@@ -20,57 +20,64 @@
 
 \end{abstract}
 
-
-%Define a clear question and approach to answering it
-Define a mapping from user interface gestures to individual programs to be loaded on local robots.
-
-Why programs for robots, rather than commanding all robots?
-Decentralized swarms are more robust than central commanders.
-
-Programs on each robot cause task completion as emergent property.
-
-Robot selection in heterogeneous swarm occurs at compile-time.
-Program designed to take advantage of current robot properties.
-
-There is no such thing as a homogeneous swarm.
-Batteries fade out, mechanical wear changes motion, sensors get bent, etc.
-Even Kilobots need calibration due to manufacturing differences.
+Methods for command and control that are based on issuing individual orders to individual actors, whether they are robotic or human, do not scale to large numbers of actors. 
+In human organizations, this problem is solved by creating hierarchies of humans to propagate commands, with the attendant increase in cost and potential to introduce errors. 
+By defining a mapping from user interface gestures to individual programs loaded on local robots, we can disintermediate the command structure, and allow an individual to control arbitrarily large, heterogeneous swarms.
+In order to remain robust in the face of failure, the overall action of the swarm should be decentralized emergent behavior, rather than a centralized orchestration. 
+Each robot receives its own program, and the sum of the execution of the programs on each robot results in task completion as emergent property.
+Because a robotic swarm's situation develops over time, there is no such thing as a homogeneous swarm.
+Each robot is at a distinct location and has a distinct level of resources such as remaining battery charge. 
+As a consequence, robot selection for tasks in a heterogeneous swarm is best deferred until compile-time.
 
 \section{Research Questions}
 
-Is there a coherent command language for controlling large swarms?  
+In order to create a mapping from a command language for multi-robot command and control, the command language must first be specified. 
+The command language in this work is a system of common gestures as determined empirically in \cite{Micire:2009:ANG:1731903.1731912}. 
+%Is there a coherent command language for controlling large swarms?  
 For the purposes of this research, a coherent command language is one that is found to be intuitive by the majority of users. 
-In contrast, an incoherent language may have components that the majority of users find intuitive, but is largely composed of components that users must be explicitly trained to use. 
-Defining the scale of a large swarm will be done empirically.
-It is expected that there is a transition point for the number of members in a swarm where users will stop interacting with the UI representation of the members of the swarm as individuals, and attempt to interact with the representations as groups or collections. 
-A large swarm is, then, a swarm with a number of members above the transition point. 
+In \cite{Micire:2009:ANG:1731903.1731912}, for each available command, one or two gestures were used by \%60 of the users. 
+In contrast, an incoherent language will have very little commonality of gestures used between users. 
+Defining the scale required for a swarm to be considered ``large'' will be done empirically.
+It is expected that there exists a transition point for the number of members in a swarm where users will stop interacting with the UI representation of the members of the swarm as individuals, and attempt to interact with the representations as groups or collections. 
+For example, rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use. 
+A large swarm is, then, a swarm with a number of members above the point at which such a transition occurs. 
 
-Is there an approach to programming for emergent behavior such that for all valid expressions of the command language, a distributed control program for the swarm A) can be synthesized automatically, and B) results in convergence of the swarm behavior to the desired result? 
+Once the language is defined, sequences of commands in that language must be translated into programs to execute on each member of the swarm. 
+The program for each swarm member must be generated automatically, either by creation of a new program or by a synthetic approach from per-determined behavior primitives.
+Because the motivating examples used in swarm robotic research are almost never related to swarm software development, the end user cannot be expected to do the programming themselves. 
+All of the valid expressions possible in the command language should be converted into programs for the robots, or the user must be usefully informed as to why it was not possible. 
+The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
+Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
+However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail.
 
-Bonus points if we feel like going into overtime: How does the synthesized program cope with failure or degradation of swarm members? How does swarm heterogeneity affect the performance of the program synthesis and runtime convergence?
+Emergent behaviors arise from the interactions of actors with each other and the world around them. 
+In the face of uncertainty in the world, the behaviors will also become uncertain. 
+Programs synthesized to guide the swarm should be designed to be robust against failure or degradation of swarm members. 
+The heterogeneity of the swarm may also be leveraged to increase its robustness against failures of individual nodes or alterations of the environment. 
+Because heterogeneity increases the dimensionality of the solution space for program synthesis, it may adversely affect the performance of the program synthesis and the swarm's runtime convergence to the desired state.
 
 
 \section{Work Plan}
 
 \subsection{Build a swarm}
 
-In order to experiment with swarm robotics, a swarm must exist. 
+In order to experiment with swarm robotics, a swarm must be made.
 Much can be done in simulation, but it is a daunting prospect to simulate the dynamics of real robot motion and the changes in the performance of each swarm member as mechanical wear and other forces influence them. 
 Further, swarm simulations must not have bugs in the software which results in incorrect behavior. 
-Genetic algorithms are infamous for exploiting quirks of their simulation environment which are not present in the real world, but allow members of the population to inflate their fitness. 
-Any behavior of a real swarm is the actual behavior of the swarm, and cannot be blamed on a defect in the simulation of the swarm or its environment. 
+Genetic algorithms are infamous for exploiting quirks of their simulation environment which are not present in the real world, but still allow members of the population to inflate their fitness. 
+Any behavior of a physical, unsimulated swarm is the real behavior of the swarm, and cannot be blamed on a defect in the simulation of the swarm or its environment. 
 
 Because the focus of this work is to determine how gesture control scales or fails to scale, and humans primary mode of gesturing is with their hands, the size of the swarm should be significantly larger than the number of fingers a user could gesture with. 
-In order to remain manageable, the swarm will not be of the large scale available in e.g. the Harvard Kilobots (CITE), but closer to 2 dozen robots. 
 
 \subsection{Swarm Robot Hardware}
 
 Swarm robots are generally small. 
 The reason to keep swarm robots small is two-fold. 
-First, more materials costs more money, and so the expense of creating the swarm increases. 
+First, larger robots consume more materials per unit, and so costs more money.
+As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
 Second, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
-If the ratio isn't kept constant, the robots will crowd each other. 
+If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
 
 The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a processor, some sensors, and a communication system, into a small package.  
 The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
@@ -100,23 +107,29 @@ The Harvard Kilobots do not support hardware heterogeneity, but in real world ap
 Wear and tear on the robots will result in differences between the robots, even if they had started from identical conditions. 
 Even sending part of a swarm up a hill while the rest remain at the bottom will result in the higher members of the swarm having less battery life than those that didn't move. 
 Battery life may be relevant to allocation of tasks, meaning that the physical elevation gradient of the robots becomes a gradient of fitness for a task as well. 
-Heterogeneity allows the robots to be cheaper. 
-Not every robot has to do everything.
+
+However, heterogeneity can also be leveraged to increase the robustness of a swarm and reduce its cost. 
+A hetergeneous swarm containing both flying and ground robots can allow specialization of the individual components. 
+By way of historical analogy, airplanes and cars have been separate types of vehicles, each specialized for a particular task. 
+Flying cars, however, are normally either poor cars, poor planes, or both, because the demands of each task are different. 
+Cars require a certain amount of weight and downward force for traction, but weight and downward air forces are the enemy of developing a good airplane. 
+Rather than requiring that all robots be able to traverse all terrains, the ground robots can be developed to cover ground well, while the aerial robots are optimized for longer ranges or dwell times. 
+Heterogeneity also allows the robots to be cheaper, because not every robot has to do everything.
 Combining robots that can fly and robots that can roll allows a mixture of overview sensing and mission endurance that would be difficult to produce robustly and inexpensively with robots that can do both. 
 
 In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a consistent control hardware platform that can be attached to children's toys. 
 Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. 
 
-Heterogenous, cheap. 
-
 In order to locate the robots within the experiment area, an overhead camera is used to detect QR codes on each robot. 
 The QR codes provide location, heading, and a unique identifier for each robot. 
 In this system, the central computer provides virtualization of the processing on each robot. 
-The robots themselves are effectively Internet of Things nodes with the ability to move around. 
-This is, then, an extension of the work done with mobile sensor motes in 
+Virtualizing the computational resources on each robot effectively allows us to borrow robots from the future. 
+As technology develops, higher powered computers and and more capable sensors have become cheaper and smaller. 
+Allowing each swarm node to have a virtual computer ``riding'' on it gives us as much computational power as we want at each point in the swarm.
+The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
+This is, then, an extension of the work done with mobile sensor motes in PAPER
 
-ROS localization of robots using QR codes from above, using a camera hanging on the ceiling above the robot enclosure. 
 
 ``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots" Jianing Chen et al. If you can't see the goal because the object is blocking your view, push on the object. 
 
