@@ -126,39 +126,66 @@ The QR codes provide location, heading, and a unique identifier for each robot.
 In this system, the central computer provides virtualization of the processing on each robot. 
 Virtualizing the computational resources on each robot effectively allows us to borrow robots from the future. 
 As technology develops, higher powered computers and and more capable sensors have become cheaper and smaller. 
-Allowing each swarm node to have a virtual computer ``riding'' on it gives us as much computational power as we want at each point in the swarm.
+Allowing each swarm node to have a virtual computer ``riding'' on it gives us as much computational power as we want at each point in the swarm, even if hardware of that power level is not currently available.
 The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
 This is, then, an extension of the work done with mobile sensor motes in PAPER
 
+The decision to use ESP-8266 wifi modules as the core of the swarm robots designed in this work is an extension of a long legacy of previous robotics projects. 
+
+%detail the other projects here, chronologically
+The use of COTS hardware in research robotics has lead to at least two platforms refered to as COTSBots.
+Bergbreiter's COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board  \cite{bergbreiter2003cotsbots}. 
+The mobility platform is a hacked toy, in particular, a specific brand of high-quality micro RC car.
+At the time of this writing, the particular car used is moderately expensive for a toy car, although quite cheap for a research robot, costing a over \$100USD per unit. 
+Bergbreiter's COTSBots use TinyOS, a modular and event-driven framework for developing node software. 
+ROS also provides a modular, event-driven framework, so many of the design ideas, if not the code, are equally applicable to the system described in this paper. 
+TinyOS is written in a dialect of C called nesC rather than ROS's polyglot approach. The motor and mote boards communicate using a messaging layer, again like ROS. 
+The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
+Ohio State also developed a very small microwave RADAR that can go on the boards.
+
+The second version of COTSBots arrived 8 years later, in ``COTSBots: Computationally Powerful, Low-Cost Robots for Computer Science Curriculums" \cite{soule2011cotsbots}. Soule and Heckendorne describe a platform composed of a laptop, which controls a modified RC car, tank, or similar toy through some combination of motor drivers. 
+Due to the diversity of possible combinations of hardware that can be assembled into this configuration, it is still a very viable platform. 
+However, the minimum size of this style of COTSBot is the size of a laptop, which is in turn dictated by the minimum size of a useful keyboard. 
+The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
+Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
+All of these parts add to the overall cost of the swarm. 
+
+Many impressive designs for swarm robot platforms have been proposed, and constructed, but are no longer easily commercially available, or never were. 
+Alice, by Caprari et al. packed a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch \cite{caprari1998autonomous}. Unfortunately, the processor is anemic by modern standards, and the platform as a whole is not commercially available anymore.
+
+Work such as ``Development of a Miniature Robot for Swarm Robotic Application" updates the processor at the heart of a robot similar to Alice, called AmIR, but there is no evidence that AmIR was ever widely available\cite{arvin2009development}. Similarly, the robot described in ``A Miniature Mobile Robot With a Color Stereo Camera System for Swarm Robotics Research'' combines a relatively modern microprocessor with a DSP for on-board vision processing \cite{haverinen2005miniature}. Again, it is not a platform that other researchers could buy.
+
+The Jasmine swarm robots were possibly the closest thing to a successor to Alice.
+Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
+Jasmine V was intended as of 2007 to include aggregation/modular robot functionality.  Unfortunately, Jasmine units cost about 100 Euro each when they were available. 
+Plans and information to reproduce Jasmine are available, but the chassis of Jasmine is a custom mechanical assembly, rather than a commercially available product. 
+This work intends to demonstrate that modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
+
+The Epuck from EFPL is approximately ~800 swiss francs per unit, so the cost of maintaining a large swarm can become daunting quickly. Michael Bonani's MarXbot runs into a similar problem, in that it has a strong computer and a rich set of sensors and effectors, but as a result it is quite expensive \cite{bonani2010marxbot}.
+
+Clearly, it cannot be expected of all swarm robotics researchers that they start and maintain a side business supporting and selling robots (much as the author might appreciate it).
+However, in the interest of allowing easy reproduction of research work, and extension of swarm platforms, it might be wished that all of the information required to reproduce swarm hardware platforms be made available in an easily-reproduced form.
+One collateral goal of the work outlined in this paper is to produce a well-documented reference design that can be implemented by a researcher using common tools, and possessed of no more than hobby-level familiarity with hardware, and common tools. 
+If researchers are not expected to become hardware entrepreneurs, they should also not be expected to become expert machine tool operators. 
+
+%synthesis of other projects
+The previously described projects tend to fall into one of two groups, from a hardware perspective. The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap. Due to their limited computation, these systems do not support complex algorithms such as vision processing. 
+All of these control systems that involve a toy plus some control hardware don't really go into how the system deals with running more advanced algorithms on the robots (because they can't, the hardware doesn't support it), or with making and operating a large cluster of them (100 \$500 laptops on RC cars is still expensive). The software of my system is the interesting part, as it allows partitioning the power of a single large computer over a lot of ``virtual'' smaller computers, while still having electromechanical systems in the real world, and all the detail that that brings.
+
+%my improvements
 
 ``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots" Jianing Chen et al. If you can't see the goal because the object is blocking your view, push on the object. 
 
 $\Rightarrow$ What if there isn't a command language that makes sense for a 1-2 dozen robot swarm?
 
-``Development of a Miniature Robot for Swarm Robotic Application" \cite{arvin2009development} Farshad Arvin, Khairulmizam Samsudin, and Abdul Rahman Ramli. Describes a pretty unremarkable swarm robot's hardware (called AMiR). Atmega128 (arduino compatible), tank steering, IR ring for sensing and data transmission. Published in International Journal of Computer and Electrical Engineering. If nothing else, I can implement my robots, spin them as IoT mobile nodes, and publish the hardware information. 
-
-``COTSBots: An off-the-shelf platform for distributed robotics'' \cite{bergbreiter2003cotsbots} Uses mote hardware for radios, plus a motor control add-on board. The mobility platform is a hacked toy, a micro RC car. The car is actually pretty expensive, over \$100. The OS is TinyOS, which is apparently common for motes around that period. The software is modular and event-driven, which ROS is as well, but written in nesC rather than ROS's polyglot approach. The motor and mote boards communicate using a messaging layer, again like ROS. The motor driver board is not commercially available, but can be custom-built without the researcher having to deal with it. Ohio State also developed a very small microwave RADAR that can go on the boards.
-
-There is another COTSBots paper ``COTSBots: Computationally Powerful, Low-Cost Robots for Computer Science Curriculums" \cite{soule2011cotsbots}, but it is referring to a different platform, which uses a laptop, plus a microcontroller/motor driver combo to move around. The mobility platform is a largish RC car, RC tank, or similar toy.
-
-All of these control systems that involve a toy plus some control hardware don't really go into how the system deals with running more advanced algorithms on the robots (because they can't, the hardware doesn't support it), or with making and operating a large cluster of them (100 \$500 laptops on RC cars is still expensive). The software of my system is the interesting part, as it allows partitioning the power of a single large computer over a lot of ``virtual'' smaller computers, while still having electromechanical systems in the real world, and all the detail that that brings. 
-
 ``Kilobot: A low cost robot with scalable operations designed for collective behaviors" \cite{rubenstein2014kilobot} Algorithms designed for hundreds of robots aren't impressive on tens of robots. Analogies with ants, thousand or more robots for research. All operations have to be constant time, anything that scales with the number of robots will take too long. Slip-stick vibration motion, rather than wheels/legs/whegs, etc. No real odometry. No motion of anything rougher than a table. No direction sensing, only range. ``Off'' mode is actually very low power sleep with a wakeup to check for the ``on'' signal every few seconds. Infrared beaming of programs with CRC for error correction. 
 
 ``The I-SWARM Project: Intelligent Small World Autonomous Robots for Micro-manipulation" \cite{seyfried2005swarm} Aiming for 2x2x1mm volume. Generally describes the challenges, but not how to deal with them. Indicates that an XML behavior spec language was created, but not what it's called or how it works. Iswarm was eventually created, using piezo actuators, about the size of a ladybug. Not commercially available. 
 
-Jasmine swarm robots are 26x26x20mm, so about an inch cubed. ATMega processors, IR close range communication and obstacle detection, two motor skid steering, li-po batteries. Jasmine V was (as of 2k7)going to include aggregation/modularity. Funding canceled as of 2012, moved to open hosting of open-source hardware. Cost about 100 Euro each, so kind of expensive if you want a lot of them. Kilobots are around \$15 in parts. Chassis is custom mechanical assembly. Not a thing you can buy, only plans and information are available. Eventually became the swarmanoid project (2006-2010) which cost way more. 
 
-Megabitty robot controller sounds like a decent controller. Two 500ma motor driver channels and an ATMega8, only available as a kit. Under 1 inch square. Costs about \$48 in single quantities and doesn't have any communications. 
 
-``The MarXbot, a Miniature Mobile Robot Opening new Perspectives for the Collective-robotic Research" \cite{bonani2010marxbot} Michael Bonani et al. 2010. Compliant self-assembly, ARM processor, two cameras, was the robot for the Swarmanoid project (the eye bot). Very expensive, only slightly smaller than a cat. Evolved from S-bots, which also do 2-D self-assembly. 
 
-``The Autonomous Micro Robot Alice: a platform for scientific and commercial applications." \cite{caprari1998autonomous} G. Caprari, P. Balmer, R. Piguet, R. Siegwart 1998. About 2cm cubed. 10 hour autonomy. PIC 16F84 brain, 1k of flash, 4MHz core, so small by today's standards. Watch motors and batteries. Custom everything, not available to researchers easily (were for sale once, not available anymore). RF and IR communications, IR sensing. 
 
-Epuck from EPFL is ~800 swiss francs per unit. Not for large swarms. 
-
-``A Miniature Mobile Robot With a Color Stereo Camera System for Swarm Robotics Research'' \cite{haverinen2005miniature} Janne Haverinen, Mikko Parpala and Juha R¨oning. 
-Modular, 3D printed body, ATMega32 for each module. TI DSP for the cameras, VGA resolution at 20 FPS. Again, not commercially available. Also, this paper is just a description of the hardware, and was published in Proceedings of the 2005 IEEE International Conference on Robotics and Automation. 
 
 Obstacles via drawing lines on the floor of the robot enclosure. Can use color detection to create obstacles, walls, etc. 
 
