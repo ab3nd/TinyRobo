@@ -151,6 +151,9 @@ Additionally, each laptop has a screen, keyboard, and so forth that are not usef
 All of these parts add to the overall cost of the swarm. 
 
 Many impressive designs for swarm robot platforms have been proposed, and constructed, but are no longer easily commercially available, or never were. 
+
+At the low end, in terms of scale, the I-SWARM Project intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers\cite{seyfried2005swarm}. Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product. 
+
 Alice, by Caprari et al. packed a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch \cite{caprari1998autonomous}. Unfortunately, the processor is anemic by modern standards, and the platform as a whole is not commercially available anymore.
 
 Work such as ``Development of a Miniature Robot for Swarm Robotic Application" updates the processor at the heart of a robot similar to Alice, called AmIR, but there is no evidence that AmIR was ever widely available\cite{arvin2009development}. Similarly, the robot described in ``A Miniature Mobile Robot With a Color Stereo Camera System for Swarm Robotics Research'' combines a relatively modern microprocessor with a DSP for on-board vision processing \cite{haverinen2005miniature}. Again, it is not a platform that other researchers could buy.
@@ -168,6 +171,10 @@ However, in the interest of allowing easy reproduction of research work, and ext
 One collateral goal of the work outlined in this paper is to produce a well-documented reference design that can be implemented by a researcher using common tools, and possessed of no more than hobby-level familiarity with hardware, and common tools. 
 If researchers are not expected to become hardware entrepreneurs, they should also not be expected to become expert machine tool operators. 
 
+One robot that is both low in cost and commercially available is the Kilobot. \cite{rubenstein2014kilobot}. Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 per robot. This is certainly more competitive than e.g. the Epuck. 
+
+However, the Kilobots do not have hardware ehterogeneity beyond that produced by wear on the robots over time. They also move by stick-slip motion, and so must operate on a smooth surface. Kilobots also do not permit highly heterogeneous programs. For very small groups, individual robots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. By combining wireless connectivity and unique identifiers, the robots described in this work can be programmed without having to handle each robot. 
+
 %synthesis of other projects
 The previously described projects tend to fall into one of two groups, from a hardware perspective. The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap. Due to their limited computation, these systems do not support complex algorithms such as vision processing. 
 All of these control systems that involve a toy plus some control hardware don't really go into how the system deals with running more advanced algorithms on the robots (because they can't, the hardware doesn't support it), or with making and operating a large cluster of them (100 \$500 laptops on RC cars is still expensive). The software of my system is the interesting part, as it allows partitioning the power of a single large computer over a lot of ``virtual'' smaller computers, while still having electromechanical systems in the real world, and all the detail that that brings.
@@ -176,33 +183,34 @@ All of these control systems that involve a toy plus some control hardware don't
 
 ``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots" Jianing Chen et al. If you can't see the goal because the object is blocking your view, push on the object. 
 
-$\Rightarrow$ What if there isn't a command language that makes sense for a 1-2 dozen robot swarm?
+%$\Rightarrow$ What if there isn't a command language that makes sense for a 1-2 dozen robot swarm?
+\subsection{Swarm Robot Software}
 
-``Kilobot: A low cost robot with scalable operations designed for collective behaviors" \cite{rubenstein2014kilobot} Algorithms designed for hundreds of robots aren't impressive on tens of robots. Analogies with ants, thousand or more robots for research. All operations have to be constant time, anything that scales with the number of robots will take too long. Slip-stick vibration motion, rather than wheels/legs/whegs, etc. No real odometry. No motion of anything rougher than a table. No direction sensing, only range. ``Off'' mode is actually very low power sleep with a wakeup to check for the ``on'' signal every few seconds. Infrared beaming of programs with CRC for error correction. 
+The basic software infrastructure consists of the software executing on the robot, modules on the control computer that are emulated as running on the robot, and support software. 
 
-``The I-SWARM Project: Intelligent Small World Autonomous Robots for Micro-manipulation" \cite{seyfried2005swarm} Aiming for 2x2x1mm volume. Generally describes the challenges, but not how to deal with them. Indicates that an XML behavior spec language was created, but not what it's called or how it works. Iswarm was eventually created, using piezo actuators, about the size of a ladybug. Not commercially available. 
+Because children's toys are manufactured to fairly low tolerances, the correlation between motion commands issued by the control software and resulting motions of the robot are prone to error. 
+The robots are also intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
+While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
+The system as a whole should be robust against the addition of new types of mobility hardware. 
+Because of the selection of hardware with a WiFi module, every hardware module is programmed with a unique MAC address. 
+In order to learn the control rules, the control software will send motion commands to each robot, and observe the displacement of that robot. 
+By varying motion commands and observing the resulting displacement, the system will learn the effect of motion commands on each robot, and so be able to control the robots. 
+Observation of the magnitude of displacement of the robots for similar motion commands, the system will also be able to quantify swarm members based on speed. 
+Variation of response to motion command will allow the system to be able to rank individual robots by the reliability of their motion. 
+As a result, the system as a whole can develop measures of the abilities of the robots, which may influence the later selection of swarm members for action assignment. 
 
+Because the system has an omniscient-view camera to track the robots, other objects in the robot arena can also be tracked. 
+For example, obstacles can be created by drawing lines on the floor of the robot enclosure. 
+Different colors could represent different types of obstacles, or qualities of the obstacles that are relevant to the software under test. 
 
+Networking between the robots will be handled by the central system, but emulating a different network topology. 
+From the point of view of the robots, messages sent into the central system will be delivered to other robots as if the messages were sent directly from one robot to another. 
+By changing how the messages are delivered by the central system, we can implement full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
+We can also vary the reliability of the network, by dropping some messages or reducing parameters based on elements of the virtual environments. 
+For example, signals that pass through a virtual wall may have a reduced emulated RSSI and range, or may not arrive. 
 
-
-
-
-Obstacles via drawing lines on the floor of the robot enclosure. Can use color detection to create obstacles, walls, etc. 
-
-Write ROS controller to learn control of heterogeneous swarm.
-Learning algorithm for controlling heterogeneous robots. 
-Each robot has an ID. Send a move command to an ID, observe displacement of robot. 
-By varying motion commands and observing displacement, can figure out ways to get a robot to move to a point, even if the individual robot is unreliable, has slip in motion. 
-Should also be able to quantify swarm members based on some criteria or other, e.g. speed. This will come in handy for action assignment.
-
-ROS software to command robots
-
-ROS networking emulation, with dynamically variable reliability
-Implementation of RSSI for swarm based on location of robots, location of walls
-Write ROS nodes to emulate inter-bot communication
-
-Dynamic heterogeneity by simulating bot properties such as damage (e.g. one motor fails, reduced speed, sensor is failing/failed) and per-bot health and settings (e.g. battery charge level, sensors equipped, localization, etc).
-Robots don't actually have all of these things, but by faking them in a modular way, we can answer questions about performance as system degrades.
+This virtual networking can be extended to other virtual robot properties, such as emulated sensors, and controlled to emulate error conditions such as reduced speed, depleted batteries, noisy sensors, degraded localization, and so forth.
+Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
 
 \subsection{UI Designs}
 
@@ -210,30 +218,107 @@ The current state of the art in design for a decentralized swarm controller appe
 The first method is to come up with behavior primitives that can be performed as a function of local sensing by each member of the swarm. 
 These primitives are then composed to come up with a program that the programmer thinks is likely to result in the desired behavior. 
 The program is then tested and modified based on the result of the testing in an iterative fashion to converge on the desired behavior. 
-Genetic algorithms and similar approaches have been explored for automating the iterative development of 
+Genetic algorithms and similar approaches have been explored for automating the iterative development of composed programs. 
 
+Neither of these approaches describes communication back to the user. 
+Programming languages and frameworks can be considered an HRI of sorts, but they are distinct from the HRI of the software as it runs. 
 
-``World Embedded Interfaces for HRI". \cite{Daily:2003:WEI:820752.821587} 
- For very large numbers of robots, anything that depends on unique identities for each robot won't scale. Centralizing control or representing data won't translate easily into something humans can deal with. Neat "Jar full of little robots" image. Local information as gradients, overlaid on real-world with e.g. augmented reality. Robots as pixels, active fiducials (e.g. bokodes). Directional beacons on robots so they can see which way a message came in (have seen this before in other papers). This is only an interface for output, does not send commands to the robots. Does raise the distinction between hybrid teams where the person is in the environment with the robots and robot-only teams where the person is elsewhere. 
+One approach to getting feedback from a swarm was the development of the Swarmish sound and light system\cite{mclurkin2006speaking}. 
+Autonomous charging means the robots can have long runtimes, and minimal one-on-one interaction with humans, so the interactions are all remote, and to a certain extent "ambient". 
+An ambient interaction is one where the information is continuously available, and the human user ``tunes in'' to it when needed. Swarmish uses a set of colored lights, with a total of 108 different combinations of colors and blink sequences, as a visual indicator. 
+In addition to the lights, each robot can produce MIDI notes over its audio system. 
+Each note can vary in instrument, pitch, duration, and volume, in addition to having tempos and rhythms as the code executes. 
+The designers of Swarmish indicate that the sum of the audio output of the swarm can provide a overall idea of the status of the swarm, but that as a musical instrument, it is difficult to play well. 
+Further, the use of lights as signaling mechanisms assumes that you can look at the robots. 
 
-``Speaking Swarmish: HRI Design for Large Swarms of Autonomous Mobile Robots" \cite{mclurkin2006speaking} How to maintain, program, interact w/ robots without doing it on an individual robot basis. Autonomous charging is an enabler (my swarm doesn't have this...). Lights and sounds of robots as output channel. Again with the robot-as-pixel (which assumes you can look at them). Remote programming is key, they do it by having something remarkably like bittorrent across all the robots, updating in parallel. Something using TCP or UDP broadcast would be good. GUI "Inspired by real-time strategy video games". Colored LEDs on top of robots (~12 single-light patterns, several variations, 108 total patterns), audio system. Audio system plays MIDI, single notes; instrument, pitch, duration, volume are variable. Tempo and rhythm variation as code executes. Requires considerable user effort to ``play'' well. 
+Assuming that the robots are visible to the user, the robots can carry some form of display that provides local information to the user. 
+This information can then be displayed as an overlay in the real world, with the display of the information conterminous with its presence\cite{Daily:2003:WEI:820752.821587}. 
+Local display of local information works if the user is part of a hybrid human/robot team, and so is in the same location as the users. 
+%``World Embedded Interfaces for HRI". \cite{Daily:2003:WEI:820752.821587} 
+% For very large numbers of robots, anything that depends on unique identities for each robot won't scale. 
+%Centralizing control or representing data won't translate easily into something humans can deal with. 
+%Neat "Jar full of little robots" image. 
+%Local information as gradients, overlaid on real-world with e.g. augmented reality. %Robots as pixels, active fiducials (e.g. bokodes). 
+%Directional beacons on robots so they can see which way a message came in (have seen this before in other papers). 
+%This is only an interface for output, does not send commands to the robots. 
+%Does raise the distinction between hybrid teams where the person is in the environment with the robots and robot-only teams where the person is elsewhere. 
 
-$\Rightarrow$ Look into real-time strategy games 
+%``Speaking Swarmish: HRI Design for Large Swarms of Autonomous Mobile Robots" \cite{mclurkin2006speaking} How to maintain, program, interact w/ robots without doing it on an individual robot basis. 
+%Autonomous charging is an enabler (my swarm doesn't have this...). 
+%Lights and sounds of robots as output channel. 
+%Again with the robot-as-pixel (which assumes you can look at them). 
+%Remote programming is key, they do it by having something remarkably like bittorrent across all the robots, updating in parallel. 
+%Something using TCP or UDP broadcast would be good. 
+%GUI "Inspired by real-time strategy video games". 
+%Colored LEDs on top of robots (~12 single-light patterns, several variations, 108 total patterns), audio system. 
+%Audio system plays MIDI, single notes; instrument, pitch, duration, volume are variable. 
+%Tempo and rhythm variation as code executes. Requires considerable user effort to ``play'' well. 
 
-``Supervisory Control of Multiple Robots: Human-Performance Issues and User-Interface Design" \cite{chen2011supervisory} ``Call center approaches" to figure out what is going on, no SA at all prior to the call. ``Specialized interfaces and adaptive systems" will save us. Supervisory control is operating as the planner and monitor of the systems being supervised, but allowing the systems to operate on their own. Ten levels of automation, 10 is no-human-involved, 1 is no-automation-involved (Parasuraman's ranking system). ``Common ground" as in team play (Stubbs et. al) to facilitate interactions using a robot proxy (robot has a stand-in during the planning to enhance collaboration). High level of operation can leave operator out of practice, or encourage mis-placed trust in automation's ability. Operator multitasking starts to fall apart with more than about 16 entities being operated at once. This bodes ill for kilo-swarms. Management by consent and by exception could still generate too many events. 
+%$\Rightarrow$ Look into real-time strategy games 
+
+For situations where the user is not located in the same area as the robots, one possible approach is a ``call center'', where robots can request human attention when required \cite{chen2011supervisory}. The human in the call center, however, is faced with having to answer potentially multiple calls with no awareness of the robot's situation. Operator multitasking starts to fail once there are more than about 16 robots being operated at once, so scaling to kilo-robot swarms seems impractical.  
+
+Supervisory control has the human act as the planner and monitor of the systems being supervised, but allowing the systems to operate on their own.
+Automation is frequently broken down into ten levels of automation, with 10 being a fully automatic system with no humans involved, and level 1 having no automation, such as a bicycle \cite{parasuraman2000model}. 
+It would be expected that reducing the number of times the human is required to interact with the robot will permit the user to operate more robots. 
+Level 5 is a sort of operation by consent model, where the computer chooses a route and executes it if the human permits it. 
+Level 9 is the inverse of level 5, where the computer informs the human only in exceptional cases. 
+In situations with even moderate numbers of robots, level five may generate too many events for the human to deal with. 
+As the number of robots increases further, even level nine may overwhelm the operator. 
+However, increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability. 
+
+The use of models such as developing a grounding using a proxy for the robot may assist the user in redeveloping SA \cite{stubbs2008using}. 
+
 
 Olsen \& Wood Fan-Out for UGVs around 5-9, depending on environment complexity. Again, bad for swarms. UAV and UGV together have reference frame issues (exo- vs. egocentric) when trying to combine incoming data to present to user. 
 
-Suggestions for interface design. Automation behavior should be visible and explainable to user. User should be able to extract meaning from information display quickly (``Swarmish" and the robot-as-pixel designs). Projected changes and predictions should be highlighted so user understands consequences of their actions. Re-instruction of the system should be quick \& easy. This last point might be bad for a plan/code/compile/run kind of paradigm, because programming isn't fast. ``Interfaces... are efficient when they are compact and when they accentuate information that guides the decision making process" So part of making the interface good is making it good at deciding what to tell the user and what to hide. Multimodal (visual/audio, visual/haptic)interfaces are faster and result in perceived reduction in workload. Scheduling incoming information that the user has to deal with reduces workload bottlenecks. Indicating which robots are in a team with a semi-transparent form covering the team was slightly preferred by user to individual robots, in interfaces where all robots are depicted. 
+Automation behavior should be continuously visible and explainable to user. 
+User should be able to extract meaning from the information display quickly, as in the case of Swarmish and the robot-as-pixel desgins.
+As the system changes, the changes and predictions should be highlighted so that the user understands consequences of their actions. 
+Re-instruction of the system should be quick \& easy, although this may be problematic for a system that operates on an automated cycle of planning, coding, compiling, and running, because programming generally is not fast.
+% ``Interfaces... are efficient when they are compact and when they accentuate information that guides the decision making process" So part of making the interface good is making it good at deciding what to tell the user and what to hide. 
+%Multimodal (visual/audio, visual/haptic)interfaces are faster and result in perceived reduction in workload. Scheduling incoming information that the user has to deal with reduces workload bottlenecks. Indicating which robots are in a team with a semi-transparent form covering the team was slightly preferred by user to individual robots, in interfaces where all robots are depicted (need to cite this). 
 
-Adaptive automation to level workload on user. Engaged at low load times, assisted at high load times. Adapt based on perceived load or physiological markers in the user. May not be relevant for fire-and-forget swarm missions. 
+One possible approach to maintain a constant and managable workload on the user is adapting the level of automation to the workload. 
+When the load is low, the user is more directly engaged, but when load is high, there is more automated assistance. 
+Adaptation does not have to be based on measured load, but could instead be based on perceived load or physiological markers in the user. 
 
-TeamTalk, TraderBot, and Plays - Task allocation and shared mental model work for human/robot teams. May also work for conveying the swarm model to the user so that they understand what is going on. $\Rightarrow$ Unsure if it can convey commands or queries back, but probably can. 
+%TeamTalk, TraderBot, and Plays - Task allocation and shared mental model work for human/robot teams. May also work for conveying the swarm model to the user so that they understand what is going on. $\Rightarrow$ Unsure if it can convey commands or queries back, but probably can. 
 
-$\Rightarrow$ How is swarm performance on task evaluated? Progress towards completion measured how?
+\subsection{User Interface Design}
 
-``Biologically-Inspired Human-Swarm Interaction Metrics.'' \cite{harriott2014biologically} Caroline E. Harriott, Adriane E. Seiffert, Sean T. Hayes, Julie A. Adams. (2014) How humans respond to interacting with swarms is not well known (and therefore a good thing to research). Nine categories of metrics, with examples, from biological and robotic swarm literature. Swarms have more uncertainty (individual reliability is low) and higher attentional demands (many individuals). Human interaction focus on macro level (cites another paper for this suggestion), influence of swarm actions rather than control of individuals. Some transition point between multi-agent and swarm, this paper puts it at ~50. 
+Ecological interface design presents a possible guide to the architecture of user interfaces for swarm robotics \cite{vicente1992ecological}. 
+User ability to interact with a system is separated into a taxonomy of skills, rules, and knowledge. 
+The user has skills, which are rote, simple activities that form the basis of the normal operation of the system. 
+Rules allow the user to handle exceptions or unusual cases that have come up before. 
+Rules do not require the user to understand the system, just to know that when certain situations are recognized, certain other actions must be performed in response. 
+Knowledge allows the user to handle novel exceptions. 
+The user has an understanding of how the system works, and can apply that knowledge to react to situations that they have not experienced or been told about before. 
+Events are also broken into three levels: routine, which uses skills; foreseen exceptions, which use rules; and unforeseen exceptions, which use knowledge. 
+All levels should be supported by the interface, but the user should not be forced to operate at a higher level than is required. 
+In order to control a process, the human/machine system must account for the complexity of the process and the constraints of the work domain. 
+The abstraction of the process maps onto the hierarchy of ecological design, with the highest level being the function of the process and the lowest level being how the function is accomplished. 
+Detection of exceptions requires the display of all constraints on the process, because exception is the breaking of constraints, and undisplayed constraints cannot be assessed to determine if they hold.
 
+Once interaction some section of the process has been taken over by automation, the user operates primarily in the rules and knowledge areas, dealing with exceptions \cite{vicente2002ecological}.
+The interface should allow direct manipulation of perceptual forms that map directly onto work-domain constraints and represent all of the information identified by the abstraction hierarchy. 
+In a swarm context, this means displaying functional information in such a way that the user can move across the hierarchy from individual swarm bots to high-level swarm-wide tasks, and interact at all levels to control the swarm. 
+EID is well-positioned to deal with emergent behavior, because the emergent behavior of the entire system is present at the functional level, but is composed of actions at the physical level.  
+%"Reciprocity of user and environment, represenative design of experiments and evaluations, primacy of perception, and start with analyzing the environment". Information about a system is abstracted across a hierarchy, high level is functional information ("This plant makes reciprocating flange whompers"), low level is physical information ("This is a fleeble grommet, it is located in the engine room"). Hierarchy is over work domain, not task. EID should encourage skill and rule-based behavior (for normal operations) while also allowing knowledge-based behavior (to solve unanticipated problems). 
+
+Previous work in multi-touch interfaces directly relates to EID by providing both an omniscient camera view for direct manipulation of the high-level, functional actions of the entire swarm, and the ability to move down the hierarchy to control individual swarm members \cite{Micire:2009:ANG:1731903.1731912}.
+Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \cite{hayes2010multi}.
+The interface displayed the locations of the robots on a directly manipulatable map, and used included movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
+Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
+%Faster task completion, especially for region selection. ``This work was partially supported by a contract from the US Marine Corps Systems Command to M2 Technologies, Inc." Basically, a lot like stuff our lab has found out, (hurf durf, because they cite Mark/Drury/Yanco on multi-touch-multi-robot). NASA TLX for human factors like frustration and workload. 
+\subsection{Metrics for the Behavior of Swarms}
+
+BRING TRUST WORK IN 
+
+In order to determine the quality of the behavior of the swarm, its efficacy at performing tasks must be measured. 
+Harriot et al propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots \cite{harriott2014biologically}.
+Nine classes of metrics are proposed. 
+The most obvious differences from individual robot control metrics are the ideas of leadership within the swarm, and macromovement of the swarm. 
 Human attributes - how the human interacts, trust, intervention frequency, etc. \\
 Task performance - ability to accomplish task, speed, accuracy, cost \\
 Timing - Command diffusion lag, behavior convergence \\
@@ -242,32 +327,30 @@ Leadership - Interaction between special members of the swarm and others, how we
 Decisions - How actions are taken, likelyhood that the correct action is chosen \\
 Communication - Speed, range, network efficiency \\
 Micromovements - Motion of individual swarm elements relative to each other \\
-Macromovement - Motion of the overall swarm, flocking, elongation, forming fancy shapes \\
+Macromovement - Motion of the overall swarm, flocking, elongation, forming fancy shapes \\ 
+Harriet et al also put the estimated transition point between multi-agent control and swarm around 50 individuals. 
+Above that threshold, human interaction may be able to remain focused on macro level behavior, influencing the overall behavior of the swarm rather than control of individuals. 
 
-``Heuristic Evaluation of Swarm Metrics’ Effectiveness'' \cite{manning2015heuristic} Matthew D. Manning et al, 2015. Visualization of swarms is gnarly. Base case is display all the units. Others include blob, blob with density shading and motion arrows, field of influence for leaders, web of information (data flow in the swarm). Lists a lot of metrics (diffusion, CoG, directional accuracy, flock thickness, resource depletion, swarm health) and assesses how well each view displayed it. Paper doesn't really list heuristics or methods, which makes me think they just kind of thought about it for a day or two and then wrote it up. Cites some interesting-looking papers in biology. 
+Swarms have more uncertainty, because the reliability of individual robots is low; and higher attentional demands because there are many robots. 
+It may be that above some threshold, the attentional demand will drop again, as the group is no longer treated as a large number of individuals, but as a single group. 
+The user interface may be able to drive this re-imagining, and convey other information, by depicting the group in different ways \cite{manning2015heuristic}.
+The base case is to simply display all the units as individuals. 
+Other approaches include an amorphous shape covering the area occupied by the swarm, an amorphous shape with density shading and motion arrows, the fields of influence for leaders in the swarm, and the web generated by the flow of information within the swarm. 
+Considered as a whole, the swarm has properties, such as center of gravity or flock thickness, that do not exist in individual robots. 
+Views of these properties may assist the user, for example in determining what areas have insufficient robot density for a thorough search operation. 
+%A lot of Dr. Adams' work in HSI was under ONR Award N00014-12-1-0987
 
-A lot of Dr. Adams' work in HSI was under ONR Award N00014-12-1-0987
-
-``Multi-Touch Interaction for Tasking Robots'' \cite{hayes2010multi} Sean T. Hayes, Eli R. Hooten, Julie A. Adams. (2010) Multi-touch better than WIMP, voice interface. ``The specific tasks are Go To location X, perform a Reconnaissance, and Cross a Dangerous Area (CDA)". ``Control widgets were placed on the map and are draggable or semi-transparent, allowing as much of the map to be displayed as possible" kind of like DREAM. Multi-touch interaction was pinch zoom and two-finger pan. Outlining regions with drawing gestures, paths with fluid strokes (not vertex selection). Faster task completion, especially for region selection. ``This work was partially supported by a contract from the US Marine Corps Systems Command to M2 Technologies, Inc." Basically, a lot like stuff our lab has found out, (hurf durf, because they cite Mark/Drury/Yanco on multi-touch-multi-robot). NASA TLX for human factors like frustration and workload. 
-
-$\Rightarrow$ What about just dropping malfunctioning individuals from view? Fits with the assumption that they are expendable, and allows human to have a rough idea of how bad things are getting by watching cloud shrink. 
-
-
-``Kinetics of Robotics: The Development of Universal Metrics in Robotic Swarms" \cite{jantz1997kinetics} Scott D. Jantz, Keith L. Doty, James A. Bagnell and Ivan R. Zapata (1997). Treats robots as a gas, each robot is a particle, calculate expected dynamics from that, and adding sensors and intelligence as improvements from the ideal gas state. Doesn't seem to deal explicitly with tasks, since a gas doesn't really perform tasks. 
-
-$\Rightarrow$ Read up on ``Ecological interface designs'', Vincente 113 in ``Supervisory Control..." display constraints as emergent patterns so user can get an intuition for the solution? 
-
-``Ecological Interface Design: Progress and Challenges" \cite{vicente2002ecological} Kim J. Vicente. EID is a framework for HCI for complex systems with a social component. As of writing of this paper (2k2), had not been tested in the real world. Automation takes over basic tasks, so worker has to deal with exceptions, must adapt to the unfamiliar in potentially high-stakes situation. "Reciprocity of user and environment, represenative design of experiments and evaluations, primacy of perception, and start with analyzing the environment". Information about a system is abstracted across a hierarchy, high level is functional information ("This plant makes reciprocating flange whompers"), low level is physical information ("This is a fleeble grommet, it is located in the engine room"). Hierarchy is over work domain, not task. EID should encourage skill and rule-based behavior (for normal operations) while also allowing knowledge-based behavior (to solve unanticipated problems). Interface should allow direct manipulation of perceptual forms that map directly onto work-domain constraints and represent all of the information (!) identified by the abstraction hierarchy. In a swarm context, this means displaying functional information across the hierarchy from swarm bots to high-level tasks so the user can interact with it if something goes wrong. Some way to represent and switch between robot tasks or behavior priorities would be key. 
-
-``Ecological Interface Design: Theoretical Foundations" \cite{vicente1992ecological} Kim J. Vicente (1992) Early work in the field. Skills, Rules, Knowledge taxonomy, don't force processing to a higher level than task requires, but support all levels. Events are also in three levels: routine, foreseen exceptions, unforeseen exceptions. In order to control a process, the human/machine system must account for the complexity of the process and the constraints of the work domain. Abstraction hierarchy as above, high level is the functional, low level is how the function is accomplished. Detection of exception requires the display of all constraints, because exception is the breaking of constraints, and undisplayed constraints cannot be assessed to determine if they hold. 
-
-$\Rightarrow$ Is trust even a factor with a swarm? Once some barrier is crossed (where is that point?) User may not care about individual units, so as long as progress appears to be being made on the mission, the user might let underperforming units slide. System might not even announce it if units are lost, until it starts to affect performance.  
-
-$\Rightarrow$ What level is a swarm expected to operate at? At the swarm-as-a-whole level, it's more or less level 1, human tells swarm what to do. At the individual robot level, it's 7 or higher. 
-
-$\Rightarrow$ Is it a valid assumption that the swarm is never teleoperated? What is the use case for being a single ant or bee, especially out of thousands of units?
-
-$\Rightarrow$ Look into MiDAS (Mission Displays for Autonomous Systems). 
+If the user is unconcerned with the functioning of individual swarm members, so long as the swarm as a whole remains functional, the UI may simply drop malfunctioning individuals from view. 
+This handling of error conditions on individual swarm units fits with the assumption that the swarm as a whole achieves robustness through redundant expendable units, while also allowing the human user to have a rough idea of how the situation is developing by watching the cloud shrink. 
+Do long as progress appears to be being made on the mission, the user might let underperforming units slide. 
+The supervisory system might not even announce when units are lost, until it starts to affect performance.  
+In the limit, the swarm could be treated as a gas, and for tasks such as diffusion over an area, the performance of the swarm would be compared to the behavior of an ideal gas \cite{jantz1997kinetics}.
+The addition of sensors and computation would then allow the robots to outperform a gas at tasks, and so achieve higher scores on a task-oriented metric than a gas could attain. 
+ 
+%$\Rightarrow$ Is trust even a factor with a swarm? Trust of swarm as a whole vs. individual.
+%$\Rightarrow$ What level is a swarm expected to operate at? At the swarm-as-a-whole level, it's more or less level 1, human tells swarm what to do. At the individual robot level, it's 7 or higher. 
+%$\Rightarrow$ Is it a valid assumption that the swarm is never teleoperated? What is the use case for being a single ant or bee, especially out of thousands of units?
+%$\Rightarrow$ Look into MiDAS (Mission Displays for Autonomous Systems). 
 
 \subsection{Derive a gesture language}
 
@@ -298,23 +381,28 @@ If no grammar exists, why not?
 How would we detect failure to converge to a grammar? No two users using the same commands, or very poor inter-user cohesion in the command sets. If no gestures are more likely than any others, then there is no preferred command set or gesture set. 
 This is actually not much of a setback, as it lets me select a grammar and develop it; or select pair of grammars, and then compare them.
 
-Another possibility, define a grammar like Tierra, where all gestures are valid commands
+One possibility is to define a command grammar like the programming environment Tierra. 
+In Tierra, there is no such thing as an invalid program. 
+All sequences of the existent symbols are regarded as executable programs, although some are more functional than others. 
+While this does prevent the possibility of the user becoming frustrated by being told that their commands are invalid, it runs into other problems. 
+Good user interface designs permit easy undoing of an undesired command, but with the physical world, this can be difficult. 
+It is much simpler to undo a digital representation of a paint stroke in a illustration program than it is to remove paint from a real wall, and it is far easier reset a simulation of a robot than it is to recall a real robot from falling down the stairs. 
 
-Probably worse than yelling at user over invalid commands, since they end up constantly sending the robots to do the wrong things
+%Allow users to operate swarm over internet, see what people try to use to control a swarm
+%Ends up causing issues because most users don't get to try (one user at a time) if it is commanding a real swarm. Swarms in simulation or web-based interactive pages don't have that problem. Can also record all the input. 
+%Can't possibly be multi-touch, as user hardware and OS support isn't really there. Most people won't do it if your instructions start with ``get a second mouse''. 
+%Could be multi-user with real robots or simulation, but runs into problems with arbitrating between which commands are used. Could do sum-of-vectors or something for shared control, like haptic/shared autonomy stuff. Could also just let users partition the robots by negotiation among themselves. Not sure how communincation for this would work. 
 
-Allow users to operate swarm over internet, see what people try to use to control a swarm
-Ends up causing issues because most users don't get to try (one user at a time) if it is commanding a real swarm. Swarms in simulation or web-based interactive pages don't have that problem. Can also record all the input. 
-Can't possibly be multi-touch, as user hardware and OS support isn't really there. Most people won't do it if your instructions start with ``get a second mouse''. 
 
-Could be multi-user with real robots or simulation, but runs into problems with arbitrating between which commands are used. Could do sum-of-vectors or something for shared control, like haptic/shared autonomy stuff. Could also just let users partition the robots by negotiation among themselves. Not sure how communincation for this would work. 
 
-User interface allows the user to define an overall desired distribution of the robots, position and directions, and then the control software compiles that into a representation in e.g. GPL or OSL that gets compiled into programs to run on the robots. This isn't a continuous controller, more fire \& forget. Could have robots with a main behavior of successfully navigating the world and other behaviors (search and rescue, track target, etc.) as riders. Sort of like putting sensors on existing bees, and then collecting the data while they do bee stuff. 
+\subsection{Conversion of User Tasks into Robot Programs}
 
-\subsection{Conversion of user tasks into robot programs}
 
 "Programming the swarm" \cite{evans2000programming} David Evans (Looks like a doctoral thesis proposal) Swarm as collection of mobile, physically situated processors communicating over an ad-hoc network. Behavior of swarm as emergent from behavior of units, resilient against "misbehaving members". References Amorphous Computing. Two approaches to programming: compose program from primitives, or synthesize unit programs based on description of environment and desired behavior. Analysis is approximate, rather than general proof of properties.
 
 Compositional approach strikes me as something like abstracted Tierra, where any combination of behaviors is a valid program, but might not be a good/useful program. 
+
+User interface allows the user to define an overall desired distribution of the robots, position and directions, and then the control software compiles that into a representation in e.g. GPL or OSL that gets compiled into programs to run on the robots. This isn't a continuous controller, more fire \& forget. Could have robots with a main behavior of successfully navigating the world and other behaviors (search and rescue, track target, etc.) as riders. Sort of like putting sensors on existing bees, and then collecting the data while they do bee stuff. 
 
 A lot of the applications listed in PtS are similar to foraging search. Spread into area, locate and converge on objective. Paper is mostly on lightweight formal methods and policy checking. Could be used at a policy level for a swarm, e.g. to limit overall power use, but adds another layer of behavior that can alter emergency. Lists as primitives: Disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, scan area, Broadcast/partialcast/unicast. Composition of programs as serial, parallel, divided, global (synchronized). I think the only composition that makes much sense is the one observed in biological organisms, that is, priority based parallel evaluation, where different behaviors become active as context requires. 
 
