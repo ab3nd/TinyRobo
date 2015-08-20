@@ -582,45 +582,59 @@ $\Rightarrow$ Protoswarm language! There's a language for that! Find a paper, do
 
 \subsection{GPS-denied Swarm Control}
 
-Pretty much all of the papers I've read assumed that the robots had either no global positioning, or positioning based on a static beacon, which is effectively relative position to a robot that doesn't move. Tend to be more concerned with 
+The Global Positioning System (GPS) has provided machines with a sense that humans lack: relatively precise localization within the global scale, in a format that is easy for computers to detect.
+Using GPS makes it easy to localize an individual member of the swarm, and so coordinate its actions relative to other similarly-localized swarm members. 
+However, GPS is less than ideal for swarm coordination for several reasons. 
 
-Determine how denial of a few usually-assumed-good properties of the system affects how the user tasks get compiled. 
-Degrade and then remove inter-robot communication to see how system adapts when robots can't reach each other. 
-Degrade and then remove global localization (GPS denial) to see what happens when robots cannot determine global absolute distance each other.
+In the most basic case, GPS signal may not be present. 
+The GPS signal is broadcast from solar-powered satellites, and so is a very low-power signal.
+At the earth's surface, it is so weak that it can be blocked by buildings or dense tree canopies, meaning that there are both indoor and outdoor areas with poor or no GPS reception \cite{zheng2005quantitative}. 
+Even if a GPS signal is present, it could be incorrect. 
+Because the GPS signal is a weak signal on a known frequency, a malicious actor can jam or spoof the signal with a minimal investment in hardware and power\cite{montgomery2009receiver}.
 
-Robustness in a robot swarm is usually assumed to occur because robots can replace each other. 
-This doesn't mean anything if the software can't deal with robots failing, or isn't itself robust in generating plans to cause the robots to behave robustly in the face of failure. 
-A kid playing with legos can use a blue block if there's not a red one available, or two small ones if there's not a large one. 
-Programs that claim to support a robust robot swarm should be at least that sturdy.
+In order to work around these problems with the GPS signal, some location-aware devices, such as cell phones, also base their position on the received signal strength of cell phone towers and wifi access points. 
+However, in both urban search and rescue and wilderness search and rescue contexts, either of these services may be unavailable. 
+USAR may be motivated by a wide-ranging disaster, such as a hurricane, which removes electrical power, and with it most wifi and cellular infrastructure.
+Because urban disaster areas by definition include buildings, at least partial GPS denial is a valid assumption.  
+Wilderness areas are unpopulated, and so have no demand to drive the placement of wireless communications. 
+Adding additional radios and processing to take advantage of these other wireless localization options will also increase the size, cost, and energy consumption of the swarm robots.
 
-Performing actions relative to other robots easy when GPS is available. Without GPS, local ranging and RSSI. 
+Global positioning, however, is not the only kind of positioning available to swarm members. 
+Indeed, there is no evidence that biological swarms, be they schools of fish, flocks of birds, or swarms of insects, have any idea about their global position. 
+It has been demonstrated that local processing and local perception, even without communication, can generate complex multi-actor behaviors such as flocking, surrounding an object, dispersing in a directed fashion, or pushing an object towards a beacon \cite{mclurkin2004stupid, chen2015occlusion, reynolds1987flocks}.
 
-Absolute distance between robots
+These sorts of behaviors are preferable to centrally-coordinated action (of which GPS is an example), because they are robust to uncertainty in the performance of the communication links between the actors. 
+If communication between a central controller and the robots fails, the robots become uncoordinated. 
+If communication between a robot and the other robots fails, that robot may be lost, but the overall actions of the swarm may continue relatively unimpeded.  
+This provides robustness to the robot swarm because robots can replace each other. 
+However, this robustness is meaningless if the control software cannot adapt to loss of individual robots, or generates plans that are not robust in the face of failures of individual robots. 
+A chile playing with blocks can use a blue block if there's not a red one available, or two small ones if there's not a large one, and software that claims to support a robust robot swarm should be at least that flexible.
 
-Absolute location within the world
+%Determine how denial of a few usually-assumed-good properties of the system affects how the user tasks get compiled. 
+%Degrade and then remove inter-robot communication to see how system adapts when robots can't reach each other. 
+%Degrade and then remove global localization (GPS denial) to see what happens when robots cannot determine global absolute distance each other.
 
-Performing actions relative to other robots gets harder when everything is relative
+The distances and locations available without a global positioning system are usually relative positions. 
+Robots can find the distance to each other by direct measurement using sensors, or by measuring the received signal strength (RSSI) of incoming communications from other robots.
+Because such measurements are not ``attached'' to any fixed points in the world, it may be possible for the robots to form a grid, but impossible to orient that grid to point north. 
 
-GPS denial is trivial for hostile actors. Weak signal coming from space on a known frequency. Jammers are available cheap on the internet. Spoofing isn't hard, just slightly more expensive. 
+With a shared map, robots may leverage their communication with each other to more quickly converge on their own location. 
+For example, SLAM with AMCL localization can generate spurious location hypotheses when the robot enters an area of the amp that is similar to another area. However, if another robot is present and aware of it's own location, it may provide a distinction between the two points by informing the other robot that if it is at one of the hypothetical locations, they should be able to see each other. 
 
-GPS denial is also a fact of life for operating inside of buildings. Since urban disaster areas pretty much by definition include buildings, at least partial GPS denial is a valid assumption. 
-
-Cell tower triangulation may not be available in wilderness rescue situations, widespread disasters
-
-Relative distance between robots (RSSI, visual recognition of other robots). RSSI is prone to multi-path interference, only really valid over short ranges. IR and sonar have similar problems with reflections. 
-
-Multi-robot SLAM, with shared map allowing placement of each robot in a shared environement. 
-SLAM errors when bits of map appear to match up that shouldn't
-Using "If you're there, you should be able to see me" to update each other's hypotheses about each other's locations.
-Is this a done thing? It should be, it's pretty easy to make robots obvious to each other. 
-
-Unreliable positioning leads to unreliable behavior. If robots in a chain are required to maintain a certain distance from each other, variable noise in the distance sensing will result in the chain becoming unstable as individual links hallucinate being too close or too far apart. 
+Unreliable positioning can lead to unreliable behavior. 
+If robots in a chain are required to maintain a certain distance from each other, variable noise in the distance sensing will result in the chain becoming unstable as individual links are erroneously perceived as being too close or too far apart. 
 
 Have to use e.g. foraging search to find each other, do area coverage, update map. Want to avoid redundancy in search, but that's hard to do without either marking the environment (collect whatever it is they are searching for, so later seekers detect that it is scarce and move on quickly, leave a repellent pheromone) or global mapping (mark areas of map as searched, move to unmapped areas). With high enough robot count and known area, diffusion/scattering will get a certain robot/area density that could count as ``coverage''. 
 
 Ant colony optimization or similar approaches to swarming on a point (forming chains away from the point to collect others, following chains)
 
-Stigmurgy is probably right out, at least in real search and rescue situations. Post-Katrina spraypainted markers for building search somewhat analogous to pheromone trails, marked environment to avoid duplication of work. Practically speaking, equipping a robot with the ability to mark the environment and the ability to perceive and make sense of marks is tricky.  
+In a real application environment, stigmurgy is somewhat less applicable than it is in simulations. 
+In simulation, robots that use pheromones to communicate have unlimited reservoirs of pheromones and flawless perception of the pheromones emitted by other robots. 
+In reality, the difficulties of limited resources and flawed perception decrease the efficiency of stigmurgic communication. 
+For example, in the USAR efforts after hurricane Katrina human search and rescue workers spraypainted markers on buildings to indicate the results of building searches to each other. 
+Computer vision has not yet reached a point where reading similar markers would be reliable. 
+Beyond technical concerns, a robot which leaves marks on its environment may not be desirable to the humans it will have to operate around. 
+Most parents train their children not to scribble on walls, and would prefer their robots are at least equally well-behaved. 
 
 How to convey to user/world map that maybe their robots are not where they think they are (for all possible disambiguations of "they"). Circles around last-seen locations? Becomes counterintuitive to control something you can't see or determine if it's doing the right thing. How do robots develop their concept of doing the right thing, and how do they convey that along with uncertainty about it to the user?
 
