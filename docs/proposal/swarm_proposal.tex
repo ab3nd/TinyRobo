@@ -387,16 +387,13 @@ All sequences of the existent symbols are regarded as executable programs, altho
 While this does prevent the possibility of the user becoming frustrated by being told that their commands are invalid, it runs into other problems. 
 Good user interface designs permit easy undoing of an undesired command, but with the physical world, this can be difficult. 
 It is much simpler to undo a digital representation of a paint stroke in a illustration program than it is to remove paint from a real wall, and it is far easier reset a simulation of a robot than it is to recall a real robot from falling down the stairs. 
-
+Furthermore, a command language with no invalid commands runs into the same problem as gesture interfaces: there is no way for a user to be idly present to the interface.
+Every signal is interpreted as something that must be acted upon. 
 %Allow users to operate swarm over internet, see what people try to use to control a swarm
 %Ends up causing issues because most users don't get to try (one user at a time) if it is commanding a real swarm. Swarms in simulation or web-based interactive pages don't have that problem. Can also record all the input. 
 %Can't possibly be multi-touch, as user hardware and OS support isn't really there. Most people won't do it if your instructions start with ``get a second mouse''. 
 %Could be multi-user with real robots or simulation, but runs into problems with arbitrating between which commands are used. Could do sum-of-vectors or something for shared control, like haptic/shared autonomy stuff. Could also just let users partition the robots by negotiation among themselves. Not sure how communincation for this would work. 
-
-
-
 \subsection{Conversion of User Tasks into Robot Programs}
-
 
 "Programming the swarm" \cite{evans2000programming} David Evans (Looks like a doctoral thesis proposal) Swarm as collection of mobile, physically situated processors communicating over an ad-hoc network. Behavior of swarm as emergent from behavior of units, resilient against "misbehaving members". References Amorphous Computing. Two approaches to programming: compose program from primitives, or synthesize unit programs based on description of environment and desired behavior. Analysis is approximate, rather than general proof of properties.
 
