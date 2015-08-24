@@ -56,7 +56,6 @@ Programs synthesized to guide the swarm should be designed to be robust against 
 The heterogeneity of the swarm may also be leveraged to increase its robustness against failures of individual nodes or alterations of the environment. 
 Because heterogeneity increases the dimensionality of the solution space for program synthesis, it may adversely affect the performance of the program synthesis and the swarm's runtime convergence to the desired state.
 
-
 \section{Work Plan}
 
 \subsection{Build a swarm}
@@ -156,7 +155,9 @@ At the low end, in terms of scale, the I-SWARM Project intended to create a 2x2x
 
 Alice, by Caprari et al. packed a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch \cite{caprari1998autonomous}. Unfortunately, the processor is anemic by modern standards, and the platform as a whole is not commercially available anymore.
 
-Work such as ``Development of a Miniature Robot for Swarm Robotic Application" updates the processor at the heart of a robot similar to Alice, called AmIR, but there is no evidence that AmIR was ever widely available\cite{arvin2009development}. Similarly, the robot described in ``A Miniature Mobile Robot With a Color Stereo Camera System for Swarm Robotics Research'' combines a relatively modern microprocessor with a DSP for on-board vision processing \cite{haverinen2005miniature}. Again, it is not a platform that other researchers could buy.
+Work such as ``Development of a Miniature Robot for Swarm Robotic Application" updates the processor at the heart of a robot similar to Alice, called AmIR, but there is no evidence that AmIR was ever widely available\cite{arvin2009development}.
+Similarly, the robot described in ``A Miniature Mobile Robot With a Color Stereo Camera System for Swarm Robotics Research'' combines a relatively modern microprocessor with a DSP for on-board vision processing \cite{haverinen2005miniature}. 
+Again, it is not a platform that other researchers could buy.
 
 The Jasmine swarm robots were possibly the closest thing to a successor to Alice.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
@@ -234,27 +235,6 @@ Further, the use of lights as signaling mechanisms assumes that you can look at 
 Assuming that the robots are visible to the user, the robots can carry some form of display that provides local information to the user. 
 This information can then be displayed as an overlay in the real world, with the display of the information conterminous with its presence\cite{Daily:2003:WEI:820752.821587}. 
 Local display of local information works if the user is part of a hybrid human/robot team, and so is in the same location as the users. 
-%``World Embedded Interfaces for HRI". \cite{Daily:2003:WEI:820752.821587} 
-% For very large numbers of robots, anything that depends on unique identities for each robot won't scale. 
-%Centralizing control or representing data won't translate easily into something humans can deal with. 
-%Neat "Jar full of little robots" image. 
-%Local information as gradients, overlaid on real-world with e.g. augmented reality. %Robots as pixels, active fiducials (e.g. bokodes). 
-%Directional beacons on robots so they can see which way a message came in (have seen this before in other papers). 
-%This is only an interface for output, does not send commands to the robots. 
-%Does raise the distinction between hybrid teams where the person is in the environment with the robots and robot-only teams where the person is elsewhere. 
-
-%``Speaking Swarmish: HRI Design for Large Swarms of Autonomous Mobile Robots" \cite{mclurkin2006speaking} How to maintain, program, interact w/ robots without doing it on an individual robot basis. 
-%Autonomous charging is an enabler (my swarm doesn't have this...). 
-%Lights and sounds of robots as output channel. 
-%Again with the robot-as-pixel (which assumes you can look at them). 
-%Remote programming is key, they do it by having something remarkably like bittorrent across all the robots, updating in parallel. 
-%Something using TCP or UDP broadcast would be good. 
-%GUI "Inspired by real-time strategy video games". 
-%Colored LEDs on top of robots (~12 single-light patterns, several variations, 108 total patterns), audio system. 
-%Audio system plays MIDI, single notes; instrument, pitch, duration, volume are variable. 
-%Tempo and rhythm variation as code executes. Requires considerable user effort to ``play'' well. 
-
-%$\Rightarrow$ Look into real-time strategy games 
 
 For situations where the user is not located in the same area as the robots, one possible approach is a ``call center'', where robots can request human attention when required \cite{chen2011supervisory}. The human in the call center, however, is faced with having to answer potentially multiple calls with no awareness of the robot's situation. Operator multitasking starts to fail once there are more than about 16 robots being operated at once, so scaling to kilo-robot swarms seems impractical.  
 
@@ -268,7 +248,6 @@ As the number of robots increases further, even level nine may overwhelm the ope
 However, increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability. 
 
 The use of models such as developing a grounding using a proxy for the robot may assist the user in redeveloping SA \cite{stubbs2008using}. 
-
 
 Olsen \& Wood Fan-Out for UGVs around 5-9, depending on environment complexity. Again, bad for swarms. UAV and UGV together have reference frame issues (exo- vs. egocentric) when trying to combine incoming data to present to user. 
 
