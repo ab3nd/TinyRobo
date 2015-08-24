@@ -393,96 +393,11 @@ Every signal is interpreted as something that must be acted upon.
 %Ends up causing issues because most users don't get to try (one user at a time) if it is commanding a real swarm. Swarms in simulation or web-based interactive pages don't have that problem. Can also record all the input. 
 %Can't possibly be multi-touch, as user hardware and OS support isn't really there. Most people won't do it if your instructions start with ``get a second mouse''. 
 %Could be multi-user with real robots or simulation, but runs into problems with arbitrating between which commands are used. Could do sum-of-vectors or something for shared control, like haptic/shared autonomy stuff. Could also just let users partition the robots by negotiation among themselves. Not sure how communincation for this would work. 
-\subsection{Conversion of User Tasks into Robot Programs}
-
-"Programming the swarm" \cite{evans2000programming} David Evans (Looks like a doctoral thesis proposal) Swarm as collection of mobile, physically situated processors communicating over an ad-hoc network. Behavior of swarm as emergent from behavior of units, resilient against "misbehaving members". References Amorphous Computing. Two approaches to programming: compose program from primitives, or synthesize unit programs based on description of environment and desired behavior. Analysis is approximate, rather than general proof of properties.
-
-Compositional approach strikes me as something like abstracted Tierra, where any combination of behaviors is a valid program, but might not be a good/useful program. 
-
-User interface allows the user to define an overall desired distribution of the robots, position and directions, and then the control software compiles that into a representation in e.g. GPL or OSL that gets compiled into programs to run on the robots. This isn't a continuous controller, more fire \& forget. Could have robots with a main behavior of successfully navigating the world and other behaviors (search and rescue, track target, etc.) as riders. Sort of like putting sensors on existing bees, and then collecting the data while they do bee stuff. 
-
-A lot of the applications listed in PtS are similar to foraging search. Spread into area, locate and converge on objective. Paper is mostly on lightweight formal methods and policy checking. Could be used at a policy level for a swarm, e.g. to limit overall power use, but adds another layer of behavior that can alter emergency. Lists as primitives: Disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, scan area, Broadcast/partialcast/unicast. Composition of programs as serial, parallel, divided, global (synchronized). I think the only composition that makes much sense is the one observed in biological organisms, that is, priority based parallel evaluation, where different behaviors become active as context requires. 
-
-Mobile software specs: "Mobile UNITY [Roman97], the Distributed Join-Calculus [Fournet96], and Mobile Ambients [Cardelli98]."
-
-"A much more ambitious goal is to produce the device programs for a primitive swarm program from the high-level behavior description. It is not realistic to hope that we could completely automate the process." This is pretty much what we're talking about doing. 
-
-Lists tuple spaces, amorphous computing, as potential enabling technologies for swarm programming. 
-
-"Continuous Space-Time Semantics Allow Adaptive Program Execution" \cite{bachrach2007continuous} Jonathan Bachrach, Jacob Beal, Takeshi Fujiwara. Spatial computer model, devices that interact depending on their location in space. Computer is "programm[ed]...as a continuious space". Swarm robotics as a special case of the spatial computer. "Proto" is language for a continuous plane spatial computer. Operations act as reduce() or similar over local area or history, feedback loops provide state. Paper provides emergent computation of firefly-style synchronization (coupled oscillators, so perhaps some elements of swarm computing can be expressed as variably-coupled oscillators in combination with driving signals derived from internal states and sensor inputs. This would in some ways be the ultimate evolution of the BEAM "Robot Jurassic Park" idea from the '90s, where each robot is sharing some of its internal state via coupled oscillation with the other robots in the park, e.g. to communicate the presence of light sources for ``food", the presence of self for collision avoidance, etc.)
-
-"The mechanism for binding sensors to names is implementation dependent, as are the value when sense is applied to an unbound name and the result of multiple streams being sent to the same actuator." So, uh, the actual interaction of the program with the world is ``implementation dependent"? Good, knowing what your code does is for suckers. 
-
-"Programming with Stigmergy: Using Swarms for Construction" \cite{mason2003programming} Zachary Mason. Homogeneous swarm with no memory, only local perception. A set of environmental triggers is "coherent if no stage in the building process can be confused with an earlier stage by making only local observations, thus obviating the need for centralized control". Agents move at random, actions governed by perception of environment at present time. Environment can include pheromones.  "Other future work includes programming construction swarms by specifying the target structure directly, letting a compiler infer the corresponding rule-set (if one exists)."
-
-"A Formal Approach to Autonomic Systems Programming: The SCEL Language" \cite{nicola2014formal} ROCCO DE NICOLA et al. Self-managing autonomous ensembles of systems. Only related to swarm robotics in the sense that it is for more than one computer. Assumes complete localization and inter-swarm communication. 
-
-"Scripting the Swarm: Event-based control of Microcontroller-based robots" \cite{magnenat2008scripting} Stephane Magenenat et al, EFPL. Introduces ASEBA, an event-based control architecture. Reflashing e-puck takes a minute, doesn't scale to a bunch of robots unless you can do it to all robots at once. Concurrent debugging is impossible. Programs compiled to bytecode, react to incoming sensor data (e.g. message from other robot, impending collision, etc.). Could compose swarm behavior by deciding reaction priorities, tuning priorities in reaction to environment. Still doesn't describe task-to-program compilation. Does permit differing code between robots, which won't scale to 1k+ robots. 
+\subsection{Conversion of User Tasks into Robot Programs} 
 
 "Structure Synthesis on-the-fly in a Modular Robot" \cite{revzen2011structure} Shai Revzen et al. Robot uses binary foam to make structures, including bodies for other robots by sticking foam to robot parts. Not really a swarm thing, unless you count the other robot parts.  
 
 "Automated Construction using Co-operating Biomemetic Robots" \cite{bowyer2000automated} Adrian Bower. Robots that build as an emergent property of individual behavior. Has a few basic rules to govern arch and column building. Mostly an exploration of potential ideas, without a lot of conclusions. Isocyanurate foam is awful stuff. 
-
-"Collective Construction with Multiple Robots" \cite{wawerla2002collective} Jens Wawerla, Gawav S. Sukhatme, Maja J. Mataric. Behavior based, virtual sensing. Communication and memory, even minimal, will improve the efficency of the system, but are not required to complete the task. Task is implied by the behaviors, not compiled from a higher-level specification. 
-
-"Emergence-Oriented Programming" \cite{palmer2005emergence} Daniel W. Palmer, Marc Kirschenbaum, Linda Seiter. Mentions GA to produce agent programs, could probably be used for developing behavior priority vectors. Hard to determine success, need to be able to recognize and evaluate performance on sub-problems. "The ideal way to program a swarm is to simply shout out high-level objectives and let the swarm figure out how to solve the problem." Meta-rules that govern selection of rules at the individual agent level depending on agent context. Nested hierarchies of systems and their contexts, but can be collapsed to an arbitrary level and its next level up (higher has no downward effect, lower can be considered part of base level). All information for the actor is local (its own sensors and memory, can possibly share with other actors). Uses aspect-oriented-programming (AoP) to recognize method invocations for single-agent actions as an aspect (e.g. maintain-distance and move-random forming a dispersion aspect). Analysis of the behavior of the swarm looking for good patterns and trying to develop code that does not yet exist to create behaviors that have not yet been observed is REALLY HARD, so have humans do it. This is a design process, not an automation process, but indicates a direction for possible ML approaches (which seems like a return to the GA approaches the authors dismissed earlier, possibly as less-directed than human intervention.). This requires multiple design/build/test loops for each activity the swarm tries to do. Perhaps have it learn forageForObject until object is found, surroundObject until object is surrounded, then "pushObject" until object is where it should be, then disperseRobots until the object is left alone again. Humans can do ``what-if" experiments on individual robots (so can the computer, and faster, assuming some evaluation function is available). Swarm algorithims extracted from Virtual Human Swarm (VHS) having people wander around a gymnasium. 
-
-What is the existing work in compilation of programs for robots? 
-
-Are there swarm-specific languages? 
-
-"Proto" is a language for a continuous plane spatial computer. Proto paper also lists TinyDB as a "database view of the devices making up the computer", *LISP, and Regiment. Continuous time evolution approximated in gamma calculus and P-systems. 
-
-"Infrastructure for Engineered Emergence on Sensor/Actuator Networks" \cite{beal2006infrastructure} Devices share internal state with local neighborhood, all run the same code bu can diverge due to neighborhood influences, sensor values. Proto is a stream-processing language, program is a directed acyclic graph with a single root (the output stream), composing programs is placing nodes into the graph. Proto is strongly typed, but with type inference rather than explicit/static typing. Doesn't cover conversion of a task into code. 
-
-$\Rightarrow$ Look into *LISP, Regiment, gamma calculus, P-systems, Functional Reactive Programming, Gooze
-
-"Combining Amorphous Computing and reactive agent-based systems: a paradigm for pervasive intelligence?" David Servat, Alexis Drogoul. Eventually everything will have an embedded, networked processor. Everything will continue to be gnarly: high heterogeneity in terms of software, processors, use cases, controllers and users. Things should still behave in a useful, coherent, predictable way. Requiring users to constantly manage them is not that. Amorphous computational model: computational units, which may be faulty, randomly located in a dynamic environment. Homogeneous programming, limited communication radius. Paper holds that most research in the area is computational models (e.g. ant colony optimization) or communications methods. Hop-count based gradient methods, bio-inspired based on quorum sensing. ``AC Hierarchy" for performing computing tasks ``simplifies programming with high-level abstractions". 
-
-"Software Eng. For Self-Adaptive Systems" (Is a 270 page book, maybe skim later?)
-
-"A Catalog of Biologically-inspired Primitives for Engineering Self-Organization" \cite{nagpal2004catalog} Radhika Nagpal.\\ 
-"1. Morphogen gradients and positional information \\
-2. Chemotaxis and directional information \\
-3. Local inhibition and local competition \\
-4. Lateral inhibition and spacing \\
-5. Local monitoring \\
-6. Quorum sensing and counting: \\
-7. Checkpoints and consensus \\
-8. Random exploration and selective stabilization:"\\
-First five are common in amorphous computing, last three not so much (what are their uses?). Calls out gradient sensing in neuronal morphogenesis. Local inhibition and competition for symmetry-breaking. Quorum sensing to detect agent count required for a task (``do we have enough robots to move this box?") JIT allocation rather than pre-allocation is more robust, use the robots that are in the right place at the right time. Domino timing, where completion of each phase triggers the next. 
-
-"Co-fields: Towards a Unifying Approach to the Engineering of Swarm Intelligent Systems" \cite{mamei2003co} Marco Mamei1, Franco Zambonelli. Again, the problem of robust software in dynamic environments with unreliable actors. Computational Fields (co-fields) are distributed data structures in a space, abstracting some features of the world perceived by the agents. Available as a dynamic systems formalism. Agents move on gradients in field spread by agents into the environment (great shades of pheromones, Batman!). Space doesn't have to be physical space. 
-
-"Engineering Amorphous Computing Systems" \cite{nagpal2004engineering} Radhika Nagpal, Marco Mamei. Intro very similar to "A Catalog of Biologically-inspired Primitives for Engineering Self-Organization". Programming languages for AC: Growing Point Language (GPL, thanks, we needed some ambiguity) differentiates to form structures. Origami Shape Language, for dense agents on a deformable sheet. Describes local folds to eventually form an origami pattern. Both compile local program from overall description of desired result. Languages have different global properties. TOTA middleware provides fields and propagation rules for data, similar to co-fields. 
-
-"Notes on Amorphous Computing" Jacob Katzenelson. \cite{katzenelson2000notes} Doing differentiation and integration on amorphous computers. 
-
-$\Rightarrow$ Why is almost everyone ignoring power supplies except as an afterthought? Not a computer science problem?
-
-$\Rightarrow$ Is it useful to share sensor information in a broadband rate-coded way, e.g. spike trains? Neuronal computation seems a bit like the limit case of amorphous computing, except that the network isn't radius-bound. 
-
-$\Rightarrow$ Are there languages to describe a problem that is to be handled by a swarm, and compile to code for swarm members?
-
-Assume the robots have a set of behaviors available (approach other robots, send a certain signal, move, avoid other robots, ``emit pheromone'') and can conditionally execute them e.g. when they see another robot, or when they reach a location. Is it possible to convert from user tasks to priority sequence or if-this-then-that style ``programs''?
-
-Could be argued to be ``composition" from primitives.
-
-``A Compositional Framework for Programming Stochastically Interacting Robots" \cite{napp2011compositional} Nils Napp \& Eric Klavins. Guarded Command Programming with Rates (GCPR). Robot behavior modeled as a stochastic process. Swarms are inherently concurrent (paper calls this the primary challenge, which I kind of doubt). Concerned with rigorous proof of correctness, which I maybe should be. ``Composed programs execute simultaneously". Assumption is that robots only have local sensing. GCPR guards are conditions on the environment, when condition is met, robot does actions at a given rate. This sounds a LOT like behavior-based robotics. In the concurrent case, this is modeled as each action happening one at a time, but in random order. Swarm behaves in a state space S, want to ensure that for all orderings of all actions, S ends in target final state. Physicality of system limits state transitions (robots can't occupy same space, can only move fixed distance in given time, etc.). Programs can be sped up or slowed down by scaling. Rate is typically the inverse of the mean time to complete the action (i.e. do things as fast as you can get them done). Markov semantics of the system description means robots randomly choose when to perform actions, once guards are met. By scaling time of actions, relative influence of actions is increased or decreased (e.g. if no obstacles move right with scale 4, move left with scale 2 means robots will move left or right, but twice as fast to the right, so robots will drift right overall). Failed behaviors are modeled as a program that doesn't do what the other program it is composed with does. Correct programs are those that reach the target state with probability one, even when composed with bounded failures (note that they might do it very slowly, but once they succeed, they stay successful).
-
-$\Rightarrow$ In the real-world case of noisy or imperfect sensors, the variable time to execution of a guarded behavior would be caused by the imperfection of the robot's ability to detect that the guard was satisfied. In the real world, we get stochasticity for free. 
-
-$\Rightarrow$ Get Klavins et al 2k4, apparently on algorithmic approach mapping local to complex global behavior.  
-
-"Evolving Self-Organizing Behaviors for a Swarm-Bot" \cite{dorigo2004evolving} MARCO DORIGO AND VITO TRIANNI et al. The whole front page is authors. Swarm-bots assumed to be able to connect to each other, so this is a modular approach. Formation of an aggregate and motion of that aggregate. Evolution is often very slow, especially in physical systems, so simulator used. Evolve in simulation, test in hardware. Genotype is the weights of a single-layer perceptron that connects the sensors to the wheels. Evolved motion strategy figured out that spinning in place was the best move, which isn't what the users wanted. Aggregation evolves well, motion ends up being slow, and slowing as robot count increases beyond evolved values. A lot of the algorithims appeared to stablize (fitness-wise) after 25 or so generations. For mutual motion when linked, robots could sense traction, allows negotiation of a common direction of movement by proprioception. Can avoid obstacles and pull objects due to traction interactions. 
-
-Didn't have enough robots to test in real life. Some decrease in performance when switching to a more accurate physical model for simulations. 
-
-$\Rightarrow$ Quinn et all 2001, 2003, apparently did work on individuals (aclonal), rather than all robots having the same genome (clonal) Quinn, M. 2001a. A comparison of approaches to the evolution of homogeneous multi-robot teams. In Proceedings of the 2001 Congress on Evolutionary Computation (CEC2001), IEEE Press: Piscataway, NJ, pp. 128–135.
-Quinn, M. 2001b. Evolving communication without dedicated communication channels. In Proceedings of the Sixth European Conference on Artificial Life, J. Kelemen and P. Sosik (Eds.), vol. 2159 of Lecture Notes in Computer Science, Springer-Verlag: Berlin, Germany, pp. 357–366.
-Quinn, M., Smith, L., Mayley, G., and Husbands, P. 2003. Evolving controllers for a homogeneous system of physical robots: Structured cooperation with minimal sensors. Philosophical Transactions of the Royal Society of London, Series A: Mathematical, Physical and Engineering Sciences, 361:2321– 2344.
-
-"Evolving Aggrgation Behaviors for Swarm Robotic Systems: A Systematic Case Study" \cite{bahgecci2005evolving} Erkin Bahceci and Erol Sahin. From Mataric, evolution is only useful if it's faster than designing it by hand. Aggregation as a preliminary behavior, before doing something of interest (moving object, attacking en mass, etc. ). 
 
 "Behavioral Feedback as a Catalyst for Emergence in Multi-Agent Systems" \cite{palmer2005behavioral} Daniel W. Palmer, Marc Kirschenbaum, LindaM. Seiter, Jason Shifflet, Peter Kovacina (2005). Not a lot of structure in swarm programming, lots of ad-hoccery, no automated agent program generation. Agents respond to emergent behavior in a sort of loop, or split-level hierarchy where the emergent behavior is the upper level and the agent behavior is the lower level. Basic swarm agents are assumed to be reactionary. Next level up uses local storage. Again with the AoP, behavioral feedback as an aspect. Used stochastic selection of actions, so kine of like Napp/Klavins work. 
 
@@ -506,31 +421,121 @@ How are individual robot actions parameterized?
 E.g. for clustering, range that robots can see each other, likelihood of a robot deciding to be a cluster center.  
 Can variable parameterization be effective in the face of heterogeneous robot behavior?
 
+\subsection {language approaches}
+
 Is it possible to build a compiler that converts user commands in task space into programs for robots without having to code in assumptions about the qualities of the robots? Does the compiler have to account for global properties (e.g. GPS denial)? Can the compiler account for robot-local properties (e.g. battery life, motor failure)?
+
+$\Rightarrow$ Protoswarm language! There's a language for that! Find a paper, do it now! Unfortunately, this has UI of a programming language, so still not great for first responders who are not also coders. 
+
+"Emergence-Oriented Programming" \cite{palmer2005emergence} Daniel W. Palmer, Marc Kirschenbaum, Linda Seiter. Mentions GA to produce agent programs, could probably be used for developing behavior priority vectors. Hard to determine success, need to be able to recognize and evaluate performance on sub-problems. "The ideal way to program a swarm is to simply shout out high-level objectives and let the swarm figure out how to solve the problem." Meta-rules that govern selection of rules at the individual agent level depending on agent context. Nested hierarchies of systems and their contexts, but can be collapsed to an arbitrary level and its next level up (higher has no downward effect, lower can be considered part of base level). All information for the actor is local (its own sensors and memory, can possibly share with other actors). Uses aspect-oriented-programming (AoP) to recognize method invocations for single-agent actions as an aspect (e.g. maintain-distance and move-random forming a dispersion aspect). Analysis of the behavior of the swarm looking for good patterns and trying to develop code that does not yet exist to create behaviors that have not yet been observed is REALLY HARD, so have humans do it. This is a design process, not an automation process, but indicates a direction for possible ML approaches (which seems like a return to the GA approaches the authors dismissed earlier, possibly as less-directed than human intervention.). This requires multiple design/build/test loops for each activity the swarm tries to do. Perhaps have it learn forageForObject until object is found, surroundObject until object is surrounded, then "pushObject" until object is where it should be, then disperseRobots until the object is left alone again. Humans can do ``what-if" experiments on individual robots (so can the computer, and faster, assuming some evaluation function is available). Swarm algorithims extracted from Virtual Human Swarm (VHS) having people wander around a gymnasium. 
+
+What is the existing work in compilation of programs for robots? 
+
+Are there swarm-specific languages? 
+
+"Proto" is a language for a continuous plane spatial computer. Proto paper also lists TinyDB as a "database view of the devices making up the computer", *LISP, and Regiment. Continuous time evolution approximated in gamma calculus and P-systems. 
+
+"Infrastructure for Engineered Emergence on Sensor/Actuator Networks" \cite{beal2006infrastructure} Devices share internal state with local neighborhood, all run the same code bu can diverge due to neighborhood influences, sensor values. Proto is a stream-processing language, program is a directed acyclic graph with a single root (the output stream), composing programs is placing nodes into the graph. Proto is strongly typed, but with type inference rather than explicit/static typing. Doesn't cover conversion of a task into code. 
+
+$\Rightarrow$ Look into *LISP, Regiment, gamma calculus, P-systems, Functional Reactive Programming, Gooze
+
+"Combining Amorphous Computing and reactive agent-based systems: a paradigm for pervasive intelligence?" David Servat, Alexis Drogoul. Eventually everything will have an embedded, networked processor. Everything will continue to be gnarly: high heterogeneity in terms of software, processors, use cases, controllers and users. Things should still behave in a useful, coherent, predictable way. Requiring users to constantly manage them is not that. Amorphous computational model: computational units, which may be faulty, randomly located in a dynamic environment. Homogeneous programming, limited communication radius. Paper holds that most research in the area is computational models (e.g. ant colony optimization) or communications methods. Hop-count based gradient methods, bio-inspired based on quorum sensing. ``AC Hierarchy" for performing computing tasks ``simplifies programming with high-level abstractions". 
+
+"Software Eng. For Self-Adaptive Systems" (Is a 270 page book, maybe skim later?)
+
+"Co-fields: Towards a Unifying Approach to the Engineering of Swarm Intelligent Systems" \cite{mamei2003co} Marco Mamei1, Franco Zambonelli. Again, the problem of robust software in dynamic environments with unreliable actors. Computational Fields (co-fields) are distributed data structures in a space, abstracting some features of the world perceived by the agents. Available as a dynamic systems formalism. Agents move on gradients in field spread by agents into the environment (great shades of pheromones, Batman!). Space doesn't have to be physical space. 
+
+"Engineering Amorphous Computing Systems" \cite{nagpal2004engineering} Radhika Nagpal, Marco Mamei. Intro very similar to "A Catalog of Biologically-inspired Primitives for Engineering Self-Organization". Programming languages for AC: Growing Point Language (GPL, thanks, we needed some ambiguity) differentiates to form structures. Origami Shape Language, for dense agents on a deformable sheet. Describes local folds to eventually form an origami pattern. Both compile local program from overall description of desired result. Languages have different global properties. TOTA middleware provides fields and propagation rules for data, similar to co-fields. 
+
+"Notes on Amorphous Computing" Jacob Katzenelson. \cite{katzenelson2000notes} Doing differentiation and integration on amorphous computers. 
+
+$\Rightarrow$ Is it useful to share sensor information in a broadband rate-coded way, e.g. spike trains? Neuronal computation seems a bit like the limit case of amorphous computing, except that the network isn't radius-bound. 
+
+$\Rightarrow$ Are there languages to describe a problem that is to be handled by a swarm, and compile to code for swarm members?
+
+Many applications that are proposed for swarms are similar to foraging search, in that the robots spread into an area in order to locate and converge on an objective. 
+
+User interface allows the user to define an overall desired distribution of the robots, position and directions, and then the control software compiles that into a representation in e.g. GPL or OSL that gets compiled into programs to run on the robots. This isn't a continuous controller, more fire \& forget. Could have robots with a main behavior of successfully navigating the world and other behaviors (search and rescue, track target, etc.) as riders. Sort of like putting sensors on existing bees, and then collecting the data while they do bee stuff. Paper is mostly on lightweight formal methods and policy checking. Could be used at a policy level for a swarm, e.g. to limit overall power use, but adds another layer of behavior that can alter emergency. 
+
+Mobile software specs: "Mobile UNITY [Roman97], the Distributed Join-Calculus [Fournet96], and Mobile Ambients [Cardelli98]."
+
+"A much more ambitious goal is to produce the device programs for a primitive swarm program from the high-level behavior description. It is not realistic to hope that we could completely automate the process." This is pretty much what we're talking about doing. 
+
+Lists tuple spaces, amorphous computing, as potential enabling technologies for swarm programming. 
+
+"Continuous Space-Time Semantics Allow Adaptive Program Execution" \cite{bachrach2007continuous} Jonathan Bachrach, Jacob Beal, Takeshi Fujiwara. Spatial computer model, devices that interact depending on their location in space. Computer is "programm[ed]...as a continuious space". Swarm robotics as a special case of the spatial computer. "Proto" is language for a continuous plane spatial computer. Operations act as reduce() or similar over local area or history, feedback loops provide state. Paper provides emergent computation of firefly-style synchronization (coupled oscillators, so perhaps some elements of swarm computing can be expressed as variably-coupled oscillators in combination with driving signals derived from internal states and sensor inputs. This would in some ways be the ultimate evolution of the BEAM "Robot Jurassic Park" idea from the '90s, where each robot is sharing some of its internal state via coupled oscillation with the other robots in the park, e.g. to communicate the presence of light sources for ``food", the presence of self for collision avoidance, etc.)
+
+"The mechanism for binding sensors to names is implementation dependent, as are the value when sense is applied to an unbound name and the result of multiple streams being sent to the same actuator." So, uh, the actual interaction of the program with the world is ``implementation dependent"? Good, knowing what your code does is for suckers. 
+
+"A Formal Approach to Autonomic Systems Programming: The SCEL Language" \cite{nicola2014formal} ROCCO DE NICOLA et al. Self-managing autonomous ensembles of systems. Only related to swarm robotics in the sense that it is for more than one computer. Assumes complete localization and inter-swarm communication. 
+
+"Scripting the Swarm: Event-based control of Microcontroller-based robots" \cite{magnenat2008scripting} Stephane Magenenat et al, EFPL. Introduces ASEBA, an event-based control architecture. Reflashing e-puck takes a minute, doesn't scale to a bunch of robots unless you can do it to all robots at once. Concurrent debugging is impossible. Programs compiled to bytecode, react to incoming sensor data (e.g. message from other robot, impending collision, etc.). Could compose swarm behavior by deciding reaction priorities, tuning priorities in reaction to environment. Still doesn't describe task-to-program compilation. Does permit differing code between robots, which won't scale to 1k+ robots.
+
+\subsection{compositional approaches}
+
+Assume the robots have a set of behaviors available (approach other robots, send a certain signal, move, avoid other robots, ``emit pheromone'') and can conditionally execute them e.g. when they see another robot, or when they reach a location. Is it possible to convert from user tasks to priority sequence or if-this-then-that style ``programs''?
+
+Could be argued to be ``composition" from primitives.
+
+One abstraction of a swarm for programming is a collection of mobile, physically situated processors communicating over an ad-hoc network \cite{evans2000programming}. The behavior of the swarm is emergent from the behavior of individual units, and is  resilient against "misbehaving members".
+Two approaches to programming this abstraction of a swarm are to compose program from individual behavior primitives, or to synthesize unit programs based on description of environment and desired behavior. 
+%Analysis is approximate, rather than general proof of properties.
+
+In the compositional approach, any combination of behaviors is a valid program, but might not be a good/useful program. 
+Evans lists disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, and scan area as primitives for motion, and broadcast, partialcast, and unicast as methods of swarm communication.
+Behaviors in a program can be composed to operate serially or in parallel, and divided across the swarm or synchronized across the swarm. 
+Most biological swarms, such as insects, could be argued to have a priority based parallel evaluation, where different behaviors become active as context requires.
+Higher organisms, including humans in large groups, engage in serial and synchronized behaviors. %TODO is there evidence for one kind or the other? 
+
+Another proposed catalog of behaviors for swarm control bases the simple behaviors on pheremones or chemical sensing in single cells \cite{nagpal2004catalog}. 
+The proposed behaviors are the use of gradient sensing for position and direction information, local inhibition and competition, lateral inhibition for spatial information, local monitoring, quorum sensing for timing and counting, checkpoint and consensus sensing, and random exploration. 
+The first five are common in amorphous computing, but the last three are not. %TODO what are their uses?. 
+These senses are sufficient for relatively complex behaviors. 
+Quorum sensing is used to detect whether the local agent count is sufficient for a task. 
+This allows just-in-time allocation of robots to tasks rather than pre-allocation when the task is designed. 
+This may be more robust against failures of individual robots, as it uses the robots that are in the right place at the right time, rather than waiting for specially assigned robots. 
+However, under sufficiently bad conditions, a sufficient quorum may never arrive, deadlocking the task. 
+In combination with domino timing, where completion of each phase triggers the next, this could then deadlock the entire process unless another mechanism detects and corrects it.
+
+It has been demonstrated that a swarm can perform construction tasks using only local sensing and no communication \cite{wawerla2002collective}.
+However, the addition of communication between systems and memory of the state of the world will improve the efficency of the system.
+The system under discussion was developed to have the task implied by the behaviors available for the agents, rather than generating the program from a higher-level specification, such as the form of the structure to be built.
+
+Another compositional method for programming robots proposes that the behaviors can be seperated into classes, such as motion, orientation, and so forth \cite{mclurkin2004stupid}. 
+Among these behaviors are ``primitives'' such as several forms of clustering, which other, later works have treated as an emergent behavior itself, arising from more primitive primitives. 
+The variable granularity of the primitives available to compose swarm control programs seems to point to a hierarchy of control elements, with perhaps single motor operations at the bottom, and an increasing composition of elements to create more and more complex behaviors.
+Demos written to run on the swarm called multiple primitive behaviors, with parameters such as degrees of bearing and centimeters of proximity. 
+The behaviors ideally run concurrently, and some of them respond to sensor inputs. 
+The output of behaviors is whether they are running, translational and rotational velocity, and LED configuration. 
+Subsumption and summation are used to arbitrate between behaviors of differing priorities. 
+
+McLurkins swarm had many properties that would be highly desirable in a swarm intended to operate robustly in a potentially hostile environment. 
+For example, the robots did not have unique identities, and so were interchangable as far as any algorithims involving them were concerned. 
+It might be useful for robots to have global, local, or no names, or temporary names, but any algorithim that depends on them may end up depending too much on a particular robot. 
+However, the swarm did not have any learning within the robots, and relied on the configuration of the environment to inform the behavior of the robots. 
+As a result, ``bad environments" could elicit pathological behavior from the swarm. 
+In real use cases, there is no such thing as a ``bad environment". 
+The environment simply is, and so if a robot fails in an environment, it is the robot and not the environment that is bad. 
+
+The absence of global IDs for the robots does pose a problem for determining if all of the robots are reachable from all of the other robots, in other words, if the network is a single connected component. 
+With global IDs, the absence of some subset of them indicates that the network is divided. 
+Without them, the network may be divided but, the robots will be unable to detect it. 
+
+``A Compositional Framework for Programming Stochastically Interacting Robots" \cite{napp2011compositional} Nils Napp \& Eric Klavins. Guarded Command Programming with Rates (GCPR). Robot behavior modeled as a stochastic process. Swarms are inherently concurrent (paper calls this the primary challenge, which I kind of doubt). Concerned with rigorous proof of correctness, which I maybe should be. ``Composed programs execute simultaneously". Assumption is that robots only have local sensing. GCPR guards are conditions on the environment, when condition is met, robot does actions at a given rate. This sounds a LOT like behavior-based robotics. In the concurrent case, this is modeled as each action happening one at a time, but in random order. Swarm behaves in a state space S, want to ensure that for all orderings of all actions, S ends in target final state. Physicality of system limits state transitions (robots can't occupy same space, can only move fixed distance in given time, etc.). Programs can be sped up or slowed down by scaling. Rate is typically the inverse of the mean time to complete the action (i.e. do things as fast as you can get them done). Markov semantics of the system description means robots randomly choose when to perform actions, once guards are met. By scaling time of actions, relative influence of actions is increased or decreased (e.g. if no obstacles move right with scale 4, move left with scale 2 means robots will move left or right, but twice as fast to the right, so robots will drift right overall). Failed behaviors are modeled as a program that doesn't do what the other program it is composed with does. Correct programs are those that reach the target state with probability one, even when composed with bounded failures (note that they might do it very slowly, but once they succeed, they stay successful).
+
+$\Rightarrow$ In the real-world case of noisy or imperfect sensors, the variable time to execution of a guarded behavior would be caused by the imperfection of the robot's ability to detect that the guard was satisfied. In the real world, we get stochasticity for free. 
+
+$\Rightarrow$ Get Klavins et al 2k4, apparently on algorithmic approach mapping local to complex global behavior.
+
+\subsection{pheremone approaches}
 
 How is task completion detected? Bio-inspiration would probably be something like quorum sensing or other local-communication-based saturation methods. Once all the robots are saying the task is locally completed, then the task is completed for at least the coverage area. 
 
-``Stupid Robot Tricks: A Behavior-Based Distributed Algorithm Library for Programming Swarms of Robots", \cite{mclurkin2004stupid} James D. McLurkin. Set of comm techniques and library of behaviors for multiple robots in a group. Gradient-flood communications. Swarm behavior emergent from individual behaviors is sometimes unexpected. Library provides parts that interact predictably. Tested on 100 real robots. Was advised by Brooks, so there's the behavior-based robotics mentioned in the title. "Insects to not seem to have global names..." Neither do people (Eric, Eric...). Algorithimic state stored in the physical world, e.g. with stigmurgy or robot positions. Robots may not all be able to communicate with each other, network can be divided by distance, paper assumes they are all in one connected component (no way to know if they are not without known global IDs "is bob here?"). Robots might have global, local, or no IDs. Transmission of signals between robots is CSMA, can have collisions, limits throughput. Different types of gradient messages, with different propagation rules and rates. 
-
-Behaviors ideally run concurrently, some respond to sensor inputs. IN the paper, the behaviors output is whether they are running, translational and rotational velocity, and LED configuration. Subsumption and summation are used to arbitrate between behaviors of differing priorities. 
-
-Motion $\rightarrow$ moveArc, moveStop, moveForward, moveByRemoteControl, bumpMove
-
-Orientation $\rightarrow$ orientForOrbit, orbitRobot, orientToRobot, matchHeadingToRobot, followRobot
-
-Navigation $\rightarrow$ followTheLeader, orbitGroup, navigateGradient
-
-Clustering $\rightarrow$ clusterOnSource, clusterWithBreadCrumbs, clusterIntoGroups
-
-Dispersion $\rightarrow$ avoidRobot, avoidManyRobots, disperseFromSource, disperseFromLeaves, disperseUniformly
-
-Utility $\rightarrow$ detectEdges
-
-Demos ended up calling multiples of these. Motion specifications were (for individual robots) things like degrees of bearing and centimeters of proximity, so behaviors can be quantified. detectEdges is to detect if a robot is on the edge of the network. Behavior-based robotics explicitly doesn't learn, so ``bad environments" can defeat the swarm. Unfortunately, there's no such thing as a ``bad environment", just environments. Paper doesn't provide axioms for swarm programming at the group level. 
-
-$\Rightarrow$ iRobot swarm had directional IR signaling (quadrants) using signal strength to figure out range and bearing, so that's something I'll want to include or emulate in my system. 
-
-$\Rightarrow$ I should probably include some form of charging that doesn't involve a lot of hands-on interaction with my robots. 
+Pheremone approaches can guide the construction of objects, even if the individual swarm members have no memory and only local perception\cite{mason2003programming}. 
+Agents move at random, and take actions governed by their individual perception of environment at present time. 
+The environment can include pheromones, which agents can release and react to, and so there is an implicit communication via stigmurgy, but no explicit agent-to-agent communication. 
+A set of environmental triggers is "coherent if no stage in the building process can be confused with an earlier stage by making only local observations, thus obviating the need for centralized control".   
+%"Other future work includes programming construction swarms by specifying the target structure directly, letting a compiler infer the corresponding rule-set (if one exists)."
 
 ``Pheremone Robotics" \cite{payton2001pheromone} Virtual pheremones with directional sensors. Largely a rehash of "World Embedded Interfaces". Modulated IR for sending messages. Hop-counting for diffusion. Budding with growth inhibition for exploration. Gas model as well, attraction balancing repulsion. Cites interesting work in directed diffusion, amorphous computing (processing with reaction-diffusion systems). "No explicit maps or models of env, no explicit knowledge of robot location". Walking in the world rather than walking in your head. 
 
@@ -540,6 +545,29 @@ $\Rightarrow$ Research quorum sensing in bacteria.
 
 $\Rightarrow$ Could steal from neuronal wiring and growth for exploration and communication algorithms. 
 
+\subsection{evolutionary composition}
+
+Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
+One approach is to set some intuitively reasonable values and then test the behavior of the software on the swarm. 
+This may not scale well to large swarms, depending on the technology used to distribute the software. 
+If each robot needs to be individually reprogrammed, then the time required for distributing a software update will grow with the size of the swarm, and eventually become unmanagable. 
+Assuming the program can be swiftly distributed, then programming it is simply a matter of iterative software development, with each bug or undesired behavior accounted for in the next iteration. 
+However, this approach assumes that the behavior of the swarm is being dictated by programmers, and expressed as a computer program. 
+While it must be a program at some level, the behavior of the swarm must be easier and faster for non-programming users to express and control. 
+ 
+It is possible to develop self-organizing behaviors for robots using genetic algorithims \cite{dorigo2004evolving}. 
+This does offer a reduction in the amount of hands-on time spent programming, but it frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
+Performing the evolution simulation allowed the robots to develop behaviors such as aggregation, but early versions also allowed the evolved motion strategy to acquire a high fitness by spinning in place. 
+For mutual motion when linked, robots could sense traction, allows negotiation of a common direction of movement by proprioception. 
+Similar traction-based interactions allowed the robots to avoid obstacles and pull objects. 
+Solutions discovered by genetic algorithims are also prone to overfitting. 
+The swarms described in Dorigo et al decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
+
+$\Rightarrow$ Quinn et all 2001, 2003, apparently did work on individuals (aclonal), rather than all robots having the same genome (clonal) Quinn, M. 2001a. A comparison of approaches to the evolution of homogeneous multi-robot teams. In Proceedings of the 2001 Congress on Evolutionary Computation (CEC2001), IEEE Press: Piscataway, NJ, pp. 128–135.
+Quinn, M. 2001b. Evolving communication without dedicated communication channels. In Proceedings of the Sixth European Conference on Artificial Life, J. Kelemen and P. Sosik (Eds.), vol. 2159 of Lecture Notes in Computer Science, Springer-Verlag: Berlin, Germany, pp. 357–366.
+Quinn, M., Smith, L., Mayley, G., and Husbands, P. 2003. Evolving controllers for a homogeneous system of physical robots: Structured cooperation with minimal sensors. Philosophical Transactions of the Royal Society of London, Series A: Mathematical, Physical and Engineering Sciences, 361:2321– 2344.
+
+"Evolving Aggrgation Behaviors for Swarm Robotic Systems: A Systematic Case Study" \cite{bahgecci2005evolving} Erkin Bahceci and Erol Sahin. From Mataric, evolution is only useful if it's faster than designing it by hand. Aggregation as a preliminary behavior, before doing something of interest (moving object, attacking en mass, etc. ).
 % research questions (usually, 1-3 should suffice) and the reason for asking them
 % the major approach(es) you will take (conceptual, theoretical, empirical and normative, as appropriate) and rationale
 % significance of the research (in academic and, if appropriate, other fields)
@@ -547,14 +575,6 @@ $\Rightarrow$ Could steal from neuronal wiring and growth for exploration and co
 %Highlight its originality and/or significance
 %Explain how it adds to, develops (or challenges) existing literature in the field
 %Persuade potential supervisors and/or funders of the importance of the work, and why you are the right person to undertake it
-
-Computer is aware of meaning of gesture, locations of robots. 
-Second assumption (global localization) may not hold. 
-How can computer determine what programs or what parameters result in the completion of the task?
-
-What are the tasks? Assume search and rescue domain, what are the tasks in USR? Search an area with good coverage. Report content of an area. Group at a location. Locate a specific resource. 
-
-This could be situated at an intersection between planning and compiling, as the compilation might have to factor in elements of the known environment at the time of compilation. Since the actors are spatially situated, plans should incorporate spatial awareness.  
 
 ``Improving Efficiency in Mobile Robot Task Planning Through World Abstraction'' \cite{galindo2004improving} Hierarchical world representation and operating at multiple levels of that hierarchy to reduce dimensionality of the problem space. Successive refinement from broad goals to behavioral primitives. Primitives are available for swarm robotics, but overall actions take place over the swarm. How to actually accomplish the translation is a bit tricky. Even GPL and OSL work from a desired known final state to a behavior specification, so task specification would have to be based on a description of the final state of the system. 
 
@@ -574,7 +594,7 @@ Collective behavior hierarchy covers a lot of the behavior primitives that paper
 
 HSI section just lists a bunch of interactions, gesture-based communication, robots observing operator and voting/consensing on what they operator signaled. Human placement of beacons or interaction via a central computer. 
 
-$\Rightarrow$ Protoswarm language! There's a language for that! Find a paper, do it now! Unfortunately, this has UI of a programming language, so still not great for first responders who are not also coders. 
+
 
 
 \subsection{GPS-denied Swarm Control}
