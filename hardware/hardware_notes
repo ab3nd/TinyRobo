@@ -1,0 +1,19 @@
+Bugs in v1 hardware:
+Don't use 0204 parts. They're annoyingly tiny. 1206 for everything. 
+The caps are OK 0805
+The footprint for the diode is too big, it's only slightly bigger than 1206. 
+The footprint for the switch needs the leg contacts moved in by half their length towards the switch
+Via for the heat sink for the motor drivers needs to not be under the ESP8266
+Connectorize battery
+
+Assembly pointers:
+Get you some fine-point tweezers for great good
+
+Ideological bugs:
+Off is not where you think it is on the switch (on is towards the battery)
+- Label on the PCB
+Surface mount ESP8266 has no idiot lights, add one so I can tell when it is on
+Add another light to an unused GPIO for debugging
+Any reason I shouldn't have all pull-ups be one value (have some 10k and some 1k)?
+
+
