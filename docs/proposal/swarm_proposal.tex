@@ -478,7 +478,7 @@ Is it possible to build a compiler that converts user commands in task space int
 
 \subsection{Amorphous Computing}
 
-Amorphous computing (AC) is computation using locally-linked and interacting, asynchronous, unreliable computing elements dispersed on a surface or throughout a volume \cite{abelson2000amorphous}. 
+Amorphous computing (AC), also called spatial computing, is computation using locally-linked and interacting, asynchronous, unreliable computing elements dispersed on a surface or throughout a volume \cite{abelson2000amorphous}. 
 The motivation for AC is that while it may be possibly to produce arbitrary quantities of ``smart dust'', it is not possible to ensure that it all works well and is precisely located, especially in real-world applications.
 The goal of AC is to get useful work out of such materials, despite uncertainty as to their reliability and location. 
 Smart dusts are also the limit-case, in terms of scale, for swarm robotics, and if AC promises to get useful work out of smart dust, then it also has some applicability to larger swarm robots.
@@ -493,7 +493,38 @@ For swarm robotics, this is an important quality, as precise localization may no
 
 "Infrastructure for Engineered Emergence on Sensor/Actuator Networks" \cite{beal2006infrastructure} Devices share internal state with local neighborhood, all run the same code bu can diverge due to neighborhood influences, sensor values. Proto is a stream-processing language, program is a directed acyclic graph with a single root (the output stream), composing programs is placing nodes into the graph. Proto is strongly typed, but with type inference rather than explicit/static typing. Doesn't cover conversion of a task into code. 
 
-$\Rightarrow$ Look into *LISP, Regiment, gamma calculus, P-systems, Functional Reactive Programming, Gooze
+There are several languages intended to program amorphous computers. 
+"Proto" is a language for a continuous plane spatial computer \cite{correll2009ad}.
+Because the devices are distributed over a plane, the difficulty in communicating between any two devices is a function of the distance between them, much as with RF or other radiative communications.
+In Proto, the behavior of regions of space is described by the programmer, and the description is transformed into local actions for the network of devices. 
+Because devices have a size in the real world, and space between them, the devices cannot not have a one-to-one mapping with the space, but instead perform an approximation of the desired behavior. 
+Swarm robots are mobile, so some swarm algorithims can be implemented as a description of constraints on the robot's state, such as "the robot must have communications links to no more than 2 and no less than 1 other robots", and a command to move randomly unless the constraint is satisfied. 
+Within a bounded environment, such an algorithm can be shown to converge \cite{correll2009ad}. 
+
+Proto also has considerable appeal as a programming language for swarm control development because of the layered mapping from behavior of regions at the global level to programs for discrete points at the level of individual devices \cite{beal2006infrastructure}. 
+If user interface interactions can be interpreted as indications of desired behaviors displayed over spatial regions, then conversion of those behaviors into programs in Proto may be automatable. 
+As a result, the user can create control programs for each robot without having to learn Proto themselves.  
+
+Growing Point Language (GPL) allows the specification of topological patterns in an amorphous computer, and so can also be used to specify the distribution of swarm robots in a space \cite{nagpal2004engineering}. 
+GPL is inspired by the morphogenic controls present in biological organisms, which use gradients of chemicals called morphogens to dictate the development of cells \cite{turing1952chemical}.
+The name GPL arises from one of the language's main abstractions, the growing point. 
+The growing point is the location of activity within the amorphous medium, at which local agents are changing their state. 
+Initially, all agents have the same state and program, with a few exceptions that serve as seeds for the growth to begin. 
+If the pattern is not required to be fixed at a particular location, even the seeds could be undetermined initially, and elect themselves via a method such as lateral inhibition. 
+During the execution of the GPL program, each agent chooses its state based on the presence of pheromones, which are morphogens with limited range. 
+Range limitation on morphogens propagating between robots is set using a TTL (Time To Live) counter that propagates with the morphogen, and is decremented with each hop in the communication network. 
+When the TTL hits zero, the morphogen message is no longer propagated. 
+By controlling the production or propagation of morphogens within the amorphous medium, complex patterns can be developed. 
+
+Origami Shape Language (OSL) uses the abstraction of a foldable sheet to form shapes, inspired by both origami and the folding of epithelial cells during the development of biological organisms \cite{nagpal2004engineering, nagpal2001programmable}.
+Regions and edges on the sheet can be defined by propagation of morphogens, and folds along the edges result in the development of the final form.
+Because of the use of morphogens and local communication between the agents on the sheet, there is no need for a global controller to dictate the development of the final form. 
+Further, because the high-level description of the desired form does not involve abstractions of the underlying modules, OSL could operate on interlocking modular robots, actuated flexible materials, swarms, or other kinds of computational media. 
+In fact, the flexible sheet could be assumed to be virtual, and the resulting motions of the sheet could be translated into motor commands to configure swarm robots into specific arrangements in space. 
+
+%  Proto paper also lists TinyDB as a "database view of the devices making up the computer", *LISP, and Regiment. Continuous time evolution approximated in gamma calculus and P-systems. 
+%"Infrastructure for Engineered Emergence on Sensor/Actuator Networks" \cite{beal2006infrastructure} Devices share internal state with local neighborhood, all run the same code bu can diverge due to neighborhood influences, sensor values. Proto is a stream-processing language, program is a directed acyclic graph with a single root (the output stream), composing programs is placing nodes into the graph. Proto is strongly typed, but with type inference rather than explicit/static typing. Doesn't cover conversion of a task into code. 
+%$\Rightarrow$ Look into *LISP, Regiment, gamma calculus, P-systems, Functional Reactive Programming, Gooze
 
 "Combining Amorphous Computing and reactive agent-based systems: a paradigm for pervasive intelligence?" David Servat, Alexis Drogoul. Eventually everything will have an embedded, networked processor. Everything will continue to be gnarly: high heterogeneity in terms of software, processors, use cases, controllers and users. Things should still behave in a useful, coherent, predictable way. Requiring users to constantly manage them is not that. Amorphous computational model: computational units, which may be faulty, randomly located in a dynamic environment. Homogeneous programming, limited communication radius. Paper holds that most research in the area is computational models (e.g. ant colony optimization) or communications methods. Hop-count based gradient methods, bio-inspired based on quorum sensing. ``AC Hierarchy" for performing computing tasks ``simplifies programming with high-level abstractions". 
 
@@ -501,7 +532,6 @@ $\Rightarrow$ Look into *LISP, Regiment, gamma calculus, P-systems, Functional R
 
 "Co-fields: Towards a Unifying Approach to the Engineering of Swarm Intelligent Systems" \cite{mamei2003co} Marco Mamei1, Franco Zambonelli. Again, the problem of robust software in dynamic environments with unreliable actors. Computational Fields (co-fields) are distributed data structures in a space, abstracting some features of the world perceived by the agents. Available as a dynamic systems formalism. Agents move on gradients in field spread by agents into the environment (great shades of pheromones, Batman!). Space doesn't have to be physical space. 
 
-"Engineering Amorphous Computing Systems" \cite{nagpal2004engineering} Radhika Nagpal, Marco Mamei. Intro very similar to "A Catalog of Biologically-inspired Primitives for Engineering Self-Organization". Programming languages for AC: Growing Point Language (GPL, thanks, we needed some ambiguity) differentiates to form structures. Origami Shape Language, for dense agents on a deformable sheet. Describes local folds to eventually form an origami pattern. Both compile local program from overall description of desired result. Languages have different global properties. TOTA middleware provides fields and propagation rules for data, similar to co-fields. 
 
 "Notes on Amorphous Computing" Jacob Katzenelson. \cite{katzenelson2000notes} Doing differentiation and integration on amorphous computers. 
 
