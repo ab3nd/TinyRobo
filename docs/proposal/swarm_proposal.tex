@@ -267,7 +267,7 @@ If communication between a central controller and the robots fails, the robots b
 If communication between a robot and the other robots fails, that robot may be lost, but the overall actions of the swarm may continue relatively unimpeded.  
 This provides robustness to the robot swarm because robots can replace each other. 
 However, this robustness is meaningless if the control software cannot adapt to loss of individual robots, or generates plans that are not robust in the face of failures of individual robots. 
-A chile playing with blocks can use a blue block if there's not a red one available, or two small ones if there's not a large one, and software that claims to support a robust robot swarm should be at least that flexible.
+A child playing with blocks can use a blue block if there's not a red one available, or two small ones if there's not a large one, and software that claims to support a robust robot swarm should be at least that flexible.
 
 %Determine how denial of a few usually-assumed-good properties of the system affects how the user tasks get compiled. 
 %Degrade and then remove inter-robot communication to see how system adapts when robots can't reach each other. 
@@ -282,21 +282,25 @@ For example, SLAM with AMCL localization can generate spurious location hypothes
 
 Unreliable positioning can lead to unreliable behavior. 
 If robots in a chain are required to maintain a certain distance from each other, variable noise in the distance sensing will result in the chain becoming unstable as individual links are erroneously perceived as being too close or too far apart. 
+Uncertain position also propagates into the user interface. 
+If the position of the robots is not well-known, the interface must convey to the user that the robots may not be in their expected positions. 
+Current GPS navigation applications on Android and iOS phones display position uncertainty by a bounding circle over the area the GPS user is most likely in, so that metaphor could be extended to circles around the last-seen locations of all of the robots. 
+Uncertainty in the interface will also likely create uncertainty in the user as to the position of the robots and the . 
 
-Have to use e.g. foraging search to find each other, do area coverage, update map. Want to avoid redundancy in search, but that's hard to do without either marking the environment (collect whatever it is they are searching for, so later seekers detect that it is scarce and move on quickly, leave a repellent pheromone) or global mapping (mark areas of map as searched, move to unmapped areas). With high enough robot count and known area, diffusion/scattering will get a certain robot/area density that could count as ``coverage''. 
-
-Ant colony optimization or similar approaches to swarming on a point (forming chains away from the point to collect others, following chains)
-
-In a real application environment, stigmurgy is somewhat less applicable than it is in simulations. 
+Search of an area is a common problem in swarm robotics.
+With a high enough robot count and bounded area, simple diffusion or scattering will reach a robot per area density that could count as ``coverage''. 
+Using fewer robots for the same task means the robots must use search of some kind to find each other, locate targets in an area, update the area map, and so forth. 
+It is also desirable to avoid redundancy in the search, so areas are not searched multiple times.
+Avoiding duplication can be done by either marking the environment, such as collecting the search target so later seekers detect that it is scarce and move on quickly or leaving a repellent pheromone, or shared mapping.
+The use of markings on the environment is known as stigmurgy, and has considerable coverage in the literature. 
+However, in a real application environment, stigmurgy is somewhat less applicable than it is in simulations. 
 In simulation, robots that use pheromones to communicate have unlimited reservoirs of pheromones and flawless perception of the pheromones emitted by other robots. 
 In reality, the difficulties of limited resources and flawed perception decrease the efficiency of stigmurgic communication. 
 For example, in the USAR efforts after hurricane Katrina human search and rescue workers spraypainted markers on buildings to indicate the results of building searches to each other. 
+Even to humans, the meanings of the markers were somewhat ambiguous. 
 Computer vision has not yet reached a point where reading similar markers would be reliable. 
 Beyond technical concerns, a robot which leaves marks on its environment may not be desirable to the humans it will have to operate around. 
 Most parents train their children not to scribble on walls, and would prefer their robots are at least equally well-behaved. 
-
-How to convey to user/world map that maybe their robots are not where they think they are (for all possible disambiguations of "they"). Circles around last-seen locations? Becomes counterintuitive to control something you can't see or determine if it's doing the right thing. How do robots develop their concept of doing the right thing, and how do they convey that along with uncertainty about it to the user?
-
 
 \subsection{UI Designs}
 
@@ -307,14 +311,12 @@ The program is then tested and modified based on the result of the testing in an
 Genetic algorithms and similar approaches have been explored for automating the iterative development of composed programs. 
 The second method is to define roles for each robot, and a sequence of actions to be performed by each role. 
 \unsure{Citations needed, is this as brittle as it sounds? This is where we get markets for selection of roles.}
-
-Neither of these approaches describes communication back to the user. 
-Programming languages and frameworks can be considered an HRI of sorts, but they are distinct from the HRI of the software as it runs. 
+Neither of these approaches describes communication back to the user, and while programming languages and frameworks can be considered an HRI of sorts, neither of these approaches describes the HRI of the software as it runs. 
 
 One approach to getting feedback from a swarm was the development of the Swarmish sound and light system\cite{mclurkin2006speaking}. 
 Swarmish provides an ambient means of determining the overall state of the swarm, as well as some information about individual robots. 
 The swarm that used Swarmish had autonomous charging, and so the individual robots had long runtimes, and minimal one-on-one interaction with humans. 
-As a result, most of the interactions the interactions were remote.
+As a result, most of the interactions were remote.
 The ``ambient'' aspect of the interaction is that the information is continuously available, and the human user ``tunes in'' to it when needed. 
 Swarmish uses a set of colored lights and sounds, produced by each robot, to provide feedback. 
 The lights were in three colors, and had a total of 108 different combinations of colors and blink sequences, as a visual indicator of the state of each robot. 
@@ -331,7 +333,7 @@ However, there are many situations where the robot is not in the same location a
 A common example is urban search and rescue, where buildings may be known to be unsafe, or of unknown stability, but it is desirable to search them for trapped people. 
 In such a situation, the human user would rather be located elsewhere, and receive information from the robots. 
 
-For situations where the user is not located in the same area as the robots, one possible approach is a ``call center'', where robots can request human attention when required \cite{chen2011supervisory}. The human in the call center, however, is faced with having to answer potentially multiple calls with no awareness of the robot's situation. Operator multitasking starts to fail once there are more than about 16 robots being operated at once, so scaling to kilo-robot swarms seems impractical.  
+For situations where the user is not located in the same area as the robots, one possible approach is a ``call center'', where robots can request human attention when required \cite{chen2011supervisory}. The human in the call center, however, is faced with having to answer potentially multiple calls with no awareness of the robot's situation. 
 
 One method that is frequently cited as a basis for call center UI is Supervisory Control. 
 Supervisory control has the human act as the planner and monitor of the systems being supervised, but allowing the systems to operate on their own.
@@ -351,9 +353,15 @@ Level 5 is a fairly high level, but with a large number of robots checking in, e
 As the number of robots increases further, even level nine may overwhelm the operator, despite the fact that the robots are only checking in with the operator when an exceptional situation occurs. 
 Increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability. 
 
-The use of models such as developing a grounding using a proxy for the robot may assist the user in redeveloping SA \cite{stubbs2008using}. 
-
-Olsen \& Wood Fan-Out for UGVs around 5-9, depending on environment complexity. Again, bad for swarms. UAV and UGV together have reference frame issues (exo- vs. egocentric) when trying to combine incoming data to present to user. 
+In fact, the any kind of multitasking may prove insufficient for large swarms. 
+Operator multitasking starts to fail once there are more than about 12 robots being operated at once, in the best cases.
+Failure generally takes the form of task effectiveness no longer increasing as more robots are added.
+Instead, the amount of time the user spends interacting with the robots begins to outweigh the time that the robots are usefully active between interactions, and so the time the robots spend uselessly waiting for interactions rises. 
+Most of the best cases are uncrewed aerial vehicles (UAVs), which require relatively little oversight. 
+Uncrewed ground vehicles (UGVs) require more oversight than UAVs, due to the higher complexity of the ground environment. 
+Estimates place the limits on the number of robots under control at 12 or 13 for UAVs and 3-9 for UGVs \cite{WangSearchScale}.  
+There is some latitude, at least in UGVs, to increase multitasking by increasing automation, as shown by the relatively wide range in the interaction limits, but even 9 is nowhere near the scale of kilo-robot swarms \cite{Olsen:2004:FMH:985692.985722}.
+%The use of models such as developing a grounding using a proxy for the robot may assist the user in redeveloping SA \cite{stubbs2008using}. 
 
 Ecological interface design presents a possible guide to the architecture of user interfaces for swarm robotics \cite{vicente1992ecological}. 
 User ability to interact with a system is separated into a taxonomy of skills, rules, and knowledge. 
@@ -384,10 +392,8 @@ Areas were selected with with drawing gestures, and paths with fluid strokes, ra
 %Faster task completion, especially for region selection. ``This work was partially supported by a contract from the US Marine Corps Systems Command to M2 Technologies, Inc." Basically, a lot like stuff our lab has found out, (hurf durf, because they cite Mark/Drury/Yanco on multi-touch-multi-robot). NASA TLX for human factors like frustration and workload. 
 \subsection{Metrics for the Behavior of Swarms}
 
-BRING TRUST WORK IN 
-
 Emergent behaviors arise from the interactions of actors with each other and the world around them. 
-In the face of uncertainty in the world, the behaviors will also become uncertain. 
+In the face of uncertainty in the world, the behaviors will also become uncertain. \todo{BRING TRUST WORK IN}
 Programs synthesized to guide the swarm should be designed to be robust against failure or degradation of swarm members. 
 The heterogeneity of the swarm may also be leveraged to increase its robustness against failures of individual nodes or alterations of the environment. 
 Because heterogeneity increases the dimensionality of the solution space for program synthesis, it may adversely affect the performance of the program synthesis and the swarm's runtime convergence to the desired state.
@@ -436,14 +442,6 @@ It is assumed that some central command point exists, as the human user can only
 This assumption is intended to support robust operation in a dynamically reliable communication network, where robots can be programmed as they become reachable. 
 The data stream returned to the command point from each robot is expected to be a telemetry stream, which may be erroneous or absent. 
 Again, this assumption is in support of robust operation on a unreliable network. 
-
-
-
-``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots" Jianing Chen et al. If you can't see the goal because the object is blocking your view, push on the object. 
-
-"Automated Construction using Co-operating Biomemetic Robots" \cite{bowyer2000automated} Adrian Bower. Robots that build as an emergent property of individual behavior. Has a few basic rules to govern arch and column building. Mostly an exploration of potential ideas, without a lot of conclusions. Isocyanurate foam is awful stuff. 
-
-"Behavioral Feedback as a Catalyst for Emergence in Multi-Agent Systems" \cite{palmer2005behavioral} Daniel W. Palmer, Marc Kirschenbaum, LindaM. Seiter, Jason Shifflet, Peter Kovacina (2005). Not a lot of structure in swarm programming, lots of ad-hoccery, no automated agent program generation. Agents respond to emergent behavior in a sort of loop, or split-level hierarchy where the emergent behavior is the upper level and the agent behavior is the lower level. Basic swarm agents are assumed to be reactionary. Next level up uses local storage. Again with the AoP, behavioral feedback as an aspect. Used stochastic selection of actions, so like Napp/Klavins work. 
 
 In the abstract case, it is clear that any problem that can be solved by agents with homogeneous software can also be solved by agents with heterogenous software. 
 Assume that for N agents, there are N distinct programs, one per agent, that can, given each agents' location and state, be executed so that the overall final state of the system arrives at the desired result. 
@@ -547,14 +545,11 @@ Lists tuple spaces, amorphous computing, as potential enabling technologies for 
 
 \subsection{compositional approaches}
 
-
-How are individual robot actions parameterized? 
-E.g. for clustering, range that robots can see each other, likelihood of a robot deciding to be a cluster center.  
-Can variable parameterization be effective in the face of heterogeneous robot behavior?
-
-Assume the robots have a set of behaviors available (approach other robots, send a certain signal, move, avoid other robots, ``emit pheromone'') and can conditionally execute them e.g. when they see another robot, or when they reach a location. Is it possible to convert from user tasks to priority sequence or if-this-then-that style ``programs''?
-
-Could be argued to be ``composition" from primitives.
+One possible approach is the composition of programs from behavioral primitives, such that some combination of the primitives results in the emergence of the desired behavior. 
+In ``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots", individual robots cooperate to push an object to a beacon based on simple behaviors \cite{chen2015occlusion}. 
+If the view of the beacon is blocked, the robots push the object. 
+If they can see the beacon, they wander and avoid obstacles. 
+The sum of the two behaviors results in a net pushing force on the side of the object opposite the beacon, which moves the object to the beacon. 
 
 One abstraction of a swarm for programming is a collection of mobile, physically situated processors communicating over an ad-hoc network \cite{evans2000programming}. The behavior of the swarm is emergent from the behavior of individual units, and is  resilient against "misbehaving members".
 Two approaches to programming this abstraction of a swarm are to compose program from individual behavior primitives, or to synthesize unit programs based on description of environment and desired behavior. 
@@ -576,7 +571,7 @@ This may be more robust against failures of individual robots, as it uses the ro
 However, under sufficiently bad conditions, a sufficient quorum may never arrive, deadlocking the task. 
 In combination with domino timing, where completion of each phase triggers the next, this could then deadlock the entire process unless another mechanism detects and corrects it.
 
-It has been demonstrated that a swarm can perform construction tasks using only local sensing and no communication \cite{wawerla2002collective}.
+It has been demonstrated that a swarm can perform construction tasks using only local sensing and no communication \cite{wawerla2002collective, bowyer2000automated}.
 However, the addition of communication between systems and memory of the state of the world will improve the efficency of the system.
 The system under discussion was developed to have the task implied by the behaviors available for the agents, rather than generating the program from a higher-level specification, such as the form of the structure to be built.
 
@@ -598,30 +593,45 @@ The environment simply is, and so if a robot fails in an environment, it is the 
 
 The absence of global IDs for the robots does pose a problem for determining if all of the robots are reachable from all of the other robots, in other words, if the network is a single connected component. 
 With global IDs, the absence of some subset of them indicates that the network is divided. 
-Without them, the network may be divided but, the robots will be unable to detect it. 
+Without global IDs, the network may be divided but the robots will be unable to detect it. 
 
-``A Compositional Framework for Programming Stochastically Interacting Robots" \cite{napp2011compositional} Nils Napp \& Eric Klavins. Guarded Command Programming with Rates (GCPR). Robot behavior modeled as a stochastic process. Swarms are inherently concurrent (paper calls this the primary challenge, which I kind of doubt). Concerned with rigorous proof of correctness, which I maybe should be. ``Composed programs execute simultaneously". Assumption is that robots only have local sensing. GCPR guards are conditions on the environment, when condition is met, robot does actions at a given rate. This sounds a LOT like behavior-based robotics. In the concurrent case, this is modeled as each action happening one at a time, but in random order. Swarm behaves in a state space S, want to ensure that for all orderings of all actions, S ends in target final state. Physicality of system limits state transitions (robots can't occupy same space, can only move fixed distance in given time, etc.). Programs can be sped up or slowed down by scaling. Rate is typically the inverse of the mean time to complete the action (i.e. do things as fast as you can get them done). Markov semantics of the system description means robots randomly choose when to perform actions, once guards are met. By scaling time of actions, relative influence of actions is increased or decreased (e.g. if no obstacles move right with scale 4, move left with scale 2 means robots will move left or right, but twice as fast to the right, so robots will drift right overall). Failed behaviors are modeled as a program that doesn't do what the other program it is composed with does. Correct programs are those that reach the target state with probability one, even when composed with bounded failures (note that they might do it very slowly, but once they succeed, they stay successful).
+"Behavioral Feedback as a Catalyst for Emergence in Multi-Agent Systems" \cite{palmer2005behavioral} Daniel W. Palmer, Marc Kirschenbaum, LindaM. Seiter, Jason Shifflet, Peter Kovacina (2005). Not a lot of structure in swarm programming, lots of ad-hoccery, no automated agent program generation. Agents respond to emergent behavior in a sort of loop, or split-level hierarchy where the emergent behavior is the upper level and the agent behavior is the lower level. Basic swarm agents are assumed to be reactionary. Next level up uses local storage. Again with the AoP, behavioral feedback as an aspect. Used stochastic selection of actions, so like Napp/Klavins work. 
 
-$\Rightarrow$ In the real-world case of noisy or imperfect sensors, the variable time to execution of a guarded behavior would be caused by the imperfection of the robot's ability to detect that the guard was satisfied. In the real world, we get stochasticity for free. 
+These emergent approaches do not have the robots perform all of their available actions all of the time. 
+Instead, it is assumed that the behavior of each robot is controlled by its reaction to the environment around it, and possibly to signals from other robots, so that actions are only performed when they are required. 
+As a result, user programs compiled from a higher-level representation could be a table consisting of possible values for the sensors, and the actions to undertake when those values are met.
+``A Compositional Framework for Programming Stochastically Interacting Robots" \cite{napp2011compositional} provides a formal framework for the analysis of this type of compositional program, called Guarded Command Programming with Rates (GCPR). 
+Robots are assumed to only have local sensing.
+The guards of GCPR are conditions on the environment.
+When a condition is met, the robot performs actions at a given rate. 
+%This is a lot like behavior-based robotics.
+In the concurrent case, this is modeled as each action happening one at a time, but in random order. 
+On a real swarm, the actions would take place in parallel, but the concurrent model is more amenable to analysis. 
+To determine if a set of actions will be successful, it is required to ensure that for all orderings of all actions, the final state space of the swarm is the desired final state. 
+Failed behaviors are modeled as a program that doesn't do what the other program it is composed with does. 
+Correct programs are those that reach the target state with probability one, even when composed with bounded failures. 
+Once the target state is reached, the program is assumed to alt, so while the final state may be reached very slowly, but once it is reached, it is not left. 
+In the GCPR models, the time to execution of an action is stochastic, but in the real-world case of noisy or imperfect sensors, the variable time to execution of a guarded behavior would be caused by the imperfection of the robot's ability to detect that the guard was satisfied. 
+In the real world, we get stochasticity for free. 
 
-$\Rightarrow$ Get Klavins et al 2k4, apparently on algorithmic approach mapping local to complex global behavior.
+%$\Rightarrow$ Get Klavins et al 2k4, apparently on algorithmic approach mapping local to complex global behavior.
 
 \subsection{evolutionary composition}
 
 Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
 One approach is to set some intuitively reasonable values and then test the behavior of the software on the swarm. 
 This may not scale well to large swarms, depending on the technology used to distribute the software. 
-If each robot needs to be individually reprogrammed, then the time required for distributing a software update will grow with the size of the swarm, and eventually become unmanagable. 
+If each robot needs to be individually reprogrammed, then the time required for distributing a software update will grow with the size of the swarm, and eventually become unmanageable. 
 Assuming the program can be swiftly distributed, then programming it is simply a matter of iterative software development, with each bug or undesired behavior accounted for in the next iteration. 
 However, this approach assumes that the behavior of the swarm is being dictated by programmers, and expressed as a computer program. 
 While it must be a program at some level, the behavior of the swarm must be easier and faster for non-programming users to express and control. 
 
-It is possible to develop self-organizing behaviors for robots using genetic algorithims \cite{dorigo2004evolving}. 
+It is possible to develop self-organizing behaviors for robots using genetic algorithms \cite{dorigo2004evolving}. 
 This does offer a reduction in the amount of hands-on time spent programming, but it frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
 Performing the evolution simulation allowed the robots to develop behaviors such as aggregation, but early versions also allowed the evolved motion strategy to acquire a high fitness by spinning in place. 
 For mutual motion when linked, robots could sense traction, allows negotiation of a common direction of movement by proprioception. 
 Similar traction-based interactions allowed the robots to avoid obstacles and pull objects. 
-Solutions discovered by genetic algorithims are also prone to overfitting. 
+Solutions discovered by genetic algorithms are also prone to overfitting. 
 The swarms described in Dorigo et al decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
 
 $\Rightarrow$ Quinn et all 2001, 2003, apparently did work on individuals (aclonal), rather than all robots having the same genome (clonal) Quinn, M. 2001a. A comparison of approaches to the evolution of homogeneous multi-robot teams. In Proceedings of the 2001 Congress on Evolutionary Computation (CEC2001), IEEE Press: Piscataway, NJ, pp. 128–135.
