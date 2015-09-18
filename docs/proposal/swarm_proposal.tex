@@ -28,41 +28,20 @@ Each robot receives its own program, and the sum of the execution of the program
 \section{Research Questions}
 
 In order to create a mapping from a command language to a set of individual robot programs for multi-robot command and control, the command language must first be specified. 
-The command language in this work is a system of common gestures as determined empirically in \cite{Micire:2009:ANG:1731903.1731912}. 
+The command language in this work is a system of common gestures selected using an empirical process as in \cite{Micire:2009:ANG:1731903.1731912}. 
 %Is there a coherent command language for controlling large swarms?  
 For the purposes of this research, an intuitive command language is one that is freely chosen by the majority of users. 
 In \cite{Micire:2009:ANG:1731903.1731912}, for each available command, one or two gestures were used by 60\% of the users. 
+The use of multi-touch interaction is desirable because one-at-a-time selection doesn't scale beyond a very limited number of robots.
+In order to interact with large groups of robots, the user must be able to perform operations on areas and groupings, rather than on the single point available with a traditional pointer-based interface. 
+Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \cite{hayes2010multi}.
+The interface displayed the locations of the robots on a directly manipulatable map, and used included movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
+Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
+
 It is possible that there is no intuitive command for some task. 
 If this is the case there will be little commonality of gestures used between users for that task.
-
-\cite{Kato:2009:MIC:1520340.1520500} has a multi-touch top-down interface, user specifies vector field. Just intended for moving robots around. Focus on the vector field rather than individual robots, so this could be handy for e.g. gathering and dispersal. Makes assumptions (for display) about knowing all the locations of all of the robots that might not be available in a real situation. On the other hand, the exact locations of the robots don't need to be known if the display is e.g. cloud of robots. Vector field paths can't cross each other (they flow together), but the can have loops (which waypoints can't do, as they have explicit ends) None of this results in a program that works on the robot without communication, as the computer orders all the robots around based on a global knowledge (the field).
-
-
-Do user study to determine if there is a control language for multi-touch interfaces for robots.
-Method similar to Mark's work, but for way more robots than the user has fingers. 
-Dozens to hundreds of robots. 
-Same tasks or similar tasks? Same, but possibly with some extensions. 
-High level tasks like searching an area, finding something. 
-
-Determine if grammar exists. 
-
-Is there a non-multitouch way to do this? Beyond a few robots, one-at-a-time selection doesn't scale. Need mass selection, maybe spreading from a point while the pointer is active?
-
-Will users care about unused or underused robots? At what point, count-wise, does the user stop caring about individuals and start ordering the robots around as a cloud or flock? Does framing the question to the user in a specific way allow us to vary that parameter, so that by couching our questions in a certain way, we can decide what the user cares about and how they command the robots?
-
-$\Rightarrow$ What about shaping and pushing the swarm the way kids will play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, etc? Shaping the group as if sculpting, with pushing and pinching to carry groups around?
-
-Could have selection based on space-partitioning, so there is no way to leave a robot out because of the shape of a partition. E.g. split space in half, tap splits tapped half, etc. Select a region and go. 
-
-If grammar exists, implement in simulation for e.g. multitouch
-
-Implement for real robots (the little tanks, the swarm I'm making, Harvard kilobots)
-
-If no grammar exists, why not?
-How would we detect failure to converge to a grammar? No two users using the same commands, or very poor inter-user cohesion in the command sets. If no gestures are more likely than any others, then there is no preferred command set or gesture set. 
-This is actually not much of a setback, as it lets me select a grammar and develop it; or select pair of grammars, and then compare them.
-
-
+If no two users use the same command the same commands, or, more generally, there is very poor inter-user cohesion in the command sets, then there is not an intuitive command for the tasks.
+This is not the severe failure it may appear to be, as even without a consistent command grammar, it is possible to compare selected command gestures for usability. 
 
 Because the focus of this work is to determine how gesture control scales or fails to scale, and humans primary mode of gesturing is with their hands, the size of the swarm should be significantly larger than the number of fingers a user could gesture with. 
 In order to have a less tongue-in-cheek definition of ``large'', the scale required for a swarm to be considered ``large'' will be determined empirically.
@@ -70,6 +49,14 @@ It is expected that there exists a transition point for the number of members in
 For example, rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use. 
 A large swarm is, then, a swarm with a number of members above the point at which such a transition occurs. 
 
+The transition point may be detected in a number of ways. 
+It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
+The user will instead use commands that control the bulk of the robots the robots as a cloud or flock, but may leave some robots unused. 
+For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to carry groups around. 
+
+It may also be the case that framing the statement of the task to the user in a specific way will allow some control over the interaction method the user uses. 
+Changing how information on the swarm is presented to the user may also affect the user's choice of interaction method. 
+ 
 Once the language is defined, sequences of commands in that language must be translated into programs to execute on each member of the swarm. 
 The program for each swarm member must be generated automatically, either by creation of a new program or by a synthetic approach from per-determined behavior primitives.
 Because the motivating examples used in swarm robotic research are almost never related to swarm software development, the end user cannot be expected to do the programming themselves. 
@@ -77,8 +64,13 @@ All of the valid expressions possible in the command language should be converte
 The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
 Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail.
+% research questions (usually, 1-3 should suffice) and the reason for asking them
+% the major approach(es) you will take (conceptual, theoretical, empirical and normative, as appropriate) and rationale
+% significance of the research (in academic and, if appropriate, other fields)
 
-
+%Highlight its originality and/or significance
+%Explain how it adds to, develops (or challenges) existing literature in the field
+%%Persuade potential supervisors and/or funders of the importance of the work, and why you are the right person to undertake it
 
 \section{Work Plan}
 
@@ -363,6 +355,22 @@ Estimates place the limits on the number of robots under control at 12 or 13 for
 There is some latitude, at least in UGVs, to increase multitasking by increasing automation, as shown by the relatively wide range in the interaction limits, but even 9 is nowhere near the scale of kilo-robot swarms \cite{Olsen:2004:FMH:985692.985722}.
 %The use of models such as developing a grounding using a proxy for the robot may assist the user in redeveloping SA \cite{stubbs2008using}. 
 
+Another possible approach to a control UI for a remotely-located swarm is a multi-touch interface for specifying a vector field \cite{Kato:2009:MIC:1520340.1520500}.
+This interface does not allow the assignment of tasks to robots, but allows the user to directly control the motion of the robots. 
+Because the user interface design focuses on the vector field rather than individual robots, the same control interface can scale to an arbitrarily large collection of robots. Vector field paths can have loops, which do not exist in waypoint-based paths. 
+Waypoint paths have explicit ends, unless an additional command is added to join beginning and ending points. 
+Vector field paths do have some limitations, however. 
+Because the vectors are bound to a 2-D plane, the paths they create cannot cross each other. 
+Instead, they flow together. 
+This user interface does directly map to programs on the robots. 
+Instead, the central computer maintains the vector field representation and commands the individual robots.
+
+The use of co-fields may provide a way to move the vector field representation from the central computer to the swarm, or allow the swarm to act for some time without constant updates from a central controller \cite{mamei2003co}.
+Co-fields distribute the data within a space, which may be physical or may be abstract. 
+Agents react to gradients in field, and spread their own fields over local communication networks. 
+The overall vector space created by the user (the UI vector space) could be propagated to the robots periodically, and combined with their own internal vector fields to generate movement based on both the user's desires and the local rules operating on each robot. 
+However, knowing which areas of the UI vector space are relevant to each robot may require  global localization, and so only be available for swarms operating in conditions that permit global localization. 
+
 Ecological interface design presents a possible guide to the architecture of user interfaces for swarm robotics \cite{vicente1992ecological}. 
 User ability to interact with a system is separated into a taxonomy of skills, rules, and knowledge. 
 The user has skills, which are rote, simple activities that form the basis of the normal operation of the system. 
@@ -386,10 +394,8 @@ EID is well-positioned to deal with emergent behavior, because the emergent beha
 %"Reciprocity of user and environment, represenative design of experiments and evaluations, primacy of perception, and start with analyzing the environment". Information about a system is abstracted across a hierarchy, high level is functional information ("This plant makes reciprocating flange whompers"), low level is physical information ("This is a fleeble grommet, it is located in the engine room"). Hierarchy is over work domain, not task. EID should encourage skill and rule-based behavior (for normal operations) while also allowing knowledge-based behavior (to solve unanticipated problems). 
 
 Previous work in multi-touch interfaces directly relates to EID by providing both an omniscient camera view for direct manipulation of the high-level, functional actions of the entire swarm, and the ability to move down the hierarchy to control individual swarm members \cite{Micire:2009:ANG:1731903.1731912}.
-Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \cite{hayes2010multi}.
-The interface displayed the locations of the robots on a directly manipulatable map, and used included movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
-Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
-%Faster task completion, especially for region selection. ``This work was partially supported by a contract from the US Marine Corps Systems Command to M2 Technologies, Inc." Basically, a lot like stuff our lab has found out, (hurf durf, because they cite Mark/Drury/Yanco on multi-touch-multi-robot). NASA TLX for human factors like frustration and workload. 
+
+
 \subsection{Metrics for the Behavior of Swarms}
 
 Emergent behaviors arise from the interactions of actors with each other and the world around them. 
@@ -456,7 +462,7 @@ Programs for swarms are only going to be functional within some probabilistic gr
 This requirement indicates that the situation has to be at least somewhat known ahead of time, so that the robots will all receive programs that allow them to perform the task.
 In the ideal case, the emergent action of all of the robots interacting with the environment causes them to perform the task. 
 
-\subsection {language approaches}
+\subsection {Language approaches}
 
 One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code that can be codified into a compiler. 
 As a consequence, input in the command language defines a program which is compiled and loaded onto the robots. 
@@ -467,12 +473,9 @@ All sequences of the existent symbols are regarded as executable programs, altho
 While this does prevent the possibility of the user becoming frustrated by being told that their commands are invalid, the ease of creating valid, but undesirable commands creates other problems. 
 Good user interface designs permit easy undoing of an undesired command, but with the physical world, this can be difficult. 
 It is far easier reset a simulation of a robot than it is to recall a real robot from falling down the stairs. 
-Furthermore, a command language with no invalid commands runs into the same problem as gesture interfaces: there is no way for a user to be idly present to the interface.
+Furthermore, a command language with no invalid commands runs into the same problem as free-space gesture interfaces: there is no way for a user to be idly present to the interface.
 Every motion is interpreted as something that must be acted upon. 
-
-Is it possible to build a compiler that converts user commands in task space into programs for robots without having to code in assumptions about the qualities of the robots? Does the compiler have to account for global properties (e.g. GPS denial)? Can the compiler account for robot-local properties (e.g. battery life, motor failure)?
-
-"Emergence-Oriented Programming" \cite{palmer2005emergence} Daniel W. Palmer, Marc Kirschenbaum, Linda Seiter. Mentions GA to produce agent programs, could probably be used for developing behavior priority vectors. Hard to determine success, need to be able to recognize and evaluate performance on sub-problems. "The ideal way to program a swarm is to simply shout out high-level objectives and let the swarm figure out how to solve the problem." Meta-rules that govern selection of rules at the individual agent level depending on agent context. Nested hierarchies of systems and their contexts, but can be collapsed to an arbitrary level and its next level up (higher has no downward effect, lower can be considered part of base level). All information for the actor is local (its own sensors and memory, can possibly share with other actors). Uses aspect-oriented-programming (AoP) to recognize method invocations for single-agent actions as an aspect (e.g. maintain-distance and move-random forming a dispersion aspect). Analysis of the behavior of the swarm looking for good patterns and trying to develop code that does not yet exist to create behaviors that have not yet been observed is REALLY HARD, so have humans do it. This is a design process, not an automation process, but indicates a direction for possible ML approaches (which seems like a return to the GA approaches the authors dismissed earlier, possibly as less-directed than human intervention.). This requires multiple design/build/test loops for each activity the swarm tries to do. Perhaps have it learn forageForObject until object is found, surroundObject until object is surrounded, then "pushObject" until object is where it should be, then disperseRobots until the object is left alone again. Humans can do ``what-if" experiments on individual robots (so can the computer, and faster, assuming some evaluation function is available). Swarm algorithims extracted from Virtual Human Swarm (VHS) having people wander around a gymnasium. 
+%Is it possible to build a compiler that converts user commands in task space into programs for robots without having to code in assumptions about the qualities of the robots? Does the compiler have to account for global properties (e.g. GPS denial)? Can the compiler account for robot-local properties (e.g. battery life, motor failure)?
 
 \subsection{Amorphous Computing}
 
@@ -528,8 +531,7 @@ In fact, the flexible sheet could be assumed to be virtual, and the resulting mo
 
 "Software Eng. For Self-Adaptive Systems" (Is a 270 page book, maybe skim later?)
 
-"Co-fields: Towards a Unifying Approach to the Engineering of Swarm Intelligent Systems" \cite{mamei2003co} Marco Mamei1, Franco Zambonelli. Again, the problem of robust software in dynamic environments with unreliable actors. Computational Fields (co-fields) are distributed data structures in a space, abstracting some features of the world perceived by the agents. Available as a dynamic systems formalism. Agents move on gradients in field spread by agents into the environment (great shades of pheromones, Batman!). Space doesn't have to be physical space. 
-
+``Improving Efficiency in Mobile Robot Task Planning Through World Abstraction'' \cite{galindo2004improving} Hierarchical world representation and operating at multiple levels of that hierarchy to reduce dimensionality of the problem space. Successive refinement from broad goals to behavioral primitives. Primitives are available for swarm robotics, but overall actions take place over the swarm. How to actually accomplish the translation is a bit tricky. Even GPL and OSL work from a desired known final state to a behavior specification, so task specification would have to be based on a description of the final state of the system. 
 
 "Notes on Amorphous Computing" Jacob Katzenelson. \cite{katzenelson2000notes} Doing differentiation and integration on amorphous computers. 
 
@@ -628,6 +630,25 @@ In the real world, we get stochasticity for free.
 
 \subsection{evolutionary composition}
 
+Genetic algorithims (GA) have been proposed as a possible way of directing the composition of behavioral primitives into programs \cite{palmer2005emergence}.
+However, it is difficult to automatically extract from the know be behavior of the system an overall understanding of the progress it is making on the task. 
+Ideally, it would be possible to recognize and evaluate performance on sub-problems. 
+Worse, without a time bound on solving a problem or a way to calculate progress, it is impossible to tell if a program has failed, or has merely not succeeded yet.
+For example, assume a program's intended purpose is to gather units of a resource at a goal. 
+If the program merely moves the units stochastically, sometimes they will enter the goal, creating an appearance of progress. 
+However, it may be vanishingly unlikely that all the units will randomly happen to be in the goal at once. 
+Even a program that cannot find the goal, and so will never put any units in it, behaves exactly the same as a perfect resource-gathering program that just hasn't moved any units to the goal yet. 
+Meta-rules that govern selection of rules at the individual agent level depending on agent context. 
+Nested hierarchies of systems and their contexts, but can be collapsed to an arbitrary level and its next level up (higher has no downward effect, lower can be considered part of base level). 
+All information for the actor is local (its own sensors and memory, can possibly share with other actors). 
+Uses aspect-oriented-programming (AoP) to recognize method invocations for single-agent actions as an aspect (e.g. maintain-distance and move-random forming a dispersion aspect).
+Analysis of the behavior of the swarm looking for good patterns and trying to develop code that does not yet exist to create behaviors that have not yet been observed is REALLY HARD, so have humans do it. 
+This is a design process, not an automation process, but indicates a direction for possible ML approaches (which seems like a return to the GA approaches the authors dismissed earlier, possibly as less-directed than human intervention.). 
+This requires multiple design/build/test loops for each activity the swarm tries to do.
+Perhaps have it learn forageForObject until object is found, surroundObject until object is surrounded, then "pushObject" until object is where it should be, then disperseRobots until the object is left alone again. 
+Humans can do ``what-if" experiments on individual robots (so can the computer, and faster, assuming some evaluation function is available). 
+Swarm algorithims extracted from Virtual Human Swarm (VHS) having people wander around a gymnasium. 
+
 Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
 One approach is to set some intuitively reasonable values and then test the behavior of the software on the swarm. 
 This may not scale well to large swarms, depending on the technology used to distribute the software. 
@@ -644,28 +665,15 @@ Similar traction-based interactions allowed the robots to avoid obstacles and pu
 Solutions discovered by genetic algorithms are also prone to overfitting. 
 The swarms described in Dorigo et al decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
 
+Aggregation behavior has also been evolved in swarm robots, using a perceptron as the controller for the robots and evolving the perceptron weight vector \cite{bahgecci2005evolving}. 
+Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object, attacking \emph{en mass}, etc.
+The resulting vector only controls aggregation behavior, so each behavioral primitive would require its own evolutionary development. 
+Evolution is only useful if it is a faster approach than designing the behavior by hand. 
+
 $\Rightarrow$ Quinn et all 2001, 2003, apparently did work on individuals (aclonal), rather than all robots having the same genome (clonal) Quinn, M. 2001a. A comparison of approaches to the evolution of homogeneous multi-robot teams. In Proceedings of the 2001 Congress on Evolutionary Computation (CEC2001), IEEE Press: Piscataway, NJ, pp. 128–135.
 Quinn, M. 2001b. Evolving communication without dedicated communication channels. In Proceedings of the Sixth European Conference on Artificial Life, J. Kelemen and P. Sosik (Eds.), vol. 2159 of Lecture Notes in Computer Science, Springer-Verlag: Berlin, Germany, pp. 357–366.
 Quinn, M., Smith, L., Mayley, G., and Husbands, P. 2003. Evolving controllers for a homogeneous system of physical robots: Structured cooperation with minimal sensors. Philosophical Transactions of the Royal Society of London, Series A: Mathematical, Physical and Engineering Sciences, 361:2321– 2344.
 
-"Evolving Aggrgation Behaviors for Swarm Robotic Systems: A Systematic Case Study" \cite{bahgecci2005evolving} Erkin Bahceci and Erol Sahin. From Mataric, evolution is only useful if it's faster than designing it by hand. Aggregation as a preliminary behavior, before doing something of interest (moving object, attacking en mass, etc. ).
-% research questions (usually, 1-3 should suffice) and the reason for asking them
-% the major approach(es) you will take (conceptual, theoretical, empirical and normative, as appropriate) and rationale
-% significance of the research (in academic and, if appropriate, other fields)
-
-%Highlight its originality and/or significance
-%Explain how it adds to, develops (or challenges) existing literature in the field
-%Persuade potential supervisors and/or funders of the importance of the work, and why you are the right person to undertake it
-
-``Improving Efficiency in Mobile Robot Task Planning Through World Abstraction'' \cite{galindo2004improving} Hierarchical world representation and operating at multiple levels of that hierarchy to reduce dimensionality of the problem space. Successive refinement from broad goals to behavioral primitives. Primitives are available for swarm robotics, but overall actions take place over the swarm. How to actually accomplish the translation is a bit tricky. Even GPL and OSL work from a desired known final state to a behavior specification, so task specification would have to be based on a description of the final state of the system. 
-
-Robots have some autonomy, similar to the existing work with extending to multi-actor teams, e.g. human/robot mixed team. 
-
-Task allocation if robots are heterogeneous (battery life, terrain, etc. will make homogeneous into heterogeneous)
-
-Proximity if robots are not (closest robot does task)
-
-Difficulty arises when robots are not super-well localized
 
 ``Swarm robotics: a review from the swarm engineering perspective" \cite{brambilla2013swarm} Manuele Brambilla, Eliseo Ferrante, Mauro Birattari, Marco Dorigo. (2013) ``Swarm engineering is an emerging discipline that aims at defining systematic and well founded procedures for modeling, designing, realizing, verifying, validating, operating, and maintaining a swarm robotics system." Two taxonomies, one of design/analysis methods, one of collective behaviors. Classes automatic design of robot programs as either evolutionary or multi-robot reinforcement, no category for program synthesis at all. Trial-and-error approaches are a different area. Behavior-based with probabilistic FSMs, virtual physics (gas models and potential fields). Other stuff category: amorphous computation. 
 
