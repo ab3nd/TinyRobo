@@ -74,12 +74,6 @@ However, certain minimum bounds on the problem may be able to be used to determi
 
 \section{Work Plan}
 
-
-\subsection{Elucidate a Control Grammar}
-
-\subsection{Command Compilation}
-
-
 \subsection{Build a swarm}
 
 In order to experiment with swarm robotics, a swarm must be made.
@@ -88,7 +82,7 @@ Further, swarm simulations must not have bugs in the software which results in i
 Genetic algorithms are infamous for exploiting quirks of their simulation environment which are not present in the real world, but still allow members of the population to inflate their fitness. 
 Any behavior of a physical, unsimulated swarm is the real behavior of the swarm, and cannot be blamed on a defect in the simulation of the swarm or its environment. 
 
-\section{Swarm Robot Hardware}
+\subsection{Swarm Robot Hardware}
 
 Swarm robots are generally small. 
 The reason to keep swarm robots small is two-fold. 
@@ -98,52 +92,7 @@ Second, each robot requires some amount of space to move around in.
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
 If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
 
-\subsection{Proposed Swarm Hardware Design}
-
-The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a processor, some sensors, and a communication system, into a small package.  
-The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
-The module used in this swarm hardware is a ESP8266-03  \unsure{Get a picture of the ESP8266}, which provides a Wi-Fi interface and approximately 500kB of flash memory for programs. 
-The ESP8266 is avialable in several form factors, each designated by a different suffix. 
-The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
-
-This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the \unsure{Cite Ionas} swarm robots developed in PAPER. 
-Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
-Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
-
-In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a consistent control hardware platform that can be attached to children's toys. 
-Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. 
-
-In order to locate the robots within the experiment area, an overhead camera is used to detect QR codes on each robot. 
-The QR codes provide location, heading, and a unique identifier for each robot. 
-In this system, the central computer provides virtualization of the processing on each robot. 
-Virtualizing the computational resources on each robot effectively allows us to borrow robots from the future. 
-As technology develops, higher powered computers and and more capable sensors have become cheaper and smaller. 
-Allowing each swarm node to have a virtual computer ``riding'' on it gives us as much computational power as we want at each point in the swarm, even if hardware of that power level is not currently available.
-The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
-This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
-
-Currently existing swarm robots are too expensive to build a large swarm, with the exception of the Harvard Kilobots \cite{rubenstein2014kilobot}. 
-Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
-However, the Kilobots do not have hardware heterogeneity beyond that produced by wear on the robots over time. 
-Wear and tear on the robots will result in differences between the robots, even if they had started from identical conditions. 
-Even sending part of a swarm up a hill while the rest remain at the bottom will result in the higher members of the swarm having less battery life than those that didn't move. 
-Battery life may be relevant to allocation of tasks, meaning that the physical elevation gradient of the robots becomes a gradient of fitness for a task as well. 
-For very small groups, individual kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-The kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
-
-However, heterogeneity can also be leveraged to increase the robustness of a swarm and reduce its cost. 
-A hetergeneous swarm containing both flying and ground robots can allow specialization of the individual components. 
-By way of historical analogy, airplanes and cars have been separate types of vehicles, each specialized for a particular task. 
-Flying cars, however, are normally either poor cars, poor planes, or both, because the demands of each task are different. 
-Cars require a certain amount of weight and downward force for traction, but weight and downward air forces are the enemy of developing a good airplane. 
-Rather than requiring that all robots be able to traverse all terrains, the ground robots can be developed to cover ground well, while the aerial robots are optimized for longer ranges or dwell times. 
-Heterogeneity also allows the robots to be cheaper, because not every robot has to do everything.
-Combining robots that can fly and robots that can roll allows a mixture of overview sensing and mission endurance that would be difficult to produce robustly and inexpensively with robots that can do both. 
-
-The decision to use ESP-8266 wifi modules as the core of the swarm robots designed in this work is an extension of a long legacy of the use of off-the-shelf components in previous robotics projects. 
-
-\subsection{Overview of Previous Swarm Hardware}
+\subsubsection{Overview of Previous Swarm Hardware}
 
 The use of COTS hardware in research robotics has lead to at least two platforms refered to as COTSBots.
 Bergbreiter's COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board  \cite{bergbreiter2003cotsbots}. 
@@ -199,7 +148,52 @@ However, in the interest of allowing easy reproduction of research work, and ext
 One collateral goal of the work outlined in this paper is to produce a well-documented reference design that can be implemented by a researcher using common tools, and possessed of no more than hobby-level familiarity with hardware, and common tools. 
 If researchers are not expected to become hardware entrepreneurs, they should also not be expected to become expert machine tool operators.
 
-\section{Swarm Robot Software}
+\subsubsection{Proposed Swarm Hardware Design}
+
+The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a processor, some sensors, and a communication system, into a small package.  
+The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
+The module used in this swarm hardware is a ESP8266-03  \unsure{Get a picture of the ESP8266}, which provides a Wi-Fi interface and approximately 500kB of flash memory for programs. 
+The ESP8266 is avialable in several form factors, each designated by a different suffix. 
+The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
+
+This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the \unsure{Cite Ionas} swarm robots developed in PAPER. 
+Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
+Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
+
+In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a consistent control hardware platform that can be attached to children's toys. 
+Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
+The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. 
+
+In order to locate the robots within the experiment area, an overhead camera is used to detect QR codes on each robot. 
+The QR codes provide location, heading, and a unique identifier for each robot. 
+In this system, the central computer provides virtualization of the processing on each robot. 
+Virtualizing the computational resources on each robot effectively allows us to borrow robots from the future. 
+As technology develops, higher powered computers and and more capable sensors have become cheaper and smaller. 
+Allowing each swarm node to have a virtual computer ``riding'' on it gives us as much computational power as we want at each point in the swarm, even if hardware of that power level is not currently available.
+The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
+This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
+
+Currently existing swarm robots are too expensive to build a large swarm, with the exception of the Harvard Kilobots \cite{rubenstein2014kilobot}. 
+Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
+However, the Kilobots do not have hardware heterogeneity beyond that produced by wear on the robots over time. 
+Wear and tear on the robots will result in differences between the robots, even if they had started from identical conditions. 
+Even sending part of a swarm up a hill while the rest remain at the bottom will result in the higher members of the swarm having less battery life than those that didn't move. 
+Battery life may be relevant to allocation of tasks, meaning that the physical elevation gradient of the robots becomes a gradient of fitness for a task as well. 
+For very small groups, individual kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
+The kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
+
+However, heterogeneity can also be leveraged to increase the robustness of a swarm and reduce its cost. 
+A hetergeneous swarm containing both flying and ground robots can allow specialization of the individual components. 
+By way of historical analogy, airplanes and cars have been separate types of vehicles, each specialized for a particular task. 
+Flying cars, however, are normally either poor cars, poor planes, or both, because the demands of each task are different. 
+Cars require a certain amount of weight and downward force for traction, but weight and downward air forces are the enemy of developing a good airplane. 
+Rather than requiring that all robots be able to traverse all terrains, the ground robots can be developed to cover ground well, while the aerial robots are optimized for longer ranges or dwell times. 
+Heterogeneity also allows the robots to be cheaper, because not every robot has to do everything.
+Combining robots that can fly and robots that can roll allows a mixture of overview sensing and mission endurance that would be difficult to produce robustly and inexpensively with robots that can do both. 
+
+The decision to use ESP-8266 wifi modules as the core of the swarm robots designed in this work is an extension of a long legacy of the use of off-the-shelf components in previous robotics projects. 
+
+\subsection{Swarm Robot Software}
 
 The basic software infrastructure consists of the software executing on the robot, modules on the control computer that are emulated as running on the robot, and support software. 
 
@@ -240,72 +234,9 @@ For example, signals that pass through a virtual wall may have a reduced emulate
 This virtual networking can be extended to other virtual robot properties, such as emulated sensors, and controlled to emulate error conditions such as reduced speed, depleted batteries, noisy sensors, degraded localization, and so forth.
 Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
 
-\subsection{GPS-denied Swarm Control}
+\subsubsection{UI Designs}
 
-The Global Positioning System (GPS) has provided machines with a sense that humans lack: relatively precise localization within the global frame, in a format that is easy for computers to detect.
-Using GPS makes it easy to localize an individual member of the swarm, and so coordinate its actions relative to other similarly-localized swarm members. 
-However, GPS is less than ideal for swarm coordination for several reasons. 
-
-In the most basic case, GPS signal may not be present. 
-The GPS signal is broadcast from solar-powered satellites, and so is a very low-power signal.
-At the earth's surface, it is so weak that it can be blocked by buildings or dense tree canopies, meaning that there are both indoor and outdoor areas with poor or no GPS reception \cite{zheng2005quantitative}. 
-Even if a GPS signal is present, it could be incorrect. 
-Because the GPS signal is a weak signal on a known frequency, a malicious actor can jam or spoof the signal with a minimal investment in hardware and power\cite{montgomery2009receiver}.
-
-In order to work around these problems with the GPS signal, some location-aware devices, such as cell phones, also base their position on the received signal strength of cell phone towers and wifi access points. 
-However, in both urban search and rescue and wilderness search and rescue contexts, either of these services may be unavailable. 
-USAR may be motivated by a wide-ranging disaster, such as a hurricane, which removes electrical power, and with it most wifi and cellular infrastructure.
-Because urban disaster areas by definition include buildings, at least partial GPS denial is a valid assumption.  
-Wilderness areas are unpopulated, and so have no demand to drive the placement of wireless communications. 
-Adding additional radios and processing to take advantage of these other wireless localization options will also increase the size, cost, and energy consumption of the swarm robots.
-
-Global positioning, however, is not the only kind of positioning available to swarm members. 
-Indeed, there is no evidence that biological swarms, be they schools of fish, flocks of birds, or swarms of insects, have any idea about their global position. 
-It has been demonstrated that local processing and local perception, even without communication, can generate complex multi-actor behaviors such as flocking, surrounding an object, dispersing in a directed fashion, or pushing an object towards a beacon \cite{mclurkin2004stupid, chen2015occlusion, reynolds1987flocks}.
-
-These sorts of behaviors are preferable to centrally-coordinated action (of which GPS is an example), because they are robust to uncertainty in the performance of the communication links between the actors. 
-If communication between a central controller and the robots fails, the robots become uncoordinated. 
-If communication between a robot and the other robots fails, that robot may be lost, but the overall actions of the swarm may continue relatively unimpeded.  
-This provides robustness to the robot swarm because robots can replace each other. 
-However, this robustness is meaningless if the control software cannot adapt to loss of individual robots, or generates plans that are not robust in the face of failures of individual robots. 
-A child playing with blocks can use a blue block if there's not a red one available, or two small ones if there's not a large one, and software that claims to support a robust robot swarm should be at least that flexible.
-
-%Determine how denial of a few usually-assumed-good properties of the system affects how the user tasks get compiled. 
-%Degrade and then remove inter-robot communication to see how system adapts when robots can't reach each other. 
-%Degrade and then remove global localization (GPS denial) to see what happens when robots cannot determine global absolute distance each other.
-
-The distances and locations available without a global positioning system are usually relative positions. 
-Robots can find the distance to each other by direct measurement using sensors, or by measuring the received signal strength (RSSI) of incoming communications from other robots.
-Because such measurements are not ``attached'' to any fixed points in the world, it may be possible for the robots to form a grid, but impossible to orient that grid to point north. 
-
-With a shared map, robots may leverage their communication with each other to more quickly converge on their own location. 
-For example, SLAM with AMCL localization can generate spurious location hypotheses when the robot enters an area of the amp that is similar to another area. However, if another robot is present and aware of it's own location, it may provide a distinction between the two points by informing the other robot that if it is at one of the hypothetical locations, they should be able to see each other. 
-
-Unreliable positioning can lead to unreliable behavior. 
-If robots in a chain are required to maintain a certain distance from each other, variable noise in the distance sensing will result in the chain becoming unstable as individual links are erroneously perceived as being too close or too far apart. 
-Uncertain position also propagates into the user interface. 
-If the position of the robots is not well-known, the interface must convey to the user that the robots may not be in their expected positions. 
-Current GPS navigation applications on Android and iOS phones display position uncertainty by a bounding circle over the area the GPS user is most likely in, so that metaphor could be extended to circles around the last-seen locations of all of the robots. 
-Uncertainty in the interface will also likely create uncertainty in the user as to the position of the robots and the . 
-
-Search of an area is a common problem in swarm robotics.
-With a high enough robot count and bounded area, simple diffusion or scattering will reach a robot per area density that could count as ``coverage''. 
-Using fewer robots for the same task means the robots must use search of some kind to find each other, locate targets in an area, update the area map, and so forth. 
-It is also desirable to avoid redundancy in the search, so areas are not searched multiple times.
-Avoiding duplication can be done by either marking the environment, such as collecting the search target so later seekers detect that it is scarce and move on quickly or leaving a repellent pheromone, or shared mapping.
-The use of markings on the environment is known as stigmurgy, and has considerable coverage in the literature. 
-However, in a real application environment, stigmurgy is somewhat less applicable than it is in simulations. 
-In simulation, robots that use pheromones to communicate have unlimited reservoirs of pheromones and flawless perception of the pheromones emitted by other robots. 
-In reality, the difficulties of limited resources and flawed perception decrease the efficiency of stigmurgic communication. 
-For example, in the USAR efforts after hurricane Katrina human search and rescue workers spraypainted markers on buildings to indicate the results of building searches to each other. 
-Even to humans, the meanings of the markers were somewhat ambiguous. 
-Computer vision has not yet reached a point where reading similar markers would be reliable. 
-Beyond technical concerns, a robot which leaves marks on its environment may not be desirable to the humans it will have to operate around. 
-Most parents train their children not to scribble on walls, and would prefer their robots are at least equally well-behaved. 
-
-\subsection{UI Designs}
-
-The current state of the art in design of software for a decentralized swarm controller appears to be one of two methods. (TODO define why I'm not doing centralized control)
+The current state of the art in design of software for a decentralized swarm controller appears to be one of two methods. \unsure{define why I'm not doing centralized control}
 The first method is to come up with behavior primitives that can be performed as a function of local sensing by each member of the swarm. 
 These primitives are then composed to come up with a program that the programmer thinks is likely to result in the desired behavior. 
 The program is then tested and modified based on the result of the testing in an iterative fashion to converge on the desired behavior. 
@@ -405,7 +336,7 @@ EID is well-positioned to deal with emergent behavior, because the emergent beha
 Previous work in multi-touch interfaces directly relates to EID by providing both an omniscient camera view for direct manipulation of the high-level, functional actions of the entire swarm, and the ability to move down the hierarchy to control individual swarm members \cite{Micire:2009:ANG:1731903.1731912}.
 
 
-\subsection{Metrics for the Behavior of Swarms}
+\subsubsection{Metrics for the Behavior of Swarms}
 
 Emergent behaviors arise from the interactions of actors with each other and the world around them. 
 In the face of uncertainty in the world, the behaviors will also become uncertain. \todo{BRING TRUST WORK IN}
@@ -449,7 +380,6 @@ The addition of sensors and computation would then allow the robots to outperfor
 %$\Rightarrow$ What level is a swarm expected to operate at? At the swarm-as-a-whole level, it's more or less level 1, human tells swarm what to do. At the individual robot level, it's 7 or higher. 
 %$\Rightarrow$ Is it a valid assumption that the swarm is never teleoperated? What is the use case for being a single ant or bee, especially out of thousands of units?
 %$\Rightarrow$ Look into MiDAS (Mission Displays for Autonomous Systems). 
-
 \subsection{Conversion of User Tasks into Robot Programs} 
 
 In order to be truly decentralized and emergent, the robots must each have a program that governs their behavior without reference to a central authority. 
@@ -471,7 +401,7 @@ Programs for swarms are only going to be functional within some probabilistic gr
 This requirement indicates that the situation has to be at least somewhat known ahead of time, so that the robots will all receive programs that allow them to perform the task.
 In the ideal case, the emergent action of all of the robots interacting with the environment causes them to perform the task. 
 
-\section{Swarm Software Development Methods}
+\subsection{Swarm Software Development Methods}
 
 Because the conversion of the specification of desired behavior for the swarm into individual programs for the swarm controllers is still an open question, it is necessary to understand the current methods used in the development of programs for swarm robots. 
 Much of swarm robotic development follows the usual model of software development. 
@@ -480,7 +410,7 @@ The program is then tested, in simulation or on real robots, and its behavior is
 The programmer then modifies their program to account for any observed difference between the desired function and the system's behavior. 
 This loop of coding, testing, and coding again is repeated until the system behaves as expected, or the programmer graduates. 
 
-\subsection {Language Approaches}
+\subsubsection {Language Approaches}
 
 One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code that can be codified into a compiler. 
 As a consequence, input in the command language defines a program which is compiled and loaded onto the robots. 
@@ -495,7 +425,7 @@ Furthermore, a command language with no invalid commands runs into the same prob
 Every motion is interpreted as something that must be acted upon. 
 %Is it possible to build a compiler that converts user commands in task space into programs for robots without having to code in assumptions about the qualities of the robots? Does the compiler have to account for global properties (e.g. GPS denial)? Can the compiler account for robot-local properties (e.g. battery life, motor failure)?
 
-\subsection{Amorphous Computing}
+\subsubsection{Amorphous Computing}
 
 Amorphous computing (AC), also called spatial computing, is computation using locally-linked and interacting, asynchronous, unreliable computing elements dispersed on a surface or throughout a volume \cite{abelson2000amorphous}. 
 The motivation for AC is that while it may be possibly to produce arbitrary quantities of ``smart dust'', it is not possible to ensure that it all works well and is precisely located, especially in real-world applications.
@@ -573,7 +503,7 @@ Lists tuple spaces, amorphous computing, as potential enabling technologies for 
 
 "Scripting the Swarm: Event-based control of Microcontroller-based robots" \cite{magnenat2008scripting} Stephane Magenenat et al, EFPL. Introduces ASEBA, an event-based control architecture. Reflashing e-puck takes a minute, doesn't scale to a bunch of robots unless you can do it to all robots at once. Concurrent debugging is impossible. Programs compiled to bytecode, react to incoming sensor data (e.g. message from other robot, impending collision, etc.). Could compose swarm behavior by deciding reaction priorities, tuning priorities in reaction to environment. Still doesn't describe task-to-program compilation. Does permit differing code between robots, which won't scale to 1k+ robots.
 
-\subsection{Compositional Approaches}
+\subsubsection{Compositional Approaches}
 
 One possible approach is the composition of programs from behavioral primitives, such that some combination of the primitives results in the emergence of the desired behavior. 
 In ``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots", individual robots cooperate to push an object to a beacon based on simple behaviors \cite{chen2015occlusion}. 
@@ -659,7 +589,7 @@ In the real world, we get stochasticity for free.
 
 %$\Rightarrow$ Get Klavins et al 2k4, apparently on algorithmic approach mapping local to complex global behavior.
 
-\subsection{Evolutionary Composition}
+\subsubsection{Evolutionary Composition}
 
 Genetic algorithims (GA) have been proposed as a possible way of directing the composition of behavioral primitives into programs \cite{palmer2005emergence}.
 However, it is difficult to automatically extract from the know be behavior of the system an overall understanding of the progress it is making on the task. 
@@ -719,7 +649,7 @@ The condition where all robots shared the same genes was called ``clonal", while
 Oddly, while one would expect that the aclonal condition would result in a specialization, with each robot developing a genome that performed either the leader or follower role well, the aclonal condition developed robots which could perform both roles. 
 Quinn hypothesizes that while the clonal condition had to evolve roles and an allocation mechanism simultaneously, the aclonal condition could specialize the roles during early evolution, and then develop an arbitration mechanism to select roles.
 
-\subsection{Pheromone Approaches}
+\subsubsection{Pheromone Approaches}
 
 Another approach used to control the behavior of swarm robots is based on the chemical signaling used by animals for communication. 
 The chemicals are called pheromones, and in pheromone robotics, they are usually simulated or ``virtual'' pheromones, rather than attempting to use real chemicals and chemical sensors. 
