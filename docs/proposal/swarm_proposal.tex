@@ -74,6 +74,12 @@ However, certain minimum bounds on the problem may be able to be used to determi
 
 \section{Work Plan}
 
+
+\subsection{Elucidate a Control Grammar}
+
+\subsection{Command Compilation}
+
+
 \subsection{Build a swarm}
 
 In order to experiment with swarm robotics, a swarm must be made.
@@ -82,7 +88,7 @@ Further, swarm simulations must not have bugs in the software which results in i
 Genetic algorithms are infamous for exploiting quirks of their simulation environment which are not present in the real world, but still allow members of the population to inflate their fitness. 
 Any behavior of a physical, unsimulated swarm is the real behavior of the swarm, and cannot be blamed on a defect in the simulation of the swarm or its environment. 
 
-\subsection{Swarm Robot Hardware}
+\section{Swarm Robot Hardware}
 
 Swarm robots are generally small. 
 The reason to keep swarm robots small is two-fold. 
@@ -91,6 +97,8 @@ As a result, for a given number of swarm units, larger robots will result in a h
 Second, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
 If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
+
+\subsection{Proposed Swarm Hardware Design}
 
 The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a processor, some sensors, and a communication system, into a small package.  
 The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
@@ -135,7 +143,8 @@ Combining robots that can fly and robots that can roll allows a mixture of overv
 
 The decision to use ESP-8266 wifi modules as the core of the swarm robots designed in this work is an extension of a long legacy of the use of off-the-shelf components in previous robotics projects. 
 
-%detail the other projects here, chronologically
+\subsection{Overview of Previous Swarm Hardware}
+
 The use of COTS hardware in research robotics has lead to at least two platforms refered to as COTSBots.
 Bergbreiter's COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board  \cite{bergbreiter2003cotsbots}. 
 The mobility platform is a hacked toy, in particular, a specific brand of high-quality micro RC car.
@@ -190,7 +199,7 @@ However, in the interest of allowing easy reproduction of research work, and ext
 One collateral goal of the work outlined in this paper is to produce a well-documented reference design that can be implemented by a researcher using common tools, and possessed of no more than hobby-level familiarity with hardware, and common tools. 
 If researchers are not expected to become hardware entrepreneurs, they should also not be expected to become expert machine tool operators.
 
-\subsection{Swarm Robot Software}
+\section{Swarm Robot Software}
 
 The basic software infrastructure consists of the software executing on the robot, modules on the control computer that are emulated as running on the robot, and support software. 
 
@@ -462,12 +471,21 @@ Programs for swarms are only going to be functional within some probabilistic gr
 This requirement indicates that the situation has to be at least somewhat known ahead of time, so that the robots will all receive programs that allow them to perform the task.
 In the ideal case, the emergent action of all of the robots interacting with the environment causes them to perform the task. 
 
-\subsection {Language approaches}
+\section{Swarm Software Development Methods}
+
+Because the conversion of the specification of desired behavior for the swarm into individual programs for the swarm controllers is still an open question, it is necessary to understand the current methods used in the development of programs for swarm robots. 
+Much of swarm robotic development follows the usual model of software development. 
+Starting from a desired functionality, the developer writes a program that they think will provide that functionality.
+The program is then tested, in simulation or on real robots, and its behavior is observed. 
+The programmer then modifies their program to account for any observed difference between the desired function and the system's behavior. 
+This loop of coding, testing, and coding again is repeated until the system behaves as expected, or the programmer graduates. 
+
+\subsection {Language Approaches}
 
 One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code that can be codified into a compiler. 
 As a consequence, input in the command language defines a program which is compiled and loaded onto the robots. 
 
-One possibility is to define a command grammar like the programming environment Tierra. \unsure{Cite Tierra papers} 
+One possibility is to define a command grammar like the programming environment Tierra. \cite{ray1991approach}
 In Tierra, there is no such thing as an invalid program. 
 All sequences of the existent symbols are regarded as executable programs, although some are more functional than others. 
 While this does prevent the possibility of the user becoming frustrated by being told that their commands are invalid, the ease of creating valid, but undesirable commands creates other problems. 
@@ -555,7 +573,7 @@ Lists tuple spaces, amorphous computing, as potential enabling technologies for 
 
 "Scripting the Swarm: Event-based control of Microcontroller-based robots" \cite{magnenat2008scripting} Stephane Magenenat et al, EFPL. Introduces ASEBA, an event-based control architecture. Reflashing e-puck takes a minute, doesn't scale to a bunch of robots unless you can do it to all robots at once. Concurrent debugging is impossible. Programs compiled to bytecode, react to incoming sensor data (e.g. message from other robot, impending collision, etc.). Could compose swarm behavior by deciding reaction priorities, tuning priorities in reaction to environment. Still doesn't describe task-to-program compilation. Does permit differing code between robots, which won't scale to 1k+ robots.
 
-\subsection{compositional approaches}
+\subsection{Compositional Approaches}
 
 One possible approach is the composition of programs from behavioral primitives, such that some combination of the primitives results in the emergence of the desired behavior. 
 In ``Occlusion-Based Cooperative Transport with a Swarm of Miniature Mobile Robots", individual robots cooperate to push an object to a beacon based on simple behaviors \cite{chen2015occlusion}. 
@@ -611,7 +629,9 @@ Unfortunately, much of the design of programs for swarm robots consists of itera
 Emergence is the transition between two levels of behavior. 
 At the base level is the behavior explicit in the program and the actions generated by it in the environment. 
 At the higher, emergent level is the implicit behavior of the program, as the sum of the results of the robots' actions. 
-Perception of the emerging behavior can in turn affect the base level behavior of the robots, providing feedback. 
+Babarilla et al propose a taxonomy of behaviors that separates spatially organizing, navigation, decision-making, and ``other'' behaviors into their own groups \cite{brambilla2013swarm}. 
+These behaviors are higher level, swarm-wide behaviors, rather than individual behaviors of individual robots. 
+If it is assumed that these are the emergent behaviors of the system, then perception of the emerging behavior can in turn affect the base level behavior of the robots, providing feedback. 
 This feedback can be used to increase the tendency of the behavior of the interacting swarm members to converge on a solution. 
 By observing the state of the environment, swarm robots determine if they are satisfied with the local state. 
 The dissatisfied members change their actions, but the satisfied units do not. 
@@ -639,7 +659,7 @@ In the real world, we get stochasticity for free.
 
 %$\Rightarrow$ Get Klavins et al 2k4, apparently on algorithmic approach mapping local to complex global behavior.
 
-\subsection{evolutionary composition}
+\subsection{Evolutionary Composition}
 
 Genetic algorithims (GA) have been proposed as a possible way of directing the composition of behavioral primitives into programs \cite{palmer2005emergence}.
 However, it is difficult to automatically extract from the know be behavior of the system an overall understanding of the progress it is making on the task. 
@@ -681,43 +701,56 @@ Aggregation was chosen because it is a preliminary behavior primitive, which the
 The resulting vector only controls aggregation behavior, so each behavioral primitive would require its own evolutionary development. 
 Evolution is only useful if it is a faster approach than designing the behavior by hand. 
 
-
-\cite{quinn2001comparison} Quinn et all 2001, 2003, apparently did work on individuals (aclonal), rather than all robots having the same genome (clonal) Quinn, M. 2001a. A comparison of approaches to the evolution of homogeneous multi-robot teams. In Proceedings of the 2001 Congress on Evolutionary Computation (CEC2001), IEEE Press: Piscataway, NJ, pp. 128–135.
-
-\cite{quinn2001evolving}Quinn, M. 2001b. Evolving communication without dedicated communication channels. In Proceedings of the Sixth European Conference on Artificial Life, J. Kelemen and P. Sosik (Eds.), vol. 2159 of Lecture Notes in Computer Science, Springer-Verlag: Berlin, Germany, pp. 357–366.
-
 Quinn et al have developed controllers that allow robots to move into formation from random starting positions \cite{quinn2003evolving}. 
 These controllers use local interactions and minimal sensing to achieve their goals. 
-One point the authors make that is not frequently mentioned in other work is that while flocking or shoaling behavior is a relatively simple behavior to have emerge from robots who can detect the distance, postion, and velocity of the other nearby robots, it is actually quite hard to have robots do that detection. 
+One point the authors make, which is not frequently mentioned in other work, is that while flocking or shoaling behavior is a relatively simple behavior to have emerge from robots who can detect the distance, postion, and velocity of the other nearby robots, it is actually quite hard to have robots do that detection. 
+Because a specific behavior, motion in formation, was desired, the fitness function used to evolve it was specified in terms of metrics related to the behavior. 
+Task-specific fitness functions are also found in later work on evolution of swarm robot behavior, which seems to indicate that evolution of behaviors in swarm robots may only be a time-complexity tradeoff. 
+The complexity of directly specifying the task is reduced to the complexity of describing the results in the fitness function, but the time required increases to that required by the evolutionary iterations. 
+Additionally, the ad hoc iterative process of creating emergent behaviors is replaced by an ad hoc iterative process of creating fitness functions.
+Developing novel behavior in the field by converting user specifications of the behavior of the swarm into a fitness function for a genetic algorithm are unlikely to yield results in a timely manner. 
 
+Interestingly, some of the work in evolvable controllers leads to inter-robot communication as one of the emergent properties of the evolved controller \cite{quinn2001evolving}.
+In order to move as a formation, one of the robots must be the leader, but there is nothing in the fitness function or any of the other code that designates roles for the robots. 
+Instead, the selection of the leader arises from the evolutionary development of the controllers, and is present in the controller as a response to a particular series of stimuli. 
+Genomes that did not encode such a symmetry-breaking reaction never developed a leader-follower distinction, and so failed to move in formation, and so received low fitness scores. 
+For the follow-the-leader task, genetic variation among the robots increased fitness more readily than having all robots share the same genome \cite{quinn2001comparison}.
+The condition where all robots shared the same genes was called ``clonal", while each robot having its own genome was ``aclonal".
+Oddly, while one would expect that the aclonal condition would result in a specialization, with each robot developing a genome that performed either the leader or follower role well, the aclonal condition developed robots which could perform both roles. 
+Quinn hypothesizes that while the clonal condition had to evolve roles and an allocation mechanism simultaneously, the aclonal condition could specialize the roles during early evolution, and then develop an arbitration mechanism to select roles.
 
-``Swarm robotics: a review from the swarm engineering perspective" \cite{brambilla2013swarm} Manuele Brambilla, Eliseo Ferrante, Mauro Birattari, Marco Dorigo. (2013) ``Swarm engineering is an emerging discipline that aims at defining systematic and well founded procedures for modeling, designing, realizing, verifying, validating, operating, and maintaining a swarm robotics system." Two taxonomies, one of design/analysis methods, one of collective behaviors. Classes automatic design of robot programs as either evolutionary or multi-robot reinforcement, no category for program synthesis at all. Trial-and-error approaches are a different area. Behavior-based with probabilistic FSMs, virtual physics (gas models and potential fields). Other stuff category: amorphous computation. 
+\subsection{Pheromone Approaches}
 
-Models tend to be macro or micro, not a lot of modeling across all levels of the swarm behavior. Paper has overviews of some of the mathematical models, not super-relevant to designing the program, but probably handy for simulation. Use of real robots rates a section, less than half of papers actually use real robots. People don't often state why the real robots were used (real sensor noise, real failures, things simulation elides). 
+Another approach used to control the behavior of swarm robots is based on the chemical signaling used by animals for communication. 
+The chemicals are called pheromones, and in pheromone robotics, they are usually simulated or ``virtual'' pheromones, rather than attempting to use real chemicals and chemical sensors. 
+Pheromones are assumed to have a set of characteristics which robots can sense. 
+For example, a robot may emit a pheromone which diffuses into the environment, so distance from the robot can be determined by the strength of the pheromone, and approaching or avoiding the robot may be accomplished by moving up or down the gradient of pheromone strength. 
+Different pheromones may have different characteristics. 
+The presence pheromone may be constantly emitted by the robot, but a robot which is searching for something may emit a ``search marker'' pheromone that lingers in the area after the robot leaves. 
+Other robots, on entering the area, would detect the pheromone and know that searching this area again would be fruitless. 
+If the object of the search can move, the pheromone could diminish as a function of time, so areas that have not been searched for a long time become unmarked and may be searched again. 
 
-Collective behavior hierarchy covers a lot of the behavior primitives that papers on compositional models cover. 
-
-HSI section just lists a bunch of interactions, gesture-based communication, robots observing operator and voting/consensing on what they operator signaled. Human placement of beacons or interaction via a central computer.
-
-\subsection{pheremone approaches}
-
-How is task completion detected? Bio-inspiration would probably be something like quorum sensing or other local-communication-based saturation methods. Once all the robots are saying the task is locally completed, then the task is completed for at least the coverage area. 
-
-Pheremone approaches can guide the construction of objects, even if the individual swarm members have no memory and only local perception\cite{mason2003programming}. 
-Agents move at random, and take actions governed by their individual perception of environment at present time. 
-The environment can include pheromones, which agents can release and react to, and so there is an implicit communication via stigmurgy, but no explicit agent-to-agent communication. 
+Pheromone approaches can guide the construction of objects, even if the individual swarm members have no memory and only local perception\cite{mason2003programming}. 
+The agents engaged in the construction move at random, and take actions governed by their individual perception of environment at present time. 
+The agents can release and react to pheromones in the environment, and so there is an implicit communication via stigmurgy, but no explicit agent-to-agent communication. 
 A set of environmental triggers is "coherent if no stage in the building process can be confused with an earlier stage by making only local observations, thus obviating the need for centralized control".   
-%"Other future work includes programming construction swarms by specifying the target structure directly, letting a compiler infer the corresponding rule-set (if one exists)."
+By specifying such a coherent set of triggers, the specification for the building can be expressed to the swarm. 
+However, Mason does not propose a user interface for creating this specification, saying instead that "Other future work includes programming construction swarms by specifying the target structure directly, letting a compiler infer the corresponding rule-set (if one exists)."
 
-``Pheremone Robotics" \cite{payton2001pheromone} Virtual pheremones with directional sensors. Largely a rehash of "World Embedded Interfaces". Modulated IR for sending messages. Hop-counting for diffusion. Budding with growth inhibition for exploration. Gas model as well, attraction balancing repulsion. Cites interesting work in directed diffusion, amorphous computing (processing with reaction-diffusion systems). "No explicit maps or models of env, no explicit knowledge of robot location". Walking in the world rather than walking in your head. 
+The addition of directional communication for the messages that convey virtual pheromone information allows easy determination of the direction of pheremone gradients \cite{payton2001pheromone}.
+Rather than directly diffusing in the space as a chemical would, hop counts in the network of robots simulate diffusion. 
+Because routes may be of different length, the message with the lowest hop count is assumed to be the truest indication of minimal distance within the network. 
+Payton provides algorithms for budding with growth inhibition to allow a swarm to explore while remaining connected as a network. 
+Rather than modeling the world based on the incoming messages, the content of the pheromone messages and the network behavior as a whole serves as a model of the world, mapped 1:1 onto the real environment. 
+While it is possible to build a set of behavioral primitives out of pheromone signaling and associated behaviors, controlling the swarm to perform a task with these primitives is still done by hand \cite{payton2003compound}.
 
-``Compound Behaviors in Pheromone Robotics" \cite{payton2003compound} Compilation from this paper's ``set of logical primitives for controlling the flow of virtual pheromone messages" from some higher-level task representation may be useful. Virtual pheromones are local (no global information), diffusion-graded (spatial information), and decay over time (old information goes away). Can also contain other data, rather than just presence/absence. Paper describes set of primitives, composes gradient follow, go hide, and cooperative sensing out of those. Inhibition out of something very like quorum sensing. Building of commands still done by hand. 
+\section{Conclusion}
 
-$\Rightarrow$ Research quorum sensing in bacteria.
-
-$\Rightarrow$ Could steal from neuronal wiring and growth for exploration and communication algorithms. 
-
-
+The various approaches to development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
+Previous work in HRI shows that multi-touch interfaces will allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm. 
+While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
+Until computational power in the individual swarm units does reach the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requrements in terms of space and power consumption. 
+\unsure{develop conclusion more, perhaps restate some of research questions?}
 
 \bibliography{swarm.bib}
 \bibliographystyle{plain}
