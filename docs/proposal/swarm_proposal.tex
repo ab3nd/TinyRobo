@@ -438,10 +438,6 @@ The abstractions used in GPL are very similar to those that guide the developmen
 Importantly, GPL does not make any prior assumptions on the location of the particles in the system, or robots in the swarm, aside from that they are sufficiently dense in the medium. 
 For swarm robotics, this is an important quality, as precise localization may not be available. 
  
-"Proto" is a language for a continuous plane spatial computer. Proto paper also lists TinyDB as a "database view of the devices making up the computer", *LISP, and Regiment. Continuous time evolution approximated in gamma calculus and P-systems. 
-
-"Infrastructure for Engineered Emergence on Sensor/Actuator Networks" \cite{beal2006infrastructure} Devices share internal state with local neighborhood, all run the same code bu can diverge due to neighborhood influences, sensor values. Proto is a stream-processing language, program is a directed acyclic graph with a single root (the output stream), composing programs is placing nodes into the graph. Proto is strongly typed, but with type inference rather than explicit/static typing. Doesn't cover conversion of a task into code. 
-
 There are several languages intended to program amorphous computers. 
 "Proto" is a language for a continuous plane spatial computer \cite{correll2009ad}.
 Because the devices are distributed over a plane, the difficulty in communicating between any two devices is a function of the distance between them, much as with RF or other radiative communications.
@@ -471,37 +467,15 @@ Because of the use of morphogens and local communication between the agents on t
 Further, because the high-level description of the desired form does not involve abstractions of the underlying modules, OSL could operate on interlocking modular robots, actuated flexible materials, swarms, or other kinds of computational media. 
 In fact, the flexible sheet could be assumed to be virtual, and the resulting motions of the sheet could be translated into motor commands to configure swarm robots into specific arrangements in space. 
 
-%  Proto paper also lists TinyDB as a "database view of the devices making up the computer", *LISP, and Regiment. Continuous time evolution approximated in gamma calculus and P-systems. 
-%"Infrastructure for Engineered Emergence on Sensor/Actuator Networks" \cite{beal2006infrastructure} Devices share internal state with local neighborhood, all run the same code bu can diverge due to neighborhood influences, sensor values. Proto is a stream-processing language, program is a directed acyclic graph with a single root (the output stream), composing programs is placing nodes into the graph. Proto is strongly typed, but with type inference rather than explicit/static typing. Doesn't cover conversion of a task into code. 
-%$\Rightarrow$ Look into *LISP, Regiment, gamma calculus, P-systems, Functional Reactive Programming, Gooze
+The Software Component Ensemble Language (SCEL) provides a set of programming abstractions to describe the control of autonomic software structures that can self-configure, self-heal, self-optimize, and self-protect \cite{nicola2014formal}. 
+These self-* properties certainly sound like useful properties to ensure the robustness of a robotic swarm. 
+The authors do make assumptions of reliable localization and intra-swarm communication that may not hold in a real swarm. 
+Despite these assumptions, the formalism of SCEL does provide a semantics for composing the behavior of interacting systems. 
+It does not, however, propose a way in which these compositions might be automatically derived to perform a desired task. 
 
-"Combining Amorphous Computing and reactive agent-based systems: a paradigm for pervasive intelligence?" David Servat, Alexis Drogoul. Eventually everything will have an embedded, networked processor. Everything will continue to be gnarly: high heterogeneity in terms of software, processors, use cases, controllers and users. Things should still behave in a useful, coherent, predictable way. Requiring users to constantly manage them is not that. Amorphous computational model: computational units, which may be faulty, randomly located in a dynamic environment. Homogeneous programming, limited communication radius. Paper holds that most research in the area is computational models (e.g. ant colony optimization) or communications methods. Hop-count based gradient methods, bio-inspired based on quorum sensing. ``AC Hierarchy" for performing computing tasks ``simplifies programming with high-level abstractions". 
-
-"Software Eng. For Self-Adaptive Systems" (Is a 270 page book, maybe skim later?)
-
-``Improving Efficiency in Mobile Robot Task Planning Through World Abstraction'' \cite{galindo2004improving} Hierarchical world representation and operating at multiple levels of that hierarchy to reduce dimensionality of the problem space. Successive refinement from broad goals to behavioral primitives. Primitives are available for swarm robotics, but overall actions take place over the swarm. How to actually accomplish the translation is a bit tricky. Even GPL and OSL work from a desired known final state to a behavior specification, so task specification would have to be based on a description of the final state of the system. 
-
-"Notes on Amorphous Computing" Jacob Katzenelson. \cite{katzenelson2000notes} Doing differentiation and integration on amorphous computers. 
-
-$\Rightarrow$ Is it useful to share sensor information in a broadband rate-coded way, e.g. spike trains? Neuronal computation seems a bit like the limit case of amorphous computing, except that the network isn't radius-bound. 
-
-Many applications that are proposed for swarms are similar to foraging search, in that the robots spread into an area in order to locate and converge on an objective. 
-
-User interface allows the user to define an overall desired distribution of the robots, position and directions, and then the control software compiles that into a representation in e.g. GPL or OSL that gets compiled into programs to run on the robots. This isn't a continuous controller, more fire \& forget. Could have robots with a main behavior of successfully navigating the world and other behaviors (search and rescue, track target, etc.) as riders. Sort of like putting sensors on existing bees, and then collecting the data while they do bee stuff. Paper is mostly on lightweight formal methods and policy checking. Could be used at a policy level for a swarm, e.g. to limit overall power use, but adds another layer of behavior that can alter emergency. 
-
-Mobile software specs: "Mobile UNITY [Roman97], the Distributed Join-Calculus [Fournet96], and Mobile Ambients [Cardelli98]."
-
-"A much more ambitious goal is to produce the device programs for a primitive swarm program from the high-level behavior description. It is not realistic to hope that we could completely automate the process." This is pretty much what we're talking about doing. 
-
-Lists tuple spaces, amorphous computing, as potential enabling technologies for swarm programming. 
-
-"Continuous Space-Time Semantics Allow Adaptive Program Execution" \cite{bachrach2007continuous} Jonathan Bachrach, Jacob Beal, Takeshi Fujiwara. Spatial computer model, devices that interact depending on their location in space. Computer is "programm[ed]...as a continuious space". Swarm robotics as a special case of the spatial computer. "Proto" is language for a continuous plane spatial computer. Operations act as reduce() or similar over local area or history, feedback loops provide state. Paper provides emergent computation of firefly-style synchronization (coupled oscillators, so perhaps some elements of swarm computing can be expressed as variably-coupled oscillators in combination with driving signals derived from internal states and sensor inputs. This would in some ways be the ultimate evolution of the BEAM "Robot Jurassic Park" idea from the '90s, where each robot is sharing some of its internal state via coupled oscillation with the other robots in the park, e.g. to communicate the presence of light sources for ``food", the presence of self for collision avoidance, etc.)
-
-"The mechanism for binding sensors to names is implementation dependent, as are the value when sense is applied to an unbound name and the result of multiple streams being sent to the same actuator." So, uh, the actual interaction of the program with the world is ``implementation dependent"? Good, knowing what your code does is for suckers. 
-
-"A Formal Approach to Autonomic Systems Programming: The SCEL Language" \cite{nicola2014formal} ROCCO DE NICOLA et al. Self-managing autonomous ensembles of systems. Only related to swarm robotics in the sense that it is for more than one computer. Assumes complete localization and inter-swarm communication. 
-
-"Scripting the Swarm: Event-based control of Microcontroller-based robots" \cite{magnenat2008scripting} Stephane Magenenat et al, EFPL. Introduces ASEBA, an event-based control architecture. Reflashing e-puck takes a minute, doesn't scale to a bunch of robots unless you can do it to all robots at once. Concurrent debugging is impossible. Programs compiled to bytecode, react to incoming sensor data (e.g. message from other robot, impending collision, etc.). Could compose swarm behavior by deciding reaction priorities, tuning priorities in reaction to environment. Still doesn't describe task-to-program compilation. Does permit differing code between robots, which won't scale to 1k+ robots.
+The Actuators and Sensors Event-Based Architecture (ASEBA) does not have SCEL's assumptions about network reliability, and was designed to ease the development of software for swarm robots with limited connectivity and computational power \cite{magnenat2008scripting}. 
+Each program is compiled to a bytecode which runs on the robot, and reacts to messages from other robots and from the sensors on the robot. 
+While it does promise to ease debugging of the code in place on the robots, ASEBA solves a problem that can be sidestepped by virtualization of the computational resources of the swarm. 
 
 \subsubsection{Compositional Approaches}
 
