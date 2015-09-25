@@ -565,6 +565,14 @@ In the real world, we get stochasticity for free.
 
 \subsubsection{Evolutionary Composition}
 
+Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
+One approach is to set some intuitively reasonable values and then test the behavior of the software on the swarm. 
+This may not scale well to large swarms, depending on the technology used to distribute the software. 
+If each robot needs to be individually reprogrammed, then the time required for distributing a software update will grow with the size of the swarm, and eventually become unmanageable. 
+Assuming the program can be swiftly distributed, then programming it is simply a matter of iterative software development, with each bug or undesired behavior accounted for in the next iteration. 
+However, this approach assumes that the behavior of the swarm is being dictated by programmers, and expressed as a computer program. 
+While it must be a program at some level, the behavior of the swarm must be easier and faster for non-programming users to express and control. 
+
 Genetic algorithims (GA) have been proposed as a possible way of directing the composition of behavioral primitives into programs \cite{palmer2005emergence}.
 However, it is difficult to automatically extract from the know be behavior of the system an overall understanding of the progress it is making on the task. 
 Ideally, it would be possible to recognize and evaluate performance on sub-problems. 
@@ -573,24 +581,12 @@ For example, assume a program's intended purpose is to gather units of a resourc
 If the program merely moves the units stochastically, sometimes they will enter the goal, creating an appearance of progress. 
 However, it may be vanishingly unlikely that all the units will randomly happen to be in the goal at once. 
 Even a program that cannot find the goal, and so will never put any units in it, behaves exactly the same as a perfect resource-gathering program that just hasn't moved any units to the goal yet. 
-Meta-rules that govern selection of rules at the individual agent level depending on agent context. 
-Nested hierarchies of systems and their contexts, but can be collapsed to an arbitrary level and its next level up (higher has no downward effect, lower can be considered part of base level). 
-All information for the actor is local (its own sensors and memory, can possibly share with other actors). 
-Uses aspect-oriented-programming (AoP) to recognize method invocations for single-agent actions as an aspect (e.g. maintain-distance and move-random forming a dispersion aspect).
-Analysis of the behavior of the swarm looking for good patterns and trying to develop code that does not yet exist to create behaviors that have not yet been observed is REALLY HARD, so have humans do it. 
-This is a design process, not an automation process, but indicates a direction for possible ML approaches (which seems like a return to the GA approaches the authors dismissed earlier, possibly as less-directed than human intervention.). 
-This requires multiple design/build/test loops for each activity the swarm tries to do.
-Perhaps have it learn forageForObject until object is found, surroundObject until object is surrounded, then "pushObject" until object is where it should be, then disperseRobots until the object is left alone again. 
-Humans can do ``what-if" experiments on individual robots (so can the computer, and faster, assuming some evaluation function is available). 
-Swarm algorithims extracted from Virtual Human Swarm (VHS) having people wander around a gymnasium. 
-
-Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
-One approach is to set some intuitively reasonable values and then test the behavior of the software on the swarm. 
-This may not scale well to large swarms, depending on the technology used to distribute the software. 
-If each robot needs to be individually reprogrammed, then the time required for distributing a software update will grow with the size of the swarm, and eventually become unmanageable. 
-Assuming the program can be swiftly distributed, then programming it is simply a matter of iterative software development, with each bug or undesired behavior accounted for in the next iteration. 
-However, this approach assumes that the behavior of the swarm is being dictated by programmers, and expressed as a computer program. 
-While it must be a program at some level, the behavior of the swarm must be easier and faster for non-programming users to express and control. 
+Palmer proposes that the interactions and emergent behavior of the system are observable, while the reactions of the agents in the system are programmable, and so by observing the interactions and emergent behavior, the developer can receive feedback on how the system is progressing. 
+This emergent behavior is discovered initially in simulation, although getting groups of people to perform the task and observing their interactions is also suggested as a possible initial mechanism.
+While these levels of emergence and reaction can in theory be nested to any depth, it is possible to treat each pair of observable features and reactions to them as independent, because the only explicit causation is in the reactions. 
+The emergent behavior is not explicitly defined, and so does not have a direct causal link to the next level up. 
+However, all of the proposed observation and hierarchy is intended as a design process, not an automation process. 
+In other words, while it is a structure for guiding the development of an emergent system, the system is still developed by programmers writing code offline and then running it on the robots.
 
 It is possible to develop self-organizing behaviors for robots using genetic algorithms \cite{dorigo2004evolving}. 
 This does offer a reduction in the amount of hands-on time spent programming, but it frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
