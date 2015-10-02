@@ -30,3 +30,7 @@ Combined with the right toy, the TinyRobo board will serve as a complete small r
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
 These software modules will also be part of this repository, so the entire collection of materials will be able to be used by any researcher who wishes to use them. 
 
+## OSHW
+This project is open source in the sense that I legally permit people to do whatever they want with the source code, design drawings, etc.; and in the sense that I provide that information for them to do what they want. 
+It is EXPLICITLY NOT COMPLIANT with the [OSHWA Certification](www.oshwa.org/2015/09/19/open-source-hardware-certification-version-1/). 
+It never will be, because the only thing that certification adds to a project is increased liability to civil suits. 
