@@ -33,6 +33,14 @@ http://www.gctronic.com/doc/index.php/E-Puck
 https://github.com/gctronic/epuck_driver
 https://github.com/gctronic/epuck_driver_cpp
 
+I have the unfortunate sense that this readme is going to turn into the notes file. 
+
+The command to upload a file to a given robot is 
+epuckuploadbt FILE ROBOT_ID
+For the built version of the demoGCtronic firmware, the command looks like this (for robot 2151)
+ ./epuckuploadbt ../../../../program/DemoGCtronic-complete/demoGCtronic.X/dist/default/production/demoGCtronic.X.production.hex 2151
+In theory, I'll only have to flash each robot once, and then I can use ROS to control them from there on out. 
+
 ###The software
 
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
