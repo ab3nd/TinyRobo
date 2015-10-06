@@ -25,6 +25,14 @@ However, children's toys are commercially very available.
 Instead of using custom-made drivetrains, TinyRobo is intended to be a drop-in replacement for the controllers of children's toys. 
 Combined with the right toy, the TinyRobo board will serve as a complete small robot that uses up to two motors for locomotion. This includes Ackerman-steering toy cars, differential-drive tanks, and holonomic-drive toy insect robots.
 
+### E-Pucks
+
+The initial development of the algorithims is going to be done on E-Pucks. 
+So far, the only useful-looking software I've found for getting E-Pucks to talk to ROS is from these links. 
+http://www.gctronic.com/doc/index.php/E-Puck
+https://github.com/gctronic/epuck_driver
+https://github.com/gctronic/epuck_driver_cpp
+
 ###The software
 
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
