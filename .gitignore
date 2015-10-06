@@ -28,6 +28,11 @@
 *.bak
 *.net
 
+# SVN snapshot noise
+*.svn-base
+
+# Compilation products for embedded stuff
+*.hex
 
 #With a little help from https://www.gitignore.io/
 ### C ###
