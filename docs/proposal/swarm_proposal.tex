@@ -25,34 +25,61 @@ By defining a mapping from user interface gestures to individual programs loaded
 In order to remain robust in the face of failure, the overall action of the swarm should be decentralized emergent behavior, rather than a centralized orchestration. 
 Each robot receives its own program, and the sum of the execution of the programs on each robot results in task completion as emergent property.
 
-\section{Research Questions}
+\section{Research Statement}
 
-In order to create a mapping from a command language to a set of individual robot programs for multi-robot command and control, the command language must first be specified. 
-The command language in this work is a system of common gestures selected using an empirical process as in \cite{Micire:2009:ANG:1731903.1731912}. 
-%Is there a coherent command language for controlling large swarms?  
-For the purposes of this research, an intuitive command language is one that is freely chosen by the majority of users. 
-In \cite{Micire:2009:ANG:1731903.1731912}, for each available command, one or two gestures were used by 60\% of the users. 
+\subsection{Problem Statement}
+\subsection{Hypothesis}
+\subsection{Approach}
+
+For the purposes of this work, the tasks that users will be asked to complete consist largely of directing the motion of the swarm. 
+While a task is generally defined as a unit of work to be accomplished, motion within space is not usually considered a task. 
+More specialized tasks, such as searching for a target item within a specific area, will likely require specialized interfaces to provide the information that is specific to that task. 
+
+\subsection{Expected Contributions}
+\subsubsection{Primary Contributions}
+
+Multitouch gesture set for command of multiple robots.
+Determination of whether gestures or neglect of individual robots change with scale of swarm.
+Compilation of gestures into command programs for robots.
+
+\subsubsection{\emph{En Passant} Contributions}
+
+In chess, \emph{en passant} is a special pawn capture that can be used to capture a pawn that advances two ranks from its start position, passing an opponent pawn. 
+The literal meaning is ``in passing'', and so it is used in this context to refer to potentially useful outcomes from this thesis that are not intended as primary goals, but are developed in passing, on the way to the primary goals. 
+
+Swarm robot hardware design for integration with children's toys. 
+ROS software for swarm virtualization. 
+
+
+\section{Related Work}
+
+Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \cite{hayes2010multi}.
+The interface displayed the locations of the robots on a directly manipulatable map, and used movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
+Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
 The use of multi-touch interaction is desirable because one-at-a-time selection doesn't scale beyond a very limited number of robots.
 In order to interact with large groups of robots, the user must be able to perform operations on areas and groupings, rather than on the single point available with a traditional pointer-based interface. 
-Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \cite{hayes2010multi}.
-The interface displayed the locations of the robots on a directly manipulatable map, and used included movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
-Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
 
+In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
+Multitouch gesture sets as a command language for controlling robots can be developed by an empirical process with naive users \cite{Micire:2009:ANG:1731903.1731912}. 
+For the purposes of this research, an intuitive command language is one that is freely chosen by the majority of users. 
+In \cite{Micire:2009:ANG:1731903.1731912}, for each available command, one or two gestures were used by 60\% of the users. 
 It is possible that there is no intuitive command for some task. 
-If this is the case there will be little commonality of gestures used between users for that task.
 If no two users use the same command the same commands, or, more generally, there is very poor inter-user cohesion in the command sets, then there is not an intuitive command for the tasks.
-This is not the severe failure it may appear to be, as even without a consistent command grammar, it is possible to compare selected command gestures for usability. 
+Even if there is not an intuitive command for a task, it is possible to compare selected command gestures for usability. 
 
-Because the focus of this work is to determine how gesture control scales or fails to scale, and humans primary mode of gesturing is with their hands, the size of the swarm should be significantly larger than the number of fingers a user could gesture with. 
+In order to determine if the intuitive gestures change with the size of the swarm, tests can be conducted with varying swarm sizes performing the same tasks. 
+The swarm should be large, with the lower bound on its size being significantly larger than the number of fingers a user could gesture with. 
 In order to have a less tongue-in-cheek definition of ``large'', the scale required for a swarm to be considered ``large'' will be determined empirically.
 It is expected that there exists a transition point for the number of members in a swarm where users will stop interacting with the UI representation of the members of the swarm as individuals, and attempt to interact with the representations as groups or collections. 
-For example, rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use. 
 A large swarm is, then, a swarm with a number of members above the point at which such a transition occurs. 
 
 The transition point may be detected in a number of ways. 
 It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
 The user will instead use commands that control the bulk of the robots the robots as a cloud or flock, but may leave some robots unused. 
 For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to carry groups around. 
+The user may also change how they indicate which robots are to be interacted with. 
+Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use. 
+The size of the swarm where changes in the user interaction method occur will indicate the transition point between interaction with individual robots and interaction with the swarm as a whole. 
 
 It may also be the case that framing the statement of the task to the user in a specific way will allow some control over the interaction method the user uses. 
 Changing how information on the swarm is presented to the user may also affect the user's choice of interaction method. 
