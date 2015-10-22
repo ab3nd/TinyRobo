@@ -25,8 +25,28 @@ However, children's toys are commercially very available.
 Instead of using custom-made drivetrains, TinyRobo is intended to be a drop-in replacement for the controllers of children's toys. 
 Combined with the right toy, the TinyRobo board will serve as a complete small robot that uses up to two motors for locomotion. This includes Ackerman-steering toy cars, differential-drive tanks, and holonomic-drive toy insect robots.
 
+### E-Pucks
+
+The initial development of the algorithims is going to be done on E-Pucks. 
+So far, the only useful-looking software I've found for getting E-Pucks to talk to ROS is from these links. 
+http://www.gctronic.com/doc/index.php/E-Puck
+https://github.com/gctronic/epuck_driver
+https://github.com/gctronic/epuck_driver_cpp
+
+I have the unfortunate sense that this readme is going to turn into the notes file. 
+
+The command to upload a file to a given robot is 
+epuckuploadbt FILE ROBOT_ID
+For the built version of the demoGCtronic firmware, the command looks like this (for robot 2151)
+ ./epuckuploadbt ../../../../program/DemoGCtronic-complete/demoGCtronic.X/dist/default/production/demoGCtronic.X.production.hex 2151
+In theory, I'll only have to flash each robot once, and then I can use ROS to control them from there on out. 
+
 ###The software
 
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
 These software modules will also be part of this repository, so the entire collection of materials will be able to be used by any researcher who wishes to use them. 
 
+## OSHW
+This project is open source in the sense that I legally permit people to do whatever they want with the source code, design drawings, etc.; and in the sense that I provide that information for them to do what they want. 
+It is EXPLICITLY NOT COMPLIANT with the [OSHWA Certification](www.oshwa.org/2015/09/19/open-source-hardware-certification-version-1/). 
+It never will be, because the only thing that certification adds to a project is increased liability to civil suits. 
