@@ -25,6 +25,18 @@ However, children's toys are commercially very available.
 Instead of using custom-made drivetrains, TinyRobo is intended to be a drop-in replacement for the controllers of children's toys. 
 Combined with the right toy, the TinyRobo board will serve as a complete small robot that uses up to two motors for locomotion. This includes Ackerman-steering toy cars, differential-drive tanks, and holonomic-drive toy insect robots.
 
+### Software for the ESP-8266 TinyRobo boards
+
+As an initial cut at the hardware (very minimal functionality), my plan is this:
+
+1. Arduino-compatible firmware on the ESP-8266, so that I can...
+2. Use ROS/Arduino to recieve ROS messages and turn them into PWM signals for the two motor drivers, so that I can...
+3. Drive the robot from RVIZ. 
+
+Unfortunately, [ROSSerial](http://wiki.ros.org/rosserial_arduino/Tutorials) will let me do ROS messaging from an Arduino-like platform, but the Arduino development environment for the ESP-8266 doesn't have the serial-over-wifi interface that the ESP-8266 normally implements.
+I assume that they would have to connect to something, using the libraries available on the Arduino environment for the ESP-8266, but there is no indication of what that thing is, or if it exists. 
+Alternatively, I can use ROSBridge to do JSON-to-ROS serialization on the host computer, and have my robots publish JSON over TCP to ROSBridge. 
+
 ### E-Pucks
 
 The initial development of the algorithims is going to be done on E-Pucks. 
@@ -38,7 +50,9 @@ I have the unfortunate sense that this readme is going to turn into the notes fi
 The command to upload a file to a given robot is 
 epuckuploadbt FILE ROBOT_ID
 For the built version of the demoGCtronic firmware, the command looks like this (for robot 2151)
+
  ./epuckuploadbt ../../../../program/DemoGCtronic-complete/demoGCtronic.X/dist/default/production/demoGCtronic.X.production.hex 2151
+
 In theory, I'll only have to flash each robot once, and then I can use ROS to control them from there on out. 
 
 ###The software
