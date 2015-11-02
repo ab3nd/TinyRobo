@@ -35,7 +35,7 @@ As an initial cut at the hardware (very minimal functionality), my plan is this:
 
 Unfortunately, [ROSSerial](http://wiki.ros.org/rosserial_arduino/Tutorials) will let me do ROS messaging from an Arduino-like platform, but the Arduino development environment for the ESP-8266 doesn't have the serial-over-wifi interface that the ESP-8266 normally implements.
 I assume that they would have to connect to something, using the libraries available on the Arduino environment for the ESP-8266, but there is no indication of what that thing is, or if it exists. 
-Alternatively, I can use ROSBridge to do JSON-to-ROS serialization on the host computer, and have my robots publish JSON over TCP to ROSBridge. 
+Alternatively, I can use ROSBridge to do JSON-to-ROS serialization on the host computer, and have my robots publish JSON over TCP to ROSBridge.
 
 ### E-Pucks
 
