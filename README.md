@@ -39,6 +39,15 @@ I assume that they would have to connect to something, using the libraries avail
 Alternatively, I can use [ROSBridge](http://wiki.ros.org/rosbridge_suite) to do JSON-to-ROS serialization on the host computer, and have my robots publish JSON over TCP to ROSBridge.
 This appears to be the winning plan, as the ESP-8266 can deal with the generation and parsing of the JSON messages, and ROSBridge provides something for it to connect to on the host computer. 
 
+Attempting to install the WiFiWebServer demo on the stock ESP-8266 doesn't work. 
+I currently have CH_PD pulled high and GPIO-15 pulled low, which allows it to communicate over the serial port. The error message is:
+warning: espcomm_sync failed
+error: espcomm_open failed
+
+What I needed to do to have it work is boot the ESP-8266-03 with GPIO15 and GPIO0 pulled low, and CH_PD pulled high. 
+Booting again with GPIO0 floating/not pulled low should (I hope) let me talk to it over serial AND have it running whatever firmware I put on it. 
+Just for reference, the WiFiWebServer demo is 295k of 434k bytes, so getting a JSON lib and motor drive in should be cake. 
+
 ### E-Pucks
 
 The initial development of the algorithims is going to be done on E-Pucks. 
