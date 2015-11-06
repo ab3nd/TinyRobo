@@ -21,7 +21,7 @@
 \end{abstract}
 
 Methods for command and control that are based on issuing individual orders to individual actors, whether they are robotic or human, do not scale to large numbers of actors \unsure{Cite this}. 
-By defining a mapping from user interface gestures to individual programs loaded on local robots, we can allow an individual to control arbitrarily large, heterogeneous swarms.
+By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
 In order to remain robust in the face of failure, the overall action of the swarm should be decentralized emergent behavior, rather than a centralized orchestration \unsure{Cite this}. 
 Each robot receives its own program, and the sum of the execution of the programs on each robot results in task completion as emergent property.
 
@@ -29,27 +29,56 @@ Each robot receives its own program, and the sum of the execution of the program
 
 \subsection{Problem Statement}
 
-One potential method for control of a swarm to perform a task is allowing a central computer to dictate to individual robots how to move.
+One potential method to control a swarm is having a central computer dictate to individual robots how the robots should move.
 However, centralized control is only as robust as the central controller. 
 Distributed control systems do not have the single point of failure that centralized models have. 
 In order to create reliable and useful swarm robotic systems, users must be able to specify emergent behaviors that the swarm can converge to without reliable orchestration from a central controller. 
-Emergent behaviors are those behaviors of a system that are irreducible to the actions of a single individual, but arise from the interactions of multiple individuals \cite{tsuda2004robust}.
 
 The current state of development of emergent control of swarms is guided by ad-hoc, iterative development models that are somewhat suited to software developers, but not suited to use by non-programming end users \cite{palmer2005behavioral}.
 The motivating examples of uses for swarms are task oriented, such as sending swarm robots into disaster zones to search for survivors. 
-While first responders are frequently trained in many specialized skills to perform their jobs, adding coding of emergent behavior algorithms to that training is absurd. 
+While first responders are frequently trained in many specialized skills to perform their jobs, adding programming swarm robots to their training would be impractical. 
 Even if first responders could be expected to develop software in a disaster zone, the situation frequently develops faster than the build/test cycles of software development can react. 
-As a result, it is desirable to automate the construction of control software for a swarm so that it can adapt to a situation, without requiring significant development time during the situation in which the software is expected to be used. 
+It is desirable to automate the construction of control software for a swarm so that it can adapt to a situation, without requiring significant development time. 
+In order to support interactive control during a developing situation, the construction of the software should occur over a similar time scale to the user interactions. 
 
-Assumptions: fire-and-forget deployment of software to nodes, possibly using a distributed distribution method similar to bittorrent. Nodes are updated as possible. Network connectivity is range limited. Network may not be completely connected. Robots can fail at any time. Robustness is achieved through redundancy. Sensing is local and range-limited. 
+In order to remain useful in real-world applications, this work makes certain assumptions about the robots and the swarm. 
+Networking between the robots is expected to be unreliable. 
+Individual robots have limited transmission power over radio or infrared light links. 
+Network links are also frequently attenuated by distance or intervening objects. 
+As a result, when robots spread out into an area, some robots may become unreachable from others. 
+Any software that purports to control a swarm under these conditions cannot rely on perfect connectivity for its operation. 
+Robots perception of their environment is frequently limited. 
+Objects can block the sensing field of sensors.
+Even without obstructions, most sensors have a limited effective range. 
+Because the real world is dynamic, robots can make only limited assumptions about what they cannot sense, and can only sense a limited area. 
+Algorithms to control robots must primarily make use of locally sensed information, and secondary make use of information received in communications from other robots. 
+Because of the limited range of their sensing and networking, the localization of the robots may also be unreliable. 
+GPS provides a global coordinate system that robots can easily localize in, but GPS signal is absent indoors, under dense tree cover, and in many other areas where it would be desirable to use swarm robots. 
+The GPS signal is also weak, and so can easily be jammed by ambient RF interference or by malicious actors. 
+Robots can also fail. 
+The harsh conditions of the WTC rubble pile destroyed many of the robots sent in \cite{Micire02analysisof}.
+In order to remain robust in the face of failures, algorithms should not be developed to depend on the perfect functioning of any individual robot. 
+Rather, the behavior should emerge from the interaction of multiple, interchangeable robots, and tolerate the loss of individual robots up to some limit. 
+In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable. 
 
 \subsection{Hypothesis}
 
 There exists a maximum swarm size beyond which users will transition from treating robots as individuals to treating the swarm as a whole. 
-
 This transition point will be apparent because of a change in the gesture set that the user uses to interact with the swarm. 
+It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
+The user will instead use commands that control the bulk of the robots the robots as a cloud or flock, but may leave some robots unused. 
+For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to ``carry'' groups around. 
+The user may also change how they indicate which robots are to be interacted with. 
+Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use. 
+The size of the swarm where changes in the user gestures occur will indicate the transition point between the user intent to interact with individual robots as opposed to interacting with the swarm as a whole. 
 
-Altering how the user interface displays the location of the robots in the swarm will affect the transition point. More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use different gestures. 
+Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
+This problem will arise at smaller scales if the swarm robots are themselves quite small, and since making swarm robot smaller is an active area of research \unsure{Find an overview paper, cite that}, this problem will only get worse. 
+Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
+Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
+This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \cite{ayanian2014controlling}.
+Altering how the user interface displays the location of the robots in the swarm will affect the transition point. 
+More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use different gestures. 
 
 It is possible to convert user commands to programs which can be transmitted to the robots and will converge to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. %This is stupidly broad. Possible may not be feasible, or may have weird pathologies.
 
@@ -58,9 +87,9 @@ It is possible to convert user commands to programs which can be transmitted to 
 
 For the purposes of this work, the tasks that users will be asked to complete consist largely of directing the motion of the swarm. 
 While a task is generally defined as a unit of work to be accomplished, motion within space is not usually considered a task. 
-Instead, motion within a space is usually performed as part of accomplishing a task.
+Instead, motion within a space is usually performed as part of a task.
 For example, searching an area requires moving over the area to be searched.
-However, specialized tasks will likely require specialized interfaces to provide the information that is specific to that task. 
+However, specialized tasks will likely require specialized interfaces to provide the information that is specific to that task, while this work intends to discover a more general set of commands that can be used across many tasks. 
 
 In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
 Multitouch gesture sets as a command language for controlling robots have been developed by an empirical process with naive users \cite{Micire:2009:ANG:1731903.1731912}. 
@@ -70,6 +99,14 @@ A user might select a group of robots by circling them.
 These robots would be the subject of the ``sentence''.
 Then the user might draw a path or tap a spot on a map, indicating that the robots should ``go here''. 
 Taken all together, the sentence could be read as ``these robots, follow this line to this location'', with the pronouns disambiguated by the locations of the command gesture on the screen.
+
+One way to define such an interface would be to select a fixed set of gestures, and then train the users to use those gestures when they interact with the system. 
+However, if the system is not one that the users use frequently, the will forget the training. 
+Since the advent of multitouch interfaces for smartphones and the trackpads of some laptops, many users already have some prior experience with multitouch gesture controls in everyday life. 
+Multitouch gestures can also be imitations of the way the users would expect to interact with material objects. 
+For example, zooming out of a map view by pinching two fingers together imitates the distant points of the map becoming closer together, indicating outward zoom, and spreading the fingers imitates stretching a smaller region to cover the screen for an inward zoom. 
+From these ``naturalistic'' expectations and daily use, users already have some idea of how a multitouch user interface can work. 
+If the interface fulfills these intuitions, the users will find it easier to learn to use. 
 
 For the purposes of this research, an intuitive gesture language is one that is freely chosen by the majority of users. 
 In \cite{Micire:2009:ANG:1731903.1731912}, for each available command, one or two gestures were used by 60\% or more of the users. 
@@ -82,30 +119,11 @@ The swarm used for these tests will be large, with the lower bound on its size b
 In order to have a less tongue-in-cheek definition of ``large'', the scale required for a swarm to be considered ``large'' will be determined empirically.
 It is expected that there exists a transition point for the number of members in a swarm where users will stop interacting with the UI representation of the members of the swarm as individuals, and attempt to interact with the representations as groups or collections. 
 A large swarm is, then, a swarm with a number of members above the point at which such a transition occurs. 
-
-The transition point may be detected in a number of ways. 
-It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
-The user will instead use commands that control the bulk of the robots the robots as a cloud or flock, but may leave some robots unused. 
-For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to ``carry'' groups around. 
-The user may also change how they indicate which robots are to be interacted with. 
-Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use. 
-The size of the swarm where changes in the user gestures occur will indicate the transition point between the user intent to interact with individual robots as opposed to interacting with the swarm as a whole. 
-
-Changing how information on the swarm is presented to the user may also affect the user's choice of interaction method. 
-Once the ratio of the area the swarm is in to the area of the map displayed to the user becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
-This problem will arise at smaller scales if the swarm robots are themselves quite small, and since making swarm robot smaller is an active area of research \unsure{Find an overview paper, cite that}, this problem will only get worse. 
-Scaling the representation up makes the robot representations overlap unrealistically. 
-Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
-This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \cite{ayanian2014controlling}.
  
-Once the language is defined, sequences of gestures in that language must be translated into programs to execute on each member of the swarm. 
-The program for each swarm member must be generated automatically, either by creation of a new program or by a synthetic approach from pre-determined behavior primitives.
-When providing motivating examples for research in swarm robotics, the focus is on the use of the robots, rather than the programming approach used to control them. 
-End users are not concerned about programs, but about accomplishing tasks. 
 All of the valid expressions possible in the command language should be converted into programs for the robots, or the user must be usefully informed as to why it was not possible. 
 The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
 Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
-However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail.
+However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. %TODO STAY OUT OF GRIDWORLD FORMAL GROTESQUERY
 
 \subsection{Swarm Robot Support Software}
 
@@ -149,9 +167,6 @@ The system as a whole should be robust against the addition of new types of mobi
 Because of the selection of hardware with a WiFi module, every hardware module is programmed with a unique MAC address. 
 In order to learn the control rules, the control software will send motion commands to each robot, and observe the displacement of that robot. 
 By varying motion commands and observing the resulting displacement, the system will learn the effect of motion commands on each robot, and so be able to control the robots. 
-Observation of the magnitude of displacement of the robots for similar motion commands, the system will also be able to quantify swarm members based on speed. 
-Variation of response to motion command will allow the system to be able to rank individual robots by the reliability of their motion. 
-As a result, the system as a whole can develop measures of the abilities of the robots, which may influence the later selection of swarm members for action assignment. 
 
 \subsection{Expected Contributions}
 \subsubsection{Primary Contributions}
@@ -179,7 +194,7 @@ without having to rely on any particular group of swarm robotics researchers sta
 Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
 If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
-The hardware resulting from this work will be designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with hardware.
+The hardware resulting from this work will be designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
 
 \section{Related Work}
 
@@ -191,42 +206,35 @@ In order to interact with large groups of robots, the user must be able to perfo
 
 \subsection{Overview of Previous Swarm Hardware}
 
-Many impressive designs for swarm robot platforms have been proposed, and constructed, but are no longer easily commercially available, or never were. 
+Many impressive designs for swarm robot platforms have been proposed, and constructed as part of research in swarm robotics. 
+However, most of these platforms are no longer easily commercially available, or never were. 
+
 At the low end, in terms of scale, the I-SWARM Project intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers\cite{seyfried2005swarm}. 
 Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product. 
 
 Alice, by Caprari et al. packed a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch \cite{caprari1998autonomous}. 
 Unfortunately, the processor is anemic by modern standards, and the platform as a whole is not commercially available anymore. 
-Several similar projects are described in the literature, but they are also not commercially available. 
-
-Work such as ``Development of a Miniature Robot for Swarm Robotic Application" updates the processor at the heart of a robot similar to Alice, called AmIR, but there is no evidence that AmIR was ever widely available\cite{arvin2009development}.
+``Development of a Miniature Robot for Swarm Robotic Application" describes the construction of a similar robot, with an updated processor, called AmIR\cite{arvin2009development}. 
+There is no evidence that AmIR was ever widely available.
 Similarly, the robot described in ``A Miniature Mobile Robot With a Color Stereo Camera System for Swarm Robotics Research'' combines a relatively modern microprocessor with a DSP for on-board vision processing \cite{haverinen2005miniature}. 
 Again, it is not a platform that other researchers could buy.
 
 The Jasmine swarm robots were possibly the closest thing to a successor to Alice \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
 Unfortunately, Jasmine units cost about 100 Euro each when they were available, and they are no longer available for purchase. 
-The plans and information required to reproduce Jasmine units are available for free at Swarmrobot.org, but the chassis of Jasmine is a custom mechanical assembly, rather than a commercially available product. 
+The plans and information required to reproduce Jasmine units are available for free at Swarmrobot.org.
 Assembling a Jasmine robot is not beyond the reach of competent electronics hobbyists, but it does require some unusual build processes, such as grinding down the cases of certain electronic parts and filling holes in the PCB with solder to prevent light leaks. 
+The chassis of Jasmine is also a custom mechanical assembly, rather than a commercially available product. 
 
 The Epuck from EFPL is approximately ~800 swiss francs per unit, so the cost of maintaining a large swarm can become daunting quickly. 
 Michael Bonani's MarXbot runs into a similar problem, in that it has a strong computer and a rich set of sensors and effectors, but as a result it is quite expensive \cite{bonani2010marxbot}. 
-
-Currently existing swarm robots are too expensive to build a large swarm, with the exception of the Harvard Kilobots \cite{rubenstein2014kilobot}. 
-Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
-However, the Kilobots do not have hardware heterogeneity beyond that produced by wear on the robots over time. 
-Wear and tear on the robots will result in differences between the robots, even if they had started from identical conditions. 
-Even sending part of a swarm up a hill while the rest remain at the bottom will result in the higher members of the swarm having less battery life than those that didn't move. 
-Battery life may be relevant to allocation of tasks, meaning that the physical elevation gradient of the robots becomes a gradient of fitness for a task as well. 
-For very small groups, individual kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-The kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
 
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS part in research robotics has lead to at least two platforms refered to as COTSBots.
 Bergbreiter's COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board  \cite{bergbreiter2003cotsbots}. 
 The mobility platform is a hacked toy, in particular, a specific brand of high-quality micro RC car.
-At the time of this writing, the particular car used is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
+At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
 Bergbreiter's COTSBots use TinyOS, a modular and event-driven framework for developing node software. 
 ROS also provides a modular, event-driven framework, so many of the design ideas, if not the code, are equally applicable to the system described in this paper. 
 TinyOS is written in a dialect of C called nesC rather than ROS's polyglot approach. The motor and mote boards communicate using a messaging layer, again like ROS. 
@@ -240,13 +248,22 @@ The large size of these COTSBots demands a very large space if the density of ro
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
 
+Currently existing swarm robots are too expensive to build a large swarm, with the exception of the Harvard Kilobots \cite{rubenstein2014kilobot}. 
+Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
+However, the Kilobots do not have hardware heterogeneity beyond that produced by wear on the robots over time. 
+Wear and tear on the robots will result in differences between the robots, even if they had started from identical conditions. 
+Even sending part of a swarm up a hill while the rest remain at the bottom will result in the higher members of the swarm having less battery life than those that didn't move. 
+Battery life may be relevant to allocation of tasks, meaning that the physical elevation gradient of the robots becomes a gradient of fitness for a task as well. 
+For very small groups, individual kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
+The kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
+
 The previously described projects tend to fall into one of two groups, from a hardware perspective. 
 The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap.
 This group includes Alice, Jasmine, AmIR, and so forth.
 Due to their limited computation, these systems do not support complex algorithms such as vision processing. 
 The second group use more powerful computers, but at a significant cost in weight, power consumption, and financial outlay.
 
-----------------------------------------
+
 
 \section{Work Plan}
 
@@ -271,46 +288,20 @@ If the ratio isn't kept constant, the robots will crowd each other, and so large
 
 \subsubsection{Proposed Swarm Hardware Design}
 
-By developing a system of inexpensive hardware and software that permits the hardware to behave as though it were under the control of a more powerful computer, my system will bridge that divide. 
-The power of a single large computer will be partitioned over a large number of ``virtual'' smaller computers, while still having electromechanical systems in the real world, and so avoiding the pitfalls of simulation. 
-
-The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a processor, some sensors, and a communication system, into a small package.  
+The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a processor, some sensors, and a communication system, into a small package.
+In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
+Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
+The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
 The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
-The module used in this swarm hardware is a ESP8266-03  \unsure{Get a picture of the ESP8266}, which provides a Wi-Fi interface and approximately 500kB of flash memory for programs. 
 The ESP8266 is avialable in several form factors, each designated by a different suffix. 
 The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
 
-The decision to use ESP-8266 wifi modules as the core of the swarm robots designed in this work is an extension of a long legacy of the use of off-the-shelf components in previous robotics projects. 
-In order to locate the robots within the experiment area, an overhead camera is used to detect QR codes on each robot. 
-The QR codes provide location, heading, and a unique identifier for each robot. 
-Because the system has an omniscient-view camera to track the robots, other objects in the robot arena can also be tracked. 
-For example, obstacles can be created by drawing lines on the floor of the robot enclosure. 
-Different colors could represent different types of obstacles, or qualities of the obstacles that are relevant to the software under test. 
-It should be stressed that while the system as a whole can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots. 
-The code operating in visualization on the robot may be neither aware of its own position in the world, or the location of other robots, if the experiment calls for such a lack of information. 
-
-In this system, the central computer provides virtualization of the processing on each robot. 
-Virtualizing the computational resources on each robot effectively allows us to borrow robots from the future. 
-As technology develops, higher powered computers and and more capable sensors have become cheaper and smaller. 
-Allowing each swarm node to have a virtual computer ``riding'' on it gives us as much computational power as we want at each point in the swarm, even if hardware of that power level is not currently available.
 The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
 This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
 This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis \cite{lairdspider}. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
-
-In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a consistent control hardware platform that can be attached to children's toys. 
-Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. 
-
-
-
-However, heterogeneity can also be leveraged to increase the robustness of a swarm and reduce its cost\change{cite something to demonstrate this}. 
-A hetergeneous swarm containing both flying and ground robots can allow specialization of the individual components. 
-Rather than requiring that all robots be able to traverse all terrains, the ground robots can be developed to cover ground well, while the aerial robots are optimized for longer ranges or dwell times. 
-Heterogeneity also allows the robots to be cheaper, because not every robot has to do everything.
-Combining robots that can fly and robots that can roll allows a mixture of overview sensing and mission endurance that would be difficult to produce robustly and inexpensively with robots that can do both. 
 
 \subsubsection{UI Designs}
 
@@ -579,7 +570,8 @@ Without global IDs, the network may be divided but the robots will be unable to 
 
 Unfortunately, much of the design of programs for swarm robots consists of iterating between coding and observing behavior of the system in an ad hoc process \cite{palmer2005behavioral}. 
 Emergence is the transition between two levels of behavior. 
-At the base level is the behavior explicit in the program and the actions generatedAnother by it in the environment. 
+At the base level is the behavior explicit in the program and the actions generated by it in the environment. 
+Emergent behaviors are those behaviors of a system that are irreducible to the actions of a single individual, but arise from the interactions of multiple individuals with each other and the environment \cite{tsuda2004robust}.
 At the higher, emergent level is the implicit behavior of the program, as the sum of the results of the robots' actions. 
 Babarilla et al propose a taxonomy of behaviors that separates spatially organizing, navigation, decision-making, and ``other'' behaviors into their own groups \cite{brambilla2013swarm}. 
 These behaviors are higher level, swarm-wide behaviors, rather than individual behaviors of individual robots. 
