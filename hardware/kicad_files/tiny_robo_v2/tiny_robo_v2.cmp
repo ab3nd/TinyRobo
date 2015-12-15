@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2014-jul-16 BZR unknown)-product   date = Wed 08 Jul 2015 03:02:04 PM EDT
+Cmp-Mod V01 Created by Cvpcb (2014-jul-16 BZR unknown)-product   date = Tue 15 Dec 2015 12:12:26 PM EST
 
 BeginCmp
 TimeStamp = /54EF9F20;
@@ -50,9 +50,16 @@ IdModule  = Diodes_SMD:Diode-DO-214AB_Handsoldering;
 EndCmp
 
 BeginCmp
-TimeStamp = /55770CA4;
+TimeStamp = /566F4942;
+Reference = D2;
+ValeurCmp = LED;
+IdModule  = LEDs:LED-0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /566F41F0;
 Reference = P1;
-ValeurCmp = CONN_5;
+ValeurCmp = CONN_8;
 IdModule  = Pin_Headers:Pin_Header_Straight_1x05;
 EndCmp
 
@@ -152,6 +159,34 @@ TimeStamp = /5576FE58;
 Reference = R9;
 ValeurCmp = 10k;
 IdModule  = Resistors_SMD:R_0805_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /566F32C9;
+Reference = R10;
+ValeurCmp = 1k;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = /566F3103;
+Reference = R11;
+ValeurCmp = 1k;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = /566F3E82;
+Reference = R12;
+ValeurCmp = 1k;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = /566F47F1;
+Reference = R13;
+ValeurCmp = 100;
+IdModule  = ;
 EndCmp
 
 BeginCmp
