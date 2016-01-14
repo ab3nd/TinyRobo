@@ -85,22 +85,11 @@ Text GLabel 7250 1300 0    60   Output ~ 0
 Unreg
 Text GLabel 1525 1850 0    60   Input ~ 0
 5Vin
-Text GLabel 4000 4525 2    60   Input ~ 0
+Text GLabel 3775 4025 2    60   Input ~ 0
 5Vin
-$Comp
-L CONN_5 P1
-U 1 1 55770CA4
-P 3350 5100
-F 0 "P1" V 3300 5100 50  0000 C CNN
-F 1 "CONN_5" V 3400 5100 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x05" H 3350 5100 60  0001 C CNN
-F 3 "" H 3350 5100 60  0001 C CNN
-	1    3350 5100
-	-1   0    0    1   
-$EndComp
-Text GLabel 6275 4950 2    60   Output ~ 0
+Text GLabel 6300 5450 2    60   Output ~ 0
 Fault2
-Text GLabel 6275 4825 2    60   Output ~ 0
+Text GLabel 6300 5600 2    60   Output ~ 0
 Fault1
 $Comp
 L GND #PWR02
@@ -462,16 +451,10 @@ Wire Wire Line
 Wire Wire Line
 	8375 4500 8375 4900
 Wire Wire Line
-	3750 4900 3775 4900
+	3650 4900 3775 4900
 Connection ~ 3225 2600
 Wire Wire Line
 	3225 2600 3225 2250
-Wire Wire Line
-	6275 4950 6075 4950
-Wire Wire Line
-	6075 4950 6075 5000
-Wire Wire Line
-	6075 5000 5725 5000
 Wire Wire Line
 	7200 1800 7050 1800
 Wire Wire Line
@@ -571,7 +554,7 @@ Wire Wire Line
 	8550 2100 8225 2100
 Connection ~ 7050 2600
 Wire Wire Line
-	4250 4900 4250 4950
+	4250 4575 4250 4950
 Wire Wire Line
 	9650 5000 9175 5000
 Wire Wire Line
@@ -618,22 +601,14 @@ Wire Wire Line
 Wire Wire Line
 	6475 1425 6475 1300
 Wire Wire Line
-	5725 4900 6050 4900
-Wire Wire Line
-	6050 4900 6050 4825
-Wire Wire Line
-	6050 4825 6275 4825
-Wire Wire Line
 	4575 4900 3900 4900
 Wire Wire Line
 	3900 4900 3900 5000
 Wire Wire Line
-	3900 5000 3750 5000
+	3900 5000 3650 5000
 Connection ~ 4250 4900
 Wire Wire Line
-	3775 4900 3775 4525
-Wire Wire Line
-	3775 4525 4000 4525
+	3775 4900 3775 4025
 Wire Wire Line
 	1525 1850 2025 1850
 Wire Wire Line
@@ -660,13 +635,13 @@ Wire Wire Line
 Connection ~ 7650 6000
 Connection ~ 7650 6100
 Wire Wire Line
-	3750 5300 4425 5300
+	3650 5300 4425 5300
 Wire Wire Line
 	4425 5300 4425 5050
 Wire Wire Line
 	4425 5050 4575 5050
 Wire Wire Line
-	3750 5200 4500 5200
+	3650 5200 4500 5200
 Wire Wire Line
 	4500 5200 4500 5250
 Wire Wire Line
@@ -676,7 +651,7 @@ Wire Wire Line
 Wire Wire Line
 	4500 5150 4500 5100
 Wire Wire Line
-	4500 5100 3750 5100
+	4500 5100 3650 5100
 $Comp
 L SPDT SW1
 U 1 1 559C6DAD
@@ -771,4 +746,138 @@ Wire Wire Line
 	7700 4800 7700 4875
 Wire Wire Line
 	7700 4875 7575 4875
+Wire Wire Line
+	5725 5300 6125 5300
+Wire Wire Line
+	6125 5300 6125 5450
+Wire Wire Line
+	6125 5450 6300 5450
+Wire Wire Line
+	5725 5400 6050 5400
+Wire Wire Line
+	6050 5400 6050 5600
+Wire Wire Line
+	6050 5600 6300 5600
+$Comp
+L R R11
+U 1 1 566F3103
+P 4575 4325
+F 0 "R11" V 4655 4325 40  0000 C CNN
+F 1 "1k" V 4582 4326 40  0000 C CNN
+F 2 "" V 4505 4325 30  0000 C CNN
+F 3 "" H 4575 4325 30  0000 C CNN
+	1    4575 4325
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R10
+U 1 1 566F32C9
+P 4250 4325
+F 0 "R10" V 4330 4325 40  0000 C CNN
+F 1 "1k" V 4257 4326 40  0000 C CNN
+F 2 "" V 4180 4325 30  0000 C CNN
+F 3 "" H 4250 4325 30  0000 C CNN
+	1    4250 4325
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4575 4075 5725 4075
+Wire Wire Line
+	5725 4075 5725 4800
+Wire Wire Line
+	5725 5000 5850 5000
+Wire Wire Line
+	5850 5000 5850 3975
+Wire Wire Line
+	5850 3975 4250 3975
+Wire Wire Line
+	4250 3975 4250 4075
+$Comp
+L R R12
+U 1 1 566F3E82
+P 4850 4350
+F 0 "R12" V 4930 4350 40  0000 C CNN
+F 1 "1k" V 4857 4351 40  0000 C CNN
+F 2 "" V 4780 4350 30  0000 C CNN
+F 3 "" H 4850 4350 30  0000 C CNN
+	1    4850 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4575 5050 4575 4975
+Wire Wire Line
+	4575 4975 5075 4975
+Wire Wire Line
+	5075 4975 5075 4100
+Wire Wire Line
+	5075 4100 4850 4100
+Wire Wire Line
+	4575 4800 4575 4700
+Wire Wire Line
+	4575 4700 4850 4700
+Wire Wire Line
+	4850 4700 4850 4600
+$Comp
+L CONN_8 P1
+U 1 1 566F41F0
+P 3300 4950
+F 0 "P1" V 3250 4950 60  0000 C CNN
+F 1 "CONN_8" V 3350 4950 60  0000 C CNN
+F 2 "" H 3300 4950 60  0000 C CNN
+F 3 "" H 3300 4950 60  0000 C CNN
+	1    3300 4950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3650 4800 4250 4800
+Wire Wire Line
+	4250 4800 4250 4775
+Connection ~ 4250 4775
+Wire Wire Line
+	3650 4700 4400 4700
+Wire Wire Line
+	4400 4700 4400 4575
+Wire Wire Line
+	4400 4575 4575 4575
+$Comp
+L R R13
+U 1 1 566F47F1
+P 6125 4625
+F 0 "R13" V 6205 4625 40  0000 C CNN
+F 1 "100" V 6132 4626 40  0000 C CNN
+F 2 "" V 6055 4625 30  0000 C CNN
+F 3 "" H 6125 4625 30  0000 C CNN
+	1    6125 4625
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED D2
+U 1 1 566F4942
+P 5950 4625
+F 0 "D2" H 5950 4725 50  0000 C CNN
+F 1 "LED" H 5950 4525 50  0000 C CNN
+F 2 "" H 5950 4625 60  0000 C CNN
+F 3 "" H 5950 4625 60  0000 C CNN
+	1    5950 4625
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5725 4900 5950 4900
+Wire Wire Line
+	5950 4900 5950 4825
+Wire Wire Line
+	5950 4425 6050 4425
+Wire Wire Line
+	6050 4425 6050 4875
+Wire Wire Line
+	6050 4875 6125 4875
+Wire Wire Line
+	6125 4375 4675 4375
+Wire Wire Line
+	4675 4375 4675 4625
+Wire Wire Line
+	4675 4625 4250 4625
+Wire Wire Line
+	4250 4625 4250 4600
+Connection ~ 4250 4600
 $EndSCHEMATC

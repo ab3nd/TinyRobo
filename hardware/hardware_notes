@@ -5,13 +5,9 @@ The footprint for the diode is too big, it's only slightly bigger than 1206.
 The footprint for the switch needs the leg contacts moved in by half their length towards the switch
 Via for the heat sink for the motor drivers needs to not be under the ESP8266
 Connectorize battery
-Needs jumper to connect CH_PD high (for running) or low (for flashing). 
- - SMD pads?
-Needs jumper from GPIO15 to ground to talk serial to it for AT commands. 
+
+Needs pull-up to connect CH_PD high, pull-downs on GPIO15 (all times) and GPIO0 (only for programming)
  - GPIO15 is what I was going to use for one of the fault sensing lines
- - What workflow do I want? Probably something like WiFi/Arduino
-   - Reflash over wifi?
-   - Motor commands?
 
 Assembly pointers:
 Get you some fine-point tweezers for great good

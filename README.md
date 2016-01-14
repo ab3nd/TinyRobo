@@ -48,6 +48,15 @@ What I needed to do to have it work is boot the ESP-8266-03 with GPIO15 and GPIO
 Booting again with GPIO0 floating/not pulled low should (I hope) let me talk to it over serial AND have it running whatever firmware I put on it. 
 Just for reference, the WiFiWebServer demo is 295k of 434k bytes, so getting a JSON lib and motor drive in should be cake. 
 
+##### Basic hardware bringup for the ethernet module
+1. Put it on a breadboard with a 1000uF cap across the power and BEEFY 3.3v power supply. I'm using a benchtop supply. 
+2. 1k resistors, pull up pin CH_PD, pull down GPIO15 & GPIO0
+3. Start the Arduino IDE, plug in a 3v3 FTDI cable
+4. Start the Arduino Serial monitor at 9600 baud
+5. See a lot of garbage, then [Vendor:www.ai-thinker.com Version:0.9.2.4] ready
+6. Good to reflash, using the "program" button in the arduino IDE
+7. If you want the program to run afterwards, you need to keep the pull up on CH_PD and the pull-down on GPIO15. 
+
 ### E-Pucks
 
 The initial development of the algorithims is going to be done on E-Pucks. 
