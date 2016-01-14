@@ -2,7 +2,7 @@
 
 #Generate an e-puck launch file
 
-pucks = {"2117":"10:00:E8:AD:77:AE"
+pucks = {"2117":"10:00:E8:AD:77:AE",
          "2099":"10:00:E8:AD:77:6E",
          "2046":"10:00:E8:AD:5B:D7",
          "2137":"10:00:E8:AD:77:C2",
@@ -17,11 +17,11 @@ pucks = {"2117":"10:00:E8:AD:77:AE"
          
 
 print "<launch>"
-#Addresses of all robots
-for robot in pucks.keys():
-    argName = "robot_{0}_addr"
-    print "    <arg name=\"{0}\" value=\"{1}\"/>".format(argName, pucks[robot])
-    pucks[robot] = [pucks[robot], argName]
+#Addresses of all robots (not needed, gets subbed in below)
+#for robot in pucks.keys():
+#    argName = "robot_{0}_addr".format(robot)
+#    print "    <arg name=\"{0}\" value=\"{1}\"/>".format(argName, pucks[robot])
+#    pucks[robot] = [pucks[robot], argName]
 
 print "    <param name=\"robot_description\" textfile=\"$(find epuck_driver)/urdf/epuck_urdf.xml\"/>"
 
@@ -47,7 +47,7 @@ for robot in pucks.keys():
             <arg name=\"ypos\" value=\"{3}\"/>
             <arg name=\"theta\" value=\"0.0\"/>
             <arg name=\"is_single_robot\" value=\"0\"/>
-        </include>'''.format(pucks[robot][0], robotName, xPos, yPos)
+        </include>'''.format(pucks[robot], robotName, xPos, yPos)
     print "    </group>"
     
     #Grid layout for robots in RVIZ
