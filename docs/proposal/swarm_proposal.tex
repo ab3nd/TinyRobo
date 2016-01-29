@@ -83,7 +83,16 @@ This approach has been used successfully for navigation in three dimensions, by 
 Altering how the user interface displays the location of the robots in the swarm will affect the transition point. 
 More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use different gestures. 
 
-It is possible to convert user commands to programs which can be transmitted to the robots and will converge to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. %This is stupidly broad. Possible may not be feasible, or may have weird pathologies.
+Further, it is hypothesized that it is feasable to convert user commands as specified in the discovered command grammar into programs which will converge to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. 
+However, this hypothesis must be modified with a few caveats. 
+First, under the assumption that robots can fail, it is possible that the entire behavior can fail. 
+For example, if enough of the robots are incapacitated, it may be that not enough are left to complete the action. 
+It's also possible that at compile time, the task is still possible, but a later change of the environment renders it impossible. 
+Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future. 
+However, it may be possible to determine if a specified action is impossible. 
+Doing so will require different heuristics for each possible tasks. 
+\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
+\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
 \subsection{Approach}
 
@@ -132,7 +141,55 @@ The synthesized program should result in convergence of the swarm's overall beha
 Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. %TODO STAY OUT OF GRIDWORLD FORMAL GROTESQUERY
 
-\subsection{Swarm Robot Support Software}
+\section{Timeline}
+
+ - Collect gesture set
+ 
+ - Finish swarm control hardware
+ 
+ - Write swarm control software framework
+ 
+ -  
+
+\section{Expected Contributions}
+
+\subsection{Discovery of a Multitouch Gesture set for Swarm Control}
+This work will attempt to determine if there is an intuitive multitouch gesture set for a single user to command a large swarm of robots.
+The influence of the presentation of the interface on the gesture set will be examined. 
+The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
+
+\subsection{Automated Compilation of User Gestures into Robot Programs}
+The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
+One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \cite{ayanian2014controlling}. 
+As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
+However, this work assumes that the individual swarm units can localize themselves, and that there is constant availability of communications between all swarm members and the central controller. 
+For a number of reasons, these assumptions frequently fail to hold, and so a more robust system can be designed by assuming that localization and communication are difficult. 
+This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
+The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
+
+\subsection{Inexpensive COTS Swarm Hardware}
+The robot swarm developed for this work consists of a hardware module for controlling two motors connected to a toy, such as a small RC car, for mobility. 
+The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
+Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
+The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
+If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
+The hardware resulting from this work will be designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
+
+In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
+Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
+The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
+The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
+The ESP8266 is avialable in several form factors, each designated by a different suffix. 
+The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
+
+The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
+This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
+Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
+This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis \cite{lairdspider}. 
+Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
+Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
+
+\subsection{Swarm Robot Software Framework}
 
 The individual robots being developed for this research do not have very powerful processors. 
 The majority of the processing will be performed on a host computer running the ROS software framework. 
@@ -175,36 +232,7 @@ Because of the selection of hardware with a WiFi module, every hardware module i
 In order to learn the control rules, the control software will send motion commands to each robot, and observe the displacement of that robot. 
 By varying motion commands and observing the resulting displacement, the system will learn the effect of motion commands on each robot, and so be able to control the robots. 
 
-\subsection{Expected Contributions}
-\subsubsection{Primary Contributions}
-
-This work will attempt to determine if there is an intuitive multitouch gesture set for a single user to command a large swarm of robots.
-The influence of the presentation of the interface on the gesture set will be examined. 
-The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
-
-The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
-One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \cite{ayanian2014controlling}. 
-As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
-However, this work assumes that the individual swarm units can localize themselves, and that there is constant availability of communications between all swarm members and the central controller. 
-For a number of reasons, these assumptions frequently fail to hold, and so a more robust system can be designed by assuming that localization and communication are difficult. 
-This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
-The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
-
-\subsubsection{\emph{En Passant} Contributions}
-
-In chess, \emph{en passant} is a special rule for capture that can be used to capture a pawn that advances two ranks from its start position, passing an opponent pawn. 
-The literal meaning is ``in passing'', and so it is used in this context to refer to potentially useful outcomes from this thesis that are not intended as primary goals, but are developed in passing, on the way to the primary goals. 
-
-The robot swarm developed for this work consists of a hardware module for controlling two motors connected to a toy, such as a small RC car, for mobility. 
-The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research,
-without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
-Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
-The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
-If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
-The hardware resulting from this work will be designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
-
 \section{Related Work}
-
 
 \subsection{Overview of Previous Swarm Hardware}
 
@@ -274,24 +302,7 @@ This group includes Alice, Jasmine, AmIR, and so forth.
 Due to their limited computation, these systems do not support complex algorithms such as vision processing. 
 The second group use more powerful computers, but at a significant cost in weight, power consumption, and financial outlay.
 
-
-\subsection{Proposed Swarm Hardware Design}
-
-In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
-Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
-The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
-The ESP8266 is avialable in several form factors, each designated by a different suffix. 
-The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
-
-The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
-This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
-Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
-This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis \cite{lairdspider}. 
-Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
-Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
-
-\subsubsection{UI Designs}
+\subsection{UI Designs}
 
 The user interface to a swarm has two functions. 
 The first is to allow the user to provide input to the swarm, so that the user can direct the swarm to perform tasks. 
