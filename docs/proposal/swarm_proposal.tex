@@ -91,6 +91,7 @@ It's also possible that at compile time, the task is still possible, but a later
 Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future. 
 However, it may be possible to determine if a specified action is impossible. 
 Doing so will require different heuristics for each possible tasks. 
+(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
 \unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
 \unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
@@ -143,13 +144,16 @@ However, certain minimum bounds on the problem may be able to be used to determi
 
 \section{Timeline}
 
- - Collect gesture set
+ - Collect gesture set. Run IRB paperwork, Test experiment with lab users. GEt a lot of gift cards. Print up flyers, announce to all my friends. \improvement{Formal description of the experiment. Recruiting protocol. Preliminary tests.}
  
- - Finish swarm control hardware
+ - Finish swarm control hardware. Test motor driver hardware, fix known bugs, respin board. Wifi connection to motors. 
+ \improvement{Describe what has already been done. Describe what needs to be done. Measure motor currents to ensure driver is sufficient.}
  
- - Write swarm control software framework
+ - Write swarm control software framework. Pretty much a straight up coding task. Simplest thing that could possibly work is probably individual robots driving in a circle, or otherwise all running the same code. Then add virtual sensing. Then virtual networking (extension of sensing, network is a sense). Robot localization is also a sense (sense of place). Then virtualized failures. \improvement{Create some graphics of the proposed system.}
  
- -  
+ - Write compiler. Figure out intermediate representation for language. Expression of desired states of robots and world after compilation. \unsure{How does this I don't even.} 
+ 
+ - Test the compiler with some sort of experiment. Experiment ends up being demo of the test cases used for the "collect gesture set" task, and ideally some new stuff so that it isn't overly focused on that.  
 
 \section{Expected Contributions}
 
