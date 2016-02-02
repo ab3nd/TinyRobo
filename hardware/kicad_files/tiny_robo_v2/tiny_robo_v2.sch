@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:tiny_robo_v2-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -10,7 +11,6 @@ LIBS:cmos4000
 LIBS:adc-dac
 LIBS:memory
 LIBS:xilinx
-LIBS:special
 LIBS:microcontrollers
 LIBS:dsp
 LIBS:microchip
@@ -29,29 +29,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:shardy
-LIBS:74hct125d
-LIBS:arm-swd-header
-LIBS:esp8266-esp-01
-LIBS:esp8266-esp-03
-LIBS:hm-11
-LIBS:lpc11u14fbd48
-LIBS:mcp1700t-3302e-tt
-LIBS:mcp73831t-2aci-ot
-LIBS:micro_usb_socket
-LIBS:mke02z64vld2
-LIBS:mke04z8vtg4
-LIBS:nrf24l01p_smd
-LIBS:nrf51822-04
-LIBS:nRF24L01+
-LIBS:pp_ws2812b
-LIBS:stm32f37xxx_48pin
-LIBS:stm32f102xx_48pin
-LIBS:stm32f302xx_48pin
-LIBS:switch_china_spdt
-LIBS:uart_pp
-LIBS:usb_plug
-LIBS:open-project
 LIBS:spdt
 LIBS:tiny_robo_v2-cache
 EELAYER 25 0
@@ -69,7 +46,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L +3.3V #PWR01
+L +3.3V-RESCUE-tiny_robo_v2 #PWR01
 U 1 1 55774122
 P 9250 3400
 F 0 "#PWR01" H 9250 3360 30  0001 C CNN
@@ -92,7 +69,7 @@ Fault2
 Text GLabel 6300 5600 2    60   Output ~ 0
 Fault1
 $Comp
-L GND #PWR02
+L GND-RESCUE-tiny_robo_v2 #PWR02
 U 1 1 5577082A
 P 6475 1425
 F 0 "#PWR02" H 6475 1425 30  0001 C CNN
@@ -115,7 +92,7 @@ SCL
 Text GLabel 6375 5075 2    60   Input ~ 0
 SDA
 $Comp
-L GND #PWR03
+L GND-RESCUE-tiny_robo_v2 #PWR03
 U 1 1 55770098
 P 8050 6850
 F 0 "#PWR03" H 8050 6850 30  0001 C CNN
@@ -126,7 +103,7 @@ F 3 "" H 8050 6850 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R5
+L R-RESCUE-tiny_robo_v2 R5
 U 1 1 5576FFFF
 P 9275 4300
 F 0 "R5" V 9355 4300 50  0000 C CNN
@@ -137,7 +114,7 @@ F 3 "" H 9275 4300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R8
+L R-RESCUE-tiny_robo_v2 R8
 U 1 1 5576FE5F
 P 10025 5050
 F 0 "R8" V 10105 5050 50  0000 C CNN
@@ -148,7 +125,7 @@ F 3 "" H 10025 5050 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R9
+L R-RESCUE-tiny_robo_v2 R9
 U 1 1 5576FE58
 P 10175 6075
 F 0 "R9" V 10255 6075 50  0000 C CNN
@@ -159,7 +136,7 @@ F 3 "" H 10175 6075 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R7
+L R-RESCUE-tiny_robo_v2 R7
 U 1 1 5576FE2F
 P 9650 4300
 F 0 "R7" V 9730 4300 50  0000 C CNN
@@ -170,7 +147,7 @@ F 3 "" H 9650 4300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R6
+L R-RESCUE-tiny_robo_v2 R6
 U 1 1 5576FE2B
 P 9450 4300
 F 0 "R6" V 9530 4300 50  0000 C CNN
@@ -181,7 +158,7 @@ F 3 "" H 9450 4300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R4
+L R-RESCUE-tiny_robo_v2 R4
 U 1 1 5576FE28
 P 7850 6350
 F 0 "R4" V 7930 6350 50  0000 C CNN
@@ -192,7 +169,7 @@ F 3 "" H 7850 6350 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R3
+L R-RESCUE-tiny_robo_v2 R3
 U 1 1 5576FE1B
 P 7650 6350
 F 0 "R3" V 7730 6350 50  0000 C CNN
@@ -225,7 +202,7 @@ F 3 "" H 8775 5100 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR04
+L GND-RESCUE-tiny_robo_v2 #PWR04
 U 1 1 5575FDC6
 P 4250 4950
 F 0 "#PWR04" H 4250 4950 30  0001 C CNN
@@ -236,7 +213,7 @@ F 3 "" H 4250 4950 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V #PWR05
+L +3.3V-RESCUE-tiny_robo_v2 #PWR05
 U 1 1 5575F5D2
 P 4500 4800
 F 0 "#PWR05" H 4500 4760 30  0001 C CNN
@@ -270,7 +247,7 @@ F 3 "" H 5650 975 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V #PWR07
+L +3.3V-RESCUE-tiny_robo_v2 #PWR07
 U 1 1 54EFA66A
 P 8550 1325
 F 0 "#PWR07" H 8550 1285 30  0001 C CNN
@@ -314,7 +291,7 @@ F 3 "~" H 4850 1950 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED Charge1
+L LED-RESCUE-tiny_robo_v2 Charge1
 U 1 1 54EF9FA6
 P 3650 2050
 F 0 "Charge1" H 3650 2150 50  0000 C CNN
@@ -325,7 +302,7 @@ F 3 "" H 3650 2050 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CP1 C4
+L CP1-RESCUE-tiny_robo_v2 C4
 U 1 1 54EF9F83
 P 8550 1900
 F 0 "C4" H 8600 2000 50  0000 L CNN
@@ -336,7 +313,7 @@ F 3 "" H 8550 1900 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R1
+L R-RESCUE-tiny_robo_v2 R1
 U 1 1 54EF9F5C
 P 4200 2050
 F 0 "R1" V 4280 2050 50  0000 C CNN
@@ -347,7 +324,7 @@ F 3 "" H 4200 2050 60  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R R2
+L R-RESCUE-tiny_robo_v2 R2
 U 1 1 54EF9F56
 P 5400 2300
 F 0 "R2" V 5480 2300 50  0000 C CNN
@@ -358,7 +335,7 @@ F 3 "" H 5400 2300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C3
+L C-RESCUE-tiny_robo_v2 C3
 U 1 1 54EF9F4F
 P 8225 1900
 F 0 "C3" H 8275 2000 50  0000 L CNN
@@ -369,7 +346,7 @@ F 3 "" H 8225 1900 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C2
+L C-RESCUE-tiny_robo_v2 C2
 U 1 1 54EF9F4A
 P 5650 2250
 F 0 "C2" H 5700 2350 50  0000 L CNN
@@ -380,7 +357,7 @@ F 3 "" H 5650 2250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C1
+L C-RESCUE-tiny_robo_v2 C1
 U 1 1 54EF9F43
 P 3225 2050
 F 0 "C1" H 3275 2150 50  0000 L CNN
@@ -413,7 +390,7 @@ F 3 "" H 2275 1850 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR08
+L GND-RESCUE-tiny_robo_v2 #PWR08
 U 1 1 54EF9ED1
 P 4450 2700
 F 0 "#PWR08" H 4450 2700 30  0001 C CNN
@@ -653,7 +630,7 @@ Wire Wire Line
 Wire Wire Line
 	4500 5100 3650 5100
 $Comp
-L SPDT SW1
+L SPDT-RESCUE-tiny_robo_v2 SW1
 U 1 1 559C6DAD
 P 6400 2000
 F 0 "SW1" H 6200 2150 50  0000 C CNN
@@ -701,7 +678,7 @@ $EndComp
 Wire Wire Line
 	6250 3450 6250 3950
 $Comp
-L GND #PWR09
+L GND-RESCUE-tiny_robo_v2 #PWR09
 U 1 1 559D6D0E
 P 6250 3950
 F 0 "#PWR09" H 6250 3950 30  0001 C CNN
@@ -759,7 +736,7 @@ Wire Wire Line
 Wire Wire Line
 	6050 5600 6300 5600
 $Comp
-L R R11
+L R-RESCUE-tiny_robo_v2 R11
 U 1 1 566F3103
 P 4575 4325
 F 0 "R11" V 4655 4325 40  0000 C CNN
@@ -770,7 +747,7 @@ F 3 "" H 4575 4325 30  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R10
+L R-RESCUE-tiny_robo_v2 R10
 U 1 1 566F32C9
 P 4250 4325
 F 0 "R10" V 4330 4325 40  0000 C CNN
@@ -793,7 +770,7 @@ Wire Wire Line
 Wire Wire Line
 	4250 3975 4250 4075
 $Comp
-L R R12
+L R-RESCUE-tiny_robo_v2 R12
 U 1 1 566F3E82
 P 4850 4350
 F 0 "R12" V 4930 4350 40  0000 C CNN
@@ -840,7 +817,7 @@ Wire Wire Line
 Wire Wire Line
 	4400 4575 4575 4575
 $Comp
-L R R13
+L R-RESCUE-tiny_robo_v2 R13
 U 1 1 566F47F1
 P 6125 4625
 F 0 "R13" V 6205 4625 40  0000 C CNN
@@ -851,7 +828,7 @@ F 3 "" H 6125 4625 30  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D2
+L LED-RESCUE-tiny_robo_v2 D2
 U 1 1 566F4942
 P 5950 4625
 F 0 "D2" H 5950 4725 50  0000 C CNN
