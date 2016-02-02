@@ -5,7 +5,7 @@
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
 \newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
-\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
 
 %opening
@@ -29,7 +29,7 @@ Each robot receives its own program, and the sum of the execution of the program
 
 \subsection{Problem Statement}
 
-One potential method to control a swarm is having a central computer dictate to individual robots how the robots should move.
+One potential method to control a swarm of robots is having a central computer dictate to individual robots how the robots should move.
 However, centralized control is only as robust as the central controller. 
 Distributed control systems do not have the single point of failure that centralized models have. 
 In order to create reliable and useful swarm robotic systems, users must be able to specify emergent behaviors that the swarm can converge to without reliable orchestration from a central controller. 
@@ -91,7 +91,7 @@ It's also possible that at compile time, the task is still possible, but a later
 Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future. 
 However, it may be possible to determine if a specified action is impossible. 
 Doing so will require different heuristics for each possible tasks. 
-(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
+%(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
 \unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
 \unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
