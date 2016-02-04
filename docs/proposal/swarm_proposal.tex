@@ -728,7 +728,12 @@ Automate creation of configuration files that load ROS nodes to speak to each in
 Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
 Implement virtual sensing. 
 Virtual networking can be viewed as an extension of sensing, in that network data arrives as a consequence of proximity to other robots, and so has range, as well as informational content. 
-Robot localization is also a sense, localization in the most abstract is a sense of place. 
+Robot localization is also a sense. 
+Localization in the most abstract can be viewed as a sense of place. 
+Localization, sensing, and networking should all be implemented such that a non-virtual method of performing those actions could be substituted for the real senses.
+For networking, all network nodes have access to a virtual ``ether" that connects robots. 
+Ether may have range and reliability constraints. 
+Open question as to whether
 Then virtualized failures. \improvement{Create some graphics of the proposed system.}
  
  - Write compiler. Figure out intermediate representation for language. Expression of desired states of robots and world after compilation. \unsure{How does this I don't even.} 
