@@ -62,17 +62,6 @@ Free run current was measured with the toy held so its moving parts didn't touch
 This means that the free running current includes the current required to move the moving parts of the toy, but not to move the toy around. 
 Stall current was measured by holding the toy's moving parts still. In the Hexbug, this causes some gear chatter, so the actual current draw when the motor is completely immobilized may be higher. 
 
-| Toy | Free run current | Stall current |
-| ---- | ---- |
-| Hexbug brand mini spider | 0.03A | 0.13A | 
-| Hexbug brand 6-legged insect | 0.06A | 0.25A | 
-| Miniature toy RC car |  0.21A | 0.8A | 
-| Miniature toy RC insect |  0.19A | 1.13A | 
-| Miniature toy RC vehicle |  0.37A | 0.8A | 
-| Miniature toy RC vehicle | 0.06A | 0.74A | 
-| Toy helicopter | 0.07A | 1.12A | 
-| Toy quadcopter | 0.74A | 1.99A | 
-
 ### E-Pucks
 
 The initial development of the algorithims is going to be done on E-Pucks. 
