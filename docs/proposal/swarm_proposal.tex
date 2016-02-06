@@ -607,6 +607,8 @@ Instead, motion within a space is usually performed as part of a task.
 For example, searching an area requires moving over the area to be searched.
 However, specialized tasks will likely require specialized interfaces to provide the information that is specific to that task, while this work intends to discover a more general set of commands that can be used across many tasks. 
 
+\subsection{Compilation of user commands into robot programs}
+
 In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
 Multitouch gesture sets as a command language for controlling robots have been developed by an empirical process with naive users \cite{Micire:2009:ANG:1731903.1731912}. 
 These gestures frequently consisted of sequences of gestures that roughly fit the linguistic structure of a sentence, with the first gesture indicating the subject of the sentence, and the next gesture indicating a verb and possibly an object. 
@@ -646,6 +648,7 @@ The synthesized program should result in convergence of the swarm's overall beha
 Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. %TODO STAY OUT OF GRIDWORLD FORMAL GROTESQUERY
 
+\subsection{Swarm Robot Hardware}
 In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
 Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
@@ -712,8 +715,30 @@ Run IRB paperwork, Test experiment with lab users. Get a lot of gift cards. Prin
 The gesture set data collection and analysis will be documented in a paper for publication. 
  
 Swarm control hardware is incomplete. 
+
+\subsection{Current Consumption of Children's Toys}
 Motor driver test required, a well as quantification of motor current draw for children's toys. 
 Quantification of required power may indicate that larger motor driver power is needed.
+
+Toys are effectively black boxes to the end user.
+Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
+In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
+The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
+
+All of the motors were driven at 3.7VDC. 
+This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
+Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
+Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
+
+Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
+Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
+Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
+Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
+Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
+Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
+Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
+Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A
+
 It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
 Development of ROS nodes to communicate with the individual boards must be done. 
 Automated discovery of boards and configuration of ROS nodes will accelerate development and make swarm use more flexible. 
