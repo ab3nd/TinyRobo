@@ -8,6 +8,10 @@
 \newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
 
+\usepackage{graphicx}
+\usepackage{auto-pst-pdf}
+\usepackage{graphviz}
+
 %opening
 \title{Command Language for Single-User, Multi-Robot Search}
 \author{Abraham Shultz}
@@ -697,6 +701,66 @@ By changing how the messages are delivered by the central system, we can impleme
 We can also vary the reliability of the network, by dropping some messages or reducing parameters based on elements of the virtual environments. 
 For example, signals that pass through a virtual wall may have a reduced virtual signal strength and range, or may not arrive. 
 Having communication mediated by software on the host will allow for simple experimentation with variable network bandwidth and reliability. 
+
+%Graphic of the software environment as a whole
+\begin{figure}[h]
+	\centering
+	\digraph[scale=0.6]{Framework}{
+	
+	subgraph clusterRobot1 {
+		motor[shape=box; label="Motor Driver"];
+		robotCode[label=<Robot <br/> Firmware>];
+		robotCode -> motor;
+		label="Robot 1";
+		shape=box;
+	}
+	
+	subgraph clusterRobot2 {
+		motor2[shape=box; label="Motor Driver"];
+		robotCode2[label=<Robot <br/> Firmware>];
+		robotCode2 -> motor2;
+		label="Robot 2";
+		shape=box;
+	}
+	
+	subgraph clusterRobot3 {
+		motor3[shape=box; label="Motor Driver"];
+		robotCode3[label=<Robot <br/> Firmware>];
+		robotCode3 -> motor3;
+		label="Robot 3";
+		shape=box;
+	}
+	
+	subgraph clusterRobotN {
+		motorN[shape=box; label="Motor Driver"];
+		robotCodeN[label=<Robot <br/> Firmware>];
+		robotCodeN -> motorN;
+		label="Robot N";
+		shape=box;
+	}
+	
+	subgraph clusterComp {
+		concentrate=true;
+		label="Control Computer";
+		{rank=source;
+			vrSense [label="Virtual Sensors"];
+			vrNet [label="Virtual Network"];
+		}
+		rp1 [label=<Robot <br/> Process 1>];
+		rp2 [label=<Robot <br/> Process 2>];
+		rp3 [label=<Robot <br/> Process 3>];
+		rpN [label=<Robot <br/> Process N>];
+		vrNet -> {rp1, rp2, rp3, rpN} [dir="both"];
+		vrSense -> {rp1, rp2, rp3, rpN};	
+	}
+	
+	rp1 -> robotCode [label="WiFi", dir="both"];
+	rp2 -> robotCode2 [label="WiFi", dir="both"];
+	rp3 -> robotCode3 [label="WiFi", dir="both"];
+	rpN -> robotCodeN [label="WiFi", dir="both"];
+	}
+	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
+\end{figure}
 
 Because children's toys are manufactured to fairly low tolerances, the correlation between motion commands issued by the control software and resulting motions of the robot are prone to error. 
 The robots are also intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
