@@ -793,64 +793,78 @@ By varying motion commands and observing the resulting displacement, the system 
 
 \subsection{Spring 2016}
 
-Gestures - Run IRB paperwork, Test experiment with lab users. Get a lot of gift cards? Print up flyers, announce to all my friends. Collect gesture set. 
-There are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
+Gestures - The paperwork to run user tests with the UML student population will be completed. 
+A pilot of the test will be run with users in the robotics lab in order to determine how long each user test is expected to take, and to work on the script for interacting with users. 
+The experiment will be run before finals week. 
+For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
+5-10 users per case would be good, so I hope to recruit 25-50 users. 
 To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. 
 There are 18 tasks. 
+The tasks do have some degree of order to their complexity, but maybe randomizing would be better so that users don't try to reuse gestures that might not make sense. 
 Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
-5-10 users per case would be good, so 25-50 users would be excellent. 
 
-Hardware - Second version of swarm board. 
-Camera(s?) mounted over table. 
-Motor driver test required. 
-Quantification of required power may indicate that larger motor driver power is needed.
-It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
-Current board has known bugs, which will be fixed by respin of PCB. 
+Hardware - The swarm control board currently has problems related to the programming interface. A second version of the swarm board is needed, to correct these problems. 
+Once that is done, the new version can be used to test the motor drivers in all the swarm robot chassis' currently available. 
+The robot enclosure needs one or more cameras mounted over it.
 
+Software - Testing the motor drivers will require a first version of the motor driver firmware. 
+Connecting to all the robots in order to control them should require minimal effort on the part of the user. 
+Ideally, all of the robots will connect to a single access point, and the control computer will be networked to that AP. 
+Discovery of the robots will be automated. 
+The camera over the table will be calibrated to provide a minimally distorted image over the whole table. 
+An ROS node will provide robot and object detection on the table surface. 
 
-Software - Motor driver firmware, Wi-fi discovery script. Object detection on table, camera calibration on table. 
+Writing - Proposal will be revised. 
 
 \subsection{Summer 2016}
 
-Gestures - Analysis of gesture set collected so far, comparison with Mark's work. 
-Maybe gather data, but will be difficult without students around.
-Analyze gesture set to determine if there is a transition point between many and few robots. 
-The gesture set data collection and analysis will be documented in a paper for publication. 
+Gestures - Assuming sufficient data for analysis of the gesture set has been collected, it will be analyzed and compared to existing work on multitouch gestures for command and control. 
+The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
+If there is sufficient data, the gesture set data collection and analysis will be documented in a paper for publication. 
+Otherwise, further data will be collected over the summer. 
 
-Hardware - Finalize design, mass produce boards. 
+Hardware - The bugs in version one of the swarm control boards will be fixed. 
+Version two will be tested. 
+If it works, the boards can be mass-assembled. 
+Otherwise, a third version should be sufficient to settle any remaining design problems.
 
-Software - Basic control of swarm board via keyboard from ROS. 
-Core functionality required is Twist (or similar) message from ROS causing motion of toy, end-to-end from PC to motors. 
-ROS autoconfig for loads of Epucks so I can add them to my swarm. 
-Automate creation of configuration files that load ROS nodes to speak to each individual robot as if those nodes were running on that robot. 
-Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
+Software - The core function of the swarm board is a Twist (or similar) message from ROS causing motion of toy, from input to the control PC to the motors. 
+This level of functionality, enabling individual swarm members to be driven from the keyboard, will be completed in the summer. 
+The automatic swarm configuration will be extended to bluetooth, so that the Epucks can be added to the swarm as well. 
+Creation of configuration files that load ROS nodes to speak to each individual robot will be automated. 
+Each robot will have a ``motor driver'' node that forwards motion commands over the wifi or bluetooth link to the robot platform for interpretation. 
 
-
-Writing - Assuming data set for gestures is useful for a paper, write that up and publish it. Add the resulting write up, as well as expansion on experimental methodology to thesis. 
+Writing - Assuming data set for gestures is useful for a paper, it will be written up and published. The resulting write up, as well as expansion on experimental methodology will be added to my thesis. 
 
 \subsection{Fall 2016}
 
-Gestures - Perform second gesture data set collection if first data set was insufficient. If it was sufficient, add drone tasks?
+Gestures - If the amount of data collected from the first run of the gesture tests was insufficient to get useful results, collect a second set of data. 
+Compare to first data, and determine if combined data set has sufficent data to get useful results. 
+If the first data collection was sufficient, perform a second data collection to add drone tasks. 
+Determine if users use different signals to command drones in groups than they do with ground robots, particularly around obstacles. 
 
-Hardware - Should be all built by now. Test performance, especially with Epucks and my swarm nodes in the same area. 
+Hardware - The swarm control boards should be complete and installed in swarm robots. The performance of the system as a whole will be tested, especially the behavior of the network and load on the central computer with Epucks and swarm robots in the same area. 
 
-Software - Virtual sensors basic function, virtual network basic function, localization basic function. Localization, sensing, and networking should all be implemented such that a non-virtual method of performing those actions could be substituted for the real senses.Implement virtual sensing. 
+Software - The basic functionality of the virtual sensors, virtual network, and virtual localization will be implemented. 
+The implementation will be such that a non-virtual method of performing those actions could be substituted for the real senses.
 Virtual networking can be viewed as an extension of sensing, in that network data arrives as a consequence of proximity to other robots, and so has range, as well as informational content. 
 Robot localization is also a sense. 
 Localization in the most abstract can be viewed as a sense of place. 
-For networking, all network nodes have access to a virtual ``ether" that connects robots. 
 
 Writing - Write up hardware design and lessons learned. Write up performance tests. Try to get it published, maybe as some kind of tech report. Add text to thesis.
 
 \subsection{Winter 2016}
 
-Gestures - Finish analysis of gesture data set. Write it up and try to get it published. If the transition point for conversion between a few robots and a swarm is not detectable, what does that mean?
+Gestures - Any remaining analysis of gesture data set will be finished. 
+The results will be written up and published if possible. 
+At this point, it should be clear that there either is or is not a transition point where the user changes the gestures they use for a bigger swarm. 
+If there is no transition, then it would seem to indicate that the same UI can be used for individual robots and swarms. 
 
 Hardware - Done. 
 
-Software - Write compiler. Figure out intermediate representation for language. Expression of desired states of robots and world after compilation. \unsure{How does this I don't even.} Start gesture compiler, chose IR, figure out parsing. Add failure parameters to virtual network and virtual sensors. 
+Software - The gesture data set provides the starting point for writing a compiler. The intermediate representation will be designed. The ability to have virtual failures will be added to the virtual network and virtual sensors for the swarm robots. 
 
-Writing - If I ended up doing a second gesture set collection, write that up, compare and contrast with others. Add to thesis, maybe try to get published too. 
+Writing - If a second data collection for gestures was done, the results from that will be compared and contrasted with the first. Any information learned from this work will be added to my thesis and written up as a paper for publication. 
 
 \subsection{Spring 2017}
 
@@ -858,9 +872,9 @@ Gestures - Done.
 
 Hardware - Done. 
 
-Software - Work on gesture compiler. Bring in theoretical work to determine if it's possible or tractable at compile time to determine if a task is impossible. How does gesture compiler handle deployment to robots and selection of robots?
+Software - Gesture compiler development will continue.  
 
-Writing - Write up and release swarm control framework, hoepfully including some sort of howto so people can use it. Append writeup to thesis. 
+Writing - The swarm control framework will be complete enough to release, so documentation for it will be written. This writeup will also be added to my thesis. 
 
 \subsection{Summer 2017}
 
@@ -868,9 +882,9 @@ Gestures - Done.
 
 Hardware - Done. 
 
-Software - Work on gesture compiler. Automate test suite for all of the tasks used in the gesture collection user tests.  Test the compiler with some sort of experiment. Experiment ends up being demo of the test cases used for the "collect gesture set" task, and ideally some new stuff so that it isn't overly focused on that.  
+Software - Finishing and cleanup work will be done on gesture compiler. Test suite for all of the tasks used in the gesture collection user tests will be automated and used to test the compiler. Design experiment to test gesture compiler and run it to demonstrate the test cases used for collecting gestures, and new tasks to avoid overfitting. 
 
-Writing - Notes on gesture compiler, may develop to be a paper. Add to thesis. 
+Writing - Notes on gesture compiler design and development will be added to thesis, and possibly developed towards a paper. Thesis defense presentation will be started. 
 
 \subsection{Fall 2017}
 
@@ -880,7 +894,7 @@ Hardware - Done.
 
 Software - Finish gesture compiler. Extend test suite. 
 
-Writing - Finish any exiting writing on gesture compiler. Try to get it published. Append it to thesis. 
+Writing - Experiments to test gesture compiler will be written up as a paper for publication. The resulting paper will be used to extend my thesis. Presentation for thesis defense will be in progress. 
 
 \subsection{Winter 2017}
 
@@ -890,7 +904,7 @@ Hardware - Done.
 
 Software - Done. 
 
-Writing - Staple a bunch of papers together, write conclusions, transition paragraphs. Edit out any bits that say "LOL HANDWAVE FIXME". Stahp. Plz Stahp. Why are you still here? Go do something else. Become a lumberjack. Hitchike to Alaska. Buy a house. 
+Writing - Thesis writing and defense presentation will be complete, thesis will be defended. 
 
 \section{Expected Contributions}
 
