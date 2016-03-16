@@ -670,11 +670,10 @@ Clearly, in a developing situation in the real world, success may be impossible,
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. %TODO STAY OUT OF GRIDWORLD FORMAL GROTESQUERY
 
 In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
-Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
+The robots described in this work accomplish this task by using a ESP-8266 wifi module for wireless communication and as a micro controller. 
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
-The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
-The ESP8266 is avialable in several form factors, each designated by a different suffix. 
-The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
+The ESP-8266 is avialable in several form factors, each designated by a different suffix. 
+The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
 
 The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
 This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
@@ -682,13 +681,14 @@ Modified toys are an adequate substitute for custom mechanical assemblies, and p
 This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis \cite{lairdspider}. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
+All of these toys can be controlled by the hardware described in this work. 
 
 \subsection{Swarm Robot Software Framework}
 
 The individual robots being developed for this research do not have very powerful processors. 
 The majority of the processing will be performed on a host computer running the ROS software framework. 
 Each robot's processor will mostly be concerned with interfacing with the robot's sensors, if any, and controlling the motors of the robot. 
-The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall behavior of the system\improvement{Draw a diagram and put it here}.
+The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall behavior of the system.
 
 In order to locate the robots within the experiment area, an overhead camera will be used to detect machine-readable symbols on each robot. 
 The symbols provide location, heading, and a unique identifier for each robot. 
@@ -791,46 +791,115 @@ By varying motion commands and observing the resulting displacement, the system 
 
 \section{Timeline}
 
-Run IRB paperwork, Test experiment with lab users. Get a lot of gift cards. Print up flyers, announce to all my friends. Collect gesture set. There are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. There are 18 tasks. Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 5-10 users per case would be good, so 25-50 users would be excellent. Preliminary tests and shakeout of protocol will be in late-winter to spring of 2016, data gathering over summer of 2016 and early fall of 2016. Analyze gesture set to determine if there is a transition point between many and few robots. 
-The gesture set data collection and analysis will be documented in a paper for publication. 
- 
-Swarm control hardware is incomplete. 
-Motor driver test required, a well as quantification of motor current draw for children's toys. 
+\subsection{Spring 2016}
+
+Gestures - Run IRB paperwork, Test experiment with lab users. Get a lot of gift cards? Print up flyers, announce to all my friends. Collect gesture set. 
+There are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
+To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. 
+There are 18 tasks. 
+Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
+5-10 users per case would be good, so 25-50 users would be excellent. 
+
+Hardware - Second version of swarm board. 
+Camera(s?) mounted over table. 
+Motor driver test required. 
 Quantification of required power may indicate that larger motor driver power is needed.
 It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
-Development of ROS nodes to communicate with the individual boards must be done. 
-Automated discovery of boards and configuration of ROS nodes will accelerate development and make swarm use more flexible. 
-Core functionality required is Twist (or similar) message from ROS causing motion of toy, end-to-end from PC to motors. 
 Current board has known bugs, which will be fixed by respin of PCB. 
-This work will proceed in parallel with data collection for the gesture set, and be completed by the end of the summer of 2016.
-Completion of the swarm control hardware means that the board will control the motors and software will be loaded to the board and executed to accept incoming motor control commands.
-The swarm hardware development and results will be collected in a paper for publication.  
 
-Swarm robot control software framework. 
+
+Software - Motor driver firmware, Wi-fi discovery script. Object detection on table, camera calibration on table. 
+
+\subsection{Summer 2016}
+
+Gestures - Analysis of gesture set collected so far, comparison with Mark's work. 
+Maybe gather data, but will be difficult without students around.
+Analyze gesture set to determine if there is a transition point between many and few robots. 
+The gesture set data collection and analysis will be documented in a paper for publication. 
+
+Hardware - Finalize design, mass produce boards. 
+
+Software - Basic control of swarm board via keyboard from ROS. 
+Core functionality required is Twist (or similar) message from ROS causing motion of toy, end-to-end from PC to motors. 
+ROS autoconfig for loads of Epucks so I can add them to my swarm. 
 Automate creation of configuration files that load ROS nodes to speak to each individual robot as if those nodes were running on that robot. 
 Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
-Implement virtual sensing. 
+
+
+Writing - Assuming data set for gestures is useful for a paper, write that up and publish it. Add the resulting write up, as well as expansion on experimental methodology to thesis. 
+
+\subsection{Fall 2016}
+
+Gestures - Perform second gesture data set collection if first data set was insufficient. If it was sufficient, add drone tasks?
+
+Hardware - Should be all built by now. Test performance, especially with Epucks and my swarm nodes in the same area. 
+
+Software - Virtual sensors basic function, virtual network basic function, localization basic function. Localization, sensing, and networking should all be implemented such that a non-virtual method of performing those actions could be substituted for the real senses.Implement virtual sensing. 
 Virtual networking can be viewed as an extension of sensing, in that network data arrives as a consequence of proximity to other robots, and so has range, as well as informational content. 
 Robot localization is also a sense. 
 Localization in the most abstract can be viewed as a sense of place. 
-Localization, sensing, and networking should all be implemented such that a non-virtual method of performing those actions could be substituted for the real senses.
 For networking, all network nodes have access to a virtual ``ether" that connects robots. 
-Ether may have range and reliability constraints. 
-Open question as to whether
-Then virtualized failures. \improvement{Create some graphics of the proposed system.}
- 
- - Write compiler. Figure out intermediate representation for language. Expression of desired states of robots and world after compilation. \unsure{How does this I don't even.} 
- 
- - Test the compiler with some sort of experiment. Experiment ends up being demo of the test cases used for the "collect gesture set" task, and ideally some new stuff so that it isn't overly focused on that.  
+
+Writing - Write up hardware design and lessons learned. Write up performance tests. Try to get it published, maybe as some kind of tech report. Add text to thesis.
+
+\subsection{Winter 2016}
+
+Gestures - Finish analysis of gesture data set. Write it up and try to get it published. If the transition point for conversion between a few robots and a swarm is not detectable, what does that mean?
+
+Hardware - Done. 
+
+Software - Write compiler. Figure out intermediate representation for language. Expression of desired states of robots and world after compilation. \unsure{How does this I don't even.} Start gesture compiler, chose IR, figure out parsing. Add failure parameters to virtual network and virtual sensors. 
+
+Writing - If I ended up doing a second gesture set collection, write that up, compare and contrast with others. Add to thesis, maybe try to get published too. 
+
+\subsection{Spring 2017}
+
+Gestures - Done. 
+
+Hardware - Done. 
+
+Software - Work on gesture compiler. Bring in theoretical work to determine if it's possible or tractable at compile time to determine if a task is impossible. How does gesture compiler handle deployment to robots and selection of robots?
+
+Writing - Write up and release swarm control framework, hoepfully including some sort of howto so people can use it. Append writeup to thesis. 
+
+\subsection{Summer 2017}
+
+Gestures - Done. 
+
+Hardware - Done. 
+
+Software - Work on gesture compiler. Automate test suite for all of the tasks used in the gesture collection user tests.  Test the compiler with some sort of experiment. Experiment ends up being demo of the test cases used for the "collect gesture set" task, and ideally some new stuff so that it isn't overly focused on that.  
+
+Writing - Notes on gesture compiler, may develop to be a paper. Add to thesis. 
+
+\subsection{Fall 2017}
+
+Gestures - Done. 
+
+Hardware - Done. 
+
+Software - Finish gesture compiler. Extend test suite. 
+
+Writing - Finish any exiting writing on gesture compiler. Try to get it published. Append it to thesis. 
+
+\subsection{Winter 2017}
+
+Gestures - Done. 
+
+Hardware - Done. 
+
+Software - Done. 
+
+Writing - Staple a bunch of papers together, write conclusions, transition paragraphs. Edit out any bits that say "LOL HANDWAVE FIXME". Stahp. Plz Stahp. Why are you still here? Go do something else. Become a lumberjack. Hitchike to Alaska. Buy a house. 
 
 \section{Expected Contributions}
 
-\subsection{Discovery of a Multitouch Gesture set for Swarm Control}
+\subsection{Multitouch Gesture set for Swarm Control}
 This work will attempt to determine if there is an intuitive multitouch gesture set for a single user to command a large swarm of robots.
 The influence of the presentation of the interface on the gesture set will be examined. 
 The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
 
-\subsection{Automated Compilation of User Gestures into Robot Programs}
+\subsection{Compilation of User Gestures into Robot Programs}
 The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
 One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \cite{ayanian2014controlling}. 
 As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
@@ -847,7 +916,7 @@ This group includes Alice, Jasmine, AmIR, and the other tabletop systems.
 Due to their limited computation, these systems do not generally support complex algorithms such as vision processing. 
 The second group use more powerful computers, but at a significant cost in weight, power consumption, and financial outlay.
 
-The robot swarm developed for this work consists of a hardware module for controlling two motors connected to a toy, such as a small RC car, for mobility. 
+The robot swarm developed for this work consists of a hardware module for controlling two motors of a toy, such as a small RC car, for mobility. 
 The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
 Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
