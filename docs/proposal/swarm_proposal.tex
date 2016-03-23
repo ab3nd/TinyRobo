@@ -669,7 +669,7 @@ Two-motor toys frequently use either differential steering or have one motor pro
 The individual robots being developed for this research do not have very powerful processors. 
 The majority of the processing will be performed on a host computer running the ROS software framework. 
 Each robot's processor will mostly be concerned with interfacing with the robot's sensors, if any, and controlling the motors of the robot. 
-The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall behavior of the system\improvement{Draw a diagram and put it here}.
+The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall behavior of the system.
 
 In order to locate the robots within the experiment area, an overhead camera will be used to detect machine-readable symbols on each robot. 
 The symbols provide location, heading, and a unique identifier for each robot. 
@@ -745,6 +745,9 @@ Having communication mediated by software on the host will allow for simple expe
 		{rank=source;
 			vrSense [label="Virtual Sensors"];
 			vrNet [label="Virtual Network"];
+			worldModel [label="World Model"];
+			worldModel -> vrSense;
+			worldModel -> vrNet;			
 		}
 		rp1 [label=<Robot <br/> Process 1>];
 		rp2 [label=<Robot <br/> Process 2>];
@@ -753,6 +756,9 @@ Having communication mediated by software on the host will allow for simple expe
 		vrNet -> {rp1, rp2, rp3, rpN} [dir="both"];
 		vrSense -> {rp1, rp2, rp3, rpN};	
 	}
+	
+	camera[label=<Overhead<br/>Camera>;shape=box;]
+	camera->worldModel;
 	
 	rp1 -> robotCode [label="WiFi", dir="both"];
 	rp2 -> robotCode2 [label="WiFi", dir="both"];
