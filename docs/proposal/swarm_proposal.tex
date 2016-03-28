@@ -60,7 +60,7 @@ Networking between the robots is expected to be unreliable.
 Individual robots have limited transmission power over radio or infrared light links. 
 Network links are also frequently attenuated by distance or intervening objects. 
 As a result, when robots spread out into an area, some robots may become unreachable from others. 
-Any software that purports to control a swarm under these conditions cannot rely on perfect connectivity for its operation \unsure{cite this}. 
+Any software that purports to control a swarm under these conditions cannot rely on perfect connectivity for its operation. 
 
 Robots' perception of their environment is frequently limited. 
 Objects can block the sensing field of sensors.
@@ -76,8 +76,20 @@ Robots can also fail.
 The harsh conditions of the WTC rubble pile destroyed many of the robots sent in \cite{Micire02analysisof}.
 In order to remain robust in the face of failures, algorithms should not be developed to depend on the perfect functioning of any individual robot. 
 Rather, the behavior should emerge from the interaction of multiple, interchangeable robots, and tolerate the loss of individual robots up to some limit. 
-In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable\improvement{Look for prior research on this}. 
+In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable. 
 
+A reliable robotic system is one that performs the required task, within some set of constraints, despite failures of some parts of the system. 
+Cooperating systems can be broken down into two major classes, those that intentionally cooperate, and those that coopererate in the manner of ants or other swarm insects, without explicit agreements and planning \cite{parker1998alliance}.
+The swarm-like approaches generally assume that the robots are homogeneous and all have the same control software. 
+For the work described in this proposal, it may be that neither of these assumptions hold. 
+The proposed hardware enables the creation of highly heterogeneous swarms, including variation in scale of the robots involved. 
+Because the proposed control software generation scheme is intended to potentially result in different software for each robot, even robots with the same hardware may have different control programs. 
+However, the frameworks for analysis of explicitly cooperating multirobot systems may also not be applicable. 
+It is the intent of this project to have minimial explicit interrobot communication, which precludes many methods used to mutually plan tasks. 
+
+%TODO: investigate CEBOT work 
+%TODO: Is it possible to have the compiler compile to ALLIANCE specifications of task ability for each robot? Still has problems with sensing that task is done or other robots are doing it.
+%TODO: ALLIANCE doesn't have an idea of minimum robots needed because even one robot can do the job, just more slowly. 
 \subsection{Hypothesis}
 
 There exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
@@ -93,7 +105,7 @@ The size of the swarm where changes in the user gestures occur will indicate the
 %TODO is this relevant, if so, how?
 
 Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
-This problem will arise at smaller scales if the swarm robots are themselves quite small, and since making swarm robots smaller is an active area of research \unsure{Find an overview paper, cite that}, this problem will only get worse. 
+This problem will arise at smaller scales if the swarm robots are themselves quite small, and since some of the avaialble swarm robots are quite tiny \cite{pelrine2012diamagnetically}.
 Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
 Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
 This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \cite{ayanian2014controlling}.
@@ -109,8 +121,8 @@ Assessing whether or not a user-specified action will be completed is not possib
 However, it may be possible to determine if a specified action is impossible. 
 Doing so will require different heuristics for each possible tasks. 
 %(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
-\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
-\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
+%\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
+%\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
 \section{Related Work}
 
@@ -127,12 +139,11 @@ Finally, if the application domain of the robots is outside of research, the dom
 For example, a swarm designed to monitor infrastructure such as a bridge or building should be small enough to enter all the areas that require monitoring. 
 A search and rescue swarm might be composed of a variety of scales of robots, with smaller robots infiltrating a damaged building to collect telemetry that guides robots large enough to move damaged material in the building. 
 
-
 The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
 
-The robots used in most swarm work are of a sufficently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places and upper bound the scale of the individual swarm members.  \unsure{find a robot size taxonomy and cite that}
+The robots used in most swarm work are of a sufficently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places and upper bound the scale of the individual swarm members. 
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
@@ -140,7 +151,10 @@ This scale range divides fairly evenly into robots that can operate in large swa
 \subsubsection{Tabletop Swarms}
 
 At the low end, in terms of scale, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
-Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product. \improvement{Cite that sandia (?) maglev manipulation platform}
+Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
+Other techniques have been developed to use magnetic fields to apply force to small magnetic objects, resulting in controlled motion of the objects \cite{floyd2008untethered, pelrine2012diamagnetically}.
+These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
+The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
 
 Alice, by Caprari et al. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
