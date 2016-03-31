@@ -1,5 +1,11 @@
+#include <ESP8266WiFi.h>
+
+
 #include <Wire.h>
 
+char ssid[] = "full_of_internets";     //  your network SSID (name)
+char pass[] = "sofullsuchinternets";  // your network password
+int status = WL_IDLE_STATUS;     // the Wifi radio's status
 /*
  *  Test the I2C motor drivers on the TinyRobo board
  *  
@@ -42,12 +48,42 @@ byte faultVals = 0x00;
  */
 
 void setup() {
-  Wire.begin(14, 12);
+  Wire.begin(14, 12); //May not be right for the actual boards. 
   Serial.begin(9600);
+
+  // attempt to connect to Wifi network:
+  WiFi.mode(WIFI_STA);
+  while ( status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to WPA SSID: ");
+    Serial.println(ssid);
+    // Connect to WPA/WPA2 network:    
+    status = WiFi.begin(ssid, pass);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+  }
+
+  Serial.print("You're connected to the network");
 }
 
 void loop(){
 
+  // print your MAC address:
+  byte mac[6];  
+  WiFi.macAddress(mac);
+  Serial.print("MAC address: ");
+  Serial.print(mac[5],HEX);
+  Serial.print(":");
+  Serial.print(mac[4],HEX);
+  Serial.print(":");
+  Serial.print(mac[3],HEX);
+  Serial.print(":");
+  Serial.print(mac[2],HEX);
+  Serial.print(":");
+  Serial.print(mac[1],HEX);
+  Serial.print(":");
+  Serial.println(mac[0],HEX);
+  
   Wire.beginTransmission(addr1); // Target device
   Wire.write(byte(0x01));        // sets register pointer to fault register
   Wire.endTransmission();        // stop transmitting
