@@ -145,6 +145,7 @@ void loop() {
         state = CLI_READ;
       }
       else {
+        Serial.println("Client not connected");
         state = CONN_WAIT;
       }
       break;
@@ -152,6 +153,11 @@ void loop() {
       if (client.available()) {
         //Read from client
         char c = client.read();
+        Serial.print("Read: ");
+        Serial.print(c);
+        Serial.print(" (");
+        Serial.print(c, HEX);
+        Serial.println(")");
         if ( c == 'Q') {
           state = QUERY_RESP;
         } else if ( c == 'M') {
@@ -170,6 +176,11 @@ void loop() {
       if (client.available()) {
         //Read command from client and store in buffer
         motor_cmd[cmd_index] = client.read();
+        Serial.print("Motor read: ");
+        Serial.print(motor_cmd[cmd_index]);
+        Serial.print(" (");
+        Serial.print(motor_cmd[cmd_index], HEX);
+        Serial.println(")");        
         cmd_index++;
         //If we have received 4 bytes (2 speed, 2 direction), then change the motors
         if (cmd_index == 4) {
@@ -180,11 +191,11 @@ void loop() {
       break;
     case MOTOR_DRV:
       //Set the motor state from what the client sent
-      setMotor(addr1, motor_cmd[0], motor_cmd[1]);
-      setMotor(addr2, motor_cmd[2], motor_cmd[3]);
+      //setMotor(addr1, motor_cmd[0], motor_cmd[1]);
+      //setMotor(addr2, motor_cmd[2], motor_cmd[3]);
       //Get the fault bits
-      fault[0] = getFault(addr1);
-      fault[1] = getFault(addr2);
+      //fault[0] = getFault(addr1);
+      //fault[1] = getFault(addr2);
 
       //Debug print everything
       Serial.print("Set motor state");
