@@ -50,24 +50,50 @@ byte faultVals = 0x00;
     0   FAULT, if set, a fault condition exists
 */
 
-enum states {
+typedef enum {
   CONN_WAIT,
   CONNECTED,
   CLI_READ,
   QUERY_RESP,
   MOTOR_READ,
   MOTOR_DRV,
-}
+} machine_state;
 
-//Stores the motor commands [speed1, direction1, speed2, direction2] 
+//Stores the motor commands [speed1, direction1, speed2, direction2]
 //received from the client
 byte motor_cmd[4] = {0, 0, 0, 0};
 int cmd_index = 0;
 
 //Stores fault codes (one per motor) to send to client
-byte fault[2] = 0x00;
+byte fault[2] = {0x00, 0x00};
 
-enum states state = CONN_WAIT; //Waiting for connection from client
+machine_state state = CONN_WAIT; //Waiting for connection from client
+
+void setMotor(byte address, byte vel, byte dir)
+{
+  //TODO add limit checking to motor speeds
+  //TODO add checking to motor directions
+  Wire.beginTransmission(address);
+  Wire.write(byte(0x00)); //Control register
+  Wire.write(byte(vel << 2) | byte(dir)); //Moderate speed
+  Wire.endTransmission();
+}
+
+byte getFault(byte addr)
+{
+  Wire.beginTransmission(addr); // Target device
+  Wire.write(byte(0x01));        // sets register pointer to fault register
+  Wire.endTransmission();        // stop transmitting
+
+  Wire.requestFrom(int(addr), 1);
+  if (Wire.available())
+  {
+    return Wire.read();
+  }
+
+  //This is probably an error
+  return 0x00;
+}
 
 void setup() {
   Wire.begin(14, 12); //May not be right for the actual boards.
@@ -102,10 +128,11 @@ void setup() {
    M[m1 speed][m1 direction][m2 speed][m2 direction] - motor control command
 */
 void loop() {
-  switch ()
+  WiFiClient client = server.available();
+      
+  switch (state)
   {
     case CONN_WAIT:
-      WiFiClient client = server.available();
       if (client)
       {
         Serial.println("Got a client");
@@ -127,7 +154,7 @@ void loop() {
         char c = client.read();
         if ( c == 'Q') {
           state = QUERY_RESP;
-        } else if ( c == "M") {
+        } else if ( c == 'M') {
           cmd_index = 0; //start of new motor command
           state = MOTOR_READ;
         } else {
@@ -152,70 +179,81 @@ void loop() {
       }
       break;
     case MOTOR_DRV:
-      //TODO Set the motor state
-      //TODO Get the fault bits
-      Serial.println("Set motor state");
+      //Set the motor state from what the client sent
+      setMotor(addr1, motor_cmd[0], motor_cmd[1]);
+      setMotor(addr2, motor_cmd[2], motor_cmd[3]);
+      //Get the fault bits
+      fault[0] = getFault(addr1);
+      fault[1] = getFault(addr2);
+
+      //Debug print everything
+      Serial.print("Set motor state");
+      for(int ii = 0; ii < 4; ii++){
+        Serial.print(" ");
+        Serial.print(motor_cmd[ii], HEX);
+      }
+      for(int ii = 0; ii < 2; ii++){
+        Serial.print(" ");
+        Serial.print(fault[ii], HEX);
+      }
+      
       state = CONNECTED;
       break;
   }
 }
 
-  //  // print your MAC address:
-  //  byte mac[6];
-  //  WiFi.macAddress(mac);
-  //  Serial.print("MAC address: ");
-  //  Serial.print(mac[5],HEX);
-  //  Serial.print(":");
-  //  Serial.print(mac[4],HEX);
-  //  Serial.print(":");
-  //  Serial.print(mac[3],HEX);
-  //  Serial.print(":");
-  //  Serial.print(mac[2],HEX);
-  //  Serial.print(":");
-  //  Serial.print(mac[1],HEX);
-  //  Serial.print(":");
-  //  Serial.println(mac[0],HEX);
+//  // print your MAC address:
+//  byte mac[6];
+//  WiFi.macAddress(mac);
+//  Serial.print("MAC address: ");
+//  Serial.print(mac[5],HEX);
+//  Serial.print(":");
+//  Serial.print(mac[4],HEX);
+//  Serial.print(":");
+//  Serial.print(mac[3],HEX);
+//  Serial.print(":");
+//  Serial.print(mac[2],HEX);
+//  Serial.print(":");
+//  Serial.print(mac[1],HEX);
+//  Serial.print(":");
+//  Serial.println(mac[0],HEX);
 
 
-  //  Wire.beginTransmission(addr1); // Target device
-  //  Wire.write(byte(0x01));        // sets register pointer to fault register
-  //  Wire.endTransmission();        // stop transmitting
-  //
-  //  Wire.requestFrom(addr1, 1);
-  //  if(Wire.available())
-  //  {
-  //    faultVals = Wire.read();
-  //    Serial.println(faultVals, HEX);
-  //  }
+//  Wire.beginTransmission(addr1); // Target device
+//  Wire.write(byte(0x01));        // sets register pointer to fault register
+//  Wire.endTransmission();        // stop transmitting
+//
+//  Wire.requestFrom(addr1, 1);
+//  if(Wire.available())
+//  {
+//    faultVals = Wire.read();
+//    Serial.println(faultVals, HEX);
+//  }
 
-  //  Wire.beginTransmission(addr1);
-  //  Wire.write(byte(0x00)); //Control register
-  //  Wire.write(byte(0x1F << 2) | byte(0x01)); //Moderate speed
-  //  Wire.endTransmission();
-  //
-  //  delay(700);
-  //
-  //  Wire.beginTransmission(addr1);
-  //  Wire.write(byte(0x00)); //Control register
-  //  Wire.write(byte(0x00)); //Stop
-  //  Wire.endTransmission();
-  //
-  //  delay(700);
-  //
-  //  Wire.beginTransmission(addr1);
-  //  Wire.write(byte(0x00)); //Control register
-  //  Wire.write(byte(0x1F << 2) | byte(0x02)); //Moderate speed, other way
-  //  Wire.endTransmission();
-  //
-  //  delay(700);
-  //
-  //  Wire.beginTransmission(addr1);
-  //  Wire.write(byte(0x00)); //Control register
-  //  Wire.write(byte(0x00)); //Stop
-  //  Wire.endTransmission();
-  //
-  //  delay(700);
-  //
-  //}
+//
+//  delay(700);
+//
+//  Wire.beginTransmission(addr1);
+//  Wire.write(byte(0x00)); //Control register
+//  Wire.write(byte(0x00)); //Stop
+//  Wire.endTransmission();
+//
+//  delay(700);
+//
+//  Wire.beginTransmission(addr1);
+//  Wire.write(byte(0x00)); //Control register
+//  Wire.write(byte(0x1F << 2) | byte(0x02)); //Moderate speed, other way
+//  Wire.endTransmission();
+//
+//  delay(700);
+//
+//  Wire.beginTransmission(addr1);
+//  Wire.write(byte(0x00)); //Control register
+//  Wire.write(byte(0x00)); //Stop
+//  Wire.endTransmission();
+//
+//  delay(700);
+//
+//}
 
 
