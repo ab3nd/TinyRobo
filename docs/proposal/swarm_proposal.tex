@@ -980,6 +980,33 @@ Because of the selection of hardware with a WiFi module, every hardware module i
 In order to learn the control rules, the control software will send motion commands to each robot, and observe the displacement of that robot. 
 By varying motion commands and observing the resulting displacement, the system will learn the effect of motion commands on each robot, and so be able to control the robots. 
 
+In order to avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks, TinyRobo uses children's toys as mobility platforms. 
+The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
+TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
+While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
+The software framework in development to support TinyRobos is based on ROS, and so will allow modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+ 
+Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
+Two-motor toys frequently use either differential steering or have one motor supply drive power and the other provide steering. 
+All of these toys can be controlled by TinyRobo controller modules.
+
+The processor of the TinyRobo controller is an ESP-8266 wifi module.
+The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
+The ESP-8266 is available in several form factors, each designated by a different suffix. 
+The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
+
+The motor controller in the TinyRobo boards is the DRV8830 IC by Texas Instruments. 
+The DRV8830 provides 1A of drive current, and is controlled by the ESP-8266 over an I2C serial interface. 
+Experimental tests with 8 different toys indicate that small toys draw well under 1A while moving freely, and peak around 2A when the motors are stalled. 
+The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
+The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
+
+The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
+The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
+Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
+Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
+
 The robot described in this work is intended to occupy a theoretical ``sweet spot'' at the high end of the tabletop swarms or the low end of the room-scale swarms, depending on how large of a mobility platform is used. 
 As a result, if it is configured for tabletop operation, the system can be used with a minimum of available space. 
 If, on the other hand, it is configured for room-scale operations, the system can be tested in natural or naturalistic human environments. 
