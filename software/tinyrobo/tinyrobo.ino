@@ -129,88 +129,80 @@ void setup() {
 */
 void loop() {
   WiFiClient client = server.available();
-      
-  switch (state)
-  {
-    case CONN_WAIT:
-      if (client)
-      {
-        Serial.println("Got a client");
-        state = CONNECTED;
-      }
-      break;
-    case CONNECTED:
-      if (client.connected()) {
-        Serial.println("Ready to read");
-        state = CLI_READ;
-      }
-      else {
-        Serial.println("Client not connected");
-        state = CONN_WAIT;
-      }
-      break;
-    case CLI_READ:
-      if (client.available()) {
-        //Read from client
-        char c = client.read();
-        Serial.print("Read: ");
-        Serial.print(c);
-        Serial.print(" (");
-        Serial.print(c, HEX);
-        Serial.println(")");
-        if ( c == 'Q') {
-          state = QUERY_RESP;
-        } else if ( c == 'M') {
-          cmd_index = 0; //start of new motor command
-          state = MOTOR_READ;
-        } else {
-          //This is an error, how to deal with it?
-        }
-        break;
-      }
-    case QUERY_RESP:
-      server.println("TinyRobo"); //TODO include the fault byte
-      break;
-    case MOTOR_READ:
-      //Read a byte for motors
-      if (client.available()) {
-        //Read command from client and store in buffer
-        motor_cmd[cmd_index] = client.read();
-        Serial.print("Motor read: ");
-        Serial.print(motor_cmd[cmd_index]);
-        Serial.print(" (");
-        Serial.print(motor_cmd[cmd_index], HEX);
-        Serial.println(")");        
-        cmd_index++;
-        //If we have received 4 bytes (2 speed, 2 direction), then change the motors
-        if (cmd_index == 4) {
-          cmd_index = 0;
-          state = MOTOR_DRV;
-        }
-      }
-      break;
-    case MOTOR_DRV:
-      //Set the motor state from what the client sent
-      //setMotor(addr1, motor_cmd[0], motor_cmd[1]);
-      //setMotor(addr2, motor_cmd[2], motor_cmd[3]);
-      //Get the fault bits
-      //fault[0] = getFault(addr1);
-      //fault[1] = getFault(addr2);
 
-      //Debug print everything
-      Serial.print("Set motor state");
-      for(int ii = 0; ii < 4; ii++){
-        Serial.print(" ");
-        Serial.print(motor_cmd[ii], HEX);
+  //client goes out of scope when it gets redeclared there
+  if (client) {
+    state = CLI_READ; //start reading from the client
+    Serial.println("Got a client");    
+    while (client.connected()) {
+      switch (state)
+      {
+        case CLI_READ:
+          if (client.available()) {
+            //Read from client
+            char c = client.read();
+            Serial.print("Read: ");
+            Serial.print(c);
+            Serial.print(" (");
+            Serial.print(c, HEX);
+            Serial.println(")");
+            if ( c == 'Q') {
+              state = QUERY_RESP;
+            } else if ( c == 'M') {
+              cmd_index = 0; //start of new motor command
+              state = MOTOR_READ;
+            } else {
+              //This is an error, how to deal with it?
+            }
+          }
+          break;
+        case QUERY_RESP:
+          Serial.println("TinyRobo");
+          client.println("TinyRobo"); //TODO include the fault byte
+          state = CLI_READ;
+          break;
+        case MOTOR_READ:
+          //Read a byte for motors
+          if (client.available()) {
+            //Read command from client and store in buffer
+            motor_cmd[cmd_index] = client.read();
+            Serial.print("Motor read: ");
+            Serial.print(motor_cmd[cmd_index]);
+            Serial.print(" (");
+            Serial.print(motor_cmd[cmd_index], HEX);
+            Serial.println(")");
+            cmd_index++;
+            //If we have received 4 bytes (2 speed, 2 direction), then change the motors
+            if (cmd_index == 4) {
+              cmd_index = 0;
+              state = MOTOR_DRV;
+            }
+          }
+          break;
+        case MOTOR_DRV:
+          //Set the motor state from what the client sent
+          //setMotor(addr1, motor_cmd[0], motor_cmd[1]);
+          //setMotor(addr2, motor_cmd[2], motor_cmd[3]);
+          //Get the fault bits
+          //fault[0] = getFault(addr1);
+          //fault[1] = getFault(addr2);
+
+          //Debug print everything
+          Serial.print("Set motor state");
+          for (int ii = 0; ii < 4; ii++) {
+            Serial.print(" ");
+            Serial.print(motor_cmd[ii], HEX);
+          }
+          for (int ii = 0; ii < 2; ii++) {
+            Serial.print(" ");
+            Serial.print(fault[ii], HEX);
+          }
+          state = CLI_READ;
+          break;
       }
-      for(int ii = 0; ii < 2; ii++){
-        Serial.print(" ");
-        Serial.print(fault[ii], HEX);
-      }
-      
-      state = CONNECTED;
-      break;
+    }
   }
+
 }
 
 //  // print your MAC address:
