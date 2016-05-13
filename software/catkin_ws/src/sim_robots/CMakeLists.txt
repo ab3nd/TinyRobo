@@ -115,6 +115,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -129,7 +130,8 @@ include_directories(
 # add_dependencies(sim_robots ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(sim_robots_node src/sim_robots_node.cpp)
+add_executable(sim_robot src/sim_robots/sim_robot.cpp)
+add_executable(sim_world src/sim_robots/sim_world.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

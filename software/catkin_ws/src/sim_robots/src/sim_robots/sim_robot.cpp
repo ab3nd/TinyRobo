@@ -1,11 +1,11 @@
-#include <sim_robots/sim_robot.hpp>
+#include <sim_robots/sim_robot.h>
 
-SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
+void SimRobot::timeCallback(const std_msgs::HeaderConstPtr& msg)
 {
 	ROS_INFO(msg->stamp);
 }
 
-SimRobot::motorCallback()
+void SimRobot::motorCallback()
 {
 	//Do nothing for the moment
 }
