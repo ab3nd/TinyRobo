@@ -1,8 +1,14 @@
 #include <sim_robots/sim_robot.h>
 
-void SimRobot::timeCallback(const std_msgs::HeaderConstPtr& msg)
+SimRobot::SimRobot(ros::NodeHandle node)
 {
-	ROS_INFO(msg->stamp);
+	//Listen for updates from the world
+	clockSub = node.subscribe("sim_world_clock", 1, &SimRobot::timeCallback, this);
+}
+
+void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
+{
+	ROS_INFO("Print msg->stamp here");
 }
 
 void SimRobot::motorCallback()
@@ -15,10 +21,7 @@ int main(int argc, char** argv)
 	ros::init(argc, argv, "sim_robot");
 	ros::NodeHandle node("~");
 
-	SimRobot sr();
+	SimRobot sr = SimRobot(node);
 
-	//Listen for updates from the world
-	clockSub = node.subscribe("sim_world_clock", 1, &SimRobot::timeCallback, &sr);
-
-	//TODO Listen for motor velocity commands
+	ros::spin();
 }

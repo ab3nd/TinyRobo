@@ -138,9 +138,14 @@ add_executable(sim_world src/sim_robots/sim_world.cpp)
 # add_dependencies(sim_robots_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(sim_robots_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(sim_robot
+   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sim_world
+   ${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##
