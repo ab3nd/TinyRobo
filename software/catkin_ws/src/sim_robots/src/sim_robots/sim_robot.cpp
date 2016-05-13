@@ -3,12 +3,12 @@
 SimRobot::SimRobot(ros::NodeHandle node)
 {
 	//Listen for updates from the world
-	clockSub = node.subscribe("sim_world_clock", 1, &SimRobot::timeCallback, this);
+	clockSub = node.subscribe("/sim_world/sim_world_clock", 1, &SimRobot::timeCallback, this);
 }
 
 void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 {
-	ROS_INFO("Print msg->stamp here");
+	ROS_LOG("Got %f ", msg->stamp.toSec());
 }
 
 void SimRobot::motorCallback()

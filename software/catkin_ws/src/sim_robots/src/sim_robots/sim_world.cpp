@@ -1,8 +1,9 @@
 #include <sim_robots/sim_world.h>
 
-SimWorld::SimWorld()
+SimWorld::SimWorld(ros::NodeHandle node)
 {
 	//Set up the publisher
+	worldClock = node.advertise<std_msgs::Header>("sim_world_clock", 10);
 
 }
 void SimWorld::step()
@@ -12,8 +13,8 @@ void SimWorld::step()
 	 * need to update themselves.
 	 */
 	std_msgs::Header msg;
+	msg.stamp = ros::Time::now();
 	worldClock.publish(msg);
-
 }
 
 void SimWorld::update()
@@ -26,14 +27,14 @@ int main(int argc, char** argv)
 	ros::init(argc, argv, "sim_world");
 	ros::NodeHandle node("~");
 
-	SimWorld world = SimWorld();
+	SimWorld world = SimWorld(node);
 
 	//TODO Subscribe to all robots updates
 
 	ros::Rate r(100); //Update frequency for the world, in Hz
 	while(ros::ok())
 	{
-		world.update();
+		world.step();
 		r.sleep();
 	}
 
