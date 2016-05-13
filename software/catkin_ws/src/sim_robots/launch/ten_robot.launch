@@ -1,13 +1,13 @@
 <launch>
-  <node name="bot_1" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_2" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_3" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_4" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_5" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_6" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_7" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_8" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_9" pkg="sim_robots" type="sim_robot" />
-  <node name="bot_10" pkg="sim_robots" type="sim_robot" />
+  <node name="bot_1" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_2" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_3" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_4" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_5" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_6" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_7" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_8" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_9" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_10" pkg="sim_robots" type="sim_robot" output="screen" />
   <node name="sim_world" pkg="sim_robots" type="sim_world" />
 </launch>

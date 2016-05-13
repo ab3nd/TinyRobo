@@ -8,7 +8,7 @@ SimRobot::SimRobot(ros::NodeHandle node)
 
 void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 {
-	ROS_LOG("Got %f ", msg->stamp.toSec());
+	ROS_INFO("%s got %f ",ros::this_node::getName().c_str(), msg->stamp.toSec());
 }
 
 void SimRobot::motorCallback()

@@ -1,4 +1,4 @@
 <launch>
-  <node name="bot_1" pkg="sim_robots" type="sim_robot" />
+  <node name="bot_1" pkg="sim_robots" type="sim_robot" output="screen" />
   <node name="sim_world" pkg="sim_robots" type="sim_world" />
 </launch>
