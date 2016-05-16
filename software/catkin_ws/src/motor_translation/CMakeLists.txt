@@ -115,6 +115,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -129,16 +130,16 @@ include_directories(
 # add_dependencies(motor_translation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(motor_translation_node src/motor_translation_node.cpp)
+add_executable(abstract_trans src/abstract_trans.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(motor_translation_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(motor_translation_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(abstract_trans
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

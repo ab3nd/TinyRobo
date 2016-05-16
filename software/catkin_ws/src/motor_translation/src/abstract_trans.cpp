@@ -7,7 +7,7 @@ MotorTranslator::MotorTranslator(ros::NodeHandle node, std::string commander)
 	motorPub = node.advertise<tiny_robo_msgs::Motor_Vel_Cmd>("drive_cmd", 10);
 }
 
-MotorTranslator::MotorTranslator(const geometry_msgs::Twist::ConstPtr& msg)
+void MotorTranslator::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
 {
 	tiny_robo_msgs::Motor_Vel_Cmd mvc = tiny_robo_msgs::Motor_Vel_Cmd();
 	/* This is a REALLY STUPID pass-through. If you know what kind of robot this is driving, there
@@ -15,8 +15,8 @@ MotorTranslator::MotorTranslator(const geometry_msgs::Twist::ConstPtr& msg)
 	 * left/right/center, but servoed steering is smarter. Robots with one motor probably ignore even more of
 	 * the twist message.
 	 */
-	mvc.motor1 = (int)(msg->linear.x * 128)
-	mvc.motor2 = (int)(msg->rot.z * 128)
+	mvc.motor1 = (int)(msg->linear.x * 128);
+	mvc.motor2 = (int)(msg->angular.z * 128);
 	motorPub.publish(mvc);
 }
 
