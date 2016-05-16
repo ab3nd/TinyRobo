@@ -1,4 +1,12 @@
 <launch>
-  <node name="bot_1" pkg="sim_robots" type="sim_robot" output="screen" />
+  <node name="bot_1" pkg="sim_robots" type="sim_robot" output="screen">
+    <!-- The robot for this driver to connect to -->
+  	<param name="translator" type="str" value="/trans_bot_1"/>
+  </node>
   <node name="sim_world" pkg="sim_robots" type="sim_world" />
+  <node name="drive_bot_1" pkg="drive_logic" type="random_driver" />
+  <node name="trans_bot_1" pkg="motor_translation" type = "abstract_trans">
+    <!-- The driver that this translation node listens to -->
+    <param name="driver" type="str" value="/drive_bot_1"/>
+  </node>
 </launch>
