@@ -12,7 +12,9 @@ class RandomDriver
 	private:
 		//Publishes twist messages
 		ros::Publisher twistPub;
-
+		float getVel();
+		float getTurn();
+		float getRand(float range);
 	public:
 		RandomDriver(ros::NodeHandle node);
 		void drive();

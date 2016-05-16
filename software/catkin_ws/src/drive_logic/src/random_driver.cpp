@@ -9,18 +9,36 @@ RandomDriver::RandomDriver(ros::NodeHandle node)
 	std::srand(ros::Time::now().toSec());
 }
 
+float RandomDriver::getVel()
+{
+	//Range is m/sec
+	return getRand(0.1);
+}
+
+float RandomDriver::getTurn()
+{
+	//Range is r/sec
+	return getRand(PI/2.0);
+}
+
+//Return a value in +/- range
+float RandomDriver::getRand(float range)
+{
+	return ((2*(std::rand()/((float)RAND_MAX)))-1) * range;
+}
+
 void RandomDriver::drive()
 {
 	//Generate a twist message
 	geometry_msgs::Twist t = geometry_msgs::Twist();
 	//I assume these are M/sec
-	t.linear.x = (2*((std::rand()/((float)RAND_MAX)) - 1) * 0.1);  //forward motion
-	t.linear.y = (2*((std::rand()/((float)RAND_MAX)) - 1) * 0.1);
-	t.linear.z = (2*((std::rand()/((float)RAND_MAX)) - 1) * 0.1);
+	t.linear.x = getVel();  //forward motion
+	t.linear.y = getVel();
+	t.linear.z = getVel();
 	//And these should be radians/sec
-	t.angular.x = (2*((std::rand()/((float)RAND_MAX)) - 1) * (PI/2.0));
-	t.angular.y = (2*((std::rand()/((float)RAND_MAX)) - 1) * (PI/2.0));
-	t.angular.z = (2*((std::rand()/((float)RAND_MAX)) - 1) * (PI/2.0)); //heading turning
+	t.angular.x = getTurn();
+	t.angular.y = getTurn();
+	t.angular.z = getTurn(); //heading turning
 	//Publish it
 	twistPub.publish(t);
 }
