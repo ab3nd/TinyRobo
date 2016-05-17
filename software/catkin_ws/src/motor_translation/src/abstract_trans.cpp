@@ -20,6 +20,18 @@ void MotorTranslator::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
 	motorPub.publish(mvc);
 }
 
+//For now this is just a call to the superclass cons
+HolonomicTranslator::HolonomicTranslator(ros::NodeHandle node, std::string driver):MotorTranslator(node, driver){}
+
+void HolonomicTranslator::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
+{
+	tiny_robo_msgs::Motor_Vel_Cmd mvc = tiny_robo_msgs::Motor_Vel_Cmd();
+	/* This is a REALLY STUPID test, and just outputs the same thing no matter what */
+	mvc.motor1 = 13;
+	mvc.motor2 = 13;
+	motorPub.publish(mvc);
+}
+
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "basic_motor_translator");
@@ -30,7 +42,12 @@ int main(int argc, char** argv)
 	// Topic to listen to
 	node.param < std::string > (ros::this_node::getName() + "/driver_name", cmd_src, "/default_driver/drive_cmd");
 
-	MotorTranslator mt = MotorTranslator(node, cmd_src);
+	//MotorTranslator mt = MotorTranslator(node, cmd_src);
+	//This works, but gets the base class callback, not the subclass callback
+	//MotorTranslator mt = HolonomicTranslator(node, cmd_src);
+	//This gets the subclass callback. Probably not a big issue unless I actually need a generic function that
+	//operates on motor translators, which is unlikely.
+	HolonomicTranslator mt = HolonomicTranslator(node, cmd_src);
 
 	//This node publishes every time it gets a message, so there's no need to delay
 	ros::spin();

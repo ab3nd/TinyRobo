@@ -2,10 +2,12 @@
 # Generate launch files for a bunch of robots
 
 #Number of robots to launch
-robotCount = 100
+robotCount = 10
 
 #Name of the launch file to generate
 fName = "./sim_{0}_robots.launch".format(robotCount)
+
+#TODO eventually, each robot will have to have a translator based on how the motors are connected to the drivetrain
 
 with open(fName, "w") as launchFile:
     launchFile.write("<launch>")
