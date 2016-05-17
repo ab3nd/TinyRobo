@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 	//Attempt to get the driver parameter to determine which driver this robot listens to
 	std::string drv_src;
 	// Topic to listen to
-	node.param < std::string > (ros::this_node::getName() + "/driver_name", drv_src, "/default_driver/drive_cmd");
+	node.param < std::string > (ros::this_node::getName() + "/translator", drv_src, "/default_driver/drive_cmd");
 
 	SimRobot sr = SimRobot(node, drv_src);
 
