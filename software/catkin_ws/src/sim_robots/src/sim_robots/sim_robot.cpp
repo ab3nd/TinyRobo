@@ -11,11 +11,11 @@ SimRobot::SimRobot(ros::NodeHandle node)
 
 	//Attempt to get the initial position of the robot within the world
 	location = std::vector<float>(3, 0); //three ints with the value 0
-	node.getParam(ros::this_node::getName() + "/location", location);
+	node.getParam("location", location);
 	//Print out the new position
-	for (std::vector<int>::iterator it = position.begin(); it != position.end(); ++it)
+	for (std::vector<float>::iterator it = location.begin(); it != location.end(); ++it)
 	{
-		ROS_INFO("%s position %d", ros::this_node::getName().c_str(), *(it));
+		ROS_INFO("%s location %f", ros::this_node::getName().c_str(), *(it));
 	}
 
 	//Listen for updates from the world
@@ -32,6 +32,7 @@ void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 void SimRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg)
 {
 	ROS_INFO("%s got %d, %d", ros::this_node::getName().c_str(), msg->motor1, msg->motor2);
+	ROS_INFO("Location (%f, %f, %f)", location[0], location[1], location[2]);
 	//TODO update the motor speeds
 }
 

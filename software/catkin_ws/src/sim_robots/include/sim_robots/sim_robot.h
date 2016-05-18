@@ -20,8 +20,6 @@ class SimRobot
 		float scaleMotor2;
 		ros::Subscriber clockSub;
 		ros::Subscriber cmdSub;
-		//Position of the robot
-		std::vector<int> position;
 
 	public:
 		//Receives time updates from the world, updates robot state
