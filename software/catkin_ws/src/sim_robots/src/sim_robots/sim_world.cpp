@@ -5,7 +5,17 @@ SimWorld::SimWorld(ros::NodeHandle node)
 	//Set up the publisher
 	worldClock = node.advertise<std_msgs::Header>("sim_world_clock", 10);
 
+	//Set up the size of the world. This is used for making images as well as coordinate stuff, so is in pixels
+	worldSizeX = 640;
+	worldSizeY = 480;
+
 }
+
+void SimWorld::renderWorld()
+{
+	//Create an image and publish it
+}
+
 void SimWorld::step()
 {
 	/* Publish a clock message, which is just a ROS Header.

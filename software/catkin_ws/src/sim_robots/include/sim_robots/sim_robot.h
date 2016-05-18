@@ -20,6 +20,8 @@ class SimRobot
 		float scaleMotor2;
 		ros::Subscriber clockSub;
 		ros::Subscriber cmdSub;
+		//Position of the robot
+		std::vector<int> position;
 
 	public:
 		//Receives time updates from the world, updates robot state
@@ -27,6 +29,6 @@ class SimRobot
 		//Receives motor speeds, updates robot state
 		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
 
-		SimRobot(ros::NodeHandle node, std::string driver);
+		SimRobot(ros::NodeHandle node);
 };
 #endif

@@ -1,11 +1,26 @@
 #include <sim_robots/sim_robot.h>
 
-SimRobot::SimRobot(ros::NodeHandle node, std::string driver)
+SimRobot::SimRobot(ros::NodeHandle node)
 {
-	//Listen for updates from the world
-	clockSub = node.subscribe("/sim_world/sim_world_clock", 1, &SimRobot::timeCallback, this);
+	//Attempt to get the driver parameter to determine which driver this robot listens to
+	std::string driver;
+	// Topic to listen to
+	node.param < std::string > (ros::this_node::getName() + "/translator", driver, "/default_driver/drive_cmd");
 	//Listen for motion commands to this robot
 	cmdSub = node.subscribe(driver + "/drive_cmd", 1, &SimRobot::motorCallback, this);
+
+	//Attempt to get the initial position of the robot within the world
+	location = std::vector<float>(3, 0); //three ints with the value 0
+	node.getParam(ros::this_node::getName() + "/location", location);
+	//Print out the new position
+	for (std::vector<int>::iterator it = position.begin(); it != position.end(); ++it)
+	{
+		ROS_INFO("%s position %d", ros::this_node::getName().c_str(), *(it));
+	}
+
+	//Listen for updates from the world
+	clockSub = node.subscribe("/sim_world/sim_world_clock", 1, &SimRobot::timeCallback, this);
+
 }
 
 void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
@@ -25,12 +40,8 @@ int main(int argc, char** argv)
 	ros::init(argc, argv, "sim_robot");
 	ros::NodeHandle node("~");
 
-	//Attempt to get the driver parameter to determine which driver this robot listens to
-	std::string drv_src;
-	// Topic to listen to
-	node.param < std::string > (ros::this_node::getName() + "/translator", drv_src, "/default_driver/drive_cmd");
-
-	SimRobot sr = SimRobot(node, drv_src);
+	SimRobot sr = SimRobot(node);
 
 	ros::spin();
 }
+
