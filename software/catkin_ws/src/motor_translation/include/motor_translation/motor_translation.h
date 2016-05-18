@@ -15,15 +15,35 @@ class MotorTranslator
 		ros::Subscriber cmdSub;
 	public:
 		//Receives twists and converts them to motor drive signals
-		virtual void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg);
+		virtual void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg) = 0;
 		MotorTranslator(ros::NodeHandle node, std::string driver);
 };
 #endif
 
 class HolonomicTranslator: public MotorTranslator
 {
-	//If I don't override anything, it's a MotorTranslator, right?
+	//May be able to base translation on spiderbots paper
 	public:
 		HolonomicTranslator(ros::NodeHandle node, std::string driver);
 		void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg);
 };
+
+class AckermanTranslator: public MotorTranslator
+{
+	/*For car-style/ackerman steering.  */
+	private:
+		float deadBand;
+	public:
+		AckermanTranslator(ros::NodeHandle node, std::string driver);
+		void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg);
+};
+
+class DifferentialTranslator: public MotorTranslator
+{
+	//For tank-style steering
+	public:
+		DifferentialTranslator(ros::NodeHandle node, std::string driver);
+		void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg);
+};
+
+
