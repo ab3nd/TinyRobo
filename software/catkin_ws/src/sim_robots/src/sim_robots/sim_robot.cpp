@@ -12,11 +12,6 @@ SimRobot::SimRobot(ros::NodeHandle node)
 	//Attempt to get the initial position of the robot within the world
 	location = std::vector<float>(3, 0); //three ints with the value 0
 	node.getParam("location", location);
-	//Print out the new position
-	for (std::vector<float>::iterator it = location.begin(); it != location.end(); ++it)
-	{
-		ROS_INFO("%s location %f", ros::this_node::getName().c_str(), *(it));
-	}
 
 	//Initial motor speeds are zero
 	speedMotor1 = speedMotor2 = 0;
@@ -25,6 +20,9 @@ SimRobot::SimRobot(ros::NodeHandle node)
 
 	//We haven't seen a time callback from the world yet
 	hasLastTime = false;
+
+	//Even big motor speed results in small motion
+	scaleMotor1 = scaleMotor2 = 0.00001;
 }
 
 void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
@@ -43,8 +41,8 @@ void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 		 * x-position change of the robot, and so it just demonstrates that things are being
 		 * updated properly.
 		 */
-		ROS_INFO("Pos change %f", (float)speedMotor1/(msg->stamp - lastTime).toSec());
-		location[0] += (float)speedMotor1/(msg->stamp - lastTime).toSec();
+		//ROS_INFO("Pos change %f", (float)(speedMotor1 * scaleMotor1)/(msg->stamp - lastTime).toSec());
+		location[0] += (float)((speedMotor1)/(msg->stamp - lastTime).toSec()) * scaleMotor1;
 
 		//Set last time to the new message
 		lastTime = msg->stamp;
@@ -58,6 +56,12 @@ void SimRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg)
 	ROS_INFO("%s got %d, %d", ros::this_node::getName().c_str(), msg->motor1, msg->motor2);
 	speedMotor1 = msg->motor1;
 	speedMotor2 = msg->motor2;
+
+	//Print out the new position
+	for (std::vector<float>::iterator it = location.begin(); it != location.end(); ++it)
+	{
+		ROS_INFO("%s location %f", ros::this_node::getName().c_str(), *(it));
+	}
 }
 
 int main(int argc, char** argv)
