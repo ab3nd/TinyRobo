@@ -18,22 +18,46 @@ SimRobot::SimRobot(ros::NodeHandle node)
 		ROS_INFO("%s location %f", ros::this_node::getName().c_str(), *(it));
 	}
 
+	//Initial motor speeds are zero
+	speedMotor1 = speedMotor2 = 0;
 	//Listen for updates from the world
 	clockSub = node.subscribe("/sim_world/sim_world_clock", 1, &SimRobot::timeCallback, this);
 
+	//We haven't seen a time callback from the world yet
+	hasLastTime = false;
 }
 
 void SimRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 {
+	if(hasLastTime)
+	{
+		//We have seen a last time message
+		lastTime = msg->stamp;
+		hasLastTime = true;
+	}
+	else
+	{
+		/* Motor rotation distance is motor velocity divided by the amount of elapsed time.
+		 * Note that this is assuming a unit-diameter wheel, we can add wheel diameter later.
+		 * TODO This is a very simple uniwheel robot, where velocity of the motor directly becomes
+		 * x-position change of the robot, and so it just demonstrates that things are being
+		 * updated properly.
+		 */
+		ROS_INFO("Pos change %f", (float)speedMotor1/(msg->stamp - lastTime).toSec());
+		location[0] += (float)speedMotor1/(msg->stamp - lastTime).toSec();
+
+		//Set last time to the new message
+		lastTime = msg->stamp;
+	}
 	//ROS_INFO("%s got %f ",ros::this_node::getName().c_str(), msg->stamp.toSec());
-	//TODO Update this robot's position from time elapsed and motions
+
 }
 
 void SimRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg)
 {
 	ROS_INFO("%s got %d, %d", ros::this_node::getName().c_str(), msg->motor1, msg->motor2);
-	ROS_INFO("Location (%f, %f, %f)", location[0], location[1], location[2]);
-	//TODO update the motor speeds
+	speedMotor1 = msg->motor1;
+	speedMotor2 = msg->motor2;
 }
 
 int main(int argc, char** argv)

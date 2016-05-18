@@ -20,6 +20,9 @@ class SimRobot
 		float scaleMotor2;
 		ros::Subscriber clockSub;
 		ros::Subscriber cmdSub;
+		int speedMotor1, speedMotor2;
+		ros::Time lastTime;
+		bool hasLastTime;
 
 	public:
 		//Receives time updates from the world, updates robot state
