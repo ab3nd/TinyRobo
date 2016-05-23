@@ -11,7 +11,7 @@
 
 class SimRobot
 {
-	private:
+	protected:
 		//Publishes location and position to the world
 		ros::Publisher posPub;
 		//Location in world coordinates
@@ -23,24 +23,22 @@ class SimRobot
 		int speedMotor1, speedMotor2;
 		ros::Time lastTime;
 		bool hasLastTime;
+		//Scale factors for motor speeds, determines how motor speed changes robot position
+		float scaleMotor1;
+		float scaleMotor2;
 
 	public:
 		//Receives time updates from the world, updates robot state
-		virtual void timeCallback(const std_msgs::Header::ConstPtr& msg);
+		virtual void timeCallback(const std_msgs::Header::ConstPtr& msg) = 0;
 		//Receives motor speeds, updates robot state
 		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
 
 		SimRobot(ros::NodeHandle node);
 };
-#endif
 
-class AckermanRobot: private SimRobot
+class AckermanRobot: public SimRobot
 {
 	private:
-		//Scale factors for motor speeds, determines how motor speed changes robot position
-		float scaleMotor1;
-		float scaleMotor2;
-		float robotWidth;
 		float wheelBase;
 		float wheelCircumference;
 		float deadBand;
@@ -51,12 +49,10 @@ class AckermanRobot: private SimRobot
 		AckermanRobot(ros::NodeHandle node);
 };
 
-class DifferentialRobot: private SimRobot
+class DifferentialRobot: public SimRobot
 {
 	private:
 		//Scale factors for motor speeds, determines how motor speed changes robot position
-		float scaleMotor1;
-		float scaleMotor2;
 		float robotWidth;
 		float wheelCircumference;
 		//Doesn't have a wheelbase, differential drive robots don't have front and back wheels
@@ -67,7 +63,7 @@ class DifferentialRobot: private SimRobot
 		DifferentialRobot(ros::NodeHandle node);
 };
 
-class SpiderRobot: private SimRobot
+class SpiderRobot: public SimRobot
 {
 
 	public:
@@ -75,3 +71,6 @@ class SpiderRobot: private SimRobot
 		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
 		SpiderRobot(ros::NodeHandle node);
 };
+
+
+#endif

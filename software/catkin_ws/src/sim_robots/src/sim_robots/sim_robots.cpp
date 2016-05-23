@@ -115,9 +115,10 @@ void DifferentialRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 	}
 }
 
-void DifferentialRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg): SimRobot::motorCallback(msg)
+void DifferentialRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg)
 {
 	//Do nothing (calls superclass)
+	 SimRobot::motorCallback(msg);
 }
 
 /************************ Holonomic(?) Spider Robot ************************/
@@ -189,9 +190,10 @@ void SpiderRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 
 }
 
-void SpiderRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg): SimRobot::motorCallback(msg)
+void SpiderRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg)
 {
 	//Do nothing (calls superclass)
+	SimRobot::motorCallback(msg);
 }
 
 /************************ Ackerman/RC car ************************/
@@ -218,9 +220,6 @@ void AckermanRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 	}
 	else
 	{
-		//Change in time since the last tick from the world simulator
-		double deltaT = (msg->stamp - lastTime).toSec();
-
 		/* Convert the steering motor signal into one of full-right, full-left, or straight ahead.
 		 * The intent here is to have this robot imitate cheap toy cars, which don't have servo steering.
 		 */
@@ -228,7 +227,7 @@ void AckermanRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 		if(abs(speedMotor1) > deadBand)
 		{
 			//This will be +/-1 times the (fixed) steering angle
-			steeringAngle = (speedMotor1/abs(speedMotor1)) * steeringAngle
+			currentAngle = (speedMotor1/abs(speedMotor1)) * steeringAngle;
 		}
 
 		/* Convert motor speeds to distance traveled.
@@ -241,8 +240,8 @@ void AckermanRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 		 * http://www.asawicki.info/Mirror/Car%20Physics%20for%20Games/Car%20Physics%20for%20Games.html
 		 */
 		double rotVel = 0.0;
-		if(steeringAngle != 0){
-			double turnRadius = wheelBase/sin(steeringAngle);
+		if(currentAngle != 0.0){
+			double turnRadius = wheelBase/sin(currentAngle);
 			rotVel = linVel/turnRadius;
 		}
 
@@ -284,9 +283,10 @@ void AckermanRobot::timeCallback(const std_msgs::Header::ConstPtr& msg)
 	}
 }
 
-void AckermanRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg): SimRobot::motorCallback(msg)
+void AckermanRobot::motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg)
 {
 	//Do nothing (calls superclass)
+	SimRobot::motorCallback(msg);
 }
 
 

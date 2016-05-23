@@ -120,9 +120,9 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(sim_robots
-#   src/${PROJECT_NAME}/sim_robots.cpp
-# )
+add_library(sim_robots_lib
+   src/${PROJECT_NAME}/sim_robots.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -130,15 +130,30 @@ include_directories(
 # add_dependencies(sim_robots ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(sim_robot src/sim_robots/sim_robot.cpp)
-add_executable(sim_world src/sim_robots/sim_world.cpp)
+add_executable(sim_ackerman src/${PROJECT_NAME}/sim_ackerman.cpp)
+add_executable(sim_spider src/${PROJECT_NAME}/sim_spider.cpp)
+add_executable(sim_differential src/${PROJECT_NAME}/sim_differential.cpp)
+add_executable(sim_world src/${PROJECT_NAME}/sim_world.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(sim_robot tiny_robo_msgs_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(sim_ackerman tiny_robo_msgs_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(sim_spider tiny_robo_msgs_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(sim_differential tiny_robo_msgs_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(sim_robot
+target_link_libraries(sim_ackerman
+   sim_robots_lib
+   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sim_spider
+   sim_robots_lib
+   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sim_differential
+   sim_robots_lib
    ${catkin_LIBRARIES}
 )
 
