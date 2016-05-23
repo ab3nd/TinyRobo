@@ -3,6 +3,9 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Header.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Point.h>
+#include <geometry_msgs/Quaternion.h>
 #include <tiny_robo_msgs/Motor_Vel_Cmd.h>
 #include <vector>
 
@@ -15,9 +18,6 @@ class SimRobot
 		std::vector<float> location;
 		//Orientation in rotation relative to world origin, in radians
 		std::vector<float> orientation;
-		//Scale factors for motor speeds, determines how motor speed changes robot position
-		float scaleMotor1;
-		float scaleMotor2;
 		ros::Subscriber clockSub;
 		ros::Subscriber cmdSub;
 		int speedMotor1, speedMotor2;
@@ -26,10 +26,52 @@ class SimRobot
 
 	public:
 		//Receives time updates from the world, updates robot state
-		void timeCallback(const std_msgs::Header::ConstPtr& msg);
+		virtual void timeCallback(const std_msgs::Header::ConstPtr& msg);
 		//Receives motor speeds, updates robot state
 		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
 
 		SimRobot(ros::NodeHandle node);
 };
 #endif
+
+class AckermanRobot: private SimRobot
+{
+	private:
+		//Scale factors for motor speeds, determines how motor speed changes robot position
+		float scaleMotor1;
+		float scaleMotor2;
+		float robotWidth;
+		float wheelBase;
+		float wheelCircumference;
+		float deadBand;
+		float steeringAngle;
+	public:
+		void timeCallback(const std_msgs::Header::ConstPtr& msg);
+		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
+		AckermanRobot(ros::NodeHandle node);
+};
+
+class DifferentialRobot: private SimRobot
+{
+	private:
+		//Scale factors for motor speeds, determines how motor speed changes robot position
+		float scaleMotor1;
+		float scaleMotor2;
+		float robotWidth;
+		float wheelCircumference;
+		//Doesn't have a wheelbase, differential drive robots don't have front and back wheels
+
+	public:
+		void timeCallback(const std_msgs::Header::ConstPtr& msg);
+		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
+		DifferentialRobot(ros::NodeHandle node);
+};
+
+class SpiderRobot: private SimRobot
+{
+
+	public:
+		void timeCallback(const std_msgs::Header::ConstPtr& msg);
+		void motorCallback(const tiny_robo_msgs::Motor_Vel_Cmd::ConstPtr& msg);
+		SpiderRobot(ros::NodeHandle node);
+};
