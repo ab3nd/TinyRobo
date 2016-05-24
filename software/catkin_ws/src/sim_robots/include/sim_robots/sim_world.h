@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Header.h>
+#include <ImageMagick/Magick++.h>
 
 class SimWorld
 {
