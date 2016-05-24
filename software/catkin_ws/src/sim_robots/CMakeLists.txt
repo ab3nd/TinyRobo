@@ -161,6 +161,8 @@ target_link_libraries(sim_differential
 )
 
 target_link_libraries(sim_world
+   MagickCore
+   Magick++
    ${catkin_LIBRARIES}
 )
 
