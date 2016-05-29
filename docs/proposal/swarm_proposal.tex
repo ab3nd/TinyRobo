@@ -11,8 +11,9 @@
 \usepackage{graphicx}
 \usepackage{auto-pst-pdf}
 \usepackage{graphviz}
+\usepackage{microtype}
 
-%not allowed to call it "Seize them my minions"
+%not allowed to call it "Seize them, my minions"
 \title{Command Language for Single-User, Multi-Robot Swarm Control}
 \author{Abraham Shultz}
 
@@ -60,7 +61,7 @@ Networking between the robots is expected to be unreliable.
 Individual robots have limited transmission power over radio or infrared light links. 
 Network links are also frequently attenuated by distance or intervening objects. 
 As a result, when robots spread out into an area, some robots may become unreachable from others. 
-Any software that purports to control a swarm under these conditions cannot rely on perfect connectivity for its operation \unsure{cite this}. 
+Any software that purports to control a swarm under these conditions cannot rely on perfect connectivity for its operation. 
 
 Robots' perception of their environment is frequently limited. 
 Objects can block the sensing field of sensors.
@@ -76,8 +77,20 @@ Robots can also fail.
 The harsh conditions of the WTC rubble pile destroyed many of the robots sent in \cite{Micire02analysisof}.
 In order to remain robust in the face of failures, algorithms should not be developed to depend on the perfect functioning of any individual robot. 
 Rather, the behavior should emerge from the interaction of multiple, interchangeable robots, and tolerate the loss of individual robots up to some limit. 
-In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable\improvement{Look for prior research on this}. 
+In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable. 
 
+A reliable robotic system is one that performs the required task, within some set of constraints, despite failures of some parts of the system. 
+Cooperating systems can be broken down into two major classes, those that intentionally cooperate, and those that coopererate in the manner of ants or other swarm insects, without explicit agreements and planning \cite{parker1998alliance}.
+The swarm-like approaches generally assume that the robots are homogeneous and all have the same control software. 
+For the work described in this proposal, it may be that neither of these assumptions hold. 
+The proposed hardware enables the creation of highly heterogeneous swarms, including variation in scale of the robots involved. 
+Because the proposed control software generation scheme is intended to potentially result in different software for each robot, even robots with the same hardware may have different control programs. 
+However, the frameworks for analysis of explicitly cooperating multirobot systems may also not be applicable. 
+It is the intent of this project to have minimial explicit interrobot communication, which precludes many methods used to mutually plan tasks. 
+
+%TODO: investigate CEBOT work 
+%TODO: Is it possible to have the compiler compile to ALLIANCE specifications of task ability for each robot? Still has problems with sensing that task is done or other robots are doing it.
+%TODO: ALLIANCE doesn't have an idea of minimum robots needed because even one robot can do the job, just more slowly. 
 \subsection{Hypothesis}
 
 There exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
@@ -93,7 +106,7 @@ The size of the swarm where changes in the user gestures occur will indicate the
 %TODO is this relevant, if so, how?
 
 Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
-This problem will arise at smaller scales if the swarm robots are themselves quite small, and since making swarm robots smaller is an active area of research \unsure{Find an overview paper, cite that}, this problem will only get worse. 
+This problem will arise at smaller scales if the swarm robots are themselves quite small, and since some of the avaialble swarm robots are quite tiny \cite{pelrine2012diamagnetically}.
 Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
 Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
 This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \cite{ayanian2014controlling}.
@@ -109,8 +122,8 @@ Assessing whether or not a user-specified action will be completed is not possib
 However, it may be possible to determine if a specified action is impossible. 
 Doing so will require different heuristics for each possible tasks. 
 %(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
-\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
-\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
+%\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
+%\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
 \section{Related Work}
 
@@ -127,12 +140,11 @@ Finally, if the application domain of the robots is outside of research, the dom
 For example, a swarm designed to monitor infrastructure such as a bridge or building should be small enough to enter all the areas that require monitoring. 
 A search and rescue swarm might be composed of a variety of scales of robots, with smaller robots infiltrating a damaged building to collect telemetry that guides robots large enough to move damaged material in the building. 
 
-
 The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
 
-The robots used in most swarm work are of a sufficently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places and upper bound the scale of the individual swarm members.  \unsure{find a robot size taxonomy and cite that}
+The robots used in most swarm work are of a sufficently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places and upper bound the scale of the individual swarm members. 
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
@@ -140,7 +152,10 @@ This scale range divides fairly evenly into robots that can operate in large swa
 \subsubsection{Tabletop Swarms}
 
 At the low end, in terms of scale, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
-Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product. \improvement{Cite that sandia (?) maglev manipulation platform}
+Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
+Other techniques have been developed to use magnetic fields to apply force to small magnetic objects, resulting in controlled motion of the objects \cite{floyd2008untethered, pelrine2012diamagnetically}.
+These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
+The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
 
 Alice, by Caprari et al. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
@@ -626,7 +641,7 @@ The condition where all robots shared the same genes was called ``clonal", while
 Oddly, while one would expect that the aclonal condition would result in a specialization, with each robot developing a genome that performed either the leader or follower role well, the aclonal condition developed robots which could perform both roles. 
 It was hypothesized that while the clonal condition had to evolve roles and an allocation mechanism simultaneously, the aclonal condition could specialize the roles during early evolution, and then develop an arbitration mechanism to select roles.
 
-Aggregation behavior has also been evolved in swarm robots \cite{bahgecci2005evolving, dorigo2004evolving}.  
+Genetic algorithims have also been used to develop aggregation behavior in swarm robots \cite{bahgecci2005evolving, dorigo2004evolving}.  
 Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object, attacking \emph{en mass}, etc.
 The resulting controllers only controls aggregation behavior, so each behavioral primitive would require its own evolutionary development. 
 Solutions discovered by genetic algorithms are also prone to overfitting. 
@@ -945,26 +960,33 @@ If researchers are not to be expected to become entrepreneurs, they should also 
 The hardware resulting from this work will be designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
 
 In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
-The robots described in this work accomplish this task by using a ESP-8266 wifi module for wireless communication and as a micro controller. 
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
-The ESP-8266 is available in several form factors, each designated by a different suffix. 
-The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
-
-The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
-This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
-This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis \cite{lairdspider}. 
+The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
+The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
 All of these toys can be controlled by the hardware described in this work. 
 
-Because children's toys are manufactured to fairly low tolerances, the correlation between motion commands issued by the control software and resulting motions of the robot are prone to error. 
-The robots are also intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
+TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
 While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
-The system as a whole should be robust against the addition of new types of mobility hardware. 
-Because of the selection of hardware with a WiFi module, every hardware module is programmed with a unique MAC address. 
-In order to learn the control rules, the control software will send motion commands to each robot, and observe the displacement of that robot. 
-By varying motion commands and observing the resulting displacement, the system will learn the effect of motion commands on each robot, and so be able to control the robots. 
+The software framework in development to support TinyRobos is based on ROS, and so will allow modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+
+The processor of the TinyRobo controller is an ESP-8266 wifi module.
+The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
+The ESP-8266 is available in several form factors, each designated by a different suffix. 
+The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
+
+The motor controller in the TinyRobo boards is the DRV8830 IC by Texas Instruments. 
+The DRV8830 provides 1A of drive current, and is controlled by the ESP-8266 over an I2C serial interface. 
+Experimental tests with 8 different toys indicate that small toys draw well under 1A while moving freely, and peak around 2A when the motors are stalled. 
+The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
+The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
+
+The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
+The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
+Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
+Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
 
 The robot described in this work is intended to occupy a theoretical ``sweet spot'' at the high end of the tabletop swarms or the low end of the room-scale swarms, depending on how large of a mobility platform is used. 
 As a result, if it is configured for tabletop operation, the system can be used with a minimum of available space. 

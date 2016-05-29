@@ -1,6 +1,9 @@
 # TinyRobo
 Hardware and software for a tiny robot platform based on the ESP-8266 WiFi modules and hacked children's toys. 
 
+I've received and tested the third version of the control PCBs. 
+You can buy them from [Dangerous Things](http://dirtypcbs.com/view.php?share=20617&accesskey=775edbb47111a5cd47e422829b761675) for like $1.50 each, but you'll have to provide all your own parts.
+
 ### The hardware
 There are a lot of designs in the academic literature for small swarm robots. 
 Generally speaking, smaller robots are better because the researchers can maintain a high ratio of space to robots in a smaller area. 
