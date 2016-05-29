@@ -96,7 +96,7 @@ byte getFault(byte addr)
 }
 
 void setup() {
-  Wire.begin(12, 13); //May not be right for the actual boards.
+  Wire.begin(12, 13); //Correct for v2 boards, arguments are (SDA, SCL).
   Serial.begin(9600);
 
   // attempt to connect to Wifi network:
