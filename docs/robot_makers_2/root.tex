@@ -66,7 +66,7 @@ Previous platforms for swarm robotics have relied on custom-manufactured mechani
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-Swarm robots are generally small. 
+Swarm robots used in research are generally small. 
 The reason to keep swarm robots small is at least three-fold. 
 First, larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
@@ -75,7 +75,7 @@ To keep the ratio of free space to robots constant, the area of space used by th
 If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded. 
 The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 
-The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room, mostly between 1cm$^3$ and 0.3m$^3$. 
+The robots used in most swarm research are of a sufficiently small size that many of them can fit in a room, mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 For the purposes of this work, only tabletop swarms are considered. 
 
@@ -129,16 +129,18 @@ Experimental tests with 8 different toys indicate that small toys draw well unde
 The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
 The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
 
+The I2C interface used for the motor drivers can be extended to customize the robots, by adding sensors or more motor drivers. 
+Because adding additional sensors on board would increase the size and cost of the robot, the basic board does not include them. 
+Future versions of the board may include connection points for I2C expansions, but at present these expansions can be connected to the same traces that provide I2C signals to the motor drivers. 
+
 The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
 The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
 
-The I2C interface used in TinyRobo could also be used to extend the abilities of the hardware, by adding additional sensors or more motor drivers. 
-However, this approach would increase the size and cost of the board. 
-Instead, a software framework is being developed to provide virtual sensors based on the view from a camera mounted over the swarm experiment area.
+Instead of a comprehensive suite of physical sensors, a software framework is being developed to provide virtual sensors based on the view from a camera mounted over the swarm experiment area.
 This software framework will also provide virtualized inter-robot networking and computational power beyond that available on the robots. 
-As a result, the robots will be able to behave as though they had capabilities such as global localization and path planning, without having to include hardware on the robots to provide these features. 
+As a result, the robots will be able to behave as though they had capabilities such as global localization and obstacle range sensors, without having to include hardware on the robots to provide these features. 
 
 \section{Conclusions}
 
