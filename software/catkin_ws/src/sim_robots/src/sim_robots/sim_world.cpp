@@ -10,6 +10,9 @@ SimWorld::SimWorld(ros::NodeHandle node)
 	worldSizeX = 640;
 	worldSizeY = 480;
 
+	//Get a parameter list of all the robots names
+
+
 }
 
 void SimWorld::renderWorld()
