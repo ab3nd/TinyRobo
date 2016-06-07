@@ -1,6 +1,4 @@
 #include <ESP8266WiFi.h>
-
-
 #include <Wire.h>
 
 char ssid[] = "full_of_internets";     //  your network SSID (name)
@@ -29,7 +27,7 @@ byte faultVals = 0x00;
     0   IN1 The other H-bridge control line
 
     The valid range for VSET is 0x06h (0.48V) to 0x3Fh (5.06V) in 0.08V increments.
-    My batteries are 3.7V, so 0x30h (3.86V) ahd higher is 100% power.
+    My batteries are 3.7V, so 0x30h (3.86V) and higher is 100% power.
     0x00h-0x05h are "reserved".
 
     H-bridge truth table
@@ -75,7 +73,7 @@ void setMotor(byte address, byte vel, byte dir)
   //TODO add checking to motor directions
   Wire.beginTransmission(address);
   Wire.write(byte(0x00)); //Control register
-  Wire.write(byte(vel << 2) | byte(dir)); //Moderate speed
+  Wire.write(byte(vel << 2) | byte(dir));
   Wire.endTransmission();
 }
 
