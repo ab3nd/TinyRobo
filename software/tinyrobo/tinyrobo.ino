@@ -75,7 +75,11 @@ void setMotor(byte address, byte vel, byte dir)
   //TODO add checking to motor directions
   Wire.beginTransmission(address);
   Wire.write(byte(0x00)); //Control register
+<<<<<<< HEAD
+  Wire.write(byte(vel << 2) | byte(dir)); //Moderate speed
+=======
   Wire.write(byte(vel << 2) | byte(dir)); 
+>>>>>>> 24ab04176c00f1d1ec2517235cec0b4a533f05bf
   Wire.endTransmission();
 }
 
@@ -96,7 +100,11 @@ byte getFault(byte addr)
 }
 
 void setup() {
-  Wire.begin(12, 13); //May not be right for the actual boards.
+<<<<<<< HEAD
+  Wire.begin(14, 12); //May not be right for the actual boards.
+=======
+  Wire.begin(12, 13); //Correct for v2 boards, arguments are (SDA, SCL).
+>>>>>>> 24ab04176c00f1d1ec2517235cec0b4a533f05bf
   Serial.begin(9600);
 
   // attempt to connect to Wifi network:
@@ -181,11 +189,19 @@ void loop() {
           break;
         case MOTOR_DRV:
           //Set the motor state from what the client sent
+<<<<<<< HEAD
+          //setMotor(addr1, motor_cmd[0], motor_cmd[1]);
+          //setMotor(addr2, motor_cmd[2], motor_cmd[3]);
+          //Get the fault bits
+          //fault[0] = getFault(addr1);
+          //fault[1] = getFault(addr2);
+=======
           setMotor(addr1, motor_cmd[0], motor_cmd[1]);
           setMotor(addr2, motor_cmd[2], motor_cmd[3]);
           //Get the fault bits
           fault[0] = getFault(addr1);
           fault[1] = getFault(addr2);
+>>>>>>> 24ab04176c00f1d1ec2517235cec0b4a533f05bf
 
           //Debug print everything
           Serial.print("Set motor state");
@@ -197,7 +213,10 @@ void loop() {
             Serial.print(" ");
             Serial.print(fault[ii], HEX);
           }
+<<<<<<< HEAD
+=======
           Serial.println(' ');
+>>>>>>> 24ab04176c00f1d1ec2517235cec0b4a533f05bf
           state = CLI_READ;
           break;
       }
