@@ -282,21 +282,23 @@ At the higher levels of the autonomy scale, the robot's neglect time far outweig
 
 Increasing neglect time may allow the user to operate more swarm robots, but it comes at a cost. 
 The longer a user goes without learning about the state of one of the robots, the less idea they will have of the situation when they are called upon to operate that robot. 
+The problem of automation decreasing the situational awareness (SA) of the user has been described in cockpit automation for aircraft \cite{wiener1980flight}, and generalized well to other systems that combine automation with human control \cite{kaber1997out}. 
 If the user takes a long time to relearn the situation, the efficiency of the system will drop. 
 Worse, the user may make errors because of an incorrect understanding of the system when they begin operations after a long neglect time \cite{cummings2008predicting}. 
 One possible approach to maintain a constant and manageable workload on the user is adapting the level of automation to the workload. 
+When the load is low, the user is more directly engaged, but when load is high, there is more automated assistance. 
+By varying the level of automation, the workload for the user is kept constant. 
 A constant workload is desirable because the user remains engaged with the work, and so has an ongoing understanding of the situation as it develops. 
-The user is not suddenly called into a situation after remaining engaged for some time. 
+The user is not suddenly called into a situation after remaining disengaged for some time. 
 However, the workload must also be manageable. 
 If the user is overloaded, their attention will become subject to triage, and they will begin to miss elements of the task. 
-When the load is low, the user is more directly engaged, but when load is high, there is more automated assistance. 
 Adaptation does not have to be based on measured load, but could instead be based on perceived load or physiological markers in the user. 
 %\cite{goodrich2010maximizing}
 
 However, in situations with even moderate numbers of robots, even relatively high levels of automation may overwhelm the user \cite{lewis200617}. 
 Level five, operation by consent, is a fairly high level of autonomy, but with a large number of robots checking in, even this level may generate too many events for the human to deal with. 
 Increasing the autonomy to level nine, so that the robots are only checking in with the operator when an exceptional situation occurs, may still overwhelm the operator if enough robots are active.
-Increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability. 
+Increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability \cite{lee2004trust}. 
 
 In fact, any kind of multitasking may prove insufficient for large swarms. 
 For teleoperation, the best case is uncrewed aerial vehicles (UAVs), which require relatively little oversight. 

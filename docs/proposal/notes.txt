@@ -51,6 +51,14 @@ Ajo Fod, Andrew Howard, Maja J Mataric
 		State vector can continue to update predicted state of currently missing blobs
 			So when they reappear near their predicted location, they get their old state vector
 
+Detecting Anamalous Human Interactions using Laser Rangefinders
+	Uses the system described in "Laser-Based People Tracking"
+	Tracks of activities re segmented to maximise Jensen-Shannon divergence
+	Comparing concurrent positions of tracks detects interactions
+	Model of interactions in space is developed
+		Anomalous interactions are those of low probability under the model
+	
+
 Challenges in Evolving Controllers for Physical Robots
 Maja Mataric, Dave Cliff
 	Evolves morphology and controller
@@ -78,6 +86,49 @@ Maja Mataric, Dave Cliff
 		May not be able to measure fitness parameters (see Evaluation, above)
 	Overall, it seems like this is a bad way to go about what I want
 
+Minimizing Complexity in Controlling a Mobile Robot Population
+Maja J Mataric
+	Distrbuting a task over homogeneous robots
+	Minimal Modeling and no planning
+	Only covers tasks that can be done by a single robot
+		but get better with multiple robots
+		e.g. foraging
+	Ignorant coexistance
+		Robots treat each other as obstacles
+		More robots leads to more problems, slower task completion
+	Informed coexistance
+		Robots behave differently when avoiding robots than obstacles
+		Wait for the other robot to get out of the way, then evade
+		Minimizes interference, better than ignorant case
+	Intelligent coexistance
+		Robots have an idea of local population density, population gradient
+		Can minimize potential for interference, not just react to it
+		Homing, flocking, etc. 
+
+Design of the Army Ant Cooperative Lifting Robot
+John S. Bay
+	Not really related, more about mechanical and electronic design
+
+Ant-inspired Navigation in Unknown Environments
+	Combination of landmarks and transitions between them
+	Failure to detect landmarks triggers search
+
+Relaxation on a Mesh: a Formalism for Generalized Location
+	Spring relaxation of networks including some globally localized bodies
+	I don't plan to do global localization
+
+Huey, Dewey, Louie, and GUI - Commanding Robot Formations
+Jacob Fredslund, Maja j Mataric
+	GUI for commanding robots into formations
+	Only formation, no box pushing, patrolling, soda-can-collecting, etc. 
+	Uses the formation algorithm from "A General Algorithim for Robot Formations Using Local Sensing and Minimal Computation"
+	Gui specifies node locations, angles can be calculated from that
+	Limitation remains that no robot can look behind itself for its friend
+
+
+Robots in Formation Using Local Information
+Jakob Fredslund, Maja J Mataric
+	Same as "A General Algorithim for Robot Formations Using Local Sensing and Minimal Computation" but with more implementation details
 
 
 Bounds of Neglect Benevolence in Input Timing for Human Interaction with Robot Swarms
