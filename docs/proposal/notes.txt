@@ -1,3 +1,169 @@
+Mobile Sensor Network Deployment using Potential Fields
+Andrew Howard, Maja Mataric, Gaurav Sukhatme
+	Deploying a sensor network in unknown environment
+	Mobile nodes
+	Maximize coverage
+	Nodes are repelled by obstacles and each other
+		Viscous friction force so that the expansion eventually stops
+	No need for localization, aside from relative to other nodes
+	Only does one thing (spread out)
+
+A General Algorithim for Robot Formations Using Local Sensing and Minimal Computation
+Jakob Fredslund, Maja J Mataric	
+N robots, form geometric shape
+	Each robot picks a friend, makes sure that friend is at angle Theta
+	Three principles of formation control
+	Unit-center-referenced
+		Relative to centroid of all robots
+		Requires global knowledge
+	Leader-referenced
+		Position of a selected leader
+	Neighbor-referenced
+		Relative to position of nearest neighbor
+		Uses local knowledge
+	Paper cites a bunch of possible strategies for formations 
+	One robot is leader, has no friends, decides heading of formation
+	Certain formations cannot be formed
+		Can have at most two loose ends
+		Assumptions of sensor precent certain curves
+	Angle robot needs to keep its friend at depends on rank in formation
+		Allows different angles for e.g. squares
+	Leader can drag whole formation around
+	Includes algorithims for avoiding obstacles
+	Includes handling of individual robot "termination"
+
+Laser-Based People Tracking
+Ajo Fod, Andrew Howard, Maja J Mataric
+	Tracking people using plana laser scanners
+	Objects are tracked as blobs
+	Blobs are registered between frames
+		Prediction and update steps
+	Groups of blobs that stay together are objects
+	Object tracker smooths object paths and compensates for occlusions
+	From old frame to new frame
+		Bounding box old objects
+		Expand box
+		Check for matches within the expanded box in the new frame
+			Minimum-distance point pairs are "matches"
+		Weghted by quality of match, which is number of point matches
+		New blobs get a state vector of zero
+		old blobs get parent's state vector
+		State vector can continue to update predicted state of currently missing blobs
+			So when they reappear near their predicted location, they get their old state vector
+
+Challenges in Evolving Controllers for Physical Robots
+Maja Mataric, Dave Cliff
+	Evolves morphology and controller
+	Genetic Programming
+		Operates on lisp S-expressions as the genome
+	Generally, evolutionary control takes a long time
+	Generally, controllers are evolved to do exactly one task
+	As of '96, no evolutionary controller was doing anything that couldn't be done by hand
+	Realtime on real hardware 
+		Battery life
+		Wear on the robot
+	Simulation
+		Noise and error models
+			Noise has to match real noise
+				Otherwise, behavior won't transfer to real world
+			GA can exploit abstractions in simulation
+		Generality v. Utility
+			Simulator that simulates a given robot well won't generalize
+	Evaluation
+		Detecting convergence is hard to automate
+		Human ranking is tedious and slow
+	Fitness functions
+		Complex to design for complex cases
+		Has the same exploitable abstraction problems as simulaton
+		May not be able to measure fitness parameters (see Evaluation, above)
+	Overall, it seems like this is a bad way to go about what I want
+
+
+
+Bounds of Neglect Benevolence in Input Timing for Human Interaction with Robot Swarms
+Sasanka Nagavalli, Shih-Yi Chien et al
+	User may need to make changes to the swarm's goal from a previous goal
+	Two capabilities needed
+		Comprehension of swarm state
+			Relations and regularities in behavior
+		Prediction of effect of input on state
+			Human must develop a mental model of swarm responses
+			Timing lags make this harder
+	Adding the human input ASAP may not be optimal
+		"Neglect Benevolence" - some neglect may be good
+	How does human understand swarm dynamics to choose best time to intervene?
+		Humans can learn to approximate optimal timing
+	Paper refers to "Neglect Benevolence shape-changing HSI reference task"
+	Doesn't really effect compilation or anything, but good for interface design
+
+
+Human-Swarm Interaction: Sources of Uncertainty
+Sean Hayes, Julie Adams
+	Defines swarms as >= 50 entities	
+	Multiple sources of Uncertainty
+		Physical state uncertianty
+			Position uncertainty - Where each of the robots is, relative position
+			Motion uncertainty - keeping track of speed and direction of members
+			Aggregation and subgroup
+				Cohesion uncertainty - how well is subgroup bound?
+		Virtual state uncertainty
+			Leadership uncertainty - which units are leaders?
+			Influence uncertainty - how much influence do leaders have?
+		Compound state uncertainty - combined virtual and physical
+			Goal outcome uncertainty - will individuals contribute to goal?
+			Role uncertainty - units may change roles due to physical or virtual state
+			Dominance - attempts to influence others that may fail
+
+Explict vs. Tacit Leadership in influencing the Behavior of Swarms
+Saman Amirpour Amraii
+	How does a teleoperated leader influence the swarm?
+		My swarm isn't going to do this
+		May provide bottleneck/single point of failure
+	Consensus (tacit)
+		No leader/follower distinction
+	Flooding (explict)
+		Leader influence takes precedence
+	May be useful for control design of the compiler
+	Flooding generally converges faster
+
+
+
+This is a scratch file that I put stuff in when I remove it from the main paper. 
+
+Don't expect it to be useful, or even to contain complete sentences. 
+
+Motion "primitives" from Stupid Robot Tricks
+Motion $\rightarrow$ moveArc, moveStop, moveForward, moveByRemoteControl, bumpMove
+
+Orientation $\rightarrow$ orientForOrbit, orbitRobot, orientToRobot, matchHeadingToRobot, followRobot
+
+Navigation $\rightarrow$ followTheLeader, orbitGroup, navigateGradient
+
+Clustering $\rightarrow$ clusterOnSource, clusterWithBreadCrumbs, clusterIntoGroups
+
+Dispersion $\rightarrow$ avoidRobot, avoidManyRobots, disperseFromSource, disperseFromLeaves, disperseUniformly
+
+Utility $\rightarrow$ detectEdges
+
+detectEdges is "detect if you are on the edge of the swarm" 
+
+Utility classes are to be regarded with skepticism, they are like "miscelaneous" categories. 
+
+$\Rightarrow$ iRobot swarm had directional IR signaling (quadrants) using signal strength to figure out range and bearing, so that's something I'll want to include or emulate in my system. 
+
+$\Rightarrow$ I should probably include some form of charging that doesn't involve a lot of hands-on interaction with my robots. 
+
+Computer is aware of meaning of gesture, locations of robots. 
+Second assumption (global localization) may not hold. 
+How can computer determine what programs or what parameters result in the completion of the task?
+
+What are the tasks? Assume search and rescue domain, what are the tasks in USR? Search an area with good coverage. Report content of an area. Group at a location. Locate a specific resource. 
+
+This could be situated at an intersection between planning and compiling, as the compilation might have to factor in elements of the known environment at the time of compilation. Since the actors are spatially situated, plans should incorporate spatial awareness. 
+
+$\Rightarrow$ Why is almost everyone ignoring power supplies except as an afterthought? Not a computer science problem?
+
+
 Notes on papers in verification of swarm robotics
 
 ALLIANCE: An Arcitecture for Fault Tolerant Multirobot Cooperation
