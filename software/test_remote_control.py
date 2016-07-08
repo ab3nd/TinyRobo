@@ -29,8 +29,7 @@ class RobotComms:
 			return False
 
 	def sendMotor(self, cmd):
-
-		self.connection.send(bytearray([ord('M'),0x1F, 0x02, 0x1F, 0x02]))
+		self.connection.send(bytearray([ord('M'), cmd[0], cmd[1], cmd[2], cmd[3]]))
 
 class remoteControl:
 	def __init__(self, window):
@@ -76,22 +75,22 @@ class remoteControl:
 		self.robot.sendMotor(self.command)
 
 	def motor1Fwd(self):
-		self.command[0] = 0x1F
+		self.command[0] = 0x20
 		self.command[1] = 0x02
 		self.robot.sendMotor(self.command)
 
 	def motor2Fwd(self):
-		self.command[2] = 0x1F
+		self.command[2] = 0x20
 		self.command[3] = 0x02
 		self.robot.sendMotor(self.command)
 
 	def motor1Back(self):
-		self.command[0] = 0x1F
+		self.command[0] = 0x20
 		self.command[1] = 0x01
 		self.robot.sendMotor(self.command)
 
 	def motor2Back(self):
-		self.command[2] = 0x1F
+		self.command[2] = 0x20
 		self.command[3] = 0x01
 		self.robot.sendMotor(self.command)
 
