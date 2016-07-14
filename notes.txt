@@ -1,3 +1,19 @@
+
+Fiducial tracking from NERVE cameras
+	Camera uses RTSP
+	Default TUIO tracker implementation can't use RTSP cameras
+	v4l2loopback is broken on Ubuntu 14.04
+		Yes, both v4l2loopback-dkms and v4l2loopback-source + module-helper
+		Not going to bother compiling from source
+			It would break with every kernel upgrade
+			Unconvinced it's going to work, given that the packages are broken
+		So no converting RTSP to a /dev/videoX entry
+	TUIO isn't actually a fiducial library, it's a protocol
+	And the reacTable amoeba tags appear to be detcted by a binary blob
+		So those guys can go pound sand, I'll use something I can use. 
+	April tags?
+
+
 Bugs in v1 hardware:
 Don't use 0204 parts. They're annoyingly tiny. 1206 for everything. 
 The caps are OK 0805
