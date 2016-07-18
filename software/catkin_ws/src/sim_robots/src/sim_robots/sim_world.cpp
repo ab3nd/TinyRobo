@@ -25,21 +25,19 @@ void SimWorld::renderWorld()
 	rosImg.height = worldSizeY;
 	rosImg.width = worldSizeX;
 	rosImg.encoding = "rgba8";
-	rosImg.step = 4 * 8 * worldSizeY; //R, G, B, A = 4, at 8 bits per channel, times width
+	rosImg.step = 4 * worldSizeX; //R, G, B, A = 4, at 8 bits per channel, times width
 
 	//Copy the ImageMagick image into the message
 	//TODO There may be a faster way to do this...
-	int dataIndex = 0;
 	for(int ii = 0; ii < worldSizeX; ii++)
 	{
 		for(int jj = 0; jj < worldSizeY; jj++)
 		{
 			Magick::Color pColor = blankWorld.pixelColor(ii, jj);
-			rosImg.data[dataIndex] = pColor.redQuantum();
-			rosImg.data[dataIndex + 1] = pColor.greenQuantum();
-			rosImg.data[dataIndex + 2] = pColor.blueQuantum();
-			rosImg.data[dataIndex + 3] = pColor.alphaQuantum();
-			dataIndex += 4;
+			rosImg.data.push_back(pColor.redQuantum());
+			rosImg.data.push_back(pColor.greenQuantum());
+			rosImg.data.push_back(pColor.blueQuantum());
+			rosImg.data.push_back(pColor.alphaQuantum());
 		}
 	}
 

@@ -18,7 +18,7 @@ class SimWorld
 		ros::Publisher worldState;
 		//Send out timing updates to all simulated robots subscribed to the world
 		ros::Publisher worldClock;
-		//Send out a clock signall to all the subscribed sim robots
+		//Send out a clock signal to all the subscribed sim robots
 		void step();
 		//Receive an update from a sim robot and update it
 		void update();
