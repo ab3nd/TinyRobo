@@ -30,10 +30,10 @@ void loop() {
   //Test motor 1
   digitalWrite(2, HIGH);
   setMotor(addr1, 0x30, 0x02);
-  delay(1000);
+  delay(3000);
   setMotor(addr1, 0x00, 0x00);
   digitalWrite(2, LOW);
   setMotor(addr2, 0x30, 0x02);
-  delay(1000);
+  delay(3000);
   setMotor(addr2, 0x00, 0x00); 
 }
