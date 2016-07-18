@@ -6,12 +6,15 @@
 //For creating a "video" output of the world
 #include <ImageMagick/Magick++.h>
 #include <sensor_msgs/Image.h>
+#include <geometry_msgs/Pose.h>
 
 class SimWorld
 {
 	private:
 		int worldSizeX;
 		int worldSizeY;
+		std::vector<std::string> robotNames;
+		std::vector<ros::Subscriber> robotSubscriptions;
 	public:
 		//Publish the states of all the robots in the world
 		//TODO will eventually want a top-down image of the world like the camera image for the real arena
@@ -21,7 +24,7 @@ class SimWorld
 		//Send out a clock signal to all the subscribed sim robots
 		void step();
 		//Receive an update from a sim robot and update it
-		void update();
+		void update(const geometry_msgs::Pose);
 		//Generate and publish a top-down image of the world
 		void renderWorld();
 		SimWorld(ros::NodeHandle node);

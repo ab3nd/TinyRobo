@@ -11,8 +11,24 @@ SimWorld::SimWorld(ros::NodeHandle node)
 	worldSizeY = 480;
 
 	//Get a parameter list of all the robots names
+	node.param("robot_list", robotNames, std::vector<std::string>());
+	if(robotNames.size() == 0)
+	{
+		ROS_ERROR("The world received no robots in the robot_list parameter.");
+	}
+	else
+	{
+		ROS_INFO("Subscribing to %lu robots", robotNames.size());
+	}
 
-
+	//Subscribe to all the robots
+	for(std::vector<std::string>::iterator lit = robotNames.begin(); lit != robotNames.end(); lit++)
+	{
+		std::string topicName = "/" + *(lit) + "/pose";
+		ROS_INFO("Subscribing to %s", topicName.c_str());
+		ros::Subscriber tmp = node.subscribe(topicName, 1, &SimWorld::update, this);
+		robotSubscriptions.push_back(tmp);
+	}
 }
 
 void SimWorld::renderWorld()
@@ -56,9 +72,10 @@ void SimWorld::step()
 	worldClock.publish(msg);
 }
 
-void SimWorld::update()
+void SimWorld::update(const geometry_msgs::Pose)
 {
 	//For now, do nothing
+	ROS_INFO("Got an update");
 }
 
 int main(int argc, char** argv)
@@ -67,8 +84,6 @@ int main(int argc, char** argv)
 	ros::NodeHandle node("~");
 
 	SimWorld world = SimWorld(node);
-
-	//TODO Subscribe to all robots updates
 
 	ros::Rate r(100); //Update frequency for the world, in Hz
 	int rateCounter = 0;
