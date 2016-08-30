@@ -1,0 +1,14 @@
+<launch>
+  <node name="bot_1" pkg="sim_robots" type="sim_robot" output="screen">
+    <!-- Which drive translator should this robot listen to -->
+  	<param name="translator" type="str" value="/trans_bot_1"/>
+  	<!-- Initial position of the robot -->
+  	<rosparam param="location"> [0.62, 0.9, -0.25] </rosparam>
+  </node>
+  <node name="sim_world" pkg="sim_robots" type="sim_world" output="screen"/>
+  <node name="drive_bot_1" pkg="drive_logic" type="random_driver" output="screen"/>
+  <node name="trans_bot_1" pkg="motor_translation" type = "abstract_trans" output="screen">
+    <!-- The driver that this translation node listens to -->
+    <param name="driver_name" type="str" value="/drive_bot_1/drive_cmd"/>
+  </node>
+</launch>
