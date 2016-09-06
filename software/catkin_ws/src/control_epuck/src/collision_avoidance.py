@@ -1,7 +1,8 @@
 #!/usr/bin/python
 import rospy
 import math
-import atexit
+import signal
+import sys
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 #Simple collision avoidance with the laser scan emulation on the epucks
@@ -58,20 +59,17 @@ class Controller(object):
 		#with the sign based on difference of left to right 
 		rot = 0.0
 
-
-		# if rVals > lVals:
-		# 	multipler = 1
-		# 	if rVals > 0:
-		# 		multiplier = lVals/rVals
-		# 	rot = max_speed * -multiplier 
-		# elif lVals > rVals:
-		# 	multipler = 1
-		# 	if lVals > 0:
-		# 		multiplier = rVals/lVals
-		# 	rot = max_speed * multiplier
-		# else:
-		# 	#they are the same, don't rotate
-		# 	pass
+		if rVals > 0.005 and rVals > lVals:
+			multiplier = lVals/rVals
+			print "Right {0}".format(multiplier)
+			rot = max_speed * -multiplier * 5  
+		elif lVals < 0.005 and lVals > rVals:
+			multiplier = rVals/lVals
+			print "Left {0}".format(multiplier)
+			rot = max_speed * multiplier * 5
+		else:
+			#they are the same, don't rotate
+			pass
 
 		#Linear speed is maximum speed minus the center values times a correction factor
 		#to make the robot reverse if it is too close to something
@@ -82,23 +80,19 @@ class Controller(object):
 		print lin, rot
 		self.twist.linear.x = lin
 		self.twist.angular.z = rot
-
-		print "publishing twist"
 		self.pub.publish(self.twist)
 
-	def shutdown(self):
+	def shutdown(self, signal, frame):
 		#Stop listening for commands and stop the motors
 		self.sub.unregister()
 		self.twist.linear.x = 0.0
 		self.twist.angular.z = 0.0
-		for ii in range(5):
-			print "publishing stop"
-			rospy.sleep(0.5)
-			self.pub.publish(self.twist)
+		self.pub.publish(self.twist)
+		sys.exit(0)
 
 
 botname = "epuck_robot_9"
 
 control = Controller(botname)
-atexit.register(control.shutdown)
+signal.signal(signal.SIGINT, control.shutdown)
 rospy.spin()
