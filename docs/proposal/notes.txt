@@ -1,0 +1,97 @@
+Notes on papers in verification of swarm robotics
+
+ALLIANCE: An Arcitecture for Fault Tolerant Multirobot Cooperation
+	Distributed team is needed for distributed tasks
+	Decomposing a problem adds complexity
+	Fault tolerance is point failures (individual robots) or communication
+		Can occur any time, must adapt
+	2 kinds of cooperation
+		Intentional/Explict cooperation
+			ALLIANCE
+		Swarm/Ant-like cooperation
+			Other papers
+			"Such approaches usually rely on mathematical convergence
+			results (such as the random walk theorem [14]) that indicate
+			the desired outcome over a sufficiently long period of time. A
+			key research issue in this scenario is determining the proper
+			design of the local control laws that will allow the collection
+			of robots to solve a given problem." <- good pointer on what to look into
+			Assumes homogeneous robot hardware & software
+				Which I'm aiming to not have
+	Distributed AI (DAI) is apparently a field
+		Negotiation, which fails under no communication
+		Tends to be agents with perfect communication, not fallible robots
+		
+	"Our assumptions are as follows.
+	1) The robots on the team can detect the effect of their own
+	actions, with some probability greater than 0.
+	2) Robot can detect the actions of other team members
+	has redundant capabilities, with some
+	for which
+	probability greater than 0; these actions may be de-
+	tected through any available means, including explicit
+	broadcast communication.
+	3) Robots on the team do not lie and are not intentionally
+	adversarial.
+	4) The communications medium is not guaranteed to be
+	available.
+	5) The robots do not possess perfect sensors and effectors.
+	6) Any of the robot subsystems can fail, with some prob-
+	ability greater than 0.
+	7) If a robot fails, it cannot necessarily communicate its
+	failure to its teammates.
+	8) A centralized store of complete world knowledge is not
+	available."
+		Good list, I should probably have a similar one for my paper, early in the problem description
+	Paper points out that recognizing that something is happening is really hard
+		Overhead cam can fake this sense, but that's a bad thing to rely on
+	ALLIANCE overview
+		Robots have behaviors
+		Behaviors have motivations
+		Motivations can activate or deactivate behaviors based on percieved need
+		Some low level stuff (avoid obstacles) may not ever turn off (always needed)
+		Only does one thing at a time (except the low-level stuff)
+		Impatience
+			Increases desire to perform a behavior, when seeing that it needs doing and other robots are failing
+		Acquiesence 
+			Decreases desire to perform a behavior, to avoid all robots trying to do the same thing
+			Triggered by getting a message from another bot saying "chill, I got this"
+		Could communicate "I'm currently doing X" with local comms, and remember previously seen robots that were doing a thing
+			Sounds like a job for quorum sensing
+			"I've seen robot M, it was doing X" replications (and a timeout "Last time I saw M...")
+		Robots can detect that their behaviors fail
+			And then become reluctant to use them again
+	Subsumption provides a pretty good way of composing behaviors
+		The behaviors can then be reasoned about using e.g. random walk theories or the stochastic stuff from GCPR	
+		
+Self-stabilizing Systems in Spite of Distributed Control (Dijkstra! He has a way with titles.)			
+	Assumes a Legitimate State, and machines on a sparse connected graph
+	Global awareness of legitimacy is hard
+		Perhaps "locally legit" is good, as long as moves tend to spread legitimacy rather than illegitimacy
+	Assumption of connectivity may not hold, but how does it extend to severing/merging graphs?
+	
+Decentralized Model Predictive Control of Cooperating UAVs (Arthur Richards and Jonathan How)
+	Assumes solid communication
+	has better performance than a centralized version of the algorithim
+	Can operate as an anytime algorithim, so only computes what is needed
+	
+Decentralized Task Allocation for Dynamic Environments (Luke B. Johnson, MS Thesis)
+	Broadcast messages
+	Message count should be minimized
+	Sequential greedy algorithim
+		All agents assemble a bid, and shares it with all others
+		Whichever agent feels it can do a task best (max score based on its own knowledge) wins the bid
+		Constraints based on interdependant tasks, whether the agents can actually be trusted to do the job
+			Is this anything like the blockchain? Could the blockchain be used for this?
+		Reaching a synchronized state with incomplete communication may be very slow or impossible. 
+	Consensus-Based Bundle Algorithm (CBBA)	
+		Each agent creates a bundle of tasks
+		Tasks are added if the agent can outbid the current high bid
+		Some additions may conflict (multiple agents may have better scores than current high bid)
+		Conflicts resoved by communication to see if anyone outbids
+			If so, agent must release task and ALL SUBSEQUENT tasks (tasks are on a path, and so have dependencies)
+		So agents build a bundle, lose all, some, or none of it, then rebid from the end of whatever is left
+	Asynchronous Consensus Based Bundle Algorithm
+		Allows agents to enter and leave network
+	This whole paper isn't really about task completion, just assignment	
+	
