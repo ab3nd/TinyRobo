@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # TinyRobo
 Hardware and software for a tiny robot platform based on the ESP-8266 WiFi modules and hacked children's toys. 
+
+I've received and tested the third version of the control PCBs. 
+You can buy them from [Dangerous Things](http://dirtypcbs.com/view.php?share=20617&accesskey=775edbb47111a5cd47e422829b761675) for like $1.50 each, but you'll have to provide all your own parts.
 
 ### The hardware
 There are a lot of designs in the academic literature for small swarm robots. 
@@ -98,5 +102,7 @@ These software modules will also be part of this repository, so the entire colle
 
 ## OSHW
 This project is open source in the sense that I legally permit people to do whatever they want with the source code, design drawings, etc.; and in the sense that I provide that information for them to do what they want. 
-It is EXPLICITLY NOT COMPLIANT with the [OSHWA Certification](www.oshwa.org/2015/09/19/open-source-hardware-certification-version-1/). 
-It never will be, because the only thing that certification adds to a project is increased liability to civil suits. 
+It does not comply with anyone's idea of open source but my own, but given that I'm counting on github to be my last-resort backup in case of my University suffering a total existance failure, it behooves me to put everything I'd need to duplicate the work here. 
+Let me know if I forgot to check something in. 
+
+

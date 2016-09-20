@@ -1,0 +1,361 @@
+
+Fiducial tracking from NERVE cameras
+	Camera uses RTSP
+	Default TUIO tracker implementation can't use RTSP cameras
+	v4l2loopback is broken on Ubuntu 14.04
+		Yes, both v4l2loopback-dkms and v4l2loopback-source + module-helper
+		Not going to bother compiling from source
+			It would break with every kernel upgrade
+			Unconvinced it's going to work, given that the packages are broken
+		So no converting RTSP to a /dev/videoX entry
+	TUIO isn't actually a fiducial library, it's a protocol
+	And the reacTable amoeba tags appear to be detcted by a binary blob
+		So those guys can go pound sand, I'll use something I can use. 
+	April tags?
+
+
+Bugs in v1 hardware:
+Don't use 0204 parts. They're annoyingly tiny. 1206 for everything. 
+The caps are OK 0805
+The footprint for the diode is too big, it's only slightly bigger than 1206. 
+The footprint for the switch needs the leg contacts moved in by half their length towards the switch
+Via for the heat sink for the motor drivers needs to not be under the ESP8266
+Connectorize battery
+
+Needs pull-up to connect CH_PD high, pull-downs on GPIO15 (all times) and GPIO0 (only for programming)
+ - GPIO15 is what I was going to use for one of the fault sensing lines
+
+DRV8833 might be a good canidate for next driver, but only has PWM interface.
+3A drive if outputs are paralleled, available in a TSSOP16 package. 
+
+IFX9201SGAUMA1 would also be good, but requires higher voltage (e.g. two-cell battery and voltage regulation)
+Has SPI interface, 6A(!) drive current, full bridge per chip. 
+ 
+https://github.com/esp8266/Arduino/issues/22 Has how to get automatic reset, easier than integrating the limpkin.fr reset circuit.  
+Needs a serial adapter that has DTR line, ordered that. 
+
+Assembly pointers:
+Get you some fine-point tweezers for great good
+
+Ideological bugs:
+Off is not where you think it is on the switch (on is towards the battery)
+- Label on the PCB
+Surface mount ESP8266 has no idiot lights, add one so I can tell when it is on
+Add another light to an unused GPIO for debugging
+Any reason I shouldn't have all pull-ups be one value (have some 10k and some 1k)?
+
+
+Mobile Sensor Network Deployment using Potential Fields
+Andrew Howard, Maja Mataric, Gaurav Sukhatme
+	Deploying a sensor network in unknown environment
+	Mobile nodes
+	Maximize coverage
+	Nodes are repelled by obstacles and each other
+		Viscous friction force so that the expansion eventually stops
+	No need for localization, aside from relative to other nodes
+	Only does one thing (spread out)
+
+A General Algorithim for Robot Formations Using Local Sensing and Minimal Computation
+Jakob Fredslund, Maja J Mataric	
+N robots, form geometric shape
+	Each robot picks a friend, makes sure that friend is at angle Theta
+	Three principles of formation control
+	Unit-center-referenced
+		Relative to centroid of all robots
+		Requires global knowledge
+	Leader-referenced
+		Position of a selected leader
+	Neighbor-referenced
+		Relative to position of nearest neighbor
+		Uses local knowledge
+	Paper cites a bunch of possible strategies for formations 
+	One robot is leader, has no friends, decides heading of formation
+	Certain formations cannot be formed
+		Can have at most two loose ends
+		Assumptions of sensor precent certain curves
+	Angle robot needs to keep its friend at depends on rank in formation
+		Allows different angles for e.g. squares
+	Leader can drag whole formation around
+	Includes algorithims for avoiding obstacles
+	Includes handling of individual robot "termination"
+
+Laser-Based People Tracking
+Ajo Fod, Andrew Howard, Maja J Mataric
+	Tracking people using plana laser scanners
+	Objects are tracked as blobs
+	Blobs are registered between frames
+		Prediction and update steps
+	Groups of blobs that stay together are objects
+	Object tracker smooths object paths and compensates for occlusions
+	From old frame to new frame
+		Bounding box old objects
+		Expand box
+		Check for matches within the expanded box in the new frame
+			Minimum-distance point pairs are "matches"
+		Weghted by quality of match, which is number of point matches
+		New blobs get a state vector of zero
+		old blobs get parent's state vector
+		State vector can continue to update predicted state of currently missing blobs
+			So when they reappear near their predicted location, they get their old state vector
+
+Detecting Anamalous Human Interactions using Laser Rangefinders
+	Uses the system described in "Laser-Based People Tracking"
+	Tracks of activities re segmented to maximise Jensen-Shannon divergence
+	Comparing concurrent positions of tracks detects interactions
+	Model of interactions in space is developed
+		Anomalous interactions are those of low probability under the model
+	
+
+Challenges in Evolving Controllers for Physical Robots
+Maja Mataric, Dave Cliff
+	Evolves morphology and controller
+	Genetic Programming
+		Operates on lisp S-expressions as the genome
+	Generally, evolutionary control takes a long time
+	Generally, controllers are evolved to do exactly one task
+	As of '96, no evolutionary controller was doing anything that couldn't be done by hand
+	Realtime on real hardware 
+		Battery life
+		Wear on the robot
+	Simulation
+		Noise and error models
+			Noise has to match real noise
+				Otherwise, behavior won't transfer to real world
+			GA can exploit abstractions in simulation
+		Generality v. Utility
+			Simulator that simulates a given robot well won't generalize
+	Evaluation
+		Detecting convergence is hard to automate
+		Human ranking is tedious and slow
+	Fitness functions
+		Complex to design for complex cases
+		Has the same exploitable abstraction problems as simulaton
+		May not be able to measure fitness parameters (see Evaluation, above)
+	Overall, it seems like this is a bad way to go about what I want
+
+Minimizing Complexity in Controlling a Mobile Robot Population
+Maja J Mataric
+	Distrbuting a task over homogeneous robots
+	Minimal Modeling and no planning
+	Only covers tasks that can be done by a single robot
+		but get better with multiple robots
+		e.g. foraging
+	Ignorant coexistance
+		Robots treat each other as obstacles
+		More robots leads to more problems, slower task completion
+	Informed coexistance
+		Robots behave differently when avoiding robots than obstacles
+		Wait for the other robot to get out of the way, then evade
+		Minimizes interference, better than ignorant case
+	Intelligent coexistance
+		Robots have an idea of local population density, population gradient
+		Can minimize potential for interference, not just react to it
+		Homing, flocking, etc. 
+
+Design of the Army Ant Cooperative Lifting Robot
+John S. Bay
+	Not really related, more about mechanical and electronic design
+
+Ant-inspired Navigation in Unknown Environments
+	Combination of landmarks and transitions between them
+	Failure to detect landmarks triggers search
+
+Relaxation on a Mesh: a Formalism for Generalized Location
+	Spring relaxation of networks including some globally localized bodies
+	I don't plan to do global localization
+
+Huey, Dewey, Louie, and GUI - Commanding Robot Formations
+Jacob Fredslund, Maja j Mataric
+	GUI for commanding robots into formations
+	Only formation, no box pushing, patrolling, soda-can-collecting, etc. 
+	Uses the formation algorithm from "A General Algorithim for Robot Formations Using Local Sensing and Minimal Computation"
+	Gui specifies node locations, angles can be calculated from that
+	Limitation remains that no robot can look behind itself for its friend
+
+
+Robots in Formation Using Local Information
+Jakob Fredslund, Maja J Mataric
+	Same as "A General Algorithim for Robot Formations Using Local Sensing and Minimal Computation" but with more implementation details
+
+
+Bounds of Neglect Benevolence in Input Timing for Human Interaction with Robot Swarms
+Sasanka Nagavalli, Shih-Yi Chien et al
+	User may need to make changes to the swarm's goal from a previous goal
+	Two capabilities needed
+		Comprehension of swarm state
+			Relations and regularities in behavior
+		Prediction of effect of input on state
+			Human must develop a mental model of swarm responses
+			Timing lags make this harder
+	Adding the human input ASAP may not be optimal
+		"Neglect Benevolence" - some neglect may be good
+	How does human understand swarm dynamics to choose best time to intervene?
+		Humans can learn to approximate optimal timing
+	Paper refers to "Neglect Benevolence shape-changing HSI reference task"
+	Doesn't really effect compilation or anything, but good for interface design
+
+
+Human-Swarm Interaction: Sources of Uncertainty
+Sean Hayes, Julie Adams
+	Defines swarms as >= 50 entities	
+	Multiple sources of Uncertainty
+		Physical state uncertianty
+			Position uncertainty - Where each of the robots is, relative position
+			Motion uncertainty - keeping track of speed and direction of members
+			Aggregation and subgroup
+				Cohesion uncertainty - how well is subgroup bound?
+		Virtual state uncertainty
+			Leadership uncertainty - which units are leaders?
+			Influence uncertainty - how much influence do leaders have?
+		Compound state uncertainty - combined virtual and physical
+			Goal outcome uncertainty - will individuals contribute to goal?
+			Role uncertainty - units may change roles due to physical or virtual state
+			Dominance - attempts to influence others that may fail
+
+Explict vs. Tacit Leadership in influencing the Behavior of Swarms
+Saman Amirpour Amraii
+	How does a teleoperated leader influence the swarm?
+		My swarm isn't going to do this
+		May provide bottleneck/single point of failure
+	Consensus (tacit)
+		No leader/follower distinction
+	Flooding (explict)
+		Leader influence takes precedence
+	May be useful for control design of the compiler
+	Flooding generally converges faster
+
+
+
+This is a scratch file that I put stuff in when I remove it from the main paper. 
+
+Don't expect it to be useful, or even to contain complete sentences. 
+
+Motion "primitives" from Stupid Robot Tricks
+Motion $\rightarrow$ moveArc, moveStop, moveForward, moveByRemoteControl, bumpMove
+
+Orientation $\rightarrow$ orientForOrbit, orbitRobot, orientToRobot, matchHeadingToRobot, followRobot
+
+Navigation $\rightarrow$ followTheLeader, orbitGroup, navigateGradient
+
+Clustering $\rightarrow$ clusterOnSource, clusterWithBreadCrumbs, clusterIntoGroups
+
+Dispersion $\rightarrow$ avoidRobot, avoidManyRobots, disperseFromSource, disperseFromLeaves, disperseUniformly
+
+Utility $\rightarrow$ detectEdges
+
+detectEdges is "detect if you are on the edge of the swarm" 
+
+Utility classes are to be regarded with skepticism, they are like "miscelaneous" categories. 
+
+$\Rightarrow$ iRobot swarm had directional IR signaling (quadrants) using signal strength to figure out range and bearing, so that's something I'll want to include or emulate in my system. 
+
+$\Rightarrow$ I should probably include some form of charging that doesn't involve a lot of hands-on interaction with my robots. 
+
+Computer is aware of meaning of gesture, locations of robots. 
+Second assumption (global localization) may not hold. 
+How can computer determine what programs or what parameters result in the completion of the task?
+
+What are the tasks? Assume search and rescue domain, what are the tasks in USR? Search an area with good coverage. Report content of an area. Group at a location. Locate a specific resource. 
+
+This could be situated at an intersection between planning and compiling, as the compilation might have to factor in elements of the known environment at the time of compilation. Since the actors are spatially situated, plans should incorporate spatial awareness. 
+
+$\Rightarrow$ Why is almost everyone ignoring power supplies except as an afterthought? Not a computer science problem?
+
+
+Notes on papers in verification of swarm robotics
+
+ALLIANCE: An Arcitecture for Fault Tolerant Multirobot Cooperation
+	Distributed team is needed for distributed tasks
+	Decomposing a problem adds complexity
+	Fault tolerance is point failures (individual robots) or communication
+		Can occur any time, must adapt
+	2 kinds of cooperation
+		Intentional/Explict cooperation
+			ALLIANCE
+		Swarm/Ant-like cooperation
+			Other papers
+			"Such approaches usually rely on mathematical convergence
+			results (such as the random walk theorem [14]) that indicate
+			the desired outcome over a sufficiently long period of time. A
+			key research issue in this scenario is determining the proper
+			design of the local control laws that will allow the collection
+			of robots to solve a given problem." <- good pointer on what to look into
+			Assumes homogeneous robot hardware & software
+				Which I'm aiming to not have
+	Distributed AI (DAI) is apparently a field
+		Negotiation, which fails under no communication
+		Tends to be agents with perfect communication, not fallible robots
+		
+	"Our assumptions are as follows.
+	1) The robots on the team can detect the effect of their own
+	actions, with some probability greater than 0.
+	2) Robot can detect the actions of other team members
+	has redundant capabilities, with some
+	for which
+	probability greater than 0; these actions may be de-
+	tected through any available means, including explicit
+	broadcast communication.
+	3) Robots on the team do not lie and are not intentionally
+	adversarial.
+	4) The communications medium is not guaranteed to be
+	available.
+	5) The robots do not possess perfect sensors and effectors.
+	6) Any of the robot subsystems can fail, with some prob-
+	ability greater than 0.
+	7) If a robot fails, it cannot necessarily communicate its
+	failure to its teammates.
+	8) A centralized store of complete world knowledge is not
+	available."
+		Good list, I should probably have a similar one for my paper, early in the problem description
+	Paper points out that recognizing that something is happening is really hard
+		Overhead cam can fake this sense, but that's a bad thing to rely on
+	ALLIANCE overview
+		Robots have behaviors
+		Behaviors have motivations
+		Motivations can activate or deactivate behaviors based on percieved need
+		Some low level stuff (avoid obstacles) may not ever turn off (always needed)
+		Only does one thing at a time (except the low-level stuff)
+		Impatience
+			Increases desire to perform a behavior, when seeing that it needs doing and other robots are failing
+		Acquiesence 
+			Decreases desire to perform a behavior, to avoid all robots trying to do the same thing
+			Triggered by getting a message from another bot saying "chill, I got this"
+		Could communicate "I'm currently doing X" with local comms, and remember previously seen robots that were doing a thing
+			Sounds like a job for quorum sensing
+			"I've seen robot M, it was doing X" replications (and a timeout "Last time I saw M...")
+		Robots can detect that their behaviors fail
+			And then become reluctant to use them again
+	Subsumption provides a pretty good way of composing behaviors
+		The behaviors can then be reasoned about using e.g. random walk theories or the stochastic stuff from GCPR	
+		
+Self-stabilizing Systems in Spite of Distributed Control (Dijkstra! He has a way with titles.)			
+	Assumes a Legitimate State, and machines on a sparse connected graph
+	Global awareness of legitimacy is hard
+		Perhaps "locally legit" is good, as long as moves tend to spread legitimacy rather than illegitimacy
+	Assumption of connectivity may not hold, but how does it extend to severing/merging graphs?
+	
+Decentralized Model Predictive Control of Cooperating UAVs (Arthur Richards and Jonathan How)
+	Assumes solid communication
+	has better performance than a centralized version of the algorithim
+	Can operate as an anytime algorithim, so only computes what is needed
+	
+Decentralized Task Allocation for Dynamic Environments (Luke B. Johnson, MS Thesis)
+	Broadcast messages
+	Message count should be minimized
+	Sequential greedy algorithim
+		All agents assemble a bid, and shares it with all others
+		Whichever agent feels it can do a task best (max score based on its own knowledge) wins the bid
+		Constraints based on interdependant tasks, whether the agents can actually be trusted to do the job
+			Is this anything like the blockchain? Could the blockchain be used for this?
+		Reaching a synchronized state with incomplete communication may be very slow or impossible. 
+	Consensus-Based Bundle Algorithm (CBBA)	
+		Each agent creates a bundle of tasks
+		Tasks are added if the agent can outbid the current high bid
+		Some additions may conflict (multiple agents may have better scores than current high bid)
+		Conflicts resoved by communication to see if anyone outbids
+			If so, agent must release task and ALL SUBSEQUENT tasks (tasks are on a path, and so have dependencies)
+		So agents build a bundle, lose all, some, or none of it, then rebid from the end of whatever is left
+	Asynchronous Consensus Based Bundle Algorithm
+		Allows agents to enter and leave network
+	This whole paper isn't really about task completion, just assignment	
+	
