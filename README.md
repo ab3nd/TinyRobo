@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TinyRobo
 Hardware and software for a tiny robot platform based on the ESP-8266 WiFi modules and hacked children's toys. 
 
@@ -61,6 +60,7 @@ Just for reference, the WiFiWebServer demo is 295k of 434k bytes, so getting a J
 6. Good to reflash, using the "program" button in the arduino IDE
 7. If you want the program to run afterwards, you need to keep the pull up on CH_PD and the pull-down on GPIO15. 
 
+![esp-8266-03 pinout](https://github.com/ab3nd/TinyRobo/blob/master/docs/8266-03-pinout.jpeg)
 ##### Mobility platform current draw
 Free run current was measured with the toy held so its moving parts didn't touch anything. 
 This means that the free running current includes the current required to move the moving parts of the toy, but not to move the toy around. 
@@ -99,6 +99,7 @@ In theory, I'll only have to flash each robot once, and then I can use ROS to co
 
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
 These software modules will also be part of this repository, so the entire collection of materials will be able to be used by any researcher who wishes to use them. 
+
 
 ## OSHW
 This project is open source in the sense that I legally permit people to do whatever they want with the source code, design drawings, etc.; and in the sense that I provide that information for them to do what they want. 
