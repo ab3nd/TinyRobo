@@ -22,7 +22,7 @@ class Controller(object):
 		rospy.init_node('controlNode', anonymous=True)
 
 		#subscribe to the laser messages
-		self.sub = rospy.Subscriber("/{0}/scan".format(botname), LaserScan, self.laserCallback)
+		self.sub = rospy.Subscriber("/{0}/scan".format(botname), LaserScan, self.stupidLaserCallback)
 		
 		#Publish motor speeds
 		self.pub = rospy.Publisher('/{0}/mobile_base/cmd_vel'.format(botname), Twist, queue_size=1)
@@ -82,17 +82,64 @@ class Controller(object):
 		self.twist.angular.z = rot
 		self.pub.publish(self.twist)
 
+	def stupidLaserCallback(self, laserData):
+		#print "Calback called"
+		threshold = 0.07
+		
+		#Split the scan into large left and right ranges, small center range
+		left = laserData.ranges[:8]
+		center = laserData.ranges[8:11]
+		right = laserData.ranges[11:]
+
+		#Check the left and right sensors
+		detectLeft = any([x < threshold for x in left])
+		detectRight = any([x < threshold for x in right])
+		detectCenter =  any([x < threshold for x in center])
+		
+		if detectCenter and detectLeft and detectRight:
+			#Surrounded, go full reverse
+			self.twist.linear.x = -4
+			self.twist.angular.z = 0
+		elif detectCenter:
+			#Back up, with angle depending on left and right
+			if detectRight:
+				#Right motor more than left to back and turn away
+				self.twist.linear.x = -2
+				self.twist.angular.z = -2
+			elif detectLeft:
+				#Left motor more than right to back and turn away
+				self.twist.linear.x = -2
+				self.twist.angular.z = 2
+			else:
+				#Rotate in place
+				self.twist.linear.x = 0
+				#TODO could pick a random direction here
+				self.twist.angular.z = 2
+		elif detectLeft:
+			#Turn to the right
+			self.twist.linear.x = 2
+			self.twist.angular.z = 2
+		elif detectRight:
+			self.twist.linear.x = 2
+			self.twist.angular.z = -2			
+		else:
+			#No detection, go straight
+			self.twist.linear.x = 5
+			self.twist.angular.z = 0
+		self.pub.publish(self.twist)
+
 	def shutdown(self, signal, frame):
 		#Stop listening for commands and stop the motors
 		self.sub.unregister()
 		self.twist.linear.x = 0.0
 		self.twist.angular.z = 0.0
 		self.pub.publish(self.twist)
+		print "Shutting down"
 		sys.exit(0)
 
 
-botname = "epuck_robot_9"
-
+botname = sys.argv[1]
+print "Controlling {0}".format(botname)
 control = Controller(botname)
 signal.signal(signal.SIGINT, control.shutdown)
 rospy.spin()
