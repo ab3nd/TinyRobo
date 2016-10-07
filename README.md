@@ -100,6 +100,23 @@ In theory, I'll only have to flash each robot once, and then I can use ROS to co
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
 These software modules will also be part of this repository, so the entire collection of materials will be able to be used by any researcher who wishes to use them. 
 
+## Installation 
+
+mkdir Proj
+cd Projects/
+   25  git clone https://github.com/ab3nd/TinyRobo
+   30  cd TinyRobo/software/catkin_ws/
+   36  sudo apt-get install libmagick++-dev
+   50  sudo ln -s /usr/include/ImageMagick-6/ /usr/include/ImageMagick
+   61  sudo apt-get install libmagickcore-dev
+   74  sudo apt-get install libmagickwand-6.q16-2
+   75  sudo apt-cache search libMagick++
+   76  sudo apt-get install libmagick++-6.q16-5v5
+   82  sudo apt-get install libmagick++-6.q16-dev  libmagickcore-dev libmagick++-dev
+   88  sudo ln -s /usr/lib/x86_64-linux-gnu/libMagickCore-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagickCore.so
+   91  sudo ln -s /usr/lib/x86_64-linux-gnu/libMagick++-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagick++.so
+   92  catkin_make
+
 
 ## OSHW
 This project is open source in the sense that I legally permit people to do whatever they want with the source code, design drawings, etc.; and in the sense that I provide that information for them to do what they want. 
