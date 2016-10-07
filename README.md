@@ -102,20 +102,29 @@ These software modules will also be part of this repository, so the entire colle
 
 ## Installation 
 
-mkdir Proj
-cd Projects/
-   25  git clone https://github.com/ab3nd/TinyRobo
-   30  cd TinyRobo/software/catkin_ws/
-   36  sudo apt-get install libmagick++-dev
-   50  sudo ln -s /usr/include/ImageMagick-6/ /usr/include/ImageMagick
-   61  sudo apt-get install libmagickcore-dev
-   74  sudo apt-get install libmagickwand-6.q16-2
-   75  sudo apt-cache search libMagick++
-   76  sudo apt-get install libmagick++-6.q16-5v5
-   82  sudo apt-get install libmagick++-6.q16-dev  libmagickcore-dev libmagick++-dev
-   88  sudo ln -s /usr/lib/x86_64-linux-gnu/libMagickCore-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagickCore.so
-   91  sudo ln -s /usr/lib/x86_64-linux-gnu/libMagick++-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagick++.so
-   92  catkin_make
+git clone https://github.com/ab3nd/TinyRobo
+
+cd TinyRobo/software/catkin_ws/
+
+sudo apt-get install libmagick++-dev
+
+sudo ln -s /usr/include/ImageMagick-6/ /usr/include/ImageMagick
+
+sudo apt-get install libmagickcore-dev
+
+sudo apt-get install libmagickwand-6.q16-2
+
+sudo apt-cache search libMagick++
+
+sudo apt-get install libmagick++-6.q16-5v5
+
+sudo apt-get install libmagick++-6.q16-dev  libmagickcore-dev libmagick++-dev
+
+sudo ln -s /usr/lib/x86_64-linux-gnu/libMagickCore-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagickCore.so
+
+sudo ln -s /usr/lib/x86_64-linux-gnu/libMagick++-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagick++.so
+
+catkin_make
 
 
 ## OSHW
