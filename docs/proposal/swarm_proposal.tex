@@ -190,6 +190,10 @@ Epucks also require a fairly smooth operating surface.
 The Epuck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
 Due to the relatively sharp corner of the lower edges of the robot, the Epuck can become stuck on 2-3mm high obstacles. 
 
+The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
+The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -816,15 +820,13 @@ Having communication mediated by software on the host will allow for simple expe
 
 \section{Timeline}
 
-\subsection{Spring 2016}
-
-
 \subsection{Summer 2016}
 
 Gestures - The paperwork to run user tests with the UML student population will be completed. 
 A pilot of the test will be run with users in the robotics lab in order to determine how long each user test is expected to take, and to work on the script for interacting with users. 
 For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
-To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. 
+Each user is assigned to one case, and then performs all the tasks using that case. 
+Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
 There are 18 tasks. 
 The tasks do have some degree of order to their complexity, but maybe randomizing would be better so that users don't try to reuse gestures that might not make sense. 
 Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
