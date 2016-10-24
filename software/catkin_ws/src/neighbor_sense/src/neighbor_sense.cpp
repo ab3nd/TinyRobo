@@ -10,7 +10,7 @@ NeighborSense::NeighborSense(ros::NodeHandle nh){
 
 void NeighborSense::tagCallback(const apriltags_ros::AprilTagDetectionArray::ConstPtr& tagArray)
 {
-	ROS_WARN("Tag callback called");
+	//ROS_WARN("Tag callback called");
 	//For each visible tag
 	for(std::vector<apriltags_ros::AprilTagDetection>::const_iterator tag = tagArray->detections.begin(); tag != tagArray->detections.end(); tag++)
 	{
@@ -40,7 +40,7 @@ void NeighborSense::tagCallback(const apriltags_ros::AprilTagDetectionArray::Con
 			float thisZ = (*tag).pose.pose.position.z;
 			float otherZ = (*otherTag).pose.pose.position.z;
 			float yaw = atan2((thisY-otherY),(thisX-otherX));
-			float roll = atan2((thisZ-otherZ), (thisY-otherY));
+			float roll = atan2((thisY-otherY), (thisZ-otherZ));
 			float pitch = atan2((thisX-otherX), (thisZ-otherZ));
 
 			//Create a quaternion from rotation vectors
