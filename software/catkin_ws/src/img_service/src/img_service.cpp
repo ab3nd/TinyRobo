@@ -66,7 +66,7 @@ void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
   }
 }
 
-cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray:ConstPtr tagz)
+cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
 {
 
     if (!got_tags)
@@ -184,10 +184,11 @@ bool detect(img_service::TagDetection::Request &req,
 	ROS_INFO("No tags found");
 	return false;
     }
+    cv::Point2f point;
     {
       boost::mutex::scoped_lock
         lock(tags_mutex);
-      cv::Point2f point = tag_location(req.tag_Id, tags);
+      point = tag_location(req.tag_Id, tags);
     }
 
     float angle = 0; //TODO implement angle
