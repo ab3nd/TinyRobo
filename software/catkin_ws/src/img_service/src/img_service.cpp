@@ -14,6 +14,11 @@
 #include <algorithm>
 #include <image_transport/image_transport.h>
 #include <cmath>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/bind.hpp>
+
+
 
 //Constants, see adjustables
 
@@ -36,14 +41,18 @@ const float ROBOT_RADIUS = 3.0f; //used to draw robots as obstacles
 
 //PUB NAMES
 const std::string CAMERA_PUBLISHER_NAME = "overhead_camera/image_rect_color";
-const std::string TAGS_PUBLISHER_NAME = "tag_detections";
+const std::string TAGS_PUBLISHER_NAME = "change";
 
 cv::Mat tapes;
 
 image_transport::Publisher pub;
 
-bool lock_image = false;
-bool lock_tags = false;
+
+bool got_tags = false;
+
+boost::mutex tapes_mutex;
+boost::mutex tags_mutex;
+
 
 sensor_msgs::Image::ConstPtr recent_img;
 apriltags_ros::AprilTagDetectionArray::ConstPtr tags;
@@ -57,10 +66,10 @@ void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
   }
 }
 
-cv::Point2f tag_location(int tag_id)
+cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray:ConstPtr tagz)
 {
 
-    if (tags == NULL)
+    if (!got_tags)
     {
 	//TODO error?
 	return cv::Point2f(-1,-1);
@@ -68,14 +77,14 @@ cv::Point2f tag_location(int tag_id)
     else 
     {
 	int index;
-	for (index=0; tags->detections[index].id != tag_id || index<tags->detections.size(); index++)
+	for (index=0; tagz->detections[index].id != tag_id || index<tagz->detections.size(); index++)
 	{
 	    if (index > 5) //TODO change to actual size
 	    {
 		return cv::Point2f(-1,-1);
 	    }
 	}
-	geometry_msgs::Pose pos = tags->detections[index].pose.pose;
+	geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
 	return cv::Point2f(pos.position.x, pos.position.y);
 	//NOTE: theta = pos.orientation
     }
@@ -153,23 +162,33 @@ bool detect(img_service::TagDetection::Request &req,
 {
     //  req.tag_Id;
     //  res.scan;
-    lock_image = true;
-    if (tapes.empty())
+    cv::Mat tapes_cpy;
     {
-	ROS_INFO("No image found");
-	return false;
+      boost::mutex::scoped_lock
+        lock(tapes_mutex);
+      if (tapes.empty())
+      {
+  	ROS_INFO("No image found");
+  	return false;
+      }
+      cv::Mat tapes_cpy = tapes.clone();
     }
-    cv::Mat tapes_cpy = tapes.clone();
-    lock_image = false;
-
-    lock_tags = true;
-    if (tags == NULL)
+    
+    if (tapes_cpy.empty()) 
+    {
+      ROS_INFO("Image duplication fail. Try again");
+      return false;
+    }
+    if (!got_tags)
     {
 	ROS_INFO("No tags found");
 	return false;
     }
-    cv::Point2f point = tag_location(req.tag_Id);
-    lock_tags = false;
+    {
+      boost::mutex::scoped_lock
+        lock(tags_mutex);
+      cv::Point2f point = tag_location(req.tag_Id, tags);
+    }
 
     float angle = 0; //TODO implement angle
     res.scan.angle_min = SCAN_MIN_ANGLE;
@@ -190,21 +209,20 @@ bool detect(img_service::TagDetection::Request &req,
 
 void Callback_Tags(apriltags_ros::AprilTagDetectionArray::ConstPtr msg) //TODO
 {
-    if (lock_tags)
-	return;
+    boost::mutex::scoped_lock
+      lock(tags_mutex);
     if (msg == NULL)
     {
 	ROS_INFO("No tags given");
 	return;
     }
+    got_tags = true;
     tags = msg;
 }
 
 void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 {
 
-    if (lock_image)
-	return;
     if (msg == NULL)
     {
 	ROS_INFO("No image found");
@@ -245,22 +263,15 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     //  Canny(img_display, dst, 50, 200, 3);
     dst = img_display.clone();
     Canny(img_display, cdst, 50, 200, 3);
-    if (lock_tags)
+    if (got_tags)
     {
-      //TODO consider exiting
-    }
-    else
-    {
-      lock_tags = true;
       std::vector<cv::Point2f> points;
       for (int i=0; i<tags->detections.size(); i++)
       {
         points.push_back(cv::Point2f(tags->detections[i].pose.pose.position.x, tags->detections[i].pose.pose.position.y));
       }
       draw_robots(points, &cdst); 
-      lock_tags = false;
     }
-
     std::vector<std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(cdst, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE, cv::Point(0, 0) );
@@ -333,11 +344,13 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 		cv::Scalar(255,0,0), 3, 3);
     }
     std::cout << "contour count: " << contours.size() << "\n";
-
-    cv::Mat tapes_copy = tapes.clone();
-    cv::addWeighted(dst, 0.5, tapes_copy, 0.5, 0.0, tapes);
-    publish_image(tapes);
-
+    {
+      boost::mutex::scoped_lock
+        lock(tapes_mutex); 
+      cv::Mat tapes_copy = tapes.clone();
+      cv::addWeighted(dst, 0.5, tapes_copy, 0.5, 0.0, tapes);
+      publish_image(tapes);
+    }
     return;
 }
 
