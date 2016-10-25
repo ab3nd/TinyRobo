@@ -37,11 +37,11 @@ const int IMAGE_THRESHOLD = 140; //TODO change it
 //TAPE FINDING CONSTANTS
 const cv::Scalar HSV_BLUE_MIN = cv::Scalar(101, 99, 8); //min blue
 const cv::Scalar HSV_BLUE_MAX = cv::Scalar(125, 255, 112); //max blue
-const float ROBOT_RADIUS = 3.0f; //used to draw robots as obstacles
+const float ROBOT_RADIUS = 10.0f; //used to draw robots as obstacles
 
 //PUB NAMES
 const std::string CAMERA_PUBLISHER_NAME = "overhead_camera/image_rect_color";
-const std::string TAGS_PUBLISHER_NAME = "change";
+const std::string TAGS_PUBLISHER_NAME = "tag_detections";
 
 cv::Mat tapes;
 
@@ -54,7 +54,6 @@ boost::mutex tapes_mutex;
 boost::mutex tags_mutex;
 
 
-sensor_msgs::Image::ConstPtr recent_img;
 apriltags_ros::AprilTagDetectionArray::ConstPtr tags;
 
 
@@ -62,7 +61,8 @@ void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
 {
   for (int i=0; i<tag_pos.size(); i++)
   { //TODO const
-    cv::circle(*canvas, tag_pos[i], ROBOT_RADIUS, cv::Scalar(0),-1);
+    cv::circle(*canvas, tag_pos[i], ROBOT_RADIUS, cv::Scalar(255),-1);
+    std::cout << "(" << tag_pos[i].x << ", " << tag_pos[i].y << ") ";
   }
 }
 
@@ -72,7 +72,7 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
     if (!got_tags)
     {
 	//TODO error?
-	return cv::Point2f(-1,-1);
+	return cv::Point2f(404,404);
     }
     else 
     {
@@ -81,7 +81,7 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
 	{
 	    if (index > 5) //TODO change to actual size
 	    {
-		return cv::Point2f(-1,-1);
+		return cv::Point2f(404,404);
 	    }
 	}
 	geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
@@ -210,20 +210,22 @@ bool detect(img_service::TagDetection::Request &req,
 
 void Callback_Tags(apriltags_ros::AprilTagDetectionArray::ConstPtr msg) //TODO
 {
-    boost::mutex::scoped_lock
-      lock(tags_mutex);
+    ROS_INFO("HAI");
     if (msg == NULL)
     {
 	ROS_INFO("No tags given");
 	return;
     }
-    got_tags = true;
-    tags = msg;
+    {
+      boost::mutex::scoped_lock
+        lock(tags_mutex);
+      got_tags = true;
+      tags = msg;
+    }
 }
 
 void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 {
-
     if (msg == NULL)
     {
 	ROS_INFO("No image found");
@@ -261,11 +263,12 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 
     cv::Mat dst, cdst;
     
-    //  Canny(img_display, dst, 50, 200, 3);
     dst = img_display.clone();
     Canny(img_display, cdst, 50, 200, 3);
     if (got_tags)
     {
+      boost::mutex::scoped_lock
+       lock(tags_mutex);
       std::vector<cv::Point2f> points;
       for (int i=0; i<tags->detections.size(); i++)
       {
@@ -308,9 +311,9 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 	boundRect[i] = cv::boundingRect( cv::Mat(contours_poly[i]) );
 	cv::minEnclosingCircle( (cv::Mat)contours_poly[i], center[i], radius[i] );
 	float tape_circle = 0.5; //TODO threshold
-	float rect_obj = (cv::contourArea(contours[i]) / (boundRect[i].width*boundRect[i].height));
+	float rect_obj_ratio = (cv::contourArea(contours[i]) / (boundRect[i].width*boundRect[i].height));
 	//  std::cout << rect_obj << ", ";
-	if (rect_obj > .8 && rect_obj < 1 && cv::contourArea(contours[i]) > 10)
+	if (rect_obj_ratio > .8 && rect_obj_ratio < 1 && cv::contourArea(contours[i]) > 10)
 	{
 	    center.erase(center.begin() + i);
 	    radius.erase(radius.begin() + i);
@@ -359,18 +362,15 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 
 int main(int argc, char **argv)
 {
-
     ros::init(argc, argv, "img_service_server");
     ros::NodeHandle n;
+    ros::Subscriber sub = n.subscribe(CAMERA_PUBLISHER_NAME, 10, Callback_Img);
+    ros::Subscriber sub2 = n.subscribe(TAGS_PUBLISHER_NAME, 3, Callback_Tags);
     image_transport::ImageTransport it(n);
     pub = it.advertise("img_service/image", 1);
     ros::ServiceServer service = n.advertiseService("img_service", detect);
-    ros::Subscriber sub = n.subscribe(CAMERA_PUBLISHER_NAME, 10, Callback_Img);
-    ros::Subscriber sub2 = n.subscribe(TAGS_PUBLISHER_NAME, 3, Callback_Tags);
     ROS_INFO("Service start");
     ros::spin();
 
     return 0;
 }
-
-
