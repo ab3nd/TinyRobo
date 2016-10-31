@@ -1,0 +1,10 @@
+<launch>
+	<!-- The RTSP camera stream -->
+	<include file="$(find epuck_launch)/launch/rtsp_camera.launch"/>
+
+	<!-- The April Tag detector -->
+	<include file="$(find epuck_launch)/launch/tag_detector.launch"/>
+
+	<!-- A static transform from the center of the table to the camera -->
+	<node pkg="tf" type="static_transform_publisher" name="map_to_overhead" args="0 0 1.31 0 1 0 0 map overhead_camera 100" />
+</launch>

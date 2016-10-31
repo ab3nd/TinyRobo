@@ -60,6 +60,7 @@ Just for reference, the WiFiWebServer demo is 295k of 434k bytes, so getting a J
 6. Good to reflash, using the "program" button in the arduino IDE
 7. If you want the program to run afterwards, you need to keep the pull up on CH_PD and the pull-down on GPIO15. 
 
+![esp-8266-03 pinout](https://github.com/ab3nd/TinyRobo/blob/master/docs/8266-03-pinout.jpeg)
 ##### Mobility platform current draw
 Free run current was measured with the toy held so its moving parts didn't touch anything. 
 This means that the free running current includes the current required to move the moving parts of the toy, but not to move the toy around. 
@@ -99,7 +100,36 @@ In theory, I'll only have to flash each robot once, and then I can use ROS to co
 Once the hardware is complete, ROS modules will be written to control TinyRobos, and to emulate various effects, like directional communication (good for certain ant-like behaviors), unreliable inter-robot communication, and simulated stigmergy. 
 These software modules will also be part of this repository, so the entire collection of materials will be able to be used by any researcher who wishes to use them. 
 
+## Installation 
+
+git clone https://github.com/ab3nd/TinyRobo
+
+cd TinyRobo/software/catkin_ws/
+
+sudo apt-get install libmagick++-dev
+
+sudo ln -s /usr/include/ImageMagick-6/ /usr/include/ImageMagick
+
+sudo apt-get install libmagickcore-dev
+
+sudo apt-get install libmagickwand-6.q16-2
+
+sudo apt-cache search libMagick++
+
+sudo apt-get install libmagick++-6.q16-5v5
+
+sudo apt-get install libmagick++-6.q16-dev  libmagickcore-dev libmagick++-dev
+
+sudo ln -s /usr/lib/x86_64-linux-gnu/libMagickCore-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagickCore.so
+
+sudo ln -s /usr/lib/x86_64-linux-gnu/libMagick++-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagick++.so
+
+catkin_make
+
+
 ## OSHW
 This project is open source in the sense that I legally permit people to do whatever they want with the source code, design drawings, etc.; and in the sense that I provide that information for them to do what they want. 
-It is EXPLICITLY NOT COMPLIANT with the [OSHWA Certification](www.oshwa.org/2015/09/19/open-source-hardware-certification-version-1/). 
-It never will be, because the only thing that certification adds to a project is increased liability to civil suits. 
+It does not comply with anyone's idea of open source but my own, but given that I'm counting on github to be my last-resort backup in case of my University suffering a total existance failure, it behooves me to put everything I'd need to duplicate the work here. 
+Let me know if I forgot to check something in. 
+
+
