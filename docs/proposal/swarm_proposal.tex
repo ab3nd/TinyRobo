@@ -672,6 +672,8 @@ Specialized tasks will likely require specialized interfaces to provide the info
 To attempt to elicit specifications for such interfaces, users will be requested to think aloud while they are using a proposed interface. 
 It is hoped that users will describe how they would invoke the more specialized components of the desired interface. 
 
+\subsection{Compilation of user commands into robot programs}
+
 In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
 Multitouch gesture sets as a command language for controlling robots have been developed by an empirical process with naive users \cite{Micire:2009:ANG:1731903.1731912}. 
 These gestures frequently consisted of sequences of gestures that roughly fit the linguistic structure of a sentence, with the first gesture indicating the subject of the sentence, and the next gesture indicating a verb and possibly an object. 
@@ -818,7 +820,21 @@ Having communication mediated by software on the host will allow for simple expe
 	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
 \end{figure}
 
-\section{Timeline}
+
+
+It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
+Development of ROS nodes to communicate with the individual boards must be done. 
+Automated discovery of boards and configuration of ROS nodes will accelerate development and make swarm use more flexible. 
+Core functionality required is Twist (or similar) message from ROS causing motion of toy, end-to-end from PC to motors. 
+Current board has known bugs, which will be fixed by respin of PCB. 
+This work will proceed in parallel with data collection for the gesture set, and be completed by the end of the summer of 2016.
+Completion of the swarm control hardware means that the board will control the motors and software will be loaded to the board and executed to accept incoming motor control commands.
+The swarm hardware development and results will be collected in a paper for publication.  
+
+Swarm robot control software framework. 
+Automate creation of configuration files that load ROS nodes to speak to each individual robot as if those nodes were running on that robot. 
+Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
+Implement virtual sensing. 
 
 \subsection{Summer 2016}
 
@@ -1005,5 +1021,26 @@ If, on the other hand, it is configured for room-scale operations, the system ca
 %A particle-swarm-optimized fuzzy-neural network for voice-controlled robot systems 
 
 %The I-SWARM project 
-
-
+%
+%\subsection{Current Consumption of Children's Toys}
+%Motor driver test required, a well as quantification of motor current draw for children's toys. 
+%Quantification of required power may indicate that larger motor driver power is needed.
+%
+%Toys are effectively black boxes to the end user.
+%Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
+%In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
+%The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
+%
+%All of the motors were driven at 3.7VDC. 
+%This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
+%Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
+%Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
+%
+%Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
+%Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
+%Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
+%Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
+%Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
+%Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
+%Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
+%Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A

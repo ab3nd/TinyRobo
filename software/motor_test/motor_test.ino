@@ -15,9 +15,27 @@ void setMotor(byte address, byte vel, byte dir)
   Wire.endTransmission();
 }
 
+byte getFault(byte addr)
+{
+  Wire.beginTransmission(addr); // Target device
+  Wire.write(byte(0x01));        // sets register pointer to fault register
+  Wire.endTransmission();        // stop transmitting
+
+  Wire.requestFrom(int(addr), 1);
+  if (Wire.available())
+  {
+    return Wire.read();
+  }
+
+  //This is probably an error
+  return 0x00;
+}
+
 void setup() {
   Wire.begin(13, 12); //Correct for v2 boards, arguments are (SDA, SCL).
   pinMode(2, OUTPUT); //Diganostic LED
+
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -28,12 +46,22 @@ void loop() {
    * if they're the same, the motor won't turn. 
    */
   //Test motor 1
-  digitalWrite(2, HIGH);
-  setMotor(addr1, 0x30, 0x02);
-  delay(3000);
+  for(int ii = 0; ii < 38; ii++)
+  {
+    digitalWrite(2, LOW);
+    setMotor(addr1, 0x06 + ii, 0x02);
+    delay(1000);
+    digitalWrite(2, HIGH);
+    faultVals = getFault(addr1);
+
+    //Debug print everything
+    Serial.print("Motor speed: ");
+    Serial.println(0x06+ii, HEX);
+    Serial.print("Fault: ");
+    Serial.print(faultVals, HEX);
+    Serial.println(' ');
+    delay(10);
+  }
   setMotor(addr1, 0x00, 0x00);
   digitalWrite(2, LOW);
-  setMotor(addr2, 0x30, 0x02);
-  delay(3000);
-  setMotor(addr2, 0x00, 0x00); 
 }
