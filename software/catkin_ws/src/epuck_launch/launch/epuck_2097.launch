@@ -1,0 +1,22 @@
+<launch>
+
+    <group ns="epuck_robot_0">
+        <include file="$(find epuck_driver_cpp)/launch/epuck_controller.launch">
+            <arg name="epuck_id" value="2097"/>
+            <arg name="epuck_address" value="10:00:E8:AD:77:ED"/>
+            <arg name="epuck_name" value="epuck_robot_0"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.0"/>
+            <arg name="ypos" value="0.0"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+        <!--<node pkg="tf" type="static_transform_publisher" name="epuck_robot_0_tf" args="0 0 0 0 0 0 /base_link /epuck_robot_0/base_link 30"/>-->
+    </group>
+</launch>

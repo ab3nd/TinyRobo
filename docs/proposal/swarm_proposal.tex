@@ -190,6 +190,10 @@ Epucks also require a fairly smooth operating surface.
 The Epuck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
 Due to the relatively sharp corner of the lower edges of the robot, the Epuck can become stuck on 2-3mm high obstacles. 
 
+The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
+The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -710,24 +714,6 @@ The synthesized program should result in convergence of the swarm's overall beha
 Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. %TODO STAY OUT OF GRIDWORLD FORMAL GROTESQUERY
 
-<<<<<<< HEAD
-\subsection{Swarm Robot Hardware}
-In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
-Each controller will use a ESP-8266 wifi module for wireless communication and as a micro controller. 
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
-The robots described in this work accomplish this task by using a Commercial Off-The-Shelf (COTS) module to provide Wi-Fi connectivity and a microcontroller for processing. 
-The ESP8266 is avialable in several form factors, each designated by a different suffix. 
-The 03 version was chosen because it offers more GPIO pins than most other versions, and includes an internal antenna, which some versions lack. 
-
-The robots themselves are effectively Internet of Things (IoT) nodes with the ability to move around. 
-This is, then, an extension of the work done with mobile sensor motes called COTSBots \cite{bergbreiter2003cotsbots}.
-Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
-This swarm controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis \cite{lairdspider}. 
-Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
-Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
-
-=======
->>>>>>> 704851181cab2da541c387859d7883b262c52b50
 \subsection{Swarm Robot Software Framework}
 
 The individual robots being developed for this research do not have very powerful processors. 
@@ -834,36 +820,7 @@ Having communication mediated by software on the host will allow for simple expe
 	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
 \end{figure}
 
-\section{Timeline}
 
-<<<<<<< HEAD
-Run IRB paperwork, Test experiment with lab users. Get a lot of gift cards. Print up flyers, announce to all my friends. Collect gesture set. There are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. There are 18 tasks. Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 5-10 users per case would be good, so 25-50 users would be excellent. Preliminary tests and shakeout of protocol will be in late-winter to spring of 2016, data gathering over summer of 2016 and early fall of 2016. Analyze gesture set to determine if there is a transition point between many and few robots. 
-The gesture set data collection and analysis will be documented in a paper for publication. 
- 
-Swarm control hardware is incomplete. 
-
-\subsection{Current Consumption of Children's Toys}
-Motor driver test required, a well as quantification of motor current draw for children's toys. 
-Quantification of required power may indicate that larger motor driver power is needed.
-
-Toys are effectively black boxes to the end user.
-Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
-In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
-The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
-
-All of the motors were driven at 3.7VDC. 
-This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
-Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
-Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
-
-Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
-Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
-Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
-Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
-Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
-Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
-Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
-Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A
 
 It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
 Development of ROS nodes to communicate with the individual boards must be done. 
@@ -878,16 +835,14 @@ Swarm robot control software framework.
 Automate creation of configuration files that load ROS nodes to speak to each individual robot as if those nodes were running on that robot. 
 Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
 Implement virtual sensing. 
-=======
-\subsection{Spring 2016}
-
 
 \subsection{Summer 2016}
 
 Gestures - The paperwork to run user tests with the UML student population will be completed. 
 A pilot of the test will be run with users in the robotics lab in order to determine how long each user test is expected to take, and to work on the script for interacting with users. 
 For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
-To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. 
+Each user is assigned to one case, and then performs all the tasks using that case. 
+Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
 There are 18 tasks. 
 The tasks do have some degree of order to their complexity, but maybe randomizing would be better so that users don't try to reuse gestures that might not make sense. 
 Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
@@ -923,7 +878,6 @@ Hardware - The swarm control boards should be complete and installed in swarm ro
 
 Software - The basic functionality of the virtual sensors, virtual network, and virtual localization will be implemented. 
 The implementation will be such that a non-virtual method of performing those actions could be substituted for the real senses.
->>>>>>> 704851181cab2da541c387859d7883b262c52b50
 Virtual networking can be viewed as an extension of sensing, in that network data arrives as a consequence of proximity to other robots, and so has range, as well as informational content. 
 Robot localization is also a sense. 
 Localization in the most abstract can be viewed as a sense of place. 
@@ -1067,5 +1021,26 @@ If, on the other hand, it is configured for room-scale operations, the system ca
 %A particle-swarm-optimized fuzzy-neural network for voice-controlled robot systems 
 
 %The I-SWARM project 
-
-
+%
+%\subsection{Current Consumption of Children's Toys}
+%Motor driver test required, a well as quantification of motor current draw for children's toys. 
+%Quantification of required power may indicate that larger motor driver power is needed.
+%
+%Toys are effectively black boxes to the end user.
+%Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
+%In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
+%The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
+%
+%All of the motors were driven at 3.7VDC. 
+%This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
+%Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
+%Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
+%
+%Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
+%Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
+%Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
+%Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
+%Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
+%Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
+%Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
+%Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A
