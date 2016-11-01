@@ -1,0 +1,45 @@
+\documentclass[]{article}
+
+%opening
+\title{TinyRobo: An Affordable Tabletop Swarm Platform}
+\author{Abraham Shultz}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Motivation}
+
+\section{Hardware}
+
+ESP8266 module. 
+
+Power supply
+
+Motor driver
+
+Potential for expansion over I2C (add expansion pads to next hardware rev, and correct I2C wiring)
+
+Use a URL shortener to point to latest revision?
+
+\section {Firmware}
+
+Adaptation to underlying toy hardware. 
+
+Should have software calibration \& hardware reset option (e.g. a IoT-style connection dialog that also includes a "motor calibrate" and "clear calibration" options.)
+
+Motor speed translation from twist message should be brought into ROS, robots don't get a Twist. Board can't tell how motor speeds affect position, ROS/Camera system can.
+
+\section{Software}
+
+Virtual senses (neighbor sense and tape sense).
+
+Not bound to TinyRobo hardware, so may be useful to other users of tabletop swarms. 
+
+Automatic setup of robots on the network (need to figure out a faster scan method)
+
+\end{document}
