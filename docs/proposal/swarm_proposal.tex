@@ -709,6 +709,16 @@ Other approaches include an amorphous shape covering the area occupied by the sw
 Considered as a whole, the swarm has properties, such as center of gravity or flock thickness, that do not exist in individual robots. 
 Views of these properties may assist the user, for example in determining what areas have insufficient robot density for a thorough search operation. 
 
+The information available to the user through the UI also implies the availability of certain information within the system. 
+The distinction between UI representations of the swarm that display each robot as an individual robot versus those that display a cloud or amorphous shape in the area occupied by robots is the most obvious example. 
+A system that displays the location of each robot must actually have localization information about each robot.
+The presence of this information in turn implies that the localization information can be used to plan the actions of each robot, which in turn affects the structure of the programs generated for each robot. 
+
+For example, if the task assigned to the swarm is to surround a fixed point, and localization information is available, then each robot can be given a program that instructs it to move towards a known location, based on its current known location.
+Even if the robots cannot determine their location, but the UI and program generator have it, the robots closest to the point can be assigned programs that cause them to act as beacons, while all the other robots are assigned programs to wander until they see a beacon and then move towards it. 
+If, instead, neither the robots nor the program generator have information on the location of the robots, then all of the robots can be assigned programs that instruct them to wander until they detect the target point, and then act as beacons, at which point the overall behavior of the system returns to the previous example.
+In the most extreme case, neither the robots nor the user interface have any information about the location of the robots. This extreme is outside the scope of this work, as it is more suited to an interface that permits the provisioning of the robots with a description of the target point. A method for providing such a description through multitouch gestures is likely to be more tedious than other approaches, e.g. summarizing desired sensor precepts or including an image of the target area for the robots to recognize. 
+
 All of the valid expressions possible in the command language should be converted into programs for the robots, or the user must be usefully informed as to why it was not possible. 
 The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
 Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
