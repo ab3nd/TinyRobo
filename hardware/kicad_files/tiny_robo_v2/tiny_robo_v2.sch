@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:tiny_robo_v2-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -415,7 +416,7 @@ Connection ~ 5650 1300
 Wire Wire Line
 	5650 1300 6275 1300
 Wire Wire Line
-	8650 5525 8650 6600
+	8650 5450 8650 6600
 Connection ~ 7850 6600
 Connection ~ 9650 3775
 Wire Wire Line
@@ -819,4 +820,52 @@ Text GLabel 2400 4125 0    60   Input ~ 0
 5Vin
 Wire Wire Line
 	2975 4125 2400 4125
+$Comp
+L C-RESCUE-tiny_robo_v2 C?
+U 1 1 57E440DA
+P 8975 5450
+F 0 "C?" H 9025 5550 50  0000 L CNN
+F 1 "0.1uF" H 9025 5350 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805_HandSoldering" H 8975 5450 60  0001 C CNN
+F 3 "" H 8975 5450 60  0001 C CNN
+	1    8975 5450
+	0    1    1    0   
+$EndComp
+$Comp
+L C-RESCUE-tiny_robo_v2 C?
+U 1 1 57E442F8
+P 8975 5750
+F 0 "C?" H 9025 5850 50  0000 L CNN
+F 1 "0.1uF" H 9025 5650 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805_HandSoldering" H 8975 5750 60  0001 C CNN
+F 3 "" H 8975 5750 60  0001 C CNN
+	1    8975 5750
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8775 5450 8650 5450
+Connection ~ 8650 5525
+Wire Wire Line
+	8775 5750 8650 5750
+Connection ~ 8650 5750
+Wire Wire Line
+	8375 6225 8375 6175
+Wire Wire Line
+	8375 6175 8825 6175
+Wire Wire Line
+	8825 6175 8825 5850
+Wire Wire Line
+	8825 5850 9175 5850
+Wire Wire Line
+	9175 5850 9175 5750
+Wire Wire Line
+	8375 5200 8375 5250
+Wire Wire Line
+	8375 5250 9000 5250
+Wire Wire Line
+	9000 5250 9000 5400
+Wire Wire Line
+	9000 5400 9175 5400
+Wire Wire Line
+	9175 5400 9175 5450
 $EndSCHEMATC
