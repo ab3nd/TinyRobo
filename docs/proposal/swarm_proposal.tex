@@ -662,6 +662,24 @@ However, individually evolved primitives could be saved in a library of primitiv
 Such a library could take advantage of the possible overfitting of GA evolution by storing primitives intentionally overfitted to specific situations and robots, and using the best matches. 
 For example, a controller that aggregates small-scale UAVs outdoors is likely quite different from one that aggregates medium-scale wheeled robots indoors, even though they are both aggregation controllers. 
 
+\subsection{Domain-Specific Languages for Swarm Robotics}
+
+Proto and other programming languages for amorphous computers provide abstractions for compuation performed on homogeneous spatially-distributed computating nodes, but do not generally support motion of nodes within the space. 
+Other versions of tuple-space based amorphous computation include motion of the agents, but do not explicitly support heterogeneity \cite{viroli2012linda}.
+
+The Voltron programming language provides what its authors describe as ``team-level programming'' for autonomous drones \cite{mottola2014team}.
+This level of programming is distinct from drone-level programming, where specific instructions are provided to each drone, and swarm programming, where each drone has the same instructions and operates without communication with other drones.
+Voltron programs consist of sensing tasks that are subject to space and time constraints, so the language does not permit the user to specify direct interactions between drones. 
+This leaves out activities beyond sensing that may be useful for swarm robots, such as patrolling an area or collaboratively moving an object.
+Additionally, Voltron is based on the assumptions that drones have global localization, synchronous clocks, and reliable inter-unit communication.   
+
+Karma provides a programming framework for micro-aerial vehicles with minimal localization and no communication in the field \cite{dantu2011programming}.
+The framework allows the composition of behaviors described at the level of individual robots. 
+Rather than each robot performing series of behaviors in response to input from its sensors, each robot is tasked by a central ``hive'' to perform a single behavior, such as performing a sensor sweep of an area. 
+The hive collects data from robots as they return to the hive, and updates a central data store. 
+The hive then assigns activities to robots based on rules that use the central data store to determine which activities should be performed. 
+
+%TODO Meld (for modular robotics)
 \section{Proposed work}
 
 For the purposes of this work, the tasks that users will be asked to complete consist largely of directing the motion of the swarm. 
