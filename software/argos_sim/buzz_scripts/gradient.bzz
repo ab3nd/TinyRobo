@@ -8,14 +8,14 @@ function init() {
   }
   else {
     # Other robots
-    mydist = 1000.
+    mydist = 1000
 	 # Listen to other robots' distances
     neighbors.listen("dist_to_source",
       function(value_id, value, robot_id) {
-	     log("Listener called", id)
         mydist = math.min(
           mydist,
           neighbors.get(robot_id).distance + value)
+		  log("mydist = ", mydist)
       })
   }
 }
