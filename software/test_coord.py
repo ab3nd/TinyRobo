@@ -32,7 +32,6 @@ class cSpaceMember:
         self.isBeacon = True
         #Add self entry to beacons
         self.beacons.append([self.id, [self.id], 0])
-        del self.actions["becomeBeacon"]
         
     def broadcastState(self):
         for neighbor in self.neighbors:
@@ -40,7 +39,6 @@ class cSpaceMember:
             for beacon in self.beacons:
                 #The other end gets their own copy of the message, not references to mine
                 neighbor[0].sendBeaconMessage(copy.deepcopy(beacon), self.id)
-        del self.actions["sendUpdates"]
         
     
     def sendBeaconMessage(self, beaconMessage, fromID):
@@ -72,7 +70,7 @@ class cSpaceMember:
             newRoutes.append(newBeaconMessage)
         #Update
         self.beacons = newRoutes
-        pprint(self.beacons)
+        #pprint(self.beacons)
         
         
     def update(self):
@@ -95,6 +93,8 @@ class cSpaceMember:
                 #import pdb; pdb.set_trace()
                 #Invoke the action
                 self.actions[action][0]()
+            else:
+                del self.actions[action]
         
         
         
@@ -119,6 +119,7 @@ class renderer:
                     outFile.write("   shape=circle\n")
                 outFile.write("   pos=\"{0},{1}!\"\n".format(xPos, yPos))
                 outFile.write("]\n")
+                
                 
                 for beacon in member.beacons:
                     #Generate the dot links for each route.
@@ -145,8 +146,8 @@ if __name__ == "__main__":
     for fromMember in space:
         neighbors = []
         for toMember in space:
-            d = distance(fromMember[0], toMember[0], fromMember[1], toMember[1])
-            if d < 30:
+            d = distance(fromMember[0], fromMember[1], toMember[0], toMember[1])
+            if d < 300:
                 neighbors.append((toMember[2], d))
         fromMember[2].setNeighbors(neighbors)
         print "{0} has {1} neighbors".format(fromMember[2].id, len(neighbors)) 
