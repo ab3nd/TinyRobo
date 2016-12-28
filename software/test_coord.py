@@ -77,7 +77,7 @@ class cSpaceMember:
         
     def updateCount(self):
         self.unchangedCount += 1
-        print "{1} updates since last change: {0}".format(self.unchangedCount, self.id) 
+        #print "{1} updates since last change: {0}".format(self.unchangedCount, self.id) 
         
     def createCoordSys(self):
         #This robot is at the origin of the system
@@ -87,7 +87,21 @@ class cSpaceMember:
         self.theta = 0
         
         #Tell all my neighbors their positions
+        for neighbor in self.oracle.getNeighbors(self.id):
+            bearing = self.oracle.getBearing(self.id, neighbor)
+            distance = self.oracle.getDistance(self.id, neighbor)
+            nX = distance*math.cos(bearing)
+            nY = distance*math.sin(bearing)
+            #print "{3} sees {0} at ({1}, {2})".format(neighbor, nX, nY, self.id)
+            #Send the "message" to the neighbor
+            space[neighbor].tellCoordinates([nX, nY, bearing, self.id])
     
+    def tellCoordinates(self, coordData):
+        self.x = coordData[0]
+        self.y = coordData[1]
+        self.theta = coordData[2] - self.oracle.getBearing(self.id, coordData[3])
+        #TODO this is where I would propagate to my neighbors
+        
     def update(self):
         #This is where we put rules. Rules are composed of a boolean condition, 
         #a thing to do if the boolean condition is true, and a rate to do it at
@@ -197,7 +211,20 @@ class renderer:
             outFile.write("strict digraph space{\n")
             for id in space.keys():
                 outFile.write("member_{0}[\n".format(id))
-                outFile.write("   label={0}\n".format(id))
+                #These are the robot's idea of it's position, not the world's idea
+                labelTheta = " "
+                labelX = " "
+                labelY = " "
+                if space[id].isBeacon:
+                    import pdb; pdb.set_trace()
+                if space[id].theta is not None:
+                    labelTheta = space[id].theta
+                if space[id].x is not None:
+                    labelX = space[id].x
+                if space[id].y is not None:
+                    labelY = space[id].y
+                    
+                outFile.write("   label=\"{0}\n({1},{2}) {3}\"\n".format(id, labelX, labelY, labelTheta))
                 outFile.write("   orientation={0}\n".format(oracle.getPosition(id).theta * 180/math.pi))
                 if space[id].isBeacon:
                     outFile.write("   shape=house\n")
