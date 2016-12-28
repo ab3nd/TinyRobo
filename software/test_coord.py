@@ -95,6 +95,7 @@ class cSpaceMember:
             #print "{3} sees {0} at ({1}, {2})".format(neighbor, nX, nY, self.id)
             #Send the "message" to the neighbor
             space[neighbor].tellCoordinates([nX, nY, bearing, self.id])
+        print "Told Neighbors"
     
     def tellCoordinates(self, coordData):
         self.x = coordData[0]
@@ -215,14 +216,14 @@ class renderer:
                 labelTheta = " "
                 labelX = " "
                 labelY = " "
-                if space[id].isBeacon:
-                    import pdb; pdb.set_trace()
+                #if space[id].isBeacon:
+                #    import pdb; pdb.set_trace()
                 if space[id].theta is not None:
-                    labelTheta = space[id].theta
+                    labelTheta = "{0:.2f}".format(space[id].theta)
                 if space[id].x is not None:
-                    labelX = space[id].x
+                    labelX = "{0:.2f}".format(space[id].x)
                 if space[id].y is not None:
-                    labelY = space[id].y
+                    labelY = "{0:.2f}".format(space[id].y)
                     
                 outFile.write("   label=\"{0}\n({1},{2}) {3}\"\n".format(id, labelX, labelY, labelTheta))
                 outFile.write("   orientation={0}\n".format(oracle.getPosition(id).theta * 180/math.pi))
