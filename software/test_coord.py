@@ -98,10 +98,21 @@ class cSpaceMember:
         print "Told Neighbors"
     
     def tellCoordinates(self, coordData):
-        self.x = coordData[0]
-        self.y = coordData[1]
-        self.theta = coordData[2] - self.oracle.getBearing(self.id, coordData[3])
-        #TODO this is where I would propagate to my neighbors
+        if self.x == None and self.y == None:
+            self.x = coordData[0]
+            self.y = coordData[1]
+            self.theta = coordData[2] - self.oracle.getBearing(self.id, coordData[3])
+            #for debugginh
+            #self.theta = 0
+            #TODO this is where I would propagate to my neighbors
+            for neighbor in self.oracle.getNeighbors(self.id):
+                bearing = self.oracle.getBearing(self.id, neighbor)
+                distance = self.oracle.getDistance(self.id, neighbor)
+                nX = self.x + distance*math.cos(bearing) 
+                nY = self.y + distance*math.sin(bearing)
+                
+                #Tell the neighbor
+                space[neighbor].tellCoordinates([nX, nY, bearing, self.id])
         
     def update(self):
         #This is where we put rules. Rules are composed of a boolean condition, 
@@ -109,7 +120,7 @@ class cSpaceMember:
         if not self.isBeacon and len(self.beacons) == 0:
             #Not a beacon, and haven't heard of any beacons
             #Add the action of becoming a beacon to the actions with a low probability
-            self.actions["becomeBeacon"] = (self.becomeBeacon, 0.01)
+            self.actions["becomeBeacon"] = (self.becomeBeacon, 0.003)
         if not self.isBeacon and len(self.beacons) > 0:
             # Not a beacon, but have heard of beacons, so don't try to become a beacon. 
             pass
@@ -149,12 +160,35 @@ class RaBOracle:
         self.neighbors = {}
         self.realWorld = {}   
     
+        #For testing with regular grid
+        self.colCount = 0
+        self.rowCount = 0
+        
     def add(self, newID):
         #Tie a (random) world position to an ID
         wp = worldPosition()
-        wp.x = random.random() * self.spaceSize
-        wp.y = random.random() * self.spaceSize
-        wp.theta = random.random() * 2 * math.pi
+        #wp.x = random.random() * self.spaceSize
+        #wp.y = random.random() * self.spaceSize
+        #wp.theta = random.random() * 2 * math.pi
+        
+        #Unrandom, for testing the coordinate system design
+        start = 20
+        step = 192
+        row = 6
+        
+        #Place the units in a regular 10x10 grid
+        wp.x = start + (self.colCount * step)
+        wp.y = start + (self.rowCount * step)
+        
+        self.colCount += 1
+        if self.colCount >= row:
+            self.colCount = 0
+            self.rowCount += 1
+            
+        wp.theta = 0 #unrotated
+        
+        print "Adding {0} at ({1},{2})".format(newID, wp.x, wp.y)
+        
         self.realWorld[newID] = wp
         
         #New node, so don't know neighbors yet
@@ -180,6 +214,7 @@ class RaBOracle:
             #in the position of the second robot from the first one
             dx = wp.x - self.realWorld[otherID].x
             dy = wp.y - self.realWorld[otherID].y
+            #import pdb; pdb.set_trace()
             self.pairwiseBearing[(newID, otherID)] = math.atan2(dy, dx) + wp.theta
             #Of course, the other robot sees the difference the other way around, 
             #so negate the signs and use the other robot's heading 
@@ -225,13 +260,14 @@ class renderer:
                 if space[id].y is not None:
                     labelY = "{0:.2f}".format(space[id].y)
                     
-                outFile.write("   label=\"{0}\n({1},{2}) {3}\"\n".format(id, labelX, labelY, labelTheta))
+                outFile.write("   label=\"{0}\n({1},{2})\n{3}\"\n".format(id, labelX, labelY, labelTheta))
                 outFile.write("   orientation={0}\n".format(oracle.getPosition(id).theta * 180/math.pi))
+                outFile.write("   shape=house\n")
+                outFile.write("   margin=0\n")
+                outFile.write("   width=0\n")
+                outFile.write("   height=0\n")
                 if space[id].isBeacon:
-                    outFile.write("   shape=house\n")
                     outFile.write("   color=red\n")
-                else:
-                    outFile.write("   shape=house\n")
                 #Set the position 
                 pos = oracle.getPosition(id)
                 outFile.write("   pos=\"{0},{1}!\"\n".format(pos.x, pos.y))
@@ -256,7 +292,7 @@ if __name__ == "__main__":
     oracle = RaBOracle()
     space = {}
     
-    members = 30
+    members = 36
     for ii in range(members):
         oracle.add(ii)
         #Member with a unique ID
