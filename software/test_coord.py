@@ -101,7 +101,7 @@ class cSpaceMember:
         if self.x == None and self.y == None:
             self.x = coordData[0]
             self.y = coordData[1]
-            self.theta = coordData[2] - self.oracle.getBearing(self.id, coordData[3])
+            self.theta = coordData[2] + self.oracle.getBearing(self.id, coordData[3])
             #for debugginh
             #self.theta = 0
             #TODO this is where I would propagate to my neighbors
@@ -185,7 +185,7 @@ class RaBOracle:
             self.colCount = 0
             self.rowCount += 1
             
-        wp.theta = 0 #unrotated
+        wp.theta = 0#math.pi #random.random() * 2 * math.pi
         
         print "Adding {0} at ({1},{2})".format(newID, wp.x, wp.y)
         
@@ -261,7 +261,7 @@ class renderer:
                     labelY = "{0:.2f}".format(space[id].y)
                     
                 outFile.write("   label=\"{0}\n({1},{2})\n{3}\"\n".format(id, labelX, labelY, labelTheta))
-                outFile.write("   orientation={0}\n".format(oracle.getPosition(id).theta * 180/math.pi))
+                outFile.write("   orientation={0}\n".format((oracle.getPosition(id).theta-math.pi/2) * 180/math.pi))
                 outFile.write("   shape=house\n")
                 outFile.write("   margin=0\n")
                 outFile.write("   width=0\n")
