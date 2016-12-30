@@ -101,18 +101,19 @@ class cSpaceMember:
         if self.x == None and self.y == None:
             self.x = coordData[0]
             self.y = coordData[1]
-            self.theta = coordData[2] + self.oracle.getBearing(self.id, coordData[3])
+            #self.theta = coordData[2] + self.oracle.getBearing(self.id, coordData[3])
+            self.theta = math.atan2(self.y, self.x) - self.oracle.getBearing(self.id, coordData[3])
             #for debugginh
             #self.theta = 0
             #TODO this is where I would propagate to my neighbors
-            for neighbor in self.oracle.getNeighbors(self.id):
-                bearing = self.oracle.getBearing(self.id, neighbor)
-                distance = self.oracle.getDistance(self.id, neighbor)
-                nX = self.x + distance*math.cos(bearing) 
-                nY = self.y + distance*math.sin(bearing)
+            #for neighbor in self.oracle.getNeighbors(self.id):
+            #    bearing = self.oracle.getBearing(self.id, neighbor)
+            #    distance = self.oracle.getDistance(self.id, neighbor)
+            #    nX = self.x + distance*math.cos(bearing) 
+            #    nY = self.y + distance*math.sin(bearing)
                 
                 #Tell the neighbor
-                space[neighbor].tellCoordinates([nX, nY, bearing, self.id])
+            #    space[neighbor].tellCoordinates([nX, nY, bearing, self.id])
         
     def update(self):
         #This is where we put rules. Rules are composed of a boolean condition, 
