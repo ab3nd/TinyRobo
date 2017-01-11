@@ -216,12 +216,12 @@ class RaBOracle:
             dx = wp.x - self.realWorld[otherID].x
             dy = wp.y - self.realWorld[otherID].y
             #import pdb; pdb.set_trace()
-            self.pairwiseBearing[(newID, otherID)] = math.atan2(dy, dx) + wp.theta
+            self.pairwiseBearing[(otherID, newID)] = math.atan2(dy, dx) + wp.theta
             #Of course, the other robot sees the difference the other way around, 
             #so negate the signs and use the other robot's heading 
             dx *= -1
             dy *= -1
-            self.pairwiseBearing[(otherID, newID)] = math.atan2(dy, dx) + self.realWorld[otherID].theta
+            self.pairwiseBearing[(newID, otherID)] = math.atan2(dy, dx) + self.realWorld[otherID].theta
             
     #Euclidian distance between two world positions
     def distance(self, wp1, wp2):
