@@ -102,13 +102,15 @@ class cSpaceMember:
             self.y = coordData[1]
             otherUnitX = coordData[4]
             otherUnitY = coordData[5]
-            #if self.theta is None:
-            #    self.theta = coordData[2] #+ self.oracle.getBearing(self.id, coordData[3])
+            
             self.theta =  math.atan2(self.y-otherUnitY, self.x-otherUnitX) 
             if self.theta < 0: 
                 self.theta += 2*math.pi
             self.theta -= self.oracle.getBearing(self.id, coordData[3])
-            self.theta += math.pi
+            if self.theta < 0:
+                self.theta += math.pi
+            else:
+                self.theta -= math.pi
 
             #TODO this is where I would propagate to my neighbors
             #for neighbor in self.oracle.getNeighbors(self.id):
