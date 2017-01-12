@@ -94,17 +94,22 @@ class cSpaceMember:
             nY = distance*math.sin(bearing)
             #print "{3} sees {0} at ({1}, {2})".format(neighbor, nX, nY, self.id)
             #Send the "message" to the neighbor
-            space[neighbor].tellCoordinates([nX, nY, bearing, self.id])
-        print "Told Neighbors"
-    
+            space[neighbor].tellCoordinates([nX, nY, bearing, self.id, self.x, self.y])
+        
     def tellCoordinates(self, coordData):
         if self.x == None and self.y == None:
             self.x = coordData[0]
             self.y = coordData[1]
-            #self.theta = coordData[2] + self.oracle.getBearing(self.id, coordData[3])
-            self.theta = math.atan2(self.y, self.x) - self.oracle.getBearing(self.id, coordData[3])
-            #for debugginh
-            #self.theta = 0
+            otherUnitX = coordData[4]
+            otherUnitY = coordData[5]
+            #if self.theta is None:
+            #    self.theta = coordData[2] #+ self.oracle.getBearing(self.id, coordData[3])
+            self.theta =  math.atan2(self.y-otherUnitY, self.x-otherUnitX) 
+            if self.theta < 0: 
+                self.theta += 2*math.pi
+            self.theta -= self.oracle.getBearing(self.id, coordData[3])
+            self.theta += math.pi
+
             #TODO this is where I would propagate to my neighbors
             #for neighbor in self.oracle.getNeighbors(self.id):
             #    bearing = self.oracle.getBearing(self.id, neighbor)
@@ -188,7 +193,7 @@ class RaBOracle:
             
         wp.theta = 0#math.pi #random.random() * 2 * math.pi
         
-        print "Adding {0} at ({1},{2})".format(newID, wp.x, wp.y)
+        #print "Adding {0} at ({1},{2})".format(newID, wp.x, wp.y)
         
         self.realWorld[newID] = wp
         
@@ -215,13 +220,23 @@ class RaBOracle:
             #in the position of the second robot from the first one
             dx = wp.x - self.realWorld[otherID].x
             dy = wp.y - self.realWorld[otherID].y
-            #import pdb; pdb.set_trace()
-            self.pairwiseBearing[(otherID, newID)] = math.atan2(dy, dx) + wp.theta
+            
+            thetaHat = math.atan2(dy, dx) #TODO probably need to add wp.theta
+            if thetaHat < 0:
+                thetaHat += 2* math.pi
+            self.pairwiseBearing[(otherID, newID)] = thetaHat
+            
+            
             #Of course, the other robot sees the difference the other way around, 
             #so negate the signs and use the other robot's heading 
             dx *= -1
             dy *= -1
-            self.pairwiseBearing[(newID, otherID)] = math.atan2(dy, dx) + self.realWorld[otherID].theta
+            thetaHat = math.atan2(dy, dx) #TODO probably need to add wp.theta
+            if thetaHat < 0:
+                thetaHat += 2* math.pi
+            self.pairwiseBearing[(newID, otherID)] = thetaHat #math.atan2(dy, dx) + self.realWorld[otherID].theta
+            
+
             
     #Euclidian distance between two world positions
     def distance(self, wp1, wp2):
@@ -299,7 +314,12 @@ if __name__ == "__main__":
         #Member with a unique ID
         member = cSpaceMember(ii, oracle)
         space[ii] = member
-            
+
+
+    #for ii in range(members):
+    #    for jj in range(members):
+    #        print "{0} to {1} = {2}, {1} to {0} = {3}".format(ii, jj, oracle.getBearing(ii, jj), oracle.getBearing(jj, ii))
+
     while True:
         for id in space.keys():
             #print "-- {0} --".format(member[2].id)
