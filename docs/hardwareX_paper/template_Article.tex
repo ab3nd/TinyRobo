@@ -49,7 +49,7 @@ While a simulation could be developed to include factors such as variable tilt i
 Worse, in some situations, such complexities are not optional, and are difficult to capture correctly. 
 The use of gentic algorithims is particularly prone to these problems, as the genetic approach frequently develops ``solutions'' which exploit deficiencies in the simulation software that do not obtain in reality. 
 In one system, the fitness function for evolved simulated creature designs awarded high fitness for moving a long distance. 
-This resulted in creatures that were very tall, and fell over as soon as the simulation started, resulting in a large and quick horizontal movement \citebrooks{2000artificial, sims1994evolving}. 
+This resulted in creatures that were very tall, and fell over as soon as the simulation started, resulting in a large and quick horizontal movement \cite{brooks2000artificial, sims1994evolving}. 
 A bug in the conservation of momentum in the same simulation resulted in creatures that moved by hitting themselves on the back. 
 As Sims notes, ``Any bugs that allow energy leaks from non-conservation, or even round-off errors, will inevitably be discovered and exploited by the
 evolving creatures. Although this can be a lazy and often amusing approach for debugging a physical modeling system, it is not necessarily the most practical." \cite{sims1994evolving}.
@@ -205,9 +205,70 @@ The charge controller allows the TinyRobo to be charged from the same USB connec
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
 
+Children's toys normally use inexpensive brushed DC motors in their construction. 
+These motors have not been the subject of extensive study, as they are commodity parts. 
+However, it is useful to quantify their behavior to some extent, to determine which kinds of toys can be used with the TinyRobo controller. 
+
+Two common types of motors found in children's toys are the RE and FA series of motors produced by Mabuchi Motor, or imitations of these motors produced by other companies. 
+These motors use simple metal brushes and are constructed to be inexpensive, rather than precise. 
+The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
+
+\begin{table}
+	\begin{tabular}{l|l|l|l|l}
+	Model & Voltage & No Load Current & Max Efficiency & Stall Current\\
+	RE-140RA-2270 & 1.5-3 & 0.21 & 0.66 & 2.1 \\
+	RE-140RA-18100 & 1.5-3 & 0.13 & 0.37 & 1.07 \\
+	RE-140RA-12240 & 3-6 & 0.05 & 0.14 & 0.39 \\
+	FA-130RA-2270 & 1.5-3 & 0.2 & 0.66 & 2.2\\
+	FA-130RA-18100 & 1.5-3 & 0.15 & 0.56 & 2.1\\
+	FA-130RA-14150 & 1.5-4.5 & 0.11 & 0.31 & 0.9\\
+	\end{tabular}
+	\caption{Current draw for Mabuchi-branded motors.}
+	\label{tab:properBrandedMotors}
+\end{table}
+
+
 \change{More detail on the motors used in children's toys. Quantify the behavior of a bunch of motors.}
+
+For tables \ref{tab:FA-series}, \ref{tab:RE-series}, and \ref{tab:coreless}, the motor current at stall was estimated by applying a regulated 3.3v supply to the motor and measuring the voltage drop across the motor. 
+
+This was done to avoid damage to the motors. 
+In toys, the current to the motors is frequently limited by the available current from the batteries, and stalling the motor is prevented by simple slip clutches or play in the motor drive train. 
+
 \change{Add photos of motors, with cm scale for visual clairity}
 \change{Two main types of motors, ~2cm$^3$ brushed DC and >1cm$^3$ coreless motors}
+
+\begin{table}
+	\begin{tabular}{l|l|l}
+	Motor number & No Load Current & Stall Current (estimated)\\
+	2 & 0.08 &
+	3 & 0.35 &
+	4 & 0.02 &
+	5 & 0.11 &
+	6 & 0.20 &
+	7 & 0.02 &
+	8 & 0.33 &
+	\end{tabular}
+	\caption{No load and stall current for Mabuchi FA series and similar motors. Measurements were performed at 3.3V supply voltage. Motor 1 was defective.}
+	\label{tab:FA-series}
+\end{table}
+
+
+\begin{table}
+	\begin{tabular}{l|l|l}
+	Motor number & No Load Current & Stall Current (estimated)\\
+	\end{tabular}
+	\caption{No load and stall current for Mabuchi RE series and similar motors. Measurements were performed at 3V supply voltage.}
+	\label{tab:RE-series}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{l|l|l}
+	Motor number & No Load Current & Stall Current (estimated)\\
+	\end{tabular}
+	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage.}
+	\label{tab:coreless}
+\end{table}
 
 The motor controller in the TinyRobo boards is the DRV8830 IC by Texas Instruments. 
 The DRV8830 provides 1A of drive current, and is controlled by the ESP-8266 over an I2C serial interface. 
