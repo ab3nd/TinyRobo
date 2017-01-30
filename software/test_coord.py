@@ -193,7 +193,7 @@ class RaBOracle:
             self.colCount = 0
             self.rowCount += 1
             
-        wp.theta = 0#math.pi #random.random() * 2 * math.pi
+        wp.theta = random.random() * 2 * math.pi
         
         #print "Adding {0} at ({1},{2})".format(newID, wp.x, wp.y)
         
@@ -226,7 +226,7 @@ class RaBOracle:
             thetaHat = math.atan2(dy, dx) #TODO probably need to add wp.theta
             if thetaHat < 0:
                 thetaHat += 2* math.pi
-            self.pairwiseBearing[(otherID, newID)] = thetaHat
+            self.pairwiseBearing[(otherID, newID)] = thetaHat + wp.theta
             
             
             #Of course, the other robot sees the difference the other way around, 
@@ -236,7 +236,7 @@ class RaBOracle:
             thetaHat = math.atan2(dy, dx) #TODO probably need to add wp.theta
             if thetaHat < 0:
                 thetaHat += 2* math.pi
-            self.pairwiseBearing[(newID, otherID)] = thetaHat #math.atan2(dy, dx) + self.realWorld[otherID].theta
+            self.pairwiseBearing[(newID, otherID)] = thetaHat + self.realWorld[otherID].theta
             
 
             
