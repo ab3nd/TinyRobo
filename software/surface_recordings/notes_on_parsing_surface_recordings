@@ -1,0 +1,31 @@
+The surface recording files are XML, with timestamped keyframe tags. 
+Each keyframe tag has update tags for each contact that was updated. 
+Contacts have a unique ID. 
+New contacts are created with an add tag. 
+IDs monotonically increase, rather than go up and down as more contacts are added and removed. So picking a finger up and putting it down three times goes 1, 2, 3, not 1, 1, 1. 
+Add tag has IsFingerRecognized and IsTagRecognized. Not a finger or a tag means it's a blob. 
+
+Given this sort of information, I would have to write my own recognizers for circles, squares, and whatever other commands are present in the user data. 
+Is there an API on the surface that would let me recognize the learned gestures and use those?
+
+Surface API provides tap, press-and-hold, and Manipulations, which are Drag, Pan, Flick, Move, Resize, Rotate (in Core.Manipulations and Presentation.Manipulations)
+
+Detecting a circle
+    Get centroid of points, try to fit a circle to it
+    Fails if the shape is e.g. an oval
+    Can't really tell circle from square
+    Look for path crossings? i.e. is there a pair of adjacent points that crosses a line between another pair of adjacent points?
+
+Detecting a box
+    Detect a closed shape as above
+    Find average angle over some smallish window of adjacent points
+    Count deviations from average angle
+        4 is a box, 3 is a triangle, 2 & 1 are weird shapes, 0 is a circle
+
+https://gamedevelopment.tutsplus.com/tutorials/how-to-detect-when-an-object-has-been-circled-by-a-gesture--gamedev-336
+Vector summation approach, so the circle doesn't have to be closed
+The interaction just has to pass through 360 degrees from Add tag to Remove tag. 
+
+http://stackoverflow.com/questions/28131557/how-to-detect-if-a-user-has-drawn-a-circle-on-a-touch-device-using-canvas-and-ja
+Another approach, this time using the centroid/circle fit. 
+        
