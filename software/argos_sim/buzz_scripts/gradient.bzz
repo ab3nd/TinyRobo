@@ -15,7 +15,7 @@ function init() {
         mydist = math.min(
           mydist,
           neighbors.get(robot_id).distance + value)
-		  log("mydist = ", mydist)
+		  debug("mydist = ", mydist)
       })
   }
 }

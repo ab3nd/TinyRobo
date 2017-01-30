@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   tiny_robo_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -66,10 +67,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs#   tiny_robo_msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   tiny_robo_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -103,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES motor_translation
-#  CATKIN_DEPENDS roscpp rospy std_msgs tiny_robo_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs tiny_robo_msgs message_runtime
 #  DEPENDS system_lib
 )
 
