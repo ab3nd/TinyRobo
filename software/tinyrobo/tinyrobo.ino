@@ -59,6 +59,41 @@ typedef enum {
   MOTOR_DRV,
 } machine_state;
 
+void printWiFiStatus()
+{
+  if(Serial.availableForWrite())
+  {
+    switch(status){
+      case WL_CONNECTED:
+        Serial.println("Connected: WL_CONNECTED");
+        break;
+      case WL_NO_SHIELD:
+        Serial.println("No WiFi Shield: WL_NO_SHIELD");
+        break;
+      case WL_IDLE_STATUS:
+        Serial.println("Idle: WL_IDLE_STATUS");
+        break;
+      case WL_NO_SSID_AVAIL:
+        Serial.println("SSID not found: WL_NO_SSID_AVAILABLE");
+        break;
+      case WL_SCAN_COMPLETED:
+        Serial.println("Scan Completed: WL_SCAN_COMPLETED");
+        break;
+      case WL_CONNECT_FAILED:
+        Serial.println("Failed: WL_CONNECT_FAILED");
+        break;
+      case WL_CONNECTION_LOST:
+        Serial.println("Lost Connection: WL_CONNECTION_LOST");
+        break;
+      case WL_DISCONNECTED:
+        Serial.println("Disconnected: WL_DISCONNECTED");
+        break;
+      default:
+        Serial.println("Undefined state");
+        break;
+    }
+  }
+}
 //Stores the motor commands [speed1, direction1, speed2, direction2]
 //received from the client
 byte motor_cmd[4] = {0, 0, 0, 0};
@@ -106,9 +141,10 @@ void setup() {
     Serial.println(ssid);
     //No password needed, TinyRoboBase is unecrypted
     status = WiFi.begin(ssid);//, pass);
-
     // wait 5 seconds for connection:
     delay(10000);
+    printWiFiStatus();
+    
   }
 
   //Now connected to WiFi
