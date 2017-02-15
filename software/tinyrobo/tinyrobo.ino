@@ -132,19 +132,21 @@ byte getFault(byte addr)
 
 void setup() {
   Wire.begin(13, 12); //Correct for v2 boards, arguments are (SDA, SCL).
-  Serial.begin(9600);
+  Serial.begin(57600);
 
   // attempt to connect to Wifi network:
   WiFi.mode(WIFI_STA);
-  while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    //No password needed, TinyRoboBase is unecrypted
-    status = WiFi.begin(ssid);//, pass);
-    // wait 5 seconds for connection:
-    delay(10000);
+  
+  //No password needed, TinyRoboBase is unecrypted
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(ssid);  
+  status = WiFi.begin(ssid);//, pass);
+
+  //Wait for the connection
+  while ( WiFi.status() != WL_CONNECTED) {
+    // wait 2 seconds for connection:
+    delay(2000);
     printWiFiStatus();
-    
   }
 
   //Now connected to WiFi
