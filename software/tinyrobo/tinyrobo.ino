@@ -201,6 +201,10 @@ void loop() {
               //This is an error, how to deal with it?
             }
           }
+          else
+          {
+            yield();
+          }
           break;
         case QUERY_RESP:
           Serial.println("TinyRobo");
@@ -224,6 +228,10 @@ void loop() {
               state = MOTOR_DRV;
             }
           }
+          else
+          {
+            yield();
+          }
           break;
         case MOTOR_DRV:
           //Set the motor state from what the client sent
@@ -244,6 +252,10 @@ void loop() {
             Serial.print(fault[ii], HEX);
           }
           Serial.println(' ');
+
+          //Send it back to the commander as 6 bytes
+          client.println(motor_cmd[0], motor_cmd[1], fault[0], motor_cmd[2], motor_cmd[3], fault[1]) 
+          
           state = CLI_READ;
           break;
       }
