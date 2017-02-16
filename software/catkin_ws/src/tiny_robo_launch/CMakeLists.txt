@@ -1,16 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(motor_translation)
+project(tiny_robo_launch)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-  tiny_robo_msgs
-  message_generation
-)
+find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -67,10 +61,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   tiny_robo_msgs
- )
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -103,8 +97,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES motor_translation
-  CATKIN_DEPENDS roscpp rospy std_msgs tiny_robo_msgs message_runtime
+#  LIBRARIES tiny_robo_launch
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -115,45 +109,28 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
 
 ## Declare a C++ library
-add_library(translator_lib
-   src/translators.cpp
-)
+# add_library(tiny_robo_launch
+#   src/${PROJECT_NAME}/tiny_robo_launch.cpp
+# )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(motor_translation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(tiny_robo_launch ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(ackerman_node src/ackerman_node.cpp)
-add_executable(holonomic_node src/holonomic_node.cpp)
-add_executable(differential_node src/differential_node.cpp)
+# add_executable(tiny_robo_launch_node src/tiny_robo_launch_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(motor_translation_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(tiny_robo_launch_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(ackerman_node
-  translator_lib
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(holonomic_node
-  translator_lib
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(differential_node
-  translator_lib
-  ${catkin_LIBRARIES}
-)
+# target_link_libraries(tiny_robo_launch_node
+#   ${catkin_LIBRARIES}
+# )
 
 #############
 ## Install ##
@@ -170,7 +147,7 @@ target_link_libraries(differential_node
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS motor_translation motor_translation_node
+# install(TARGETS tiny_robo_launch tiny_robo_launch_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -195,7 +172,7 @@ target_link_libraries(differential_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_motor_translation.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_tiny_robo_launch.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

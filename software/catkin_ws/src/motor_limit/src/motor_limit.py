@@ -4,6 +4,8 @@
 # the max voltage used to avoid overcurrent conditions. 
 
 import rospy
+import socket
+
 from tiny_robo_msgs.msg import Motor_Vel_Cmd
 
 
@@ -93,7 +95,7 @@ class motorLimiter:
 		maxV = 0x00
 		if motor == 0:
 			maxV = self.m1_maxV
-		else
+		else:
 			maxV = self.m2_maxV
 		cmd = abs(cmd)
 		speed = (cmd * maxV) / 128.0
@@ -131,15 +133,15 @@ if __name__ == "__main__":
 
 
 	#TODO I may want to set up static leases in the wifi router to attempt 
-	ipAddr = '192.168.1.101' #TODO this should be a conf parameter with ROSPARAM
+	ipAddr = '192.168.1.176' #TODO this should be a conf parameter with ROSPARAM
 	
 	#Get a motor speed limiter object and connect it to the robot at the given IP address
 	ml = motorLimiter()
 	ml.connect(ipAddr)
 
 	#Subscribe to a motor command message channel
-	sub = rospy.Subscriber("/default_driver/drive_cmd", tiny_robo_msgs.msg.Motor_Vel_Cmd, ml.handleMessage)
+	sub = rospy.Subscriber("/default_driver/drive_cmd", Motor_Vel_Cmd, ml.handleMessage)
 	#Publish a motor command message channel
-	pub = rospy.Publisher('limited_cmds', tiny_robo_msgs.msg.Motor_Vel_Cmd, queue_size=10)
+	pub = rospy.Publisher('limited_cmds', Motor_Vel_Cmd, queue_size=10)
 
 	rospy.spin()

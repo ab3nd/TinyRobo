@@ -132,7 +132,7 @@ byte getFault(byte addr)
 
 void setup() {
   Wire.begin(13, 12); //Correct for v2 boards, arguments are (SDA, SCL).
-  Serial.begin(57600);
+  Serial.begin(115200);
 
   // attempt to connect to Wifi network:
   WiFi.mode(WIFI_STA);
@@ -144,14 +144,15 @@ void setup() {
 
   //Wait for the connection
   while ( WiFi.status() != WL_CONNECTED) {
-    // wait 2 seconds for connection:
+    // let the ESP8266 do stuff and wait for connection:
+    yield();
     delay(2000);
     printWiFiStatus();
   }
 
   //Now connected to WiFi
   //Print the IP address
-  Serial.print("You're connected to the network");
+  Serial.print("You're connected to the network ");
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
@@ -166,6 +167,7 @@ void setup() {
     delay(100);
     digitalWrite(2, LOW);
     delay(100);
+    yield();
   }
 }
 
@@ -175,7 +177,7 @@ void setup() {
 */
 void loop() {
   WiFiClient client = server.available();
-
+  yield();
   //client goes out of scope when it gets redeclared there
   if (client) {
     state = CLI_READ; //start reading from the client
@@ -201,15 +203,13 @@ void loop() {
               //This is an error, how to deal with it?
             }
           }
-          else
-          {
-            yield();
-          }
+          yield();
           break;
         case QUERY_RESP:
           Serial.println("TinyRobo");
           client.println("TinyRobo"); //TODO include the fault byte
           state = CLI_READ;
+          yield();
           break;
         case MOTOR_READ:
           //Read a byte for motors
@@ -228,10 +228,7 @@ void loop() {
               state = MOTOR_DRV;
             }
           }
-          else
-          {
-            yield();
-          }
+          yield();
           break;
         case MOTOR_DRV:
           //Set the motor state from what the client sent
@@ -254,9 +251,11 @@ void loop() {
           Serial.println(' ');
 
           //Send it back to the commander as 6 bytes
-          client.println(motor_cmd[0], motor_cmd[1], fault[0], motor_cmd[2], motor_cmd[3], fault[1]) 
-          
+          uint8_t motStatus[6] = {motor_cmd[0], motor_cmd[1], fault[0], motor_cmd[2], motor_cmd[3], fault[1]};
+          //The cast is a hack, may cause nasal demons
+          client.write((const uint8_t*)motStatus, 6); 
           state = CLI_READ;
+          yield();
           break;
       }
     }
