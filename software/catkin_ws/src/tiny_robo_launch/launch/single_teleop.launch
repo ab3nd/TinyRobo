@@ -1,0 +1,11 @@
+<launch>
+
+	<node pkg="joy" type="joy_node" name="joystick_node" output="screen"/>
+
+	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist" output="screen"/>
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen"/>
+
+	<node pkg="motor_limit" type="motor_limit" name="motor_control_node" output="screen"/>
+
+</launch>
