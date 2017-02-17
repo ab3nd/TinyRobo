@@ -201,6 +201,7 @@ void loop() {
               state = MOTOR_READ;
             } else {
               //This is an error, how to deal with it?
+              Serial.println("Got something weird");
             }
           }
           yield();

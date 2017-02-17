@@ -30,8 +30,13 @@ class RobotComms:
 	def sendMotor(self, cmd):
 		#Send the motor speeds and directions
 		self.connection.send(bytearray([ord('M'), cmd[0], cmd[1], cmd[2], cmd[3]]))
-		#Get the reply from the motor driver
-		return self.connection.recv(6)
+		
+		#Get the reply from the motor driver and convert it into an array of integers
+		buff = ""
+		#TODO if we're not writing anything back, this is going to be an issue
+		while len(buff) < 6:
+			buff += self.connection.recv(6)
+		return bytearray(buff)
 
   # According to the DRV8830 data sheet, there are two registers:
   #   0x00 - Control
@@ -88,7 +93,7 @@ class motorLimiter:
 		if cmd > 0:
 			direction = 0x02
 		elif cmd < 0:
-			direction - 0x01
+			direction = 0x01
 
 		#Get the maximum cutoff for the motor
 		# and use it to set the speed
@@ -98,7 +103,7 @@ class motorLimiter:
 		else:
 			maxV = self.m2_maxV
 		cmd = abs(cmd)
-		speed = (cmd * maxV) / 128.0
+		speed = int((cmd * maxV) / 128.0)
 
 		return speed, direction
 		
@@ -110,23 +115,25 @@ class motorLimiter:
 		m2_speed = 0x00
 
 		#Map each motor speed to a speed/direction value for the motor
-		m1_speed, m1_dir = mapSpeed(m1_cmd, 0)
-		m2_speed, m2_dir = mapSpeed(m2_cmd, 1)
+		m1_speed, m1_dir = self.mapSpeed(m1_cmd, 0)
+		m2_speed, m2_dir = self.mapSpeed(m2_cmd, 1)
 
 		#Send the speed/direction values
 		#Result is [motor1 speed, motor1 dir, motor1 status, motor2 speed, motor2 dir, motor2 status]
-		result = robot.sendMotor([m1_speed, m1_dir, m2_speed, m2_dir])
+		result = self.robot.sendMotor([m1_speed, m1_dir, m2_speed, m2_dir])
+		#rospy.logwarn(result) Not useful, they're not printable chars
 
 		#If there's a problem, adapt the motor voltage downward
+		#The conversions to int are because otherwise result is treated as a string
 		if (result[2] & self.ILIMIT) or (result[2] & self.OCP):
-			m1_maxV -= 1
-			rospy.logwarn("Overcurrent on motor 1, reducing power to {0}".format(m1_maxV))
+			self.m1_maxV -= 1
+			rospy.logwarn("Overcurrent on motor 1, reducing power to {0}".format(self.m1_maxV))
 		if (result[5] & self.ILIMIT) or (result[5] & self.OCP):
-			m2_maxV -= 1
-			rospy.logwarn("Overcurrent on motor 2, reducing power to {0}".format(m2_maxV))
+			self.m2_maxV -= 1
+			rospy.logwarn("Overcurrent on motor 2, reducing power to {0}".format(self.m2_maxV))
 
 	def handleMessage(self, msg):
-		setSpeeds(msg.motor1, msg.motor2)
+		self.setSpeeds(msg.motor1, msg.motor2)
 
 if __name__ == "__main__":
 	rospy.init_node('motor_speed_limiter')
