@@ -2,7 +2,6 @@
 #include <Wire.h>
 
 #define DEBUG
-
 char ssid[] = "TinyRoboBase";     //  your network SSID (name)
 //char pass[] = "sofullsuchinternets";  // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -185,6 +184,7 @@ void setup() {
 */
 void loop() {
   WiFiClient client = server.available();
+  uint8_t motStatus[6] = {0,0,0,0,0,0};
   yield();
   //client goes out of scope when it gets redeclared there
   if (client) {
@@ -200,11 +200,11 @@ void loop() {
             //Read from client
             char c = client.read();
 #ifdef DEBUG
-            Serial.print("Read: ");
-            Serial.print(c);
-            Serial.print(" (");
-            Serial.print(c, HEX);
-            Serial.println(")");
+//            Serial.print("Read: ");
+//            Serial.print(c);
+//            Serial.print(" (");
+//            Serial.print(c, HEX);
+//            Serial.println(")");
 #endif
             if ( c == 'Q') {
               state = QUERY_RESP;
@@ -234,11 +234,11 @@ void loop() {
             //Read command from client and store in buffer
             motor_cmd[cmd_index] = client.read();
 #ifdef DEBUG
-            Serial.print("Motor read: ");
-            Serial.print(motor_cmd[cmd_index]);
-            Serial.print(" (");
-            Serial.print(motor_cmd[cmd_index], HEX);
-            Serial.println(")");
+//            Serial.print("Motor read: ");
+//            Serial.print(motor_cmd[cmd_index]);
+//            Serial.print(" (");
+//            Serial.print(motor_cmd[cmd_index], HEX);
+//            Serial.println(")");
 #endif            
             cmd_index++;
             //If we have received 4 bytes (2 speed, 2 direction), then change the motors
@@ -258,25 +258,37 @@ void loop() {
           fault[1] = getFault(addr2);
 
 #ifdef DEBUG
-          //Debug print everything
-          Serial.print("Set motor state");
-          for (int ii = 0; ii < 4; ii++) {
-            Serial.print(" ");
-            Serial.print(motor_cmd[ii], HEX);
-          }
-          for (int ii = 0; ii < 2; ii++) {
-            Serial.print(" ");
-            Serial.print(fault[ii], HEX);
-          }
-          Serial.println(' ');
+//          //Debug print everything
+//          Serial.print("Set motor state");
+//          for (int ii = 0; ii < 4; ii++) {
+//            Serial.print(" ");
+//            Serial.print(motor_cmd[ii], HEX);
+//          }
+//          for (int ii = 0; ii < 2; ii++) {
+//            Serial.print(" ");
+//            Serial.print(fault[ii], HEX);
+//          }
+//          Serial.println(' ');
 #endif
           //Send it back to the commander as 6 bytes
-          uint8_t motStatus[6] = {motor_cmd[0], motor_cmd[1], fault[0], motor_cmd[2], motor_cmd[3], fault[1]};
+          motStatus[0] = motor_cmd[0];
+          motStatus[1] = motor_cmd[1];
+          motStatus[2] = fault[0];
+          motStatus[3] = motor_cmd[2];
+          motStatus[4] = motor_cmd[3];
+          motStatus[5] = fault[1];
           //The cast is a hack, may cause nasal demons
           client.write((const uint8_t*)motStatus, 6); 
+          Serial.print(".");
           state = CLI_READ;
           yield();
           break;
+        default:
+          //This shouldn't happen
+          Serial.println("Got a bogus state value, check yo stack before you wreck yo frames.");
+          Serial.print("State was ");
+          Serial.println(state);
+          state = CLI_READ;
       }
     }
   }

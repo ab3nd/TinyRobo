@@ -89,7 +89,7 @@ class motorLimiter:
 
 	def mapSpeed(self, cmd, motor):
 		#Get the direction
-		#TODO this may, unfortunately, depend on the robot's wiring. Make configurable.
+		#TODO this may, unfortunately, depend on the robot's wiring. Make configurable
 		direction = 0x00
 		if cmd > 0:
 			direction = 0x01
@@ -129,9 +129,14 @@ class motorLimiter:
 		if (result[2] & self.ILIMIT) or (result[2] & self.OCP):
 			self.m1_maxV -= 1
 			rospy.logwarn("Overcurrent on motor 1, reducing power to {0}".format(self.m1_maxV))
+		elif result[2] & self.UVLO:
+			rospy.logwarn("Supply undervoltage on motor 1")
+
 		if (result[5] & self.ILIMIT) or (result[5] & self.OCP):
 			self.m2_maxV -= 1
 			rospy.logwarn("Overcurrent on motor 2, reducing power to {0}".format(self.m2_maxV))
+		elif result[5] & self.UVLO:
+			rospy.logwarn("Supply undervoltage on motor 2")
 
 	def handleMessage(self, msg):
 		self.setSpeeds(msg.motor1, msg.motor2)
@@ -141,7 +146,7 @@ if __name__ == "__main__":
 
 
 	#TODO I may want to set up static leases in the wifi router to attempt 
-	ipAddr = '192.168.1.176' #TODO this should be a conf parameter with ROSPARAM
+	ipAddr = '192.168.1.119' #TODO this should be a conf parameter with ROSPARAM
 	
 	#Get a motor speed limiter object and connect it to the robot at the given IP address
 	ml = motorLimiter()
