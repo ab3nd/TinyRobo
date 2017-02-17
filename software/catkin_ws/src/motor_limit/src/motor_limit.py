@@ -89,11 +89,12 @@ class motorLimiter:
 
 	def mapSpeed(self, cmd, motor):
 		#Get the direction
+		#TODO this may, unfortunately, depend on the robot's wiring. Make configurable.
 		direction = 0x00
 		if cmd > 0:
-			direction = 0x02
-		elif cmd < 0:
 			direction = 0x01
+		elif cmd < 0:
+			direction = 0x02
 
 		#Get the maximum cutoff for the motor
 		# and use it to set the speed
