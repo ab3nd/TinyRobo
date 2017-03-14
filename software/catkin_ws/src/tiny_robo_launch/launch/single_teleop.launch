@@ -1,0 +1,17 @@
+<launch>
+
+	<node pkg="joy" type="joy_node" name="joystick_node" output="screen">
+		<param name="/coalesce_interval" value="0.1" type="double"/>
+	</node>
+
+	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist" output="screen"/>
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
+		<param name="/driver_name" value="/cmd_vel" type="str" />
+	</node>
+
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
+	</node>
+
+</launch>

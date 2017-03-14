@@ -77,6 +77,8 @@ Miniature toy RC vehicle | 0.06A | 0.74A
 Toy helicopter | 0.07A | 1.12A
 Toy quadcopter | 0.74A | 1.99A
 
+The [hexbug fire ant](http://amzn.to/2e3HDu2) uses [mx116 motor drivers from mixic](http://www.mixic.com.cn/data/mx116_en.pdf), which have a 550mA max output and overheat, but not overcurrent, protection. This implies that the fire ant motors (small, coreless DC motors) have a maximum current draw of 500mA or so. This is consistent with the observed current above. 
+
 ### E-Pucks
 
 The initial development of the algorithims is going to be done on E-Pucks. 
