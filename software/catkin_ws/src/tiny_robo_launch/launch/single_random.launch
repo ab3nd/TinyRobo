@@ -1,0 +1,13 @@
+<launch>
+
+	<node pkg="random_tiny_driver" type="random_driver.py" name="random_twist" output="screen"/>
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
+		<param name="/driver_name" value="/random_twists" type="str" />
+	</node>
+
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
+	</node>
+
+</launch>
