@@ -147,9 +147,10 @@ if __name__ == "__main__":
 
 	#TODO I may want to set up static leases in the wifi router to attempt 
 	#'192.168.1.119' hexbugbase
-	ipAddr = '192.168.1.176' #medium-size tank
+	#ipAddr = '192.168.1.176' #medium-size tank
 	#ipAddr = '192.168.1.119' #TODO this should be a conf parameter with ROSPARAM
-	
+	ipAddr = '192.168.1.218' #small white tank
+
 	#Get a motor speed limiter object and connect it to the robot at the given IP address
 	ml = motorLimiter()
 	ml.connect(ipAddr)
