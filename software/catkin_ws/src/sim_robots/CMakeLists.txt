@@ -69,10 +69,10 @@ find_package(ImageMagick COMPONENTS Magick++ REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-   DEPENDENCIES
-   tiny_robo_msgs
-)
+#generate_messages(
+#   DEPENDENCIES
+#   tiny_robo_msgs
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
