@@ -25,7 +25,7 @@ sudo ln -s /usr/lib/x86_64-linux-gnu/libMagickCore-6.Q16.so /usr/lib/x86_64-linu
 
 sudo ln -s /usr/lib/x86_64-linux-gnu/libMagick++-6.Q16.so /usr/lib/x86_64-linux-gnu/libMagick++.so
 
-catkin_make
+You'll also need the [Apriltags_ros](https://github.com/RIVeR-Lab/apriltags_ros) and [video_stream_opencv](https://github.com/ros-drivers/video_stream_opencv) libraries before you use catkin_make.
 
 
 ## OSHW
