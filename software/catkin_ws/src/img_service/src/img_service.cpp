@@ -59,6 +59,7 @@ apriltags_ros::AprilTagDetectionArray::ConstPtr tags;
 
 void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
 {
+    ROS_INFO("draw_robots called");
   for (int i=0; i<tag_pos.size(); i++)
   { //TODO const
     cv::circle(*canvas, tag_pos[i], ROBOT_RADIUS, cv::Scalar(255),-1);
@@ -68,7 +69,7 @@ void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
 
 cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
 {
-
+    ROS_INFO("tag_location called");
     if (!got_tags)
     {
 	//TODO error?
@@ -101,6 +102,7 @@ float get_scan(cv::Point2f point, float theta, cv::Mat image, int threshold,
                float min_range=0.0f, float max_range=1000.0f,
 	       int round_mode = 1)
 {
+    ROS_INFO("get_scan called");
     cv::Point2f traversal;
     traversal.x = point.x;
     traversal.y = point.y;
@@ -152,6 +154,7 @@ float get_scan(cv::Point2f point, float theta, cv::Mat image, int threshold,
 
 void publish_image(cv::Mat tapes_l)
 {
+    ROS_INFO("publish_image called");
     sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "mono8", tapes_l).toImageMsg();
     pub.publish(msg);
     ros::spinOnce();
@@ -160,6 +163,7 @@ void publish_image(cv::Mat tapes_l)
 bool detect(img_service::TagDetection::Request &req, 
 	img_service::TagDetection::Response &res)
 {
+    ROS_INFO("detect called");
     //  req.tag_Id;
     //  res.scan;
     cv::Mat tapes_cpy;
@@ -210,7 +214,7 @@ bool detect(img_service::TagDetection::Request &req,
 
 void Callback_Tags(apriltags_ros::AprilTagDetectionArray::ConstPtr msg) //TODO
 {
-    ROS_INFO("HAI");
+    ROS_INFO("Callback_Tags called");
     if (msg == NULL)
     {
 	ROS_INFO("No tags given");
@@ -226,6 +230,7 @@ void Callback_Tags(apriltags_ros::AprilTagDetectionArray::ConstPtr msg) //TODO
 
 void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 {
+    ROS_INFO("Callback_Img called");
     if (msg == NULL)
     {
 	ROS_INFO("No image found");
@@ -371,6 +376,6 @@ int main(int argc, char **argv)
     ros::ServiceServer service = n.advertiseService("img_service", detect);
     ROS_INFO("Service start");
     ros::spin();
-
+    ROS_WARN("img_service shutting down");
     return 0;
 }
