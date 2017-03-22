@@ -78,15 +78,48 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
     else 
     {
 	int index;
-	for (index=0; tagz->detections[index].id != tag_id || index<tagz->detections.size(); index++)
+	for (index=0;  || index < 1 + tagz->detections.size(); index++)
 	{
-	    if (index > 5) //TODO change to actual size
+            if (index == tagz->detections.size()) // so we couldn't find the tag
 	    {
-		return cv::Point2f(404,404);
+                return cv::Point2f(404,404);
+	    }
+	    if (tagz->detections[index].id == tag_id) //we found it
+	    {
+	        break;
 	    }
 	}
 	geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
 	return cv::Point2f(pos.position.x, pos.position.y);
+    }
+}
+
+float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
+{
+    ROS_INFO("tag_orientation called");
+    if (!got_tags)
+    {
+	//TODO error?
+	return -40.4f;
+    }
+    else 
+    {
+	int index;
+	for (index=0;  || index < 1 + tagz->detections.size(); index++)
+	{
+            if (index == tagz->detections.size()) // so we couldn't find the tag
+	    {
+                return -40.4f;
+	    }
+	    if (tagz->detections[index].id == tag_id) //we found it
+	    {
+	        break;
+	    }
+	}
+	geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
+	return 0.0f;
+	    
+	    //return do some quat -> euler conversion?
 	//NOTE: theta = pos.orientation
     }
 }
@@ -195,7 +228,7 @@ bool detect(img_service::TagDetection::Request &req,
       point = tag_location(req.tag_Id, tags);
     }
 
-    float angle = 0; //TODO implement angle
+    float angle = tag_orientation(req.tag_Id, tags); //TODO finish writing this function (returns 0.0f atm)
     res.scan.angle_min = SCAN_MIN_ANGLE;
     res.scan.angle_max = SCAN_MAX_ANGLE;
     res.scan.angle_increment = SCAN_INCREMENT;
