@@ -80,8 +80,7 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
     }
     else 
     {
-        //int index;
-        ROS_INFO("There are %lu tags", tagz->detections.size());
+        //ROS_INFO("There are %lu tags", tagz->detections.size());
         for(std::vector<apriltags_ros::AprilTagDetection>::const_iterator detectIt = tagz->detections.begin();
             detectIt < tagz->detections.end(); detectIt++ )
         {
@@ -89,24 +88,41 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
             {
                 tag_loc.x = detectIt->pose.pose.position.x;
                 tag_loc.y = detectIt->pose.pose.position.y;
+                break;
             }
         }
-
-        /*
-        for (index=0; tagz->detections[index].id != tag_id || index<tagz->detections.size(); index++)
-        {
-            ROS_INFO("Tag index %i is ID %i", index, tagz->detections[index].id);
-            if (index > 5) //TODO change to actual size
-            {
-                return cv::Point2f(404,404);
-            }
-        }
-        geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
-        return cv::Point2f(pos.position.x, pos.position.y);
-        //NOTE: theta = pos.orientation
-        */
     }
+
     return tag_loc;
+}
+
+float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
+{
+    ROS_INFO("tag_orientation called");
+    
+    //Not sure if this is an out-of-range orientation
+    float orientation = -1;
+
+    if (!got_tags || (tagz->detections.size() == 0))
+    {
+        ROS_WARN("No tags available to find orientation.");
+    }
+    else 
+    {
+        for(std::vector<apriltags_ros::AprilTagDetection>::const_iterator detectIt = tagz->detections.begin();
+            detectIt < tagz->detections.end(); detectIt++ )
+        {
+            if(detectIt->id == tag_id)
+            {
+                //Either do a quaternion to euler conversion, or return
+                //a quaternion from this function rather than a float. 
+                orientation = 0.0;
+                break;
+            }
+        }
+    }
+	
+    return orientation;
 }
 
 
@@ -223,7 +239,7 @@ bool detect(img_service::TagDetection::Request &req,
         //ROS_WARN("Releasing tags_mutex");
     }
 
-    float angle = 0; //TODO implement angle
+    float angle = tag_orientation(req.tag_Id, tags); //TODO finish writing this function (returns 0.0f atm)
     res.scan.angle_min = SCAN_MIN_ANGLE;
     res.scan.angle_max = SCAN_MAX_ANGLE;
     res.scan.angle_increment = SCAN_INCREMENT;
