@@ -59,27 +59,43 @@ apriltags_ros::AprilTagDetectionArray::ConstPtr tags;
 
 void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
 {
-    ROS_INFO("draw_robots called");
+    //ROS_INFO("draw_robots called");
     for (int i=0; i<tag_pos.size(); i++)
     { //TODO const
         cv::circle(*canvas, tag_pos[i], ROBOT_RADIUS, cv::Scalar(255),-1);
-        std::cout << "(" << tag_pos[i].x << ", " << tag_pos[i].y << ") ";
+        //std::cout << "(" << tag_pos[i].x << ", " << tag_pos[i].y << ") ";
     }
 }
 
 cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
 {
-    ROS_INFO("tag_location called");
-    if (!got_tags)
+    //ROS_INFO("tag_location called");
+    cv::Point2f tag_loc = cv::Point2f(-1,-1);
+
+    if ((!got_tags) || (tagz->detections.size() == 0))
     {
-	   //TODO error?
-       return cv::Point2f(404,404);
+        //TODO error?
+        ROS_WARN("Don't have tags yet");
+        return tag_loc;
     }
     else 
     {
-        int index;
+        //int index;
+        ROS_INFO("There are %lu tags", tagz->detections.size());
+        for(std::vector<apriltags_ros::AprilTagDetection>::const_iterator detectIt = tagz->detections.begin();
+            detectIt < tagz->detections.end(); detectIt++ )
+        {
+            if(detectIt->id == tag_id)
+            {
+                tag_loc.x = detectIt->pose.pose.position.x;
+                tag_loc.y = detectIt->pose.pose.position.y;
+            }
+        }
+
+        /*
         for (index=0; tagz->detections[index].id != tag_id || index<tagz->detections.size(); index++)
         {
+            ROS_INFO("Tag index %i is ID %i", index, tagz->detections[index].id);
             if (index > 5) //TODO change to actual size
             {
                 return cv::Point2f(404,404);
@@ -88,7 +104,9 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
         geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
         return cv::Point2f(pos.position.x, pos.position.y);
         //NOTE: theta = pos.orientation
+        */
     }
+    return tag_loc;
 }
 
 
@@ -102,13 +120,14 @@ float get_scan(cv::Point2f point, float theta, cv::Mat image, int threshold,
  float min_range=0.0f, float max_range=1000.0f,
  int round_mode = 1)
 {
-    ROS_INFO("get_scan called");
+    //ROS_INFO("get_scan called");
     cv::Point2f traversal;
     traversal.x = point.x;
     traversal.y = point.y;
     int x = point.x;
     int y = point.y;
     bool past_min = false;
+
     while (x >= 0 && x < image.rows && y >= 0 && y < image.cols)
     {
         if (!past_min && sqrt(pow(traversal.x - point.x, 2)
@@ -117,10 +136,11 @@ float get_scan(cv::Point2f point, float theta, cv::Mat image, int threshold,
             past_min = true; //use flag to save a bit of time
             continue;
         }
+    
         if (image.at<uchar>(x, y) > threshold)
         {
             break;
-        }
+        }        
         else
         {
             traversal.x += cos(theta);
@@ -145,19 +165,20 @@ float get_scan(cv::Point2f point, float theta, cv::Mat image, int threshold,
             }
         }
     }
+
     if (x < 0 || x > image.rows || y < 0 || y > image.cols) // out of range
     {
-       return max_range;
+        return max_range;
     }
     else
     {
-       return sqrt(pow(traversal.x - point.x, 2) + pow(traversal.y - point.y, 2)); 
+        return sqrt(pow(traversal.x - point.x, 2) + pow(traversal.y - point.y, 2)); 
     }
 }
 
 void publish_image(cv::Mat tapes_l)
 {
-    ROS_INFO("publish_image called");
+    //ROS_INFO("publish_image called");
     sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "mono8", tapes_l).toImageMsg();
     pub.publish(msg);
     ros::spinOnce();
@@ -171,15 +192,15 @@ bool detect(img_service::TagDetection::Request &req,
     //  res.scan;
     cv::Mat tapes_cpy;
     {
-        ROS_WARN("Getting tapes_mutex 1");
+        //ROS_WARN("Getting tapes_mutex 1");
         boost::mutex::scoped_lock lock(tapes_mutex);
         if (tapes.empty())
         {
             ROS_INFO("No image found");
             return false;
         }
-        cv::Mat tapes_cpy = tapes.clone();
-        ROS_WARN("Releasing tapes_mutex 1");
+        tapes_cpy = tapes.clone();
+        //ROS_WARN("Releasing tapes_mutex 1");
     }
 
     if (tapes_cpy.empty()) 
@@ -196,10 +217,10 @@ bool detect(img_service::TagDetection::Request &req,
 
     cv::Point2f point;
     {
-        ROS_WARN("Getting tags_mutex");
+        //ROS_WARN("Getting tags_mutex");
         boost::mutex::scoped_lock lock(tags_mutex);
         point = tag_location(req.tag_Id, tags);
-        ROS_WARN("Releasing tags_mutex");
+        //ROS_WARN("Releasing tags_mutex");
     }
 
     float angle = 0; //TODO implement angle
@@ -210,34 +231,35 @@ bool detect(img_service::TagDetection::Request &req,
     res.scan.range_max = SCAN_RANGE_MAX; //TODO get max based on camera dimension?
     for (int i=0; i<SCAN_COUNT; i++)
     {
-       res.scan.ranges[i] = get_scan(point, angle + i*SCAN_INCREMENT, tapes_cpy,
-        IMAGE_THRESHOLD,
-        SCAN_RANGE_MIN,
-        SCAN_RANGE_MAX);
+        ROS_WARN("About to do the thing 4!");
+         res.scan.ranges.push_back(get_scan(point, angle + i*SCAN_INCREMENT, tapes_cpy,
+            IMAGE_THRESHOLD,
+            SCAN_RANGE_MIN,
+            SCAN_RANGE_MAX));
     }
     return true;
 }
 
 void Callback_Tags(apriltags_ros::AprilTagDetectionArray::ConstPtr msg) //TODO
 {
-    ROS_INFO("Callback_Tags called");
+    //ROS_INFO("Callback_Tags called");
     if (msg == NULL)
     {
         ROS_INFO("No tags given");
         return;
     }
     {
-        ROS_WARN("Getting tags_mutex");
+        //ROS_WARN("Getting tags_mutex");
         boost::mutex::scoped_lock lock(tags_mutex);
         got_tags = true;
         tags = msg;
-        ROS_WARN("Releasing tags_mutex");
+        //ROS_WARN("Releasing tags_mutex");
     }
 }
 
 void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 {
-    ROS_INFO("Callback_Img called");
+    //ROS_INFO("Callback_Img called");
     if (msg == NULL)
     {
         ROS_INFO("No image found");
@@ -281,7 +303,7 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     Canny(img_display, cdst, 50, 200, 3);
     if (got_tags)
     {
-        ROS_WARN("Getting tags_mutex");
+        //ROS_WARN("Getting tags_mutex");
         boost::mutex::scoped_lock lock(tags_mutex);
         std::vector<cv::Point2f> points;
         for (int i=0; i<tags->detections.size(); i++)
@@ -289,7 +311,7 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
             points.push_back(cv::Point2f(tags->detections[i].pose.pose.position.x, tags->detections[i].pose.pose.position.y));
         }
         draw_robots(points, &cdst); 
-        ROS_WARN("Releasing tags_mutex");
+        //ROS_WARN("Releasing tags_mutex");
     }
 
     std::vector<std::vector<cv::Point> > contours;
@@ -307,7 +329,7 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
             contours.erase(contours.begin() + i--);
         }
     }
-    std::cout << "Passed contours: " << before - contours.size() << "\n";
+    //std::cout << "Passed contours: " << before - contours.size() << "\n";
 
     std::vector<std::vector<cv::Point> > contours_poly( contours.size() );
     std::vector<cv::Rect> boundRect( contours.size() );
@@ -351,7 +373,7 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     	}*/
     }
 
-    std::cout << "Passed contours: " << before - contours.size() << "\n";
+    //std::cout << "Passed contours: " << before - contours.size() << "\n";
     for(int i = 0; i< contours.size(); i++ )
     {
     	std::stringstream ss;
@@ -364,14 +386,16 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     	cv::circle(drawing, center[i], radius[i], cv::Scalar(255,255,255),-1);
     	cv::putText(drawing,ss.str() , center[i], cv::FONT_HERSHEY_SCRIPT_SIMPLEX, 1, cv::Scalar(255,0,0), 3, 3);
     }
-    std::cout << "contour count: " << contours.size() << "\n";
+
+    //std::cout << "contour count: " << contours.size() << "\n";
+    
     {
-        ROS_WARN("Getting tapes_mutex 2");
+        //ROS_WARN("Getting tapes_mutex 2");
         boost::mutex::scoped_lock lock(tapes_mutex); 
         cv::Mat tapes_copy = tapes.clone();
         cv::addWeighted(dst, 0.5, tapes_copy, 0.5, 0.0, tapes);
         //publish_image(tapes);
-        ROS_WARN("Releasing tapes_mutex 2");
+        //ROS_WARN("Releasing tapes_mutex 2");
     }
     return;
 }
@@ -386,8 +410,6 @@ int main(int argc, char **argv){
     image_transport::ImageTransport it(n);
     pub = it.advertise("img_service/image", 1);
     ros::ServiceServer service = n.advertiseService("img_service", detect);
-    ROS_INFO("Service start");
     ros::spin();
-    ROS_WARN("img_service shutting down");
     return 0;
 }
