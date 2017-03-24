@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
-#define DEBUG
+//#define DEBUG
 char ssid[] = "TinyRoboBase";     //  your network SSID (name)
 //char pass[] = "sofullsuchinternets";  // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -279,7 +279,9 @@ void loop() {
           motStatus[5] = fault[1];
           //The cast is a hack, may cause nasal demons
           client.write((const uint8_t*)motStatus, 6); 
+#ifdef DEBUG
           Serial.print(".");
+#endif
           state = CLI_READ;
           yield();
           break;

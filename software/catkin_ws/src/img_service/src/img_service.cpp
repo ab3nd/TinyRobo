@@ -59,35 +59,70 @@ apriltags_ros::AprilTagDetectionArray::ConstPtr tags;
 
 void draw_robots(std::vector<cv::Point2f> tag_pos, cv::Mat* canvas)
 {
-  for (int i=0; i<tag_pos.size(); i++)
-  { //TODO const
-    cv::circle(*canvas, tag_pos[i], ROBOT_RADIUS, cv::Scalar(255),-1);
-    std::cout << "(" << tag_pos[i].x << ", " << tag_pos[i].y << ") ";
-  }
+    //ROS_INFO("draw_robots called");
+    for (int i=0; i<tag_pos.size(); i++)
+    { //TODO const
+        cv::circle(*canvas, tag_pos[i], ROBOT_RADIUS, cv::Scalar(255),-1);
+        //std::cout << "(" << tag_pos[i].x << ", " << tag_pos[i].y << ") ";
+    }
 }
 
 cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
 {
+    //ROS_INFO("tag_location called");
+    cv::Point2f tag_loc = cv::Point2f(-1,-1);
 
-    if (!got_tags)
+    if ((!got_tags) || (tagz->detections.size() == 0))
     {
-	//TODO error?
-	return cv::Point2f(404,404);
+        //TODO error?
+        ROS_WARN("Don't have tags yet");
+        return tag_loc;
     }
     else 
     {
-	int index;
-	for (index=0; tagz->detections[index].id != tag_id || index<tagz->detections.size(); index++)
-	{
-	    if (index > 5) //TODO change to actual size
-	    {
-		return cv::Point2f(404,404);
-	    }
-	}
-	geometry_msgs::Pose pos = tagz->detections[index].pose.pose;
-	return cv::Point2f(pos.position.x, pos.position.y);
-	//NOTE: theta = pos.orientation
+        //ROS_INFO("There are %lu tags", tagz->detections.size());
+        for(std::vector<apriltags_ros::AprilTagDetection>::const_iterator detectIt = tagz->detections.begin();
+            detectIt < tagz->detections.end(); detectIt++ )
+        {
+            if(detectIt->id == tag_id)
+            {
+                tag_loc.x = detectIt->pose.pose.position.x;
+                tag_loc.y = detectIt->pose.pose.position.y;
+                break;
+            }
+        }
     }
+
+    return tag_loc;
+}
+
+float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
+{
+    ROS_INFO("tag_orientation called");
+    
+    //Not sure if this is an out-of-range orientation
+    float orientation = -1;
+
+    if (!got_tags || (tagz->detections.size() == 0))
+    {
+        ROS_WARN("No tags available to find orientation.");
+    }
+    else 
+    {
+        for(std::vector<apriltags_ros::AprilTagDetection>::const_iterator detectIt = tagz->detections.begin();
+            detectIt < tagz->detections.end(); detectIt++ )
+        {
+            if(detectIt->id == tag_id)
+            {
+                //Either do a quaternion to euler conversion, or return
+                //a quaternion from this function rather than a float. 
+                orientation = 0.0;
+                break;
+            }
+        }
+    }
+	
+    return orientation;
 }
 
 
@@ -98,60 +133,68 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
  * default = 1
  */
 float get_scan(cv::Point2f point, float theta, cv::Mat image, int threshold,
-               float min_range=0.0f, float max_range=1000.0f,
-	       int round_mode = 1)
+ float min_range=0.0f, float max_range=1000.0f,
+ int round_mode = 1)
 {
+    //ROS_INFO("get_scan called");
     cv::Point2f traversal;
     traversal.x = point.x;
     traversal.y = point.y;
     int x = point.x;
     int y = point.y;
     bool past_min = false;
+
     while (x >= 0 && x < image.rows && y >= 0 && y < image.cols)
     {
-	if (!past_min &&
-	    sqrt(pow(traversal.x - point.x, 2)
-	       + pow(traversal.y - point.y, 2)) < min_range)
-	{
-	    past_min = true; //use flag to save a bit of time
-	    continue;
-	}
-	if (image.at<uchar>(x, y) > threshold)
-	    break;
-	else
-	{
-	    traversal.x += cos(theta);
-	    traversal.y += sin(theta);
-	    switch (round_mode)
-	    {
-		case 1:
-		    x = floor(traversal.x);
-		    y = floor(traversal.y);
-		    break;
-		case 2:
-		    x = ceil(traversal.x);
-		    y = ceil(traversal.y);
-		    break;
-		case 3:
-		    x = round(traversal.x);
-		    y = round(traversal.y);
-		    break;
-		default:
-		    //TODO errorcode
-		    return -1;
-	    }
-	}
+        if (!past_min && sqrt(pow(traversal.x - point.x, 2)
+            + pow(traversal.y - point.y, 2)) < min_range)
+        {
+            past_min = true; //use flag to save a bit of time
+            continue;
+        }
+    
+        if (image.at<uchar>(x, y) > threshold)
+        {
+            break;
+        }        
+        else
+        {
+            traversal.x += cos(theta);
+            traversal.y += sin(theta);
+            switch (round_mode)
+            {
+                case 1:
+                    x = floor(traversal.x);
+                    y = floor(traversal.y);
+                    break;
+                case 2:
+                    x = ceil(traversal.x);
+                    y = ceil(traversal.y);
+                    break;
+                case 3:
+                    x = round(traversal.x);
+                    y = round(traversal.y);
+                    break;
+                default:
+                    //TODO errorcode
+                    return -1;
+            }
+        }
     }
-    if (x < 0 || x > image.rows || y < 0 || y > image.cols) // out of range
-	return max_range;
 
+    if (x < 0 || x > image.rows || y < 0 || y > image.cols) // out of range
+    {
+        return max_range;
+    }
     else
-	return sqrt(pow(traversal.x - point.x, 2)
-	          + pow(traversal.y - point.y, 2)); 
+    {
+        return sqrt(pow(traversal.x - point.x, 2) + pow(traversal.y - point.y, 2)); 
+    }
 }
 
 void publish_image(cv::Mat tapes_l)
 {
+    //ROS_INFO("publish_image called");
     sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "mono8", tapes_l).toImageMsg();
     pub.publish(msg);
     ros::spinOnce();
@@ -160,38 +203,43 @@ void publish_image(cv::Mat tapes_l)
 bool detect(img_service::TagDetection::Request &req, 
 	img_service::TagDetection::Response &res)
 {
+    ROS_INFO("detect called");
     //  req.tag_Id;
     //  res.scan;
     cv::Mat tapes_cpy;
     {
-      boost::mutex::scoped_lock
-        lock(tapes_mutex);
-      if (tapes.empty())
-      {
-  	ROS_INFO("No image found");
-  	return false;
-      }
-      cv::Mat tapes_cpy = tapes.clone();
-    }
-    
-    if (tapes_cpy.empty()) 
-    {
-      ROS_INFO("Image duplication fail. Try again");
-      return false;
-    }
-    if (!got_tags)
-    {
-	ROS_INFO("No tags found");
-	return false;
-    }
-    cv::Point2f point;
-    {
-      boost::mutex::scoped_lock
-        lock(tags_mutex);
-      point = tag_location(req.tag_Id, tags);
+        //ROS_WARN("Getting tapes_mutex 1");
+        boost::mutex::scoped_lock lock(tapes_mutex);
+        if (tapes.empty())
+        {
+            ROS_INFO("No image found");
+            return false;
+        }
+        tapes_cpy = tapes.clone();
+        //ROS_WARN("Releasing tapes_mutex 1");
     }
 
-    float angle = 0; //TODO implement angle
+    if (tapes_cpy.empty()) 
+    {
+        ROS_INFO("Image duplication fail. Try again");
+        return false;
+    }
+
+    if (!got_tags)
+    {
+	   ROS_INFO("No tags found");
+	   return false;
+    }
+
+    cv::Point2f point;
+    {
+        //ROS_WARN("Getting tags_mutex");
+        boost::mutex::scoped_lock lock(tags_mutex);
+        point = tag_location(req.tag_Id, tags);
+        //ROS_WARN("Releasing tags_mutex");
+    }
+
+    float angle = tag_orientation(req.tag_Id, tags); //TODO finish writing this function (returns 0.0f atm)
     res.scan.angle_min = SCAN_MIN_ANGLE;
     res.scan.angle_max = SCAN_MAX_ANGLE;
     res.scan.angle_increment = SCAN_INCREMENT;
@@ -199,47 +247,50 @@ bool detect(img_service::TagDetection::Request &req,
     res.scan.range_max = SCAN_RANGE_MAX; //TODO get max based on camera dimension?
     for (int i=0; i<SCAN_COUNT; i++)
     {
-	res.scan.ranges[i]
-	= get_scan(point, angle + i*SCAN_INCREMENT, tapes_cpy,
-	           IMAGE_THRESHOLD,
-		   SCAN_RANGE_MIN,
-		   SCAN_RANGE_MAX);
+        ROS_WARN("About to do the thing 4!");
+         res.scan.ranges.push_back(get_scan(point, angle + i*SCAN_INCREMENT, tapes_cpy,
+            IMAGE_THRESHOLD,
+            SCAN_RANGE_MIN,
+            SCAN_RANGE_MAX));
     }
     return true;
 }
 
 void Callback_Tags(apriltags_ros::AprilTagDetectionArray::ConstPtr msg) //TODO
 {
-    ROS_INFO("HAI");
+    //ROS_INFO("Callback_Tags called");
     if (msg == NULL)
     {
-	ROS_INFO("No tags given");
-	return;
+        ROS_INFO("No tags given");
+        return;
     }
     {
-      boost::mutex::scoped_lock
-        lock(tags_mutex);
-      got_tags = true;
-      tags = msg;
+        //ROS_WARN("Getting tags_mutex");
+        boost::mutex::scoped_lock lock(tags_mutex);
+        got_tags = true;
+        tags = msg;
+        //ROS_WARN("Releasing tags_mutex");
     }
 }
 
 void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 {
+    //ROS_INFO("Callback_Img called");
     if (msg == NULL)
     {
-	ROS_INFO("No image found");
-	return;
+        ROS_INFO("No image found");
+        return;
     }
+    
     cv_bridge::CvImagePtr cv_ptr;
     try 
     {
-	cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
     }
     catch (cv_bridge::Exception& e)
     {
-	ROS_ERROR("cv_bridge exception: %s", e.what());
-	return;
+        ROS_ERROR("cv_bridge exception: %s", e.what());
+        return;
     }
 
 
@@ -247,15 +298,16 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
 
     if (image.empty())
     {
-	ROS_INFO("Cant open image. Invalid format?");
-	return;
+        ROS_INFO("Cant open image. Invalid format?");
+        return;
     }
     if (tapes.empty()) //init
     {
         ROS_INFO("Initiating new image map");
-	tapes = cv::Mat(image.size(), CV_8UC1);
-	tapes = cv::Scalar(127);
+        tapes = cv::Mat(image.size(), CV_8UC1);
+        tapes = cv::Scalar(127);
     }
+
     cv::blur(image,image, cv::Size(3,3)); //TODO might need to adjust
     cv::Mat img_hsv, img_threshold, img_display;
     cv::cvtColor(image, img_hsv, CV_BGR2HSV);
@@ -267,15 +319,17 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     Canny(img_display, cdst, 50, 200, 3);
     if (got_tags)
     {
-      boost::mutex::scoped_lock
-       lock(tags_mutex);
-      std::vector<cv::Point2f> points;
-      for (int i=0; i<tags->detections.size(); i++)
-      {
-        points.push_back(cv::Point2f(tags->detections[i].pose.pose.position.x, tags->detections[i].pose.pose.position.y));
-      }
-      draw_robots(points, &cdst); 
+        //ROS_WARN("Getting tags_mutex");
+        boost::mutex::scoped_lock lock(tags_mutex);
+        std::vector<cv::Point2f> points;
+        for (int i=0; i<tags->detections.size(); i++)
+        {
+            points.push_back(cv::Point2f(tags->detections[i].pose.pose.position.x, tags->detections[i].pose.pose.position.y));
+        }
+        draw_robots(points, &cdst); 
+        //ROS_WARN("Releasing tags_mutex");
     }
+
     std::vector<std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(cdst, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE, cv::Point(0, 0) );
@@ -284,14 +338,14 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     int before = contours.size();
     for (int i=0; i<contours.size(); i++)
     {
-	//    std::cout << cv::contourArea(contours[i]) << ", ";
-	if (cv::contourArea(contours[i]) > 30) //TODO threshold
-	{
-	    hierarchy.erase(hierarchy.begin() + i);
-	    contours.erase(contours.begin() + i--);
-	}
+        //    std::cout << cv::contourArea(contours[i]) << ", ";
+        if (cv::contourArea(contours[i]) > 30) //TODO threshold
+        {
+            hierarchy.erase(hierarchy.begin() + i);
+            contours.erase(contours.begin() + i--);
+        }
     }
-    std::cout << "Passed contours: " << before - contours.size() << "\n";
+    //std::cout << "Passed contours: " << before - contours.size() << "\n";
 
     std::vector<std::vector<cv::Point> > contours_poly( contours.size() );
     std::vector<cv::Rect> boundRect( contours.size() );
@@ -299,69 +353,72 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
     std::vector<float>radius( contours.size() );
     for (int i=0; i<contours.size(); i++)
     {
-	if (cv::contourArea(contours[i], true) < 0) //fix counter clockwise
-	{
-	    std::reverse(contours[i].begin(), contours[i].end());
-	}
+        if (cv::contourArea(contours[i], true) < 0) //fix counter clockwise
+        {
+           std::reverse(contours[i].begin(), contours[i].end());
+        }
     }
+
     before = contours.size();
     for (int i=0; i<contours.size(); i++)
     {
-	cv::approxPolyDP( cv::Mat(contours[i]), contours_poly[i], 3, true );
-	boundRect[i] = cv::boundingRect( cv::Mat(contours_poly[i]) );
-	cv::minEnclosingCircle( (cv::Mat)contours_poly[i], center[i], radius[i] );
-	float tape_circle = 0.5; //TODO threshold
-	float rect_obj_ratio = (cv::contourArea(contours[i]) / (boundRect[i].width*boundRect[i].height));
-	//  std::cout << rect_obj << ", ";
-	if (rect_obj_ratio > .8 && rect_obj_ratio < 1 && cv::contourArea(contours[i]) > 10)
-	{
-	    center.erase(center.begin() + i);
-	    radius.erase(radius.begin() + i);
-	    boundRect.erase(boundRect.begin() + i);  
-	    hierarchy.erase(hierarchy.begin() + i);
-	    contours.erase(contours.begin() + i--);
+        cv::approxPolyDP( cv::Mat(contours[i]), contours_poly[i], 3, true );
+        boundRect[i] = cv::boundingRect( cv::Mat(contours_poly[i]) );
+        cv::minEnclosingCircle( (cv::Mat)contours_poly[i], center[i], radius[i] );
+        float tape_circle = 0.5; //TODO threshold
+        float rect_obj_ratio = (cv::contourArea(contours[i]) / (boundRect[i].width*boundRect[i].height));
 
-	}
-	/*    if (cv::contourArea(contours[i])/(PI*radius[i]*radius[i]) < tape_circle)
-	      {
-	//remove this, probably not tape
-	//also remove these if plan to use after
-	center.erase(center.begin() + i);
-	radius.erase(radius.begin() + i);
-	boundRect.erase(boundRect.begin() + i);  
-	hierarchy.erase(hierarchy.begin() + i);
-	contours.erase(contours.begin() + i--);
-	}*/
+    	//  std::cout << rect_obj << ", ";
+        if (rect_obj_ratio > .8 && rect_obj_ratio < 1 && cv::contourArea(contours[i]) > 10)
+        {
+            center.erase(center.begin() + i);
+            radius.erase(radius.begin() + i);
+            boundRect.erase(boundRect.begin() + i);
+            hierarchy.erase(hierarchy.begin() + i);
+            contours.erase(contours.begin() + i--);
+        }
+    	/*    if (cv::contourArea(contours[i])/(PI*radius[i]*radius[i]) < tape_circle)
+    	      {
+    	//remove this, probably not tape
+    	//also remove these if plan to use after
+    	center.erase(center.begin() + i);
+    	radius.erase(radius.begin() + i);
+    	boundRect.erase(boundRect.begin() + i);  
+    	hierarchy.erase(hierarchy.begin() + i);
+    	contours.erase(contours.begin() + i--);
+    	}*/
     }
-    std::cout << "Passed contours: " << before - contours.size() << "\n";
+
+    //std::cout << "Passed contours: " << before - contours.size() << "\n";
     for(int i = 0; i< contours.size(); i++ )
     {
-	std::stringstream ss;
-	ss << i;
-	if (radius[i] < 1) radius[i] = 1.0f;
-	radius[i] += 1.5;
-	//    cv::drawContours( dst, contours, i, cv::Scalar(0), -1, 8, hierarchy, 0, cv::Point() );
-	//  cv::drawContours(drawing, contours, i, cv::Scalar(255,255,255),-1,8,hierarchy,0,cv::Point());
-	cv::circle(dst, center[i], radius[i], cv::Scalar(0),-1);
-	cv::circle(drawing, center[i], radius[i], cv::Scalar(255,255,255),-1);
-	cv::putText(drawing,ss.str() , center[i], cv::FONT_HERSHEY_SCRIPT_SIMPLEX, 1,
-		cv::Scalar(255,0,0), 3, 3);
+    	std::stringstream ss;
+    	ss << i;
+    	if (radius[i] < 1) radius[i] = 1.0f;
+    	radius[i] += 1.5;
+    	//    cv::drawContours( dst, contours, i, cv::Scalar(0), -1, 8, hierarchy, 0, cv::Point() );
+    	//  cv::drawContours(drawing, contours, i, cv::Scalar(255,255,255),-1,8,hierarchy,0,cv::Point());
+    	cv::circle(dst, center[i], radius[i], cv::Scalar(0),-1);
+    	cv::circle(drawing, center[i], radius[i], cv::Scalar(255,255,255),-1);
+    	cv::putText(drawing,ss.str() , center[i], cv::FONT_HERSHEY_SCRIPT_SIMPLEX, 1, cv::Scalar(255,0,0), 3, 3);
     }
-    std::cout << "contour count: " << contours.size() << "\n";
+
+    //std::cout << "contour count: " << contours.size() << "\n";
+    
     {
-      boost::mutex::scoped_lock
-        lock(tapes_mutex); 
-      cv::Mat tapes_copy = tapes.clone();
-      cv::addWeighted(dst, 0.5, tapes_copy, 0.5, 0.0, tapes);
-      publish_image(tapes);
+        //ROS_WARN("Getting tapes_mutex 2");
+        boost::mutex::scoped_lock lock(tapes_mutex); 
+        cv::Mat tapes_copy = tapes.clone();
+        cv::addWeighted(dst, 0.5, tapes_copy, 0.5, 0.0, tapes);
+        //publish_image(tapes);
+        //ROS_WARN("Releasing tapes_mutex 2");
     }
     return;
 }
 
 
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
     ros::init(argc, argv, "img_service_server");
     ros::NodeHandle n;
     ros::Subscriber sub = n.subscribe(CAMERA_PUBLISHER_NAME, 10, Callback_Img);
@@ -369,8 +426,6 @@ int main(int argc, char **argv)
     image_transport::ImageTransport it(n);
     pub = it.advertise("img_service/image", 1);
     ros::ServiceServer service = n.advertiseService("img_service", detect);
-    ROS_INFO("Service start");
     ros::spin();
-
     return 0;
 }
