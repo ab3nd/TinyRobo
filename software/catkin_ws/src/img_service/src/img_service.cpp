@@ -98,7 +98,7 @@ cv::Point2f tag_location(int tag_id, apriltags_ros::AprilTagDetectionArray::Cons
 
 float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPtr tagz)
 {
-    ROS_INFO("tag_orientation called");
+    //ROS_INFO("tag_orientation called");
     
     //Not sure if this is an out-of-range orientation
     float orientation = -1;
