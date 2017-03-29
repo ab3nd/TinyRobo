@@ -116,7 +116,7 @@ float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPt
             {
                 //Either do a quaternion to euler conversion, or return
                 //a quaternion from this function rather than a float. 
-                orientation = 0.0;
+                orientation = 2*asin(detectIt->pose.pose.orientation.y);
                 break;
             }
         }
