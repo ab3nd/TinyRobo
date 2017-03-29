@@ -1,5 +1,6 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Pose.h"
+#include "geometry_msgs/Quaternion.h"
 #include "img_service/TagDetection.h"
 #include "sensor_msgs/LaserScan.h"
 #include "sensor_msgs/Image.h"
@@ -116,7 +117,9 @@ float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPt
             {
                 //Either do a quaternion to euler conversion, or return
                 //a quaternion from this function rather than a float. 
-                orientation = 2*asin(detectIt->pose.pose.orientation.y);
+                // v.1 orientation = 2*asin(detectIt->pose.pose.orientation.y);
+                geometry_msgs::Quaternion q = detectIt->pose.pose.orientation;
+                orientation = atan2(2.0*(q.y*q.z + q.w*q.x), q.w*q.w - q.x*q.x - q.y*q.y + q.z*q.z);
                 break;
             }
         }
