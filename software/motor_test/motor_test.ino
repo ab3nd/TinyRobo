@@ -5,6 +5,12 @@
 #define addr2 0x64
 byte faultVals = 0x00;
 
+#define ILIMIT 0x10
+#define OTS 0x08
+#define UVLO 0x04
+#define OCP 0x02
+#define FAULT 0x01
+
 void setMotor(byte address, byte vel, byte dir)
 {
   //TODO add limit checking to motor speeds
@@ -13,6 +19,15 @@ void setMotor(byte address, byte vel, byte dir)
   Wire.write(byte(0x00)); //Control register
   Wire.write(byte(vel << 2) | byte(dir));
   Wire.endTransmission();
+}
+
+void clearFault(byte addr)
+{
+  Wire.beginTransmission(addr); // Target device
+  Wire.write(byte(0x01));        // sets register pointer to fault register
+  Wire.write(byte(0x80));        // set the clear bit
+  Wire.endTransmission();        // stop transmitting
+  
 }
 
 byte getFault(byte addr)
@@ -48,20 +63,34 @@ void loop() {
   //Test motor 1
   for(int ii = 0; ii < 38; ii++)
   {
+    
     digitalWrite(2, LOW);
-    setMotor(addr1, 0x06 + ii, 0x02);
+    setMotor(addr2, 0x06 + ii, 0x02);
     delay(1000);
     digitalWrite(2, HIGH);
-    faultVals = getFault(addr1);
+    faultVals = getFault(addr2);
 
     //Debug print everything
     Serial.print("Motor speed: ");
     Serial.println(0x06+ii, HEX);
     Serial.print("Fault: ");
     Serial.print(faultVals, HEX);
+    if(faultVals & ILIMIT){
+      Serial.print(" Extended current limit");
+    }
+    if(faultVals & OTS){
+      Serial.print(" Overtemperature");
+    }
+    if(faultVals & UVLO){
+      Serial.print(" Undervoltage");
+    }
+    if(faultVals & OCP){
+      Serial.print(" Overcurrent event");
+    }
+    
     Serial.println(' ');
     delay(10);
   }
-  setMotor(addr1, 0x00, 0x00);
+  setMotor(addr2, 0x00, 0x00);
   digitalWrite(2, LOW);
 }
