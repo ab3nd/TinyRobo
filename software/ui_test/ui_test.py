@@ -13,13 +13,36 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.config import Config
+from kivy.uix.widget import Widget
+from kivy.graphics import Color, Ellipse, Line
+
+
+#Widget that records all finger motion events on it
+#TODO move the background image stuff to this, rather 
+#than having it be in the layout
+class FingerRecorder(Widget):
+    def on_touch_down(self, touch):
+        with self.canvas:
+            Color(0.5, 0.8, 0)
+            #d = 30.
+            #Ellipse(pos=(touch.x -d/2, touch.y-d/2), size=(d,d))
+            touch.ud['line'] = Line(points=(touch.x, touch.y))
+
+    def on_touch_up(self, touch):
+        print(touch)
+
+    def on_touch_move(self, touch):
+        touch.ud['line'].points += [touch.x, touch.y]
+
+    def clean_up(self):
+        self.canvas.clear()
+
 
 class SlideScreen(FloatLayout):  
 
     def __init__(self, **kwargs):
         super(SlideScreen, self).__init__(**kwargs)
         self.cols = 1
-        self.nextButton = Button(text="Next", size_hint=(0.07, 0.07))
         
         #Get the app configuration and count the total slides
         self.cfg = Config.get_configparser('app')
@@ -27,10 +50,18 @@ class SlideScreen(FloatLayout):
         #We're looking at the first slide
         self.slideIndex = 1
         
-        self.nextButton.bind(on_press = self.nextClickedCallback)
+        
+        #Background image of the task in question
         self.bgImage = Image(source = self.cfg.get("Files", str(self.slideIndex)))
-
         self.add_widget(self.bgImage)
+        
+        #Widget that records finger motions, defaults to being as big as the screen
+        self.fr = FingerRecorder()
+        self.add_widget(self.fr)
+
+        #Small button for advancing the slide
+        self.nextButton = Button(text="Next", size_hint=(0.07, 0.07))
+        self.nextButton.bind(on_press = self.nextClickedCallback)
         self.add_widget(self.nextButton)
         
 
@@ -40,6 +71,7 @@ class SlideScreen(FloatLayout):
         if self.slideIndex > self.slideCount:
             self.slideIndex = 1
         self.change_background(self.cfg.get("Files", str(self.slideIndex)))
+        self.fr.clean_up()
 
     def change_background(self, new_path):
         self.bgImage.source = new_path
@@ -51,9 +83,8 @@ class UITestApp(App):
     #    return super(UITestApp, self).get_application_config('./%(appname).ini')
 
     def build_config(self, config):
-        config.setdefaults('section1', {
-            'key1': 'value1',
-            'key2': '42'})
+        #If you don't set any defaults, Kivy won't load your config at all 
+        config.setdefaults('Files', {'1': 'value1'})
 
     def build(self):
         cfg = self.config
