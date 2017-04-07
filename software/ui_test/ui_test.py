@@ -8,21 +8,21 @@ kivy.require('1.9.1') # replace with your current kivy version !
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.config import Config
 
-class SlideScreen(GridLayout):  
+class SlideScreen(FloatLayout):  
 
     def __init__(self, **kwargs):
         super(SlideScreen, self).__init__(**kwargs)
         self.cols = 1
-        self.nextButton = Button(text="Next")
+        self.nextButton = Button(text="Next", size_hint=(0.07, 0.07))
         
         #Get the app configuration and count the total slides
         self.cfg = Config.get_configparser('app')
-        import pdb; pdb.set_trace()
         self.slideCount = len(self.cfg.items("Files"))
         #We're looking at the first slide
         self.slideIndex = 1
@@ -30,9 +30,9 @@ class SlideScreen(GridLayout):
         self.nextButton.bind(on_press = self.nextClickedCallback)
         self.bgImage = Image(source = self.cfg.get("Files", str(self.slideIndex)))
 
-        self.add_widget(self.nextButton)
         self.add_widget(self.bgImage)
-
+        self.add_widget(self.nextButton)
+        
 
     def nextClickedCallback(self, value):
         #Increment the slide index and wrap if needed
@@ -57,7 +57,6 @@ class UITestApp(App):
 
     def build(self):
         cfg = self.config
-        import pdb; pdb.set_trace()
         return SlideScreen()
 
     def on_pause(self):
