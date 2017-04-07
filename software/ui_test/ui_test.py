@@ -11,33 +11,48 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.uix.button import Button
+from kivy.config import Config
 
-class SlideScreen(GridLayout):
-
-	
+class SlideScreen(GridLayout):	
 
 	def __init__(self, **kwargs):
 		super(SlideScreen, self).__init__(**kwargs)
 		self.cols = 1
 		self.nextButton = Button(text="Next")
+		
+		#Get the app configuration and count the total slides
+		self.cfg = Config.get_configparser('app')
+		import pdb; pdb.set_trace()
+		self.slideCount = len(self.cfg.items("Files"))
+		#We're looking at the first slide
+		self.slideIndex = 1
+		
 		self.nextButton.bind(on_press=self.nextClickedCallback)
-		self.bgImage = Image(source="./Swarm_Robot_Control_-_100_Robot_0028.png")
+		self.bgImage = Image(self.cfg.get("Files", str(slideIndex)))
+
 		self.add_widget(self.nextButton)
 		self.add_widget(self.bgImage)
 
 
 	def nextClickedCallback(self, value):
-		print "Woooo"
-		self.change_background("./Swarm_Robot_Control_-_100_Robot_0030.png")
+		#Increment the slide index and wrap if needed
+		self.slideIndex += 1
+		if self.slideIndex > self.slideCount:
+			self.slideIndex = 1
+		self.change_background(self.cfg.get("Files", str(slideIndex)))
 
 	def change_background(self, new_path):
 		self.bgImage.source = new_path
 		self.bgImage.canvas.ask_update()
 		
-class MyApp(App):
+class UITestApp(App):
+
+    def build_config(self, config):
+    	#config.setdefaults()
+    	pass
 
     def build(self):
-        return SlideScreen()
+    	return SlideScreen()
 
     def on_pause(self):
     	#This is where I'd save the log file
@@ -49,4 +64,4 @@ class MyApp(App):
 
 
 if __name__ == '__main__':
-    MyApp().run()
+    UITestApp().run()
