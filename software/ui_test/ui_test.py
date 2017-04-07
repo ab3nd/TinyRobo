@@ -15,8 +15,8 @@ from kivy.uix.button import Button
 from kivy.config import Config
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
-
-
+#For keyboard listener
+from kivy.core.window import Window
 
 
 
@@ -55,20 +55,23 @@ class FingerDrawer(Widget):
         self.tr = TouchRecorder()
 
     def on_touch_down(self, touch):
-        self.tr.log_touch_event(touch)
-        with self.canvas:
-            Color(0.5, 0.8, 0)
-            Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
-            touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
+        if self.collide_point(*touch.pos):
+            self.tr.log_touch_event(touch)
+            with self.canvas:
+                Color(0.5, 0.8, 0)
+                Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+                touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
 
     def on_touch_up(self, touch):
-        self.tr.log_touch_event(touch)
-        with self.canvas:
-            Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+        if self.collide_point(*touch.pos):
+            self.tr.log_touch_event(touch)
+            with self.canvas:
+                Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
 
     def on_touch_move(self, touch):
-        self.tr.log_touch_event(touch)
-        touch.ud['line'].points += [touch.x, touch.y]
+        if self.collide_point(*touch.pos):
+            self.tr.log_touch_event(touch)
+            touch.ud['line'].points += [touch.x, touch.y]
 
     def clean_up(self):
         self.canvas.clear()
@@ -95,31 +98,41 @@ class MultiImage(Image):
         self.source = self.cfg.get("Files", str(self.slideIndex))
         self.canvas.ask_update()
 
-# class SlideScreen(GridLayout):  
+#A lot of this was copied from the kivy example at 
+#https://kivy.org/docs/api-kivy.core.window.html
+class KeyboardListener(Widget):
+    def __init__(self, **kwargs):
+        super(KeyboardListener, self).__init__(**kwargs)
+        self._kbrd = Window.request_keyboard(self._keyboard_closed, self, 'text')
+        if self._kbrd.widget:
+            # If it exists, this widget is a VKeyboard object which you can use
+            # to change the keyboard layout.
+            pass
+        self._kbrd.bind(on_key_down=self._on_keyboard_down)
+    
+    def _keyboard_closed(self):
+        print('My keyboard have been closed!')
+        self._kbrd.unbind(on_key_down=self._on_keyboard_down)
+        self._kbrd = None
+        #TODO close the app here
 
-#     def __init__(self, **kwargs):
-#         super(SlideScreen, self).__init__(**kwargs)
-#         self.cols = 1
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        print('The key', keycode, 'have been pressed')
+        print(' - text is %r' % text)
+        print(' - modifiers are %r' % modifiers)
         
-#         #Recorder for when the next button is clicked
-#         self.rec = TouchRecorder()
-        
-#         #Widget that records finger motions, defaults to being as big as the screen
-#         self.fr = FingerDrawer()
-#         self.add_widget(self.fr)
+        # Keycode is composed of an integer + a string
+        # If we hit escape, release the keyboard
+        if keycode[1] == 'escape':
+            keyboard.release()
+        if keycode[1] == 'n':
+            #TODO THIS FAILS IF THE WIDGET TREE CHANGES
+            self.parent.ids["slide_show"].nextSlide()
+            self.parent.ids["finger_draw"].clean_up()
+        # Return True to accept the key. Otherwise, it will be used by
+        # the system.
+        return True
 
-#         #Small button for advancing the slide
-#         self.nextButton = Button(text="Next", size_hint=(0.07, 0.07))
-#         self.nextButton.bind(on_press = self.nextClickedCallback)
-#         self.add_widget(self.nextButton)
-        
-
-    # def nextClickedCallback(self, value):
-    #     #Log that this happened
-    #     self.rec.log_meta_event("Next clicked")
-    #     self.bgImage.source = new_path
-    #     self.bgImage.canvas.ask_update()
-        
 class UITestApp(App):
     #Load the ini file from the working directory instead of who-knows-where
     #def get_application_config(self):
@@ -133,9 +146,6 @@ class UITestApp(App):
         #Config.set('modules', 'touchring', '')
 
     def build(self):
-        #cfg = self.config
-        #return SlideScreen()
-        #Loading the kv file is done automagically
         pass
 
     def on_pause(self):

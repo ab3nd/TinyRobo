@@ -5,16 +5,28 @@
 #           id:slide_show
 #       FingerDrawer:
 #           id:finger_draw
-#   BoxLayout:
-#       orientation:"horizontal"
-#       size_hint:0.07,0.07
-#       Button:
-#           id:next_btn
-#           text:"Next"
-#           on_press: slide_show.nextSlide()
-FloatLayout:
+
+
+#RelativeLayout:
+#    size_hint:1, 0.93
+#    MultiImage:
+#        id:slide_show
+#        pos:1,10
+#    FingerDrawer:
+#        id:finger_draw
+
+AnchorLayout:
+    anchor_x:"center"
+    anchor_y:"center"
     MultiImage:
         id:slide_show
+        anchor_x:"left"
+        anchor_y:"top"
     FingerDrawer:
+        size_hint:slide_show.size
         id:finger_draw
+        anchor_x:"left"
+        anchor_y:"top"
+    KeyboardListener:
+        id:kbd_lstn
 
