@@ -16,6 +16,21 @@ from kivy.config import Config
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
 
+
+
+
+
+
+#Singleton-ifies things, so you only get one instance
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
+
+@singleton
 class TouchRecorder():
     def __init__(self):
         #Create a file name to log to
@@ -23,8 +38,11 @@ class TouchRecorder():
         pass
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
-    def log_event(self, event):
+    def log_touch_event(self, event):
         print event.uid, event.time_start, event.time_update, event.time_end, event.x, event.y, event.shape
+
+    def log_meta_event(self, desc):
+        print desc
 
 #Widget that records all finger motion events on it
 #TODO move the background image stuff to this, rather 
@@ -37,62 +55,70 @@ class FingerDrawer(Widget):
         self.tr = TouchRecorder()
 
     def on_touch_down(self, touch):
-        self.tr.log_event(touch)
+        self.tr.log_touch_event(touch)
         with self.canvas:
             Color(0.5, 0.8, 0)
             Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
             touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
 
     def on_touch_up(self, touch):
-        self.tr.log_event(touch)
+        self.tr.log_touch_event(touch)
         with self.canvas:
             Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
 
     def on_touch_move(self, touch):
-        self.tr.log_event(touch)
+        self.tr.log_touch_event(touch)
         touch.ud['line'].points += [touch.x, touch.y]
 
     def clean_up(self):
         self.canvas.clear()
 
-
-class SlideScreen(FloatLayout):  
-
+class MultiImage(Image):
     def __init__(self, **kwargs):
-        super(SlideScreen, self).__init__(**kwargs)
-        self.cols = 1
+        super(MultiImage, self).__init__(**kwargs)
         
         #Get the app configuration and count the total slides
         self.cfg = Config.get_configparser('app')
         self.slideCount = len(self.cfg.items("Files"))
         #We're looking at the first slide
         self.slideIndex = 1
-        
-        #Background image of the task in question
-        self.bgImage = Image(source = self.cfg.get("Files", str(self.slideIndex)))
-        self.add_widget(self.bgImage)
-        
-        #Widget that records finger motions, defaults to being as big as the screen
-        self.fr = FingerDrawer()
-        self.add_widget(self.fr)
 
-        #Small button for advancing the slide
-        self.nextButton = Button(text="Next", size_hint=(0.07, 0.07))
-        self.nextButton.bind(on_press = self.nextClickedCallback)
-        self.add_widget(self.nextButton)
-        
+        #Set ourselves up with the inital image
+        self.source = self.cfg.get("Files", str(self.slideIndex))
 
-    def nextClickedCallback(self, value):
+    def nextSlide(self):
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
         if self.slideIndex > self.slideCount:
             self.slideIndex = 1
-        self.change_background(self.cfg.get("Files", str(self.slideIndex)))
-        self.fr.clean_up()
+        #New image for the background
+        self.source = self.cfg.get("Files", str(self.slideIndex))
+        self.canvas.ask_update()
 
-    def change_background(self, new_path):
-        self.bgImage.source = new_path
-        self.bgImage.canvas.ask_update()
+# class SlideScreen(GridLayout):  
+
+#     def __init__(self, **kwargs):
+#         super(SlideScreen, self).__init__(**kwargs)
+#         self.cols = 1
+        
+#         #Recorder for when the next button is clicked
+#         self.rec = TouchRecorder()
+        
+#         #Widget that records finger motions, defaults to being as big as the screen
+#         self.fr = FingerDrawer()
+#         self.add_widget(self.fr)
+
+#         #Small button for advancing the slide
+#         self.nextButton = Button(text="Next", size_hint=(0.07, 0.07))
+#         self.nextButton.bind(on_press = self.nextClickedCallback)
+#         self.add_widget(self.nextButton)
+        
+
+    # def nextClickedCallback(self, value):
+    #     #Log that this happened
+    #     self.rec.log_meta_event("Next clicked")
+    #     self.bgImage.source = new_path
+    #     self.bgImage.canvas.ask_update()
         
 class UITestApp(App):
     #Load the ini file from the working directory instead of who-knows-where
@@ -107,8 +133,10 @@ class UITestApp(App):
         #Config.set('modules', 'touchring', '')
 
     def build(self):
-        cfg = self.config
-        return SlideScreen()
+        #cfg = self.config
+        #return SlideScreen()
+        #Loading the kv file is done automagically
+        pass
 
     def on_pause(self):
         #This is where I'd save the log file
