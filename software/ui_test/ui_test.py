@@ -16,22 +16,40 @@ from kivy.config import Config
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
 
+class TouchRecorder():
+    def __init__(self):
+        #Create a file name to log to
+        #Create a start log entry
+        pass
+
+    #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
+    def log_event(self, event):
+        print event.uid, event.time_start, event.time_update, event.time_end, event.x, event.y, event.shape
 
 #Widget that records all finger motion events on it
 #TODO move the background image stuff to this, rather 
 #than having it be in the layout
-class FingerRecorder(Widget):
+class FingerDrawer(Widget):
+
+    def __init__(self, **kwargs):
+        super(FingerDrawer, self).__init__(**kwargs)
+        self.d = 8.
+        self.tr = TouchRecorder()
+
     def on_touch_down(self, touch):
+        self.tr.log_event(touch)
         with self.canvas:
             Color(0.5, 0.8, 0)
-            #d = 30.
-            #Ellipse(pos=(touch.x -d/2, touch.y-d/2), size=(d,d))
-            touch.ud['line'] = Line(points=(touch.x, touch.y))
+            Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+            touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
 
     def on_touch_up(self, touch):
-        print(touch)
+        self.tr.log_event(touch)
+        with self.canvas:
+            Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
 
     def on_touch_move(self, touch):
+        self.tr.log_event(touch)
         touch.ud['line'].points += [touch.x, touch.y]
 
     def clean_up(self):
@@ -50,13 +68,12 @@ class SlideScreen(FloatLayout):
         #We're looking at the first slide
         self.slideIndex = 1
         
-        
         #Background image of the task in question
         self.bgImage = Image(source = self.cfg.get("Files", str(self.slideIndex)))
         self.add_widget(self.bgImage)
         
         #Widget that records finger motions, defaults to being as big as the screen
-        self.fr = FingerRecorder()
+        self.fr = FingerDrawer()
         self.add_widget(self.fr)
 
         #Small button for advancing the slide
@@ -85,6 +102,9 @@ class UITestApp(App):
     def build_config(self, config):
         #If you don't set any defaults, Kivy won't load your config at all 
         config.setdefaults('Files', {'1': 'value1'})
+        #Kivy module that draws a ring around touches, unfortunately uses a big ole 
+        #PNG file that is white, and so doesn't show up on white backgrounds
+        #Config.set('modules', 'touchring', '')
 
     def build(self):
         cfg = self.config
