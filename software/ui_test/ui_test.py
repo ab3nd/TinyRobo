@@ -18,8 +18,9 @@ from kivy.graphics import Color, Ellipse, Line
 #For keyboard listener
 from kivy.core.window import Window
 
-
-
+import pickle
+import datetime
+import time
 
 #Singleton-ifies things, so you only get one instance
 def singleton(cls):
@@ -32,17 +33,38 @@ def singleton(cls):
 
 @singleton
 class TouchRecorder():
-    def __init__(self):
+    def __init__(self, prefix=None):
         #Create a file name to log to
-        #Create a start log entry
-        pass
+        self.fName = time.strftime("%d-%m-%y_%H:%M:%S") + ".pickle"
+        if prefix is not None:
+            self.fName = prefix + fName
+
+        self.outfile = open(self.fName, 'w')
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
-        print event.uid, event.time_start, event.time_update, event.time_end, event.x, event.y, event.shape
+        event = {"time": event.time_update,
+                 "uid": event.uid,
+                 "start_time" : event.time_start,
+                 "end_time" : event.time_end,
+                 "event_x" : event.x,
+                 "event_y" : event.y,
+                 "update_time" : event.time_update,
+                 "shape" : event.shape}
+        #TODO THIS IS BAD, will pickle do better?
+        #Json isn't framed, so you can't just append to the file. 
+        #Maybe csv?
+        #json.dump(event, self.outfile)
+        pickle.dump(event, self.outfile)
+        #Paranoia
+        self.outfile.flush()
 
     def log_meta_event(self, desc):
-        print desc
+        event = {"time": time.time(),
+                 "desc": desc}
+        pickle.dump(event)
+        #Paranoia
+        self.outfile.flush()
 
 #Widget that records all finger motion events on it
 #TODO move the background image stuff to this, rather 
@@ -53,6 +75,7 @@ class FingerDrawer(Widget):
         super(FingerDrawer, self).__init__(**kwargs)
         self.d = 8.
         self.tr = TouchRecorder()
+        Window.bind(size=self.reSize)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -72,6 +95,11 @@ class FingerDrawer(Widget):
         if self.collide_point(*touch.pos):
             self.tr.log_touch_event(touch)
             touch.ud['line'].points += [touch.x, touch.y]
+
+    def reSize(self, width, height):
+        self.width = self.parent.ids["slide_show"].texture.width
+        self.height = self.parent.ids["slide_show"].texture.height
+        print self.size
 
     def clean_up(self):
         self.canvas.clear()
@@ -96,6 +124,7 @@ class MultiImage(Image):
             self.slideIndex = 1
         #New image for the background
         self.source = self.cfg.get("Files", str(self.slideIndex))
+        #Widget is the same size as the image
         self.canvas.ask_update()
 
 #A lot of this was copied from the kivy example at 

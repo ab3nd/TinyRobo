@@ -1,20 +1,3 @@
-#BoxLayout:
-#   orientation:"vertical"
-#   FloatLayout:
-#       MultiImage:
-#           id:slide_show
-#       FingerDrawer:
-#           id:finger_draw
-
-
-#RelativeLayout:
-#    size_hint:1, 0.93
-#    MultiImage:
-#        id:slide_show
-#        pos:1,10
-#    FingerDrawer:
-#        id:finger_draw
-
 AnchorLayout:
     anchor_x:"center"
     anchor_y:"center"
@@ -27,6 +10,7 @@ AnchorLayout:
         id:finger_draw
         anchor_x:"left"
         anchor_y:"top"
+        #size_hint=(slide_show.texture.height, slide_show.texture.width)
     KeyboardListener:
         id:kbd_lstn
 
