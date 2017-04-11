@@ -162,6 +162,7 @@ Alice robots are no longer available for purchase.
 The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
 There is no evidence that AmIR was ever widely available.
 
+%TODO add http://colias.uk/ and the LCD-based method of doing pheremones
 The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
 Unfortunately, Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
@@ -436,7 +437,7 @@ By controlling the production or propagation of morphogens within the amorphous 
 The abstractions of GPL bear a very strong relation to pheromone robotics. 
 Pheromone robotics refers to a metaphor for developing control software for swarm robots. 
 Some social animals, especially insects, use chemical signals called pheromones to communicate with each other. 
-For example, wasps inside their nest react to the scent of wasp venom by traveling to the outer surface of the nest and attacking nearby moving targets  \cite{jeanne1981alarm}.
+For example, wasps inside their nest react to the scent of wasp venom by travelling to the outer surface of the nest and attacking nearby moving targets  \cite{jeanne1981alarm}.
 Ants leave trails of pheromones for other ants to follow to food sources. 
 Each individual ant's contribution to the trail can be modulated by the quality of the food source, which allows the reaction of the other ants to the trail to cause an emergent distribution of the foraging work force that favors higher-quality food sources \cite{sumpter2003nonlinearity}.
 Because pheromones are chemicals with spatial locations, it would be possible to combine the use of pheromones with reaction diffusion equations to structure activity within a space or to converge to patterns of activity over time  \cite{turing1952chemical}. 
@@ -455,8 +456,8 @@ As a result, once any robot discovers the target, all of the robots quickly conv
 The addition of directional communication for the messages that convey virtual pheromone information allows easy determination of the direction of pheremone gradients \cite{payton2001pheromone}.
 Rather than directly diffusing in the space as a chemical would, hop counts in the network of robots simulate diffusion. 
 Because routes may be of different length, the message with the lowest hop count is assumed to be the truest indication of minimal distance within the network. 
-Rather than modeling the world based on the incoming messages, the content of the pheromone messages and the network behavior as a whole serves as a model of the world, mapped 1:1 onto the real environment. 
-While it is possible to build a set of behavioral primitives out of pheromone signaling and associated behaviors, controlling the swarm to perform a task with these primitives is still done by hand \cite{payton2003compound}.
+Rather than modelling the world based on the incoming messages, the content of the pheromone messages and the network behavior as a whole serves as a model of the world, mapped 1:1 onto the real environment. 
+While it is possible to build a set of behavioral primitives out of pheromone signalling and associated behaviors, controlling the swarm to perform a task with these primitives is still done by hand \cite{payton2003compound}.
 
 In all of these examples, the sensing of the pheromones is assumed to be local to the robot, at least metaphorically. 
 To actually maintain pheromones in the environment without robots being present to transmit them requires, again, a global representation of the task space which the robots can refer to when needed. 

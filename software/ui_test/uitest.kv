@@ -1,0 +1,16 @@
+AnchorLayout:
+    anchor_x:"center"
+    anchor_y:"center"
+    MultiImage:
+        id:slide_show
+        anchor_x:"left"
+        anchor_y:"top"
+    FingerDrawer:
+        size_hint:slide_show.size
+        id:finger_draw
+        anchor_x:"left"
+        anchor_y:"top"
+        #size_hint=(slide_show.texture.height, slide_show.texture.width)
+    KeyboardListener:
+        id:kbd_lstn
+
