@@ -4,6 +4,10 @@
 
 import kivy
 kivy.require('1.9.1') # replace with your current kivy version !
+from kivy.config import Config
+#Don't resize the window
+#This has to be before any other Kivy imports, or it fails quietly
+Config.set('graphics', 'resizable', False)
 
 from kivy.app import App
 from kivy.uix.label import Label
@@ -12,7 +16,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.uix.button import Button
-from kivy.config import Config
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
 #For keyboard listener
@@ -21,6 +24,8 @@ from kivy.core.window import Window
 import pickle
 import datetime
 import time
+
+
 
 #Singleton-ifies things, so you only get one instance
 def singleton(cls):
@@ -51,10 +56,6 @@ class TouchRecorder():
                  "event_y" : event.y,
                  "update_time" : event.time_update,
                  "shape" : event.shape}
-        #TODO THIS IS BAD, will pickle do better?
-        #Json isn't framed, so you can't just append to the file. 
-        #Maybe csv?
-        #json.dump(event, self.outfile)
         pickle.dump(event, self.outfile)
         #Paranoia
         self.outfile.flush()
@@ -97,6 +98,7 @@ class FingerDrawer(Widget):
             touch.ud['line'].points += [touch.x, touch.y]
 
     def reSize(self, width, height):
+        print "reSize called"
         self.width = self.parent.ids["slide_show"].texture.width
         self.height = self.parent.ids["slide_show"].texture.height
         print self.size
