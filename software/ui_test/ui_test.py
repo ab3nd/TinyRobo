@@ -63,7 +63,7 @@ class TouchRecorder():
     def log_meta_event(self, desc):
         event = {"time": time.time(),
                  "desc": desc}
-        pickle.dump(event)
+        pickle.dump(event, self.outfile)
         #Paranoia
         self.outfile.flush()
 
@@ -98,7 +98,6 @@ class FingerDrawer(Widget):
             touch.ud['line'].points += [touch.x, touch.y]
 
     def reSize(self, width, height):
-        print "reSize called"
         self.width = self.parent.ids["slide_show"].texture.width
         self.height = self.parent.ids["slide_show"].texture.height
         print self.size
@@ -140,6 +139,8 @@ class KeyboardListener(Widget):
             # to change the keyboard layout.
             pass
         self._kbrd.bind(on_key_down=self._on_keyboard_down)
+        self.tr = TouchRecorder()
+
     
     def _keyboard_closed(self):
         print('My keyboard have been closed!')
@@ -148,18 +149,22 @@ class KeyboardListener(Widget):
         #TODO close the app here
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        print('The key', keycode, 'have been pressed')
-        print(' - text is %r' % text)
-        print(' - modifiers are %r' % modifiers)
-        
         # Keycode is composed of an integer + a string
         # If we hit escape, release the keyboard
         if keycode[1] == 'escape':
             keyboard.release()
         if keycode[1] == 'n':
+            self.tr.log_meta_event("Advanced slide")
             #TODO THIS FAILS IF THE WIDGET TREE CHANGES
             self.parent.ids["slide_show"].nextSlide()
             self.parent.ids["finger_draw"].clean_up()
+        if keycode[1] == 'c':
+            self.tr.log_meta_event("Cleared screen for user")
+            self.parent.ids["finger_draw"].clean_up()
+        if keycode[1] == 'q':
+            self.tr.log_meta_event("Quit experiment")
+            self.parent.ids["finger_draw"].clean_up()
+
         # Return True to accept the key. Otherwise, it will be used by
         # the system.
         return True
