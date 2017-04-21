@@ -118,6 +118,9 @@ class MultiImage(Image):
         #Set ourselves up with the inital image
         self.source = self.cfg.get("Files", str(self.slideIndex))
 
+        #Record touch events
+        self.tr = TouchRecorder()
+
     def nextSlide(self):
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
@@ -127,6 +130,18 @@ class MultiImage(Image):
         self.source = self.cfg.get("Files", str(self.slideIndex))
         #Widget is the same size as the image
         self.canvas.ask_update()
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.tr.log_touch_event(touch)
+
+    def on_touch_up(self, touch):
+        if self.collide_point(*touch.pos):
+            self.tr.log_touch_event(touch)
+
+    def on_touch_move(self, touch):
+        if self.collide_point(*touch.pos):
+            self.tr.log_touch_event(touch)
 
 #A lot of this was copied from the kivy example at 
 #https://kivy.org/docs/api-kivy.core.window.html
@@ -143,27 +158,24 @@ class KeyboardListener(Widget):
 
     
     def _keyboard_closed(self):
-        print('My keyboard have been closed!')
         self._kbrd.unbind(on_key_down=self._on_keyboard_down)
         self._kbrd = None
-        #TODO close the app here
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         # Keycode is composed of an integer + a string
-        # If we hit escape, release the keyboard
-        if keycode[1] == 'escape':
-            keyboard.release()
         if keycode[1] == 'n':
             self.tr.log_meta_event("Advanced slide")
             #TODO THIS FAILS IF THE WIDGET TREE CHANGES
             self.parent.ids["slide_show"].nextSlide()
-            self.parent.ids["finger_draw"].clean_up()
+            #self.parent.ids["finger_draw"].clean_up()
         if keycode[1] == 'c':
             self.tr.log_meta_event("Cleared screen for user")
-            self.parent.ids["finger_draw"].clean_up()
+            #self.parent.ids["finger_draw"].clean_up()
         if keycode[1] == 'q':
             self.tr.log_meta_event("Quit experiment")
-            self.parent.ids["finger_draw"].clean_up()
+            keyboard.release()
+            App.get_running_app().stop()
+            #self.parent.ids["finger_draw"].clean_up()
 
         # Return True to accept the key. Otherwise, it will be used by
         # the system.
