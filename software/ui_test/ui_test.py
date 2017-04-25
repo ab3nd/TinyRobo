@@ -1,25 +1,6 @@
 #!/usr/bin/python
 
 #Display JPGs and log user interactions 
-#This is terrible (kinda globals, and sys.argv parsing by hand to dodge kivy)
-# import sys
-# condition = 0
-# participant_id = 0
-# for arg_index in range(len(sys.argv)):
-#     arg = sys.argv[arg_index]
-#     print arg_index, arg
-#     if arg == '-c':
-#         condition = int(sys.argv[arg_index])
-#         sys.argv.remove(arg)
-        
-#     if arg == '-i':
-#         sys.argv.remove(arg)
-#         participant_id = i
-
-# print condition, participant_id
-#The above doesn't work due to bad array manipulation, but 
-#leaving them in place breaks kivy. Start at the end of the array, and walk back?
-
 
 import kivy
 kivy.require('1.9.1') # replace with your current kivy version !
@@ -150,7 +131,7 @@ class MultiImage(Image):
         #Set ourselves up with the inital image
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
         self.canvas.ask_update()
-        
+
         #Record touch events
         self.tr = TouchRecorder()
 
