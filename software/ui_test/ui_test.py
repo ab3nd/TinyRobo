@@ -74,8 +74,6 @@ class TouchRecorder():
         self.outfile.flush()
 
 #Widget that records all finger motion events on it
-#TODO move the background image stuff to this, rather 
-#than having it be in the layout
 class FingerDrawer(Widget):
 
     def __init__(self, **kwargs):
@@ -127,7 +125,6 @@ class MultiImage(Image):
         #We're looking at the first slide
         self.slideIndex = 1
 
-        import pdb; pdb.set_trace()
         #Set ourselves up with the inital image
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
         self.canvas.ask_update()
