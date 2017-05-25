@@ -10,6 +10,7 @@ project(distance_oracle)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  apriltags_ros
   message_generation
 )
 
@@ -70,6 +71,7 @@ add_service_files(
 generate_messages(
   DEPENDENCIES
   std_msgs
+  apriltags_ros
 )
 
 ################################################
