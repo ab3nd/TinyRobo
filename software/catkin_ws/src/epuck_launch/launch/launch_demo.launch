@@ -1,7 +1,7 @@
 <launch>
     <param name="robot_description" textfile="$(find epuck_driver)/urdf/epuck_urdf.xml"/>
     <!-- Bound to hci0 -->
-    <include file="$(find epuck_launch)/launch/epuck_2099.launch" />
+    </include file="$(find epuck_launch)/launch/epuck_2099.launch" />
     <include file="$(find epuck_launch)/launch/epuck_2110.launch" />
     <include file="$(find epuck_launch)/launch/epuck_2087.launch" />
     <include file="$(find epuck_launch)/launch/epuck_2117.launch" />
