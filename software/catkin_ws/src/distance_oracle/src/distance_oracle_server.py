@@ -15,7 +15,6 @@ class DistanceServer():
 		self.currentTags = {}
 
 	def handle_distance_req(self, req):
-		print self.currentTags.keys()
 		if req.toID in self.currentTags.keys() and req.fromID in self.currentTags.keys():
 			#We have both ends, so figure out the distance between them
 			p1 = self.currentTags[req.toID].pose.position
