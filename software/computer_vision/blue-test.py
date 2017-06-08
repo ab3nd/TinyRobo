@@ -2,12 +2,19 @@
 
 import matplotlib.pyplot as plt
 from sys import argv
-from cv2 import imread, imwrite, cvtColor, inRange, bitwise_and, imshow, erode, COLOR_BGR2HSV, morphologyEx, MORPH_OPEN, createCLAHE, COLOR_BGR2GRAY, Canny, line, HoughLinesP
+from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWindow, waitKey,
+                 cvtColor, inRange, bitwise_and, imshow, erode, COLOR_BGR2HSV, COLOR_HSV2RGB_FULL,
+                 morphologyEx, MORPH_OPEN, createCLAHE, COLOR_BGR2GRAY, Canny, line, HoughLinesP, 
+                 hconcat, vconcat, CV_LOAD_IMAGE_UNCHANGED
+)
 from numpy import array, ones, uint8, cos, sin, pi
 
 lower_blue, upper_blue = array([110,30,30]), array([130,255,255])
 
 kernel = ones([5,5], uint8)
+
+def read(infile):
+    return imread(infile, CV_LOAD_IMAGE_UNCHANGED)
 
 def convert_hsv(image):
     return cvtColor(image, code=COLOR_BGR2HSV)
@@ -38,13 +45,18 @@ def find_lines(image):
         line(image,(x1,y1),(x2,y2),(0,255,0),2)
     return image
 
+def generate_tiled_image(images):
+    return vconcat([hconcat(image_set) for image_set in images])
+
 def main():
+    namedWindow('Blue Test', WINDOW_NORMAL)
+    resizeWindow('Blue Test', 1920, 1080)
     images = []
     infiles = argv[1:]
 
     for infile in infiles:
         
-        original = imread(infile, 1)
+        original = read(infile)
 
         hsv = convert_hsv(original)
 
@@ -54,18 +66,21 @@ def main():
         eroded_morph = erosion(morphed)
 
         lines = find_lines(imread(infile))
-        images += [original,  masked, morphed, lines]
-
-    height = len(infiles)
-    width =  len(images) / height
-
+        images.append([original, lines])
+ 
+    imshow('Blue Test', generate_tiled_image(images))
+    waitKey(0)
+        
+'''
     for point, image in enumerate(images): 
+        imshow('test',hconcat(image))
+        waitKey(0) 
         plt.subplot(height, width, point + 1)
         plt.imshow(image)
 
         plt.xticks([]), plt.yticks([]) 
 
     plt.show()
-
+'''
 if __name__ == '__main__':
     main()
