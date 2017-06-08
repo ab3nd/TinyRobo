@@ -47,11 +47,6 @@ def find_lines(image):
         line(line_image, (x1, y1),(x2, y2), (0, 255, 0), 2)
     return line_image
 
-def convert_grayscale(image):
-    imwrite('temp.png', image)
-    i = imread('temp.png', 1)
-    return convert_hsv(i)
-
 def generate_tiled_image(images):
     return vconcat([hconcat(image_set) for image_set in images])
 
@@ -80,7 +75,7 @@ def main():
         eroded_morph = erosion(morphed)
 
         lines = find_lines(original)
-        images.append([original, masked, eroded, morphed, eroded_morph, lines])
+        images.append([original, hsv, masked, eroded, morphed, eroded_morph, lines])
  
     result = generate_tiled_image(images)
 
