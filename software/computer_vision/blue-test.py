@@ -9,8 +9,11 @@ lower_blue, upper_blue = array([110,30,30]), array([130,255,255])
 
 kernel = ones([5,5], uint8)
 
-def convert(image):
+def convert_hsv(image):
     return cvtColor(image, code=COLOR_BGR2HSV)
+
+def convert_gray(image):
+    return cvtColor(image, code=COLOR_BGR2GRAY)
 
 def mask(image):
     return inRange(image, lower_blue, upper_blue)
@@ -25,7 +28,7 @@ def morph(image):
     return morphologyEx(image, MORPH_OPEN, kernel)
 
 def find_lines(image):
-    gray = cvtColor(image, COLOR_BGR2GRAY)
+    gray = convert_gray(image)
     edges = Canny(gray, 50, 150, apertureSize = 3)
 
     minLineLength = 5
@@ -43,14 +46,14 @@ def main():
         
         original = imread(infile, 1)
 
-        hsv = convert(original)
+        hsv = convert_hsv(original)
 
         masked = mask(hsv)
         eroded = erosion(masked)
         morphed = morph(masked)
         eroded_morph = erosion(morphed)
 
-        lines = find_lines(imread(infile,))
+        lines = find_lines(imread(infile))
         images += [original,  masked, morphed, lines]
 
     height = len(infiles)
