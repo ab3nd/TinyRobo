@@ -24,7 +24,8 @@ def convert_gray(image):
     return cvtColor(image, code=COLOR_BGR2GRAY)
 
 def mask(image):
-    return inRange(image, lower_blue, upper_blue)
+    masked = inRange(image, lower_blue, upper_blue)
+    return cvtColor(masked, COLOR_GRAY2BGR)
 
 def erosion(image):
     return erode(image, kernel, iterations=1)
@@ -36,14 +37,15 @@ def morph(image):
     return morphologyEx(image, MORPH_OPEN, kernel)
 
 def find_lines(image):
-    gray = convert_gray(image)
+    line_image = image.copy()
+    gray = convert_gray(line_image)
     edges = Canny(gray, 50, 150, apertureSize = 3)
     minLineLength = 5
     maxLineGap = 5
     lines = HoughLinesP(edges, 1, pi/180, 10, minLineLength, maxLineGap)
     for x1,y1,x2,y2 in lines[0]:
-        line(image,(x1,y1),(x2,y2),(0,255,0),2)
-    return image
+        line(line_image, (x1, y1),(x2, y2), (0, 255, 0), 2)
+    return line_image
 
 def convert_grayscale(image):
     imwrite('temp.png', image)
@@ -72,12 +74,12 @@ def main():
 
         hsv = convert_hsv(original)
 
-        masked = cvtColor(mask(hsv), COLOR_GRAY2BGR)
+        masked = mask(hsv)
         eroded = erosion(masked)
         morphed = morph(masked)
         eroded_morph = erosion(morphed)
 
-        lines = find_lines(imread(infile))
+        lines = find_lines(original)
         images.append([original, masked, eroded, morphed, eroded_morph, lines])
  
     result = generate_tiled_image(images)
@@ -87,5 +89,6 @@ def main():
     else:    
         imshow(name, result)
         waitKey(0)
+ 
 if __name__ == '__main__':
     main()
