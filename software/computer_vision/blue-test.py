@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-import matplotlib.pyplot as plt
-from sys import argv
 from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWindow, waitKey,
                  cvtColor, inRange, bitwise_and, imshow, erode, COLOR_BGR2HSV, COLOR_HSV2RGB_FULL,
                  morphologyEx, MORPH_OPEN, createCLAHE, COLOR_BGR2GRAY, Canny, line, HoughLinesP, 
                  hconcat, vconcat, COLOR_HSV2BGR, COLOR_GRAY2BGR
 )
 from numpy import array, ones, uint8, cos, sin, pi
+from argparse import ArgumentParser
 
 lower_blue, upper_blue = array([110,30,30]), array([130,255,255])
 
@@ -55,10 +54,17 @@ def generate_tiled_image(images):
     return vconcat([hconcat(image_set) for image_set in images])
 
 def main():
+    parser = ArgumentParser()
+    parser.add_argument('infile', type=str, nargs='+', help='Any number of input images')
+    parser.add_argument('-o', '--outfile', type=str, default=None, help='Output file to write to')
+  
+    args = parser.parse_args()
+
     namedWindow(name, WINDOW_NORMAL)
     resizeWindow(name, width, height)
     images = []
-    infiles = argv[1:]
+    infiles = args.infile
+    outfile = args.outfile
 
     for infile in infiles:
         
@@ -74,8 +80,12 @@ def main():
         lines = find_lines(imread(infile))
         images.append([original, masked, eroded, morphed, eroded_morph, lines])
  
-    imshow(name, generate_tiled_image(images))
-    waitKey(0)
+    result = generate_tiled_image(images)
 
+    if outfile:
+        imwrite(outfile, result)
+    else:    
+        imshow(name, result)
+        waitKey(0)
 if __name__ == '__main__':
     main()
