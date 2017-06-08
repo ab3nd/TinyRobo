@@ -13,8 +13,10 @@ lower_blue, upper_blue = array([110,30,30]), array([130,255,255])
 
 kernel = ones([5,5], uint8)
 
+name, width, height = 'Blue Test', 1920, 1080
+
 def read(infile):
-    return imread(infile, CV_LOAD_IMAGE_UNCHANGED)
+    return imread(infile, 1)
 
 def convert_hsv(image):
     return cvtColor(image, code=COLOR_BGR2HSV)
@@ -49,8 +51,8 @@ def generate_tiled_image(images):
     return vconcat([hconcat(image_set) for image_set in images])
 
 def main():
-    namedWindow('Blue Test', WINDOW_NORMAL)
-    resizeWindow('Blue Test', 1920, 1080)
+    namedWindow(name, WINDOW_NORMAL)
+    resizeWindow(name, width, height)
     images = []
     infiles = argv[1:]
 
@@ -68,7 +70,7 @@ def main():
         lines = find_lines(imread(infile))
         images.append([original, lines])
  
-    imshow('Blue Test', generate_tiled_image(images))
+    imshow(name, generate_tiled_image(images))
     waitKey(0)
         
 '''
