@@ -5,7 +5,7 @@ from sys import argv
 from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWindow, waitKey,
                  cvtColor, inRange, bitwise_and, imshow, erode, COLOR_BGR2HSV, COLOR_HSV2RGB_FULL,
                  morphologyEx, MORPH_OPEN, createCLAHE, COLOR_BGR2GRAY, Canny, line, HoughLinesP, 
-                 hconcat, vconcat, CV_LOAD_IMAGE_UNCHANGED
+                 hconcat, vconcat, COLOR_HSV2BGR, COLOR_GRAY2BGR
 )
 from numpy import array, ones, uint8, cos, sin, pi
 
@@ -39,13 +39,17 @@ def morph(image):
 def find_lines(image):
     gray = convert_gray(image)
     edges = Canny(gray, 50, 150, apertureSize = 3)
-
     minLineLength = 5
     maxLineGap = 5
     lines = HoughLinesP(edges, 1, pi/180, 10, minLineLength, maxLineGap)
     for x1,y1,x2,y2 in lines[0]:
         line(image,(x1,y1),(x2,y2),(0,255,0),2)
     return image
+
+def convert_grayscale(image):
+    imwrite('temp.png', image)
+    i = imread('temp.png', 1)
+    return convert_hsv(i)
 
 def generate_tiled_image(images):
     return vconcat([hconcat(image_set) for image_set in images])
@@ -62,27 +66,16 @@ def main():
 
         hsv = convert_hsv(original)
 
-        masked = mask(hsv)
+        masked = cvtColor(mask(hsv), COLOR_GRAY2BGR)
         eroded = erosion(masked)
         morphed = morph(masked)
         eroded_morph = erosion(morphed)
 
         lines = find_lines(imread(infile))
-        images.append([original, lines])
+        images.append([original, masked, eroded, morphed, eroded_morph, lines])
  
     imshow(name, generate_tiled_image(images))
     waitKey(0)
-        
-'''
-    for point, image in enumerate(images): 
-        imshow('test',hconcat(image))
-        waitKey(0) 
-        plt.subplot(height, width, point + 1)
-        plt.imshow(image)
 
-        plt.xticks([]), plt.yticks([]) 
-
-    plt.show()
-'''
 if __name__ == '__main__':
     main()
