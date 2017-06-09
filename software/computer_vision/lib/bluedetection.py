@@ -11,8 +11,6 @@ lower_blue, upper_blue = array([100,30,30]), array([130,255,255])
 
 kernel = ones([5,5], uint8)
 
-name, width, height = 'Blue Test', 1920, 1080
-
 def read(infile):
     return imread(infile, 1)
 
@@ -51,7 +49,7 @@ def cmask(image):
 def cmask_and_erode(image):
     return erosion(cmask(image))
 
-def find_lines_in_erosioned_cmask(image):
+def find_lines_in_eroded_cmask(image):
     return find_lines(cmask_and_erode(image))
 
 def cmask_and_find_lines(image):

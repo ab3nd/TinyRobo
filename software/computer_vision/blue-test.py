@@ -5,6 +5,8 @@ from argparse import ArgumentParser
 from lib.bluedetection import *
 
 def main():
+    name, width, height = 'Blue Test', 1920, 1080
+
     parser = ArgumentParser()
     parser.add_argument('infile', type=str, nargs='+', help='Any number of input images')
     parser.add_argument('-o', '--outfile', type=str, default=None, help='Output file to write to')
