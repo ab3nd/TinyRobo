@@ -2,18 +2,18 @@ from cv2 import VideoCapture, cvtColor, imshow, resizeWindow, WINDOW_NORMAL, des
 
 from lib.camera import Camera
 from lib.bluedetection import *
-from lib.keycodes import *
+from lib.keycodes import keypress, key
 
-def frame_filter(key, frame):
+def frame_filter(keypress, frame):
     filters = {
-        key_w: find_lines,
-        key_e: cmask,
-        key_r: cmask_and_erode,
-        key_t: find_lines_in_eroded_cmask,
-        key_y: cmask_and_find_lines
+        key.w: find_lines,
+        key.e: cmask,
+        key.r: cmask_and_erode,
+        key.y: find_lines_in_eroded_cmask,
+        key.u: cmask_and_find_lines
     }   
-    if key in filters:
-        return filters[key](frame)
+    if keypress in filters:
+        return filters[keypress](frame)
     else:
         return frame
 
@@ -26,11 +26,11 @@ def main():
     with Camera() as camera:
         set_key = None
         for frame in camera:
-            pressed_key = key()
+            pressed_key = keypress()
 
-            if pressed_key == key_q:
+            if pressed_key == key.q:
                 break
-            if not set_key == pressed_key and not pressed_key == key_none:
+            if not set_key == pressed_key and not pressed_key == key.none:
                 set_key = pressed_key
 
             imshow(name, frame_filter(set_key, frame))

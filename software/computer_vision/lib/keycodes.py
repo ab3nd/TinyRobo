@@ -1,13 +1,18 @@
 from cv2 import waitKey
 
-key_q = ord('q')
-key_w = ord('w')
-key_e = ord('e')
-key_r = ord('r')
-key_t = ord('t')
-key_y = ord('y')
+class KeyCode(object):
+    def __init__(self):
+        codes = ('abcdefghijklmnopqrstuvwxyz'
+                 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-key_none = 255
+        for code in codes:
+            setattr(self, code, ord(code))
 
-def key():
+    @property
+    def none(self):
+        return 255
+
+def keypress():
     return waitKey(1) & 0xFF
+
+key = KeyCode()
