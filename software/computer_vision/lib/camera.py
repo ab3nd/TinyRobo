@@ -13,6 +13,9 @@ class Camera(object):
     def frame(self):
         return self.camera.read()
 
+    def opened(self):
+        return self.camera.isOpened()
+
     def __iter__(self):
         while True:
             ret, frame = self.frame()
