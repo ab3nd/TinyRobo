@@ -1,12 +1,8 @@
-from cv2 import VideoCapture, cvtColor, imshow, COLOR_BGR2GRAY, waitKey, destroyAllWindows
+from cv2 import VideoCapture, cvtColor, imshow, COLOR_BGR2GRAY, destroyAllWindows
 
 from lib.camera import Camera
 from lib.bluedetection import *
-
-key_q, key_w, key_e, key_r = ord('q'), ord('w'), ord('e'), ord('r')
-
-def key():
-    return waitKey(1) & 0xFF
+from lib.keycodes import *
 
 def frame_filter(key, frame):
     filters = {
@@ -26,7 +22,7 @@ with Camera() as camera:
 
         if pressed_key == key_q:
             break
-        if not set_key == pressed_key and not pressed_key == 255:
+        if not set_key == pressed_key and not pressed_key == key_none:
             set_key = pressed_key
 
         imshow('frame', frame_filter(set_key, frame))
