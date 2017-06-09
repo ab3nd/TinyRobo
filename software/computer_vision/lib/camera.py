@@ -8,6 +8,18 @@ class Camera(object):
         pass
 
     def __exit__(self, eType, eValue, eTrace):
-        self.camera.release()
- 
+        self.close()
 
+    def frame(self):
+        return self.camera.read()
+        '''
+        while True:
+            ret, frame = self.camera.read()
+            if ret:
+                yield frame
+            else:
+                break
+        '''
+         
+    def close(self):
+        self.camera.release()
