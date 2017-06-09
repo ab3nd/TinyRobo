@@ -4,17 +4,11 @@ from lib.camera import Camera
 from lib.bluedetection import *
 camera = Camera()
 
-while(True):
-        frame = camera.frame() 
- 
-        if frame.any():
-            gray = find_lines(frame)
-            imshow('frame', gray)
-            if waitKey(1) & 0xFF == ord('q'):
-                break
-        else:
-            print 'Camera not working'
-            break
+for frame in camera:
+    #gray = find_lines(frame)
+    imshow('frame', frame)
+    if waitKey(1) & 0xFF == ord('q'):
+        break
 
 camera.release()
 destroyAllWindows()

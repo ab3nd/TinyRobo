@@ -12,14 +12,14 @@ class Camera(object):
 
     def frame(self):
         return self.camera.read()
-        '''
+
+    def __iter__(self):
         while True:
-            ret, frame = self.camera.read()
+            ret, frame = self.frame()
             if ret:
                 yield frame
             else:
-                break
-        '''
-         
+                break  
+
     def close(self):
         self.camera.release()
