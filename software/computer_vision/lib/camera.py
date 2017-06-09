@@ -1,11 +1,11 @@
 from cv2 import VideoCapture
 
 class Camera(object):
-    def __init__(self):
-        self.camera = VideoCapture(0)
+    def __init__(self, camera=0):
+        self.camera = VideoCapture(camera)
 
     def __enter__(self):
-        pass
+        return self
 
     def __exit__(self, eType, eValue, eTrace):
         self.close()
