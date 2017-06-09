@@ -7,7 +7,7 @@ from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWind
 )
 from numpy import array, ones, uint8, cos, sin, pi
 
-lower_blue, upper_blue = array([110,30,30]), array([130,255,255])
+lower_blue, upper_blue = array([100,30,30]), array([130,255,255])
 
 kernel = ones([5,5], uint8)
 
@@ -47,6 +47,12 @@ def find_lines(image):
 
 def cmask(image):
     return mask(convert_hsv(image))
+
+def cmask_and_erode(image):
+    return erosion(cmask(image))
+
+def find_lines_in_erosioned_cmask(image):
+    return find_lines(cmask_and_erode(image))
 
 def cmask_and_find_lines(image):
     return find_lines(cmask(image))
