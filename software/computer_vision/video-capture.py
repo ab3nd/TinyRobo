@@ -1,4 +1,4 @@
-from cv2 import VideoCapture, cvtColor, imshow, resizeWindow, WINDOW_NORMAL, destroyAllWindows
+from cv2 import VideoCapture, cvtColor, imshow, resizeWindow, WINDOW_NORMAL, destroyWindow
 
 from lib.camera import Camera
 from lib.bluedetection import *
@@ -36,7 +36,7 @@ def main():
 
             imshow(name, frame_filter(set_key, frame))
 
-    destroyAllWindows()
+    destroyWindow(name)
 
 if __name__ == '__main__':
     main()

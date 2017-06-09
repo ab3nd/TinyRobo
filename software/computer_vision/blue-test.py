@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from cv2 import (imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWindow, waitKey)
+from cv2 import imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWindow, waitKey, destroyWindow
 from argparse import ArgumentParser
 from lib.bluedetection import *
 
@@ -40,6 +40,8 @@ def main():
     else:    
         imshow(name, result)
         waitKey(0)
- 
+
+    destroyWindow(name)
+
 if __name__ == '__main__':
     main()
