@@ -34,7 +34,6 @@ def morph(image):
     http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html
     '''
     return morphologyEx(image, MORPH_OPEN, kernel)
-
 def find_lines(image):
     line_image = image.copy()
     gray = convert_gray(line_image)
@@ -42,9 +41,15 @@ def find_lines(image):
     minLineLength = 5
     maxLineGap = 5
     lines = HoughLinesP(edges, 1, pi/180, 10, minLineLength, maxLineGap)
-    for x1,y1,x2,y2 in lines[0]:
+    for x1, y1, x2, y2 in lines[0]:
         line(line_image, (x1, y1),(x2, y2), (0, 255, 0), 2)
     return line_image
+
+def cmask(image):
+    return mask(convert_hsv(image))
+
+def cmask_and_find_lines(image):
+    return find_lines(cmask(image))
 
 def generate_tiled_image(images):
     return vconcat([hconcat(image_set) for image_set in images])
