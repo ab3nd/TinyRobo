@@ -1,12 +1,13 @@
 from cv2 import VideoCapture, cvtColor, imshow, COLOR_BGR2GRAY, waitKey, destroyAllWindows
 
+from lib.camera import Camera
 from lib.bluedetection import *
-camera = VideoCapture(0)
+camera = Camera()
 
 while(True):
-        ret, frame = camera.read() 
+        frame = camera.frame() 
  
-        if ret:
+        if frame.any():
             gray = find_lines(frame)
             imshow('frame', gray)
             if waitKey(1) & 0xFF == ord('q'):
