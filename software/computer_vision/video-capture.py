@@ -8,9 +8,10 @@ def frame_filter(keypress, frame):
     filters = {
         key.w: find_lines,
         key.e: cmask,
-        key.r: cmask_and_erode,
-        key.y: find_lines_in_eroded_cmask,
-        key.u: cmask_and_find_lines
+        key.r: cmask_erode,
+        key.t: cmask_erode_morph,
+        key.y: cmask_erode_morph_find_lines,
+        key.u: cmask_find_lines
     }   
     if keypress in filters:
         return filters[keypress](frame)

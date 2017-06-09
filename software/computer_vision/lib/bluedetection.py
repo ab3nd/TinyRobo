@@ -46,13 +46,16 @@ def find_lines(image):
 def cmask(image):
     return mask(convert_hsv(image))
 
-def cmask_and_erode(image):
+def cmask_erode(image):
     return erosion(cmask(image))
 
-def find_lines_in_eroded_cmask(image):
-    return find_lines(cmask_and_erode(image))
+def cmask_erode_morph(image):
+    return morph(cmask_erode(image))
 
-def cmask_and_find_lines(image):
+def cmask_erode_morph_find_lines(image):
+    return find_lines(cmask_erode_morph(image))
+
+def cmask_find_lines(image):
     return find_lines(cmask(image))
 
 def generate_tiled_image(images):
