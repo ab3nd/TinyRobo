@@ -1,0 +1,3 @@
+Command line for converting a bunch of PDFs into a bunch of PNG files:
+for file in `ls *.pdf`; do export test=`basename "$file" .pdf`; convert -density 300 $file "$test"_%04d.png; done
+Density 300 is probably too high, 150 gets 1500x1125 images

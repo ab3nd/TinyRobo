@@ -13,8 +13,9 @@ import errno
 scan_ips = []
 for interface in ni.interfaces():
 	ip = ni.ifaddresses(interface)[2][0]['addr']
-	if not ip.startswith("127"):
+	if not ip.startswith("127") and ip.startswith("192.168"): #added to only check the TinyRoboBase device. 
 		scan_ips.append(ip)
+
 
 for ip in scan_ips:
 	for ii in range(255): #Scan the whole /8

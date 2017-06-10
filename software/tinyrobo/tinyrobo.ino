@@ -1,8 +1,9 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
-char ssid[] = "full_of_internets";     //  your network SSID (name)
-char pass[] = "sofullsuchinternets";  // your network password
+//#define DEBUG
+char ssid[] = "TinyRoboBase";     //  your network SSID (name)
+//char pass[] = "sofullsuchinternets";  // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 WiFiServer server(4321); //Totally arbitrary port number
@@ -15,8 +16,8 @@ WiFiServer server(4321); //Totally arbitrary port number
     Arduino uses 7-bit addresses, so these get shifted one bit right,
     and read() write() are used instead of different addresses.
 */
-#define addr1 (0xCC >> 1)
-#define addr2 (0xD0 >> 1)
+#define addr1 0x63
+#define addr2 0x64
 byte faultVals = 0x00;
 
 /*  According to the DRV8830 data sheet, there are two registers:
@@ -57,6 +58,43 @@ typedef enum {
   MOTOR_DRV,
 } machine_state;
 
+void printWiFiStatus()
+{
+#ifdef DEBUG
+  if(Serial.availableForWrite())
+  {
+    switch(status){
+      case WL_CONNECTED:
+        Serial.println("Connected: WL_CONNECTED");
+        break;
+      case WL_NO_SHIELD:
+        Serial.println("No WiFi Shield: WL_NO_SHIELD");
+        break;
+      case WL_IDLE_STATUS:
+        Serial.println("Idle: WL_IDLE_STATUS");
+        break;
+      case WL_NO_SSID_AVAIL:
+        Serial.println("SSID not found: WL_NO_SSID_AVAILABLE");
+        break;
+      case WL_SCAN_COMPLETED:
+        Serial.println("Scan Completed: WL_SCAN_COMPLETED");
+        break;
+      case WL_CONNECT_FAILED:
+        Serial.println("Failed: WL_CONNECT_FAILED");
+        break;
+      case WL_CONNECTION_LOST:
+        Serial.println("Lost Connection: WL_CONNECTION_LOST");
+        break;
+      case WL_DISCONNECTED:
+        Serial.println("Disconnected: WL_DISCONNECTED");
+        break;
+      default:
+        Serial.println("Undefined state");
+        break;
+    }
+  }
+#endif
+}
 //Stores the motor commands [speed1, direction1, speed2, direction2]
 //received from the client
 byte motor_cmd[4] = {0, 0, 0, 0};
@@ -94,31 +132,50 @@ byte getFault(byte addr)
 }
 
 void setup() {
-  Wire.begin(12, 13); //Correct for v2 boards, arguments are (SDA, SCL).
-  Serial.begin(9600);
-
+  Wire.begin(13, 12); //Correct for v2 boards, arguments are (SDA, SCL).
+#ifdef DEBUG
+  Serial.begin(115200);
+#endif
   // attempt to connect to Wifi network:
   WiFi.mode(WIFI_STA);
-  while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to WPA SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network:
-    status = WiFi.begin(ssid, pass);
+  
+  //No password needed, TinyRoboBase is unecrypted
+#ifdef DEBUG
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(ssid);  
+#endif
+  status = WiFi.begin(ssid);//, pass);
 
-    // wait 5 seconds for connection:
-    delay(5000);
+  //Wait for the connection
+  while ( WiFi.status() != WL_CONNECTED) {
+    // let the ESP8266 do stuff and wait for connection:
+    yield();
+    delay(2000);
+    printWiFiStatus();
   }
 
   //Now connected to WiFi
   //Print the IP address
-  Serial.print("You're connected to the network");
+#ifdef DEBUG
+  Serial.print("You're connected to the network ");
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
+#endif
+  
   //Start the server
   server.begin();
 
-
+  //Blink the LED to indicate connection
+  pinMode(2, OUTPUT);
+  for(int ii = 0; ii < 10; ii++)
+  {
+    digitalWrite(2, HIGH);
+    delay(100);
+    digitalWrite(2, LOW);
+    delay(100);
+    yield();
+  }
 }
 
 /* Protocol from the client is as follows:
@@ -127,11 +184,14 @@ void setup() {
 */
 void loop() {
   WiFiClient client = server.available();
-
+  uint8_t motStatus[6] = {0,0,0,0,0,0};
+  yield();
   //client goes out of scope when it gets redeclared there
   if (client) {
     state = CLI_READ; //start reading from the client
+#ifdef DEBUG    
     Serial.println("Got a client");    
+#endif
     while (client.connected()) {
       switch (state)
       {
@@ -139,36 +199,47 @@ void loop() {
           if (client.available()) {
             //Read from client
             char c = client.read();
-            Serial.print("Read: ");
-            Serial.print(c);
-            Serial.print(" (");
-            Serial.print(c, HEX);
-            Serial.println(")");
+#ifdef DEBUG
+//            Serial.print("Read: ");
+//            Serial.print(c);
+//            Serial.print(" (");
+//            Serial.print(c, HEX);
+//            Serial.println(")");
+#endif
             if ( c == 'Q') {
               state = QUERY_RESP;
             } else if ( c == 'M') {
               cmd_index = 0; //start of new motor command
               state = MOTOR_READ;
             } else {
+#ifdef DEBUG
               //This is an error, how to deal with it?
+              Serial.println("Got something weird");
+#endif              
             }
           }
+          yield();
           break;
         case QUERY_RESP:
+#ifdef DEBUG
           Serial.println("TinyRobo");
+#endif          
           client.println("TinyRobo"); //TODO include the fault byte
           state = CLI_READ;
+          yield();
           break;
         case MOTOR_READ:
           //Read a byte for motors
           if (client.available()) {
             //Read command from client and store in buffer
             motor_cmd[cmd_index] = client.read();
-            Serial.print("Motor read: ");
-            Serial.print(motor_cmd[cmd_index]);
-            Serial.print(" (");
-            Serial.print(motor_cmd[cmd_index], HEX);
-            Serial.println(")");
+#ifdef DEBUG
+//            Serial.print("Motor read: ");
+//            Serial.print(motor_cmd[cmd_index]);
+//            Serial.print(" (");
+//            Serial.print(motor_cmd[cmd_index], HEX);
+//            Serial.println(")");
+#endif            
             cmd_index++;
             //If we have received 4 bytes (2 speed, 2 direction), then change the motors
             if (cmd_index == 4) {
@@ -176,6 +247,7 @@ void loop() {
               state = MOTOR_DRV;
             }
           }
+          yield();
           break;
         case MOTOR_DRV:
           //Set the motor state from what the client sent
@@ -185,19 +257,40 @@ void loop() {
           fault[0] = getFault(addr1);
           fault[1] = getFault(addr2);
 
-          //Debug print everything
-          Serial.print("Set motor state");
-          for (int ii = 0; ii < 4; ii++) {
-            Serial.print(" ");
-            Serial.print(motor_cmd[ii], HEX);
-          }
-          for (int ii = 0; ii < 2; ii++) {
-            Serial.print(" ");
-            Serial.print(fault[ii], HEX);
-          }
-          Serial.println(' ');
+#ifdef DEBUG
+//          //Debug print everything
+//          Serial.print("Set motor state");
+//          for (int ii = 0; ii < 4; ii++) {
+//            Serial.print(" ");
+//            Serial.print(motor_cmd[ii], HEX);
+//          }
+//          for (int ii = 0; ii < 2; ii++) {
+//            Serial.print(" ");
+//            Serial.print(fault[ii], HEX);
+//          }
+//          Serial.println(' ');
+#endif
+          //Send it back to the commander as 6 bytes
+          motStatus[0] = motor_cmd[0];
+          motStatus[1] = motor_cmd[1];
+          motStatus[2] = fault[0];
+          motStatus[3] = motor_cmd[2];
+          motStatus[4] = motor_cmd[3];
+          motStatus[5] = fault[1];
+          //The cast is a hack, may cause nasal demons
+          client.write((const uint8_t*)motStatus, 6); 
+#ifdef DEBUG
+          Serial.print(".");
+#endif
           state = CLI_READ;
+          yield();
           break;
+        default:
+          //This shouldn't happen
+          Serial.println("Got a bogus state value, check yo stack before you wreck yo frames.");
+          Serial.print("State was ");
+          Serial.println(state);
+          state = CLI_READ;
       }
     }
   }

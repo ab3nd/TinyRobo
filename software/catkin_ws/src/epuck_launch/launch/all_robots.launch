@@ -1,0 +1,213 @@
+<launch>
+    <param name="robot_description" textfile="$(find epuck_driver)/urdf/epuck_urdf.xml"/>
+    <group ns="epuck_robot_2097">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:77:ED"/>
+            <arg name="epuck_name" value="epuck_robot_2097"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0"/>
+            <arg name="ypos" value="0"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2180">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:77:F5"/>
+            <arg name="epuck_name" value="epuck_robot_2180"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.1"/>
+            <arg name="ypos" value="0"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2099">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:77:6E"/>
+            <arg name="epuck_name" value="epuck_robot_2099"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.2"/>
+            <arg name="ypos" value="0"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2046">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:5B:D7"/>
+            <arg name="epuck_name" value="epuck_robot_2046"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.3"/>
+            <arg name="ypos" value="0"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2137">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:77:C2"/>
+            <arg name="epuck_name" value="epuck_robot_2137"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.4"/>
+            <arg name="ypos" value="0"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2087">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:77:B4"/>
+            <arg name="epuck_name" value="epuck_robot_2087"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0"/>
+            <arg name="ypos" value="0.1"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2151">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:79:B3"/>
+            <arg name="epuck_name" value="epuck_robot_2151"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.1"/>
+            <arg name="ypos" value="0.1"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2110">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:76:FD"/>
+            <arg name="epuck_name" value="epuck_robot_2110"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.2"/>
+            <arg name="ypos" value="0.1"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2028">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:5B:B5"/>
+            <arg name="epuck_name" value="epuck_robot_2028"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.3"/>
+            <arg name="ypos" value="0.1"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2039">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:5B:AA"/>
+            <arg name="epuck_name" value="epuck_robot_2039"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0.4"/>
+            <arg name="ypos" value="0.1"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+    <group ns="epuck_robot_2117">
+        <include file="$(find epuck_driver)/launch/epuck_controller.launch">
+            <arg name="epuck_address" value="10:00:E8:AD:77:AE"/>
+            <arg name="epuck_name" value="epuck_robot_2117"/>
+            <arg name="cam_en" value="false"/>
+            <arg name="acc_en" value="false"/>
+            <arg name="prox_en" value="true"/>
+            <arg name="mot_pos_en" value="true"/>
+            <arg name="light_en" value="false"/>
+            <arg name="floor_en" value="false"/>
+            <arg name="sel_en" value="false"/> <!--this command is available only in ascii mode-->
+            <arg name="mot_speed_en" value="false"/>
+            <arg name="mic_en" value="false"/>
+            <arg name="xpos" value="0"/>
+            <arg name="ypos" value="0.2"/>
+            <arg name="theta" value="0.0"/>
+            <arg name="is_single_robot" value="0"/>
+        </include>
+    </group>
+<node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find epuck_driver)/config/multi_epuck_driver_rviz.rviz"/>
+</launch>

@@ -27,7 +27,7 @@
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \cite{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
-Previous work in HRI shows that multi-touch interfaces will allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm. 
+Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
 While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
 Until computational power in the individual swarm units does reach the levels required for complex computation, visualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
 Centralizing the control of a large group of robots (a swarm) makes the system as a whole sensitive to the failure of the central controller. 
@@ -70,7 +70,7 @@ Because the real world is dynamic, robots can make only limited assumptions abou
 Algorithms to control robots must primarily make use of locally sensed information, and secondarily make use of information received in communications from other robots. 
 
 Because of the limited range of their sensing and networking, the localization of the robots may also be unreliable. 
-GPS provides a global coordinate system that robots can easily localize in, but GPS signal is absent indoors, under dense tree cover, and in many other areas where it would be desirable to use swarm robots. 
+GPS provides a global coordinate system in which robots can easily localize, but GPS signal is absent indoors, under dense tree cover, and in many other areas where it would be desirable to use swarm robots. 
 The GPS signal is also weak, and so can easily be jammed by ambient RF interference or by malicious actors. 
 
 Robots can also fail. 
@@ -118,9 +118,8 @@ However, this hypothesis must be modified with a few caveats.
 First, under the assumption that robots can fail, it is possible that the entire behavior can fail. 
 For example, if enough of the robots are incapacitated, it may be that not enough are left to complete the action. 
 It's also possible that at compile time, the task is still possible, but a later change of the environment renders it impossible. 
-Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future. 
-However, it may be possible to determine if a specified action is impossible. 
-Doing so will require different heuristics for each possible tasks. 
+Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future, but in some limited cases, it may be possible to determine whether a specified action is impossible. The goal of this work is to provide a best-effort attempt to satisfy the user command, rather than prove anything about the possibility of doing so. 
+
 %(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
 %\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
 %\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
@@ -138,9 +137,9 @@ To keep the ratio of free space to robots constant, the area of space used by th
 If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
 Finally, if the application domain of the robots is outside of research, the domain will dictate the size of the robots. 
 For example, a swarm designed to monitor infrastructure such as a bridge or building should be small enough to enter all the areas that require monitoring. 
-A search and rescue swarm might be composed of a variety of scales of robots, with smaller robots infiltrating a damaged building to collect telemetry that guides robots large enough to move damaged material in the building. 
+A search and rescue swarm might be composed of a variety of scales of robots, with smaller robots infiltrating a damaged building to collect telemetry that will guide robots large enough to move damaged material in the building. 
 
-The challenge of construction of swarm robots hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
+The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
 
@@ -151,18 +150,19 @@ This scale range divides fairly evenly into robots that can operate in large swa
 
 \subsubsection{Tabletop Swarms}
 
-At the low end, in terms of scale, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
+At the low end, in terms of size, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
 Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
 Other techniques have been developed to use magnetic fields to apply force to small magnetic objects, resulting in controlled motion of the objects \cite{floyd2008untethered, pelrine2012diamagnetically}.
 These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
 The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
 
-Alice, by Caprari et al. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under one cubic inch. 
+Alice, by Caprari et al. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
 Alice robots are no longer available for purchase. 
-The AmIR robot was similar to Alice in size and capability, but with a more modern. processor\cite{arvin2009development}.
+The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
 There is no evidence that AmIR was ever widely available.
 
+%TODO add http://colias.uk/ and the LCD-based method of doing pheremones
 The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
 Unfortunately, Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
@@ -191,6 +191,10 @@ Epucks also require a fairly smooth operating surface.
 The Epuck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
 Due to the relatively sharp corner of the lower edges of the robot, the Epuck can become stuck on 2-3mm high obstacles. 
 
+The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
+The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -208,14 +212,14 @@ As previously mentioned, the Kilobots require a smooth surface, and the Epuck ca
 This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
 In order to overcome this problem, larger swarm robots can be constructed.
  
-The MarXbot swarm platform s capable of operating in unstructured human environments. 
+The MarXbot swarm platform is capable of operating in unstructured human environments. 
 MarXBots can also use their grippers to link themselves together and perform operations that an individual robot could not perform, such as bridging a gap larger than a single robot \cite{bonani2010marxbot}. 
 The size and complexity of the MarXbots, as well as their powerful computer, renders the individual robots quite expensive. 
 
 Swarmanoid extends the interlinking mechanism of MarXbot to a heterogeneous swarm with three different types of robots \cite{dorigo2013swarmanoid}.
 The ``foot'' robots are MarXbots, and provide ground motion for ``hand'' robots. 
-``hand'' have grippers to manipulate objects, and can also climb.
-The hand robots have an attachment point like the MarXbots, and so can be carried by foot robots. 
+``Hand'' robots have grippers to manipulate objects, and can also climb.
+The ``hand'' robots have an attachment point like the MarXbots, and so can be carried by ``foot'' robots. 
 Flying ``eye'' robots provide overviews of the work area and networking.  
 
 In order to reduce costs, another platform called COTSBots was developed \cite{soule2011cotsbots}.  
@@ -283,21 +287,23 @@ At the higher levels of the autonomy scale, the robot's neglect time far outweig
 
 Increasing neglect time may allow the user to operate more swarm robots, but it comes at a cost. 
 The longer a user goes without learning about the state of one of the robots, the less idea they will have of the situation when they are called upon to operate that robot. 
+The problem of automation decreasing the situational awareness (SA) of the user has been described in cockpit automation for aircraft \cite{wiener1980flight}, and generalized well to other systems that combine automation with human control \cite{kaber1997out}. 
 If the user takes a long time to relearn the situation, the efficiency of the system will drop. 
-Worse, the user may make errors because of an incorrect understanding of the system when they begin operations after a long neglect time\cite{cummings2008predicting}. 
+Worse, the user may make errors because of an incorrect understanding of the system when they begin operations after a long neglect time \cite{cummings2008predicting}. 
 One possible approach to maintain a constant and manageable workload on the user is adapting the level of automation to the workload. 
+When the load is low, the user is more directly engaged, but when load is high, there is more automated assistance. 
+By varying the level of automation, the workload for the user is kept constant. 
 A constant workload is desirable because the user remains engaged with the work, and so has an ongoing understanding of the situation as it develops. 
-The user is not suddenly called into a situation after remaining engaged for some time. 
+The user is not suddenly called into a situation after remaining disengaged for some time. 
 However, the workload must also be manageable. 
 If the user is overloaded, their attention will become subject to triage, and they will begin to miss elements of the task. 
-When the load is low, the user is more directly engaged, but when load is high, there is more automated assistance. 
 Adaptation does not have to be based on measured load, but could instead be based on perceived load or physiological markers in the user. 
 %\cite{goodrich2010maximizing}
 
 However, in situations with even moderate numbers of robots, even relatively high levels of automation may overwhelm the user \cite{lewis200617}. 
 Level five, operation by consent, is a fairly high level of autonomy, but with a large number of robots checking in, even this level may generate too many events for the human to deal with. 
 Increasing the autonomy to level nine, so that the robots are only checking in with the operator when an exceptional situation occurs, may still overwhelm the operator if enough robots are active.
-Increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability. 
+Increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability \cite{lee2004trust}. 
 
 In fact, any kind of multitasking may prove insufficient for large swarms. 
 For teleoperation, the best case is uncrewed aerial vehicles (UAVs), which require relatively little oversight. 
@@ -305,7 +311,7 @@ Uncrewed ground vehicles (UGVs) require more oversight than UAVs, due to the hig
 Estimates place the limits on the number of robots under control at 12 or 13 for UAVs and 3-9 for UGVs \cite{WangSearchScale}.  
 There is some latitude, at least in UGVs, to increase multitasking by increasing automation, as shown by the relatively wide range in the interaction limits, but even 9 robots per operator is nowhere near the scale of kilo-robot swarms  \cite{Olsen:2004:FMH:985692.985722}.
 Failure generally takes the form of task effectiveness no longer increasing as more robots are added.
-Instead, the amount of time the user spends interacting with the robots begins to outweigh the neglect time, and so the robots spend increasing amounts of time waiting for interactions\cite{cummings2008predicting}. 
+Instead, the amount of time the user spends interacting with the robots begins to outweigh the neglect time, and so the robots spend increasing amounts of time waiting for interactions \cite{cummings2008predicting}. 
 
 Ecological interface design (EID) presents a possible guide to the architecture of user interfaces for swarm robotics, and has been used in interfaces with mixed human-robot teams \cite{vicente1992ecological, gancet2010user}. 
 In EID, a user's abilities that enable them to interact with a system is separated into a taxonomy of skills, rules, and knowledge. 
@@ -379,13 +385,11 @@ The programmer then modifies their program to account for any observed differenc
 This loop of coding, testing, and coding again is repeated until the system behaves as expected, or the programmer graduates. 
 
 Because the normal software development model is time-consuming, and outside of the abilities of many people who might want to use swarm robots, it is desirable to automate the development of software controllers for robots. 
-Possible approaches include translating from user commands into a software formalism that can be compiled and run on the robots, composing preexisting behaviors that each satisfy part of the user's desired behavior, or allowing the user to specify a desired behavior and evolving controllers to match it. 
-
-\subsubsection {Language Approaches}
-
 One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code that can be codified into a compiler. 
 As a consequence, input in the command language defines a program which is compiled and loaded onto the robots. 
-%Is it possible to build a compiler that converts user commands in task space into programs for robots without having to code in assumptions about the qualities of the robots? Does the compiler have to account for global properties (e.g. GPS denial)? Can the compiler account for robot-local properties (e.g. battery life, motor failure)?
+Another possibility is the composition of preexisting behaviors that each satisfy part of the user's desired behavior. 
+Pheromone robotics provides one possible method of controlling this composition dynamically. 
+Still another approach is to allowing the user to specify a desired behavior and evolving controllers to match it. 
 
 \subsubsection{Amorphous Computing}
 
@@ -395,7 +399,7 @@ The goal of AC is to get useful work out of such materials, despite uncertainty 
 Smart dusts are also the limit-case, in terms of scale, for swarm robotics, and if AC promises to get useful work out of smart dust, then it also has some applicability to larger swarm robots.
 
 There are several languages intended to program amorphous computers. 
-"Proto" is a language for a continuous plane spatial computer \cite{correll2009ad}.
+``Proto" is a language for a continuous plane spatial computer \cite{correll2009ad}.
 Because the devices are distributed over a plane, the difficulty in communicating between any two devices is a function of the distance between them, much as with RF or other radiative communications.
 In Proto, the behavior of regions of space is described by the programmer, and the description is transformed into local actions for the network of devices. 
 Because devices have a size in the real world, and space between them, the devices cannot not have a one-to-one mapping with the space, but instead perform an approximation of the desired behavior. 
@@ -433,13 +437,13 @@ By controlling the production or propagation of morphogens within the amorphous 
 The abstractions of GPL bear a very strong relation to pheromone robotics. 
 Pheromone robotics refers to a metaphor for developing control software for swarm robots. 
 Some social animals, especially insects, use chemical signals called pheromones to communicate with each other. 
-For example, wasps inside their nest react to the scent of wasp venom by traveling to the outer surface of the nest and attacking nearby moving targets  \cite{jeanne1981alarm}.
+For example, wasps inside their nest react to the scent of wasp venom by travelling to the outer surface of the nest and attacking nearby moving targets  \cite{jeanne1981alarm}.
 Ants leave trails of pheromones for other ants to follow to food sources. 
 Each individual ant's contribution to the trail can be modulated by the quality of the food source, which allows the reaction of the other ants to the trail to cause an emergent distribution of the foraging work force that favors higher-quality food sources \cite{sumpter2003nonlinearity}.
 Because pheromones are chemicals with spatial locations, it would be possible to combine the use of pheromones with reaction diffusion equations to structure activity within a space or to converge to patterns of activity over time  \cite{turing1952chemical}. 
 Assuming even diffusion of the robots in space, the global map of the pheromone concentrations is represented over the network by the locally-computed concentrations computed by each robot.
 
-In pheromone robotics, the pheromones are usually simulated or ``virtual'' pheromones, rather than real chemicals which are detected by chemical sensors. 
+In pheromone robotics, the pheromones are usually simulated or ``virtual'' pheromones, rather than real chemicals which are detected by chemical sensors (for an exception, see \cite{hayes2001swarm}). 
 Each pheromone can have properties such as diffusion and evaporation rates that result in the pheromone spreading in space or gradually disappearing. 
 In addition to its properties, the pheromones may have other characteristics which robots can sense. 
 For example, a robot may emit a pheromone which diffuses into the environment and evaporates quickly, so distance from the robot can be determined by the strength of the pheromone, and approaching or avoiding the robot may be accomplished by moving up or down the gradient of pheromone strength. 
@@ -452,8 +456,8 @@ As a result, once any robot discovers the target, all of the robots quickly conv
 The addition of directional communication for the messages that convey virtual pheromone information allows easy determination of the direction of pheremone gradients \cite{payton2001pheromone}.
 Rather than directly diffusing in the space as a chemical would, hop counts in the network of robots simulate diffusion. 
 Because routes may be of different length, the message with the lowest hop count is assumed to be the truest indication of minimal distance within the network. 
-Rather than modeling the world based on the incoming messages, the content of the pheromone messages and the network behavior as a whole serves as a model of the world, mapped 1:1 onto the real environment. 
-While it is possible to build a set of behavioral primitives out of pheromone signaling and associated behaviors, controlling the swarm to perform a task with these primitives is still done by hand \cite{payton2003compound}.
+Rather than modelling the world based on the incoming messages, the content of the pheromone messages and the network behavior as a whole serves as a model of the world, mapped 1:1 onto the real environment. 
+While it is possible to build a set of behavioral primitives out of pheromone signalling and associated behaviors, controlling the swarm to perform a task with these primitives is still done by hand \cite{payton2003compound}.
 
 In all of these examples, the sensing of the pheromones is assumed to be local to the robot, at least metaphorically. 
 To actually maintain pheromones in the environment without robots being present to transmit them requires, again, a global representation of the task space which the robots can refer to when needed. 
@@ -506,12 +510,13 @@ However, it is possible to develop emergent control systems without a global spa
 \subsubsection{Compositional Approaches}
 
 Rather than developing a novel control program for each robot automatically, it may be possible to compose programs from behavioral primitives, such that some combination of the primitives results in the emergence of the desired behavior. 
-A compositional approach to program generation requires the definition of primitives out of which programs can be composed. 
+A compositional approach to program generation requires the definition of primitives out of which programs can be composed, and some degree of assurance that these primitives can cover the space of possible tasks required from the robot. 
 One possible list of primitives is disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, and scan area \cite{evans2000programming}.
 Another proposed catalog of behaviors for swarm control bases the simple behaviors on pheromones or chemical sensing in single cells \cite{nagpal2004catalog}. 
 The proposed behaviors are the use of gradient sensing for position and direction information, local inhibition and competition, lateral inhibition for spatial information, local monitoring, quorum sensing for timing and counting, checkpoint and consensus sensing, and random exploration. 
 The first five are common in amorphous computing as well, but the last three are not. %TODO what are their uses?. 
-While these behaviors are themselves expressed in terms of pheromones, the composition of the primitives into complete programs is not dictated by a pheromone-based system. 
+While these behaviors are themselves expressed in terms of pheromones, the composition of the primitives into complete programs is not dictated by a pheromone-based system.
+Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \cite{belta2007symbolic}.
 
 These senses are sufficient for relatively complex behaviors. 
 Quorum sensing is used to detect whether the local agent count is sufficient for a task. 
@@ -576,7 +581,7 @@ If each robot needs to be individually reprogrammed, then the time required for 
 Assuming the program can be swiftly distributed, then programming it is simply a matter of iterative software development, with each bug or undesired behavior accounted for in the next iteration. 
 Unfortunately, this means that rather than removing iterative software design from the process, it has simply been moved up one layer of abstraction, from writing code for the robots to composing that code from behavior primitives. 
 
-One possibility is to permit composition to behave like the programming environment Tierra. \cite{ray1991approach}
+One possibility is to permit composition to behave like the programming environment Tierra \cite{ray1991approach}.
 In Tierra, there is no such thing as an invalid program. 
 All sequences of the existent symbols are regarded as executable programs, although some are more useful than others. 
 %While this does prevent the possibility of the user becoming frustrated by being told that their commands are invalid, the ease of creating valid, but undesirable commands creates other problems. 
@@ -595,16 +600,18 @@ However, it is still useful to examine the possibility of developing a fitness f
 Without some way of determining the ``goodness'' of a swarm's behavior, it is useless to say that one algorithm or design paradigm is better or worse than another. 
 
 In order to determine the quality of the behavior of the swarm, its behavior must be measured.
-Harriot et al propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots, and can be broken down into 9 classes \cite{harriott2014biologically}. 
-Human attributes - how the human interacts, trust, intervention frequency, etc. \\
-Task performance - ability to accomplish task, speed, accuracy, cost \\
-Timing - Command diffusion lag, behavior convergence \\
-Status - Condition of the swarm, battery life, number of functioning members, stragglers \\
-Leadership - Interaction between special members of the swarm and others, how well leaders are followed \\
-Decisions - How actions are taken, likelihood that the correct action is chosen \\
-Communication - Speed, range, network efficiency \\
-Micromovements - Motion of individual swarm elements relative to each other \\
-Macromovement - Motion of the overall swarm, flocking, elongation, forming fancy shapes 
+Harriot et al. propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots, and can be broken down into 9 classes \cite{harriott2014biologically}. 
+\begin{itemize}
+\item Human attributes - How the human interacts, trust, intervention frequency, etc. 
+\item Task performance - Ability to accomplish task, speed, accuracy, cost
+\item Timing - Command diffusion lag, behavior convergence
+\item Status - Condition of the swarm, battery life, number of functioning members, stragglers
+\item Leadership - Interaction between special members of the swarm and others, how well leaders are followed
+\item Decisions - How actions are taken, likelihood that the correct action is chosen
+\item Communication - Speed, range, network efficiency
+\item Micromovements - Motion of individual swarm elements relative to each other
+\item Macromovement - Motion of the overall swarm, flocking, elongation, forming fancy shapes 
+\end{itemize}
 The most obvious differences from individual robot control metrics are the ideas of leadership within the swarm, and macromovement of the swarm.
 
 Task performance is an especially interesting metric, but it is difficult to automatically extract from the observed behavior of the system an overall understanding of the progress it is making on the task, and so a value for the output of the fitness function. 
@@ -642,20 +649,50 @@ Oddly, while one would expect that the aclonal condition would result in a speci
 It was hypothesized that while the clonal condition had to evolve roles and an allocation mechanism simultaneously, the aclonal condition could specialize the roles during early evolution, and then develop an arbitration mechanism to select roles.
 
 Genetic algorithims have also been used to develop aggregation behavior in swarm robots \cite{bahgecci2005evolving, dorigo2004evolving}.  
-Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object, attacking \emph{en mass}, etc.
+Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object, attacking together, etc.
 The resulting controllers only controls aggregation behavior, so each behavioral primitive would require its own evolutionary development. 
 Solutions discovered by genetic algorithms are also prone to overfitting. 
-The swarms described in Dorigo \emph{et al.} decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
+The swarms described in Dorigo et al. decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
 
 The common hope of users of genetic algorithms is that they can reduce the complexity of directly specifying the task to the (hopefully lower) complexity of describing the results in the fitness function.
 Rather than describing how to solve a problem, one simply describes what the solution would look like. 
 Unfortunately, the reduction in hands-on time spent programming frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
 One early version of the evolved aggregation controllers allowed the evolved motion strategy to acquire a high fitness by spinning in place, and so the fitness function required modification to prevent robots from simply spinning. 
-The \emph{ad hoc} iterative process of creating emergent behaviors is replaced by an \emph{ad hoc} iterative process of creating fitness functions.
+The ad hoc iterative process of creating emergent behaviors is replaced by an ad hoc iterative process of creating fitness functions.
 As a result, developing novel behavior in the field by converting user specifications of the behavior of the swarm into a fitness function for a genetic algorithm is unlikely to yield results in a timely manner. 
 However, individually evolved primitives could be saved in a library of primitives for use by a higher-level compositional approach. 
 Such a library could take advantage of the possible overfitting of GA evolution by storing primitives intentionally overfitted to specific situations and robots, and using the best matches. 
 For example, a controller that aggregates small-scale UAVs outdoors is likely quite different from one that aggregates medium-scale wheeled robots indoors, even though they are both aggregation controllers. 
+
+\subsection{Domain-Specific Languages for Swarm Robotics}
+
+Proto and other programming languages for amorphous computers provide abstractions for compuation performed on homogeneous spatially-distributed computating nodes, but do not generally support motion of nodes within the space. 
+Other versions of tuple-space based amorphous computation include motion of the agents, but do not explicitly support heterogeneity \cite{viroli2012linda}.
+
+The Voltron programming language provides what its authors describe as ``team-level programming'' for autonomous drones \cite{mottola2014team}.
+This level of programming is distinct from drone-level programming, where specific instructions are provided to each drone, and swarm programming, where each drone has the same instructions and operates without communication with other drones.
+Voltron programs consist of sensing tasks that are subject to space and time constraints, so the language does not permit the user to specify direct interactions between drones. 
+This leaves out activities beyond sensing that may be useful for swarm robots, such as patrolling an area or collaboratively moving an object.
+Additionally, Voltron is based on the assumptions that drones have global localization, synchronous clocks, and reliable inter-unit communication.   
+
+Karma provides a programming framework for micro-aerial vehicles with minimal localization and no communication in the field \cite{dantu2011programming}.
+The framework allows the composition of behaviors described at the level of individual robots. 
+Rather than each robot performing series of behaviors in response to input from its sensors, each robot is tasked by a central ``hive'' to perform a single behavior, such as performing a sensor sweep of an area. 
+The hive collects data from robots as they return to the hive, and updates a central data store, which includes both the sensor information from the individual robots and spatial information about the sensor information. 
+The hive then assigns activities to robots based on rules that use the central data store to determine which activities should be performed. 
+As a result, while the individual robots are autonomous and not in communication with the hive while operating, the hive maintains a central data store that is used to guide the future behaviors of the swarm. 
+This model does permit a form of interaction between swarm members, in that information from one swarm member can inform the behavior of another member, but it does not permit dynamic collaboration between swarm members while they are operating away from the hive. 
+
+Meld is a programming language for robot ensembles, which are composed of individual modular robots \cite{ashley2007meld}. 
+However, many of the problems facing an ensemble of modules are the same as those facing a swarm, such as determining the overall goal, moving to proper positions, and detecting when the goal has been acheived. 
+Meld is written in terms of facts and rules. 
+Facts describe things such as adjacency between robots and location of robots. 
+Rules are applied to facts, resulting in the generation of new facts. 
+By including rules that generate facts which describe motor actions, the application of rules to the known state of the system can create a ``to-do list'' of actions for individual members of the system to perform. 
+Rules are said to ``prove'' facts, and when no further facts can be proven, the system has arrived in a final state. 
+Since facts that alter the state of the world can make previous facts false, the set of facts available must be periodically purged of facts that no longer hold. 
+The authors of Meld point out that logic programming, of which Meld is an example, is poor at representing state beyond what can be computed as a consequence of the base facts. 
+However, it is also claimed that the use of aggregates, which compute results based on the provable facts, can be used to store state about the system, avoiding this restriction. 
 
 \section{Proposed work}
 
@@ -666,6 +703,8 @@ For example, searching an area requires moving over the area to be searched.
 Specialized tasks will likely require specialized interfaces to provide the information that is specific to that task. 
 To attempt to elicit specifications for such interfaces, users will be requested to think aloud while they are using a proposed interface. 
 It is hoped that users will describe how they would invoke the more specialized components of the desired interface. 
+
+\subsection{Compilation of user commands into robot programs}
 
 In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
 Multitouch gesture sets as a command language for controlling robots have been developed by an empirical process with naive users \cite{Micire:2009:ANG:1731903.1731912}. 
@@ -701,6 +740,16 @@ The base case is to simply display all the units as individuals, but this may no
 Other approaches include an amorphous shape covering the area occupied by the swarm, an amorphous shape with density shading and motion arrows, the fields of influence for leaders in the swarm, and the web generated by the flow of information within the swarm. 
 Considered as a whole, the swarm has properties, such as center of gravity or flock thickness, that do not exist in individual robots. 
 Views of these properties may assist the user, for example in determining what areas have insufficient robot density for a thorough search operation. 
+
+The information available to the user through the UI also implies the availability of certain information within the system. 
+The distinction between UI representations of the swarm that display each robot as an individual robot versus those that display a cloud or amorphous shape in the area occupied by robots is the most obvious example. 
+A system that displays the location of each robot must actually have localization information about each robot.
+The presence of this information in turn implies that the localization information can be used to plan the actions of each robot, which in turn affects the structure of the programs generated for each robot. 
+
+For example, if the task assigned to the swarm is to surround a fixed point, and localization information is available, then each robot can be given a program that instructs it to move towards a known location, based on its current known location.
+Even if the robots cannot determine their location, but the UI and program generator have it, the robots closest to the point can be assigned programs that cause them to act as beacons, while all the other robots are assigned programs to wander until they see a beacon and then move towards it. 
+If, instead, neither the robots nor the program generator have information on the location of the robots, then all of the robots can be assigned programs that instruct them to wander until they detect the target point, and then act as beacons, at which point the overall behavior of the system returns to the previous example.
+In the most extreme case, neither the robots nor the user interface have any information about the location of the robots. This extreme is outside the scope of this work, as it is more suited to an interface that permits the provisioning of the robots with a description of the target point. A method for providing such a description through multitouch gestures is likely to be mNSFore tedious than other approaches, e.g. summarizing desired sensor precepts or including an image of the target area for the robots to recognize. 
 
 All of the valid expressions possible in the command language should be converted into programs for the robots, or the user must be usefully informed as to why it was not possible. 
 The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
@@ -749,6 +798,8 @@ Having communication mediated by software on the host will allow for simple expe
 \begin{figure}[h]
 	\centering
 	\digraph[scale=0.6]{Framework}{
+	
+	graph[nodesep=0.5];
 	
 	subgraph clusterRobot1 {
 		motor[shape=box; label="Motor Driver"];
@@ -811,59 +862,59 @@ Having communication mediated by software on the host will allow for simple expe
 	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
 \end{figure}
 
-\section{Timeline}
 
-\subsection{Spring 2016}
+
+It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
+Development of ROS nodes to communicate with the individual boards must be done. 
+Automated discovery of boards and configuration of ROS nodes will accelerate development and make swarm use more flexible. 
+Core functionality required is Twist (or similar) message from ROS causing motion of toy, end-to-end from PC to motors. 
+Current board has known bugs, which will be fixed by respin of PCB. 
+This work will proceed in parallel with data collection for the gesture set, and be completed by the end of the summer of 2016.
+Completion of the swarm control hardware means that the board will control the motors and software will be loaded to the board and executed to accept incoming motor control commands.
+The swarm hardware development and results will be collected in a paper for publication.  
+
+Swarm robot control software framework. 
+Automate creation of configuration files that load ROS nodes to speak to each individual robot as if those nodes were running on that robot. 
+Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
+Implement virtual sensing. 
+
+\subsection{Summer 2016}
 
 Gestures - The paperwork to run user tests with the UML student population will be completed. 
 A pilot of the test will be run with users in the robotics lab in order to determine how long each user test is expected to take, and to work on the script for interacting with users. 
-The experiment will be run before finals week. 
 For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
-5-10 users per case would be good, so I hope to recruit 25-50 users. 
-To prevent the user remembering what they did in a different case, each user is assigned to one case, and then performs all the tasks using that case. 
+Each user is assigned to one case, and then performs all the tasks using that case. 
+Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
 There are 18 tasks. 
 The tasks do have some degree of order to their complexity, but maybe randomizing would be better so that users don't try to reuse gestures that might not make sense. 
 Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
 
-Hardware - The swarm control board currently has problems related to the programming interface. A second version of the swarm board is needed, to correct these problems. 
-Once that is done, the new version can be used to test the motor drivers in all the swarm robot chassis' currently available. 
-The robot enclosure needs one or more cameras mounted over it.
+Hardware - The bugs in version one of the swarm control boards have been fixed, and a working version is available. 
+5 boards have been assembled and mounted to robots. 
+Parts have been ordered to assemble and connect another 5 boards.  
 
-Software - Testing the motor drivers will require a first version of the motor driver firmware. 
-Connecting to all the robots in order to control them should require minimal effort on the part of the user. 
-Ideally, all of the robots will connect to a single access point, and the control computer will be networked to that AP. 
-Discovery of the robots will be automated. 
+Software - The core function of the swarm board is a Twist (or similar) message from ROS causing motion of toy, from input to the control PC to the motors. 
+This level of functionality, enabling individual swarm members to be driven from the keyboard, is in process and will be completed over the summer. 
+A simulated world and robot models have been developed to avoid having the software development be blocked by the development of the hardware, but the simulator is at this point incomplete. 
+The automatic swarm configuration will be extended to bluetooth, so that the Epucks can be added to the swarm as well. 
+Creation of configuration files that load ROS nodes to communicate each individual robot will be automated. 
+Each robot will have a ``motor driver'' node that forwards motion commands over the wifi or bluetooth link to the robot platform for interpretation. 
 The camera over the table will be calibrated to provide a minimally distorted image over the whole table. 
 An ROS node will provide robot and object detection on the table surface. 
 
-Writing - Proposal will be revised. 
-
-\subsection{Summer 2016}
-
-Gestures - Assuming sufficient data for analysis of the gesture set has been collected, it will be analyzed and compared to existing work on multitouch gestures for command and control. 
-The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
-If there is sufficient data, the gesture set data collection and analysis will be documented in a paper for publication. 
-Otherwise, further data will be collected over the summer. 
-
-Hardware - The bugs in version one of the swarm control boards will be fixed. 
-Version two will be tested. 
-If it works, the boards can be mass-assembled. 
-Otherwise, a third version should be sufficient to settle any remaining design problems.
-
-Software - The core function of the swarm board is a Twist (or similar) message from ROS causing motion of toy, from input to the control PC to the motors. 
-This level of functionality, enabling individual swarm members to be driven from the keyboard, will be completed in the summer. 
-The automatic swarm configuration will be extended to bluetooth, so that the Epucks can be added to the swarm as well. 
-Creation of configuration files that load ROS nodes to speak to each individual robot will be automated. 
-Each robot will have a ``motor driver'' node that forwards motion commands over the wifi or bluetooth link to the robot platform for interpretation. 
-
-Writing - Assuming data set for gestures is useful for a paper, it will be written up and published. The resulting write up, as well as expansion on experimental methodology will be added to my thesis. 
+Writing - This document has been revised to the point of being ready to defend. 
+The hardware design has been documented in a workshop paper for Robotics: Science and Systems to be presented in mid-June, and the text of that paper has been used to improve this proposal. 
 
 \subsection{Fall 2016}
 
-Gestures - If the amount of data collected from the first run of the gesture tests was insufficient to get useful results, collect a second set of data. 
-Compare to first data, and determine if combined data set has sufficient data to get useful results. 
+Gestures - The main experiment to collect the gesture set will be performed. 
+5-10 users per case would be sufficient, so I hope to recruit 25-50 users. 
+The data set will be analyzed and compared to existing work on multitouch gestures for command and control. 
+The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
+If there is sufficient data, the gesture set data collection and analysis will be documented in a paper for publication. 
 If the first data collection was sufficient, perform a second data collection to add drone tasks. 
 Determine if users use different signals to command drones in groups than they do with ground robots, particularly around obstacles. 
+This work can also be written up for publication. 
 
 Hardware - The swarm control boards should be complete and installed in swarm robots. The performance of the system as a whole will be tested, especially the behavior of the network and load on the central computer with Epucks and swarm robots in the same area. 
 
@@ -873,7 +924,7 @@ Virtual networking can be viewed as an extension of sensing, in that network dat
 Robot localization is also a sense. 
 Localization in the most abstract can be viewed as a sense of place. 
 
-Writing - Write up hardware design and lessons learned. Write up performance tests. Try to get it published, maybe as some kind of tech report. Add text to thesis.
+Writing - Assuming data set for gestures is useful for a paper, it will be written up and published. The resulting write up, as well as expansion on experimental methodology will be added to my thesis. 
 
 \subsection{Winter 2016}
 
@@ -1012,5 +1063,26 @@ If, on the other hand, it is configured for room-scale operations, the system ca
 %A particle-swarm-optimized fuzzy-neural network for voice-controlled robot systems 
 
 %The I-SWARM project 
-
-
+%
+%\subsection{Current Consumption of Children's Toys}
+%Motor driver test required, a well as quantification of motor current draw for children's toys. 
+%Quantification of required power may indicate that larger motor driver power is needed.
+%
+%Toys are effectively black boxes to the end user.
+%Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
+%In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
+%The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
+%
+%All of the motors were driven at 3.7VDC. 
+%This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
+%Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
+%Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
+%
+%Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
+%Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
+%Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
+%Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
+%Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
+%Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
+%Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
+%Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A

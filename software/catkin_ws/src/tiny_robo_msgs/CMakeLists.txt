@@ -102,7 +102,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES tiny_robo_msgs
-   CATKIN_DEPENDS roscpp rospy std_msgs message_generation
+   CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
 #  DEPENDS system_lib
 )
 

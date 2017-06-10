@@ -1,0 +1,55 @@
+<launch>
+   <!-- launch video stream -->
+   <include file="$(find video_stream_opencv)/launch/camera.launch" >
+   		<!-- node name and ros graph name -->
+	  	<arg name="camera_name" value="overhead_camera" />
+	  	<!-- url of the video stream -->
+	  	<arg name="video_stream_provider" value="rtsp://b34.nrv/live.sdp"/>
+	  	<!-- throttling the querying of frames to -->
+	  	<arg name="fps" value="30" />
+	  	<!-- setting frame_id -->
+	  	<arg name="frame_id" value="rtsp_frame" />
+	  	<!-- camera info loading, take care as it needs the "file:///" at the start , e.g.:
+	  	"file:///$(find your_camera_package)/config/your_camera.yaml" -->
+	  	<arg name="camera_info_url" value="file:///$(find camera_cal)/overhead_camera_calibration.yaml" />
+	  	<!-- flip the image horizontally (mirror it) -->
+	  	<arg name="flip_horizontal" value="false" />
+	  	<!-- flip the image vertically -->
+	  	<arg name="flip_vertical" value="false" />
+	  	<!-- visualize on an image_view window the stream generated -->
+	  	<arg name="visualize" value="false" />
+   </include>
+
+   <!-- Video un-distorting -->
+   <node name="image_proc" pkg="image_proc" type="image_proc" ns="overhead_camera"/>
+
+   <!-- April tags -->
+   <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
+
+   <!-- Fake laser readings --> 
+   <node pkg="img_service" type="img_service_node" name="fake_laser_service" output="screen"/>
+
+   	<!-- Joystick Teleoperation -->
+	<node pkg="joy" type="joy_node" name="joystick_node" output="screen">
+		<param name="/coalesce_interval" value="0.1" type="double"/>
+	</node>
+
+	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist" output="screen"/>
+
+	<!-- Motor translation for tank-style driving -->
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
+		<param name="/driver_name" value="/cmd_vel" type="str" />
+	</node>
+
+	<!-- Motor power limiting -->
+	<!--'192.168.1.119' hexbugbase
+		'192.168.1.176' medium-size tank
+		'192.168.1.218' small white tank
+		'192.168.1.101' bigger wheel
+	-->
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
+		<param name="robot_addr" value="192.168.1.176" type="str" />
+	</node>
+
+</launch>

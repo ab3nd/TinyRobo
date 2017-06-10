@@ -7,6 +7,7 @@ project(sim_robots)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  message_generation
   std_msgs
   tiny_robo_msgs
 )
@@ -68,10 +69,10 @@ find_package(ImageMagick COMPONENTS Magick++ REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
+#generate_messages(
 #   DEPENDENCIES
-#   std_msgs
-# )
+#   tiny_robo_msgs
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,7 +106,7 @@ find_package(ImageMagick COMPONENTS Magick++ REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES sim_robots
-#  CATKIN_DEPENDS roscpp rospy std_msgs tiny_robo_msgs/
+  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime tiny_robo_msgs
 #  DEPENDS system_lib
 )
 
