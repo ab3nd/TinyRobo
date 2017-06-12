@@ -10,7 +10,7 @@ def frame_filter(keypress, frame):
         key.r: cmask_erode,
         key.t: cmask_erode_morph,
         key.y: cmask_erode_morph_find_lines,
-        key.u: cmask_find_lines
+        key.u: cmask_erode_morph_find_lines_from_origin
     }   
     if keypress in filters:
         return filters[keypress](frame)

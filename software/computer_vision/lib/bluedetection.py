@@ -7,6 +7,8 @@ from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWind
 )
 from numpy import array, ones, uint8, cos, sin, pi
 
+RED, GREEN, BLUE = (0, 0, 255), (0, 255, 0), (255, 0, 0)
+
 lower_blue, upper_blue = array([100,30,30]), array([130,255,255])
 
 kernel = ones([5,5], uint8)
@@ -32,15 +34,41 @@ def morph(image):
     http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html
     '''
     return morphologyEx(image, MORPH_OPEN, kernel)
-def find_lines(image):
+def line_end_points(image):
     line_image = image.copy()
     gray = convert_gray(line_image)
     edges = Canny(gray, 50, 150, apertureSize = 3)
     minLineLength = 5
     maxLineGap = 5
-    lines = HoughLinesP(edges, 1, pi/180, 10, minLineLength, maxLineGap)
-    for x1, y1, x2, y2 in lines[0]:
-        line(line_image, (x1, y1),(x2, y2), (0, 255, 0), 2)
+    lines = HoughLinesP(edges, 1, pi / 180, 10, minLineLength, maxLineGap)
+    return lines[0]
+    #for x1, y1, x2, y2 in lines[0]:
+    #    line(line_image, (x1, y1),(x2, y2), (0, 255, 0), 2)
+    #return line_image
+
+def colored_lines(image, lines, color_value):
+    line_image = image.copy()
+    for x1, y1, x2, y2 in lines:
+        line(line_image, (x1, y1), (x2, y2), color_value, 2)
+
+    return line_image
+
+def find_lines(image):
+    i = line_end_points(image)
+    return colored_lines(image, i, GREEN)
+
+def find_line_from_origin(image):
+    height, width = image.shape[:2]
+
+    x, y = int(width / 2), height
+
+    line_image = image.copy()
+    line_coordinates = line_end_points(line_image)
+
+    for x1, y1, x2, y2 in line_coordinates:
+        line(line_image, (x1, y1), (x, y), RED, 2)
+        line(line_image, (x2, y2), (x, y), RED, 2)
+
     return line_image
 
 def cmask(image):
@@ -54,6 +82,9 @@ def cmask_erode_morph(image):
 
 def cmask_erode_morph_find_lines(image):
     return find_lines(cmask_erode_morph(image))
+
+def cmask_erode_morph_find_lines_from_origin(image):
+    return find_line_from_origin(cmask_erode_morph(image))
 
 def cmask_find_lines(image):
     return find_lines(cmask(image))
