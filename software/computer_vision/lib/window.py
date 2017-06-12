@@ -1,4 +1,4 @@
-from cv2 import namedWindow, WINDOW_NORMAL, resizeWindow, destroyWindow
+from cv2 import namedWindow, WINDOW_NORMAL, resizeWindow, imshow, destroyWindow
 
 class Window(object):
     def __init__(self, name, width=1280, height=720):
@@ -12,4 +12,10 @@ class Window(object):
         return self
 
     def __exit__(self, eType, eValue, eTrace):
-        destroyWindow(self._name)        
+        self.close()
+
+    def display(self, image):
+        imshow(self._name, image)
+
+    def close(self):
+        destroyWindow(self._name)

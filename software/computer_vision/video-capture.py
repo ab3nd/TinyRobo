@@ -1,7 +1,6 @@
-from cv2 import VideoCapture, cvtColor, imshow, resizeWindow, WINDOW_NORMAL, destroyWindow
-
 from lib.camera import Camera
 from lib.bluedetection import *
+from lib.window import Window
 from lib.keycodes import keypress, key
 
 def frame_filter(keypress, frame):
@@ -19,24 +18,18 @@ def frame_filter(keypress, frame):
         return frame
 
 def main():
-    name, width, height = 'Camera Filter Test', 1280, 720
+    with Window(name='Camera Test', width=1280, height=720) as window:
+        with Camera() as camera:
+            set_key = None
+            for frame in camera:
+                pressed_key = keypress()
 
-    namedWindow(name, WINDOW_NORMAL)
-    resizeWindow(name, width, height)
+                if pressed_key == key.q:
+                    break
+                if not set_key == pressed_key and not pressed_key == key.none:
+                    set_key = pressed_key
 
-    with Camera() as camera:
-        set_key = None
-        for frame in camera:
-            pressed_key = keypress()
-
-            if pressed_key == key.q:
-                break
-            if not set_key == pressed_key and not pressed_key == key.none:
-                set_key = pressed_key
-
-            imshow(name, frame_filter(set_key, frame))
-
-    destroyWindow(name)
+                window.display(frame_filter(set_key, frame))
 
 if __name__ == '__main__':
     main()
