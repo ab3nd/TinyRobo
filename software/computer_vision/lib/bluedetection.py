@@ -3,10 +3,13 @@
 from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWindow, waitKey,
                  cvtColor, inRange, bitwise_and, imshow, erode, COLOR_BGR2HSV, COLOR_HSV2RGB_FULL,
                  morphologyEx, MORPH_OPEN, createCLAHE, COLOR_BGR2GRAY, Canny, line, HoughLinesP, 
-                 hconcat, vconcat, COLOR_HSV2BGR, COLOR_GRAY2BGR
+                 hconcat, vconcat, COLOR_HSV2BGR, COLOR_GRAY2BGR,
+                 findContours, RETR_TREE, CHAIN_APPROX_SIMPLE, threshold,
+                 drawContours, pointPolygonTest
 )
-from numpy import array, ones, uint8, cos, sin, pi
-
+from numpy import array, ones, uint8, cos, sin, pi, deg2rad
+from math import hypot
+from lib.laserscan import line_intersections
 RED, GREEN, BLUE = (0, 0, 255), (0, 255, 0), (255, 0, 0)
 
 lower_blue, upper_blue = array([100,30,30]), array([130,255,255])
@@ -34,6 +37,7 @@ def morph(image):
     http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html
     '''
     return morphologyEx(image, MORPH_OPEN, kernel)
+
 def line_end_points(image):
     line_image = image.copy()
     gray = convert_gray(line_image)
@@ -71,6 +75,71 @@ def find_line_from_origin(image):
 
     return line_image
 
+def point_intersections(x, y, contours, min_range=0, max_range=180, interval=5):
+    points = [x for _ in range(min_range, max_range)]
+    for angle in range(min_range, max_range + 1, interval):
+        for point in range(1, x, 10):
+            pointFound = False
+            x2, y2 = coordinates(x, y, angle, point)
+            for contour in contours:
+                output = pointPolygonTest(contour, (x2, y2), False)
+                if output > 0:
+                    points[angle] = hypot(x2 - x, y2 - y)
+                    pointFound = True
+                    break
+            if pointFound == True:
+                break
+                    
+    return points
+
+def find_contours(image):
+    im = image.copy()
+    imgray = cvtColor(image, COLOR_BGR2GRAY)
+    ret,thresh = threshold(imgray, 127,255,0)
+    contours, h = findContours(thresh, RETR_TREE, CHAIN_APPROX_SIMPLE)
+
+    height, width = image.shape[:2]
+
+    x1, y1 = int(width / 2), height
+   
+    points = line_intersections(x1, y1, contours, 1, 180, 5)
+    for i, a in enumerate(points): print i, a
+    #for x, y in points:
+    #    x2, y2 = int(round(x) - 1), int(round(y) - 1)
+    #    line(im, (x1, y1), (x2, y2), GREEN, 2)
+
+    return im
+
+
+def coordinates(x, y, angle, distance):
+    xcoord = x + distance * cos(deg2rad(angle))
+    ycoord = y - distance * sin(deg2rad(angle))
+
+    return (xcoord, ycoord)
+
+def scan(image):
+    i = cmask_erode_morph(image)
+
+    lines = line_end_points(i)
+
+    height, width = image.shape[:2]
+
+    x1, y1 = int(width / 2), height
+
+    for angle in range(45, 135):
+        x2, y2 = coordinates(x1, y1, angle, x1)
+        intersects = []
+        
+        for a, b, c, d in lines:
+            L1 = li([x1, y1], [x2, y2])
+            L2 = li([a, b], [c, d])
+            a = intersection(L1, L2)
+            print(a)
+        #print(angle, x1, y1, abs(x2), y2)
+        #line(i, (x1, y1), (abs(x2), y2), RED, 5)
+
+    return i
+
 def cmask(image):
     return mask(convert_hsv(image))
 
@@ -84,7 +153,10 @@ def cmask_erode_morph_find_lines(image):
     return find_lines(cmask_erode_morph(image))
 
 def cmask_erode_morph_find_lines_from_origin(image):
-    return find_line_from_origin(cmask_erode_morph(image))
+    return scan(cmask_erode_morph_find_lines(image))
+
+def cmask_erode_morph_find_contours(image):
+    return find_contours(cmask_erode_morph(image))
 
 def cmask_find_lines(image):
     return find_lines(cmask(image))
