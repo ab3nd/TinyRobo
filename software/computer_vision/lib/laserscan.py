@@ -1,6 +1,6 @@
 from numpy import cos, sin, pi, deg2rad
 from cv2 import pointPolygonTest
-from math import hypot
+from math import hypot, atan2, degrees
 
 def calc_coordinates(x, y, angle, distance):
     xcoord = x + distance * cos(deg2rad(angle))
@@ -9,12 +9,27 @@ def calc_coordinates(x, y, angle, distance):
 
     return (xcoord, ycoord)
 
+def calc_angle(x1, y1, x2, y2):
+    return degrees(atan2(y1 - y2, x2 - x1))
+
 def is_within_contour(contours, coordinates):
     for contour in contours:
         test = pointPolygonTest(contour, coordinates, False)
         if test >= 0:
             return True
     return False
+
+def contour_ranges(x1, y1, contours):
+    ranges = []
+    for contour in contours:
+        angle_values = []
+        for points in contour:
+            x2, y2 = points[0][0], points[0][1]
+            angle_values.append(calc_angle(x1, y1, x2, y2))
+            range_min, range_max = min(angle_values), max(angle_values)
+        ranges.append((range_min, range_max, contour))
+
+    return ranges
 
 def filter_contours(contours, angle):
     results = []
@@ -25,9 +40,9 @@ def filter_contours(contours, angle):
 
 def line_intersections(x, y, contours, min_range, max_range, interval):
     points = []
-    for angle in range(min_range, max_range + 1, interval):
+    for angle in range(min_range, max_range + 1, 5):
         c = filter_contours(contours, angle)
-        for point in range(1, x, 1):
+        for point in range(1, x, 10):
             x2, y2 = calc_coordinates(x, y, angle, point)
             if is_within_contour(c, (x2, y2)):
                 points.append((x2, y2))

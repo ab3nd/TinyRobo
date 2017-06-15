@@ -9,7 +9,7 @@ from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWind
 )
 from numpy import array, ones, uint8, cos, sin, pi, deg2rad
 from math import hypot, atan2, degrees
-from lib.laserscan import line_intersections
+from lib.laserscan import *
 RED, GREEN, BLUE = (0, 0, 255), (0, 255, 0), (255, 0, 0)
 
 lower_blue, upper_blue = array([100,30,30]), array([130,255,255])
@@ -88,30 +88,15 @@ def find_contours(image):
     height, width = image.shape[:2]
 
     x1, y1 = int(width / 2), height
-    angles = []
-    for contour in contours:
-        angle_values = []
-        for points in contour:
-            x2, y2 = points[0][0], points[0][1]
-            angle_values.append(calc_angle(x1, y1, x2, y2))
-            range_min, range_max = min(angle_values), max(angle_values)
-        angles.append((range_min, range_max, contour))
     
-    points = line_intersections(x1, y1, angles, 1, 180, 1)
+    contour_range = contour_ranges(x1, y1, contours)
 
+    points = line_intersections(x1, y1, contour_range, 1, 180, 1)
+    
     for x2, y2 in points:
         line(im, (x1, y1), (int(round(x2)), int(round(y2))), GREEN, 1)
 
     return im
-
-
-def coordinates(x, y, angle, distance):
-    xcoord = x + distance * cos(deg2rad(angle))
-    ycoord = y - distance * sin(deg2rad(angle))
-
-    return (xcoord, ycoord)
-
-    return i
 
 def cmask(image):
     return mask(convert_hsv(image))
