@@ -89,10 +89,10 @@ def find_contours(image):
 
     x1, y1 = int(width / 2), height
     
-    contour_range = contour_ranges(x1, y1, contours, max_distance=x1)
+    contour_range = contour_ranges(x1, y1, contours, range_max=x1)
 
-    points = line_intersections(x1, y1, contour_range, min_angle=0, max_angle=180, angle_interval=1)
- 
+    points = line_intersections(x1, y1, contour_range, angle_min=0, angle_max=180, angle_increment=1)
+
     for x2, y2 in points:
         line(im, (x1, y1), (int(round(x2)), int(round(y2))), GREEN, 1)
 

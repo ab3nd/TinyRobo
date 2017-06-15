@@ -22,17 +22,17 @@ def is_within_contour(contours, coordinates):
             return True
     return False
 
-def contour_ranges(x1, y1, contours, max_distance):
+def contour_ranges(x1, y1, contours, range_max):
     ranges = []
     for contour in contours:
         points = [points[0] for points in contour]
 
-        coordinates = array([(x2, y2) for x2, y2 in points if calc_distance(x2, x1, y1, y2) <= max_distance])
+        coordinates = array([(x2, y2) for x2, y2 in points if calc_distance(x2, x1, y1, y2) <= range_max])
 
         if coordinates.any():
             angles = [calc_angle(x1, y1, x2, y2) for x2, y2 in coordinates]
-            range_min, range_max = min(angles), max(angles)
-            ranges.append((range_min, range_max, coordinates))
+            angle_min, angle_max = min(angles), max(angles)
+            ranges.append((angle_min, angle_max, coordinates))
 
     return ranges
 
@@ -44,13 +44,13 @@ def filter_contours(contours, angle):
         
     return results
 
-def line_intersections(x, y, contours, min_angle=0, max_angle=180, angle_interval=1):
+def line_intersections(x, y, contours, angle_min=0, angle_max=180, angle_increment=1):
     points = []
-    for angle in range(min_angle, max_angle + 1, angle_interval):
-        c = filter_contours(contours, angle)
+    for angle in range(angle_min, angle_max + 1, angle_increment):
+        filtered_contours = filter_contours(contours, angle)
         for point in range(1, x, 5):
             x2, y2 = calc_coordinates(x, y, angle, point)
-            if is_within_contour(c, (x2, y2)):
+            if is_within_contour(filtered_contours, (x2, y2)):
                 points.append((x2, y2))
                 break
     
