@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from lib.camera import Camera
 from lib.bluedetection import *
 from lib.window import Window

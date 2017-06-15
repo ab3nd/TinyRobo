@@ -8,7 +8,7 @@ from cv2 import (imread, imwrite, namedWindow, WINDOW_NORMAL, imshow, resizeWind
                  drawContours, pointPolygonTest
 )
 from numpy import array, ones, uint8, cos, sin, pi, deg2rad
-from math import hypot
+from math import hypot, atan2, degrees
 from lib.laserscan import line_intersections
 RED, GREEN, BLUE = (0, 0, 255), (0, 255, 0), (255, 0, 0)
 
@@ -61,6 +61,10 @@ def find_lines(image):
     i = line_end_points(image)
     return colored_lines(image, i, GREEN)
 
+def calc_angle(x1, y1, x2, y2):
+    return degrees(atan2(y1 - y2, x2 - x1))
+
+
 def find_line_from_origin(image):
     height, width = image.shape[:2]
 
@@ -75,23 +79,6 @@ def find_line_from_origin(image):
 
     return line_image
 
-def point_intersections(x, y, contours, min_range=0, max_range=180, interval=5):
-    points = [x for _ in range(min_range, max_range)]
-    for angle in range(min_range, max_range + 1, interval):
-        for point in range(1, x, 10):
-            pointFound = False
-            x2, y2 = coordinates(x, y, angle, point)
-            for contour in contours:
-                output = pointPolygonTest(contour, (x2, y2), False)
-                if output > 0:
-                    points[angle] = hypot(x2 - x, y2 - y)
-                    pointFound = True
-                    break
-            if pointFound == True:
-                break
-                    
-    return points
-
 def find_contours(image):
     im = image.copy()
     imgray = cvtColor(image, COLOR_BGR2GRAY)
@@ -101,12 +88,19 @@ def find_contours(image):
     height, width = image.shape[:2]
 
     x1, y1 = int(width / 2), height
-   
-    points = line_intersections(x1, y1, contours, 1, 180, 5)
-    for i, a in enumerate(points): print i, a
-    #for x, y in points:
-    #    x2, y2 = int(round(x) - 1), int(round(y) - 1)
-    #    line(im, (x1, y1), (x2, y2), GREEN, 2)
+    angles = []
+    for contour in contours:
+        angle_values = []
+        for points in contour:
+            x2, y2 = points[0][0], points[0][1]
+            angle_values.append(calc_angle(x1, y1, x2, y2))
+            range_min, range_max = min(angle_values), max(angle_values)
+        angles.append((range_min, range_max, contour))
+    
+    points = line_intersections(x1, y1, angles, 1, 180, 1)
+
+    for x2, y2 in points:
+        line(im, (x1, y1), (int(round(x2)), int(round(y2))), GREEN, 1)
 
     return im
 
@@ -116,27 +110,6 @@ def coordinates(x, y, angle, distance):
     ycoord = y - distance * sin(deg2rad(angle))
 
     return (xcoord, ycoord)
-
-def scan(image):
-    i = cmask_erode_morph(image)
-
-    lines = line_end_points(i)
-
-    height, width = image.shape[:2]
-
-    x1, y1 = int(width / 2), height
-
-    for angle in range(45, 135):
-        x2, y2 = coordinates(x1, y1, angle, x1)
-        intersects = []
-        
-        for a, b, c, d in lines:
-            L1 = li([x1, y1], [x2, y2])
-            L2 = li([a, b], [c, d])
-            a = intersection(L1, L2)
-            print(a)
-        #print(angle, x1, y1, abs(x2), y2)
-        #line(i, (x1, y1), (abs(x2), y2), RED, 5)
 
     return i
 
