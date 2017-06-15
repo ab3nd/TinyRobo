@@ -81,17 +81,12 @@ def find_line_from_origin(image):
 
 def find_contours(image):
     im = image.copy()
-    imgray = cvtColor(image, COLOR_BGR2GRAY)
-    ret,thresh = threshold(imgray, 127,255,0)
-    contours, h = findContours(thresh, RETR_TREE, CHAIN_APPROX_SIMPLE)
 
     height, width = image.shape[:2]
-
     x1, y1 = int(width / 2), height
-    
-    contour_range = contour_ranges(x1, y1, contours, range_max=x1)
 
-    points = line_intersections(x1, y1, contour_range, angle_min=0, angle_max=180, angle_increment=1)
+    laserscan = LaserScan((x1, y1))
+    points = laserscan.scan(im)    
 
     for x2, y2 in points:
         line(im, (x1, y1), (int(round(x2)), int(round(y2))), GREEN, 1)

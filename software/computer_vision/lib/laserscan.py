@@ -1,5 +1,6 @@
 from numpy import cos, sin, pi, deg2rad, hypot, degrees, array
-from cv2 import pointPolygonTest
+from cv2 import (pointPolygonTest, COLOR_BGR2GRAY, RETR_TREE, CHAIN_APPROX_SIMPLE, cvtColor,
+                threshold, findContours)
 from math import atan2
 
 def calc_coordinates(x, y, angle, distance):
@@ -57,13 +58,20 @@ def line_intersections(x, y, contours, angle_min=0, angle_max=180, angle_increme
     return points
 
 class LaserScan(object):
-    def __init__(self, contour, origin=(0, 0), angle_min=1, angle_max=180, angle_increment=5,
-                 range_min=200):
+    def __init__(self, xy=(0, 0), angle_min=1, angle_max=180, angle_increment=5, range_max=200):
+        self._x, self._y = xy
         self._angle_min = angle_min
         self._angle_max = angle_max
         self._angle_increment = angle_increment
 
         self._range_max = range_max
+
+    @property
+    def x(self):
+        return self._x
+
+    def y(self):
+        return self._y
 
     @property
     def angle_min(self):
@@ -76,4 +84,15 @@ class LaserScan(object):
     @property
     def angle_increment(self):
        return self._angle_increment
+
+    def scan(self, frame):
+        im = frame.copy()
+        imgray = cvtColor(frame, COLOR_BGR2GRAY)
+        ret, thresh = threshold(imgray, 127, 255, 0)
+        contours, h = findContours(thresh, RETR_TREE, CHAIN_APPROX_SIMPLE)
+
+        contour_range = contour_ranges(self._x, self._y, contours, self._range_max)
+        
+        i = line_intersections(self._x, self._y, contour_range, self._angle_min, self._angle_max, self._angle_increment)
+        return i
 
