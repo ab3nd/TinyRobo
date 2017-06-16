@@ -85,11 +85,15 @@ def find_contours(image):
     height, width = image.shape[:2]
     x1, y1 = int(width / 2), height
 
-    laserscan = LaserScan((x1, y1))
-    points = laserscan.scan(im)    
+    laserscan = LaserScan(im)
+       
+    print laserscan.header
+    print laserscan.range_min, laserscan.range_max
+    print len(laserscan.ranges)
 
-    for x2, y2 in points:
-        line(im, (x1, y1), (int(round(x2)), int(round(y2))), GREEN, 1)
+    for xy, distance, time in laserscan._scanned:
+        x2, y2 = xy
+        line(im, (x1, y1), (int(round(x2)), int(round(y2))), GREEN, 3)
 
     return im
 

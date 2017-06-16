@@ -46,18 +46,18 @@ def filter_contours(contours, angle):
         
     return results
 
-def line_intersections(x, y, contours, angle_min=1, angle_max=180, angle_increment=1):
+def line_intersections(x1, y1, contours, angle_min=1, angle_max=180, angle_increment=1):
     points = []
     # Scanning is left-to-right
     for angle in range(angle_max, angle_min, -5):
         filtered_contours = filter_contours(contours, angle)
-        for point in range(1, x, angle_increment):
-            x2, y2 = calc_coordinates(x, y, angle, point)
+        for point in range(1, x1, angle_increment):
+            x2, y2 = calc_coordinates(x1, y1, angle, point)
             if is_within_contour(filtered_contours, (x2, y2)):
-                points.append(((x2, y2), angle, point - 1, time()))
+                points.append(((x2, y2), calc_distance(x1, y1, x2, y2), time()))
                 break
         else:
-            points.append(((x2, y2), angle, point - 1, time())) 
+            points.append(((x2, y2), calc_distance(x1, y1, x2, y2), time())) 
     return points
 
 class LaserScan(object):
@@ -124,5 +124,5 @@ class LaserScan(object):
         self._scanned = line_intersections(self._x, self._y, contour_range, self._angle_min, self._angle_max, self._angle_increment)
         
         
-        self._ranges = [distance for xy, angle, distance, time in self._scanned]
+        self._ranges = [distance for xy, distance, time in self._scanned]
 
