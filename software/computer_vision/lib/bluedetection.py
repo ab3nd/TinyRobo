@@ -88,7 +88,7 @@ def find_contours(image):
     laserscan = LaserScan(im)
        
     print laserscan.header
-    print laserscan.range_min, laserscan.range_max
+    print laserscan.range_min , laserscan.range_max
     print len(laserscan.ranges)
 
     for xy, distance, time in laserscan._scanned:

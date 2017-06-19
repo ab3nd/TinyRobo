@@ -1,6 +1,6 @@
 from numpy import cos, sin, pi, deg2rad, array
 from cv2 import (pointPolygonTest, COLOR_BGR2GRAY, RETR_TREE, CHAIN_APPROX_SIMPLE, cvtColor,
-                threshold, findContours)
+                threshold, findContours, approxPolyDP)
 from time import time
 from math import atan2, degrees, hypot
 
@@ -14,6 +14,10 @@ def calc_coordinates(x, y, angle, distance):
 def calc_angle(x1, y1, x2, y2):
     return degrees(atan2(y1 - y2, x2 - x1))
 
+
+def distance_squared(x1, y1, x2, y2):
+    return (x2 - x1)**2 + (y1 - y2)**2
+
 def calc_distance(x1, y1, x2, y2):
     return hypot(x2 - x1, y1 - y2)
 
@@ -26,16 +30,17 @@ def is_within_contour(contours, coordinates):
 
 def contour_ranges(x1, y1, contours, range_max):
     ranges = []
+    range_max_squared = range_max ** 2
     for contour in contours:
-        points = [points[0] for points in contour]
+        
+        points = array([points[0] for points in approxPolyDP(contour, 1, True)])
 
-        coordinates = array([(x2, y2) for x2, y2 in points])
+        range_min = min([distance_squared(x1, y1, x2, y2) for x2, y2 in points])
 
-
-        angles = [calc_angle(x1, y1, x2, y2) for x2, y2 in points]
-        angle_min, angle_max = min(angles), max(angles)
-        ranges.append((angle_min, angle_max, coordinates))
-
+        if range_min <= range_max_squared:
+            angles = [calc_angle(x1, y1, x2, y2) for x2, y2 in points]
+            angle_min, angle_max = min(angles), max(angles)
+            ranges.append((angle_min, angle_max, points))
     return ranges
 
 def filter_contours(contours, angle):
@@ -49,9 +54,9 @@ def filter_contours(contours, angle):
 def line_intersections(x1, y1, contours, angle_min=1, angle_max=180, angle_increment=1):
     points = []
     # Scanning is left-to-right
-    for angle in range(angle_min, angle_max, 5)[::-1]:
+    for angle in range(angle_min, angle_max, angle_increment)[::-1]:
         filtered_contours = filter_contours(contours, angle)
-        for point in range(1, x1, angle_increment):
+        for point in range(1, x1, 3):
             x2, y2 = calc_coordinates(x1, y1, angle, point)
             if is_within_contour(filtered_contours, (x2, y2)):
                 points.append(((x2, y2), calc_distance(x1, y1, x2, y2), time()))
@@ -120,7 +125,6 @@ class LaserScan(object):
         ret, thresh = threshold(imgray, 127, 255, 0)
         contours, h = findContours(thresh, RETR_TREE, CHAIN_APPROX_SIMPLE)
 
-        #contour_range_calc(self._x, self._y, contours, self._angle_increment)
         contour_range = contour_ranges(self._x, self._y, contours, self._range_max)
         self._scanned = line_intersections(self._x, self._y, contour_range, self._angle_min, self._angle_max, self._angle_increment)
         
