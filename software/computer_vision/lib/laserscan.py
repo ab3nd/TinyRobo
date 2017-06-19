@@ -29,12 +29,12 @@ def contour_ranges(x1, y1, contours, range_max):
     for contour in contours:
         points = [points[0] for points in contour]
 
-        coordinates = array([(x2, y2) for x2, y2 in points if calc_distance(x1, x2, y1, y2) <= range_max])
+        coordinates = array([(x2, y2) for x2, y2 in points])
 
-        if coordinates.any():
-            angles = [calc_angle(x1, y1, x2, y2) for x2, y2 in coordinates]
-            angle_min, angle_max = min(angles), max(angles)
-            ranges.append((angle_min, angle_max, coordinates))
+
+        angles = [calc_angle(x1, y1, x2, y2) for x2, y2 in points]
+        angle_min, angle_max = min(angles), max(angles)
+        ranges.append((angle_min, angle_max, coordinates))
 
     return ranges
 
@@ -49,7 +49,7 @@ def filter_contours(contours, angle):
 def line_intersections(x1, y1, contours, angle_min=1, angle_max=180, angle_increment=1):
     points = []
     # Scanning is left-to-right
-    for angle in range(angle_max, angle_min, -5):
+    for angle in range(angle_min, angle_max, 5)[::-1]:
         filtered_contours = filter_contours(contours, angle)
         for point in range(1, x1, angle_increment):
             x2, y2 = calc_coordinates(x1, y1, angle, point)
@@ -61,7 +61,7 @@ def line_intersections(x1, y1, contours, angle_min=1, angle_max=180, angle_incre
     return points
 
 class LaserScan(object):
-    def __init__(self, frame, angle_min=0, angle_max=180, angle_increment=1, origin=None, range_max=None):
+    def __init__(self, frame, angle_min=1, angle_max=180, angle_increment=1, origin=None, range_max=None):
         self._frame = frame
         if origin:
             self._x, self._y = origin
@@ -104,22 +104,23 @@ class LaserScan(object):
 
     @property
     def range_min(self):
-       return min(self.ranges)
+       return round(5 * min(self.ranges) / self._x, 1)
 
     @property
     def range_max(self):
-        return max(self.ranges) 
+        return round(5 * max(self.ranges) / self._x, 1)
 
     @property
     def ranges(self):
         return self._ranges
-    #def range_min(self):
+
     def scan(self, frame):
         im = frame.copy()
         imgray = cvtColor(frame, COLOR_BGR2GRAY)
         ret, thresh = threshold(imgray, 127, 255, 0)
         contours, h = findContours(thresh, RETR_TREE, CHAIN_APPROX_SIMPLE)
 
+        #contour_range_calc(self._x, self._y, contours, self._angle_increment)
         contour_range = contour_ranges(self._x, self._y, contours, self._range_max)
         self._scanned = line_intersections(self._x, self._y, contour_range, self._angle_min, self._angle_max, self._angle_increment)
         
