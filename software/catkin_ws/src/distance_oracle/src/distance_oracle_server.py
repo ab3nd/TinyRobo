@@ -2,7 +2,6 @@
 
 # Distance oracle service for TinyRobos
 # Gives the distance between any two april tags that it can see
-# TODO what if you can't see both tags?
 
 import rospy
 from math import pow, sqrt
