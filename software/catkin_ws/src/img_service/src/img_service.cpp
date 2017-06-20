@@ -124,7 +124,7 @@ float tag_orientation(int tag_id, apriltags_ros::AprilTagDetectionArray::ConstPt
             }
         }
     }
-	
+	ROS_INFO("Orientation of %d is %f", tag_id, orientation);
     return orientation;
 }
 
@@ -413,9 +413,10 @@ void Callback_Img(const sensor_msgs::Image::ConstPtr& msg)
         boost::mutex::scoped_lock lock(tapes_mutex); 
         cv::Mat tapes_copy = tapes.clone();
         cv::addWeighted(dst, 0.5, tapes_copy, 0.5, 0.0, tapes);
-        //publish_image(tapes);
+        
         //ROS_WARN("Releasing tapes_mutex 2");
     }
+    publish_image(tapes);
     return;
 }
 
