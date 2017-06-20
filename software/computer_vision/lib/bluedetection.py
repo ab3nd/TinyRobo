@@ -46,9 +46,6 @@ def line_end_points(image):
     maxLineGap = 5
     lines = HoughLinesP(edges, 1, pi / 180, 10, minLineLength, maxLineGap)
     return lines[0]
-    #for x1, y1, x2, y2 in lines[0]:
-    #    line(line_image, (x1, y1),(x2, y2), (0, 255, 0), 2)
-    #return line_image
 
 def colored_lines(image, lines, color_value):
     line_image = image.copy()

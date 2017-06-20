@@ -32,7 +32,6 @@ def contour_ranges(x1, y1, contours, range_max):
     ranges = []
     range_max_squared = range_max ** 2
     for contour in contours:
-        
         points = array([points[0] for points in approxPolyDP(contour, 1, True)])
 
         range_min = min([distance_squared(x1, y1, x2, y2) for x2, y2 in points])
