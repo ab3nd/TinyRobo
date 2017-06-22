@@ -125,10 +125,7 @@ class LaserServer():
 							dPx = self.distancePixels(tagA.tagCenterPx, tagB.tagCenterPx)
 							self.avgPxPerM += dPx/dMeters
 				self.avgPxPerM = self.avgPxPerM/(len(self.currentTags)**2)
-		print self.avgPxPerM
-
-
-
+		
 	def update_image(self, msg):
 		self.image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
 		self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
