@@ -24,6 +24,8 @@ class LaserServer():
 
 	def __init__(self):
 		self.currentTags = {}
+		#Factor for pixel/meter conversion
+		self.avgPxPerM = 0
 		self.image = None
 		self.bridge = CvBridge()
 		#Debug image publisher, to publish the results of the image pipeline
@@ -44,6 +46,9 @@ class LaserServer():
 		#Time between scans
 		#TODO may want to throttle this
 		scan_time = 1.0
+
+		#TODO these need to be part of a conversion from 
+		#Meters to pixels
 		range_min = 0.0
 		range_max = 100.0
 
@@ -86,10 +91,43 @@ class LaserServer():
 			print self.currentTags.keys(), req.robotID
 
 
+	def distancePose(self, p1, p2):
+		return (math.sqrt(
+			(math.pow(p1.position.x - p2.position.x, 2)) +
+			(math.pow(p1.position.y - p2.position.y, 2)) + 
+			(math.pow(p1.position.z - p2.position.z, 2))
+				))
+
+	def distancePixels(self, p1, p2):
+		return math.sqrt(math.pow(p1.x-p2.x,2) + math.pow(p1.y-p2.y,2))
+
 	def update_tags(self, msg):
 		self.currentTags = {}
 		for ii in range(len(msg.detections)):
 			self.currentTags[int(msg.detections[ii].id)] = msg.detections[ii]
+		if len(self.currentTags) > 0:
+			if len(self.currentTags) == 1:
+				#Calculate pixels per meter from tag size
+				tag = self.currentTags.values()[0]
+				d = 0
+				for ii in range(1, len(tag.tagCornersPx)):
+					d += self.distancePixels(tag.tagCornersPx[ii], tag.tagCornersPx[ii-1])
+				d = d/len(tag.tagCornersPx)
+				self.avgPxPerM = d/tag.size
+			else:
+				#Calculate pixels per meter from inter-tag distances
+				for tagA in self.currentTags.values():
+					for tagB in self.currentTags.values():
+						if tagA == tagB:
+							continue
+						else:
+							dMeters = self.distancePose(tagA.pose.pose, tagB.pose.pose)
+							dPx = self.distancePixels(tagA.tagCenterPx, tagB.tagCenterPx)
+							self.avgPxPerM += dPx/dMeters
+				self.avgPxPerM = self.avgPxPerM/(len(self.currentTags)**2)
+		print self.avgPxPerM
+
+
 
 	def update_image(self, msg):
 		self.image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
@@ -116,37 +154,19 @@ class LaserServer():
 			y = self.currentTags[robotID].pose.pose.orientation.y
 			z = self.currentTags[robotID].pose.pose.orientation.z
 
-			#yaw = math.atan2(2*((w*y) + (y*z)), 1-2*(math.pow(x,2) - math.pow(y,2)))
-			#pitch = math.asin(2*((w*y) + (z*y)))
-			#roll = math.atan2(2*((w*z) + (x*y)), 1-2*(math.pow(y,2) - math.pow(z,2)))
-
-			# roll  = math.atan2(2*y*w + 2*x*z, 1 - 2*y*y - 2*z*z);
-			# pitch = math.atan2(2*x*w + 2*y*z, 1 - 2*x*x - 2*z*z);
-			# yaw   = math.asin(2*x*y + 2*z*w);
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
-			#print roll, pitch, yaw
-			#Draw a line starting from the robot center
-			# pointing along the yaw direction
 
+			#Draw a line starting from the robot center pointing along the 
+			#roll direction, which is what this ends up calling what I'd 
+			#call yaw. RPY are ambiguious, nothing to be done for it.
 			cX = self.currentTags[robotID].tagCenterPx.x
 			cY = self.currentTags[robotID].tagCenterPx.y
 			endX = int(cX + 30*(math.cos(roll)))
 			endY = int(cY + 30*(math.sin(roll)))
-
-			# cR = math.sqrt(math.pow(cX, 2) + math.pow(cY,2))
-			# cTheta = math.atan2(cY, cX)
-
-			# #Now the other endpoint is a fixed distance and angle from that
-			# endR = cR + 20
-			# endTheta = yaw
-
-			#convert back
-			# endX = int(endR * math.cos(endTheta))
-			# endY = int(endR * math.sin(endTheta))
 			cX = int(cX)
 			cY = int(cY)
-
 			cv2.line(masked, (cX, cY), (endX, endY), (0,200,200), 3)
+
 
 		#Convert back for debugging
 		masked = cv2.cvtColor(masked, cv2.COLOR_HSV2BGR)
