@@ -130,8 +130,8 @@ class LaserServer():
 
 			cX = self.currentTags[robotID].tagCenterPx.x
 			cY = self.currentTags[robotID].tagCenterPx.y
-			endX = int(cX + 30*(math.cos(pitch)))
-			endY = int(cY + 30*(math.sin(pitch)))
+			endX = int(cX + 30*(math.cos(roll)))
+			endY = int(cY + 30*(math.sin(roll)))
 
 			# cR = math.sqrt(math.pow(cX, 2) + math.pow(cY,2))
 			# cTheta = math.atan2(cY, cX)
