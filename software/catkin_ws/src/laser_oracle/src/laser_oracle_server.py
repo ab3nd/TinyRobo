@@ -117,10 +117,9 @@ class LaserServer():
 						#made by the laser scan
 						#import pdb; pdb.set_trace()
 						if self.intersects((startX, startY), (endX, endY), p1[0], p2[0]):
-							#TODO calculate intersection
+							#Calculate intersection
 							x,y = self.calcIntersection((startX, startY), (endX, endY), p1[0], p2[0])
-							#For debugging, put a dot on it
-							cv2.circle(masked, (x,y), 5, 128, -1)
+							#Put it in meters and see if it's the smallest
 							distMeters = self.distance((cX, cY), (x,y))/self.avgPxPerM
 							if distMeters < currentMinDistance:
 								currentMinDistance = distMeters
@@ -147,6 +146,7 @@ class LaserServer():
 			return LaserOracleResponse(scanMsg)
 		else:
 			rospy.logwarn("Can't see robot {0}, only {1}".format(req.robotID, self.currentTags.keys()))
+			return None
 
 
 	def distance(self, p1, p2):
@@ -179,6 +179,7 @@ class LaserServer():
 			return True
 		return False
 
+	#Check if ab intersects cd
 	def intersects(self, a, b, c, d):
 		o1 = self.orientation(a, b, c)
 		o2 = self.orientation(a, b, d)
@@ -201,11 +202,15 @@ class LaserServer():
 		#All other cases
 		return False
 
+	#Calculate the point of intersection of two lines
+	#Might behave badly if lines are parallel or coincident
 	def calcIntersection(self, a, b, c, d):
 		#From wikipedia https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Intersection_of_two_lines
 		den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0])
 		if den == 0:
 			#Lines are parallel or coincident
+			#Not sure what to return here...
+			rospy.warn("About to divide by zero because of parallel or coincident lines!")
 			pass
 		numX = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))
 		numY = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))
