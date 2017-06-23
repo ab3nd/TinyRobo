@@ -57,13 +57,10 @@ class LaserServer():
 	def handle_laser_req(self, req):
 
 		#Get the origin from the ID of the robot, if we can see it
-		if req.robotID in self.currentTags.keys():
-			#This is in physical coordinates
-			#x = self.currentTags[req.robotID].pose.position.x
-			#y = self.currentTags[req.robotID].pose.position.y				
-
-			x=self.currentTags[req.robotID].tagCenterPx.x
-			y=self.currentTags[req.robotID].tagCenterPx.y
+		if req.robotID in self.currentTags.keys() and self.image is not None:
+			#Pixel coordinates of robot in image
+			cX=self.currentTags[req.robotID].tagCenterPx.x
+			cY=self.currentTags[req.robotID].tagCenterPx.y
 
 			#The laser scan lines are from the min to max scan distance, 
 			#translated to pixels, and are at angles around the orientation
@@ -75,96 +72,85 @@ class LaserServer():
 			#Mask off everything in the image that's not within the 
 			#laser range of the robot
 			mask = np.zeros(self.image.shape, dtype=np.uint8)
-			cv2.circle(mask, (int(x), int(y)), int(maxRangePx) + 5, 255, -1)
-			import pdb; pdb.set_trace()
+			cv2.circle(mask, (int(cX), int(cY)), int(maxRangePx) + 5, 255, -1)
 			masked = cv2.bitwise_and(self.image, mask)
 
-			cv2.imwrite('./test_image.png',masked)
+			#Find the contours in the image, as a list
+			#and compressed with chain approximation. 
+			cImg, contours, hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
 			
-			#Publish mask for debugging
-			#mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-			#self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(mask, encoding="passthrough"))
+			#Convert robot quaternion to RPY, then check the line segment from the center
+			#of each robot to the max range for intersection with a segment of a contour,
+			#and find the minimum-distance intersection. That minimum-distance intersection 
+			#is the laser range for that robot and that scan.
+			w = self.currentTags[req.robotID].pose.pose.orientation.w
+			x = self.currentTags[req.robotID].pose.pose.orientation.x
+			y = self.currentTags[req.robotID].pose.pose.orientation.y
+			z = self.currentTags[req.robotID].pose.pose.orientation.z
 
-		# 	if self.image is not None:
-		# 		vls = VirtualLaserScan(self.image, angle_min, angle_max, angle_increment, (x,y), range_max)
+			#The roll direction is what I'd call yaw. 
+			#RPY are ambiguious, nothing to be done for it.
+			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
 
-		# 		#Generate a laser scan message and return it
-		# 		scanMsg = LaserScan()
-		# 		h = Header()
-		# 		h.stamp = rospy.Time.now()
-		# 		scanMsg.header = h
+			#Calculate the number of scans 
+			scanCount = int((abs(self.angle_min) + abs(self.angle_max))/self.angle_increment)
 
-		# 		scanMsg.angle_min = angle_min
-		# 		scanMsg.angle_max = angle_max
-		# 		scanMsg.angle_increment = angle_increment
-		# 		scanMsg.time_increment = time_increment
-		# 		scanMsg.scan_time = scan_time
-		# 		scanMsg.range_max = range_max
-		# 		scanMsg.range_min = range_min
+			#This evenly spaces the scans, which may be a little off from the behavior of 
+			#a real laser scanner. Note that this assumes self.angle_min is negative, so 
+			#the scan is centered on the robot's heading
+			scan = []
+			for angle in np.linspace(roll + self.angle_min, roll + self.angle_max, scanCount):
+				#Set the current closest point seen to the max range
+				currentMinDistance = self.range_max
 
-		# 		scanMsg.ranges = vls.ranges
-		# 		scanMsg.intensities = []
-
-		# 		return LaserOracleResponse(scanMsg)
-
-		# 	else:
-		# 		rospy.logwarn("No image available.")
-		# else:
-		# 	rospy.logwarn("Can't see robot {0}".format(req.robotID))
-		# 	print self.currentTags.keys(), req.robotID
-
-		# #Find the contours in the image, as a list
-		# #and compressed with chain approximation. 
-		# cImg, contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
-		
-		# #Convert robot quaternion to RPY, then check the line segment from the center
-		# #of each robot to the max range for intersection with a segment of a contour,
-		# #and find the minimum-distance intersection. That minimum-distance intersection 
-		# #is the laser range for that robot and that scan.
-		# for robotID in self.currentTags.keys():
-		# 	w = self.currentTags[robotID].pose.pose.orientation.w
-		# 	x = self.currentTags[robotID].pose.pose.orientation.x
-		# 	y = self.currentTags[robotID].pose.pose.orientation.y
-		# 	z = self.currentTags[robotID].pose.pose.orientation.z
-
-		# 	#The roll direction is what I'd call yaw. 
-		# 	#RPY are ambiguious, nothing to be done for it.
-		# 	(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
-
-		# 	#Get the center of the robot
-		# 	cX = self.currentTags[robotID].tagCenterPx.x
-		# 	cY = self.currentTags[robotID].tagCenterPx.y
+				startX = int(cX + minRangePx*(math.cos(angle)))
+				startY = int(cY + minRangePx*(math.sin(angle)))
+				endX = int(cX + maxRangePx*(math.cos(angle)))
+				endY = int(cY + maxRangePx*(math.sin(angle)))
+				
+				for contour in contours:
+					#Get pairs of points
+					for pointIdx in range(1, len(contour)):
+						p1 = contour[pointIdx]
+						p2 = contour[pointIdx-1]
+						#Fast check if the line between the contour points intersects the line
+						#made by the laser scan
+						#import pdb; pdb.set_trace()
+						if self.intersects((startX, startY), (endX, endY), p1[0], p2[0]):
+							#TODO calculate intersection
+							x,y = self.calcIntersection((startX, startY), (endX, endY), p1[0], p2[0])
+							#For debugging, put a dot on it
+							cv2.circle(masked, (x,y), 5, 128, -1)
+							distMeters = self.distance((cX, cY), (x,y))/self.avgPxPerM
+							if distMeters < currentMinDistance:
+								currentMinDistance = distMeters
+				#Store this laser scan distance
+				scan.append(currentMinDistance)
 			
-		# 	#Calculate the number of scans 
-		# 	scanCount = int((abs(self.angle_min) + abs(self.angle_max))/self.angle_increment)
+			#Generate a laser scan message and return it
+			scanMsg = LaserScan()
+			h = Header()
+			h.stamp = rospy.Time.now()
+			scanMsg.header = h
 
-		# 	#This evenly spaces the scans, which may be a little off from the behavior of 
-		# 	#a real laser scanner. Note that this assumes self.angle_min is negative, so 
-		# 	#the scan is centered on the robot's heading
-		# 	for angle in np.linspace(roll + self.angle_min, roll + self.angle_max, scanCount):
-		# 		startX = int(cX + minRangePx*(math.cos(angle)))
-		# 		startY = int(cY + minRangePx*(math.sin(angle)))
-		# 		endX = int(cX + maxRangePx*(math.cos(angle)))
-		# 		endY = int(cY + maxRangePx*(math.sin(angle)))
-		# 		#TODO if this needs speeding up, only look in an area around 
-		# 		#each robot bounded by the max range of the laser, rather 
-		# 		#than looking at all the contours
-		# 		for contour in contours:
-		# 			#Get pairs of points
-		# 			for pointIdx in range(1, len(contour)):
-		# 				p1 = contour[pointIdx]
-		# 				p2 = contour[pointIdx-1]
-		# 				#Fast check if the line between the contour points intersects the line
-		# 				#made by the laser scan
-		# 				#import pdb; pdb.set_trace()
-		# 				if self.intersects((startX, startY), (endX, endY), p1[0], p2[0]):
-		# 					#TODO calculate intersection
-		# 					x,y = self.calcIntersection((startX, startY), (endX, endY), p1[0], p2[0])
-		# 					#For debugging, put a dot on it
-		# 					cv2.circle(self.image, (x,y), 5, np.array([34,255,255]), -1)
+			scanMsg.angle_min = self.angle_min
+			scanMsg.angle_max = self.angle_max
+			scanMsg.angle_increment = self.angle_increment
+			scanMsg.time_increment = self.time_increment
+			scanMsg.scan_time = self.scan_time
+			scanMsg.range_max = self.range_max
+			scanMsg.range_min = self.range_min
+
+			scanMsg.ranges = scan
+			scanMsg.intensities = []
+
+			return LaserOracleResponse(scanMsg)
+		else:
+			rospy.logwarn("Can't see robot {0}, only {1}".format(req.robotID, self.currentTags.keys()))
 
 
-
+	def distance(self, p1, p2):
+		return math.sqrt(math.pow(p1[0]-p2[0],2) + math.pow(p1[1]-p2[1],2))
 
 	def distancePose(self, p1, p2):
 		return (math.sqrt(
@@ -174,7 +160,7 @@ class LaserServer():
 				))
 
 	def distancePixels(self, p1, p2):
-		return math.sqrt(math.pow(p1.x-p2.x,2) + math.pow(p1.y-p2.y,2))
+		return self.distance((p1.x, p1.y), (p2.x, p2.y))
 
 	#Check for counterclockwise arrangement of points
 	#Points are 2-tuples of the form (x,y) or [x,y]
