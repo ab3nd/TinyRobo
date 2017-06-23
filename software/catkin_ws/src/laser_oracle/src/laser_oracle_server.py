@@ -36,7 +36,7 @@ class LaserServer():
 		self.angle_min = -135 *(math.pi/180)
 		#180 Degrees
 		self.angle_max = 135 *(math.pi/180)
-		#About 5 degrees
+		#About 20 degrees
 		self.angle_increment = 20 * (math.pi/180)
 		#Time between measurements
 		#TODO this might be a LOT smaller
@@ -45,13 +45,16 @@ class LaserServer():
 		#TODO may want to throttle this
 		self.scan_time = 1.0
 
-		#TODO these need to be part of a conversion from 
-		#Meters to pixels
+		#These are in meters, but get converted to pixels for
+		#the virtual laser scans
 		self.range_min = 0.0
 		self.range_max = 0.2
 
-	def handle_laser_req(self, req):
+		#Radius of robot, in pixels, in the image
+		#used to draw a blue dot over all robots for collision avoidance
+		self.robotRad = 30
 
+	def handle_laser_req(self, req):
 
 		#Get the origin from the ID of the robot, if we can see it
 		if req.robotID in self.currentTags.keys():
@@ -62,33 +65,105 @@ class LaserServer():
 			x=self.currentTags[req.robotID].tagCenterPx.x
 			y=self.currentTags[req.robotID].tagCenterPx.y
 
-			if self.image is not None:
-				vls = VirtualLaserScan(self.image, angle_min, angle_max, angle_increment, (x,y), range_max)
+			#The laser scan lines are from the min to max scan distance, 
+			#translated to pixels, and are at angles around the orientation
+			#of the robot
+			maxRangePx = self.avgPxPerM * self.range_max
+			#Minimum scan must be outside of robot's radius
+			minRangePx = max(self.robotRad + 1, self.avgPxPerM * self.range_min)
+			
+			#Mask off everything in the image that's not within the 
+			#laser range of the robot
+			mask = np.zeros(self.image.shape, dtype=np.uint8)
+			cv2.circle(mask, (int(x), int(y)), int(maxRangePx) + 5, 255, -1)
+			import pdb; pdb.set_trace()
+			masked = cv2.bitwise_and(self.image, mask)
 
-				#Generate a laser scan message and return it
-				scanMsg = LaserScan()
-				h = Header()
-				h.stamp = rospy.Time.now()
-				scanMsg.header = h
+			cv2.imwrite('./test_image.png',masked)
+			
+			#Publish mask for debugging
+			#mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+			#self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(mask, encoding="passthrough"))
 
-				scanMsg.angle_min = angle_min
-				scanMsg.angle_max = angle_max
-				scanMsg.angle_increment = angle_increment
-				scanMsg.time_increment = time_increment
-				scanMsg.scan_time = scan_time
-				scanMsg.range_max = range_max
-				scanMsg.range_min = range_min
+		# 	if self.image is not None:
+		# 		vls = VirtualLaserScan(self.image, angle_min, angle_max, angle_increment, (x,y), range_max)
 
-				scanMsg.ranges = vls.ranges
-				scanMsg.intensities = []
+		# 		#Generate a laser scan message and return it
+		# 		scanMsg = LaserScan()
+		# 		h = Header()
+		# 		h.stamp = rospy.Time.now()
+		# 		scanMsg.header = h
 
-				return LaserOracleResponse(scanMsg)
+		# 		scanMsg.angle_min = angle_min
+		# 		scanMsg.angle_max = angle_max
+		# 		scanMsg.angle_increment = angle_increment
+		# 		scanMsg.time_increment = time_increment
+		# 		scanMsg.scan_time = scan_time
+		# 		scanMsg.range_max = range_max
+		# 		scanMsg.range_min = range_min
 
-			else:
-				rospy.logwarn("No image available.")
-		else:
-			rospy.logwarn("Can't see robot {0}".format(req.robotID))
-			print self.currentTags.keys(), req.robotID
+		# 		scanMsg.ranges = vls.ranges
+		# 		scanMsg.intensities = []
+
+		# 		return LaserOracleResponse(scanMsg)
+
+		# 	else:
+		# 		rospy.logwarn("No image available.")
+		# else:
+		# 	rospy.logwarn("Can't see robot {0}".format(req.robotID))
+		# 	print self.currentTags.keys(), req.robotID
+
+		# #Find the contours in the image, as a list
+		# #and compressed with chain approximation. 
+		# cImg, contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
+		
+		# #Convert robot quaternion to RPY, then check the line segment from the center
+		# #of each robot to the max range for intersection with a segment of a contour,
+		# #and find the minimum-distance intersection. That minimum-distance intersection 
+		# #is the laser range for that robot and that scan.
+		# for robotID in self.currentTags.keys():
+		# 	w = self.currentTags[robotID].pose.pose.orientation.w
+		# 	x = self.currentTags[robotID].pose.pose.orientation.x
+		# 	y = self.currentTags[robotID].pose.pose.orientation.y
+		# 	z = self.currentTags[robotID].pose.pose.orientation.z
+
+		# 	#The roll direction is what I'd call yaw. 
+		# 	#RPY are ambiguious, nothing to be done for it.
+		# 	(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
+
+		# 	#Get the center of the robot
+		# 	cX = self.currentTags[robotID].tagCenterPx.x
+		# 	cY = self.currentTags[robotID].tagCenterPx.y
+			
+		# 	#Calculate the number of scans 
+		# 	scanCount = int((abs(self.angle_min) + abs(self.angle_max))/self.angle_increment)
+
+		# 	#This evenly spaces the scans, which may be a little off from the behavior of 
+		# 	#a real laser scanner. Note that this assumes self.angle_min is negative, so 
+		# 	#the scan is centered on the robot's heading
+		# 	for angle in np.linspace(roll + self.angle_min, roll + self.angle_max, scanCount):
+		# 		startX = int(cX + minRangePx*(math.cos(angle)))
+		# 		startY = int(cY + minRangePx*(math.sin(angle)))
+		# 		endX = int(cX + maxRangePx*(math.cos(angle)))
+		# 		endY = int(cY + maxRangePx*(math.sin(angle)))
+		# 		#TODO if this needs speeding up, only look in an area around 
+		# 		#each robot bounded by the max range of the laser, rather 
+		# 		#than looking at all the contours
+		# 		for contour in contours:
+		# 			#Get pairs of points
+		# 			for pointIdx in range(1, len(contour)):
+		# 				p1 = contour[pointIdx]
+		# 				p2 = contour[pointIdx-1]
+		# 				#Fast check if the line between the contour points intersects the line
+		# 				#made by the laser scan
+		# 				#import pdb; pdb.set_trace()
+		# 				if self.intersects((startX, startY), (endX, endY), p1[0], p2[0]):
+		# 					#TODO calculate intersection
+		# 					x,y = self.calcIntersection((startX, startY), (endX, endY), p1[0], p2[0])
+		# 					#For debugging, put a dot on it
+		# 					cv2.circle(self.image, (x,y), 5, np.array([34,255,255]), -1)
+
+
 
 
 	def distancePose(self, p1, p2):
@@ -100,6 +175,56 @@ class LaserServer():
 
 	def distancePixels(self, p1, p2):
 		return math.sqrt(math.pow(p1.x-p2.x,2) + math.pow(p1.y-p2.y,2))
+
+	#Check for counterclockwise arrangement of points
+	#Points are 2-tuples of the form (x,y) or [x,y]
+	#translated from http://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
+	def orientation(self, a,b,c):
+		orient = ((c[1]-a[1]) * (b[0]-a[0])) - ((b[1]-a[1]) * (c[0] - a[0]))
+		if orient == 0: #Collinear
+			return 0 
+		if orient > 0: #clockwise
+			return 1
+		return 2 #counterclockwise
+
+	#Check if b is on segment ac
+	def onSegment(self, a, b, c):
+		if b[0] <= max(a[0], c[0]) and b[0] >= min(a[0], c[0]) and b[1] <= max(a[1], c[1]) and b[1] >= min(a[1], c[1]):
+			return True
+		return False
+
+	def intersects(self, a, b, c, d):
+		o1 = self.orientation(a, b, c)
+		o2 = self.orientation(a, b, d)
+		o3 = self.orientation(c, d, a)
+		o4 = self.orientation(c, d, b)
+
+		if (o1 != o2) and (o3 != o4):
+			#Not collinear and intersect
+			return True
+		else:
+			#Colinear special cases
+			if (o1 == 0) and (self.onSegment(a,c,d)):
+				return True
+			if (o2 == 0) and (self.onSegment(a,d,b)):
+				return True
+			if (o3 == 0) and (self.onSegment(c,a,d)):
+				return True
+			if (o4 == 0) and (self.onSegment(c,b,d)):
+				return True
+		#All other cases
+		return False
+
+	def calcIntersection(self, a, b, c, d):
+		#From wikipedia https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Intersection_of_two_lines
+		den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0])
+		if den == 0:
+			#Lines are parallel or coincident
+			pass
+		numX = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))
+		numY = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))
+
+		return (int(numX/den), int(numY/den))
 
 	def update_tags(self, msg):
 		self.currentTags = {}
@@ -126,71 +251,34 @@ class LaserServer():
 							dPx = self.distancePixels(tagA.tagCenterPx, tagB.tagCenterPx)
 							self.avgPxPerM += dPx/dMeters
 				self.avgPxPerM = self.avgPxPerM/(len(self.currentTags)**2)
-		
-	def update_image(self, msg):
-		self.image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
-		self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+	
 
+	def drawRobots(self, image):
 		#Draw a blue circle for each robot so they avoid each other
 		for robotID in self.currentTags.keys():
 			x=int(self.currentTags[robotID].tagCenterPx.x)
 			y=int(self.currentTags[robotID].tagCenterPx.y)
-			robotRad = 30
-			cv2.circle(self.image, (x,y), robotRad, np.array([115,255,255]), -1)
-			cv2.putText(self.image, str(robotID), (x-robotRad/2, y), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.3, np.array([115,255,30]))
+			cv2.circle(image, (x,y), self.robotRad, np.array([115,255,255]), -1)
+		return image
+			#Optional, draw the robot ID on the robot
+			#cv2.putText(self.image, str(robotID), (x-robotRad/2, y), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.3, np.array([115,255,30]))
+
+
+	def update_image(self, msg):
+		self.image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+		self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+
+		#Draw blue dots over all the robots so they get detected as obstacles
+		self.image = self.drawRobots(self.image)
 		
 		#B&W image that is white for every pixel in the range
 		mask = cv2.inRange(self.image, lower_blue, upper_blue)
 		#Erode the mask to remove little noise pixels
 		mask = cv2.erode(mask, kernel, iterations=1)
 
-		#Find the contours in the image, as a list
-		#and compressed with chain approximation. 
-		cImg, contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-		self.image = cv2.drawContours(self.image, contours, -1, (0,200,200),3)
+		#Store the binary image for calculation of laser scans later
+		self.image = mask
 
-
-		#masked = cv2.bitwise_and(self.image, self.image, mask=mask)
-
-
-		# #Testing RPY conversion from quaternions
-		# for robotID in self.currentTags.keys():
-		# 	w = self.currentTags[robotID].pose.pose.orientation.w
-		# 	x = self.currentTags[robotID].pose.pose.orientation.x
-		# 	y = self.currentTags[robotID].pose.pose.orientation.y
-		# 	z = self.currentTags[robotID].pose.pose.orientation.z
-
-		# 	(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
-
-		# 	#Draw a line starting from the robot center pointing along the 
-		# 	#roll direction, which is what this ends up calling what I'd 
-		# 	#call yaw. RPY are ambiguious, nothing to be done for it.
-		# 	cX = self.currentTags[robotID].tagCenterPx.x
-		# 	cY = self.currentTags[robotID].tagCenterPx.y
-		# 	endX = int(cX + 30*(math.cos(roll)))
-		# 	endY = int(cY + 30*(math.sin(roll)))
-		# 	cX = int(cX)
-		# 	cY = int(cY)
-		# 	cv2.line(masked, (cX, cY), (endX, endY), (0,200,200), 3)
-
-		# 	#The laser scan lines are of the scan max distance lenght, 
-		# 	#translated to pixels, and are at angles around the orientation
-		# 	#of the robot
-		# 	rangePx = self.avgPxPerM * self.range_max
-		# 	scanCount = int((abs(self.angle_min) + abs(self.angle_max))/self.angle_increment)
-		# 	for angle in np.linspace(roll + self.angle_min, roll + self.angle_max, scanCount):
-		# 		cX = self.currentTags[robotID].tagCenterPx.x
-		# 		cY = self.currentTags[robotID].tagCenterPx.y
-		# 		endX = int(cX + rangePx*(math.cos(angle)))
-		# 		endY = int(cY + rangePx*(math.sin(angle)))
-		# 		cX = int(cX)
-		# 		cY = int(cY)
-		# 		#No need to draw the line
-		# 		#cv2.line(masked, (cX, cY), (endX, endY), (0,75,200), 3)
-
-		#Convert back for debugging
-		self.image = cv2.cvtColor(self.image, cv2.COLOR_HSV2BGR)
-		self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(self.image, encoding="bgr8"))
 
 def init_oracle():
 	ls = LaserServer()
