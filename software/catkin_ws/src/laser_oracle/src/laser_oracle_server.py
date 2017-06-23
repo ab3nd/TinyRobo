@@ -31,26 +31,26 @@ class LaserServer():
 		#Debug image publisher, to publish the results of the image pipeline
 		self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
-
-	def handle_laser_req(self, req):
 		#TODO may want to make these rosparams
 		#Parameters for the laser scan
-		angle_min = 0.0
+		self.angle_min = -135 *(math.pi/180)
 		#180 Degrees
-		angle_max = 3.1415
+		self.angle_max = 135 *(math.pi/180)
 		#About 5 degrees
-		angle_increment = 0.0872665
+		self.angle_increment = 20 * (math.pi/180)
 		#Time between measurements
 		#TODO this might be a LOT smaller
-		time_increment = 0.06
+		self.time_increment = 0.06
 		#Time between scans
 		#TODO may want to throttle this
-		scan_time = 1.0
+		self.scan_time = 1.0
 
 		#TODO these need to be part of a conversion from 
 		#Meters to pixels
-		range_min = 0.0
-		range_max = 100.0
+		self.range_min = 0.0
+		self.range_max = 0.2
+
+	def handle_laser_req(self, req):
 
 
 		#Get the origin from the ID of the robot, if we can see it
@@ -116,6 +116,7 @@ class LaserServer():
 				self.avgPxPerM = d/tag.size
 			else:
 				#Calculate pixels per meter from inter-tag distances
+				#This is pretty heavy (all pairs) and may not need to be 
 				for tagA in self.currentTags.values():
 					for tagB in self.currentTags.values():
 						if tagA == tagB:
@@ -137,37 +138,59 @@ class LaserServer():
 			robotRad = 30
 			cv2.circle(self.image, (x,y), robotRad, np.array([115,255,255]), -1)
 			cv2.putText(self.image, str(robotID), (x-robotRad/2, y), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.3, np.array([115,255,30]))
+		
 		#B&W image that is white for every pixel in the range
 		mask = cv2.inRange(self.image, lower_blue, upper_blue)
 		#Erode the mask to remove little noise pixels
 		mask = cv2.erode(mask, kernel, iterations=1)
-		masked = cv2.bitwise_and(self.image, self.image, mask=mask)
+
+		#Find the contours in the image, as a list
+		#and compressed with chain approximation. 
+		cImg, contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+		self.image = cv2.drawContours(self.image, contours, -1, (0,200,200),3)
 
 
-		#Testing RPY conversion from quaternions
-		for robotID in self.currentTags.keys():
-			w = self.currentTags[robotID].pose.pose.orientation.w
-			x = self.currentTags[robotID].pose.pose.orientation.x
-			y = self.currentTags[robotID].pose.pose.orientation.y
-			z = self.currentTags[robotID].pose.pose.orientation.z
+		#masked = cv2.bitwise_and(self.image, self.image, mask=mask)
 
-			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
 
-			#Draw a line starting from the robot center pointing along the 
-			#roll direction, which is what this ends up calling what I'd 
-			#call yaw. RPY are ambiguious, nothing to be done for it.
-			cX = self.currentTags[robotID].tagCenterPx.x
-			cY = self.currentTags[robotID].tagCenterPx.y
-			endX = int(cX + 30*(math.cos(roll)))
-			endY = int(cY + 30*(math.sin(roll)))
-			cX = int(cX)
-			cY = int(cY)
-			cv2.line(masked, (cX, cY), (endX, endY), (0,200,200), 3)
+		# #Testing RPY conversion from quaternions
+		# for robotID in self.currentTags.keys():
+		# 	w = self.currentTags[robotID].pose.pose.orientation.w
+		# 	x = self.currentTags[robotID].pose.pose.orientation.x
+		# 	y = self.currentTags[robotID].pose.pose.orientation.y
+		# 	z = self.currentTags[robotID].pose.pose.orientation.z
 
+		# 	(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
+
+		# 	#Draw a line starting from the robot center pointing along the 
+		# 	#roll direction, which is what this ends up calling what I'd 
+		# 	#call yaw. RPY are ambiguious, nothing to be done for it.
+		# 	cX = self.currentTags[robotID].tagCenterPx.x
+		# 	cY = self.currentTags[robotID].tagCenterPx.y
+		# 	endX = int(cX + 30*(math.cos(roll)))
+		# 	endY = int(cY + 30*(math.sin(roll)))
+		# 	cX = int(cX)
+		# 	cY = int(cY)
+		# 	cv2.line(masked, (cX, cY), (endX, endY), (0,200,200), 3)
+
+		# 	#The laser scan lines are of the scan max distance lenght, 
+		# 	#translated to pixels, and are at angles around the orientation
+		# 	#of the robot
+		# 	rangePx = self.avgPxPerM * self.range_max
+		# 	scanCount = int((abs(self.angle_min) + abs(self.angle_max))/self.angle_increment)
+		# 	for angle in np.linspace(roll + self.angle_min, roll + self.angle_max, scanCount):
+		# 		cX = self.currentTags[robotID].tagCenterPx.x
+		# 		cY = self.currentTags[robotID].tagCenterPx.y
+		# 		endX = int(cX + rangePx*(math.cos(angle)))
+		# 		endY = int(cY + rangePx*(math.sin(angle)))
+		# 		cX = int(cX)
+		# 		cY = int(cY)
+		# 		#No need to draw the line
+		# 		#cv2.line(masked, (cX, cY), (endX, endY), (0,75,200), 3)
 
 		#Convert back for debugging
-		masked = cv2.cvtColor(masked, cv2.COLOR_HSV2BGR)
-		self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(masked, encoding="bgr8"))
+		self.image = cv2.cvtColor(self.image, cv2.COLOR_HSV2BGR)
+		self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(self.image, encoding="bgr8"))
 
 def init_oracle():
 	ls = LaserServer()
