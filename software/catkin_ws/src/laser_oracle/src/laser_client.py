@@ -8,8 +8,8 @@ from sensor_msgs.msg import LaserScan
 
 def LaserDriver():
 	rospy.init_node('laser_driver', anonymous=True)
-	#TODO make a rosparam
-	id = 19
+	id = rospy.get_param("~robot_id", 0)	
+
 	#TODO add parameters for laser
 	#And reasonable defaults
 
