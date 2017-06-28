@@ -50,5 +50,10 @@
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client_15" output="screen">
    	<param name="robot_id" value="15" type="int"/>
+   	<param name="angleMin" type="double" value="-1.745"/>
+	<param name="angleMax" type="double" value="1.745"/>
+	<param name="angleIncrement" type="double" value="0.1745"/>
+	<param name="rangeMin" type="double" value="0.1"/>
+	<param name="rangeMax" type="double" value="0.8"/>
    </node>
 </launch>

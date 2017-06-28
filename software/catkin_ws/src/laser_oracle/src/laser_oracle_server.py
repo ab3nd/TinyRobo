@@ -30,24 +30,16 @@ class LaserServer():
 		#Debug image publisher, to publish the results of the image pipeline
 		#self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
-		#TODO may want to make these rosparams
-		#Parameters for the laser scan
-		self.angle_min = -135 *(math.pi/180)
-		#180 Degrees
-		self.angle_max = 135 *(math.pi/180)
-		#About 20 degrees
-		self.angle_increment = 20 * (math.pi/180)
-		#Time between measurements
-		#TODO this might be a LOT smaller
-		self.time_increment = 0.06
-		#Time between scans
-		#TODO may want to throttle this
-		self.scan_time = 1.0
+		#TODO most of the parameters of the laser scan are passed in the 
+		#request, and the requester should fill these out, since it knows
+		#how often it is making requests. 
+		self.time_increment = 0.0
+		self.scan_time = 0.0
 
 		#These are in meters, but get converted to pixels for
 		#the virtual laser scans
-		self.range_min = 0.0
-		self.range_max = 0.2
+		#self.range_min = 0.0
+		#self.range_max = 0.2
 
 		#Radius of robot, in pixels, in the image
 		#used to draw a blue dot over all robots for collision avoidance
@@ -71,9 +63,9 @@ class LaserServer():
 			#The laser scan lines are from the min to max scan distance, 
 			#translated to pixels, and are at angles around the orientation
 			#of the robot
-			maxRangePx = self.avgPxPerM * self.range_max
+			maxRangePx = self.avgPxPerM * req.rangeMax
 			#Minimum scan must be outside of robot's radius
-			minRangePx = max(self.robotRad + 1, self.avgPxPerM * self.range_min)
+			minRangePx = max(self.robotRad + 1, self.avgPxPerM * req.rangeMin)
 			
 			#Mask off everything in the image that's not within the 
 			#laser range of the robot
@@ -99,15 +91,15 @@ class LaserServer():
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
 
 			#Calculate the number of scans 
-			scanCount = int((abs(self.angle_min) + abs(self.angle_max))/self.angle_increment)
+			scanCount = int((abs(req.angleMin) + abs(req.angleMax))/req.angleIncrement)
 
 			#This evenly spaces the scans, which may be a little off from the behavior of 
 			#a real laser scanner. Note that this assumes self.angle_min is negative, so 
 			#the scan is centered on the robot's heading
 			scan = []
-			for angle in np.linspace(roll + self.angle_min, roll + self.angle_max, scanCount):
+			for angle in np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount):
 				#Set the current closest point seen to the max range
-				currentMinDistance = self.range_max
+				currentMinDistance = req.rangeMax
 
 				startX = int(cX + minRangePx*(math.cos(angle)))
 				startY = int(cY + minRangePx*(math.sin(angle)))
@@ -138,13 +130,13 @@ class LaserServer():
 			h.stamp = rospy.Time.now()
 			scanMsg.header = h
 
-			scanMsg.angle_min = self.angle_min
-			scanMsg.angle_max = self.angle_max
-			scanMsg.angle_increment = self.angle_increment
+			scanMsg.angle_min = req.angleMin
+			scanMsg.angle_max = req.angleMax
+			scanMsg.angle_increment = req.angleIncrement
 			scanMsg.time_increment = self.time_increment
 			scanMsg.scan_time = self.scan_time
-			scanMsg.range_max = self.range_max
-			scanMsg.range_min = self.range_min
+			scanMsg.range_max = req.rangeMax
+			scanMsg.range_min = req.rangeMin
 
 			scanMsg.ranges = scan
 			scanMsg.intensities = []
