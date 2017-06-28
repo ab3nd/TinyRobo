@@ -28,7 +28,7 @@ class LaserServer():
 		self.image = None
 		self.bridge = CvBridge()
 		#Debug image publisher, to publish the results of the image pipeline
-		self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
+		#self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
 		#TODO may want to make these rosparams
 		#Parameters for the laser scan
@@ -53,10 +53,17 @@ class LaserServer():
 		#used to draw a blue dot over all robots for collision avoidance
 		self.robotRad = 30
 
-	def handle_laser_req(self, req):
+	def isReady(self):
+		#Ready if we have an image to work with and some tags in it
+		return self.image is not None and len(self.currentTags.keys()) > 0
 
+	def handle_laser_req(self, req):
 		#Get the origin from the ID of the robot, if we can see it
 		if req.robotID in self.currentTags.keys() and self.image is not None:
+			#Use a copy of the existing image, not the original, or else
+			#you get threading-related issues
+			imgCpy = self.image.copy()
+
 			#Pixel coordinates of robot in image
 			cX=self.currentTags[req.robotID].tagCenterPx.x
 			cY=self.currentTags[req.robotID].tagCenterPx.y
@@ -70,9 +77,9 @@ class LaserServer():
 			
 			#Mask off everything in the image that's not within the 
 			#laser range of the robot
-			mask = np.zeros(self.image.shape, dtype=np.uint8)
+			mask = np.zeros(imgCpy.shape, dtype=np.uint8)
 			cv2.circle(mask, (int(cX), int(cY)), int(maxRangePx) + 5, 255, -1)
-			masked = cv2.bitwise_and(self.image, mask)
+			masked = cv2.bitwise_and(imgCpy, mask)
 
 			#Find the contours in the image, as a list
 			#and compressed with chain approximation. 
@@ -255,14 +262,14 @@ class LaserServer():
 
 
 	def update_image(self, msg):
-		self.image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
-		self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+		img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+		img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
 		#Draw blue dots over all the robots so they get detected as obstacles
-		self.image = self.drawRobots(self.image)
+		img = self.drawRobots(img)
 		
 		#B&W image that is white for every pixel in the range
-		mask = cv2.inRange(self.image, lower_blue, upper_blue)
+		mask = cv2.inRange(img, lower_blue, upper_blue)
 		#Erode the mask to remove little noise pixels
 		mask = cv2.erode(mask, kernel, iterations=1)
 
@@ -274,14 +281,19 @@ def init_oracle():
 	ls = LaserServer()
 
 	rospy.init_node('laser_oracle_server')
-	svc = rospy.Service('laser_oracle', LaserOracle, ls.handle_laser_req)
-	rospy.loginfo("Laser oracle started...")
 
 	#Subscribe to april tag tag detections
 	rospy.Subscriber("/tag_detections", AprilTagDetectionArray, ls.update_tags)
 
 	#Subscribe to images from the overhead camera
 	rospy.Subscriber("/overhead_camera/image_rect_color", Image, ls.update_image)
+
+	rate = rospy.Rate(3)
+	while not ls.isReady():
+		rate.sleep()
+
+	svc = rospy.Service('laser_oracle', LaserOracle, ls.handle_laser_req)
+	rospy.loginfo("Laser oracle started...")
 	rospy.spin()
 
 

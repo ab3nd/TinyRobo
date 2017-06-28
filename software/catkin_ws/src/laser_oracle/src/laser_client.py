@@ -16,7 +16,7 @@ def LaserDriver():
 	pub = rospy.Publisher('laser_driver_{0}'.format(id), LaserScan, queue_size=0)
 	
 	#TODO make this a parameter
-	rate = rospy.Rate(0.3) #Every three seconds
+	rate = rospy.Rate(3)
 
 	while not rospy.is_shutdown():
 		rospy.wait_for_service("laser_oracle")
