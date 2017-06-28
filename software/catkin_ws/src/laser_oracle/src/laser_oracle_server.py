@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-# Distance oracle service for TinyRobos
-# Gives the distance between any two april tags that it can see
-# TODO what if you can't see both tags?
+# Laser oracle service for TinyRobos
+# Creates laser rangefindings for a given robot ID
 
 import rospy
 from math import pow, sqrt
