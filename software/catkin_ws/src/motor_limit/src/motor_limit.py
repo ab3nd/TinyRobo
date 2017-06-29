@@ -5,6 +5,7 @@
 
 import rospy
 import socket
+import select
 
 from tiny_robo_msgs.msg import Motor_Vel_Cmd
 
@@ -35,7 +36,12 @@ class RobotComms:
 		buff = ""
 		#TODO if we're not writing anything back, this is going to be an issue
 		while len(buff) < 6:
-			buff += self.connection.recv(6)
+			#Wait two seconds to be able to read
+			retval = select.select([self.connection], [], [], 2.0)
+			if len(retval[0]) == 0:
+				rospy.logwarn("Timed out waiting for response from robot")
+			else:
+				buff += self.connection.recv(6)
 		return bytearray(buff)
 
   # According to the DRV8830 data sheet, there are two registers:
@@ -119,6 +125,7 @@ class motorLimiter:
 		m1_speed, m1_dir = self.mapSpeed(m1_cmd, 0)
 		m2_speed, m2_dir = self.mapSpeed(m2_cmd, 1)
 
+		rospy.logwarn("({0},{1}), ({2},{3})".format(m1_speed, m1_dir, m2_speed, m2_dir))
 		#Send the speed/direction values
 		#Result is [motor1 speed, motor1 dir, motor1 status, motor2 speed, motor2 dir, motor2 status]
 		result = self.robot.sendMotor([m1_speed, m1_dir, m2_speed, m2_dir])
@@ -130,13 +137,15 @@ class motorLimiter:
 			self.m1_maxV -= 1
 			rospy.logwarn("Overcurrent on motor 1, reducing power to {0}".format(self.m1_maxV))
 		elif result[2] & self.UVLO:
-			rospy.logwarn("Supply undervoltage on motor 1")
+			#rospy.logwarn("Supply undervoltage on motor 1")
+			pass
 
 		if (result[5] & self.ILIMIT) or (result[5] & self.OCP):
 			self.m2_maxV -= 1
 			rospy.logwarn("Overcurrent on motor 2, reducing power to {0}".format(self.m2_maxV))
 		elif result[5] & self.UVLO:
-			rospy.logwarn("Supply undervoltage on motor 2")
+			#rospy.logwarn("Supply undervoltage on motor 2")
+			pass
 
 	def handleMessage(self, msg):
 		self.setSpeeds(msg.motor1, msg.motor2)
@@ -145,7 +154,7 @@ if __name__ == "__main__":
 	rospy.init_node('motor_speed_limiter')
 
 	#Get the IP address of the robot to connect to
-	ipAddr = rospy.get_param("/{0}/robot_addr".format(rospy.get_name()))
+	ipAddr = rospy.get_param("~robot_addr".format(rospy.get_name()))
 
 	#TODO I may want to set up static leases in the wifi router to attempt 
 	#ipAddr = '192.168.1.119' #hexbugbase
