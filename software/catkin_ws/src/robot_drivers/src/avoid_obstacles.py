@@ -45,8 +45,9 @@ class AvoidDriver():
 		#rospy.loginfo("Linear: {0} Rotation: {1}".format(linear, rotational))
 
 		#only two params are used for robots on a table
-		rTwist.linear.x = linear
-		rTwist.angular.z = rotational
+		#Multiplied by < 1 to slow the robot down
+		rTwist.linear.x = linear * 0.5
+		rTwist.angular.z = rotational * 0.5
 		#The rest are not used
 		rTwist.linear.y = rTwist.linear.z = 0
 		rTwist.angular.x = rTwist.angular.y = 0
