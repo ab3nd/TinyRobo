@@ -35,16 +35,12 @@
    </node>
 
    <!-- Driver node that tries to avoid stuff -->
-   <node pkg="robot_drivers" type="avoid_obstacles.py" name="wander">
+   <node pkg="robot_drivers" type="avoid_obstacles.py" name="wander" output="screen">
       <param name="robot_id" value="19" type="int"/>
    </node>   
 
 	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
 		<param name="/driver_name" value="/avoid_twists_19" type="str" />
-	</node>
-
-	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
-		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
 	</node>
 
 </launch>

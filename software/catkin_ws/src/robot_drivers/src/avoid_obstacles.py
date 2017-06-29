@@ -23,16 +23,26 @@ class AvoidDriver():
 		linear = rotational = 0
 
 		#Check the left and right sides of the scan
-		sideSize = msg.ranges/2
+		sideSize = len(msg.ranges)/2
+		bump = len(msg.ranges) % 2 #Account for odd sizes
 		lAvg = sum(msg.ranges[:sideSize])/sideSize
-		rAvg = sum(msg.ranges[sideSize:])/sideSize
+		#This does ignore the middle range scan, if any
+		rAvg = sum(msg.ranges[sideSize + bump:])/sideSize
 
 		#Debugging
-		rospy.loginfo("L: {0} R: {0}".format(lAvg, rAvg))
-		
-		#Decide to turn
+		#rospy.loginfo("L: {0} R: {1}".format(lAvg, rAvg))
 
-		#No turn, go straight
+		#Decide to turn, based on difference between sides,
+		#scaled to the range 0..1 by the laser max range
+		scaleFactor = msg.range_max
+		rotational = (lAvg - rAvg)/scaleFactor
+
+		#Linear speed is inversely proportional to rotational speed
+		#so as it turns harder, it goes forward less
+		linear = 1.0 - abs(rotational)
+
+		#Debugging
+		#rospy.loginfo("Linear: {0} Rotation: {1}".format(linear, rotational))
 
 		#only two params are used for robots on a table
 		rTwist.linear.x = linear
@@ -44,7 +54,7 @@ class AvoidDriver():
 		self.twistPub.publish(rTwist)
 
 
-if __name__ = '__main__':
+if __name__ == '__main__':
 
 	rospy.init_node("obstacle_avoid_driver", anonymous=True)
 
@@ -52,4 +62,4 @@ if __name__ = '__main__':
 
 	driver = AvoidDriver(robotID)
 	
-	pass
+	rospy.spin()
