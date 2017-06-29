@@ -1,0 +1,50 @@
+<launch>
+   <!-- launch video stream -->
+   <include file="$(find video_stream_opencv)/launch/camera.launch" >
+   		<!-- node name and ros graph name -->
+	  	<arg name="camera_name" value="overhead_camera" />
+	  	<!-- url of the video stream -->
+	  	<arg name="video_stream_provider" value="rtsp://b34.nrv/live.sdp"/>
+	  	<!-- throttling the querying of frames to -->
+	  	<arg name="fps" value="30" />
+	  	<!-- setting frame_id -->
+	  	<arg name="frame_id" value="rtsp_frame" />
+	  	<!-- camera info loading, take care as it needs the "file:///" at the start , e.g.:
+	  	"file:///$(find your_camera_package)/config/your_camera.yaml" -->
+	  	<arg name="camera_info_url" value="file:///$(find camera_cal)/overhead_camera_calibration.yaml" />
+	  	<!-- flip the image horizontally (mirror it) -->
+	  	<arg name="flip_horizontal" value="false" />
+	  	<!-- flip the image vertically -->
+	  	<arg name="flip_vertical" value="false" />
+	  	<!-- visualize on an image_view window the stream generated -->
+	  	<arg name="visualize" value="false" />
+   </include>
+
+   <!-- Video un-distorting -->
+   <node name="image_proc" pkg="image_proc" type="image_proc" ns="overhead_camera"/>
+
+   <!-- April tags -->
+   <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
+
+   <!-- Fake laser readings --> 
+   <node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen"/>
+
+   <!-- client for the laser ranges -->
+   <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
+   	<param name="robot_id" value="19" type="int"/>
+   </node>
+
+   <!-- Driver node that tries to avoid stuff -->
+   <node pkg="robot_drivers" type="avoid_obstacles.py" name="wander">
+      <param name="robot_id" value="19" type="int"/>
+   </node>   
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
+		<param name="/driver_name" value="/avoid_twists_19" type="str" />
+	</node>
+
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
+	</node>
+
+</launch>
