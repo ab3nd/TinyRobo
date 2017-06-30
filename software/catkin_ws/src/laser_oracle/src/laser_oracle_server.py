@@ -30,8 +30,8 @@ class LaserServer():
 		#Debug image publisher, to publish the results of the image pipeline
 		#self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
-		#TODO most of the parameters of the laser scan are passed in the 
-		#request, and the requester should fill these out, since it knows
+		#Most of the parameters of the laser scan are passed in the 
+		#request. The requester should fill these two, since it knows
 		#how often it is making requests. 
 		self.time_increment = 0.0
 		self.scan_time = 0.0

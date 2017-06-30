@@ -31,25 +31,11 @@
 
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
-   	<param name="robot_id" value="7" type="int"/>
+   	<param name="robot_id" value="23" type="int"/>
    	<param name="tag_rotation" value="-3.114159" type="double"/>
    	<param name="rangeMax" value="1.0"/>
    	<param name="angleIncrement" value="0.0872"/>
    </node>
-
-   <!-- Driver node that tries to avoid stuff -->
-   <node pkg="robot_drivers" type="avoid_obstacles.py" name="wander" output="screen">
-      <param name="robot_id" value="7" type="int"/>
-   </node>   
-
-	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
-		<param name="/driver_name" value="/avoid_twists_7" type="str" />
-	</node>
-
-	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
-		<param name="robot_addr" value="192.168.1.176" type="str" />
-		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
-	</node>
 
 	<!-- static transform from world_base to the camera. world_base is the lower left of the table. -->
 	<node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base rtsp_frame 50" />

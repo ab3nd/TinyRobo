@@ -46,8 +46,8 @@ class AvoidDriver():
 
 		#only two params are used for robots on a table
 		#Multiplied by < 1 to slow the robot down
-		rTwist.linear.x = linear * 0.5
-		rTwist.angular.z = rotational * 0.5
+		rTwist.linear.x = linear * 0.4
+		rTwist.angular.z = rotational * 0.4
 		#The rest are not used
 		rTwist.linear.y = rTwist.linear.z = 0
 		rTwist.angular.x = rTwist.angular.y = 0

@@ -134,14 +134,14 @@ class motorLimiter:
 		#If there's a problem, adapt the motor voltage downward
 		#The conversions to int are because otherwise result is treated as a string
 		if (result[2] & self.ILIMIT) or (result[2] & self.OCP):
-			self.m1_maxV -= 1
+			self.m1_maxV = max(0, self.m1_maxV - 1)
 			rospy.logwarn("Overcurrent on motor 1, reducing power to {0}".format(self.m1_maxV))
 		elif result[2] & self.UVLO:
 			#rospy.logwarn("Supply undervoltage on motor 1")
 			pass
 
 		if (result[5] & self.ILIMIT) or (result[5] & self.OCP):
-			self.m2_maxV -= 1
+			self.m2_maxV = max(0, self.m2_maxV - 1)
 			rospy.logwarn("Overcurrent on motor 2, reducing power to {0}".format(self.m2_maxV))
 		elif result[5] & self.UVLO:
 			#rospy.logwarn("Supply undervoltage on motor 2")

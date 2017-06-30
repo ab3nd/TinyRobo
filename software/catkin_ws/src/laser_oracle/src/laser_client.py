@@ -9,11 +9,14 @@ import math
 
 def LaserDriver():
 	rospy.init_node('laser_driver', anonymous=True)
+	#The identifier of this robot
 	id = rospy.get_param("~robot_id", 0)	
+	#Rotation of the april tag relative to the robot front, in radians
+	tag_rotation = rospy.get_param("~tag_rotation", 0)
 
 	#Parameters for laser
-	angleMin = rospy.get_param("~angleMin", -135 *(math.pi/180))
-	angleMax = rospy.get_param("~angleMax", 135 *(math.pi/180))
+	angleMin = rospy.get_param("~angleMin", -135 *(math.pi/180) + tag_rotation)
+	angleMax = rospy.get_param("~angleMax", 135 *(math.pi/180) + tag_rotation)
 	angleIncrement = rospy.get_param("~angleIncrement", 20 * (math.pi/180))
 	rangeMin = rospy.get_param("~rangeMin", 0.0)
 	rangeMax = rospy.get_param("~rangeMax", 0.3)
@@ -34,7 +37,8 @@ def LaserDriver():
 
 			#Calculate and update the scanTime and time_increment
 			if lastScan is not None:
-				deltaT = rospy.Time.now() - lastScan
+				nowTime = rospy.Time.now()
+				deltaT = nowTime - lastScan
 				#Write the time between scans to the response laserScan object
 				response.laserScan.scan_time = deltaT.to_sec()
 
@@ -43,6 +47,11 @@ def LaserDriver():
 				scanCount = len(response.laserScan.ranges)
 				if scanCount != 0: #Avoid div/0
 					response.laserScan.time_increment = deltaT.to_sec()/scanCount
+				
+				#Laser scans are in the frame of the tag, which is in the frame of the robot
+				#TODO this probably isn't perfect, esp. if tag is rotated relative to robot
+				response.laserScan.header.frame_id="tag_{0}".format(id)
+				response.laserScan.header.stamp = nowTime
 
 			pub.publish(response.laserScan)
 			#Update time last message was published
