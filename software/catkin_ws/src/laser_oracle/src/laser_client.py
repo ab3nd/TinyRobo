@@ -15,8 +15,8 @@ def LaserDriver():
 	tag_rotation = rospy.get_param("~tag_rotation", 0)
 
 	#Parameters for laser
-	angleMin = rospy.get_param("~angleMin", -135 *(math.pi/180) + tag_rotation)
-	angleMax = rospy.get_param("~angleMax", 135 *(math.pi/180) + tag_rotation)
+	angleMin = rospy.get_param("~angleMin", -65 *(math.pi/180) + tag_rotation)
+	angleMax = rospy.get_param("~angleMax", 65 *(math.pi/180) + tag_rotation)
 	angleIncrement = rospy.get_param("~angleIncrement", 20 * (math.pi/180))
 	rangeMin = rospy.get_param("~rangeMin", 0.0)
 	rangeMax = rospy.get_param("~rangeMax", 0.3)

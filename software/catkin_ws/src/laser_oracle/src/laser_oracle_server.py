@@ -207,9 +207,15 @@ class LaserServer():
 		den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0])
 		if den == 0:
 			#Lines are parallel or coincident
-			#Not sure what to return here...
-			rospy.warn("About to divide by zero because of parallel or coincident lines!")
-			pass
+			rospy.logwarn("About to divide by zero because of parallel or coincident lines!")
+			
+			#Return a distance reading that is infinitely far away. Since this is compared
+			#to the max range, and the smaller value is used, it will get clamped 
+			#to the max range of the sensor. 
+			#TODO it's bad coding practice to assume knowldege of what your caller will do
+			#TOnotDO it's good coding practice to know what the code you call will do :-)
+			return (float('inf'), float('inf'))
+
 		numX = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))
 		numY = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))
 
@@ -245,9 +251,14 @@ class LaserServer():
 	def drawRobots(self, image):
 		#Draw a blue circle for each robot so they avoid each other
 		for robotID in self.currentTags.keys():
-			x=int(self.currentTags[robotID].tagCenterPx.x)
-			y=int(self.currentTags[robotID].tagCenterPx.y)
-			cv2.circle(image, (x,y), self.robotRad, np.array([115,255,255]), -1)
+			try:
+				x=int(self.currentTags[robotID].tagCenterPx.x)
+				y=int(self.currentTags[robotID].tagCenterPx.y)
+				cv2.circle(image, (x,y), self.robotRad, np.array([115,255,255]), -1)
+			except KeyError, e:
+				#The list changed while we were drawing, do nothing
+				pass
+				
 		return image
 			#Optional, draw the robot ID on the robot
 			#cv2.putText(self.image, str(robotID), (x-robotRad/2, y), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.3, np.array([115,255,30]))
