@@ -16,16 +16,279 @@
 4/25/17
 - Fix problem with ini file loading in test app
 	- It was the wrong monitor, no GL accleration on the rightmost monitor
+- e-mailed a few people who asked about the code at the Open House
+- Configured wheelchair network
+	- Don't use the lab internal network and avahi-autoipd at the same time, they fight
+- Disable whatever part of ubuntu keeps breaking the wired connection on the wheelchair
+    - See above
+- Added a bunch of stuff to the collection of everything we plug in
+- Started fixing NTP on the wheelchair
 
+4/26/17
+- Organized schedule to include things like sleep, work, weightlifting, shower/shave/etc. routine
+- Finished fixing ntp on the wheelchair
+- Tried to get the wheelchair to talk to eduroam
+	- mostly to be able to install software
+	- It doesn't seem to be working well
+
+4/27/17
+- Integrated survey feedback
+- Contacted Carlos about slide deck for 50th reunion event
+- Botball setup
+- Set up bit.ly link to youcanbookme for booking experiment slots
+	- https://swarmbots.youcanbook.me/
+- Set up e-mail for contacting me about experiment
+	- Just using my ashultz@cs.uml.edu address, now that redirect works again
+- Sent survey, slides, script, etc. to Holly to pass on to IRB
+- Tried to get wheelchair to use eduroam, didn't really have any luck with it
+
+4/28/17
+- Tried to get packmule up and running to do Botball setup
+- Botball setup
+
+5/1/17 
+- Researched history of robots for presentation
+- Wrote presentation for class of 57/67 reunion
+
+5/2/17
+- Worked on presentation images
+- tried to install active_sensing on scooter
+
+5/3/17
+- Finished presentation
+- Lab meeting
+
+5/4/17
+- Installed active sensing
+- Fixed up .bashrc
+- Fixed cuda compilation problems and path configuration to get active_sensing working again
+- Tested a few of the modules of the system
+
+5/5/17
+- Pestered everybody about videos for presentation
+- Attempted to extract videos from powerpoint deck
+- Interviewed canidates for summer internships
+- Worked on getting scooter running, have some nodelet problem with the cameras
+
+5/8/17
+- Added movies of google glass and instrumented person to presentation
+- Showed scooter to visitor from Israel
+	- He asked about voice activation
+	- Voice would make a good command interface
+
+5/9/17
+- Notecards for presentaton
+- Dan practice talk
+- Read some papers
+	- Evolving a neural model of insect path navigation
+		- Neat, but not relevant to the swarm project
+	- http://blog.inf.ed.ac.uk/insectrobotics/antbot-setting-up-the-app/
+		- ant robot, cheap swarm unit, but more individual capability than I have
+		- used a vision-based path integration system
+
+5/10/17
+- Two job interviews
+- Practice talk
+- Talk edits
+
+5/11/17
+- Counseling appointment
+- Health services appointment
+- Collected primitives for programming robots
+- wrote up a lot of possible ways to 
+- Interviewed a potential summer hire
+
+5/12/17 
+- Presentation
+- Went home and slept after presentation
+
+5/15/17
+- Tested wheelchair, trajopt pathing stuff doesn't seem to be working right in active_sensing_driving
+- Lab meeting
+- Brainstorming about coordinate spaces and having a UI where you legit can't see the robots
+- started reg for research days in Austria
+
+5/16/17 todo
+- Fix whatever trajopt path is missing
+- Read papers from that Austrian conf/Self-Organizing Systems
+- Help Dan fix lab network
+- Added a little calibration mark to the right camera mount
+- Tried to get URDF loading to work so I can calibrate the cameras
+
+5/8/17
+- Set up single-camera on wheelchair
+- Everything now working, imaged laptop
+
+5/19/17
+- Started playing with single camera
+  - Structure sensor is being odd, rostopic hz didn't get anything from depth_registered
+  - It only uses depth, not depth_registered, because it doesn't have RGB images
+
+5/22/17
+- Set up static transforms for second camera to wheelchair
+- Test all three sensors at the same time
+- put video on ICRA site so I can point people at it at the conference
+
+5/23/17 
+- Worked with Andreas on integrating second camera
+- Has problems with interference between the cameras
+
+5/24/17
+- Slides for ICRA
+
+5/25/17
+- Brainstorming/todo list for PhD stuff
+
+--ICRA--
+
+6/5/17
+- Lab meeting
+- Gave interns some tasks related to Thing 1 bringup
+- Read some papers on evolving controllers for cellular automata
+	- probably not the way I want to go on my thesis
+
+6/6/17
+- Directing of some interns
+	- Ray is doing automatic calibration of the scooter
+	- Marshall is working on building Thing 1
+- Automatic cloud registration with appropriate sensor activation
+- Expense report for Singapore
+
+
+6/12/17
+- Finished registered cloud provider
+- Can we get the RGB images in the same plane as well, for laser finding?
+	- Otherwise, laser finder will have to be extended to two RGB images
+- Lab meeting 
+- Checked if subscribing to the RGB image turns the IR sensor on as well
+- Expense report for Singapore trip
 
 To Do:
+
+6/13/17
+- Test edits to active_sensing_driving
+- Helped Siddharth fix a bad file system on his laptop
+	- If you get "EXT4-fs (sda1): group descriptors corrupted!", boot with a liveCD, and do sudo mke2fs -n /dev/xxx to list the superblock backup locations, followed by sudo e2fsck -b block_number /dev/xxx using the first superblock backup number to restore the superblock. It will prompt you before fixing stuff, just hit y for everything. 
+
+6/14/17
+- Try to convert return path for arm to use obstacle-aware planner
+- Try to troubleshoot arm kinematic problems
+- Commit working stuff
+
+6/15/17
+- Troubleshooting of scooter
+- Daringly updated packages and fixed CUDA again
+	- Was hoping to make cloud registration a bit more stable
+
+6/16/17
+- Calibrate scooter
+- Fix excessive NaN points for laser
+	- have cloud_registration not check either sensor if it has no subscribers
+	- have proxy unsub from cloud registration when not using it
+
+
+6/20/17
+- Scooter demo for Dave Kontak
+
+6/21-25
+- Finish virtual sensor node
+
+6/27
+- Fighting with the very old version of emerge on the baxter control PC to try to get wireless on the scooter. 
+- Restore scooter image
+
+6/28
+- Just hook the scooter up to a switch
+- Test controlling it with the laptop connected to the same switch
+- Maybe put a switch in the box, so we could drive it around?
+
+
+
+Wheelchair:
+
+Gesture Experiment
+- Add image of robot to recruitment poster
 - Set up a single-page website with a map to the experiment location
-- Make flyers to promote the experiment
 - Post flyers
-- Work on wheelchair
+
+Swarm control software
+- Write virtual network node
+- Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 
+- look for papers on follow-the-leader, ant mills in robots
+- there are papers on developing a coordinate grid with only local sensing and messaging, get some references
+- write a little sim to see if the spreading inhibition and member-count-based frame choice is a stable strategy for eventually having one coordinate frame dominate. Write a graphical output for it so it looks sweet, and for illustrating papers. 
+
+Documentation/presentations
+- Write presentation for ICRA
+- Finish paper for HardwareX, including last revision of hardware
+
+
+
 
 
 To Not Do:
 - Put lubuntu on the vaio
 	- Crashes on USB stick insertion, probably can't boot off USB anyway
 
+
+
+Wireless on the scooter:
+The version of emerge on there is v. old, so installing a new version of emerge is blocked because of having an old version of emerge. This is a known problem with gentoo in general. Currently attempting to get the tarfile for the recent emerge, install that, upgrade it with itself. 
+
+Attempting to get the url for the tarfile by visiting http://distfiles.gentoo.org/distfiles/ crashes firefox, so I got it with 
+
+ wget http://distfiles.gentoo.org/distfiles/
+
+Getting the new version of portage resulted in a python version fight. 
+
+Installing things with either version of portage, old or new, results in it making output that looks like it's installing things, without actually doing the install. 
+
+ruser@thing2 ~/new_portage/portage-2.3.6 $ sudo emerge python-updater
+!!! Invalid PORTDIR_OVERLAY (not a dir): '/usr/local/portage/overlay-rethink'
+!!! Invalid PORTDIR_OVERLAY (not a dir): '/usr/local/portage/overlay-ros-indigo'
+!!! SYNC setting found in make.conf.
+    This setting is Deprecated and no longer used.  Please ensure your 'sync-type' and 'sync-uri' are set correctly in /etc/portage/repos.conf/gentoo.conf
+
+ * IMPORTANT: 2 config files in '/etc/portage' need updating.
+ * See the CONFIGURATION FILES and CONFIGURATION FILES UPDATE TOOLS
+ * sections of the emerge man page to learn how to update config files.
+Calculating dependencies  .... done!
+>>> Emerging binary (1 of 1) app-admin/python-updater-0.14::gentoo
+>>> Installing (1 of 1) app-admin/python-updater-0.14::gentoo
+>>> Jobs: 1 of 1 complete                           Load avg: 0.39, 0.42, 0.34
+>>> Auto-cleaning packages...
+
+>>> No outdated packages were found on your system.
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 2 config files in '/etc' need updating.
+ * See the CONFIGURATION FILES and CONFIGURATION FILES UPDATE TOOLS
+ * sections of the emerge man page to learn how to update config files.
+ruser@thing2 ~/new_portage/portage-2.3.6 $ py
+pydoc                  pygtk-codegen-2.0      python2.7-config       python-config          pyvenv-3.3
+pydoc2.7               pylupdate4             python3                python-config-2.7      pyvenv-3.4
+pydoc3.3               pyrcc4                 python3.3              python-config-3.3      
+pydoc3.4               python                 python3.3-config       python-config-3.4      
+pygmentize             python2                python3.4              python-wrapper         
+pygobject-codegen-2.0  python2.7              python3.4-config       pyuic4                 
+ruser@thing2 ~/new_portage/portage-2.3.6 $ py
+pydoc                  pygtk-codegen-2.0      python2.7-config       python-config          pyvenv-3.3
+pydoc2.7               pylupdate4             python3                python-config-2.7      pyvenv-3.4
+pydoc3.3               pyrcc4                 python3.3              python-config-3.3      
+pydoc3.4               python                 python3.3-config       python-config-3.4      
+pygmentize             python2                python3.4              python-wrapper         
+pygobject-codegen-2.0  python2.7              python3.4-config       pyuic4                 
+ruser@thing2 ~/new_portage/portage-2.3.6 $ python-updater
+-bash: python-updater: command not found
+
+Unfortunately, restoring the image of the baxter hard drive seems to have done something bad to the networking on the baxter. 
+
+It's now using "stable network interface names" instead of net1 and net0
+
+Somehow, /etc/udev/rules.d/70-persistent-net.rules either wasn't included in the clonezilla backup, or got deleted. Either way, it's needed to configure the network interfaces to be named net1 and net0, which is in turn needed by everything else. 
+
+I fixed it by scping the 70-persistent-net.rules off the working baxter and editing it. For future reference, the values are 
+
+net0: 34:17:eb:af:2b:a5 <- Dell interface, or at least Dell vendor according to lookup
+net1: 00:0a:f7:68:78:7e <- Broadcom, probably the network card
