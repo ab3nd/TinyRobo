@@ -202,6 +202,13 @@ To Do:
 - Test controlling it with the laptop connected to the same switch
 - Maybe put a switch in the box, so we could drive it around?
 
+7/3,5,6
+- Helped interns with finding stuff and scooter cam config
+- Got rqt_graphprofiler working with Qt 5
+- Tried to fix lack of USB ports on XPS system (front and one rear don't do anything)
+	- Using USB hub starts running into bandwidth issues with cameras
+- Reseated cards and RAM in XPS, hoping to reduce crashes
+- Started slides for presentation to psych class
 
 
 Wheelchair:
@@ -230,6 +237,14 @@ To Not Do:
 - Put lubuntu on the vaio
 	- Crashes on USB stick insertion, probably can't boot off USB anyway
 
+
+Starting the rqt_graphprofiler
+roscore
+rosparam set enable_statistics true
+rosrun rosprofiler rosprofiler
+rosrun rosprofiler rosgrapher
+roslaunch your stuff
+rqt_graphprofiler
 
 
 Wireless on the scooter:
