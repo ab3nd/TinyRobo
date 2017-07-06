@@ -1,0 +1,28 @@
+<launch>
+
+	<!-- Launch the e-pucks -->
+	<include file="$(find epuck_launch)/launch/launch_demo.launch"/>
+
+	<!-- Launch each of the controllers -->
+	<node name="epuck_10_wander" pkg="control_epuck" type="collision_avoidance.py">
+		<param name="robot_name" value="epuck_robot_10"/>
+	</node>
+
+	<node name="epuck_1_wander" pkg="control_epuck" type="collision_avoidance.py">
+		<param name="robot_name" value="epuck_robot_1"/>
+	</node>
+
+	<node name="epuck_7_wander" pkg="control_epuck" type="collision_avoidance.py">
+		<param name="robot_name" value="epuck_robot_7"/>
+	</node>
+
+	<node name="epuck_9_wander" pkg="control_epuck" type="collision_avoidance.py">
+		<param name="robot_name" value="epuck_robot_9"/>
+	</node>
+
+	<node name="epuck_3_wander" pkg="control_epuck" type="collision_avoidance.py">
+		<param name="robot_name" value="epuck_robot_3"/>
+	</node>
+
+
+</launch>

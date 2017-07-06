@@ -18,9 +18,13 @@ def fmap(x, in_min, in_max, out_min, out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 class Controller(object):
-	def __init__(self, botname):
+	def __init__(self):
 		rospy.init_node('controlNode', anonymous=True)
 
+		#Get the robot to attach to
+		botname = rospy.get_param(rospy.get_name()+"/robot_name")
+		print "Controlling {0}".format(botname)
+	
 		#subscribe to the laser messages
 		self.sub = rospy.Subscriber("/{0}/scan".format(botname), LaserScan, self.stupidLaserCallback)
 		
@@ -138,8 +142,8 @@ class Controller(object):
 		sys.exit(0)
 
 
-botname = sys.argv[1]
-print "Controlling {0}".format(botname)
-control = Controller(botname)
-signal.signal(signal.SIGINT, control.shutdown)
-rospy.spin()
+#botname = sys.argv[1]
+if __name__ == "__main__":
+	control = Controller()
+	signal.signal(signal.SIGINT, control.shutdown)
+	rospy.spin()

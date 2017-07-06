@@ -1,0 +1,8 @@
+uint32 robotID
+float32 angleMin
+float32 angleMax
+float32 angleIncrement
+float32 rangeMin
+float32 rangeMax
+---
+sensor_msgs/LaserScan laserScan
