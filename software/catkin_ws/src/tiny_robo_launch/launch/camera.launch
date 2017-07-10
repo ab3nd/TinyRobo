@@ -1,15 +1,14 @@
 <launch>
-  	<arg name="camera_name" default="camera" />
+  	<arg name="camera_name" default="overhead_camera" />
   	<!-- video_stream_provider can be a number as a video device or a url of a video stream -->
-  	<arg name="video_stream_provider" default="0" />
+  	<arg name="video_stream_provider" default="rtsp://b34.nrv/live.sdp"/>
   	<!-- frames per second to query the camera for -->
-  	<arg name="fps" default="30" />
+  	<arg name="fps" default="60" />
   	<!-- frame_id for the camera -->
   	<arg name="frame_id" default="$(arg camera_name)" />
-  	<!-- By default, calibrations are stored to file://${ROS_HOME}/camera_info/${NAME}.yaml
-  	To use your own fill this arg with the corresponding url, e.g.:
-  	"file:///$(find your_camera_package)/config/your_camera.yaml" -->
-    <arg name="camera_info_url" default="" />
+    <!-- camera info loading, take care as it needs the "file:///" at the start , e.g.:
+      "file:///$(find your_camera_package)/config/your_camera.yaml" -->
+    <arg name="camera_info_url" value="file:///$(find camera_cal)/overhead_camera_calibration.yaml" />  
   	<!-- flip the image horizontally (mirror it) -->
   	<arg name="flip_horizontal" default="false" />
   	<!-- flip the image vertically -->
