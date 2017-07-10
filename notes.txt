@@ -359,3 +359,263 @@ Decentralized Task Allocation for Dynamic Environments (Luke B. Johnson, MS Thes
 		Allows agents to enter and leave network
 	This whole paper isn't really about task completion, just assignment	
 	
+------ 7/10/17 -----
+
+Had some concerns about thesis once it was framed as a planning problem rather than a compilation problem due to the fact that planning has a long history, and a lot of work already done in it. 
+
+As a planning problem, user input is desired world state (or can be transformed to desired world state). 
+
+Can possibly converge to desired world state without knowing starting state, as in stochastic box-pushing example on wiki. 
+
+Planner with unknown worldstate is using "coercion" to make the world match a known state before or in the process of operating. 
+
+UI may convey how precisely user's input is supposed to be followed. 
+  - Direct line to end point just means "go here", indirect, bendy line means follow this exact path
+  - Do we need to get close, vs. jsut approximately hit the target? How approximately?
+
+Could need a hierarchy of subplans based on what's available to the compiler, in terms of robot abilities
+  - Heterogenous "processors" for a parallel compilation task. 
+
+Program generation for swarms? Looking into Carlo Pinciroli's stuff
+
+Do any systems allow specification of the desired end state of the universe, not the actions to take? Can the actions be transformed into the target end state, i.e. how do you know you're done?
+
+Grammatical Swarm: The generation of programs by social programming
+  Particle Swarm Optimization
+  Each particle is a choice of program constuction rule
+  Rules are in BNF
+  Based on Grammatical Evolution
+  Sort of a genetic algorithm, but the evaluation function/fitness adds or removes velocity to the particle swarm
+  So all the particles converge towards the best solution found so far, but explore around it
+  Genotype specifies a BNF grammar that permits derivation of a program
+  Still has the problem that the encoding of the fitness function becomes the iterative target rather than the actual code of the solution. 
+
+Property-driven design for swarm robotics
+Manuele Brambilla, Carlo Pinciroli, Mauro Birattari and Marco Dorigo
+  Top-down design, as opposed to code-and-fix
+    Code and fix is expertise-dependent
+  Formal spec of desired properties (but of the system, not of system + world (what I'm calling "the universe"))
+  Applied using Discrete time Markov chains and probablistic computation tree logic
+    Oh god more stuff to learn
+  Protoswarm
+    Assumes constant network connectivity and total spatial coverage
+  Hamiltonian Vector Field methods
+  	Specification of the system is as energy potentials and flows
+  	Only works for spatially-organizing behaviors
+  Automatic design methods
+  	Evolutionary and reinforcement methods
+  	Domain knowledge required, result may not be verifiable or generalizable
+  Property Verification
+  	The turing tarpit of formalisms, where you can prove you can do things, but not actually do them
+  	Scaling issues
+
+  Property-driven Design
+  	1. Specify properties
+  	2. Build a model
+  		Programmer iterates on the model, checking that properties are verified
+  		Final model 
+  	3. Model is used as a guide to implement the swarm software
+  	4. Run it on some real robots. May need some tuning. 
+
+  So this is a design method, not an end-to-end automation, still has developer iterating on something
+  I want to not have a designer, and leave the iterating to computers
+
+  PCTL expands a Markov chain into a (potentially infinite) tree rooted at the initial state
+    CTL can make assertions like "a given state will be reached" or "a given state will hold for a fixed time"
+    PCTL adds probabilities to those assertions
+    Potentially infinite trees? Put that in your limited system memory and smoke it. 
+
+  PRISM model checker implements PCTL and DTMC (among others)
+
+  Case study on aggregation
+    Allows time bounds on behavior, so none of my "converges in ... finite time, I hope"
+    Behaviors still hand-designed by the programmer, so while it can be checked fast, it still needs to be written by a person
+      My stuff would be automatically designing the behaviors or behavior sets and triggers
+
+  Property-driven design reduces the probability of designing the "wrong" system, but doesn't let you not design the system
+
+
+Boolean Network Robotics as an Intermediate Step in the Synthesis of Finite State Machines for Robot Control
+Lorenzo Garattoni 1 , Andrea Roli 2 , Matteo Amaducci 2 , Carlo Pinciroli 1 and Mauro Birattari 1
+  Automated design of compact high-level representations of control software for robots
+  Larger exploration footprint for automated design methods, compared to manual
+  Automated design of FSMs for controlling the robots
+  Boolean Network robots?
+    Boolean network is a model of genetic regulatory networks
+      I wonder if this relates to guards in GCPR?
+        It sure looks like it
+        Oriented graph with N nodes, associated with a boolean value and boolean function of inputs to node
+        Various update schemes
+        To control a robot, some nodes are input and output nodes
+        Input node boolean values are imposed by sensor precepts, not other nodes
+        Output nodes control robot actions (motor vel, etc. or actions)
+        Yeah, this smells like an isomorphism. 
+    Can be analysed as dynamic systems
+    Automatic design shapes network dynamics in limited areas of state space
+    State clusters are associated with behaviors of the robot
+    Map from clusters to FSM states to get a formal and explainable framework
+
+  Calls out the existing problems with evolutionary controllers
+    Have to constrain FSM size or you get really hairy, uncompact representations
+  ANNs have problems with explainability
+
+  Example programs use a constrained network size. 
+  Rather than having all the nodes of the network be behavioral primitives, and sequences of boolean actions control those, the boolean network acts as an action selector. 
+  Constant connectivity, intially random, three incoming inputs to each node. No self-connections.
+  Flips bits at random in the boolean functions of the nodes, and only keeps the ones that work at least as well as the current best. 
+  I bet boolean networks are stupid-fast and compact to represent in programmable hardware. 
+
+  This case isn't specifying the desired behavior from a user input
+  It also requires a lot of simulated runs to develop the working networks
+    It's stochastic gradient descent operating on a binary genome, or evolution again. 
+    No crossover, though. Probably for the best, that would transplant part of the FSM into another part. 
+
+  Constrained to dealing with booleans
+    Not really that much of a constraint, you can represent floats with booleans, at a (probably high) cost in complexity. 
+    Evolving sub-modules might help reduce this, since a subnetwork can be reduced to a boolean network node itself. 
+
+
+Finite State Automata Synthesis in Boolean Network Robotics
+L. Garattoni, C. Pinciroli, A. Roli, M. Amaducci, and M. Birattari
+  Still an evolutionary method, still needs a fitness function defined for it
+  Also all the examples are for single-robot cases, no assumptions about interaction
+    Binary robots could have senses for other robots, and at some levels of abstraction, quorum sensing
+  Does permit dynamic behaviors, and so dynamic environment and systems
+  "FSA asan indirect product of the design process of BN-robot systems and, hence, we
+do not have the problems of representing automata in terms of genomes and
+constraints."
+    No, you represent it in terms of a binary string that evolves under control of a fitness function, though...
+
+Recent Advances in AI Planning
+Daniel S. Weld
+  1999, talking about the last 5 years in planning 
+  2-phase GRAPHPLAN
+    Apparently very fast
+    Detail level is a bit out of scope for my work at present, seems to cover the textbook sections I read
+  Compiling planning problems into propostional formulas using SAT algorithms
+  Talks about planning based on a known inital position of the world
+  Calls out problems with universal quantifiers 
+
+A Survey of the Seventh International Planning Competition
+Amanda Coles, Andrew Coles, Angel García Olaya, Sergio Jiménez, Carlos Linares López, Scott Sanner, Sungwook Yoon
+  Constrained planning domain description language (PDDL)
+  Fixed domains, so people are running with a specific description of a specific domain
+  various constraints in various tracks (optimality, uncertainty, etc.)
+  Paper doesn't cover how things worked aside from what won and what techniques they were using
+
+
+What I'm doing isn't exactly classical planning, because it's the generation of behaviors and the conditions under which they are to be executed, rather than a sequence of actions. No temporality in my "plan". Also, I don't assume that once all the behaviors have been executed, the desired world state holds. Instead, execution of at least some of the behaviors by at least some of the agents is intended to converge to the desired world state, but some behaviors may not be executed by some agents, and some agents may execute no behaviors (because they're broken). 
+
+While we're talking weirdness, any binary sequence could be a representation of a binary network's binary functions, and so e.g. the complete works of Shakespear in ASCII, combined with a given connectivity, might do something cool.
+
+SWARMORPH-script: a language for arbitrary morphology generation in self-assembling robots
+Anders Lyhne Christensen, Rehan O’Grady, Marco Dorigo
+  Governs self-assembling robots
+  Morphology scripting, inter-robot lcoal communication
+
+AutoMoDe-Chocolate: a Method for the Automatic Design of Robot Swarms that Outperforms Humans
+G. Francesca
+   Previous methods: Vanilla and EvoStick
+   Vanilla beats EvoStick, humans beat all
+   Chocolate = Vanilla + better optimization algorithm
+   Design of collective behavior, but designer eventually has to specify the behavior of individual robots
+   "Presently, no general approach exists to derive the individual behavior of the robots from a desired collective behavior"
+      Well, that's encouraging to me...
+   1. Specification
+   2. Development using simulation
+   3. Deployment onto a swarm
+   AutoMoDe (2014) defines a program by composing probablistic FSMs
+   Vanilla specializes AutoMoDe for the E-puck
+      Shouldn't define the problem for specific homogeneous collections of robots
+   Comparison with Vanilla and Evostick was on aggregation and foraging
+      I'm assuming that things like aggregation were defined as primitives I can compose
+      Foraging is a "find the box/target area" kind of thing, one step in performing a task
+      So I think I'm looking at a level up from this
+   5 methods on 5 tasks
+      Fixed tasks, rather than open tasks as defined by the user
+   Mentions work on task allocation via reaction-diffusion
+      Works well with local state, so robots who are well-situated to solve a problem volunteer for it
+      The idea of volunteering based on local information is probably a good way to look at it, in opposition to assignment by a central authority. 
+   4 design methods
+      Vanilla
+         Assembles pre-exising modules into a PFSM
+         Modules might have some parameters that affect their functioning
+         Behaviors 
+            Activity the robot can perform
+         Transitions
+            Control switching behaviors based on a condition or event
+            Boolean, based on input values
+         "The six behaviors are:
+exploration, stop, phototaxis, anti-phototaxis, attraction, and repulsion. With the
+exception of stop, these behaviors include an obstacle avoidance mechanism. The
+six transitions are: black-floor, gray-floor, white-floor, neighbor-count, inverted-
+neighbor-count, fixed-probability."
+         Up to four states with up to four outgoing edges
+         Optimize the expected value of a task-specific performance measure
+         F-Race optimization algorithim, whoever does the task fastest is fittest
+            Chocolate uses iterated F-Race
+                Each iteration resamples search space with a distribution that favors the best performers on previous iterations
+                This is starting to sound a lot like an evolutionary method
+      EvoStick
+         Evolutional method, generates feed-fwd ANN with no hidden nodes
+         Inputs are robot sensors
+         Outputs operate on the wheel speeds
+            So the only possible actions are changing the position of the robot
+      U-human
+      	 Unconstrained human
+      	 Person writing some code, no constraint on what they write
+      	 Testing in ARGoS, but not the robots, like the automatic methods
+      	 C++ class that operates on the inputs of the robot and provides logic for controlling the robot
+      C-human
+         Human who has to use the Vanilla control architecture and modules
+         Human does what the Vanilla optimization algorithm would have to do
+            This sounds like setting the human up for a beating, simply because they can't search the space as fast
+         Again, only four states and at most four transitions out of each one
+   5 conditions
+      Shelter with constrained access
+      Largest covering network
+      Coverage with forbidden areas
+      Surface and perimeter coverage
+      Aggregation with ambient cues
+         These are more complex tasks than my primitives, and possibly more complex than my tasks for the UI
+   Vanilla and EvoStick can create solutions in 2h20m, so humans were given 4h, since they have to watch sims, and the software doesn't. 
+   EvoStick beats the heck out of everything, all the time... in simulation
+      It can't cross the reality gap, so it's probably overfitting
+      In reality, it gets beat nearly all the time by something
+   C-human beats U-human, which is surprising, but may be up to reduced variance due to reduced chance for bugs
+   Chocolate beats humans, more in simulation than in reality, but usually in both
+      Chocolate also has good reality-gap-crossing results
+
+AutoMoDe-Chocolate: automatic design of control software for robot swarms
+G. Francesca, M. Brambilla, A. Brutschy, L. Garattoni, R. Miletitch, G. Podevijn, A. Reina, T. Soleymani, M. Salvaro, C. Pinciroli, F. Mascia, V. Trianni , and M. Birattari
+   Seems largely like a restating of the previous paper? Maybe that was a preprint. 
+
+An Experiment in Automatic Design of Robot Swarms: AutoMoDe-Vanilla, EvoStick, and Human Experts
+G. Francesca, M. Brambilla, A. Brutschy, L. Garattoni, R. Miletitch, G. Podevijn, A. Reina, T. Soleymani, M. Salvaro, C. Pinciroli, V. Trianni, M. Birattari
+   14-page version of the two papers above
+
+Boolean network robotics: a proof of concept
+Andrea Roli and Mattia Manfroni, Carlo Pinciroli and Mauro Birattari
+   Covers a lot of the same ground that the previous binary network paper I listed covers. 
+   More mathematical explanation of the error/fitness function
+   The evaluation heuristic from iterated F-Race sounds like it would be great for this
+      Assuming that more-similar bitstrings have more-similar behavior, then selecting from a distribution that favors the elite examples would tend to generate more elite examples. 
+   The single-bit-flip approach that was used is pretty close to this anyway, as it uses minimal perturbations
+   Detail on training, used a shaping approach, where first phototaxis was trained, and then a handclap triggered antiphototaxis
+      Longer runtime with the clap
+   
+
+ARK: Augmented Reality for Kilobots
+Andreagiovanni Reina, Alex J. Cope, Eleftherios Nikolaidis, James A.R. Marshall, and Chelsea Sabo
+   Similar design to my system
+   Automates some aspects of e.g. identifying the robots
+   Highly tied to the Kilobot platform
+   I should certainly cite it, though
+
+
+
+Things to look into: 
+Multi-objectivization (Trianni and Lopes-Ibanez, 2014) 
+Novelty Search (Lehman and Stanley 2011, Gomes et al 2013)
+Heirarchical decomposition (Duarte et al, 2014) 
+   Apparently untested on robots, and the decomposition is designed for the task by the programmer
