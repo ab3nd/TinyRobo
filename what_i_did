@@ -204,13 +204,36 @@ To Do:
 
 7/3,5,6
 - Helped interns with finding stuff and scooter cam config
-- Got rqt_graphprofiler working with Qt 5
+- Getting rqt_graphprofiler working with QT5
 - Tried to fix lack of USB ports on XPS system (front and one rear don't do anything)
 	- Using USB hub starts running into bandwidth issues with cameras
 - Reseated cards and RAM in XPS, hoping to reduce crashes
 - Started slides for presentation to psych class
 
+7/5-7
+- Reading up on planning 1970-1990
+- Writing up notes on planning as applied to swarm program generation
+- Looked into ROS planning
+   - It's mostly for motion rather than task/goal oriented planning
 
+7/10
+- Reading up on planning 1990-present
+- USB cables will arrive, so try to get USB cameras up on the swarm environment
+
+7/11
+- WFH, read a lot of papers
+
+7/12
+- Tried to fix the reliability issues with the scooter cameras
+   - problem doesn't show up repeatably, so solving it is problematic
+   - Also, linux is trash. 
+      - Sometimes the scooter laptop doesn't have a visible mouse cursor on reboots
+      - / somehow became read-only, rebooting fixed it, after a bit of whining about /tmp not being ready
+   - Read a bunch of papers and took notes
+      - Looks like I'm close to a lot of things but not exactly overlapping any of them
+   - Swung by NERVE and tried out USB extension for table camera
+      - Straight doesn't work. I get select timeouts if the cable is present, and no problems if the cable is absent. The camera cable just isn't long enough. 
+         
 Wheelchair:
 
 Gesture Experiment
