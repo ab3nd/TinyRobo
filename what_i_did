@@ -202,8 +202,13 @@ To Do:
 - Test controlling it with the laptop connected to the same switch
 - Maybe put a switch in the box, so we could drive it around?
 
-7/3-4
+7/3,5,6
+- Helped interns with finding stuff and scooter cam config
 - Getting rqt_graphprofiler working with QT5
+- Tried to fix lack of USB ports on XPS system (front and one rear don't do anything)
+	- Using USB hub starts running into bandwidth issues with cameras
+- Reseated cards and RAM in XPS, hoping to reduce crashes
+- Started slides for presentation to psych class
 
 7/5-7
 - Reading up on planning 1970-1990
@@ -215,7 +220,23 @@ To Do:
 - Reading up on planning 1990-present
 - USB cables will arrive, so try to get USB cameras up on the swarm environment
 
+7/11
+- WFH, read a lot of papers
 
+7/12
+- Tried to fix the reliability issues with the scooter cameras
+   - problem doesn't show up repeatably, so solving it is problematic
+   - Also, linux is trash. 
+      - Sometimes the scooter laptop doesn't have a visible mouse cursor on reboots
+      - / somehow became read-only, rebooting fixed it, after a bit of whining about /tmp not being ready
+   - Read a bunch of papers and took notes
+      - Looks like I'm close to a lot of things but not exactly overlapping any of them
+   - Swung by NERVE and tried out USB extension for table camera
+      - Straight doesn't work. I get select timeouts if the cable is present, and no problems if the cable is absent. The camera cable just isn't long enough. 
+   - USB card that I have in the computer probably just needs to be thrown away, it doesn't show up on lspci and is probably too slow anyway
+   - I don't think I have any USB3 ports on this computer to test the extension on, took it home to test. 
+
+      
 Wheelchair:
 
 Gesture Experiment
@@ -242,6 +263,14 @@ To Not Do:
 - Put lubuntu on the vaio
 	- Crashes on USB stick insertion, probably can't boot off USB anyway
 
+
+Starting the rqt_graphprofiler
+roscore
+rosparam set enable_statistics true
+rosrun rosprofiler rosprofiler
+rosrun rosprofiler rosgrapher
+roslaunch your stuff
+rqt_graphprofiler
 
 
 Wireless on the scooter:

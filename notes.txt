@@ -603,7 +603,6 @@ Andrea Roli and Mattia Manfroni, Carlo Pinciroli and Mauro Birattari
    The single-bit-flip approach that was used is pretty close to this anyway, as it uses minimal perturbations
    Detail on training, used a shaping approach, where first phototaxis was trained, and then a handclap triggered antiphototaxis
       Longer runtime with the clap
-   
 
 ARK: Augmented Reality for Kilobots
 Andreagiovanni Reina, Alex J. Cope, Eleftherios Nikolaidis, James A.R. Marshall, and Chelsea Sabo
@@ -612,6 +611,9 @@ Andreagiovanni Reina, Alex J. Cope, Eleftherios Nikolaidis, James A.R. Marshall,
    Highly tied to the Kilobot platform
    I should certainly cite it, though
 
+Towards a swarm of agile micro quadrotors
+Alex Kushleyev, Daniel Mellinger, Caitlin Powers, Vijay Kumar
+   Seems unrelated
 
 Searching for swarm robot planning gets a lot of hits based on PSO, but I want the swarm on a table, not in the planner. 
 
@@ -849,8 +851,122 @@ Mark Burstein, George Ferguson, and James Allen
 
 I should check that I'm not too close to Mataric's behavior-based synthesis of collective behaviors (1992-1994)
 
+Decentralized Controllers for Shape Generation with Robotic Swarms
+Mong-Ying Ani Hsieh, Vijay Kumar, Luiz Chaimowicz
+   Robots converge to a specific class of simple closed curves
+   Local sensing only 
+   "Ogren et al. relaxed this assumption in the
+development of coordination strategies for a group of
+unidentified, holonomic robots. 15 Similar approaches for
+multi-robot manipulation were presented by Song and
+Kumar 16 and Pereira and Kumar 17 respectively. Chaimowicz
+et al. extended these approaches to arbitrary shapes and
+established convergence to patterns that approximate the
+desired shape. 18"
+   These approaches might be useful as primitive behaviors the planner can invoke
+
+
+Generation of desired emergent behavior in swarm of micro-robots
+Sergey Kornienko and Olga Kornienko and Paul Levi
+
+
+Should add citations for Miniman and MiCRoN
+   MiCRoN is floor-powered, optically tracked from above, has a manipulator finger
 Things to look into: 
 Multi-objectivization (Trianni and Lopes-Ibanez, 2014) 
 Novelty Search (Lehman and Stanley 2011, Gomes et al 2013)
 Heirarchical decomposition (Duarte et al, 2014) 
    Apparently untested on robots, and the decomposition is designed for the task by the programmer
+
+From Local to Global Behavior in Intelligent Self-Assembly
+Chris Jones and Maja J. Mataric
+   Transition Rule Set compiler
+   Takes a desired structure for a self-assembling robot, outputs a set of rules
+   Operates on a grid, with local sensing
+   Uses a state transition set
+   Only covers self assembly
+   Consistent rule sets
+      Consistency requires that the spatiotemporal constraints to construct the figure are properly set up and that contraditory transistion rules not become active at the same time
+      Inconsistency can cause e.g. building the perimiter of a filled figure without filling it, making it impossible to finish. 
+   Limited to connected figures. No islands, no islands in holes in the figure. 
+   Does do some of the same things I want to do
+      User specification converted into local rules for robots
+      mobile robots
+   Also doesn't do some things I want to do
+      Strictly a morphological language
+
+Designing Collective Behavior in a Termite-Inspired Robot Construction Team
+Justin Werfel1, Kirstin Petersen, Radhika Nagpal
+   Given a physical structure, output a set of rules
+   Local sensing
+   Communication through the environment
+   Strictly a morphological language, again
+
+Differences from what I'm proposing
+   I'm proposing a realtime user interface for this operation
+   I'm proposing open-ended tasks, not only construction
+      Could probably generalize to construction, but the UI would have to support it
+   User interface elements of project are unrelated to previous compiler work
+
+Goals as Parallel Program Specifications
+Leslie Pack Kaelbling 1988
+   Programmer specifies agent's behaivor using symbolic goal-reduction rules that are compiled into a program
+   Realtime, dynamic domains permitting parallel actions
+   Mentions Georgeff & Lansky Reactive Planning (1978)
+      Does runtime interpretation of highly conditional user-specified plans
+   Gapps model of computation
+      Agent transduces stream of input into stream of output
+      Small upper bound on time for transduction ("reaction time")
+      Rex language
+         takes program spec as input
+         generates description of a synchronous digital circuit with delay components to satisfy spec
+         circuit operates on a clock
+         Used to program "the SRI robot", maybe Shakey?
+      Computations as a perception and action component
+         Perception component maintains state
+         Action component is stateless, fired by Perception component
+         This seems a lot like GCPR with ROS callbacks operating on it...
+   Goals
+      execution
+         do(g) - instant action g, just do it
+      Maintenence   
+         maint(h) - if h is true, act to keep it true as long as possible
+      Achievement
+         ach(i) - make i true ASAP
+      Set of goals is boolean operation of primitive goals
+      Not-acheiving X is the same as maintaining not-X and not-maintaining X is the same as acheiving not-X (they are dual)
+   Saying an action leads to a goal
+      Action is a correct step toward satisfying a goal
+      Doesn't appear admit formalization in a domain-nonspecific way
+      Seems to require some way of representing the leads-to structures of the domain...
+   Goal g can be reduced to g' if any action that leads to g' will lead to g
+   "Note that the conditions in a program need not be exhaustive-satisfaction does not require that there be an action that leads to the goal in every situation, since this is impossible in general."
+   When more than one condition and associated action is true (leads towards goal), execution of the program can pick one at random
+   This is a LOT like GCPR
+   Gapps programs
+      set of goal reduction rules and a top-level goal-expression
+      Paper defines operations on the expressions of a goal
+   Reduction rules match goal expressions if their patterns can be "unified in the current binding environment"
+   The binding environment is bindings of the compile time variables in the patterns of the expression under evaluation
+      If the patterns match, Gapps sets up a binding environment to evaluate the rule
+      Example is that acheiving the goal at(p) with the variables dist-err and angle-err reduces to if not facing(p)angle-err acheive facing(p) angle-err acheive moved-toward(p) distance-error
+         In otherwords, if you're not at p, face p based on the error in your angle and move towards it based on the error in your distance from it
+         At... runtime, I think, p would be substitued (bound) with a place to go
+   Compiler expects that acheiving two conjunctive goals reduces to if you have one goal, maintain it and acheive the other. 
+      This seems prone to combinatorial explosion in the face of multiple goals
+   Supports priority lists for goals, and prioritzing methods of acheiving the goals (if one is better somehow)
+      Can also prioritize acheiving a set of goals, but less-preferred goals are subsets of the set of decreasing size
+         So "get me a pizza, or if you can't, get me pizza ingredients, or at least get me some of the pizza ingredients"
+   Actions can be merged
+      good for merging e.g. vector velocities
+      Have to tell the system that velocities can always be merged, and then define how to merge them e.g. averaging
+
+Ok, so Gapps has programs that are evaluated kind of like the way I was planning to use GCPR, but doesn't have a UI, and assumes it's being developed by a programmer, not used by a normal user. 
+
+"From Local to Global Behavior in Intelligent Self-Assembly" has compilation of a desired end state into a set of rules for a FSM, but operates in a gridlike world and is for construction of a set of figures, rather than general action. 
+
+"Designing Collective Behavior in a Termite-Inspired Robot Construction Team" has compilation of a desired end state into rules for local sensing and action, but for a domain consisting of construction. Not intended for real-time-like commands either. 
+
+Looks like people either have compilation into a rule set from a high-level representation, but for closed domains, or have software development required of the user?
+
+
