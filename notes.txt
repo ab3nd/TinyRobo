@@ -613,6 +613,241 @@ Andreagiovanni Reina, Alex J. Cope, Eleftherios Nikolaidis, James A.R. Marshall,
    I should certainly cite it, though
 
 
+Searching for swarm robot planning gets a lot of hits based on PSO, but I want the swarm on a table, not in the planner. 
+
+I'm getting the impression that a multi-agent planner might assume much less stochasticity on the part of the agents than I am actually going to have in my system. 
+
+Interactions among Autonomous Planning Agents
+Frank Von Martial
+   Autonomous agents create their own plans independently
+   Plans are Executed in a common environment
+   Paper proposes a taxonomy, harmful/favorable interactions
+   Implies a dynamic environment
+   Has been modeled as a single multiagent plan with conflicts, which can be resolved
+   Communication can be present or absent
+   Assumptions
+      the agents are "intellegent", which is a hell of an assumption
+      Agents have different skills
+      Agents can include each other's actions as part of their plans
+         Parenthetically notes as "(multiagent planning)", which means what I'm planning isn't
+      Agents can communicate actions to each other
+      Agents are honest and benevolent
+         Don't lie about actions, don't want to harm each other
+   I don't think this is the model I'm looking at, since I want the total behavior to be sorted by the compiler/planner (complanner? Planpiler?) rather than by an iterated negotiation among agents
+
+Multi-Agent Planning under Dynamic Adaptive Autonomy
+K. S. Barber and D. C. Han
+   Autonomy levels characterize agent's role in organization of agents
+   Agents can change autonomy levels dynamically
+   Concurrent actions by multiple agents
+   Agents can enter into autonomy agreements with each other to attain goals they otherwise can't reach
+      e.g. a ship in a naval formation can't change position with getting clearance (the agreement) to do so. 
+   The determine if they need these agreements via a 2-stage planning process
+      1. Come up with goals based on available subgoals and intended goals
+      2. Filter the available operators by autonomy level, and plan using the remaining ones. If needed, try to acquire higher autonomy levels
+   
+I think a lot of the problem I'm having with planning here is that there are some actions that are going to be ongoing things, which overlap each other, rather than discrete operations in a plan. Some planners do talk about contingencies, but I'm thinking of stuff like random walking forever, as a plan element. It (eventually) has a probablistic postcondition of having visited everywhere in a bounded area, but it doesn't synchronize on that point with anything else, because it could take almost any amount of time. 
+
+Is It an Agent, or Just a Program?: A Taxonomy for Autonomous Agents 
+Stan Franklin and Art Graesser 
+   Agents need to be able to execute autonomously and have domain-oriented reasoning
+   Agents need to get data from their environment (which may be virtual)
+   Agents have goals
+   Not really useful to me, but could be interesting to read some other time. 
+
+Robot Path Planning using Particle Swarm Optimization of Ferguson Splines 
+Martin Saska, Martin Macas, Libor Preucil, and Lenka Lhotska
+   Splines for indivisual robot movement
+   Cool result, but got into my search due to mention of particle swarm, not robot swarm
+
+Cooperative Mobile Robotics: Antecedents and Directions
+Y. UNY CAO, ALEX S. FUKUNAGA, ANDREW B. KAHNG
+   1995, said field of multiple cooperating robots was still in its formative stages
+   Task may be too complex for one robot
+   Fault tolerance
+   Insight into social theories and life sciences 
+   Cooperation is the use of some mechanism of the system to increase total utility on a task
+   Dudek et al. (1993) taxonomy on SWARM and Mataric's Behavior based work
+   Common problems
+      Traffic control of swarms
+         Geometric problem in configuration spacetime
+         Behavior-based collision avoidance is fine, if you're not restricted to roads
+      Box-pushing cooperative mainipulation
+         As a study fo task allocation, fault-tolerance, reinforcement learning  
+         " Cooperative manipulation of large
+objects is particularly interesting in that cooperation
+can be achieved without the robots even knowing of
+each others’ existence (Sen et al., 1994;  Tung and
+Kleinrock, 1993). "
+      Foraging
+         Stigmurgy, chain formation and passing
+   So how should cooperation arise?
+      "Note that
+certain basic robot interactions are not task-performing
+interactions per se, but are rather basic primitives upon
+which task-performing interactions can be built, e.g.,
+following ((Connell,  1987;  Donald et al.,  1994) and
+many  others)  or  flocking  (Reynolds,  1987;  Mataric,
+1994a)."
+      Group Architecture
+         Abilities of robots
+         homo/heterogeneity
+         Central or not
+         Task coverage (parker 1994)
+            Ability of a given team member to do a task
+            Maximal in homogeneous groups
+         Communication structures
+            Via environment, e.g. stigmurgy
+            Via sensing, robots can tell each other from environmental obstacles
+               Flocking and pattern formation
+            Via communication
+               Explicit sending and receiving of messages
+               Signboards, diffusion of messages
+         Modeling of other agents
+            Box and bar pushing without communication
+      Resource conflict resolution
+      Origins of cooperation
+         Eusocial is emergent, gentically programmed group behaivor 
+         Cooperation is an intentional desire to cooperate to maximize individual utility
+         Not intrested in explicitly designed cooperation (good, I'm not either)
+         Learning control parameters to maximize perceived utility
+            Cites Yanco & Stein 1992!
+      Geometric problems
+         Path planning, formations, patterns in space   
+         Formation and marching are a useful tool for caging manipulation
+         Amount of information available affects solubility of problem
+         Formation is optimally solved in computational geometry as "geometric matching under isometry" 
+
+SWARM ROBOT MATERIALS HANDLING PARADIGM FOR A MANUFACTURING WORKCELL
+Keith L. Doty  and Ronald E. Van Aken 1993
+   Paper is working on materiels handling to work areas for some process
+   Adaptable in the face of changes to the processs
+   Devices that need materials emit brodcast requests
+   Robots detect requests, can load and unload machines, and carry material
+   Machines take parts and finsih them
+   No learning
+   Machines ask for materials, but aren't told if it's on the way
+   Robots wander randomly when they're not tracking a request for material RFM
+   Not competetive with actual scheduling, but functional
+
+Path Planning and Motion Coordination in Multiple Mobile Robot Teams
+Lynne E. Parker
+   Becomes a problem in my system when the user specifies waypoints
+   Don't want to wedge all the robots when passing through a narrow area
+   But also don't want to plan the paths and timings of all robots and encode in programs for each robot
+   Need a reactive approach
+   General optimal planning is PSPACE-hard
+   A* exponentioal in dimensions of configuration space, and so in number of robots
+   Decoupled planners plan individually, and then resolve collosions/conflicts
+   Motion coordination doesn't need advance planning for swarming or flocking, but does need reactivity
+   Coupled, centralized
+      Whole swarm considered as a composite system, classical planning 
+      Potential fields can be used (could also be used decentralized and decoupled)
+      Tend to computational intractability without using some form of dimensionality reduction
+   Decoupled
+      Prioritized or not
+      Path coordination
+         Plans paths and then plans velocities
+         So where robot paths intersect, they miss each other in time/space
+   Motion coordination
+      Reactive, dealing with problems while moving on the path
+      Traffic controls, like yeild to oncoming traffic
+   Table 1 is cool, doesn't copy/paste well, lists swarm behaviors
+
+New Potential Functions for Multi robot path planning : SWARM or SPREAD
+Sung-hwan Kim, Gyungtae Lee, Inpyo Hong, Young-Joo Kim, Daeyoung Kim
+   Artificial potential fields with priority selection between robots
+   New potentials based on priority
+   Avoids local minima in APF
+   Distance to goal is used as a multiplication factor so that goal is always lowest point
+   Potential field is calculated per-robot, rather than all over 
+
+Multi-Robot Path-Planning Based on Implicit Cooperation in a Robotic Swarm 
+Guillaume Beslon, Frederique Biennier, Beat Hirsbrunner 
+   Reactive material handling agents in a conveying task
+   Stigmurgic strategies
+   Each agent has a beacon
+   Each agent beacon re-emits any beacon that it detects
+   So shadows of machines and agents are filled in by the beacons on those agents
+   Front sector of mobile agents doesn't emit, so they don't do head-on collisions
+      Also, they random walk when shadowed by another agent, avoiding collisions
+
+Handbook of Robotics, Ch 40 Multiple Mobile Robot Systems
+Lynne E. Parker
+   Makes distinction between collective swarm and intentionally coooperative systems
+   I'm doing a more collective swarm than intentionally cooperative 
+   Has similarity to elements of the Parker paper above, in terms of taxonomizing
+
+
+From real robot swarm to evolutionary multi-robot organism
+S. Kornienko, O. Kornienko, A. Nagarathinam, P. Levi
+   Jasmine robots, and some talk about self assembly, which Jasmine can't do
+   Jasmine docking guided by IR sensors
+   Planar self-assembly via IR signalling
+   Robots controlled by petri-net, has a high-level description of the robots including the "genes" for the full organism as well as the individual robot
+
+No Robot Left Behind: Coordination to Overcome Local Minima in Swarm Navigation
+Leandro Soriano Marcolino and Luiz Chaimowicz
+   Some robots are rescuers, help others out of local minima
+   "In  order  to  compute  the  gradient
+forces,  robots  must  know  their  global  position.  This  is  a
+strong assumption, but it is generally accepted when dealing
+with  swarm  navigation."
+   I'm not assuming that
+   Robots do gradient descent/ascent to the zero isocontour of a 3D surface whose value is less than zero inside its boundary and great outside its boundary
+   Rescuers can go push stuck robots by approaching them (altering the local potentail field)
+   Trapped robots repel all non-rescuers, so local minima don't fill up with robots
+   Rescuers self-elect, trapped robots approach rescuers, rescuers retrace path to lead
+
+A Multiagent Planning Architecture
+David E. Wilkins and Karen L. Myers 1998
+   MPA defines a uniform interface for agents
+   Shared plan representation
+   Metalevel agents that work on the interactions between other agents
+   Emphasis on application to large scale planning
+   Planning cell
+      Collection agents
+      Two distingiushed agents
+         Cell manager
+            Composes cell from agent pool
+            Distributes task
+         Plan server
+            Warehouse of plan parts and information
+   Act formalism for storing shared plan representation
+   Message passing among agents
+   This is a multiagent planner in that it uses multiple agents to create a plan, not because it makes plans for multiple agents
+
+IMPACTing SHOP: Putting an AI Planner into a Multi-Agent Environment 
+Jurgen Dix, Hector Munoz-Avila, Dana S. Nau, Lingling Zhang 
+   Multiple agents
+   Multiple infromation sources
+   Mixed symbolic/numeric reasoning
+      Pretty normal for planners by 2k2, isn't it?
+   Paper doesn't address multiple planning agents
+   Shop does hierarchical task network planning
+
+ZEUS: A Toolkit for Building Distributed Multi-Agent Systems
+Hyacinth S. Nwana, Divine T. Ndumu, Lyndon C. Lee & Jaron C. Collis
+   Seems really unrelated, largely about building pure-software agents for undefined problems
+   It also seems a lot like trying to implement web services. Like, call programs on other computers to do tasks
+   I'm not sure there's any reason to be talking about this as agents
+
+What was the point of agents anyway?
+   Something to do with Minsky's Society of Mind? 
+   Agent-based systems appear to have some idea of seperation of concerns for agents, with each one having a particular responsibility. 
+   Not seeing any reason this couldn't be done with e.g. a library...
+   Natural-language interaction, with a conversational agent, but again, this is a UI concern
+   Agents can drive themselves, based on sensing their environment and context
+   Agents can act without people controlling them
+
+Integrating Agent-Based Mixed-Initiative Control With An Existing Multi-Agent Planning System
+Mark Burstein, George Ferguson, and James Allen
+   Mixed-initiative control 
+   Wraps a non-agent planner in an interface so other agents can communicate with it
+      Cool and all, but RPC doesn't deserve this level of discussion
+   Multi-agent planning in general appears to refer to planning by multiple agents, not for them
+
+I should check that I'm not too close to Mataric's behavior-based synthesis of collective behaviors (1992-1994)
 
 Things to look into: 
 Multi-objectivization (Trianni and Lopes-Ibanez, 2014) 
