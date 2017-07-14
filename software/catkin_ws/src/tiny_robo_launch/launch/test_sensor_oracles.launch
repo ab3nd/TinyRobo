@@ -32,6 +32,9 @@
    <!-- Distance oracle -->
    <node pkg="distance_oracle" type="distance_oracle_server.py" name="fake_range_service" output="screen"/>
 
+   <!-- Network service -->
+   <node pkg="network_service" type="network_server.py" name="fake_net_service" output="screen"/>
+
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
    	<param name="robot_id" value="19" type="int"/>
