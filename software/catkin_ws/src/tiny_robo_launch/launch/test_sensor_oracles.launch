@@ -33,26 +33,23 @@
    <node pkg="distance_oracle" type="distance_oracle_server.py" name="fake_range_service" output="screen"/>
 
    <!-- Network service -->
-   <node pkg="network_service" type="network_server.py" name="fake_net_service" output="screen"/>
+   <node pkg="network_service" type="network_server.py" name="fake_net_service" output="screen">
+      <param name="txRange" value="2" type="double"/>
+   </node>
 
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
-   	<param name="robot_id" value="19" type="int"/>
-   </node>
-   
-   <!-- client for the laser ranges -->
-   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_5" output="screen">
-   	<param name="robot_id" value="5" type="int"/>
-   </node>
-   
-   <!-- client for the laser ranges -->
-   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_9" output="screen">
    	<param name="robot_id" value="9" type="int"/>
    </node>
-
+   
    <!-- client for the laser ranges -->
-   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_15" output="screen">
-   	<param name="robot_id" value="15" type="int"/>
+   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_2" output="screen">
+   	<param name="robot_id" value="2" type="int"/>
+   </node>
+   
+   <!-- client for the laser ranges -->
+   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_6" output="screen">
+   	<param name="robot_id" value="6" type="int"/>
    	<param name="angleMin" type="double" value="-1.745"/>
 	<param name="angleMax" type="double" value="1.745"/>
 	<param name="angleIncrement" type="double" value="0.1745"/>
