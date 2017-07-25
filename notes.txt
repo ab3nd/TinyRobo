@@ -969,4 +969,171 @@ Ok, so Gapps has programs that are evaluated kind of like the way I was planning
 
 Looks like people either have compilation into a rule set from a high-level representation, but for closed domains, or have software development required of the user?
 
+7/24
+
+Human Interaction With Robot Swarms: A Survey
+Andreas Kolling ; Phillip Walker ; Nilanjan Chakraborty ; Katia Sycara ; Michael Lewis
+http://ieeexplore.ieee.org/document/7299280/
+
+Survey of Human-Swarm Interaction (HSI)
+
+Explicitly indicates that swarms are distributed, individual robots might not be effective
+
+Reasons to have an operator
+	"1) recognize and mitigate shortcomings of the autonomy; 2) have available “out-of-band” information not accessible to the autonomy and that can be utilized to increase performance; and 3) convey changes in intent as mission goals change."
+
+Paper outlines these as reseach questions
+    "How do the properties of the communication channel between operator and swarm affect HSIs, such as the ability to observe and control the swarm?"
+    	I approach this with the swarm vs. cloud representation, the "no visible robots" case would also be in this area
+    "How can an operator observe a swarm and its dynamics?"
+    	Top-down view...
+    "What are the different control methods used, and how do they affect the ability of an operator to control a swarm?"
+
+    "What is the relevance of the notion of levels of automation in HSI and how has it been exploited and studied?"
+
+    "How do swarm dynamics affect the ability of the operator to control the swarm?"
+
+There are a lot of swarm taxonomies
+	This paper discusses swarms based on methodologies, tasks, and algorithms
+	List bioinspired, control theoretic, amorphous, and physics
+		I touch on all of those except control theoretic
+			Ionnas's work is control theoretic, though
+		Control theory has formal methods for defining whether human control input is theoretically possible for a task
+			I think programming via desired end states might sidestep this, unless you can't draw the result desired...
+
+Mentions use of belwethers in swarm control
+
+Task type list is of interest as "primitive" behaviors
+	Aggregation and Rendezvous
+	Deployment and Area Coverage
+		Including art gallery problem
+	Flocking and Formation control
+		Control theory shows up a lot here
+		Boids
+	Foraging and transport
+		Including minimal paths
+		Caging manipulation
+
+Cognitive complexity
+	Fan-out and neglect tolerance in independent tasks
+	"A different form of control, such as designating a region to be searched by drawing it on a map, can command an arbitrary number of robots with a single operator action, as long as the interactions between the robots (such as preventing collisions) can be handled autonomously. In this case, the number of actions the operator must take are independent of the number of robots, and thus, control is O(1) , allowing one (or a fixed number of) human operator(s) to control any number of robots. "
+		That's what I'm shooting for
+	Useful point is that if the user has to coordinate inter-robot interactions, scaling can be exponential
+		So REALLY don't do that
+
+Communication 
+	State has to get back to the user somehow
+		I've just kind of assumed I have a magic eye in the sky
+		Although the zero robot case is of interest because it assumes your magic eye is nearly blind
+	Work has been done on bandwidth as far as receiving robot updates
+		don't have to have perfect data on the whole swarm
+		this supports e.g. the use of the cloud view
+	Proximal interaction is cool, but I'm not doing it
+
+State Estimiation and Visualization
+	-> I should include a section on this <-
+		few, many, cloud, no visuals
+	"For example, a visualization of forces might aid comprehension for an operator familiar with attractive and repulsive forces. Very little research, however, has investigated these ideas."
+	Centroid + std Dev is sufficient for target search and navigation
+		S. Nunnally, P. Walker, A. Kolling, N. Chakraborty, M. Lewis, K. Sycara, M. Goodrich, "Human influence of robotic swarms with bandwidth and localization issues"
+		So my cloud model is supported
+
+The control types they identify are 
+    "switching between algorithms that implement desired swarm behaviors;"
+    "changing parameters of a swarm control algorithm;"
+    "indirect control of the swarm via environmental influences;"
+    "control through selected swarm members, typically called leaders."
+    Heh. Select None. I'm having the compiler select parameters and algorithms
+    	This saves the operator from having to know how the various algorithms will cause the swarm to move/behave
+    Z. Kira, M. Potter, "Exerting human control over decentralized robot swarms", Proc. 4th Int. Conf. Auton. Robot. Agents, pp. 566-571, 2009.
+    	Looks interesting, in that there are virtual particles exerting pull on robots
+    		Would have to check in simulation to get the right positions, and then deploy those to robots
+    		Which sounds like a nightmare to make reactive in a dynamic environment
+    Personality of robots + hot/cold regions in environment
+    	H. Hexmoor, B. McLaughlan, M. Baker, "Swarm control in unmanned aerial vehicles", Proc. Int. Conf. Artif. Intell., pp. 911-917, 2005.
+    	Seems to assume localization
+    D. S. Brown, M. A. Goodrich, "Human-swarm interactions based on managing attractors", Proc. ACM/IEEE Int. Conf. Human-Robot Interaction, pp. 90-97, 2014.
+    	Flocking-task only
+    Environmental influences
+    	Nice if you can influence the environment
+    	B. Walter, A. Sannier, D. Reiners, J. Oliver, "UAV swarm control: Calculating digital pheromone fields with the GPU", J. Defense Model. Simulation: Appl. Methodol. Technol.,
+    		50k drones, in simulation
+    Leaders/belwethers 
+    	persistent, essentially the user teleoperators a leader or leaders
+    	Can also have no specific leader, but joystick an attractor or overall swarm desired direction
+
+
+Research Advance in Swarm Robotics
+Ying Tan, Zhong-yang Zheng
+	Focus on bioinspired
+	V. high-level overview, cites some stuff that might be useful if I have to e.g. justify that a particular technical challenge is surmountable
+
+"A multi-robot coverage approach based on stigmergic communication." Multiagent system technologies (2012): 126-138.
+Ranjbar-Sahraei, Bijan, Gerhard Weiss, and Ali Nakisaei. 
+	Stigmurgic communication for area coverage and intruder detection
+	Mentions that people have done stigmurgy with RFID and with ethanaol
+	Hasn't been implmented for real yet, but simulation looks good
+	Coverage based on driving in a circle and detecting when you cross over another robot's trail. 
+	I could actually do this based on an overhead projector and color sensors on the robots, or the top camera looking at the color of the white areas of the april tags to determine "pheremone concentration" over the area where the robot is currently located
+
+An Architecture for Swarm Robots
+K.A.Hawick, H.A.James, J.E.Story and R.G.Shepherd
+	PIC, TINI (probably not avaialable anymore), bluetooth module
+	Also essentially a souped-up toy
+		Used Cybot bases
+	Price breakdown as of writing, in UK pounds:
+		Cybot		42
+		TINI 		70
+		PIC 		 7
+		WaveLAN    110
+		misc.       18
+		Total      247
+	This was in 2k2, so 15 years old
+
+Formica 
+	http://warrantyvoidifremoved.com/formica
+	15-24 UK pounds
+	Cites a lot of other robot swarms
+	DIY motor drivers, P & N MOSFETs
+		Really clever merger of dual motor drivers using 6 MOSFETs instead of four, the H-bridges have a common center leg
+		4 drive lines because of using P & N MOSFETs so the outside legs have common drive pins
+	IR sensors
+		Distance sensing to obstacles based on intensity of reflection, this is also really clever
+	no wireless, at least no radio, can do IR comms
+	MSP430 controller
+	Direct drive by pager motors
+	The entire electrical design of these things is brilliant
+
+
+An Overview of Physicomimetics
+William M. Spears, Diana F. Spears, Rodney Heil, Wesley Kerr, and Suranga Hettiarachchi
+	robotic behaviors based on solids, liquids, and gases
+	also known as artificial physics
+		Doesn't have to be natural physics, can have different fields and so on
+	Robot has to sense enough to detct "forces" and move enough to respond to them
+	Solids and crystals for formations
+		Synthetic aperature radar, beamforming
+	Solid/liquid transition is controlled by a parameter balancing attractive and repulsive forces
+	Gases for coverage and dispersion
+		Dominated by repulsive forces
+	By giving robots color plus different forces based on color, square lattices can be formed
+		mimics sodium/chlorine interaction in forming salt crystals
+	All done with local forces
+	Rotation of moving crystal through obstacle field is an emergent quality
+	Liquids can also flow through obstacles while maintaining connectivity
+		Connectivity draws a lot of research, so this is a really cool result
+	Adding brownian motion to gas gives it better area coverage for a sweeping traversal of an area
+	Applied genetic algorithims to tune parameters
+		Got good results even with losing up to 75% of the robots
+		Or with losing 75% of the sensor accuracy	
+
+
+Off topic, is firefly synchronization applicable to underwater gliders?
+	Surface, and you can reach anyone already on the surface
+	So surface, wait a random amount of time, and dive, emitting a "We dive!" signal when you do
+	If you hear a "We dive!" signal, dive immediately
+	Stay down for a fixed period
+	I think this will eventually collect all the gliders into one synchronous swarm
+
+Can I get battery level monitoring in my system? Maybe an ADC-capable GPIO?
 

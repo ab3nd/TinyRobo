@@ -246,14 +246,31 @@ To Do:
 7/14
 - Committed changes to cloud registration for wheelchair, seems to be a lot more stable now
 
-
-      
-Wheelchair:
+7/17-721
 - Find out what branch marcus was referring to
 - Try to pull changes for doing multi-point views after failing on point view
 - Image wheelchair laptop again before merging
+- Bad attempt to add infinitam
+- started better attempt to add infinitam to scooter
+- No swarm work
+- Added grasping in base cloud
 
+7/23
+- Edits to paper for HardwareX
+   - Are there any other open-source hardware journals?
 
+7/24
+- Scooter work to add infinitam
+- Paper from Holly
+
+7/25
+- Demo/meeting with Dave Kontak
+- Read a bunch of papers (see notes file)
+- Thinking about representation of interpreted user input for compiler
+   - probably json data structures, don't see a lot of reason for anything much more complex at the moment
+
+      
+Wheelchair:
 
 Gesture Experiment
 - Add image of robot to recruitment poster
@@ -261,7 +278,6 @@ Gesture Experiment
 - Post flyers
 
 Swarm control software
-- Write virtual network node
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 
 - look for papers on follow-the-leader, ant mills in robots
 - there are papers on developing a coordinate grid with only local sensing and messaging, get some references

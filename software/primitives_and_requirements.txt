@@ -1,0 +1,204 @@
+It looks like the first pass of the compiler would convert the user gestures in whatever format into some constant
+JSON format, which I guess is my Intermediate Representation, and then the next pass would expand that into the 
+set of avaialable primitives. The availability of primitives would be based on metaparameters to the compiler
+that describe the abilities of the system, and implementations of primitives would be based on the parameters as well.
+So e.g. finding an object might be a regular grid search, or brownian motion + beaconing, etc. 
+This heuristic system would be based on work in the literature, so that e.g. traveling to a specfic point may only be
+avaialable if global localization is available, or forming a circle may depend on various levels of robot sensing ability.
+So I'll need implementations of each primitive, as e.g. GCPR rules, and a heuristic table for retreiving them
+So I'll need a list of primitives and a set of taxonomies of swarm capabilities
+Given a list of primitives, come up with an implmentation per combination of swarm abilities
+or possibly implement as needed vs. determining it's not possible
+Can have some complicated dependencies, like local shape formation may depend on or be limited by the ability to form a 
+local coordinate system, which may in turn be limited by the ability to communicate or sense other robots. 
+It may be possible to specify a logical representation of the depenencies, which would then be used to determine whether 
+it is possible to generate the program. 
+
+If there's a need to specify which robots get which programs, that's informed by user gestures, so it should happen as 
+part of the IR generation, but before the primitive availability heuristics get used. 
+That way also leaves it open to highly heterogeneous swarms, as they may end up with different primitive availabilities.
+
+
+
+Primitives and their required abilities
+
+	Edge-following (Kilobots)
+
+	Gradient Formation (Kilobots)
+
+	Localization (local) (Kilobots)
+
+	Produce Coordinate System (Amorphous)
+
+	Orient To Robot (Stupid)
+
+	Match Heading To Robot (Stupid)
+
+	Follow Robot (Stupid)
+
+	Avoid Robot (Stupid)
+
+	Orient for Orbit (Stupid)
+
+	Orbit Robot (Stupid)
+
+	Avoid Many Robots (Stupid)
+
+	Disperse From Source (Stupid)
+
+	Disperse Uniformly (Stupid)
+
+	Follow The Leader (Stupid)
+
+	Orbit Group (Stupid)
+
+	Navigate Gradient (Stupid)
+
+	Cluster on Source (Stupid)
+
+	Cluster Into Groups (Stupid)
+
+	Detect Edges (Stupid)
+
+	Morphogen Gradients and Position (Catalog)
+		Local communication
+
+	Chemotaxis and Directional Information (Catalog)
+		Local communication
+		Morphogen gradients
+
+	Local Inhibition and Local Competition (Catalog)
+		Local random process
+		Local communication
+
+	Lateral Inhibition and Spacing (Catalog)
+		Same as Local inhibition (but with a limited range)
+
+	Local Monitoring (Catalog)
+		Local Communication
+
+	Quorum Sensing and Counting (Catalog)
+		Local Communication
+
+	Checkpoings and Consensus (Catalog)
+		Local communication
+
+	Random Exploration and Selective Stabilization (Catalog)
+
+
+Catalog -> http://groups.csail.mit.edu/mac/users/radhi/nagpal-esoa03.pdf
+Kilobots -> http://science.sciencemag.org/content/345/6198/795.full
+Amorphous -> http://dl.acm.org/citation.cfm?id=332842
+Programming -> https://ocs.aaai.org/Papers/Symposia/Spring/2003/SS-03-02/SS03-02-024.pdf (Nagpal on OSL)
+Stupid -> https://people.csail.mit.edu/jamesm/publications/McLurkin-SM-MIT-2004(72dpi).pdf
+
+Behaviors and their primitives
+
+	Boid-style flocking
+
+	Foraging Search
+
+	Source Search 
+
+	Moving to a specified object
+
+	Moving to a specified location
+
+	Aggregation (Scholar, SwarmEng)
+
+	Pattern Formation (Scholar, SwarmEng)
+
+	Chain Formation (Scholar, SwarmEng)
+
+	Self-Assembly (Scholar, SwarmEng)
+
+	Object Clustering/Assembling (Scholar, SwarmEng)
+
+	Collective Exploration (Scholar, SwarmEng)
+
+	Collective Motion (Scholar, SwarmEng)
+
+	Collective Transport (Scholar, SwarmEng)
+
+	Consensus Generation (Scholar, SwarmEng)
+
+	Allocation to Tasks (Scholar, SwarmEng)
+
+	Fault detection (Scholar, SwarmEng)
+
+	Group Size Regulation (Scholar, SwarmEng)
+
+
+Scholar -> http://www.scholarpedia.org/article/Swarm_robotics#Collective_behaviors
+Same author as Swarm Eng
+
+Scholar lists 5 categories
+	1. Spatially organizing
+	2. navigation
+	3. decision-making
+	4. human interaction <- stuff like gesture recognition or receiving commands
+	5. other <- really? That's a category?
+
+Review -> An Extensive Review of Research in Swarm Robotics
+Yogeswaran Mohan, S. G. Ponnambalam
+	Lists search, retrieve, deposit, return, rest as ant behaviors
+	Has kind of a taxonomy of research areas in swarms
+
+SwarmEng -> Swarm robotics: a review from the swarm engineering perspective
+Manuele Brambilla · Eliseo Ferrante · Mauro Birattari · Marco Dorigo
+
+A Taxonomy for Swarm Robots
+G. Dudek, M. Jenkin, E. Milios, D. Wilkes
+	Size
+		1 robot
+		Pair
+		N small relative to task or env
+		Effectively infinite
+	Communication Range
+		None
+		Local
+		Global
+	Comminication Topology
+		Broadcast
+		Addressed
+		Tree
+		Graph
+	Communication Bandwidth
+		High - cost is negligible
+		Motion - cost is on par with moving
+		Low - cost is worse than moving
+		Zero - No communication
+	Configurability
+		Static arrangement in space
+		Coordinated rearrangement with communication
+		Dynamic arrangement, anyone can go anywhere
+	Unit processing ability
+		Summation
+		Finite State Automata
+		Push-down automata
+		Turing machine <- Most robots
+	Composition (applies to hardware and software, so same hardware/different software is a thing)
+		Heterogeneous
+		Homogeneous
+
+Iocchi Taxonomy
+	Levels
+		1. Cooperation (or not)
+		2. Cooperating: aware of each other or not
+		3. Cooperating and aware: strongly, weakly, or not coordinated
+		4. Cooperating, aware, and strongly coordinated: Strongly, weakly, or not centralized
+
+An Introduction to Swarm Robotics
+Iñaki Navarro and Fernando Matía
+	Cites some implementations of various swarm behaviors
+
+Swarm Robotics: From Sources of
+Inspiration to Domains of Application
+Erol Sahin
+	"As our starting point, we propose the following definition for the term swarm robotics: Swarm
+robotics is the study of how large number of relatively simple physically embodied agents can be
+designed such that a desired collective behavior emerges from the local interactions among agents
+and between the agents and the environment."
+	Good definition, that
+
+	

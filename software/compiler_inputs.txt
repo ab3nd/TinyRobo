@@ -1,0 +1,148 @@
+# Note, real JSON doesn't permit comments
+# So if I want this with no comments in it, I can just use grep -v "#" and remove every line with a # in it
+# https://github.com/ab3nd/TinyRobo/wiki/Primitive-behaviors
+
+#Some "types"
+
+#Point is a point in the physical coordinate space used by the swarm
+#Could be 2D or 3D, and what that coordinate space is, is an open question
+{"Point":[x,y]}
+
+#Robot is just a numeric identifier for now
+{"Robot":id}
+
+# It looks like the first pass of the compiler would convert the user gestures in whatever format into some constant
+# JSON format, which I guess is my Intermediate Representation, and then the next pass would expand that into the 
+# set of avaialable primitives. The availability of primitives would be based on metaparameters to the compiler
+# that describe the abilities of the system, and implementations of primitives would be based on the parameters as well.
+# So e.g. finding an object might be a regular grid search, or brownian motion + beaconing, etc. 
+# This heuristic system would be based on work in the literature, so that e.g. traveling to a specfic point may only be
+# avaialable if global localization is available, or forming a circle may depend on various levels of robot sensing ability.
+# So I'll need implementations of each primitive, as e.g. GCPR rules, and a heuristic table for retreiving them
+# So I'll need a list of primitives and a set of taxonomies of swarm capabilities
+# Given a list of primitives, come up with an implmentation per combination of swarm abilities
+# or possibly implement as needed vs. determining it's not possible
+# Can have some complicated dependencies, like local shape formation may depend on or be limited by the ability to form a 
+# local coordinate system, which may in turn be limited by the ability to communicate or sense other robots. 
+# It may be possible to specify a logical representation of the depenencies, which would then be used to determine whether 
+# it is possible to generate the program. 
+
+# If there's a need to specify which robots get which programs, that's informed by user gestures, so it should happen as 
+# part of the IR generation, but before the primitive availability heuristics get used. 
+# That way also leaves it open to highly heterogeneous swarms, as they may end up with different primitive availabilities.
+
+# Move the robots to area A
+# "MoveTo" is a primitive, behavior is implemented by the compiler
+# could be done using local or global coordinates, heading/distance, brownian motion, etc. 
+{"MoveTo":[Point]}
+
+# Move the robots to area A with a wall in the way
+# Assuming we can do waypoint following, we do this, and hit successive waypoints in turn
+# How the actual "hitting" works again depends on global v. local coordinate space
+{"MoveTo":[Point, Point, ...]}
+
+# Stop 
+# This is an out-of-band thing, but could also be a primitive that's compiled as a program consisting of "do nothing"
+# null is a valid JSON keyword
+{"Stop":null}
+
+# Divide around an obstacle
+# Assign robots to groups and then assign programs to groups?
+# Consider what happens if a robot is in more than one group. Maybe just take whatever assignment was done last?
+# If that's the case, assignment should be done first, and program transmission last
+{"AssignGroup":{"robots":[Robot, Robot, ...], "group": 0}
+{"GroupProg":{"group":0, "prog":{"MoveTo":[Point, Point, ...]}}}
+{"AssignGroup":{"robots":[Robot, Robot, ...], "group": 1}
+{"GroupProg":{"group":1, "prog":{"MoveTo":[Point, Point, ...]}}}
+{"AssignGroup":{"robots":[Robot, Robot, ...], "group": 2}
+{"GroupProg":{"group":2, "prog":{"MoveTo":[Point, Point, ...]}}}
+
+# Divide into two groups
+# Pretty much the same as dividing around an obstacle
+# Whether there's waypoint following or not kind of depends on user input
+# Just clicking a point doesn't specify a route, but dragging does?
+# Or consider how straight the line is that the user drew, and whether it intersects obstacles?
+# Of course, that assumes the system knows where the obstacles are
+{"AssignGroup":{"robots":[Robot, Robot, ...], "group": 0}
+{"GroupProg":{"group":0, "prog":{"MoveTo":[Point]}}}
+{"AssignGroup":{"robots":[Robot, Robot, ...], "group": 1}
+{"GroupProg":{"group":1, "prog":{"MoveTo":[Point]}}}
+
+
+# Merge two groups
+# Move the groups to the same point, and unassign the group memberships
+# If group assignment just ends after every move, there's no need for explicit unassignment, and none of the tasks 
+# seem to call for assignment to a specific group to remain in place for a long period
+{"GroupProg":{"group":0, "prog":{"MoveTo":[Point]}}}
+{"GroupProg":{"group":1, "prog":{"MoveTo":[Point]}}}
+{"UnassignGroup":[0,1]}
+
+# Move one group of robots to one location and the other group to the other location
+# Pretty much the same as dividing into two groups
+
+# Form a line
+# A line is a special case of a polygon
+{FormPolygon:[Point, Point, ...]}
+
+# Form a square
+# If it's not all the robots, there would have to be an AssignGroup, and then the group would form the polygon
+{FormPolygon:[Point, Point, ...]}
+
+# Move the box to area A
+# Tempting to do this as:
+{FormPolygon:[Point, Point, ...]}
+{MovePolygon:[Point]}
+# Which is forming a polygon around the box, and then moving the polygon center to the designated point
+# Alternatively, if I go with a semantics that's all about desired end state of the world
+{"Object":"Box", "Location": Point}
+# A similar semantic method could be used for moving robots
+{"Object": Robot, "Location": Point}
+# Or even a list of desired goals
+[{"Object": Robot, "Location": Point}, {"Object": Robot, "Location": Point}, {"Object": Robot, "Location": Point}, ...]
+# Where each goal is tackled after the previous one is satisfied
+
+# Patrol the screen border
+# Patrol area A
+# Seems to me to consist of moving to the patrol region and then moving either around its perimiter, or inside it
+# In the case of moving to the perimiter and along it, the perimeter itself should be attractive (pheremone model)
+# and the robot's motion should remain non-zero. Alternatively, it could just be a loop of 
+[{"MoveTo":Point}, {"MoveTo":Point}, ...]
+# And if we assume that the user input parsing always orders the points of a polygon (clockwise or counterclockwise)
+# then we don't get the case that a robot hits the line and ends up going the wrong way relative to the others. Then
+# MoveTo and some obstacle avoiding does an OK job, unless there are too many robots for the line
+
+# Disperse over screen area
+# Disperse is a legit primitive for swarms, and there are like a zillion ways to do it
+{"Disperse":null}
+# Disperse over a fixed area is more complicated....
+{"DispersePoly":[Point, Point, ...]}
+# Assuming you have some form of localization, then the borders of the space need to be treated sort-of like other robots
+# Repellent if you are inside them, but attractive if you are outside them
+
+# Mark defective robot
+# As a program, this could be 
+{"MarkDefective":Robot}
+# but this is a directive to the compiler, and so is sort of a header/metaparameter that affects the program 
+# generation, but isn't actually apparent in the general program. 
+# Causes compiler to not include that robot in planning
+# May cause othe robots to consider the defective robot an obstacle or something rather than a robot
+# Other metaparameters could affect the decision of what type of rules to use for the actual robot programs
+# e.g. 
+# {"HasGlobalLocalization":false, "HasLocalLocalization":true, "RobotsCanCommunicate": true, "CommRange": 0.3}
+# and so on, to define the type of swarm used. Kind of asking for some sort of exponential blowup, unless
+# there's essentially a lookup table for how each behavior is implemented under each configuration
+# Could initially be populated from a taxonomy paper or two, plus papers on how to do specific behaviors
+# under a given limitation or set of constraints
+
+# Remove defective robot
+# Could be treated as an example of moving the box, and just have the other robots move it out of the way
+# In the desired-state semantics
+{"Object": Robot, "Location":Point}
+# As-stated here, this is ambiguious with instructing the robot to move itself to that point
+# Could be disambiguated with the compiler having a "MarkDefective" operation, so it would have
+{"MarkDefective":Robot}
+{"Object": Robot, "Location":Point}
+# And since the robot is known defective by the time the object-move goal is set, the program generation would be able
+# to figure out that the robot should be moved by others, rather than moving itself
+
+
