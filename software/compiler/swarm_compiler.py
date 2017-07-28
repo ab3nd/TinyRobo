@@ -22,3 +22,23 @@
 # If there's a need to specify which robots get which programs, that's informed by user gestures, so it should happen as 
 # part of the IR generation, but before the primitive availability heuristics get used. 
 # That way also leaves it open to highly heterogeneous swarms, as they may end up with different primitive availabilities.
+
+def loadIR(infile):
+	pass
+
+def loadSwarmSpec(infile):
+	pass
+
+def loadCapMap(infile):
+	pass
+
+
+if __name__=="__main__":
+	#Load the file describing the desired task
+	loadIR("./test_IR.json")
+	#Load the file describing the swarm
+	loadSwarmSpec("./test_spec.json")
+	#Load the file desribing the mapping of swarm capabilities to GCPR implementations
+	loadCapMap("./test_capacities_map.json")
+	
+	print "So implement the compiler!"
