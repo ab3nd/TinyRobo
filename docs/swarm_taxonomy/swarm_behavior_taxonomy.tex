@@ -12,6 +12,7 @@
 \usepackage{auto-pst-pdf}
 \usepackage{graphviz}
 \usepackage{microtype}
+\usepackage{enumitem}
 
 %opening
 \title{A Hierarchy of Swarm Robot Behaviors}
@@ -36,7 +37,51 @@ An action, such as sensing or moving forward, does not have a context, whereas b
 For example, the swimming of fish is an action, but when a group of fish swim close together in the same direction, this schooling is a behavior. 
 Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming is the behavior. 
  
-McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved \cite{mclurkin2004stupid}. 
+McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved \cite{mclurkin2004stupid}.
+
+\begin{enumerate}[noitemsep]
+\item Motion
+	\begin{enumerate}[noitemsep]
+	\item Move Arc
+	\item Move Stop
+	\item Move Forward
+	\item Move By Remote Control
+	\item Avoid Bump
+	\end{enumerate}
+\item Orientation
+	\begin{enumerate}[noitemsep]
+	\item Orient for Orbit
+	\item Orbit Robot
+	\item Orient to Robot
+	\item Match Robot Heading
+	\item Follow Robot
+	\end{enumerate}
+\item Navigation
+	\begin{enumerate}[noitemsep]
+	\item Follow the Leader
+	\item Orbit Group
+	\item Navigate Gradient
+	\end{enumerate}
+\item Clustering
+	\begin{enumerate}[noitemsep]
+	\item Cluster On Source
+	\item Cluster With Breadcrumbs
+	\item Cluster Into Groups
+	\end{enumerate}
+\item Dispersion
+	\begin{enumerate}[noitemsep]
+	\item Avoid Robot
+	\item Avoid Many Robots
+	\item Disperse From Source
+	\item Disperse From Leaves
+	\item Disperse Uniformly
+	\end{enumerate}
+\item Utility
+	\begin{enumerate}[noitemsep]
+	\item Detect Edges
+	\end{enumerate}
+\end{enumerate}
+ 
 In that paper, the author uses the term ``primitive'' to refer to behaviors of a single robot, ``pair behaviors'' for two robots, and group behaviors for more than two robots. 
 McLurkin also has a set of actions that are, as described above, actions without contexts. 
 MoveArc, moveForward, rotateToAngle, and moveStop are all actions. 
@@ -45,7 +90,7 @@ MoveArc moves the robot on an arc, composed of forward and rotational velocity. 
 McLurkin groups the behaviors into six groups, motion, navigation, dispersion, clustering, orientation, and ``Utility". Under the proposed distinction between actions and behaviors above, the motion group is composed only of actions except for bumpMove, the collision avoidance behavior. 
 
 Nagpal proposes eight biologically inspired primitives for composing higher level behaviors \cite{nagpal2004catalog}. They are 
-\begin{enumerate}
+\begin{enumerate}[noitemsep]
 \item Morphogen gradients and positional information
 \item Chemotaxis and directional information
 \item Local inhibition and local competition
@@ -56,14 +101,71 @@ Nagpal proposes eight biologically inspired primitives for composing higher leve
 \item Random exploration and selective stabilization
 \end{enumerate}
 
-The behaviors of forming and navigating gradients and orbiting the edge of a group of robots are combined with group-based localization to allow Kilobots to form patterns much larger than the individual robots or their sensing range \cite{Rubenstein795}. 
+Morphogen gradients use local communication with hop counting to create a gradient from a source. 
+The source robot transmits a message with a hop count of 0; other robots retransmit the message when they receive it, incrementing the hop count. 
+As a result, the hop count becomes a rough proxy for distance from the source. 
+
+Chemotaxis and direction is implemented in terms of morphogen gradients, by allowing each robot to query its neighbors about their hop count/morphogen intensity. 
+This allows estimation of the direction of the local gradient, and so orientation towards or away from the source. 
+
+Local and lateral inhibition have a large collection of possible variants and applications. 
+Generally, they are used for electing individuals from the group. 
+Nagpal suggests that each agent start from a random number and count down, with the agent that hits zero first becoming the elected individual. 
+The elected individual broadcasts a message that suppresses all the robots that receive it from becoming the elected individual. 
+In a large group, a random countdown can lead to ties.
+If two robots select themselves within a time window smaller than that required for the suppressing message to propagate between them, they will both think they are leaders.
+Self-election timestamps could be used as tiebreakers in this case. 
+McLurkin suggests using globally unique robot IDs included in the suppression message, with each robot being suppressed if its ID is higher than the ID in the suppression message.
+This can still have ties while the gradient propagates, but will converge to one elected robot.
+ 
+Local monitoring uses heartbeat messages between local agents to keep track of the presence and activity of those neighbors. Failure to receive a message could trigger a response, such as moving to occupy a previously-occupied area to maintain sensor coverage.
+
+Quorum sensing uses the number of agents in an area, as measured by morphgen signals, to determine when enough agents are present to perform an action. 
+Checkpointing is a closely related behavior, where all agents that can detect if a desired condition is met emit a signal until they detect the condition is met. 
+When all agents agree that the condition has been satisfied, signals indicating that it is not will cease. 
+Checkpointing can be used to perform sequences of actions, provided that the robots can detect the desired transition point. 
+
+
 
 
 In addition to primitive behaviors, there are catalogs of higher level behaviors as well. 
 Brambilla et al group collective behaviors into four classes: spatially-organizing behaviors, navigation behaviors, collective decision-making and ``other collective behaviors''.
-This breakdown differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes some activities not seen in nature. 
+This breakdown differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviors using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
+For the purposes of this paper, the underlying metaphor of the implementation of the behavior is not of primary relevance, as long as the behavior remains the same. 
 
-Some of these behaviors are expressed in terms of tasks, such as moving from one location to another while transporting an object. 
+\begin{enumerate}[noitemsep]
+\item Spatially-organizing
+	\begin{enumerate}[noitemsep]
+	\item Aggregation
+	\item Pattern Formation
+	\item Chain Formation
+	\item Self-assembly and Morphogenesis
+	\item Object Clustering and Assembling
+	\end{enumerate}
+\item Navigation
+	\begin{enumerate}[noitemsep]
+	\item Collective Exploration
+		\begin{enumerate}[noitemsep]
+		\item Area Coverage
+		\item Swarm-guided Navigation
+		\end{enumerate}
+	\item Coordinated Motion
+	\item Collective Transport
+	\end{enumerate}
+\item Collective Decision-Making
+	\begin{enumerate}[noitemsep]
+	\item Consensus Achievement
+	\item Task Allocation
+	\end{enumerate}
+\item Other Collective Behaviors
+	\begin{enumerate}[noitemsep]
+	\item Fault Detection
+	\item Group Size Regulation
+	\end{enumerate}
+\end{enumerate}
+
+There is substantial overlap between these lists.
+
 
 \section{When We Say ``Swarm Robots''...}
 
@@ -80,66 +182,47 @@ Examining these assumptions may reveal unexplored regions of the space of possib
 
 
 \section{The Basic Pair of Assumptions}
+
+There are two basic assumptions that are common to a large amount of swarm robotic work. 
+\begin{enumerate}
+\item Robots can identify each other uniquely.
+\item Robots can communicate locally. 
+\end{enumerate}
+
+Local communication refers to the ability to communicate with some subset of the swarm.
+Depending on the implementation, particularly radio vs. infrared, this communication may depend on a clear line of sight between the robots. 
+
+Communicating robots can arrive at a consensus coordinate system using trilateration  based on range sensors \cite{cheng2005robust}, or use lateral inhibition to select individual robots to serve as beacons which create gradients for trilateration via hop counts \cite{nagpal1999organizing}.
+Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by communicating.
+Rather than directly determining range and bearing from sensors, the communicating robots exchange their coordinates, and calculate the ranges and bearings from their positions. 
+
 Robots can identify each other uniquely. Has to be unique for detecting e.g. circumnavigation of an object, transient or local names fail to re-identify and non-unique names lead to multiple identification.
 
-Robots can communicate locally. 
+Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviors from Stupid Robot Tricks \cite{mclurkin2004stupid}.
+The behaviors of forming and navigating gradients and orbiting the edge of a group of robots, combined with group-based localization, allow Kilobots to form patterns much larger than the individual robots or their sensing ranges \cite{Rubenstein795}.
 
-Local communication leads to lateral inhibition.
+Even if the robots do not start with unique identifiers, the formation of a consensus localization framework will provide one.
+Assuming that only one robot can be in a  location at a time, the robots can use their initial location as a unique identifier. 
+However, this assumes that the robots are all members of the same coordinate system.
+If the initial configuration of the robots is as more than one disconnected network, separated by regions wider than the robots can communicate across, they may arrive at multiple coordinate frames.
 
-Lateral inhibition can be used to elect a set of beacons.
-
-Beacons can be used to create gradients for trilateration via hop counts. This is known to be imperfect, but it can work %TODO Cite 
-
-Once the robots have beacons and can trilaterate, they can also do range and bearing of each other by communicating, where they swap what they think their coordinates are, and calculate the ranges and bearings from that. 
-
-%TODO discuss unification of coordinate frames
-
-Once they can do range and bearing, they can do a bunch of things.
-
-\begin{figure}[h]
-	\centering
-	\digraph[scale=0.6]{BehaviorDependencies}{
-	
-		edge [label="Edge Following"];
-		grad [label="Gradient Formation"];
-		local [label="Localization"];
-		move [label="Move Arc"];
-		avoid [label="Avoid Obstacles"];
-		orientToBot [label="Orient to Robot"];
-		head [label="Match Heading"];
-		follow [label="Follow Robot"];
-        avoidBot [label="Avoid Robot"];		
-		prepOrbit [label="Orient for Orbit"];
-		orbit [label="Orbit Robot"];
-		avoidMany [label="Avoid Many"];
-		disperseSrc [label="Disperse Source"];
-		disperseLeaves [label="Disperse Leaves"];
-		disperseUniform [label="Disperse Uniform"];
-		followLeader [label="Follow Leader"];
-		orbitGroup [label="Orbit Group"];
-		navigateGradient [label="Navigate Gradient"];
-		clusterSrc [label="Cluster at Source"];
-		clusterGroups [label="Cluster into Groups"];
-		detectEdge [label="Detect Edge"];
-		localInhib [label="Local Inhibition"];
-		lateralInhib [label="Lateral Inhibition"];
-		localMonitor [label="Local Monitor"];
-		quorum [label="Quorum Sensing"];
-		checkpoint [label="Checkpointing"];
-		randomExplore [label="Random Exploration"];
-		selectStable [label="Selective Stabilization"];
-	}
-	\caption{Dependencies between behaviors}
-\end{figure}
+%TODO how do people handle unifying coordinate frames? 
+%To solve this problem, the robots can count up how many robots are in their group, and store than number. 
+%When a robot communicates with a robot from a different coordinate system, there will likely be a detectable problem, such as the number of robots in the coordinate system differing, or their respective distances (measured from one robot's position in its coordinate frame to the other robot's position in the other coordinate frame) could be larger than the known range of communication. 
+%When such a case is detected, the robot from the smaller coordinate frame could localize to the larger frame by trilateration 
 
 \section{Non-communication}
-Various types of non-communication, no sending messages with content, no identification of is-a-robot vs. is-an-obstacle, stigmurgy.
 
-Separation of the network into small cells. 
+Even without communication, some forms of complex cooperative behavior are possible. 
+If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. 
 
-If you have too few robots, you can't trilaterate
+The TERMES robot swarm uses only local sensing of the environment, combined with local rules, to collaboratively construct structures from blocks \cite{werfel2014designing}. 
+The robots communicate via altering their environment, called stigmergy, but do not communicate with each other directly. 
 
-Some cooperative behavior is still possible (e.g. pushing towards a light source)
+A group of robots can rendezvous at a single location without communication or localization, but with the ability to detect another robot within its field of view \cite{yu2012rendezvous}. However, this paper makes some assumptions, such as the assumption that robots that are close enough will merge, that are not supported by the current state of the art. 
+
+%Separation of the network into small cells. 
+%If you have too few robots, you can't trilaterate
 
 \section{No Unique Names}
 
@@ -147,7 +230,7 @@ Can't circumnavigate a thing using another robot as a beacon
 
 \section {Sensing and Reacting to the Environment}
 
-McLurkin assumes that all swarm robots have a simple obstacle avoidance behavior that causes them to not hit each other or obstacles in the environment. %TODO Cite
+McLurkin assumes that all swarm robots have a simple obstacle avoidance behavior that causes them to not hit each other or obstacles in the environment \cite{mclurkin2004stupid}.
 
 Requiring tasks like patrolling an area, sensor overwatch of an area, moving an object all require the ability to recognize the area or the object. Without this sensing, any region of the featureless expanse looks like any other. 
 
@@ -155,3 +238,94 @@ Requiring tasks like patrolling an area, sensor overwatch of an area, moving an 
 \bibliographystyle{apalike}
 
 \end{document}
+
+%\begin{figure}[h]
+%	\centering
+%	\digraph[scale=0.6]{BehaviorDependencies}{
+%	
+%		//edgeFollow [label="Edge Following"];
+%		grad [label="Gradient Formation"];
+%		local [label="Localization"];
+%		move [label="Move Arc"];
+%		avoid [label="Avoid Obstacles"];
+%		orientToBot [label="Orient to Robot"];
+%		head [label="Match Heading"];
+%		follow [label="Follow Robot"];
+%        avoidBot [label="Avoid Robot"];		
+%		prepOrbit [label="Orient for Orbit"];
+%		orbit [label="Orbit Robot"];
+%		avoidMany [label="Avoid Many"];
+%		disperseSrc [label="Disperse Source"];
+%		disperseLeaves [label="Disperse Leaves"];
+%		disperseUniform [label="Disperse Uniform"];
+%		followLeader [label="Follow Leader"];
+%		orbitGroup [label="Orbit Group"];
+%		navigateGradient [label="Navigate Gradient"];
+%		clusterSrc [label="Cluster at Source"];
+%		clusterGroups [label="Cluster into Groups"];
+%		detectEdge [label="Detect Edge"];
+%		localInhib [label="Local Inhibition"];
+%		lateralInhib [label="Lateral Inhibition"];
+%		localMonitor [label="Local Monitor"];
+%		quorum [label="Quorum Sensing"];
+%		checkpoint [label="Checkpointing"];
+%		randomExplore [label="Random Exploration"];
+%		selectStable [label="Selective Stabilization"];
+%		senseNeighborBearing [label="Sense Neighbor Bearing"];
+%		senseNeighborRange [label="Sense Neighbor Range"];
+%		interstitialAvoid [label="Aim Between Robots"];
+%		
+%		clusterGroups -> navigateGradient;
+%		
+%		clusterSrc -> follow;
+%		
+%		navigateGradient -> interstitialAvoid;
+%		navigateGradient -> senseNeighborBearing;
+%		navigateGradient -> move;
+%		
+%		orbitGroup -> orbitRobot;
+%		orbitGroup -> senseNeighborRange;
+%		
+%		followLeader -> follow;
+%		
+%		disperseUniform -> senseNeighborBearing;
+%		disperseUniform -> senseNeighborRange;
+%		disperseUniform -> move;
+%		
+%		disperseLeaves -> avoidMany;
+%		disperseLeaves -> grad;
+%		
+%		disperseSrc -> avoidMany;
+%		
+%		avoidMany -> senseNeighborBearing;
+%		avoidMany -> move;
+%		
+%		orbit -> prepOrbit;
+%		orbit -> move;
+%		
+%		prepOrbit -> orientToRobot;
+%		prepOrbit -> senseNeighborRange;
+%		
+%		orientToBot -> senseNeighborBearing;
+%		orientToBot -> move;
+%		
+%		head -> orientToBot;
+%		head -> move;
+%		
+%		follow -> orientToBot;
+%		follow -> senseNeighborRange;
+%		follow -> move;
+%		
+%		avoidBot -> orientToBot;
+%		avoidBot -> move;
+%		
+%		local -> grad;
+%		local -> lateralInhib;
+%	
+%		navigateGradient -> grad;
+%
+%	}
+%	\caption{Dependencies between behaviors}
+%\end{figure}
+
+
