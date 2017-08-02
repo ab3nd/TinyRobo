@@ -19,6 +19,9 @@
 # It may be possible to specify a logical representation of the depenencies, which would then be used to determine whether 
 # it is possible to generate the program. 
 
+# After working through the lists of primives for swarms in McLurkin 2004, and Nagpal 2003, it seems like pretty much anything
+# can be implemented in terms of local communication. 
+
 # If there's a need to specify which robots get which programs, that's informed by user gestures, so it should happen as 
 # part of the IR generation, but before the primitive availability heuristics get used. 
 # That way also leaves it open to highly heterogeneous swarms, as they may end up with different primitive availabilities.
