@@ -13,6 +13,7 @@
 \usepackage{graphviz}
 \usepackage{microtype}
 \usepackage{enumitem}
+\usepackage{multicol}
 
 %opening
 \title{A Hierarchy of Swarm Robot Behaviors}
@@ -23,73 +24,97 @@
 \maketitle
 
 \begin{abstract}
-Because robotic swarms consist of multiple robots, there are behaviors available to them that are not available to single robots. Also, swarms present the possibility of emergent behavior at a greater scale than individual robots, by having emergent behaviors of the swarm implied, rather than explicitly defined, at the level of individual robots. These multiple levels of behavioral organization give rise to multiple, inter-related possible behaviors that a swarm of robots can exhibit. This paper examines the available behaviors starting from minimal assumptions about the swarm, and examines possible other families or heirarchies of behaviors that arise when those assumptions are not in force. It also proposes mechanisms for unifying swarm states that develop under suboptimal network conditions. 
+Because robotic swarms consist of multiple robots, there are behaviors available to them that are not available to single robots. Also, swarms present the possibility of behavior at a greater scale than individual robots, by having emergent behaviors of the swarm implied, rather than explicitly defined, at the level of individual robots. These multiple levels of behavioral organization give rise to multiple, inter-related possible behaviors that a swarm of robots can exhibit. This paper examines the available behaviors starting from minimal assumptions about the swarm, and examines possible other families or heirarchies of behaviors that arise when those assumptions are not in force. It also proposes mechanisms for unifying swarm states that develop under suboptimal network conditions. 
 
 \end{abstract}
 
 \section{Introduction}
 
-Numerous papers provide catalogs of primitive behaviors for robots 
-%TODO McLurkin, Nagpal, Termite paper, Kilobots
-The descriptions of these behaviors as ``primitive'' is meant to indicate that they are building blocks of more complex behaviors, and that they are not decomposable into smaller behaviors themselves. 
-Behaviors differ from ``actions''. 
+For the purposes of this paper, behaviors differ from ``actions''. 
 An action, such as sensing or moving forward, does not have a context, whereas behaviors are contextualized by interaction with other members of the swarm or the environment.
 For example, the swimming of fish is an action, but when a group of fish swim close together in the same direction, this schooling is a behavior. 
-Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming is the behavior. 
+Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming makes up the behavior of schooling. 
+
+Numerous papers provide catalogs of primitive behaviors for robots 
+The descriptions of these behaviors as ``primitive'' is sometimes meant to indicate that they are building blocks of more complex behaviors, or that they are not decomposable into smaller behaviors themselves. 
+Other papers describe behaviors as primitive because while the behavior does not complete a task in itself, it can be combined with other behaviors or actions to perform a useful task. 
+
+Designating some behaviors as primitive, while others are regarded as more advanced or complex, implies the existence of a hierarchy of behaviors, where complex behaviors are composed of more primitive behaviors, with the most primitive behaviors being closer to actions, as defined above. 
+The purpose of this paper is to explore which behaviors are available or not from given sets of basic actions.
+Such exploration is useful for creating a catalog of primitives that can be used in a compositional approach to program generation, both to define the primitives out of which programs can be composed, and provide some degree of assurance that these primitives can cover the space of possible tasks required from the swarm. 
+
+\section{When We Say ``Swarm Robots''...}
+
+Typically, a robot swarm consists of cooperating, autonomous robots with local sensing and communication and without central control or global information, situated in an environment that they can sense and modify \cite{brambilla2013swarm}.
+The cooperation element of this definition is important, as a swarm may be expected to perform actions as a group that they cannot perform as single individuals \cite{csahin2004swarm}. 
+These actions could be as simple as covering an area with sensor fields of vision, or as complex as moving an object from one point to another as a team. 
+The mobility of the agents also makes swarm robotics distinct from amorphous computing or sensor mesh networks, although swarms also take inspiration and techniques from those fields.  
+
+Numerous papers have proposed taxonomies of swarm robots, Brambilla \textit{et al}. provide an overview of these \cite{brambilla2013swarm}. 
+This paper is focused instead on the interrelationships of the behaviors available to a swarm, and the assumptions that those behaviors are predicated on. 
+Examining these assumptions may reveal unexplored regions of the space of possible swarm configurations. 
+
+%TODO cite work on moving in formation as related to, but not entirely required for, caging manipulation
+
+\section{Lists of Swarm Behaviors}
+
+One possible list of primitives is disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, and scan area \cite{evans2000programming}.
+
+McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved, but also grouped into six groups: motion, navigation, dispersion, clustering, orientation, and utility.
+
+McLurkin uses the term ``primitive'' to refer to behaviors of a single robot, ``pair behaviors'' for two robots, and group behaviors for more than two robots. 
+Under the proposed distinction between actions and behaviors above, the motion group is composed only of actions except for Avoid Bump, the collision avoidance behavior. Move Arc, Move Forward, Rotate To Angle, and Move Stop are all actions. 
+Move Arc moves the robot on an arc, composed of forward and rotational velocity. Move Forward, Rotate To Angle, and Move Stop are special cases of Move Arc, with, respectively, the rotational, translational, or both velocities set to zero. 
  
-McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved \cite{mclurkin2004stupid}.
+\cite{mclurkin2004stupid}.
+\begin{multicols}{2}
+	\begin{enumerate}[noitemsep]
+	\item Motion
+		\begin{enumerate}[noitemsep]
+		\item Move Arc
+		\item Move Stop
+		\item Move Forward
+		\item Move By Remote Control
+		\item Avoid Bump
+		\end{enumerate}
+	\item Orientation
+		\begin{enumerate}[noitemsep]
+		\item Orient for Orbit
+		\item Orbit Robot
+		\item Orient to Robot
+		\item Match Robot Heading
+		\item Follow Robot
+		\end{enumerate}
+	\item Navigation
+		\begin{enumerate}[noitemsep]
+		\item Follow the Leader
+		\item Orbit Group
+		\item Navigate Gradient
+		\end{enumerate}
+	\item Clustering
+		\begin{enumerate}[noitemsep]
+		\item Cluster On Source
+		\item Cluster With Breadcrumbs
+		\item Cluster Into Groups
+		\end{enumerate}
+	\item Dispersion
+		\begin{enumerate}[noitemsep]
+		\item Avoid Robot
+		\item Avoid Many Robots
+		\item Disperse From Source
+		\item Disperse From Leaves
+		\item Disperse Uniformly
+		\end{enumerate}
+	\item Utility
+		\begin{enumerate}[noitemsep]
+		\item Detect Edges
+		\end{enumerate}
+	\end{enumerate}
+\end{multicols} 
 
-\begin{enumerate}[noitemsep]
-\item Motion
-	\begin{enumerate}[noitemsep]
-	\item Move Arc
-	\item Move Stop
-	\item Move Forward
-	\item Move By Remote Control
-	\item Avoid Bump
-	\end{enumerate}
-\item Orientation
-	\begin{enumerate}[noitemsep]
-	\item Orient for Orbit
-	\item Orbit Robot
-	\item Orient to Robot
-	\item Match Robot Heading
-	\item Follow Robot
-	\end{enumerate}
-\item Navigation
-	\begin{enumerate}[noitemsep]
-	\item Follow the Leader
-	\item Orbit Group
-	\item Navigate Gradient
-	\end{enumerate}
-\item Clustering
-	\begin{enumerate}[noitemsep]
-	\item Cluster On Source
-	\item Cluster With Breadcrumbs
-	\item Cluster Into Groups
-	\end{enumerate}
-\item Dispersion
-	\begin{enumerate}[noitemsep]
-	\item Avoid Robot
-	\item Avoid Many Robots
-	\item Disperse From Source
-	\item Disperse From Leaves
-	\item Disperse Uniformly
-	\end{enumerate}
-\item Utility
-	\begin{enumerate}[noitemsep]
-	\item Detect Edges
-	\end{enumerate}
-\end{enumerate}
+
+Nagpal proposes eight biologically inspired primitives for composing higher level behaviors \cite{nagpal2004catalog}.
  
-In that paper, the author uses the term ``primitive'' to refer to behaviors of a single robot, ``pair behaviors'' for two robots, and group behaviors for more than two robots. 
-McLurkin also has a set of actions that are, as described above, actions without contexts. 
-MoveArc, moveForward, rotateToAngle, and moveStop are all actions. 
-MoveArc moves the robot on an arc, composed of forward and rotational velocity. MoveForward, rotateToAngle, and moveStop are moveArc, with, respectively, the rotational, translational, or both velocities set to zero. 
-
-McLurkin groups the behaviors into six groups, motion, navigation, dispersion, clustering, orientation, and ``Utility". Under the proposed distinction between actions and behaviors above, the motion group is composed only of actions except for bumpMove, the collision avoidance behavior. 
-
-Nagpal proposes eight biologically inspired primitives for composing higher level behaviors \cite{nagpal2004catalog}. They are 
 \begin{enumerate}[noitemsep]
 \item Morphogen gradients and positional information
 \item Chemotaxis and directional information
@@ -111,9 +136,9 @@ This allows estimation of the direction of the local gradient, and so orientatio
 Local and lateral inhibition have a large collection of possible variants and applications. 
 Generally, they are used for electing individuals from the group. 
 Nagpal suggests that each agent start from a random number and count down, with the agent that hits zero first becoming the elected individual. 
-The elected individual broadcasts a message that suppresses all the robots that receive it from becoming the elected individual. 
+The elected individual broadcasts a message that suppresses all the robots that receive it from electing themselves. 
 In a large group, a random countdown can lead to ties.
-If two robots select themselves within a time window smaller than that required for the suppressing message to propagate between them, they will both think they are leaders.
+If two robots elect themselves within a time window smaller than that required for the suppressing message to propagate between them, they will both think they are leaders.
 Self-election timestamps could be used as tiebreakers in this case. 
 McLurkin suggests using globally unique robot IDs included in the suppression message, with each robot being suppressed if its ID is higher than the ID in the suppression message.
 This can still have ties while the gradient propagates, but will converge to one elected robot.
@@ -125,12 +150,10 @@ Checkpointing is a closely related behavior, where all agents that can detect if
 When all agents agree that the condition has been satisfied, signals indicating that it is not will cease. 
 Checkpointing can be used to perform sequences of actions, provided that the robots can detect the desired transition point. 
 
-
-
-
-In addition to primitive behaviors, there are catalogs of higher level behaviors as well. 
-Brambilla et al group collective behaviors into four classes: spatially-organizing behaviors, navigation behaviors, collective decision-making and ``other collective behaviors''.
+In addition to primitive behaviors, there are catalogs of higher level behaviors. 
+Brambilla \textit{et al}. group collective behaviors into four classes: spatially-organizing behaviors, navigation behaviors, collective decision-making, and other collective behaviors.
 This breakdown differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviors using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
+Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone or morphogen-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \cite{belta2007symbolic}.
 For the purposes of this paper, the underlying metaphor of the implementation of the behavior is not of primary relevance, as long as the behavior remains the same. 
 
 \begin{enumerate}[noitemsep]
@@ -167,18 +190,7 @@ For the purposes of this paper, the underlying metaphor of the implementation of
 There is substantial overlap between these lists.
 
 
-\section{When We Say ``Swarm Robots''...}
 
-Typically, a robot swarm consists of cooperating, autonomous robots with local sensing and communication and without central control or global information, situated in an environment that they can sense and modify \cite{brambilla2013swarm}.
-The cooperation element of this definition is important, as a swarm may be expected to perform actions as a group that they cannot perform as single individuals \cite{csahin2004swarm}. 
-These actions could be as simple as covering an area with sensor fields of vision, or as complex as moving an object from one point to another as a team. 
-The mobility of the agents also makes swarm robotics distinct from amorphous computing or sensor mesh networks, although swarms also take inspiration and techniques from those fields.  
-
-Numerous papers have proposed taxonomies of swarm robots, Brambilla et al provide an overview of these \cite{brambilla2013swarm}. 
-This paper is focused instead on the interrelationships of the behaviors available to a swarm, and the assumptions that those behaviors are predicated on. 
-Examining these assumptions may reveal unexplored regions of the space of possible swarm configurations. 
-
-%TODO cite work on moving in formation as related to, but not entirely required for, caging manipulation
 
 
 \section{The Basic Pair of Assumptions}
@@ -196,13 +208,11 @@ Communicating robots can arrive at a consensus coordinate system using trilatera
 Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by communicating.
 Rather than directly determining range and bearing from sensors, the communicating robots exchange their coordinates, and calculate the ranges and bearings from their positions. 
 
-Robots can identify each other uniquely. Has to be unique for detecting e.g. circumnavigation of an object, transient or local names fail to re-identify and non-unique names lead to multiple identification.
-
 Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviors from Stupid Robot Tricks \cite{mclurkin2004stupid}.
 The behaviors of forming and navigating gradients and orbiting the edge of a group of robots, combined with group-based localization, allow Kilobots to form patterns much larger than the individual robots or their sensing ranges \cite{Rubenstein795}.
 
 Even if the robots do not start with unique identifiers, the formation of a consensus localization framework will provide one.
-Assuming that only one robot can be in a  location at a time, the robots can use their initial location as a unique identifier. 
+Assuming that only one robot can be in a location at a time, the robots can use their initial location as a unique identifier. 
 However, this assumes that the robots are all members of the same coordinate system.
 If the initial configuration of the robots is as more than one disconnected network, separated by regions wider than the robots can communicate across, they may arrive at multiple coordinate frames.
 
@@ -214,19 +224,47 @@ If the initial configuration of the robots is as more than one disconnected netw
 \section{Non-communication}
 
 Even without communication, some forms of complex cooperative behavior are possible. 
-If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. 
+If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. Robots with the ability to measure the motion of an object can collaborate to move it without communicating with each other \cite{wang2015multi}.
 
 The TERMES robot swarm uses only local sensing of the environment, combined with local rules, to collaboratively construct structures from blocks \cite{werfel2014designing}. 
 The robots communicate via altering their environment, called stigmergy, but do not communicate with each other directly. 
 
 A group of robots can rendezvous at a single location without communication or localization, but with the ability to detect another robot within its field of view \cite{yu2012rendezvous}. However, this paper makes some assumptions, such as the assumption that robots that are close enough will merge, that are not supported by the current state of the art. 
 
+The morphogen gradients and hop-counting methods discussed earlier have a substantial overlap with pheromone-based robotics, where robots can release a chemical into the environment (usually via some non-chemical method, such as IR broadcast, but for an exception, see \cite{hayes2001swarm}). 
+The robots can release and react to pheromones in the environment, and so there is an implicit communication via stigmergy, but no explicit agent-to-agent communication. 
+Pheromone approaches can guide the construction of objects, even if the individual swarm members have no memory, no communication, and only local perception \cite{mason2003programming, wawerla2002collective, bowyer2000automated}.
+The agents engaged in the construction move at random, and take actions governed by their individual perception of environment at present time. 
+The addition of communication between systems and memory of the state of the world will improve the efficiency of the system, but not having explicit communication does not prevent it from functioning.
+
 %Separation of the network into small cells. 
 %If you have too few robots, you can't trilaterate
 
 \section{No Unique Names}
 
-Can't circumnavigate a thing using another robot as a beacon
+Globally unique robot identifiers make some tasks easier, such as detecting circumnavigation of an object by using a stationary robot as a beacon. 
+If a transient or local names is used, the moving robot may fail to re-identify the beacon, while non-unique names could lead to multiple incorrect identifications of the beacon.
+
+%todo what does not having each level of naming _prevent_?
+
+The naming of robots within a swarm is not a binary distinction. Robots can have no awareness of the distinction between robots and other obstacles in the environment, be able to distinguish other robots, be able to determine the type of other robots, or be able to recognize specific other robots, either by local/temporary identifiers or permanent/global identifiers. 
+
+At the most basic, robots in the swarm are completely unaware of each other, in that they make no distinction between other swarm robots and obstacles within the environment. 
+
+With slightly better sensing, the robots can identify whether an object is another robot or a non-robot object. The TERMES swarm uses ultrasound for detecting the structure on which they operate, but can also detect other robots using ultrasound nearby. They do not communicate via ultrasound, and their interaction is limited to yielding to other robots on the same path \cite{werfel2014designing}. Reynolds' ``boid'' flocking algorithm also uses the range to other boids and to non-boid objects, without explicitly identifying individuals, which implies that swarm behaviors such as aggregation and dispersion will function well when taking into account the presence of other swarm members without considering their identity \cite{reynolds1987flocks}. 
+
+In the case of heterogeneous swarms, it may be useful to have robots be able to identify what class or type of robot another robot is, but have no need to know that it is a specific instance of that class. The Swarmanoid project uses mobile foot-bots, flying eye-bots, and hand-bots bearing grippers to perform tasks cooperatively. The mechanism of this cooperation does not rely on individual identities for the robots, but allows them to communicate with each other locally, and transfer information based on the type of robot requesting it \cite{ducatelle2011self}. 
+
+For temporary collaboration, robots could develop local names or identities. 
+However, this approach seems absent from the literature, perhaps because the effort of negotiating local names or identities when needed is lower than the effort of simply having pre-generated names. 
+Nagpal's catalog specifically calls out the possibility that there may be too many agents to name, but provides mechanisms for election of ``leaders'' for specific functions \cite{nagpal2004catalog}. 
+Leadership, in this case, becomes a sort of temporary identity for the robot, which distinguishes it from all non-leaders, and possibly uniquely as a particular leader. 
+In cases like the beacon example above, this temporary quality is sufficient.  
+
+Globally unique identifiers are convenient, and not difficult to implement for moderately sized swarms (although the author has had several experiences with MAC addresses of commercial hardware being not as unique as they should be).
+However, global unique identifiers lack biological plausibility. 
+It is clear that, for example, ants can recognize the distinction between members of their own colony and outsiders, and the distinct castes within their colony, by the smell of chemicals on the surface of the other ant \cite{sharma2015cuticular}. 
+While this is an impressive range, it seems unlikely that ants can identify each other as specific individuals, with the possible exception of the queen, due in large part to the identity chemicals of the ants being shared via contact within the hive \cite{bos2012recognition}. 
 
 \section {Sensing and Reacting to the Environment}
 
