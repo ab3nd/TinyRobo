@@ -152,9 +152,6 @@ Checkpointing can be used to perform sequences of actions, provided that the rob
 
 In addition to primitive behaviors, there are catalogs of higher level behaviors. 
 Brambilla \textit{et al}. group collective behaviors into four classes: spatially-organizing behaviors, navigation behaviors, collective decision-making, and other collective behaviors.
-This breakdown differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviors using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
-Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone or morphogen-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \cite{belta2007symbolic}.
-For the purposes of this paper, the underlying metaphor of the implementation of the behavior is not of primary relevance, as long as the behavior remains the same. 
 
 \begin{enumerate}[noitemsep]
 \item Spatially-organizing
@@ -190,7 +187,7 @@ For the purposes of this paper, the underlying metaphor of the implementation of
 
 Matari\'c suggested the behavior set of avoidance, safe-wandering, following, aggregation, dispersion, and homing, combined with summation of the behaviors or switching between them based on sensor precepts \cite{mataric1995designing}. For example, flocking is the summation of dispersion, aggregation, and safe-wandering, plus homing to provide the swarm with a direction to flock in. 
 
-This use of homing as a driver of other behaviors may be why homing is present in the behavior set, but absent from the others. 
+The use of homing as a driver of other behaviors may be why homing is present in Matari\'c's behavior set, but absent from the others. 
 Homing is the ability to find a particular location or region. 
 All of the other behaviors in these lists are executable at any location, and do not refer to a specific place. 
 Homing, on the other hand, implies that the robot has a sense of location, so that it can orient towards home. 
@@ -198,19 +195,62 @@ Without such a sense, the only way for an individual robot to find home would be
 
 There is substantial overlap between these lists. Matari\'c's avoidance is the same as McLurkin's Avoid Bump, in that they both give the robot the ability to move without colliding with other robots or the environment. 
 Aggregation and clustering, area coverage and dispersion, swarm-guided navigation and morphogen gradient navigation are all similar pairs of activites. 
+Brambilla \textit{et al}. differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviors using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
+Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone or morphogen-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \cite{belta2007symbolic}.
 
+For the purposes of this paper, the underlying metaphor of the implementation of the behavior is not of primary relevance, as long as the behavior remains the same. 
+However, different metaphors may require different assumptions about the available sensor information for each robot, and so result in a different range of basic behaviors being available to the swarm. 
+Further, it seems that there is no swarm so minimal that someone hasn't found a way to get useful work out of it.  
+If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. 
+This behavior can be implemented by switching between random walking and phototropism based on whether the robot is pressed against an object, and so doesn't even require a general-purpose computer, just robots tall enough to see over the object when they are on the side away from the goal. 
+A group of robots can rendezvous at a single location without communication or localization, but with the ability to detect another robot within its field of view \cite{yu2012rendezvous}. However, this paper makes some assumptions, such as the assumption that robots that are close enough will merge, that are not supported by the current state of the art. 
 
-\section{The Basic Pair of Assumptions}
-
-There are two basic assumptions that are common to a large amount of swarm robotic work. 
-\begin{enumerate}
-\item Robots can identify each other uniquely.
-\item Robots can communicate locally. 
-\end{enumerate}
-
+Because some apparently complex behaviors can be implemented on relatively trivial robots by making certain assumptions about the robots or the area that they are in, the remainder of this paper will focus on behaviors that could be implemented on a general abstract robot. 
+This assumption is made with the understanding that by specializing the sensors of the robot, more specific tasks could be accomplished. 
+For example, dispersion on the general robot is defined as dispersing so that no robot is within less than a fixed distance of any other robot. 
+By adding a sensor that determines if the robot is within a desired area, area coverage can be specified from general dispersion. 
+ 
+The general robot is mobile, and communicate locally. 
+No restriction is placed on its ability to store messages from other robots or state information from those messages. 
 Local communication refers to the ability to communicate with some subset of the swarm.
-Depending on the implementation, particularly radio vs. infrared, this communication may depend on a clear line of sight between the robots. 
-This assumption is much more common, and to a certain extent, more important than unique identification, because local communication can create unique identification. 
+Depending on the implementation, particularly radio vs. infrared, this communication may depend on a clear line of sight between the robots.
+For the general robot, the implementation details are not important. 
+
+Determining the base set of behaviors for the swarm is difficult. 
+Ideally, the base set covers all the desired tasks for the swarm through composition of base set behaviors with specializing sensors as described above. 
+Since the set of possible desired tasks is unconstrained, there is no known set of behaviors that could cover all possible tasks. 
+However, the convergence of multiple suggestions for behavior libraries implies that aggregation, dispersion, formation of patterns (particularly chains and arbitrary polygon formations), formation of navigational structures (such as beacon selection, gradients, and distributed coordinate systems), and distributed decision making are likely candidates for inclusion in a behavioral library sufficient to perform many tasks.  
+
+\section{Pheremone Metaphors}
+
+\subsection{Aggregation}
+
+Aggregation in the general sense can be implemented simply by having robots attempt to minimize the distance between themselves and other robots. 
+This form of aggregation can be implemented without communication, so long as robots can detect the distance to their neighbors. 
+However, this simple form is also prone to causing the robots to form more than one cluster, as there is no guarantee that all robots will initially move to the same point. 
+
+Aggregation in robotic swarms using a pheremone or morphogenic metaphor can be accomplished by having a robot at the desired location (the source) broadcast a message that indicates that nearby robots should come towards it. 
+Nearby robots also broadcast the message, incrementing a hop count, and discarding any messages with a higher hop count than the lowest they have received. 
+This rule results in all robots that can communicate eventually having a hop count value that indicates their distance, in hops, from the lowest robot. By querying their neighbors, each robot can determine the direction towards the source (towards those neighbors with lower hop counts) and so move towards the source. 
+
+This behavior relies on the formation of a navigational structure, the gradient of message hop counts, as well as some ability to determine where the neighbors are located. These functions are covered in more detail in section \ref{pheremone_nav_struct}.
+
+\subsection{Dispersion}
+
+Dispersion is the inverse of aggregation, where each robot attempts to spread out from others, usually attempting to maintain some condition such as having no robots within a fixed distance. 
+Typically, dispersion is intended to maximize area coverage without causing the robots to be so far apart that they can no longer communicate with each other. 
+As with aggregation, dispersion can be implemented simply if the robots have the ability to detect each other's distance. 
+
+In pheromone robotics, each robot can emit a repellent pheromone with a hop count that is rebroadcast by each robot that receives it, decrementing the hop count. 
+Once the hop count reaches zero, the retransmission ends. 
+
+%TODO find something that doesn't use range sensors or direction sensors and cite that
+
+\subsection{Chain Formation}
+
+\subsection{Polygon Formation}
+
+\subsection{Navigational Structures} \label{pheremone_nav_struct}
 
 Communicating robots can arrive at a consensus coordinate system using trilateration based on range sensors \cite{cheng2005robust}, or use lateral inhibition to select individual robots to serve as beacons which create gradients for trilateration via hop counts \cite{nagpal1999organizing}.
 Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by communicating.
@@ -224,80 +264,117 @@ Assuming that only one robot can be in a location at a time, the robots can use 
 However, this assumes that the robots are all members of the same coordinate system.
 If the initial configuration of the robots is as more than one disconnected network, separated by regions wider than the robots can communicate across, they may arrive at multiple coordinate frames.
 
-%TODO how do people handle unifying coordinate frames? 
-%To solve this problem, the robots can count up how many robots are in their group, and store than number. 
-%When a robot communicates with a robot from a different coordinate system, there will likely be a detectable problem, such as the number of robots in the coordinate system differing, or their respective distances (measured from one robot's position in its coordinate frame to the other robot's position in the other coordinate frame) could be larger than the known range of communication. 
-%When such a case is detected, the robot from the smaller coordinate frame could localize to the larger frame by trilateration 
 
-The extrapolation from local communication to localization to unique identification is an example of a path through a latent hierarchy of behaviors available to a robot swarm. 
-Explication of the full hierarchy is useful for design of a robot swarm, as it provides a method for enumerating the more primitive behaviors required for coverage of the desired tasks that the swarm must be able to undertake. 
-%If you want to get really wiggy, behaviors could be hardwired in silicon using chip fab techniques for MEMS-based swarms, resulting in a enormous power savings over embedding a general-purpose computer and the software to run it in the machines. 
-Or course, at a certain level, one could argue that a single range sensor and motion is all that is required, since robots could conceivably signal to each other by wiggling codes towards each other's range sensors, and bootstrap that form of local communication to global localization. 
-The purpose of such a hierarchy, then, is not just to determine what is conceivably possible, but what is reasonable for the developers of swarm software to deal with, and what behaviors a good swarm software library should provide. 
+\subsection{Decision Making}
 
-%TODO how multi-dimensional is this? Local sensing is a pretty wide range of things, from point sonar to full point clouds and object recognizers. Local communication is a range from explicit full messaging, to implicit forms like pheremones and stigmergy, identifiers are ... not as needed as I thought. 
+\section{Evolved Behaviors}
 
-\section{Non-communication}
+\subsection{Aggregation}
 
-Communication, in addition to being unicast, multicast, or broadcast, can also be implicit or explicit. 
-Explicit communication is the sending of a message with some informational content between robots. 
-Implicit communication is the conveying of information between robots without sending a message, by performing actions that alter the environment in a way that the robot receiving the communication can detect. 
+\subsection{Dispersion}
 
-Communication via altering the environment is called stigmergy.
-The TERMES robot swarm uses only local sensing of the environment, combined with local rules, to collaboratively construct structures from blocks \cite{werfel2014designing}. 
-The placement of new blocks provides stigmergic signals to other robots, when they arrive at the location of the new blocks. 
-Robots with the ability to measure the motion of an object can collaborate to move it without communicating with each other \cite{wang2015multi}. 
-In this case, detected motions of the object being moved are a form of communication between the robots, in that they convey information about the actions of the other robots. 
+\subsection{Chain Formation}
 
-The morphogen gradients and hop-counting methods discussed earlier have a substantial overlap with pheromone-based robotics, where robots can release a chemical into the environment (usually via some non-chemical method, such as IR broadcast, but for an exception, see \cite{hayes2001swarm}). 
-The robots can release and react to pheromones in the environment, and so there is an implicit communication via stigmergy, but no explicit agent-to-agent communication. 
-Pheromone approaches can guide the construction of objects, even if the individual swarm members have no memory, no communication, and only local perception \cite{mason2003programming, wawerla2002collective, bowyer2000automated}.
-The agents engaged in the construction move at random, and take actions governed by their individual perception of environment at present time. 
-The addition of communication between systems and memory of the state of the world will improve the efficiency of the system, but not having explicit communication does not prevent it from functioning.
+\subsection{Polygon Formation}
 
-Eliminating even implicit communication does not eliminate all forms of complex cooperative behavior. 
-If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. 
+\subsection{Navigational Structures}
 
-A group of robots can rendezvous at a single location without communication or localization, but with the ability to detect another robot within its field of view \cite{yu2012rendezvous}. However, this paper makes some assumptions, such as the assumption that robots that are close enough will merge, that are not supported by the current state of the art. 
+\subsection{Decision Making}
 
-It is interesting to note that systems that reduce the amount of communication between robots do it by increasing the perception and abilities of the robots
-%Separation of the network into small cells. 
-%If you have too few robots, you can't trilaterate
+\section{Virtual Physics Metaphors}
 
-\section{No Unique Names}
+\subsection{Aggregation}
 
-Globally unique robot identifiers make some tasks easier, such as detecting circumnavigation of an object by using a stationary robot as a beacon. 
-If a transient or local names is used, the moving robot may fail to re-identify the beacon, while non-unique names could lead to multiple incorrect identifications of the beacon.
+\subsection{Dispersion}
 
-%todo what does not having each level of naming _prevent_?
+\subsection{Chain Formation}
 
-The naming of robots within a swarm is not a binary distinction. Robots can have no awareness of the distinction between robots and other obstacles in the environment, be able to distinguish other robots, be able to determine the type of other robots, or be able to recognize specific other robots, either by local/temporary identifiers or permanent/global identifiers. 
+\subsection{Polygon Formation}
 
-At the most basic, robots in the swarm are completely unaware of each other, in that they make no distinction between other swarm robots and obstacles within the environment. 
+\subsection{Navigational Structures}
 
-With slightly better sensing, the robots can identify whether an object is another robot or a non-robot object. The TERMES swarm uses ultrasound for detecting the structure on which they operate, but can also detect other robots using ultrasound nearby. They do not communicate via ultrasound, and their interaction is limited to yielding to other robots on the same path \cite{werfel2014designing}. Reynolds' ``boid'' flocking algorithm also uses the range to other boids and to non-boid objects, without explicitly identifying individuals, which implies that swarm behaviors such as aggregation and dispersion will function well when taking into account the presence of other swarm members without considering their identity \cite{reynolds1987flocks}. 
+\subsection{Decision Making}
 
-In the case of heterogeneous swarms, it may be useful to have robots be able to identify what class or type of robot another robot is, but have no need to know that it is a specific instance of that class. The Swarmanoid project uses mobile foot-bots, flying eye-bots, and gripper-equipped hand-bots to perform tasks cooperatively. The mechanism of this cooperation does not rely on individual identities for the robots, but allows them to communicate with each other locally, and transfer information based on the type of robot requesting it \cite{ducatelle2011self}. 
+\section{Control Theory}
 
-For temporary collaboration, robots could develop local names or identities. 
-However, this approach seems absent from the literature, perhaps because the effort of negotiating local names or identities when needed is lower than the effort of simply having pre-generated names. 
-Nagpal's catalog specifically calls out the possibility that there may be too many agents to name, but provides mechanisms for election of ``leaders'' for specific functions \cite{nagpal2004catalog}. 
-Leadership, in this case, becomes a sort of temporary identity for the robot, which distinguishes it from all non-leaders, and possibly uniquely as a particular leader. 
-In cases like the beacon example above, this temporary quality is sufficient.  
+\subsection{Aggregation}
 
-Globally unique identifiers are convenient, and not difficult to implement for moderately sized swarms (although the author has had several experiences with MAC addresses of commercial hardware being not as unique as they should be).
-However, global unique identifiers lack biological plausibility. 
-It is clear that, for example, ants can recognize the distinction between members of their own colony and outsiders, and the distinct castes within their colony, by the smell of chemicals on the surface of the other ant \cite{sharma2015cuticular}. 
-While this is an impressive range, it seems unlikely that ants can identify each other as specific individuals, with the possible exception of the queen, due in large part to the identity chemicals of the ants being shared via contact within the hive \cite{bos2012recognition}. 
+\subsection{Dispersion}
 
-\section {Sensing and Reacting to the Environment}
+\subsection{Chain Formation}
 
-McLurkin assumes that all swarm robots have a simple obstacle avoidance behavior that causes them to not hit each other or obstacles in the environment \cite{mclurkin2004stupid}.
-This assumption, or this base behavior, is present in other systems as well \cite{werger1999cooperation, mataric1995designing}
+\subsection{Polygon Formation}
 
-Requiring tasks like patrolling an area, sensor overwatch of an area, moving an object all require the ability to recognize the area or the object. Without this sensing, regions of the environment cannot be treated as special. 
-Matari\'c refers to this ability as "homing"\cite{mataric1995designing}.
+\subsection{Navigational Structures}
 
+\subsection{Decision Making}
+
+\section{Probablistic Finite State Machines}
+
+\subsection{Aggregation}
+
+\subsection{Dispersion}
+
+\subsection{Chain Formation}
+
+\subsection{Polygon Formation}
+
+\subsection{Navigational Structures}
+
+\subsection{Decision Making}
+
+%\section{Non-communication}
+%
+%Communication, in addition to being unicast, multicast, or broadcast, can also be implicit or explicit. 
+%Explicit communication is the sending of a message with some informational content between robots. 
+%Implicit communication is the conveying of information between robots without sending a message, by performing actions that alter the environment in a way that the robot receiving the communication can detect. 
+%
+%Communication via altering the environment is called stigmergy.
+%The TERMES robot swarm uses only local sensing of the environment, combined with local rules, to collaboratively construct structures from blocks \cite{werfel2014designing}. 
+%The placement of new blocks provides stigmergic signals to other robots, when they arrive at the location of the new blocks. 
+%Robots with the ability to measure the motion of an object can collaborate to move it without communicating with each other \cite{wang2015multi}. 
+%In this case, detected motions of the object being moved are a form of communication between the robots, in that they convey information about the actions of the other robots. 
+%
+%The morphogen gradients and hop-counting methods discussed earlier have a substantial overlap with pheromone-based robotics, where robots can release a chemical into the environment (usually via some non-chemical method, such as IR broadcast, but for an exception, see \cite{hayes2001swarm}). 
+%The robots can release and react to pheromones in the environment, and so there is an implicit communication via stigmergy, but no explicit agent-to-agent communication. 
+%Pheromone approaches can guide the construction of objects, even if the individual swarm members have no memory, no communication, and only local perception \cite{mason2003programming, wawerla2002collective, bowyer2000automated}.
+%The agents engaged in the construction move at random, and take actions governed by their individual perception of environment at present time. 
+%The addition of communication between systems and memory of the state of the world will improve the efficiency of the system, but not having explicit communication does not prevent it from functioning.
+
+%\section{No Unique Names}
+%
+%Globally unique robot identifiers make some tasks easier, such as detecting circumnavigation of an object by using a stationary robot as a beacon. 
+%If a transient or local names is used, the moving robot may fail to re-identify the beacon, while non-unique names could lead to multiple incorrect identifications of the beacon.
+%
+%%todo what does not having each level of naming _prevent_?
+%
+%The naming of robots within a swarm is not a binary distinction. Robots can have no awareness of the distinction between robots and other obstacles in the environment, be able to distinguish other robots, be able to determine the type of other robots, or be able to recognize specific other robots, either by local/temporary identifiers or permanent/global identifiers. 
+%
+%At the most basic, robots in the swarm are completely unaware of each other, in that they make no distinction between other swarm robots and obstacles within the environment. 
+%
+%With slightly better sensing, the robots can identify whether an object is another robot or a non-robot object. The TERMES swarm uses ultrasound for detecting the structure on which they operate, but can also detect other robots using ultrasound nearby. They do not communicate via ultrasound, and their interaction is limited to yielding to other robots on the same path \cite{werfel2014designing}. Reynolds' ``boid'' flocking algorithm also uses the range to other boids and to non-boid objects, without explicitly identifying individuals, which implies that swarm behaviors such as aggregation and dispersion will function well when taking into account the presence of other swarm members without considering their identity \cite{reynolds1987flocks}. 
+%
+%In the case of heterogeneous swarms, it may be useful to have robots be able to identify what class or type of robot another robot is, but have no need to know that it is a specific instance of that class. The Swarmanoid project uses mobile foot-bots, flying eye-bots, and gripper-equipped hand-bots to perform tasks cooperatively. The mechanism of this cooperation does not rely on individual identities for the robots, but allows them to communicate with each other locally, and transfer information based on the type of robot requesting it \cite{ducatelle2011self}. 
+%
+%For temporary collaboration, robots could develop local names or identities. 
+%However, this approach seems absent from the literature, perhaps because the effort of negotiating local names or identities when needed is lower than the effort of simply having pre-generated names. 
+%Nagpal's catalog specifically calls out the possibility that there may be too many agents to name, but provides mechanisms for election of ``leaders'' for specific functions \cite{nagpal2004catalog}. 
+%Leadership, in this case, becomes a sort of temporary identity for the robot, which distinguishes it from all non-leaders, and possibly uniquely as a particular leader. 
+%In cases like the beacon example above, this temporary quality is sufficient.  
+%
+%Globally unique identifiers are convenient, and not difficult to implement for moderately sized swarms (although the author has had several experiences with MAC addresses of commercial hardware being not as unique as they should be).
+%However, global unique identifiers lack biological plausibility. 
+%It is clear that, for example, ants can recognize the distinction between members of their own colony and outsiders, and the distinct castes within their colony, by the smell of chemicals on the surface of the other ant \cite{sharma2015cuticular}. 
+%While this is an impressive range, it seems unlikely that ants can identify each other as specific individuals, with the possible exception of the queen, due in large part to the identity chemicals of the ants being shared via contact within the hive \cite{bos2012recognition}. 
+%
+%\section {Sensing and Reacting to the Environment}
+%
+%McLurkin assumes that all swarm robots have a simple obstacle avoidance behavior that causes them to not hit each other or obstacles in the environment \cite{mclurkin2004stupid}.
+%This assumption, or this base behavior, is present in other systems as well \cite{werger1999cooperation, mataric1995designing}
+%
+%Requiring tasks like patrolling an area, sensor overwatch of an area, moving an object all require the ability to recognize the area or the object. Without this sensing, regions of the environment cannot be treated as special. 
+%Matari\'c refers to this ability as "homing"\cite{mataric1995designing}.
+%
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
 
