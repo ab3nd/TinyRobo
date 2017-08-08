@@ -16,7 +16,7 @@
 \usepackage{multicol}
 
 %opening
-\title{A Hierarchy of Swarm Robot Behaviors}
+\title{A Hierarchy of Swarm Robot Behaviours}
 \author{Abraham Shultz}
 
 \begin{document}
@@ -24,24 +24,24 @@
 \maketitle
 
 \begin{abstract}
-Because robotic swarms consist of multiple robots, there are behaviors available to them that are not available to single robots. Also, swarms present the possibility of behavior at a greater scale than individual robots, by having emergent behaviors of the swarm implied, rather than explicitly defined, at the level of individual robots. These multiple levels of behavioral organization give rise to multiple, inter-related possible behaviors that a swarm of robots can exhibit. This paper examines the available behaviors starting from minimal assumptions about the swarm, and examines possible other families or heirarchies of behaviors that arise when those assumptions are not in force. It also proposes mechanisms for unifying swarm states that develop under suboptimal network conditions. 
+Because robotic swarms consist of multiple robots, there are behaviours available to them that are not available to single robots. Also, swarms present the possibility of behaviour at a greater scale than individual robots, by having emergent behaviours of the swarm implied, rather than explicitly defined, at the level of individual robots. These multiple levels of behavioural organization give rise to multiple, inter-related possible behaviours that a swarm of robots can exhibit. This paper examines the available behaviours starting from minimal assumptions about the swarm, and examines possible other families or hierarchies of behaviours that arise when those assumptions are not in force. It also proposes mechanisms for unifying swarm states that develop under suboptimal network conditions. 
 
 \end{abstract}
 
 \section{Introduction}
 
-For the purposes of this paper, behaviors differ from ``actions''. 
-An action, such as sensing or moving forward, does not have a context, whereas behaviors are contextualized by interaction with other members of the swarm or the environment.
-For example, the swimming of fish is an action, but when a group of fish swim close together in the same direction, this schooling is a behavior. 
-Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming makes up the behavior of schooling. 
+For the purposes of this paper, behaviours differ from ``actions''. 
+An action, such as sensing or moving forward, does not have a context, whereas behaviours are contextualized by interaction with other members of the swarm or the environment.
+For example, the swimming of fish is an action, but when a group of fish swim close together in the same direction, this schooling is a behaviour. 
+Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming makes up the behaviour of schooling. 
 
-Numerous papers provide catalogs of primitive behaviors for robots 
-The descriptions of these behaviors as ``primitive'' is sometimes meant to indicate that they are building blocks of more complex behaviors, or that they are not decomposable into smaller behaviors themselves. 
-Other papers describe behaviors as primitive because while the behavior does not complete a task in itself, it can be combined with other behaviors or actions to perform a useful task. 
+Numerous papers provide catalogues of primitive behaviours for robots 
+The descriptions of these behaviours as ``primitive'' is sometimes meant to indicate that they are building blocks of more complex behaviours, or that they are not decomposable into smaller behaviours themselves. 
+Other papers describe behaviours as primitive because while the behaviour does not complete a task in itself, it can be combined with other behaviours or actions to perform a useful task. 
 
-Designating some behaviors as primitive, while others are regarded as more advanced or complex, implies the existence of a hierarchy of behaviors, where complex behaviors are composed of more primitive behaviors, with the most primitive behaviors being closer to actions, as defined above. 
-The purpose of this paper is to explore which behaviors are available or not from given sets of basic actions.
-Such exploration is useful for creating a catalog of primitives that can be used in a compositional approach to program generation, both to define the primitives out of which programs can be composed, and provide some degree of assurance that these primitives can cover the space of possible tasks required from the swarm. 
+Designating some behaviours as primitive, while others are regarded as more advanced or complex, implies the existence of a hierarchy of behaviours, where complex behaviours are composed of more primitive behaviours, with the most primitive behaviours being closer to actions, as defined above. 
+The purpose of this paper is to explore which behaviours are available or not from given sets of basic actions.
+Such exploration is useful for creating a catalogue of primitives that can be used in a compositional approach to program generation, both to define the primitives out of which programs can be composed, and provide some degree of assurance that these primitives can cover the space of possible tasks required from the swarm. 
 
 \section{When We Say ``Swarm Robots''...}
 
@@ -51,7 +51,7 @@ These actions could be as simple as covering an area with sensor fields of visio
 The mobility of the agents also makes swarm robotics distinct from amorphous computing or sensor mesh networks, although swarms also take inspiration and techniques from those fields.  
 
 Numerous papers have proposed taxonomies of swarm robots, Brambilla \textit{et al}. provide an overview of these \cite{brambilla2013swarm}. 
-This paper is focused instead on the interrelationships of the behaviors available to a swarm, and the assumptions that those behaviors are predicated on. 
+This paper is focused instead on the interrelationships of the behaviours available to a swarm, and the assumptions that those behaviours are predicated on. 
 Examining these assumptions may reveal unexplored regions of the space of possible swarm configurations. 
 
 %TODO cite work on moving in formation as related to, but not entirely required for, caging manipulation
@@ -62,8 +62,8 @@ One possible list of primitives is disperse (no other nodes within distance d), 
 
 McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved, but also grouped into six groups: motion, navigation, dispersion, clustering, orientation, and utility.
 
-McLurkin uses the term ``primitive'' to refer to behaviors of a single robot, ``pair behaviors'' for two robots, and group behaviors for more than two robots. 
-Under the proposed distinction between actions and behaviors above, the motion group is composed only of actions except for Avoid Bump, the collision avoidance behavior. Move Arc, Move Forward, Rotate To Angle, and Move Stop are all actions. 
+McLurkin uses the term ``primitive'' to refer to behaviours of a single robot, ``pair behaviours'' for two robots, and group behaviors for more than two robots. 
+Under the proposed distinction between actions and behaviours above, the motion group is composed only of actions except for Avoid Bump, the collision avoidance behaviour. Move Arc, Move Forward, Rotate To Angle, and Move Stop are all actions. 
 Move Arc moves the robot on an arc, composed of forward and rotational velocity. Move Forward, Rotate To Angle, and Move Stop are special cases of Move Arc, with, respectively, the rotational, translational, or both velocities set to zero. 
  
 \cite{mclurkin2004stupid}.
@@ -113,7 +113,7 @@ Move Arc moves the robot on an arc, composed of forward and rotational velocity.
 \end{multicols} 
 
 
-Nagpal proposes eight biologically inspired primitives for composing higher level behaviors \cite{nagpal2004catalog}.
+Nagpal proposes eight biologically inspired primitives for composing higher level behaviours \cite{nagpal2004catalog}.
  
 \begin{enumerate}[noitemsep]
 \item Morphogen gradients and positional information
@@ -130,7 +130,7 @@ Morphogen gradients use local communication with hop counting to create a gradie
 The source robot transmits a message with a hop count of 0; other robots retransmit the message when they receive it, incrementing the hop count. 
 As a result, the hop count becomes a rough proxy for distance from the source. 
 
-Chemotaxis and direction is implemented in terms of morphogen gradients, by allowing each robot to query its neighbors about their hop count/morphogen intensity. 
+Chemotaxis and direction is implemented in terms of morphogen gradients, by allowing each robot to query its neighbours about their hop count/morphogen intensity. 
 This allows estimation of the direction of the local gradient, and so orientation towards or away from the source. 
 
 Local and lateral inhibition have a large collection of possible variants and applications. 
@@ -143,15 +143,15 @@ Self-election timestamps could be used as tiebreakers in this case.
 McLurkin suggests using globally unique robot IDs included in the suppression message, with each robot being suppressed if its ID is higher than the ID in the suppression message.
 This can still have ties while the gradient propagates, but will converge to one elected robot.
  
-Local monitoring uses heartbeat messages between local agents to keep track of the presence and activity of those neighbors. Failure to receive a message could trigger a response, such as moving to occupy a previously-occupied area to maintain sensor coverage.
+Local monitoring uses heartbeat messages between local agents to keep track of the presence and activity of those neighbours. Failure to receive a message could trigger a response, such as moving to occupy a previously-occupied area to maintain sensor coverage.
 
-Quorum sensing uses the number of agents in an area, as measured by morphgen signals, to determine when enough agents are present to perform an action. 
-Checkpointing is a closely related behavior, where all agents that can detect if a desired condition is met emit a signal until they detect the condition is met. 
+Quorum sensing uses the number of agents in an area, as measured by morphogen signals, to determine when enough agents are present to perform an action. 
+Checkpointing is a closely related behaviour, where all agents that can detect if a desired condition is met emit a signal until they detect the condition is met. 
 When all agents agree that the condition has been satisfied, signals indicating that it is not will cease. 
 Checkpointing can be used to perform sequences of actions, provided that the robots can detect the desired transition point. 
 
-In addition to primitive behaviors, there are catalogs of higher level behaviors. 
-Brambilla \textit{et al}. group collective behaviors into four classes: spatially-organizing behaviors, navigation behaviors, collective decision-making, and other collective behaviors.
+In addition to primitive behaviours, there are catalogues of higher level behaviours. 
+Brambilla \textit{et al}. group collective behaviours into four classes: spatially-organizing behaviours, navigation behaviours, collective decision-making, and other collective behaviours.
 
 \begin{enumerate}[noitemsep]
 \item Spatially-organizing
@@ -185,27 +185,27 @@ Brambilla \textit{et al}. group collective behaviors into four classes: spatiall
 \end{enumerate}
 
 
-Matari\'c suggested the behavior set of avoidance, safe-wandering, following, aggregation, dispersion, and homing, combined with summation of the behaviors or switching between them based on sensor precepts \cite{mataric1995designing}. For example, flocking is the summation of dispersion, aggregation, and safe-wandering, plus homing to provide the swarm with a direction to flock in. 
+Matari\'c suggested the behaviour set of avoidance, safe-wandering, following, aggregation, dispersion, and homing, combined with summation of the behaviors or switching between them based on sensor precepts \cite{mataric1995designing}. For example, flocking is the summation of dispersion, aggregation, and safe-wandering, plus homing to provide the swarm with a direction to flock in. 
 
-The use of homing as a driver of other behaviors may be why homing is present in Matari\'c's behavior set, but absent from the others. 
+The use of homing as a driver of other behaviours may be why homing is present in Matari\'c's behaviour set, but absent from the others. 
 Homing is the ability to find a particular location or region. 
-All of the other behaviors in these lists are executable at any location, and do not refer to a specific place. 
+All of the other behaviours in these lists are executable at any location, and do not refer to a specific place. 
 Homing, on the other hand, implies that the robot has a sense of location, so that it can orient towards home. 
 Without such a sense, the only way for an individual robot to find home would be to be able to detect it, and to wander randomly until the robot arrives. 
 
 There is substantial overlap between these lists. Matari\'c's avoidance is the same as McLurkin's Avoid Bump, in that they both give the robot the ability to move without colliding with other robots or the environment. 
-Aggregation and clustering, area coverage and dispersion, swarm-guided navigation and morphogen gradient navigation are all similar pairs of activites. 
-Brambilla \textit{et al}. differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviors using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
-Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone or morphogen-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \cite{belta2007symbolic}.
+Aggregation and clustering, area coverage and dispersion, swarm-guided navigation and morphogen gradient navigation are all similar pairs of activities. 
+Brambilla \textit{et al}. differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviours using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
+Furthermore, compositional approaches have been proposed in control-theoretic terms as well as pheromone or morphogen-based terms, so the process of composition of primitives can be viewed as a meta-strategy for the creation of programs, rather than a process specific to pheromone robotics \cite{belta2007symbolic}.
 
-For the purposes of this paper, the underlying metaphor of the implementation of the behavior is not of primary relevance, as long as the behavior remains the same. 
-However, different metaphors may require different assumptions about the available sensor information for each robot, and so result in a different range of basic behaviors being available to the swarm. 
+For the purposes of this paper, the underlying metaphor of the implementation of the behaviour is not of primary relevance, as long as the behaviour remains the same. 
+However, different metaphors may require different assumptions about the available sensor information for each robot, and so result in a different range of basic behaviours being available to the swarm. 
 Further, it seems that there is no swarm so minimal that someone hasn't found a way to get useful work out of it.  
 If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. 
-This behavior can be implemented by switching between random walking and phototropism based on whether the robot is pressed against an object, and so doesn't even require a general-purpose computer, just robots tall enough to see over the object when they are on the side away from the goal. 
+This behaviour can be implemented by switching between random walking and phototropism based on whether the robot is pressed against an object, and so doesn't even require a general-purpose computer, just robots tall enough to see over the object when they are on the side away from the goal. 
 A group of robots can rendezvous at a single location without communication or localization, but with the ability to detect another robot within its field of view \cite{yu2012rendezvous}. However, this paper makes some assumptions, such as the assumption that robots that are close enough will merge, that are not supported by the current state of the art. 
 
-Because some apparently complex behaviors can be implemented on relatively trivial robots by making certain assumptions about the robots or the area that they are in, the remainder of this paper will focus on behaviors that could be implemented on a general abstract robot. 
+Because some apparently complex behaviours can be implemented on relatively trivial robots by making certain assumptions about the robots or the area that they are in, the remainder of this paper will focus on behaviours that could be implemented on a general abstract robot. 
 This assumption is made with the understanding that by specializing the sensors of the robot, more specific tasks could be accomplished. 
 For example, dispersion on the general robot is defined as dispersing so that no robot is within less than a fixed distance of any other robot. 
 By adding a sensor that determines if the robot is within a desired area, area coverage can be specified from general dispersion. 
@@ -213,13 +213,13 @@ By adding a sensor that determines if the robot is within a desired area, area c
 The general robot is mobile, and communicate locally. 
 No restriction is placed on its ability to store messages from other robots or state information from those messages. 
 Local communication refers to the ability to communicate with some subset of the swarm.
-Depending on the implementation, particularly radio vs. infrared, this communication may depend on a clear line of sight between the robots.
+Depending on the implementation, particularly radio vs. infra-red, this communication may depend on a clear line of sight between the robots.
 For the general robot, the implementation details are not important. 
 
-Determining the base set of behaviors for the swarm is difficult. 
-Ideally, the base set covers all the desired tasks for the swarm through composition of base set behaviors with specializing sensors as described above. 
-Since the set of possible desired tasks is unconstrained, there is no known set of behaviors that could cover all possible tasks. 
-However, the convergence of multiple suggestions for behavior libraries implies that aggregation, dispersion, formation of patterns (particularly chains and arbitrary polygon formations), formation of navigational structures (such as beacon selection, gradients, and distributed coordinate systems), and distributed decision making are likely candidates for inclusion in a behavioral library sufficient to perform many tasks.  
+Determining the base set of behaviours for the swarm is difficult. 
+Ideally, the base set covers all the desired tasks for the swarm through composition of base set behaviours with specializing sensors as described above. 
+Since the set of possible desired tasks is unconstrained, there is no known set of behaviours that could cover all possible tasks. 
+However, the convergence of multiple suggestions for behaviour libraries implies that aggregation, dispersion, formation of patterns (particularly chains and arbitrary polygon formations), formation of navigational structures (such as beacon selection, gradients, and distributed coordinate systems), and distributed decision making are likely candidates for inclusion in a behavioural library sufficient to perform many tasks.  
 
 \section{Pheremone Metaphors}
 
@@ -231,7 +231,8 @@ However, this simple form is also prone to causing the robots to form more than 
 
 Aggregation in robotic swarms using a pheremone or morphogenic metaphor can be accomplished by having a robot at the desired location (the source) broadcast a message that indicates that nearby robots should come towards it. 
 Nearby robots also broadcast the message, incrementing a hop count, and discarding any messages with a higher hop count than the lowest they have received. 
-This rule results in all robots that can communicate eventually having a hop count value that indicates their distance, in hops, from the lowest robot. By querying their neighbors, each robot can determine the direction towards the source (towards those neighbors with lower hop counts) and so move towards the source. 
+This rule results in all robots that can communicate eventually having a hop count value that indicates their distance, in hops, from the lowest robot. 
+By querying their neighbors, each robot can determine the direction towards the source (towards those neighbors with lower hop counts) and so move towards the source. 
 
 This behavior relies on the formation of a navigational structure, the gradient of message hop counts, as well as some ability to determine where the neighbors are located. These functions are covered in more detail in section \ref{pheremone_nav_struct}.
 
@@ -280,7 +281,7 @@ Communicating robots can arrive at a consensus coordinate system using trilatera
 Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by communicating.
 Rather than directly determining range and bearing from sensors, the communicating robots exchange their coordinates, and calculate the ranges and bearings from their positions. 
 
-Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviors from Stupid Robot Tricks \cite{mclurkin2004stupid}.
+Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviours from Stupid Robot Tricks \cite{mclurkin2004stupid}.
 
 Even if the robots do not start with unique identifiers, the formation of a consensus localization framework will provide one.
 Assuming that only one robot can be in a location at a time, the robots can use their initial location as a unique identifier. 
@@ -289,7 +290,7 @@ If the initial configuration of the robots is as more than one disconnected netw
 
 \subsection{Decision Making}
 
-Pheremone robotics provides mechanisms for consensus decision making by quorum sensing and by checkpointing \cite{nagpal2004catalog}. 
+Pheromone robotics provides mechanisms for consensus decision making by quorum sensing and by checkpointing \cite{nagpal2004catalog}. 
 Quorum sensing uses messages that propagate through the swarm, and signal to other robots that the transmitting robot is ready to begin a task. 
 Robots can sense either the count of unique IDs originating ready messages, or the frequency with which the messages arrive, to determine how many robots are ready to begin. 
 Checkpointing is similar, in that the robots broadcast a halting signal when they detect that the preconditions for performing an action are not met.
@@ -328,6 +329,9 @@ Unless the detection can be accomplished solely through communication, the abstr
 
 \section{Probablistic Finite State Machines}
 
+Some of these algorithms can be implemented on the abstract robot with only local communication and mobility, but many of them rely on directional sensing to acquire navigational behaviour. 
+%todo expand this
+
 \subsection{Aggregation}
 
 Aggregation in robotic swarms can be accomplished by a combination of basic behaviours of obstacle avoidance, approaching other robots, being repelled by other robots, and waiting \cite{soysal2005probabilistic}.
@@ -335,11 +339,23 @@ The approach described assumes that robots have the ability to detect each other
 It may also be possible to have randomly wandering robots form clusters by stopping when they encounter each other, and starting to move again with a probability inversely proportional to the number of robots in the cluster, so that the larger a cluster gets, the less likely robots are to leave it. 
 However, this approach would likely take a long time to converge, and requires that the robots be able to count the number of robots in the cluster (or approximate it by e.g. the volume detected by a sound sensor, and produced by speakers on all the robots).
 
+Wireless communication and range sensors can also be used in a PFSM to get aggregation and stable clustering \cite{winfield2008modelling}.
+This model acts to keep the swarm connected, while controlling the distance between members of the swarm with a single parameter, $\alpha$.
+The $\alpha$ parameter is how many robots each robot attempts to maintain connections to, and so small values of $\alpha$ force the swarm to disperse, while larger values bring it closer together. 
+
 \subsection{Dispersion}
+
+As described in the previous section, some implementations of aggregation are more accurately characterized as controlling inter-robot spacing, and so by increasing the desired spacing, these forms of aggregation become dispersion controllers. 
+Correl \textit{et al}. use a controller written in Proto to maximize wireless coverage of an area with mobile robots that have wireless connections.
+Unlike Winfield \textit{et al}., this dispersion controller uses Brownian motion to move the robots until constraints on their connectivity are satisfied, rather than having specific motions intended to preserve connectivity. 
+This algorithm can be implemented on the abstract robot with only communication and mobility, as it does not rely on detection of the range to other robots, just detection of the ability to communicate with them. 
 
 \subsection{Chain Formation}
 
-\cite{nouyan2008path} 
+The chain algorithm of Nouyan, Campo, and Dorigo uses a PFSM to control the decisions of robots to join or leave chains, only if they are situated at the tip of a chain \cite{nouyan2008path}. 
+The chains are used for searching for a target, so when the target is found, the probability of leaving the chain drops to zero, stabilizing the chain between the starting point and the target. 
+The robots use color signals to indicate to each other which direction is towards the end of the chain. 
+In some versions of the chain algorithm, the robots can also adjust the angles between robots in the chain to maximize chain length. 
 
 \subsection{Polygon Formation}
 
@@ -349,11 +365,18 @@ While not formally expressed as a PFSM, this algorithm is essentially case-based
 
 \subsection{Navigational Structures}
 
+Nouyan, Campo, and Dorigo also propose an algorithm similar to chain formation called vectorfield, where robots use their LEDs to indicate the direction of the starting point.
+Robots can join or leave the field probabilistically if they are on the edges of it. 
+Robots that leave the field walk randomly, and can rejoin the field after a randomly chosen time.
+Again, once the target is found, the probability that the robot will leave the field is set to zero, stabilizing the branch of the field that leads to the target. 
+At this point, following the vector field away from the starting point will lead to the target. 
+This method bears some similarity to the use of morphogen gradients to form a gradient from a source for navigation, but relies on LED markers around the perimeter of the robots rather than broadcast messages between the robots. 
+
 \subsection{Decision Making}
 
 \section{Evolved Behaviors}
 
-Evolved behaviors for robots express the behavior as a ``genome'' which is subject to evolution in a genetic programming approach, where each genome is used to configure a controller, and then the behavior of that controller is assessed with a fitness function. 
+Evolved behaviours for robots express the behaviour as a ``genome'' which is subject to evolution in a genetic programming approach, where each genome is used to configure a controller, and then the behaviour of that controller is assessed with a fitness function. 
 The fitness function assigns a value to the genome based on its ability to perform the desired task. 
 Those genomes with higher fitness are kept, and ``bred'' by crossover with other high-fitness genomes until a desired fitness level is reached. 
 Typically, the use of evolved controllers uses the genome as parameters for another controller, for example, the weight vector of a neural network. 
@@ -385,7 +408,7 @@ The use of modulated transmit power could stand in for distance sensing, as desc
 
 \subsection{Decision Making}
 
-Controllers for allowing a pair of robots to arbitrate leader and follower roles to move in formation have been evolved on robots without explict communication channels \cite{quinn2001evolving, quinn2003evolving}. 
+Controllers for allowing a pair of robots to arbitrate leader and follower roles to move in formation have been evolved on robots without explicit communication channels \cite{quinn2001evolving, quinn2003evolving}. 
 These robots used only range sensors to perform the task, but were constrained to begin within sensor range of each other. 
 
 %\section{Non-communication}
