@@ -235,20 +235,44 @@ This rule results in all robots that can communicate eventually having a hop cou
 
 This behavior relies on the formation of a navigational structure, the gradient of message hop counts, as well as some ability to determine where the neighbors are located. These functions are covered in more detail in section \ref{pheremone_nav_struct}.
 
-\subsection{Dispersion}
+\subsection{Dispersion} \label{morpho_disperse}
 
 Dispersion is the inverse of aggregation, where each robot attempts to spread out from others, usually attempting to maintain some condition such as having no robots within a fixed distance. 
 Typically, dispersion is intended to maximize area coverage without causing the robots to be so far apart that they can no longer communicate with each other. 
 As with aggregation, dispersion can be implemented simply if the robots have the ability to detect each other's distance. 
 
-In pheromone robotics, each robot can emit a repellent pheromone with a hop count that is rebroadcast by each robot that receives it, decrementing the hop count. 
-Once the hop count reaches zero, the retransmission ends. 
+%In pheromone robotics, each robot can emit a repellent pheromone with a hop count that is rebroadcast by each robot that receives it, decrementing the hop count. 
+%Once the hop count reaches zero, the retransmission ends. 
 
-%TODO find something that doesn't use range sensors or direction sensors and cite that
+Many implementations of dispersion using pheromones rely on the presence of a central controller that can calculate the pheromone gradients based on the observed locations of the robots or on sensing of the power and direction of the pheromone signal from the robot emitting it \cite{pearce2003dispersion, payton2001pheromone}. 
+These abilities are extensions beyond what the abstract robot under consideration can do. 
+If it is acceptable to break the connectivity of the network, robots can simply emit a dispersion pheromone and wander randomly until they no longer detect dispersion pheromone emitted from any other robot. 
+This approach does not rely on the ability to sense the direction or range of any other robot emitting the pheromone.
+Furthermore, if the robots can modulate their own transmission strength, emitting the dispersion pheromone at e.g. half strength will leave the robots within reach of a full-strength transmission, dispersing the robots while still preserving the connectivity of the network. 
 
 \subsection{Chain Formation}
 
+Work has been done in allowing robots to form chains that communicate by tapping each other's bump sensors, which arguably fits in with the idea that the abstract robot is able to move and avoid obstacles \cite{Werger96roboticfood}. 
+This approach, however, seems like an overloading of the ability to wander without collisions.
+
+Given the ability to determine the direction of pheromone signals, chain formation can be accomplished by having the anchor of the chain emit a recruitment signal that causes a robot perceiving it to move towards it and begin emitting the recruitment signal from the opposite side of the newly recruited robot.
+Alternatively, one robot can be inclined to disperse from the group, and the others inclined to maintain connectivity, so that the chain grows behind the departing robot, as in the growing point model \cite{payton2001pheromone}.
+As this model does not require abilities beyond those previously discussed: dispersion, aggregation, and collision-free motion, it is a solid match for the abstract robot under consideration.
+
 \subsection{Polygon Formation}
+
+The behaviours of forming and navigating gradients and orbiting the edge of a group of robots, combined with group-based localization, allow Kilobots to form patterns much larger than the individual robots or their sensing ranges \cite{Rubenstein795}.
+However, this approach uses an edge-orbiting behaviour that is outside the repertoire of the abstract robot, as it relies on the ability to detect the strength of a received signal. 
+The need to sense the signal strength of the transmitting robots on the edge of the orbited group could be replaced by orbiting based on the presence or absence of the edge robot signal, assuming that the edge robots can modulate the strength of their transmissions. 
+The edge robots would reduce transmit power to a level that results in orbiting at a proper distance. 
+If the maximum range of the transmissions is an acceptable distance to orbit at, even transmit power modulation is not needed. 
+
+Assuming that the robots can produce a consensus coordinate system as in section \ref{pheremone_nav_struct}, then the formation of a polygon can be guided by the use of the coordinate system.
+Indeed, the generation of such a coordinate system makes all of the other behaviours much simpler, as the robots can form the coordinate system and then operate with those coordinates as if they had a global localization system.
+However, consensus coordinate systems are prone to error, and the error in the system may be sufficient to disrupt the formation of polygons. 
+
+Without a coordinate system, but with a morphogen-style ability to elect leaders, the formation of approximate polygons can be directed by the use of lobes formed on the perimeter of a ring \cite{mamei2004experiments}. 
+The resulting shapes are regular polygons, but with somewhat ``blobby'' rather than straight sides. 
 
 \subsection{Navigational Structures} \label{pheremone_nav_struct}
 
@@ -257,29 +281,22 @@ Robots with a consensus coordinate system can perform range and bearing calculat
 Rather than directly determining range and bearing from sensors, the communicating robots exchange their coordinates, and calculate the ranges and bearings from their positions. 
 
 Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviors from Stupid Robot Tricks \cite{mclurkin2004stupid}.
-The behaviors of forming and navigating gradients and orbiting the edge of a group of robots, combined with group-based localization, allow Kilobots to form patterns much larger than the individual robots or their sensing ranges \cite{Rubenstein795}.
 
 Even if the robots do not start with unique identifiers, the formation of a consensus localization framework will provide one.
 Assuming that only one robot can be in a location at a time, the robots can use their initial location as a unique identifier. 
 However, this assumes that the robots are all members of the same coordinate system.
 If the initial configuration of the robots is as more than one disconnected network, separated by regions wider than the robots can communicate across, they may arrive at multiple coordinate frames.
 
-
 \subsection{Decision Making}
 
-\section{Evolved Behaviors}
+Pheremone robotics provides mechanisms for consensus decision making by quorum sensing and by checkpointing \cite{nagpal2004catalog}. 
+Quorum sensing uses messages that propagate through the swarm, and signal to other robots that the transmitting robot is ready to begin a task. 
+Robots can sense either the count of unique IDs originating ready messages, or the frequency with which the messages arrive, to determine how many robots are ready to begin. 
+Checkpointing is similar, in that the robots broadcast a halting signal when they detect that the preconditions for performing an action are not met.
+Once the precondition is met, then the halting signal will go away, as the robots detect the precondition and cease broadcasting the halting signal. 
+Note that both of these behaviours are specializations to the usual communication ability of the abstract robot, since they require the ability to detect readiness or the state of some precondition. 
+Unless the detection can be accomplished solely through communication, the abstract robot requires some additional sensor to detect it. 
 
-\subsection{Aggregation}
-
-\subsection{Dispersion}
-
-\subsection{Chain Formation}
-
-\subsection{Polygon Formation}
-
-\subsection{Navigational Structures}
-
-\subsection{Decision Making}
 
 \section{Virtual Physics Metaphors}
 
@@ -313,15 +330,63 @@ If the initial configuration of the robots is as more than one disconnected netw
 
 \subsection{Aggregation}
 
+Aggregation in robotic swarms can be accomplished by a combination of basic behaviours of obstacle avoidance, approaching other robots, being repelled by other robots, and waiting \cite{soysal2005probabilistic}.
+The approach described assumes that robots have the ability to detect each other via sound sensors and infra-red range sensors. 
+It may also be possible to have randomly wandering robots form clusters by stopping when they encounter each other, and starting to move again with a probability inversely proportional to the number of robots in the cluster, so that the larger a cluster gets, the less likely robots are to leave it. 
+However, this approach would likely take a long time to converge, and requires that the robots be able to count the number of robots in the cluster (or approximate it by e.g. the volume detected by a sound sensor, and produced by speakers on all the robots).
+
 \subsection{Dispersion}
 
 \subsection{Chain Formation}
+
+\cite{nouyan2008path} 
+
+\subsection{Polygon Formation}
+
+It is possible to form arbitrary polygons and circles with a robot swarm, subject to the constraints that the robots are able to query the distance to any other robot \cite{sugihara1996distributed}.
+For the formation of polygons, a user must select the robots to serve as vertices. 
+While not formally expressed as a PFSM, this algorithm is essentially case-based, and so could easily be implemented in an FSM. 
+
+\subsection{Navigational Structures}
+
+\subsection{Decision Making}
+
+\section{Evolved Behaviors}
+
+Evolved behaviors for robots express the behavior as a ``genome'' which is subject to evolution in a genetic programming approach, where each genome is used to configure a controller, and then the behavior of that controller is assessed with a fitness function. 
+The fitness function assigns a value to the genome based on its ability to perform the desired task. 
+Those genomes with higher fitness are kept, and ``bred'' by crossover with other high-fitness genomes until a desired fitness level is reached. 
+Typically, the use of evolved controllers uses the genome as parameters for another controller, for example, the weight vector of a neural network. 
+
+Genetic programming is used more as a meta-method, for setting the parameters of a controller based on some other metaphor, than as a method in itself \cite{fehervari2013evolution}. 
+As a result, there are no ``pure'' genetic swarm controllers, but neural, virtual physics, or other controller architectures parametrized by the output of genetic algorithms. 
+Because the use of evolution is typically tightly coupled with the available sensors on the robot, which provide information to the evolved controller, there is almost no work that uses robots like the basic abstract robot under consideration in this paper, which only has the ability to send and receive local communications and move in a collision-free manner. 
+This section will instead deal with the existing evolved controllers, and the sensors required for them. 
+
+\subsection{Aggregation}
+
+The use of evolved controllers for aggregation has been the subject of several studies \cite{dorigo2004evolving,bahgecci2005evolving}. 
+Boolean networks, in particular, have been demonstrated to be able to evolve networks exhibiting phototaxis and antiphototaxis, which generalizes to aggregation and dispersion if the robots are equipped with omnidirectional lights \cite{roli2011design}.
+
+\subsection{Dispersion}
+
+Controllers have been evolved to allow Kilobots to perform a variety of tasks, including dispersion, by evolving a lookup table (LUT) that maps range sensor strengths to motor speeds on the Kilobot \cite{beckerleg2016evolving}.
+This work does assume the ability to use distance sensing, but a similar approach could evolve the ability to move until no messages from any robot are sensed, resulting in dispersion similar to the morphogenic approach in section \ref{morpho_disperse}. 
+As mentioned in the previous section, the use of a boolean network evolved to display antiphototaxis will cause robots equipped with lights to disperse from each other. 
+
+\subsection{Chain Formation}
+
+Beckerleg and Zhang also evolved a controller that allows Kilobots to play ``follow-the-leader'', which is a form of chain formation \cite{beckerleg2016evolving}. 
+The use of modulated transmit power could stand in for distance sensing, as described in section \ref{morpho_disperse}, at a cost of increased message transmission. 
 
 \subsection{Polygon Formation}
 
 \subsection{Navigational Structures}
 
 \subsection{Decision Making}
+
+Controllers for allowing a pair of robots to arbitrate leader and follower roles to move in formation have been evolved on robots without explict communication channels \cite{quinn2001evolving, quinn2003evolving}. 
+These robots used only range sensors to perform the task, but were constrained to begin within sensor range of each other. 
 
 %\section{Non-communication}
 %
