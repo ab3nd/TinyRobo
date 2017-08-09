@@ -301,17 +301,55 @@ Unless the detection can be accomplished solely through communication, the abstr
 
 \section{Virtual Physics Metaphors}
 
+Virtual physics metaphors, also called ``artifical physics'' or ``physicomimetics'' cause the robots to act based on virtual forces to try to reduce the total potential energy of the system. 
+Each robot is treated as a particle with a position and velocity, and the particles are perturbed by forces acting on them to change their velocity. 
+Obstacle avoidance, for example, can be created by allowing detected obstacles to exert a repulsive force on the particles, pushing the robot away from the obstacle. 
+Many of the more complex applications of virtual physics do not apply well to a robot that can only communicate and move.
+The onboard calculation of the forces acting on a robot ``particle'' relies on the robot being able to sense the elements of the environment that contribute to those forces. 
+However, this is not an insurmountable difficulty, as many of these approaches have been implemented on real robots using relatively inexpensive sensors. 
+
 \subsection{Aggregation}
 
+The application of a combination of attractive and repulsive forces can cause robots to organize into hexagonal or square lattices \cite{spears2004overview}.
+The combination of attraction and repulsion can change the spacing of the particles, and so result in wider or smaller lattices. 
+Proper tuning of the parameters also allows the robots to move in formation through areas with small obstacles, or change formation to avoid obstacles while maintaining group cohesion. 
+ 
 \subsection{Dispersion}
+
+Payton refers to a ``gas expansion'' model for area coverage, albeit using a repulsive pheromone rather than a physics-based description of the repulsive force \cite{payton2001pheromone}. 
+Jantz and Doty used the physics of ideal gasses to derive the rate of diffusion of robots through an opening into a much larger area, as well as predicting robot collision frequency as related to robot density \cite{jantz1997kinetics}. 
+Expansion into an area under a physics-based model has been tested using a physics-based model to sweep a corridor\cite{spears2006physics}.
+This model assumes some attractive force at the end of the corridor, as well as the inter-robot interactions, to drive coverage of the entire space. 
 
 \subsection{Chain Formation}
 
+By modifying the circular forces of attraction and dispersion into a circular attraction region and a much longer ellipsoid region of repulsion, chain formation emerges from a physical model \cite{maxim2009robotic}. 
+Robots off the chain are attracted to each other until they enter the region of repulsion, which pushes them along the chain. 
+The authors point out that this model does not set the direction of the chain formation, so in an unconstrained environment, the chain grows randomly. 
+However, in an environment where the chain is constrained by e.g. the walls of a hallway, the chain will extend into the open space, and so grow along the hallway. 
+The sensing required is above and beyond the abstract robot described at the beginning of this section, but within the abilities of robots with the ability to trilaterate each other's locations. 
+This algorithm has been implemented on real robots, rather than only in simulation.  
+
 \subsection{Polygon Formation}
+
+The hexagonal lattice formation described above is a result of circular repulsive fields around robots. 
+Assuming there are enough robots in the initial group, the resulting lattice takes on a roughly hexagonal or circular form. 
+The square lattice would be expected to form rectilinear shapes, but without additional constraints, they are not guaranteed to be actual squares (or hexagons).
+The addition of unique identifiers can provide this constraint, resulting in precise formations \cite{spears1999using}. 
+Square lattices also require an additional sensor that can detect the color of other robots, and robots of two colors, or some similar way to distinguish the robots into two groups of roughly equal numbers. 
+This distinction has an interesting parallel with the arrangement of sodium and chlorine in crystalline salt, and so might be generalizable to other crystal structures. 
 
 \subsection{Navigational Structures}
 
+Both potential fields and the structures based on the square and hexagonal lattices could be used as navigational structures, especially in combination with communication to allow individual robots to communicate to others that they have reached a goal. 
+For example, a chain formation could extend into a region until the goal is reached, and then the robots could propagate a message (or change the shape of their own local fields) to ``reel in'' the rest of the group. 
+
 \subsection{Decision Making}
+
+The use of potential fields can guide individual robots to adopt different roles depending on their individual perception of the area around them \cite{vail2003multi}.
+The robots essentially bid on the available roles, calculating their bid based on their expected effectiveness at that role. 
+Mapping the bid function over the area the robots are operating in reveals the field strength at every point of the area. 
+The same mechanism is used to guide the movement of the robots, for example by having attractive potentials at goal locations. 
 
 \section{Control Theory}
 
@@ -404,12 +442,30 @@ The use of modulated transmit power could stand in for distance sensing, as desc
 
 \subsection{Polygon Formation}
 
+Virtual physics combined with evolutionary algorithms for setting the parameters has been used to guide uncrewed aerial vehicles (UAVs) in simulation \cite{spears2004overview}. 
+The resulting controllers were robust against changes in the simulation environment, reduction in the number of UAVs, and reduction in the quality of the simulated UAV sensors. 
+The use of genetic algorithims has also been applied to parametrizing a gene regulatory network (GRN) that guides swarm robots to positions on a shape described with a non-uniform rational B-spline (NURBS) model. 
+The resulting controller can recover from perturbation by an obstacle and the failure of individual robots. 
+Robots using this algorithm must be able to determine how many other robots are in their neighborhood, as well as localizing within a global coordinate space. 
+They decide on their own positions on the NURBS and arbitrate amongst themselves to distribute evenly. 
+
 \subsection{Navigational Structures}
+
+Sperati, Trianni, and Nolfi evolved a controller that uses red and blue lights on the back and front of the robots, respectively as visual cues to allow the creation of chain structures between two target areas \cite{sperati2011self}.
+Rather than forming a fixed chain, the robots form a stable pair of lines that cycle from one target region to the other and back. 
+The controller is a feed-forward neural network, with leaky activation on the hidden neurons to provide a fading memory. 
+All of the parameters of the network were evolved, rather than trained, which makes sense given the lack of a large set of training data. 
 
 \subsection{Decision Making}
 
 Controllers for allowing a pair of robots to arbitrate leader and follower roles to move in formation have been evolved on robots without explicit communication channels \cite{quinn2001evolving, quinn2003evolving}. 
 These robots used only range sensors to perform the task, but were constrained to begin within sensor range of each other. 
+
+Baldassarre, Nolfi, and Parisi evolved controllers for mobile robots that displayed situated specialization, changing their behavior according to the local conditions \cite{baldassarre2003evolving}.
+Specializing in this way could be viewed as a precursor to role assignment, albeit in an extremely decentralized and emergent way. 
+The evolved controllers were feed-forward neural networks with 16 sensor neurons and one bias neuron directly connected to two output neurons that controlled the speed of the left and right wheels of a circular simulated robot. 
+A number of different solutions emerged to allow the robots to aggregate and move as an aggregate towards a light source. 
+The robots in the front could lead the group, but the ones in the back could not see the light source as well and followed the leaders, displaying situated specialization into leader and follower roles. 
 
 %\section{Non-communication}
 %
