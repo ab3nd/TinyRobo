@@ -299,7 +299,7 @@ Note that both of these behaviours are specializations to the usual communicatio
 Unless the detection can be accomplished solely through communication, the abstract robot requires some additional sensor to detect it. 
 
 
-\section{Virtual Physics Metaphors}
+\section{Virtual Physics Metaphors} \label{virt_phys}
 
 Virtual physics metaphors, also called ``artifical physics'' or ``physicomimetics'' cause the robots to act based on virtual forces to try to reduce the total potential energy of the system. 
 Each robot is treated as a particle with a position and velocity, and the particles are perturbed by forces acting on them to change their velocity. 
@@ -355,16 +355,35 @@ The same mechanism is used to guide the movement of the robots, for example by h
 
 \subsection{Aggregation}
 
+The expression of the attraction and repulsion among individual robots taking up space, rather than point robots, can be expressed as a model which depends only on the position of the individuals and their observations of the relative positions of others \cite{gazi2004class}. 
+The authors point out that while pure aggregation or dispersion causes the swarm to cluster around a center that does not move, adding a motion term to the equations will result in the cluster moving with guaranteed unit cohesion. 
+
 \subsection{Dispersion}
+
+The attraction and repulsion controls proposed by Gazi and Passino above include real-valued components which sets the strength of attraction and repulsion, and so can be used to vary the desired distance between individuals of the swarm, thus allowing the same control formula to provide both attraction and repulsion. 
+
+Lee and Chong provide a controller for uniform dispersion on a hexagonal grid that enables robots to close gaps in the dispersed swarm \cite{lee2008geometric}. 
+This controller is interesting because it assumes that the robots do not have a common coordinate system, communication, or unique identifiers, and can only detect each other's locations locally, rather than globally. 
 
 \subsection{Chain Formation}
 
+Due to the similarity between the expression of attraction and dispersion in virtual physical metaphors, as described in section \ref{virt_phys}, the same extension of virtual physics used by Maxim, Spears, and Spears could be converted to a control-theoretic expression easily \cite{maxim2009robotic}.
+It is likely due to this similarity that while chain formation could be expressed, and so analysed for e.g. stability, by control theory, most of the work on it has developed around other metaphors. 
+
 \subsection{Polygon Formation}
+
+Chea, Hou, and Slotine propose a shape controller that enables robots to maintain appropriate distances from each other and remain within a defined shape while moving \cite{cheah2009region}.
+The shapes can be round, as well as polygons, and can have holes within the shape. 
+Control forces are calculated from the positions of the robots, and so require a coordinate system. 
+Chea and Hou extended this work to compound shapes with rotation, translation, and scaling \cite{hou2012dynamic}.
 
 \subsection{Navigational Structures}
 
 \subsection{Decision Making}
 
+Lei \textit{et al}. indicate that with communication sufficient to form a spanning tree, a network of swarm robots can reach consensus on their heading, and apply that consensus to formation control \cite{lei2015consensus}.
+The resulting controller does rely on a coordinate frame for the robots, and maintains the formation while avoiding collisions. 
+ 
 \section{Probablistic Finite State Machines}
 
 Some of these algorithms can be implemented on the abstract robot with only local communication and mobility, but many of them rely on directional sensing to acquire navigational behaviour. 
@@ -463,7 +482,8 @@ These robots used only range sensors to perform the task, but were constrained t
 
 Baldassarre, Nolfi, and Parisi evolved controllers for mobile robots that displayed situated specialization, changing their behavior according to the local conditions \cite{baldassarre2003evolving}.
 Specializing in this way could be viewed as a precursor to role assignment, albeit in an extremely decentralized and emergent way. 
-The evolved controllers were feed-forward neural networks with 16 sensor neurons and one bias neuron directly connected to two output neurons that controlled the speed of the left and right wheels of a circular simulated robot. 
+The evolved controllers were feed-forward neural networks with 16 sensor neurons and one bias neuron. 
+The input neurons were directly and fully connected to two output neurons that controlled the speed of the left and right wheels of a circular simulated robot. 
 A number of different solutions emerged to allow the robots to aggregate and move as an aggregate towards a light source. 
 The robots in the front could lead the group, but the ones in the back could not see the light source as well and followed the leaders, displaying situated specialization into leader and follower roles. 
 
