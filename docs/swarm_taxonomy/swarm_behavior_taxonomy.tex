@@ -1,0 +1,636 @@
+\documentclass[]{article}
+
+\usepackage{xargs} 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+
+\usepackage{graphicx}
+\usepackage{auto-pst-pdf}
+\usepackage{graphviz}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{multicol}
+
+%opening
+\title{A Hierarchy of Swarm Robot Behaviours}
+\author{Abraham Shultz}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Because robotic swarms consist of multiple robots, there are behaviours available to them that are not available to single robots. Also, swarms present the possibility of behaviour at a greater scale than individual robots, by having emergent behaviours of the swarm implied, rather than explicitly defined, at the level of individual robots. These multiple levels of behavioural organization give rise to multiple, inter-related possible behaviours that a swarm of robots can exhibit. This paper examines the available behaviours starting from minimal assumptions about the swarm, and examines possible other families or hierarchies of behaviours that arise when those assumptions are not in force. It also proposes mechanisms for unifying swarm states that develop under suboptimal network conditions. 
+
+\end{abstract}
+
+\section{Introduction}
+
+For the purposes of this paper, behaviours differ from ``actions''. 
+An action, such as sensing or moving forward, does not have a context, whereas behaviours are contextualized by interaction with other members of the swarm or the environment.
+For example, the swimming of fish is an action, but when a group of fish swim close together in the same direction, this schooling is a behaviour. 
+Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming makes up the behaviour of schooling. 
+
+Numerous papers provide catalogues of primitive behaviours for robots 
+The descriptions of these behaviours as ``primitive'' is sometimes meant to indicate that they are building blocks of more complex behaviours, or that they are not decomposable into smaller behaviours themselves. 
+Other papers describe behaviours as primitive because while the behaviour does not complete a task in itself, it can be combined with other behaviours or actions to perform a useful task. 
+
+Designating some behaviours as primitive, while others are regarded as more advanced or complex, implies the existence of a hierarchy of behaviours, where complex behaviours are composed of more primitive behaviours, with the most primitive behaviours being closer to actions, as defined above. 
+The purpose of this paper is to explore which behaviours are available or not from given sets of basic actions.
+Such exploration is useful for creating a catalogue of primitives that can be used in a compositional approach to program generation, both to define the primitives out of which programs can be composed, and provide some degree of assurance that these primitives can cover the space of possible tasks required from the swarm. 
+
+\section{When We Say ``Swarm Robots''...}
+
+Typically, a robot swarm consists of cooperating, autonomous robots with local sensing and communication and without central control or global information, situated in an environment that they can sense and modify \cite{brambilla2013swarm}.
+The cooperation element of this definition is important, as a swarm may be expected to perform actions as a group that they cannot perform as single individuals \cite{csahin2004swarm}. 
+These actions could be as simple as covering an area with sensor fields of vision, or as complex as moving an object from one point to another as a team. 
+The mobility of the agents also makes swarm robotics distinct from amorphous computing or sensor mesh networks, although swarms also take inspiration and techniques from those fields.  
+
+Numerous papers have proposed taxonomies of swarm robots, Brambilla \textit{et al}. provide an overview of these \cite{brambilla2013swarm}. 
+This paper is focused instead on the interrelationships of the behaviours available to a swarm, and the assumptions that those behaviours are predicated on. 
+Examining these assumptions may reveal unexplored regions of the space of possible swarm configurations. 
+
+%TODO cite work on moving in formation as related to, but not entirely required for, caging manipulation
+
+\section{Lists of Swarm Behaviors}
+
+One possible list of primitives is disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, and scan area \cite{evans2000programming}.
+
+McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved, but also grouped into six groups: motion, navigation, dispersion, clustering, orientation, and utility.
+
+McLurkin uses the term ``primitive'' to refer to behaviours of a single robot, ``pair behaviours'' for two robots, and group behaviors for more than two robots. 
+Under the proposed distinction between actions and behaviours above, the motion group is composed only of actions except for Avoid Bump, the collision avoidance behaviour. Move Arc, Move Forward, Rotate To Angle, and Move Stop are all actions. 
+Move Arc moves the robot on an arc, composed of forward and rotational velocity. Move Forward, Rotate To Angle, and Move Stop are special cases of Move Arc, with, respectively, the rotational, translational, or both velocities set to zero. 
+ 
+\cite{mclurkin2004stupid}.
+\begin{multicols}{2}
+	\begin{enumerate}[noitemsep]
+	\item Motion
+		\begin{enumerate}[noitemsep]
+		\item Move Arc
+		\item Move Stop
+		\item Move Forward
+		\item Move By Remote Control
+		\item Avoid Bump
+		\end{enumerate}
+	\item Orientation
+		\begin{enumerate}[noitemsep]
+		\item Orient for Orbit
+		\item Orbit Robot
+		\item Orient to Robot
+		\item Match Robot Heading
+		\item Follow Robot
+		\end{enumerate}
+	\item Navigation
+		\begin{enumerate}[noitemsep]
+		\item Follow the Leader
+		\item Orbit Group
+		\item Navigate Gradient
+		\end{enumerate}
+	\item Clustering
+		\begin{enumerate}[noitemsep]
+		\item Cluster On Source
+		\item Cluster With Breadcrumbs
+		\item Cluster Into Groups
+		\end{enumerate}
+	\item Dispersion
+		\begin{enumerate}[noitemsep]
+		\item Avoid Robot
+		\item Avoid Many Robots
+		\item Disperse From Source
+		\item Disperse From Leaves
+		\item Disperse Uniformly
+		\end{enumerate}
+	\item Utility
+		\begin{enumerate}[noitemsep]
+		\item Detect Edges
+		\end{enumerate}
+	\end{enumerate}
+\end{multicols} 
+
+
+Nagpal proposes eight biologically inspired primitives for composing higher level behaviours \cite{nagpal2004catalog}.
+ 
+\begin{enumerate}[noitemsep]
+\item Morphogen gradients and positional information
+\item Chemotaxis and directional information
+\item Local inhibition and local competition
+\item Lateral inhibition and spacing
+\item Local monitoring
+\item Quorum sensing and counting
+\item Checkpoints and consensus
+\item Random exploration and selective stabilization
+\end{enumerate}
+
+Morphogen gradients use local communication with hop counting to create a gradient from a source. 
+The source robot transmits a message with a hop count of 0; other robots retransmit the message when they receive it, incrementing the hop count. 
+As a result, the hop count becomes a rough proxy for distance from the source. 
+
+Chemotaxis and direction is implemented in terms of morphogen gradients, by allowing each robot to query its neighbours about their hop count/morphogen intensity. 
+This allows estimation of the direction of the local gradient, and so orientation towards or away from the source. 
+
+Local and lateral inhibition have a large collection of possible variants and applications. 
+Generally, they are used for electing individuals from the group. 
+Nagpal suggests that each agent start from a random number and count down, with the agent that hits zero first becoming the elected individual. 
+The elected individual broadcasts a message that suppresses all the robots that receive it from electing themselves. 
+In a large group, a random countdown can lead to ties.
+If two robots elect themselves within a time window smaller than that required for the suppressing message to propagate between them, they will both think they are leaders.
+Self-election timestamps could be used as tiebreakers in this case. 
+McLurkin suggests using globally unique robot IDs included in the suppression message, with each robot being suppressed if its ID is higher than the ID in the suppression message.
+This can still have ties while the gradient propagates, but will converge to one elected robot.
+ 
+Local monitoring uses heartbeat messages between local agents to keep track of the presence and activity of those neighbours. Failure to receive a message could trigger a response, such as moving to occupy a previously-occupied area to maintain sensor coverage.
+
+Quorum sensing uses the number of agents in an area, as measured by morphogen signals, to determine when enough agents are present to perform an action. 
+Checkpointing is a closely related behaviour, where all agents that can detect if a desired condition is met emit a signal until they detect the condition is met. 
+When all agents agree that the condition has been satisfied, signals indicating that it is not will cease. 
+Checkpointing can be used to perform sequences of actions, provided that the robots can detect the desired transition point. 
+
+In addition to primitive behaviours, there are catalogues of higher level behaviours. 
+Brambilla \textit{et al}. group collective behaviours into four classes: spatially-organizing behaviours, navigation behaviours, collective decision-making, and other collective behaviours.
+
+\begin{enumerate}[noitemsep]
+\item Spatially-organizing
+	\begin{enumerate}[noitemsep]
+	\item Aggregation
+	\item Pattern Formation
+	\item Chain Formation
+	\item Self-assembly and Morphogenesis
+	\item Object Clustering and Assembling
+	\end{enumerate}
+\item Navigation
+	\begin{enumerate}[noitemsep]
+	\item Collective Exploration
+		\begin{enumerate}[noitemsep]
+		\item Area Coverage
+		\item Swarm-guided Navigation
+		\end{enumerate}
+	\item Coordinated Motion
+	\item Collective Transport
+	\end{enumerate}
+\item Collective Decision-Making
+	\begin{enumerate}[noitemsep]
+	\item Consensus Achievement
+	\item Task Allocation
+	\end{enumerate}
+\item Other Collective Behaviors
+	\begin{enumerate}[noitemsep]
+	\item Fault Detection
+	\item Group Size Regulation
+	\end{enumerate}
+\end{enumerate}
+
+
+Matari\'c suggested the behaviour set of avoidance, safe-wandering, following, aggregation, dispersion, and homing, combined with summation of the behaviors or switching between them based on sensor precepts \cite{mataric1995designing}. For example, flocking is the summation of dispersion, aggregation, and safe-wandering, plus homing to provide the swarm with a direction to flock in. 
+
+The use of homing as a driver of other behaviours may be why homing is present in Matari\'c's behaviour set, but absent from the others. 
+Homing is the ability to find a particular location or region. 
+All of the other behaviours in these lists are executable at any location, and do not refer to a specific place. 
+Homing, on the other hand, implies that the robot has a sense of location, so that it can orient towards home. 
+Without such a sense, the only way for an individual robot to find home would be to be able to detect it, and to wander randomly until the robot arrives. 
+
+There is substantial overlap between these lists. Matari\'c's avoidance is the same as McLurkin's Avoid Bump, in that they both give the robot the ability to move without colliding with other robots or the environment. 
+Aggregation and clustering, area coverage and dispersion, swarm-guided navigation and morphogen gradient navigation are all similar pairs of activities. 
+Brambilla \textit{et al}. differs from McLurkin \& Nagpal in that it is not explicitly inspired by biology and so includes implementations of behaviours using basis other than biological, such as virtual physics or probabilistic finite state machines (PSFMs). 
+Furthermore, compositional approaches have been proposed in control-theoretic terms as well as pheromone or morphogen-based terms, so the process of composition of primitives can be viewed as a meta-strategy for the creation of programs, rather than a process specific to pheromone robotics \cite{belta2007symbolic}.
+
+For the purposes of this paper, the underlying metaphor of the implementation of the behaviour is not of primary relevance, as long as the behaviour remains the same. 
+However, different metaphors may require different assumptions about the available sensor information for each robot, and so result in a different range of basic behaviours being available to the swarm. 
+Further, it seems that there is no swarm so minimal that someone hasn't found a way to get useful work out of it.  
+If the robots can determine whether they have a line of sight to a goal, they can collaborate to push an object to the goal by only pushing on the side of the object if the goal is obscured by the object \cite{chen2015occlusion}. This works well for convex objects, but certain concave objects can be shown to be pushed away from the goal under this scheme. 
+This behaviour can be implemented by switching between random walking and phototropism based on whether the robot is pressed against an object, and so doesn't even require a general-purpose computer, just robots tall enough to see over the object when they are on the side away from the goal. 
+A group of robots can rendezvous at a single location without communication or localization, but with the ability to detect another robot within its field of view \cite{yu2012rendezvous}. However, this paper makes some assumptions, such as the assumption that robots that are close enough will merge, that are not supported by the current state of the art. 
+
+Because some apparently complex behaviours can be implemented on relatively trivial robots by making certain assumptions about the robots or the area that they are in, the remainder of this paper will focus on behaviours that could be implemented on a general abstract robot. 
+This assumption is made with the understanding that by specializing the sensors of the robot, more specific tasks could be accomplished. 
+For example, dispersion on the general robot is defined as dispersing so that no robot is within less than a fixed distance of any other robot. 
+By adding a sensor that determines if the robot is within a desired area, area coverage can be specified from general dispersion. 
+ 
+The general robot is mobile, and communicate locally. 
+No restriction is placed on its ability to store messages from other robots or state information from those messages. 
+Local communication refers to the ability to communicate with some subset of the swarm.
+Depending on the implementation, particularly radio vs. infra-red, this communication may depend on a clear line of sight between the robots.
+For the general robot, the implementation details are not important. 
+
+Determining the base set of behaviours for the swarm is difficult. 
+Ideally, the base set covers all the desired tasks for the swarm through composition of base set behaviours with specializing sensors as described above. 
+Since the set of possible desired tasks is unconstrained, there is no known set of behaviours that could cover all possible tasks. 
+However, the convergence of multiple suggestions for behaviour libraries implies that aggregation, dispersion, formation of patterns (particularly chains and arbitrary polygon formations), formation of navigational structures (such as beacon selection, gradients, and distributed coordinate systems), and distributed decision making are likely candidates for inclusion in a behavioural library sufficient to perform many tasks.  
+
+\section{Pheremone Metaphors}
+
+\subsection{Aggregation}
+
+Aggregation in the general sense can be implemented simply by having robots attempt to minimize the distance between themselves and other robots. 
+This form of aggregation can be implemented without communication, so long as robots can detect the distance to their neighbors. 
+However, this simple form is also prone to causing the robots to form more than one cluster, as there is no guarantee that all robots will initially move to the same point. 
+
+Aggregation in robotic swarms using a pheremone or morphogenic metaphor can be accomplished by having a robot at the desired location (the source) broadcast a message that indicates that nearby robots should come towards it. 
+Nearby robots also broadcast the message, incrementing a hop count, and discarding any messages with a higher hop count than the lowest they have received. 
+This rule results in all robots that can communicate eventually having a hop count value that indicates their distance, in hops, from the lowest robot. 
+By querying their neighbors, each robot can determine the direction towards the source (towards those neighbors with lower hop counts) and so move towards the source. 
+
+This behavior relies on the formation of a navigational structure, the gradient of message hop counts, as well as some ability to determine where the neighbors are located. These functions are covered in more detail in section \ref{pheremone_nav_struct}.
+
+\subsection{Dispersion} \label{morpho_disperse}
+
+Dispersion is the inverse of aggregation, where each robot attempts to spread out from others, usually attempting to maintain some condition such as having no robots within a fixed distance. 
+Typically, dispersion is intended to maximize area coverage without causing the robots to be so far apart that they can no longer communicate with each other. 
+As with aggregation, dispersion can be implemented simply if the robots have the ability to detect each other's distance. 
+
+%In pheromone robotics, each robot can emit a repellent pheromone with a hop count that is rebroadcast by each robot that receives it, decrementing the hop count. 
+%Once the hop count reaches zero, the retransmission ends. 
+
+Many implementations of dispersion using pheromones rely on the presence of a central controller that can calculate the pheromone gradients based on the observed locations of the robots or on sensing of the power and direction of the pheromone signal from the robot emitting it \cite{pearce2003dispersion, payton2001pheromone}. 
+These abilities are extensions beyond what the abstract robot under consideration can do. 
+If it is acceptable to break the connectivity of the network, robots can simply emit a dispersion pheromone and wander randomly until they no longer detect dispersion pheromone emitted from any other robot. 
+This approach does not rely on the ability to sense the direction or range of any other robot emitting the pheromone.
+Furthermore, if the robots can modulate their own transmission strength, emitting the dispersion pheromone at e.g. half strength will leave the robots within reach of a full-strength transmission, dispersing the robots while still preserving the connectivity of the network. 
+
+\subsection{Chain Formation}
+
+Work has been done in allowing robots to form chains that communicate by tapping each other's bump sensors, which arguably fits in with the idea that the abstract robot is able to move and avoid obstacles \cite{Werger96roboticfood}. 
+This approach, however, seems like an overloading of the ability to wander without collisions.
+
+Given the ability to determine the direction of pheromone signals, chain formation can be accomplished by having the anchor of the chain emit a recruitment signal that causes a robot perceiving it to move towards it and begin emitting the recruitment signal from the opposite side of the newly recruited robot.
+Alternatively, one robot can be inclined to disperse from the group, and the others inclined to maintain connectivity, so that the chain grows behind the departing robot, as in the growing point model \cite{payton2001pheromone}.
+As this model does not require abilities beyond those previously discussed: dispersion, aggregation, and collision-free motion, it is a solid match for the abstract robot under consideration.
+
+\subsection{Polygon Formation}
+
+The behaviours of forming and navigating gradients and orbiting the edge of a group of robots, combined with group-based localization, allow Kilobots to form patterns much larger than the individual robots or their sensing ranges \cite{Rubenstein795}.
+However, this approach uses an edge-orbiting behaviour that is outside the repertoire of the abstract robot, as it relies on the ability to detect the strength of a received signal. 
+The need to sense the signal strength of the transmitting robots on the edge of the orbited group could be replaced by orbiting based on the presence or absence of the edge robot signal, assuming that the edge robots can modulate the strength of their transmissions. 
+The edge robots would reduce transmit power to a level that results in orbiting at a proper distance. 
+If the maximum range of the transmissions is an acceptable distance to orbit at, even transmit power modulation is not needed. 
+
+Assuming that the robots can produce a consensus coordinate system as in section \ref{pheremone_nav_struct}, then the formation of a polygon can be guided by the use of the coordinate system.
+Indeed, the generation of such a coordinate system makes all of the other behaviours much simpler, as the robots can form the coordinate system and then operate with those coordinates as if they had a global localization system.
+However, consensus coordinate systems are prone to error, and the error in the system may be sufficient to disrupt the formation of polygons. 
+
+Without a coordinate system, but with a morphogen-style ability to elect leaders, the formation of approximate polygons can be directed by the use of lobes formed on the perimeter of a ring \cite{mamei2004experiments}. 
+The resulting shapes are regular polygons, but with somewhat ``blobby'' rather than straight sides. 
+
+\subsection{Navigational Structures} \label{pheremone_nav_struct}
+
+Communicating robots can arrive at a consensus coordinate system using trilateration based on range sensors \cite{cheng2005robust}, or use lateral inhibition to select individual robots to serve as beacons which create gradients for trilateration via hop counts \cite{nagpal1999organizing}.
+Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by communicating.
+Rather than directly determining range and bearing from sensors, the communicating robots exchange their coordinates, and calculate the ranges and bearings from their positions. 
+
+Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviours from Stupid Robot Tricks \cite{mclurkin2004stupid}.
+
+Even if the robots do not start with unique identifiers, the formation of a consensus localization framework will provide one.
+Assuming that only one robot can be in a location at a time, the robots can use their initial location as a unique identifier. 
+However, this assumes that the robots are all members of the same coordinate system.
+If the initial configuration of the robots is as more than one disconnected network, separated by regions wider than the robots can communicate across, they may arrive at multiple coordinate frames.
+
+\subsection{Decision Making}
+
+Pheromone robotics provides mechanisms for consensus decision making by quorum sensing and by checkpointing \cite{nagpal2004catalog}. 
+Quorum sensing uses messages that propagate through the swarm, and signal to other robots that the transmitting robot is ready to begin a task. 
+Robots can sense either the count of unique IDs originating ready messages, or the frequency with which the messages arrive, to determine how many robots are ready to begin. 
+Checkpointing is similar, in that the robots broadcast a halting signal when they detect that the preconditions for performing an action are not met.
+Once the precondition is met, then the halting signal will go away, as the robots detect the precondition and cease broadcasting the halting signal. 
+Note that both of these behaviours are specializations to the usual communication ability of the abstract robot, since they require the ability to detect readiness or the state of some precondition. 
+Unless the detection can be accomplished solely through communication, the abstract robot requires some additional sensor to detect it. 
+
+
+\section{Virtual Physics Metaphors} \label{virt_phys}
+
+Virtual physics metaphors, also called ``artifical physics'' or ``physicomimetics'' cause the robots to act based on virtual forces to try to reduce the total potential energy of the system. 
+Each robot is treated as a particle with a position and velocity, and the particles are perturbed by forces acting on them to change their velocity. 
+Obstacle avoidance, for example, can be created by allowing detected obstacles to exert a repulsive force on the particles, pushing the robot away from the obstacle. 
+Many of the more complex applications of virtual physics do not apply well to a robot that can only communicate and move.
+The onboard calculation of the forces acting on a robot ``particle'' relies on the robot being able to sense the elements of the environment that contribute to those forces. 
+However, this is not an insurmountable difficulty, as many of these approaches have been implemented on real robots using relatively inexpensive sensors. 
+
+\subsection{Aggregation}
+
+The application of a combination of attractive and repulsive forces can cause robots to organize into hexagonal or square lattices \cite{spears2004overview}.
+The combination of attraction and repulsion can change the spacing of the particles, and so result in wider or smaller lattices. 
+Proper tuning of the parameters also allows the robots to move in formation through areas with small obstacles, or change formation to avoid obstacles while maintaining group cohesion. 
+ 
+\subsection{Dispersion}
+
+Payton refers to a ``gas expansion'' model for area coverage, albeit using a repulsive pheromone rather than a physics-based description of the repulsive force \cite{payton2001pheromone}. 
+Jantz and Doty used the physics of ideal gasses to derive the rate of diffusion of robots through an opening into a much larger area, as well as predicting robot collision frequency as related to robot density \cite{jantz1997kinetics}. 
+Expansion into an area under a physics-based model has been tested using a physics-based model to sweep a corridor\cite{spears2006physics}.
+This model assumes some attractive force at the end of the corridor, as well as the inter-robot interactions, to drive coverage of the entire space. 
+
+\subsection{Chain Formation}
+
+By modifying the circular forces of attraction and dispersion into a circular attraction region and a much longer ellipsoid region of repulsion, chain formation emerges from a physical model \cite{maxim2009robotic}. 
+Robots off the chain are attracted to each other until they enter the region of repulsion, which pushes them along the chain. 
+The authors point out that this model does not set the direction of the chain formation, so in an unconstrained environment, the chain grows randomly. 
+However, in an environment where the chain is constrained by e.g. the walls of a hallway, the chain will extend into the open space, and so grow along the hallway. 
+The sensing required is above and beyond the abstract robot described at the beginning of this section, but within the abilities of robots with the ability to trilaterate each other's locations. 
+This algorithm has been implemented on real robots, rather than only in simulation.  
+
+\subsection{Polygon Formation}
+
+The hexagonal lattice formation described above is a result of circular repulsive fields around robots. 
+Assuming there are enough robots in the initial group, the resulting lattice takes on a roughly hexagonal or circular form. 
+The square lattice would be expected to form rectilinear shapes, but without additional constraints, they are not guaranteed to be actual squares (or hexagons).
+The addition of unique identifiers can provide this constraint, resulting in precise formations \cite{spears1999using}. 
+Square lattices also require an additional sensor that can detect the color of other robots, and robots of two colors, or some similar way to distinguish the robots into two groups of roughly equal numbers. 
+This distinction has an interesting parallel with the arrangement of sodium and chlorine in crystalline salt, and so might be generalizable to other crystal structures. 
+
+\subsection{Navigational Structures}
+
+Both potential fields and the structures based on the square and hexagonal lattices could be used as navigational structures, especially in combination with communication to allow individual robots to communicate to others that they have reached a goal. 
+For example, a chain formation could extend into a region until the goal is reached, and then the robots could propagate a message (or change the shape of their own local fields) to ``reel in'' the rest of the group. 
+
+\subsection{Decision Making}
+
+The use of potential fields can guide individual robots to adopt different roles depending on their individual perception of the area around them \cite{vail2003multi}.
+The robots essentially bid on the available roles, calculating their bid based on their expected effectiveness at that role. 
+Mapping the bid function over the area the robots are operating in reveals the field strength at every point of the area. 
+The same mechanism is used to guide the movement of the robots, for example by having attractive potentials at goal locations. 
+
+\section{Control Theory}
+
+\subsection{Aggregation}
+
+The expression of the attraction and repulsion among individual robots taking up space, rather than point robots, can be expressed as a model which depends only on the position of the individuals and their observations of the relative positions of others \cite{gazi2004class}. 
+The authors point out that while pure aggregation or dispersion causes the swarm to cluster around a center that does not move, adding a motion term to the equations will result in the cluster moving with guaranteed unit cohesion. 
+
+\subsection{Dispersion}
+
+The attraction and repulsion controls proposed by Gazi and Passino above include real-valued components which sets the strength of attraction and repulsion, and so can be used to vary the desired distance between individuals of the swarm, thus allowing the same control formula to provide both attraction and repulsion. 
+
+Lee and Chong provide a controller for uniform dispersion on a hexagonal grid that enables robots to close gaps in the dispersed swarm \cite{lee2008geometric}. 
+This controller is interesting because it assumes that the robots do not have a common coordinate system, communication, or unique identifiers, and can only detect each other's locations locally, rather than globally. 
+
+\subsection{Chain Formation}
+
+Due to the similarity between the expression of attraction and dispersion in virtual physical metaphors, as described in section \ref{virt_phys}, the same extension of virtual physics used by Maxim, Spears, and Spears could be converted to a control-theoretic expression easily \cite{maxim2009robotic}.
+It is likely due to this similarity that while chain formation could be expressed, and so analysed for e.g. stability, by control theory, most of the work on it has developed around other metaphors. 
+
+\subsection{Polygon Formation}
+
+Chea, Hou, and Slotine propose a shape controller that enables robots to maintain appropriate distances from each other and remain within a defined shape while moving \cite{cheah2009region}.
+The shapes can be round, as well as polygons, and can have holes within the shape. 
+Control forces are calculated from the positions of the robots, and so require a coordinate system. 
+Chea and Hou extended this work to compound shapes with rotation, translation, and scaling \cite{hou2012dynamic}.
+
+\subsection{Navigational Structures}
+
+\subsection{Decision Making}
+
+Lei \textit{et al}. indicate that with communication sufficient to form a spanning tree, a network of swarm robots can reach consensus on their heading, and apply that consensus to formation control \cite{lei2015consensus}.
+The resulting controller does rely on a coordinate frame for the robots, and maintains the formation while avoiding collisions. 
+ 
+\section{Probablistic Finite State Machines}
+
+Some of these algorithms can be implemented on the abstract robot with only local communication and mobility, but many of them rely on directional sensing to acquire navigational behaviour. 
+%todo expand this
+
+\subsection{Aggregation}
+
+Aggregation in robotic swarms can be accomplished by a combination of basic behaviours of obstacle avoidance, approaching other robots, being repelled by other robots, and waiting \cite{soysal2005probabilistic}.
+The approach described assumes that robots have the ability to detect each other via sound sensors and infra-red range sensors. 
+It may also be possible to have randomly wandering robots form clusters by stopping when they encounter each other, and starting to move again with a probability inversely proportional to the number of robots in the cluster, so that the larger a cluster gets, the less likely robots are to leave it. 
+However, this approach would likely take a long time to converge, and requires that the robots be able to count the number of robots in the cluster (or approximate it by e.g. the volume detected by a sound sensor, and produced by speakers on all the robots).
+
+Wireless communication and range sensors can also be used in a PFSM to get aggregation and stable clustering \cite{winfield2008modelling}.
+This model acts to keep the swarm connected, while controlling the distance between members of the swarm with a single parameter, $\alpha$.
+The $\alpha$ parameter is how many robots each robot attempts to maintain connections to, and so small values of $\alpha$ force the swarm to disperse, while larger values bring it closer together. 
+
+\subsection{Dispersion}
+
+As described in the previous section, some implementations of aggregation are more accurately characterized as controlling inter-robot spacing, and so by increasing the desired spacing, these forms of aggregation become dispersion controllers. 
+Correl \textit{et al}. use a controller written in Proto to maximize wireless coverage of an area with mobile robots that have wireless connections.
+Unlike Winfield \textit{et al}., this dispersion controller uses Brownian motion to move the robots until constraints on their connectivity are satisfied, rather than having specific motions intended to preserve connectivity. 
+This algorithm can be implemented on the abstract robot with only communication and mobility, as it does not rely on detection of the range to other robots, just detection of the ability to communicate with them. 
+
+\subsection{Chain Formation}
+
+The chain algorithm of Nouyan, Campo, and Dorigo uses a PFSM to control the decisions of robots to join or leave chains, only if they are situated at the tip of a chain \cite{nouyan2008path}. 
+The chains are used for searching for a target, so when the target is found, the probability of leaving the chain drops to zero, stabilizing the chain between the starting point and the target. 
+The robots use color signals to indicate to each other which direction is towards the end of the chain. 
+In some versions of the chain algorithm, the robots can also adjust the angles between robots in the chain to maximize chain length. 
+
+\subsection{Polygon Formation}
+
+It is possible to form arbitrary polygons and circles with a robot swarm, subject to the constraints that the robots are able to query the distance to any other robot \cite{sugihara1996distributed}.
+For the formation of polygons, a user must select the robots to serve as vertices. 
+While not formally expressed as a PFSM, this algorithm is essentially case-based, and so could easily be implemented in an FSM. 
+
+\subsection{Navigational Structures}
+
+Nouyan, Campo, and Dorigo also propose an algorithm similar to chain formation called vectorfield, where robots use their LEDs to indicate the direction of the starting point.
+Robots can join or leave the field probabilistically if they are on the edges of it. 
+Robots that leave the field walk randomly, and can rejoin the field after a randomly chosen time.
+Again, once the target is found, the probability that the robot will leave the field is set to zero, stabilizing the branch of the field that leads to the target. 
+At this point, following the vector field away from the starting point will lead to the target. 
+This method bears some similarity to the use of morphogen gradients to form a gradient from a source for navigation, but relies on LED markers around the perimeter of the robots rather than broadcast messages between the robots. 
+
+\subsection{Decision Making}
+
+\section{Evolved Behaviors}
+
+Evolved behaviours for robots express the behaviour as a ``genome'' which is subject to evolution in a genetic programming approach, where each genome is used to configure a controller, and then the behaviour of that controller is assessed with a fitness function. 
+The fitness function assigns a value to the genome based on its ability to perform the desired task. 
+Those genomes with higher fitness are kept, and ``bred'' by crossover with other high-fitness genomes until a desired fitness level is reached. 
+Typically, the use of evolved controllers uses the genome as parameters for another controller, for example, the weight vector of a neural network. 
+
+Genetic programming is used more as a meta-method, for setting the parameters of a controller based on some other metaphor, than as a method in itself \cite{fehervari2013evolution}. 
+As a result, there are no ``pure'' genetic swarm controllers, but neural, virtual physics, or other controller architectures parametrized by the output of genetic algorithms. 
+Because the use of evolution is typically tightly coupled with the available sensors on the robot, which provide information to the evolved controller, there is almost no work that uses robots like the basic abstract robot under consideration in this paper, which only has the ability to send and receive local communications and move in a collision-free manner. 
+This section will instead deal with the existing evolved controllers, and the sensors required for them. 
+
+\subsection{Aggregation}
+
+The use of evolved controllers for aggregation has been the subject of several studies \cite{dorigo2004evolving,bahgecci2005evolving}. 
+Boolean networks, in particular, have been demonstrated to be able to evolve networks exhibiting phototaxis and antiphototaxis, which generalizes to aggregation and dispersion if the robots are equipped with omnidirectional lights \cite{roli2011design}.
+
+\subsection{Dispersion}
+
+Controllers have been evolved to allow Kilobots to perform a variety of tasks, including dispersion, by evolving a lookup table (LUT) that maps range sensor strengths to motor speeds on the Kilobot \cite{beckerleg2016evolving}.
+This work does assume the ability to use distance sensing, but a similar approach could evolve the ability to move until no messages from any robot are sensed, resulting in dispersion similar to the morphogenic approach in section \ref{morpho_disperse}. 
+As mentioned in the previous section, the use of a boolean network evolved to display antiphototaxis will cause robots equipped with lights to disperse from each other. 
+
+\subsection{Chain Formation}
+
+Beckerleg and Zhang also evolved a controller that allows Kilobots to play ``follow-the-leader'', which is a form of chain formation \cite{beckerleg2016evolving}. 
+The use of modulated transmit power could stand in for distance sensing, as described in section \ref{morpho_disperse}, at a cost of increased message transmission. 
+
+\subsection{Polygon Formation}
+
+Virtual physics combined with evolutionary algorithms for setting the parameters has been used to guide uncrewed aerial vehicles (UAVs) in simulation \cite{spears2004overview}. 
+The resulting controllers were robust against changes in the simulation environment, reduction in the number of UAVs, and reduction in the quality of the simulated UAV sensors. 
+The use of genetic algorithims has also been applied to parametrizing a gene regulatory network (GRN) that guides swarm robots to positions on a shape described with a non-uniform rational B-spline (NURBS) model. 
+The resulting controller can recover from perturbation by an obstacle and the failure of individual robots. 
+Robots using this algorithm must be able to determine how many other robots are in their neighborhood, as well as localizing within a global coordinate space. 
+They decide on their own positions on the NURBS and arbitrate amongst themselves to distribute evenly. 
+
+\subsection{Navigational Structures}
+
+Sperati, Trianni, and Nolfi evolved a controller that uses red and blue lights on the back and front of the robots, respectively as visual cues to allow the creation of chain structures between two target areas \cite{sperati2011self}.
+Rather than forming a fixed chain, the robots form a stable pair of lines that cycle from one target region to the other and back. 
+The controller is a feed-forward neural network, with leaky activation on the hidden neurons to provide a fading memory. 
+All of the parameters of the network were evolved, rather than trained, which makes sense given the lack of a large set of training data. 
+
+\subsection{Decision Making}
+
+Controllers for allowing a pair of robots to arbitrate leader and follower roles to move in formation have been evolved on robots without explicit communication channels \cite{quinn2001evolving, quinn2003evolving}. 
+These robots used only range sensors to perform the task, but were constrained to begin within sensor range of each other. 
+
+Baldassarre, Nolfi, and Parisi evolved controllers for mobile robots that displayed situated specialization, changing their behavior according to the local conditions \cite{baldassarre2003evolving}.
+Specializing in this way could be viewed as a precursor to role assignment, albeit in an extremely decentralized and emergent way. 
+The evolved controllers were feed-forward neural networks with 16 sensor neurons and one bias neuron. 
+The input neurons were directly and fully connected to two output neurons that controlled the speed of the left and right wheels of a circular simulated robot. 
+A number of different solutions emerged to allow the robots to aggregate and move as an aggregate towards a light source. 
+The robots in the front could lead the group, but the ones in the back could not see the light source as well and followed the leaders, displaying situated specialization into leader and follower roles. 
+
+%\section{Non-communication}
+%
+%Communication, in addition to being unicast, multicast, or broadcast, can also be implicit or explicit. 
+%Explicit communication is the sending of a message with some informational content between robots. 
+%Implicit communication is the conveying of information between robots without sending a message, by performing actions that alter the environment in a way that the robot receiving the communication can detect. 
+%
+%Communication via altering the environment is called stigmergy.
+%The TERMES robot swarm uses only local sensing of the environment, combined with local rules, to collaboratively construct structures from blocks \cite{werfel2014designing}. 
+%The placement of new blocks provides stigmergic signals to other robots, when they arrive at the location of the new blocks. 
+%Robots with the ability to measure the motion of an object can collaborate to move it without communicating with each other \cite{wang2015multi}. 
+%In this case, detected motions of the object being moved are a form of communication between the robots, in that they convey information about the actions of the other robots. 
+%
+%The morphogen gradients and hop-counting methods discussed earlier have a substantial overlap with pheromone-based robotics, where robots can release a chemical into the environment (usually via some non-chemical method, such as IR broadcast, but for an exception, see \cite{hayes2001swarm}). 
+%The robots can release and react to pheromones in the environment, and so there is an implicit communication via stigmergy, but no explicit agent-to-agent communication. 
+%Pheromone approaches can guide the construction of objects, even if the individual swarm members have no memory, no communication, and only local perception \cite{mason2003programming, wawerla2002collective, bowyer2000automated}.
+%The agents engaged in the construction move at random, and take actions governed by their individual perception of environment at present time. 
+%The addition of communication between systems and memory of the state of the world will improve the efficiency of the system, but not having explicit communication does not prevent it from functioning.
+
+%\section{No Unique Names}
+%
+%Globally unique robot identifiers make some tasks easier, such as detecting circumnavigation of an object by using a stationary robot as a beacon. 
+%If a transient or local names is used, the moving robot may fail to re-identify the beacon, while non-unique names could lead to multiple incorrect identifications of the beacon.
+%
+%%todo what does not having each level of naming _prevent_?
+%
+%The naming of robots within a swarm is not a binary distinction. Robots can have no awareness of the distinction between robots and other obstacles in the environment, be able to distinguish other robots, be able to determine the type of other robots, or be able to recognize specific other robots, either by local/temporary identifiers or permanent/global identifiers. 
+%
+%At the most basic, robots in the swarm are completely unaware of each other, in that they make no distinction between other swarm robots and obstacles within the environment. 
+%
+%With slightly better sensing, the robots can identify whether an object is another robot or a non-robot object. The TERMES swarm uses ultrasound for detecting the structure on which they operate, but can also detect other robots using ultrasound nearby. They do not communicate via ultrasound, and their interaction is limited to yielding to other robots on the same path \cite{werfel2014designing}. Reynolds' ``boid'' flocking algorithm also uses the range to other boids and to non-boid objects, without explicitly identifying individuals, which implies that swarm behaviors such as aggregation and dispersion will function well when taking into account the presence of other swarm members without considering their identity \cite{reynolds1987flocks}. 
+%
+%In the case of heterogeneous swarms, it may be useful to have robots be able to identify what class or type of robot another robot is, but have no need to know that it is a specific instance of that class. The Swarmanoid project uses mobile foot-bots, flying eye-bots, and gripper-equipped hand-bots to perform tasks cooperatively. The mechanism of this cooperation does not rely on individual identities for the robots, but allows them to communicate with each other locally, and transfer information based on the type of robot requesting it \cite{ducatelle2011self}. 
+%
+%For temporary collaboration, robots could develop local names or identities. 
+%However, this approach seems absent from the literature, perhaps because the effort of negotiating local names or identities when needed is lower than the effort of simply having pre-generated names. 
+%Nagpal's catalog specifically calls out the possibility that there may be too many agents to name, but provides mechanisms for election of ``leaders'' for specific functions \cite{nagpal2004catalog}. 
+%Leadership, in this case, becomes a sort of temporary identity for the robot, which distinguishes it from all non-leaders, and possibly uniquely as a particular leader. 
+%In cases like the beacon example above, this temporary quality is sufficient.  
+%
+%Globally unique identifiers are convenient, and not difficult to implement for moderately sized swarms (although the author has had several experiences with MAC addresses of commercial hardware being not as unique as they should be).
+%However, global unique identifiers lack biological plausibility. 
+%It is clear that, for example, ants can recognize the distinction between members of their own colony and outsiders, and the distinct castes within their colony, by the smell of chemicals on the surface of the other ant \cite{sharma2015cuticular}. 
+%While this is an impressive range, it seems unlikely that ants can identify each other as specific individuals, with the possible exception of the queen, due in large part to the identity chemicals of the ants being shared via contact within the hive \cite{bos2012recognition}. 
+%
+%\section {Sensing and Reacting to the Environment}
+%
+%McLurkin assumes that all swarm robots have a simple obstacle avoidance behavior that causes them to not hit each other or obstacles in the environment \cite{mclurkin2004stupid}.
+%This assumption, or this base behavior, is present in other systems as well \cite{werger1999cooperation, mataric1995designing}
+%
+%Requiring tasks like patrolling an area, sensor overwatch of an area, moving an object all require the ability to recognize the area or the object. Without this sensing, regions of the environment cannot be treated as special. 
+%Matari\'c refers to this ability as "homing"\cite{mataric1995designing}.
+%
+\bibliography{../proposal/swarm.bib}
+\bibliographystyle{apalike}
+
+\end{document}
+
+%\begin{figure}[h]
+%	\centering
+%	\digraph[scale=0.6]{BehaviorDependencies}{
+%	
+%		//edgeFollow [label="Edge Following"];
+%		grad [label="Gradient Formation"];
+%		local [label="Localization"];
+%		move [label="Move Arc"];
+%		avoid [label="Avoid Obstacles"];
+%		orientToBot [label="Orient to Robot"];
+%		head [label="Match Heading"];
+%		follow [label="Follow Robot"];
+%        avoidBot [label="Avoid Robot"];		
+%		prepOrbit [label="Orient for Orbit"];
+%		orbit [label="Orbit Robot"];
+%		avoidMany [label="Avoid Many"];
+%		disperseSrc [label="Disperse Source"];
+%		disperseLeaves [label="Disperse Leaves"];
+%		disperseUniform [label="Disperse Uniform"];
+%		followLeader [label="Follow Leader"];
+%		orbitGroup [label="Orbit Group"];
+%		navigateGradient [label="Navigate Gradient"];
+%		clusterSrc [label="Cluster at Source"];
+%		clusterGroups [label="Cluster into Groups"];
+%		detectEdge [label="Detect Edge"];
+%		localInhib [label="Local Inhibition"];
+%		lateralInhib [label="Lateral Inhibition"];
+%		localMonitor [label="Local Monitor"];
+%		quorum [label="Quorum Sensing"];
+%		checkpoint [label="Checkpointing"];
+%		randomExplore [label="Random Exploration"];
+%		selectStable [label="Selective Stabilization"];
+%		senseNeighborBearing [label="Sense Neighbor Bearing"];
+%		senseNeighborRange [label="Sense Neighbor Range"];
+%		interstitialAvoid [label="Aim Between Robots"];
+%		
+%		clusterGroups -> navigateGradient;
+%		
+%		clusterSrc -> follow;
+%		
+%		navigateGradient -> interstitialAvoid;
+%		navigateGradient -> senseNeighborBearing;
+%		navigateGradient -> move;
+%		
+%		orbitGroup -> orbitRobot;
+%		orbitGroup -> senseNeighborRange;
+%		
+%		followLeader -> follow;
+%		
+%		disperseUniform -> senseNeighborBearing;
+%		disperseUniform -> senseNeighborRange;
+%		disperseUniform -> move;
+%		
+%		disperseLeaves -> avoidMany;
+%		disperseLeaves -> grad;
+%		
+%		disperseSrc -> avoidMany;
+%		
+%		avoidMany -> senseNeighborBearing;
+%		avoidMany -> move;
+%		
+%		orbit -> prepOrbit;
+%		orbit -> move;
+%		
+%		prepOrbit -> orientToRobot;
+%		prepOrbit -> senseNeighborRange;
+%		
+%		orientToBot -> senseNeighborBearing;
+%		orientToBot -> move;
+%		
+%		head -> orientToBot;
+%		head -> move;
+%		
+%		follow -> orientToBot;
+%		follow -> senseNeighborRange;
+%		follow -> move;
+%		
+%		avoidBot -> orientToBot;
+%		avoidBot -> move;
+%		
+%		local -> grad;
+%		local -> lateralInhib;
+%	
+%		navigateGradient -> grad;
+%
+%	}
+%	\caption{Dependencies between behaviors}
+%\end{figure}
+
+

@@ -1137,3 +1137,79 @@ Off topic, is firefly synchronization applicable to underwater gliders?
 
 Can I get battery level monitoring in my system? Maybe an ADC-capable GPIO?
 
+Range-Sensor Based Navigation in Three Dimensions (1999)
+Ishay Kamon, Elon Rimon, Ehud Rivlin
+	3DBug
+	Straight line to the target unless there's an obstacle
+	Minimal reactive data gathering about obstacle during avoidance
+	in 3 dimensions, so not a plane bug
+	Bug algos in general augment local planning with a global convergence criterion
+		Bug moves straight towards target (global convergence)
+		When bug hits an obstacle, it switches to following the obstacle edge
+			"leaving condition" causes bug to leave the edge (e.g. moving along the edge puts you further from the target)
+				My example here is bad because it traps the bug in concavities
+			If the bug loops (uh, detecting this might be an open question...), it decides it can't reach the target
+		To decide unrechability on a 3D surface, the bug needs to check the whole surface
+	3Dbug uses position and range sensors
+		Localization may not be a thing...
+	Cool, but makes assumptions that don't apply in my case
+
+A Pursuit-Evasion BUG Algorithm (2001) (were bugs hot at the turn of the century?)
+Stjepan Rajko, Steven M. LaValle
+	PE-BUG
+	Not just navigation
+	No map
+	Pursuer needs to find evaders
+		Can see walls, and see moving evaders
+	Does not require pursuer to localize
+	Pursuer finds boundaries of areas it can't see by looking for discontinuities in depth graph
+		This is handy for one of my personal projects!
+
+Path-Planning Strategies for a Point Mobile Automaton Moving Amidst Unknown Obstacles of Arbitrary Shape (1987)
+I. Vladimir, J. Lumelsky, and Alexander A. Stepanov
+	The original bug paper
+	Limited to things homeomorphic to a plane
+	Provable reachability is interesting
+	
+Performance Comparison of Bug Navigation Algorithms
+James Ng & Thomas Bräunl
+	Talks about target expressed in distance and bearing
+	So if the robot knows its heading, then maybe global location isn't needed
+		Original bug paper used global location to determine if the perimeter of the object had been circumnavigated
+	Turns out that a bug algorithm, as originally designed, isn't in itself sufficient to follow a wall
+		It assumes "wall follow" is just a thing you can do
+	Some practical extension of bugs to real robots
+		e.g. approximating points, rather than requiring that it hit the exact coordinate
+		imperfect sensing
+	Sensor noise can cause bugs to not terminate, or do a bad job (incorrect termination, termination too far from target)
+
+I-Bug: An Intensity-Based Bug Algorithm (2009)
+Kamilah Taylor and Steven M. LaValle
+	No precise position, no coordinate, no time, no odometry
+	Signal intensity function from source
+		This is handy for swarms that can do gradient signalling
+	Level of signal doesn't have to be circles, but has to be topologically equivalent to circles
+		Does this hold for discrete robots generating the signal field?
+
+IBA: Intelligent Bug Algorithm – A Novel Strategy to Navigate Mobile Robots Autonomously
+Muhammad Zohaib, Syed Mustafa Pasha, Nadeem Javaid, and Jamshed Iqbal
+	Uses a range sensor to see if there's something between it and the target, leaves if there isn't. 
+	This seems a LOT like visbug
+
+K-Bug, A NEW BUG APPROACH FOR MOBILE ROBOT’S PATH PLANNING
+Ricardo A. Langer, Leandro S. Coelho, and Gustavo H. C. Oliveira
+	Goes to closest point of visible obstacles between it and the target
+
+Ok, so there are a host of bug algorithims
+	some have some userful properties for swarms
+	Many make poor assumptions
+		Unlimited range visual sensors
+		Perfect sensing
+		noiseless sensing
+		point robots
+		etc. 
+
+
+https://mobile.aau.at/publications/jdeed-2017-Spiderino_low-cost_robot_for_swarm_research_and_educational_purposes.pdf
+
+Well damnit 
