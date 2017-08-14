@@ -3,12 +3,13 @@
 #Display JPGs and log user interactions 
 
 import kivy
-kivy.require('1.9.1') # replace with your current kivy version !
+kivy.require('1.9.2') # replace with your current kivy version !
 from kivy.config import Config
 #Don't resize the window
 #This has to be before any other Kivy imports, or it fails quietly
-Config.set('graphics', 'resizable', False)
-
+#Config.set('graphics', 'resizable', False)
+#Config.set('graphics', 'fullscreen', 'fake')
+Config.set('graphics', 'borderless', False)
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
@@ -135,7 +136,7 @@ class MultiImage(Image):
     def nextSlide(self):
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
-        if self.slideIndex > self.slideCount:
+        if self.slideIndex >= self.slideCount:
             self.slideIndex = 1
         #New image for the background
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
@@ -217,6 +218,7 @@ class UITestApp(App):
             config.set('Condition', 'type', 'files_unknown')
 
         config.set("Subject", 'id', self.subject)
+        #config.set('graphics', 'fullscreen', 'auto')
 
     def build(self):
         pass
