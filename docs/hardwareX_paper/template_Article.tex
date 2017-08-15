@@ -188,6 +188,24 @@ TinyRobos are intended to be heterogeneous, partly because of the advantages of 
 While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
 The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
 
+%Toys cost $24, $16, $15, $21/2, 
+\begin{table}
+	\begin{tabular}{l l l l}
+	Part & Price & Quantity & Subtotal\\
+	\hline
+	Mobile Toy & 14-20 & 1 & 20 \\
+	Battery & 2.54 & 1 & 2.54 \\
+	Main PCB & 2.75 &  1 & 2.75 \\
+	ESP8266 Module & 2-7 & 1 & 7.0 \\
+	DRV8830 & 2.30 & 2 & 4.60 \\
+	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
+	MCP73831 & 0.58 & 1 & 0.58 \\
+	\hline
+	Total & & & 27.83-38.83\\
+	\end{tabular}
+	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
+\end{table}
+
 The processor of the TinyRobo controller is an ESP-8266 wifi module.
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
 The ESP-8266 is available in several form factors, each designated by a different suffix. 
@@ -200,10 +218,13 @@ Experimental tests with 8 different toys indicate that small toys draw well unde
 The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
 The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
 
+
 The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
 The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
+
+\subsection{Toy Compatibility}
 
 Children's toys normally use inexpensive brushed DC motors in their construction. 
 These motors have not been the subject of extensive study, as they are commodity parts. 
@@ -214,8 +235,9 @@ These motors use simple metal brushes and are constructed to be inexpensive, rat
 The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
 
 \begin{table}
-	\begin{tabular}{l|l|l|l|l}
+	\begin{tabular}{l l l l l}
 	Model & Voltage & No Load Current & Max Efficiency & Stall Current\\
+	\hline
 	RE-140RA-2270 & 1.5-3 & 0.21 & 0.66 & 2.1 \\
 	RE-140RA-18100 & 1.5-3 & 0.13 & 0.37 & 1.07 \\
 	RE-140RA-12240 & 3-6 & 0.05 & 0.14 & 0.39 \\
@@ -234,8 +256,9 @@ The measurements from the toy helicopter and toy quadcopter are included for com
 While the TinyRobo board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
 
 \begin{table}
-	\begin{tabular}{l|l|l}
+	\begin{tabular}{l l l}
 	Motor number & No Load Current & Stall Current (measured)\\
+	\hline 
 	Hexbug brand mini spider & 0.03A & 0.13A* \\
 	Hexbug brand 6-legged insect & 0.06A & 0.25A \\
 	Miniature toy RC car & 0.21A & 0.8A \\
@@ -283,8 +306,9 @@ Because the TinyRobo battery is nominally 3.7V, the motor command 0x30 is the hi
 Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor, as per table \ref{tab:DRV8830_truth}.
 
 \begin{table}
-	\begin{tabular}{l|l|l|l|l}
+	\begin{tabular}{l l l l l}
 	Bit 1 & Bit 0 & Out 1 & Out 2 & Function\\
+	\hline
 	0 & 0 & Z & Z & Coast\\
 	0 & 1 & L & H & Reverse\\
 	1 & 0 & H & L & Forward\\
@@ -307,6 +331,104 @@ By moving the control to the main computer, the firmware can be kept simple whil
 The TinyRobo swarm is controlled by ROS nodes running on a single computer.
 Since all of the robots are controlled by a single computer, it may appear that this is a highly centralized system. 
 However, the central computer provides a framework for implementing a decentralized control scheme on the individual robots. 
+
+%Graphic of the software environment as a whole
+\begin{figure}[h]
+	\centering
+	\digraph[scale=0.6]{Framework}{
+	
+	graph[nodesep=0.5];
+
+	subgraph clusterRobot1 {
+		motor[shape=box; label="Motor Driver"];
+		robotCode[label=<Robot <br/> Firmware>];
+		robotCode -> motor;
+		label="Robot 1";
+		shape=box;
+	}
+	
+	subgraph clusterRobot2 {
+		motor2[shape=box; label="Motor Driver"];
+		robotCode2[label=<Robot <br/> Firmware>];
+		robotCode2 -> motor2;
+		label="Robot 2";
+		shape=box;
+	}
+	
+	subgraph clusterRobot3 {
+		motor3[shape=box; label="Motor Driver"];
+		robotCode3[label=<Robot <br/> Firmware>];
+		robotCode3 -> motor3;
+		label="Robot 3";
+		shape=box;
+	}
+	
+	subgraph clusterRobotN {
+		motorN[shape=box; label="Motor Driver"];
+		robotCodeN[label=<Robot <br/> Firmware>];
+		robotCodeN -> motorN;
+		label="Robot N";
+		shape=box;
+	}
+	
+	subgraph clusterComp {
+		concentrate=true;
+		label="Control Computer";
+		{rank=source;
+			aprilTag [label="Tag Detector"];
+		}
+		
+		{rank=same;
+			vrLaser [label="Laser Service"];
+			vrNet [label="Network Service"];
+			vrDist [label="Distance Service"];			
+		}
+		
+		{rank=same rp1 rp2 rp3 rpN}
+		
+		rp1 [label=<Robot <br/> Process 1>];
+		rp2 [label=<Robot <br/> Process 2>];
+		rp3 [label=<Robot <br/> Process 3>];
+		rpN [label=<Robot <br/> Process N>];
+		lc1 [label=<Robot 1<br/> Laser>];
+		lc2 [label=<Robot 2<br/> Laser>];
+		//vrNet -> {rp1, rp2, rp3, rpN} [dir="both"];
+		//vrSense -> {rp1, rp2, rp3, rpN};
+		
+		//Distance informs whether robots can be reached on the net
+		vrNet -> vrDist;
+		vrDist -> vrNet;
+		
+		rp1 -> robotCode [label="WiFi", dir="both"];
+		rp2 -> robotCode2 [label="WiFi", dir="both"];
+		rp3 -> robotCode3 [label="WiFi", dir="both"];
+		rpN -> robotCodeN [label="WiFi", dir="both"];
+	
+		//Robots 1 and 2 have laser clients getting scans
+		lc1 -> vrLaser;// [label=<std\string_msgs/Integer>];
+		vrLaser -> lc1;// [label=<sensor\string_msgs/LaserScan>];
+		lc1 -> rp1;
+		lc2 -> vrLaser;// [label=<std\string_msgs/Integer>];
+  		vrLaser -> lc2;// [label=<sensor\string_msgs/LaserScan>];
+		lc2 -> rp2;
+		
+		//Robots 3 and N are talking over the network
+		rp3 -> vrNet;
+		vrNet -> rpN;
+					
+		//April tags inform distance and laser
+		aprilTag -> vrDist;// [label=<apriltags\string_ros/TagDetections>];	
+		aprilTag -> vrLaser;// [label=<apriltags\string_ros/TagDetections>];
+		
+				
+	}
+	
+	camera[label=<Overhead<br/>Camera>;shape=box;]
+	camera->{vrLaser, aprilTag};	
+		 
+	}
+	\caption{Overview of the framework. Rectangular nodes are hardware, oval nodes are software. Robots 1 and 2 have virtual lasers, robots 3 and N are communicating over the network.}
+\end{figure}
 
 Rather than all of the robots being controlled by a single program on the central computer, each robot has ROS nodes that are responsible for controlling that robot. 
 Each of these nodes only has access to the information that would be available to that robot, and so acts as if it is a local control program running on the robot.
@@ -422,115 +544,15 @@ For example, the likelihood that a message arrives at the robot to which it was 
 	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
 \end{figure}
 
+
+\section{Conclusions}
+
 Swarm software is frequently described as centralized or decentralized. 
 In a centralized system, a single computer coordinates the actions of the swarm by commanding each individual robot. 
 In a decentralized system, robots use their local processors and sensor information to make control decisions. 
-
 The TinyRobo design works with ROS to provide an emulation of a decentralized system within a centralized system. 
+While this paper presents it in the context of a complete system, the software framework is not tightly bound to the TinyRobo hardware, and so may be useful to other users of tabletop swarms. 
 
-The individual TinyRobos do not have powerful processors. 
-The majority of the processing is performed on a host computer running the ROS software framework. 
-Each robot's processor is only concerned with receiving commands via WiFi and controlling the motors of the robot. 
-The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall behavior of the system.
-
-
-%Graphic of the software environment as a whole
-\begin{figure}[h]
-	\centering
-	\digraph[scale=0.6]{Framework}{
-	
-	graph[nodesep=0.5];
-
-	subgraph clusterRobot1 {
-		motor[shape=box; label="Motor Driver"];
-		robotCode[label=<Robot <br/> Firmware>];
-		robotCode -> motor;
-		label="Robot 1";
-		shape=box;
-	}
-	
-	subgraph clusterRobot2 {
-		motor2[shape=box; label="Motor Driver"];
-		robotCode2[label=<Robot <br/> Firmware>];
-		robotCode2 -> motor2;
-		label="Robot 2";
-		shape=box;
-	}
-	
-	subgraph clusterRobot3 {
-		motor3[shape=box; label="Motor Driver"];
-		robotCode3[label=<Robot <br/> Firmware>];
-		robotCode3 -> motor3;
-		label="Robot 3";
-		shape=box;
-	}
-	
-	subgraph clusterRobotN {
-		motorN[shape=box; label="Motor Driver"];
-		robotCodeN[label=<Robot <br/> Firmware>];
-		robotCodeN -> motorN;
-		label="Robot N";
-		shape=box;
-	}
-	
-	subgraph clusterComp {
-		concentrate=true;
-		label="Control Computer";
-		aprilTag [label="Tag Detector"];
-		{rank=source;
-			vrLaser [label="Laser Service"];
-			vrNet [label="Network Service"];
-			vrDist [label="Distance Service"];			
-		}
-		rp1 [label=<Robot <br/> Process 1>];
-		rp2 [label=<Robot <br/> Process 2>];
-		rp3 [label=<Robot <br/> Process 3>];
-		rpN [label=<Robot <br/> Process N>];
-		lc1 [label=<Robot 1<br/> Laser>];
-		lc3 [label=<Robot 3<br/> Laser>];
-		//vrNet -> {rp1, rp2, rp3, rpN} [dir="both"];
-		//vrSense -> {rp1, rp2, rp3, rpN};
-		
-		//Distance informs whether robots can be reached on the net
-		vrNet -> vrDist;
-		vrDist -> vrNet;
-		
-		rp1 -> robotCode [label="WiFi", dir="both"];
-		rp2 -> robotCode2 [label="WiFi", dir="both"];
-		rp3 -> robotCode3 [label="WiFi", dir="both"];
-		rpN -> robotCodeN [label="WiFi", dir="both"];
-	
-		//Robots 1 and 3 have laser clients getting scans
-		lc1 -> vrLaser;// [label=<std\string_msgs/Integer>];
-		vrLaser -> lc1;// [label=<sensor\string_msgs/LaserScan>];
-		lc1 -> rp1;
-		lc3 -> vrLaser;// [label=<std\string_msgs/Integer>];
-  		vrLaser -> lc3;// [label=<sensor\string_msgs/LaserScan>];
-		lc3 -> rp3;
-		
-		//Robots 2 and N are talking over the network
-		rp2 -> vrNet;
-		vrNet -> rpN;
-					
-		//April tags inform distance and laser
-		aprilTag -> vrDist;// [label=<apriltags\string_ros/TagDetections>];	
-		aprilTag -> vrLaser;// [label=<apriltags\string_ros/TagDetections>];
-		
-				
-	}
-	
-	camera[label=<Overhead<br/>Camera>;shape=box;]
-	camera->{vrLaser, aprilTag};	
-		 
-	}
-	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
-\end{figure}
-
-Not bound to TinyRobo hardware, so may be useful to other users of tabletop swarms. 
-
-Automatic setup of robots on the network (need to figure out a faster scan method)
-
-Possible to implement pheremones in the area of the swarm by having an overhead projector project colors for the pheremones into the arena. Since the locations of the April tags are known, and the april tags have white areas on them, the pheremone is detectable by seeing what color the ``white'' area appears to be, using the arena camera. 
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
