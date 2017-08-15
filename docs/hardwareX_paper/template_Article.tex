@@ -40,7 +40,7 @@ This resulted in creatures that were very tall, and fell over as soon as the sim
 A bug in the conservation of momentum in the same simulation resulted in creatures that moved by hitting themselves on the back. 
 
 Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be a cause of substantial expense. 
-This paper presents a hardware platform and the associated software framework to make a tabletop research robot swarm. 
+This paper presents a hardware platform and the associated software framework to make a tabletop research robot swarm for about \$30 per robot. 
 The hardware is designed to be adaptable to a wide variety of mobility platforms, and to accommodate the resulting changes with minimal alteration of the software controlling it. 
 
 \section{Related Work}
@@ -552,6 +552,10 @@ In a centralized system, a single computer coordinates the actions of the swarm 
 In a decentralized system, robots use their local processors and sensor information to make control decisions. 
 The TinyRobo design works with ROS to provide an emulation of a decentralized system within a centralized system. 
 While this paper presents it in the context of a complete system, the software framework is not tightly bound to the TinyRobo hardware, and so may be useful to other users of tabletop swarms. 
+
+The combination of hardware and software presented in this work makes it possible to construct swarm robots at a cost of around \$30 per robot. 
+The resulting robots are useful for swarm robotics research, and the price point is accessible to many institutions, as well as private individuals. 
+All of the software used is open source, and available for no cost. 
 
 
 \bibliography{../proposal/swarm.bib}
