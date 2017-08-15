@@ -28,8 +28,6 @@
 
 \section{Motivation}
 
-\section{Simulation and its Discontents}
-
 Simulation of robots is clearly the lowest cost option for performing tests with large collections of robots. 
 Once the simulation environment is created, adding additional robots does not incur any financial cost. 
 Larger simulations may of course require more computer time, but by running at less than realtime, or improving the hardware the simulation runs on, this problem can be ameliorated. 
@@ -40,34 +38,33 @@ The use of genetic algorithms is particularly prone to these problems, as the ge
 In one system, the fitness function for evolved simulated creature designs awarded high fitness to creatures that moved a long distance, quickly. 
 This resulted in creatures that were very tall, and fell over as soon as the simulation started, resulting in a rapid horizontal movement as measured from the track of the creature's center of gravity over the ground \cite{brooks2000artificial, sims1994evolving}. 
 A bug in the conservation of momentum in the same simulation resulted in creatures that moved by hitting themselves on the back. 
-As Sims notes, ``Any bugs that allow energy leaks from non-conservation, or even round-off errors, will inevitably be discovered and exploited by the
-evolving creatures. Although this can be a lazy and often amusing approach for debugging a physical modeling system, it is not necessarily the most practical." \cite{sims1994evolving}.
 
 Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be a cause of substantial expense. 
+This paper presents a hardware platform and the associated software framework to make a tabletop research robot swarm. 
+The hardware is designed to be adaptable to a wide variety of mobility platforms, and to accommodate the resulting changes with minimal alteration of the software controlling it. 
 
 \section{Related Work}
 
 \subsection{Overview of Previous Swarm Hardware}
 
 Swarm robots are generally small. 
-The reason to keep swarm robots small is at least three-fold. 
-First, larger robots consume more materials per unit, and so cost more money.
+The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
+Larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
-Second, each robot requires some amount of space to move around in. 
+Also, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
 If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
-Finally, if the application domain of the robots is outside of research, the domain will dictate the size of the robots. 
-For example, a swarm designed to monitor infrastructure such as a bridge or building should be small enough to enter all the areas that require monitoring. 
-A search and rescue swarm might be composed of a variety of scales of robots, with smaller robots infiltrating a damaged building to collect telemetry that will guide robots large enough to move damaged material in the building. 
+Finally, larger robots are just more cumbersome to deal with. 
+They require larger storage areas, possibly teamwork to lift or repair, and so forth, all multiplied by the number of robots in the swarm. 
 
+The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
+The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
+As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
+This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
 
-The robots used in most swarm work are of a sufficently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places and upper bound the scale of the individual swarm members. 
-The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
-As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
-This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 
 \subsubsection{Tabletop Swarms}
 
@@ -95,16 +92,7 @@ It used two processors, one to run higher level behaviors and one to interface w
 InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
 However, the construction process appears to have been relatively straightforward. 
 
-Combining a relatively modern microprocessor with a DSP allowed the creation of a system that could perform vision processing tasks on the robot \cite{haverinen2005miniature}. 
-Again, it is not a platform that other researchers could buy.
-
-Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm, with the exception of the Harvard Kilobots  \cite{rubenstein2014kilobot}. 
-Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
-The Kilobots are intended for research in a highly homogeneous environment, with all robots executing the same program. 
-As a result, they are designed to be programmed in parallel using an IR interface. 
-For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
-
+Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
 The Epuck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
 The high price of the Epuck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
 Epucks also require a fairly smooth operating surface.
@@ -115,6 +103,13 @@ The r-one research robot is cheaper than the Epuck, at approximately \$220 USD p
 The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
 The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
+The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
+Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
+The Kilobots are intended for research in a highly homogeneous environment, with most or all of the robots executing the same program. 
+As a result, they are designed to be programmed in parallel using an IR interface. 
+For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
+The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -124,11 +119,12 @@ At the time of this writing, the car used in COTSBots is moderately expensive fo
 COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
 TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
+The second COTSBots is larger, and will be discussed in the next section. 
 
 \subsubsection{Room-sized Swarms}
 
 One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimeters tall. 
+As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimetres tall. 
 This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
 In order to overcome this problem, larger swarm robots can be constructed.
  
@@ -144,15 +140,15 @@ Flying ``eye'' robots provide overviews of the work area and networking.
 
 In order to reduce costs, another platform called COTSBots was developed \cite{soule2011cotsbots}.  
 Instead of sensor motes on micro-scale RC cars, the newer COTSBots platform is composed of a laptop for processing and a modified RC car, tank, or similar toy as a mobility platform.
-In order to interface between the laptop and motor drivers, a second microcontroller board, such as an Arduino or Phidget interface may be used. 
+In order to interface between the laptop and motor drivers, a second micro-controller board, such as an Arduino or Phidget interface, may be used. 
 Due to the diversity of possible combinations of hardware that can be assembled into this configuration, it is still a very viable platform. 
 However, the minimum size of this style of COTSBot is the size of a laptop, which is in turn dictated largely by the minimum size of a useful keyboard. 
 The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
 
-Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas \cite{guo2007bio, tammet2008rfid}.
-In theory, swarm research could be performed by robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
+Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas, as well as larger custom platforms for outdoor multi-robot work \cite{guo2007bio, tammet2008rfid, olson2013cacm}.
+In theory, swarm research could be performed using robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
 
 \section{Hardware}
 
@@ -172,6 +168,12 @@ Duplication of software and other digital artifacts is trivial, so constructing 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
 If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
 The hardware resulting from this work is designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{../robot_makers_2/tiny_tank}
+\caption{A tank-drive toy with a 3.7V lithium polymer battery and a TinyRobo control board mounted to it.}
+\end{figure}
 
 In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
@@ -306,28 +308,36 @@ The TinyRobo swarm is controlled by ROS nodes running on a single computer.
 Since all of the robots are controlled by a single computer, it may appear that this is a highly centralized system. 
 However, the central computer provides a framework for implementing a decentralized control scheme on the individual robots. 
 
-Each robot has ROS nodes that are responsible for controlling that robot. 
+Rather than all of the robots being controlled by a single program on the central computer, each robot has ROS nodes that are responsible for controlling that robot. 
+Each of these nodes only has access to the information that would be available to that robot, and so acts as if it is a local control program running on the robot.
+However, since the ROS nodes are running on a relatively modern desktop PC, they have substantial processing power available to them. 
+As a result, the individual robots are small, lightweight, and consume relatively little electrical power, but still have significant computing power. 
+As more powerful and lower power consumption processors become available, more of the processing can be moved from the central computer and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
 
-Rather than controlling each robot, the central computer will maintain a separate process for each robot in the swarm. 
-Each of these robot processes will only have access to the information that would be available to that robot, and so will act as a local control program for the robot, but will have the full processing resources of the host computer. 
-As a result, the individual robots can be small, lightweight, and consume relatively little electrical power, but the system as a whole will endow them with significant computing power. 
-As a result, the overall system behaves as though the individual robots each had a powerful computer. 
-As more powerful and lower power consumption processors become available, more of the processing can be moved from the virtualized robot processors and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
+Individual TinyRobos have minimal sensing capacity, due to their small size. 
+The central computer has a top-down camera over the ``arena'' the TinyRobos are active in. 
+Each TinyRobo has an AprilTag \cite{olson2011tags} on top of it, so that the central computer can localize them within the arena. 
+The central computer uses the location information to create ``virtual sensors'' for each robot. 
+Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
+
+For example, since the central computer knows the location, adding a range and bearing sensor that allows each robot to detect the distance and angle of the nearby robots is simple to implement. 
+This functionality is available in hardware on Epucks and Marxbots, but since each robot must be equipped with it, the cost scales linearly with the number of robots to equip.  
+
+It is possible to calculate the odometry for individual robots by watching the change in position in their tags over time. 
+The calculated odometry could then be published as a ROS topic, just like odometry collected from e.g. wheel encoders. 
+This functionality has not been implemented yet, but would be useful for testing distributed SLAM algorithms on the swarm. 
+
+The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
+Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
 
 \subsection{Virtual Localization}
 
-The central computer has a top-down camera over the ``arena'' the TinyRobos are active in. 
-Each TinyRobo has an April Tag \change{Cite this} on top of it, so that the central computer can localize them within the arena. 
-
+The AprilTag tracking of the robots provides localization of the robots within a common coordinate frame. 
 It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
 The code virtually operating on the robot may be neither aware of its own position in the world, nor the location of other robots, if the experiment calls for such a lack of information. 
 
 Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokoyu brand laser scanners used on larger robots. 
 It is also used to limit the range of messages sent between the robots through a virtual network. 
-
-It is possible to calculate the odometry for individual robots by watching the change in position in their tags over time. 
-The calculated odometry could then be published as a ROS topic, just like odometry collected from e.g. wheel encoders. 
-This functionality has not been implemented yet, but would be useful for testing distributed SLAM algorithms on the swarm. 
 
 \subsection{Virtual Laser Scanners}
 
@@ -336,25 +346,25 @@ The virtual laser ranger consists of two ROS nodes, a service and clients for th
 The service is called ``laser\_oracle\_server''. 
 It subscribes to the AprilTag detections and the images from the arena overhead camera. 
 
-As the virtual laser service receives images, it draws a blue dot over the location of evry robot. 
+As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
 This dot provides the outer edge of each robot in the virtual laser scan. 
 The image is then converted to HSV and binarized by setting all pixels that are not sufficiently saturated blue to black. 
-
 The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
  
 When a client requests a laser scan, the virtual laser service masks the modified arena image with a circle with a radius of the laser range, centered on the robot requesting the scan.
-This masking removes everything that is out of range of the laser, and so reduces the time spent calculating the laser scan points. 
+This masking removes all of the objects that are out of range of the laser, and so reduces the time spent calculating the laser scan points. 
 Contour detection is used to find the outlines of everything within the laser range. 
-Line segments are created based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
+
+Each sample of the laser scan is represented as a line segment, located based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
 Each line segment is checked for intersection with the lines defining the contours of the blue objects in the image. 
-If multiple intersections are found for one segment, the closest one is used, as the laser would stop after reflecting off an object.
-The service then formats the detections of nearby objects as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
+If multiple intersections are found for a line segment, the intersection closest to the robot is used, as the laser would stop after reflecting off an object.
+The service then formats the distances to the intersection points as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
 
 The virtual laser clients take the place of the laser driver ROS nodes that would be used to control a real linear laser scanner. 
 The laser client is initialized with some parameters, such as the sweep angle and angular resolution of the virtual laser, and polls the laser service regularly. 
 As it receives laser scans from the service, it publishes them to a ROS topic in the same manner as a ROS node for a hardware laser would. 
 
-The apriltags\_ros \change{Cite this} node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
+The apriltags\_ros node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
 In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
 The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 
@@ -362,11 +372,9 @@ The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 	\centering
 	\digraph[scale=0.6]{VirtualLaserSystem}{
 	
-	vls -> vsc [label=<std\string_msgs/Integer>];
+	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
 	vsc -> vls [label=<sensor\string_msgs/LaserScan>];
 	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
-	vsc -> sub2 [label=<sensor\string_msgs/LaserScan>];
-	vsc -> sub3 [label=<sensor\string_msgs/LaserScan>];
 	cam -> vls [label=<sensor\string_msgs/Image>];
 	cam -> atag	[label=<sensor\string_msgs/Image>];
 	atag -> vls [label=<apriltags\string_ros/TagDetections>];	
@@ -376,41 +384,34 @@ The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 	atag [label="AprilTag Detector"];
 	cam [label="Arena Camera"];
 	sub1 [label="Subscriber"];
-	sub2 [label="Subscriber"];	
-	sub3 [label="Subscriber"];
 	}
 	\caption{Data flow in the virtual laser service}
 \end{figure}
-
-Individual TinyRobos have minimal sensing capacity, due to their small size. 
-However, the central computer can use the location information to create ``virtual sensors'' for each robot. 
-The sensor precepts from virtual sensors would be simulated, but their magnitude or direction may be based on the location of a real robot relative to a real object in the experiment area. 
-For example, collision avoidance between two could be implemented by a virtual sensor on each robot that indicates the direction and heading of the nearest robot. 
-Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
-The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
-Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
 
 \subsection{Virtual Networking}
 
 If the robots are required to communicate directly with each other, the communication passes through a virtual network.
 From the point of view of the robots, messages sent into the virtual network are delivered to other robots as if the messages were sent directly from one robot to another. 
 However, all the communication is taking place between processes running on the central computer.
-By changing how the messages are delivered by the central system, we can implement full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
-We can also vary the reliability of the network, by dropping some messages or reducing parameters based on elements of the virtual environments. 
-For example, the likelihood that a message arrives at the robot it was transmitted to may depend on the distance between the two robots. 
-Having communication mediated by software on the host allows for simple experimentation with variable network bandwidth and reliability. 
+By changing how the messages are delivered by the central system, the virtual network can provide full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
+The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
+For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver. 
 
 \begin{figure}[h]
 	\centering
 	\digraph[scale=0.6]{VirtualNetwork}{
 	
+	{rank=same atag dist}
+	{rank=same tx rx}
+
 	vns -> dist [label="Robot IDs"];
 	dist -> vns [label="Distance"];
 	cam -> atag	[label=<sensor\string_msgs/Image>];
 	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
-	tx -> vns [label="Network Message"];	 
 	vns -> rx [label="Network Message"];
+	tx -> vns [label="Network Message"];	 
 	
+		
 	vns [label="Virtual Network Service"];
 	dist [label="Distance Service"];
 	atag [label="AprilTag Detector"];
