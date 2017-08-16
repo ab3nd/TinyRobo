@@ -304,6 +304,13 @@ To Do:
 - Weird diagonal display tearing on the lab laptop and the 3m screen, will bring in my own laptop
 - Finished first draft of hardware paper
 
+8/16
+- Video drivers on old linux laptop from scooter cause major rendering issues on second monitor
+- Using the old robotbrain laptop can't have accurate mouse positions because it's also a touchscreen
+   - https://askubuntu.com/questions/141341/touchscreen-with-dual-monitors first solution
+   - command is 'xinput --map-to-output 16 VGA1'
+- Test run with samuel took 10 minutes
+
 Wheelchair:
 
 
