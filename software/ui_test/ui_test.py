@@ -142,6 +142,7 @@ class MultiImage(Image):
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
         #Widget is the same size as the image
         self.canvas.ask_update()
+        self.canvas.ask_update()
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
