@@ -3,7 +3,7 @@
 #Display JPGs and log user interactions 
 
 import kivy
-kivy.require('1.9.2') # replace with your current kivy version !
+kivy.require('1.9.1') # replace with your current kivy version !
 from kivy.config import Config
 #Don't resize the window
 #This has to be before any other Kivy imports, or it fails quietly
@@ -126,12 +126,14 @@ class MultiImage(Image):
         #We're looking at the first slide
         self.slideIndex = 1
 
-        #Set ourselves up with the inital image
-        self.source = self.cfg.get(self.condition, str(self.slideIndex))
-        self.canvas.ask_update()
 
         #Record touch events
         self.tr = TouchRecorder()
+
+        #Set ourselves up with the inital image
+        self.source = self.cfg.get(self.condition, str(self.slideIndex))
+        self.tr.log_meta_event(self.source)
+        self.canvas.ask_update()
 
     def nextSlide(self):
         #Increment the slide index and wrap if needed
@@ -140,6 +142,10 @@ class MultiImage(Image):
             self.slideIndex = 1
         #New image for the background
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
+
+        #Log what file was loaded
+        self.tr.log_meta_event(self.source)
+
         #Widget is the same size as the image
         self.canvas.ask_update()
         self.canvas.ask_update()
