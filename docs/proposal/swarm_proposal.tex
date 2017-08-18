@@ -129,24 +129,23 @@ Assessing whether or not a user-specified action will be completed is not possib
 \subsection{Overview of Previous Swarm Hardware}
 
 Swarm robots are generally small. 
-The reason to keep swarm robots small is at least three-fold. 
-First, larger robots consume more materials per unit, and so cost more money.
+The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
+Larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
-Second, each robot requires some amount of space to move around in. 
+Also, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
 If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
-Finally, if the application domain of the robots is outside of research, the domain will dictate the size of the robots. 
-For example, a swarm designed to monitor infrastructure such as a bridge or building should be small enough to enter all the areas that require monitoring. 
-A search and rescue swarm might be composed of a variety of scales of robots, with smaller robots infiltrating a damaged building to collect telemetry that will guide robots large enough to move damaged material in the building. 
+Finally, larger robots are just more cumbersome to deal with. 
+They require larger storage areas, possibly teamwork to lift or repair, and so forth, all multiplied by the number of robots in the swarm. 
 
+The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
+The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
+As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
+This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
 
-The robots used in most swarm work are of a sufficently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places and upper bound the scale of the individual swarm members. 
-The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
-As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
-This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 
 \subsubsection{Tabletop Swarms}
 
@@ -162,7 +161,6 @@ Alice robots are no longer available for purchase.
 The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
 There is no evidence that AmIR was ever widely available.
 
-%TODO add http://colias.uk/ and the LCD-based method of doing pheremones
 The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
 Unfortunately, Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
@@ -175,16 +173,7 @@ It used two processors, one to run higher level behaviors and one to interface w
 InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
 However, the construction process appears to have been relatively straightforward. 
 
-Combining a relatively modern microprocessor with a DSP allowed the creation of a system that could perform vision processing tasks on the robot \cite{haverinen2005miniature}. 
-Again, it is not a platform that other researchers could buy.
-
-Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm, with the exception of the Harvard Kilobots  \cite{rubenstein2014kilobot}. 
-Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
-The Kilobots are intended for research in a highly homogeneous environment, with all robots executing the same program. 
-As a result, they are designed to be programmed in parallel using an IR interface. 
-For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
-
+Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
 The Epuck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
 The high price of the Epuck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
 Epucks also require a fairly smooth operating surface.
@@ -195,6 +184,13 @@ The r-one research robot is cheaper than the Epuck, at approximately \$220 USD p
 The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
 The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
+The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
+Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
+The Kilobots are intended for research in a highly homogeneous environment, with most or all of the robots executing the same program. 
+As a result, they are designed to be programmed in parallel using an IR interface. 
+For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
+The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -204,11 +200,12 @@ At the time of this writing, the car used in COTSBots is moderately expensive fo
 COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
 TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
+The second COTSBots is larger, and will be discussed in the next section. 
 
 \subsubsection{Room-sized Swarms}
 
 One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimeters tall. 
+As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimetres tall. 
 This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
 In order to overcome this problem, larger swarm robots can be constructed.
  
@@ -224,15 +221,15 @@ Flying ``eye'' robots provide overviews of the work area and networking.
 
 In order to reduce costs, another platform called COTSBots was developed \cite{soule2011cotsbots}.  
 Instead of sensor motes on micro-scale RC cars, the newer COTSBots platform is composed of a laptop for processing and a modified RC car, tank, or similar toy as a mobility platform.
-In order to interface between the laptop and motor drivers, a second microcontroller board, such as an Arduino or Phidget interface may be used. 
+In order to interface between the laptop and motor drivers, a second micro-controller board, such as an Arduino or Phidget interface, may be used. 
 Due to the diversity of possible combinations of hardware that can be assembled into this configuration, it is still a very viable platform. 
 However, the minimum size of this style of COTSBot is the size of a laptop, which is in turn dictated largely by the minimum size of a useful keyboard. 
 The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
 
-Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas \cite{guo2007bio, tammet2008rfid}.
-In theory, swarm research could be performed by robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
+Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas, as well as larger custom platforms for outdoor multi-robot work \cite{guo2007bio, tammet2008rfid, olson2013cacm}.
+In theory, swarm research could be performed using robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
 
 \subsection{UI Designs}
 
@@ -994,7 +991,7 @@ For a number of reasons, these assumptions frequently fail to hold, and so a mor
 This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
 The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
 
-\subsection{Inexpensive COTS Swarm Hardware}
+\subsection{Inexpensive Swarm Hardware}
 
 The previously described swarm robot platforms tend to fall into one of two groups, from a hardware perspective. 
 The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap.
@@ -1002,17 +999,27 @@ This group includes Alice, Jasmine, AmIR, and the other tabletop systems.
 Due to their limited computation, these systems do not generally support complex algorithms such as vision processing. 
 The second group use more powerful computers, but at a significant cost in weight, power consumption, and financial outlay.
 
+The robot described in this work is intended to occupy a theoretical ``sweet spot'' at the high end of the tabletop swarms or the low end of the room-scale swarms, depending on how large of a mobility platform is used. 
+As a result, if it is configured for tabletop operation, the system can be used with a minimum of available space. 
+If, on the other hand, it is configured for room-scale operations, the system can be tested in natural or naturalistic human environments. 
+
 The robot swarm developed for this work consists of a hardware module for controlling two motors of a toy, such as a small RC car, for mobility. 
 The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
 Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
 If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
-The hardware resulting from this work will be designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
+The hardware resulting from this work is designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
 
-In order to be both heterogeneous and inexpensive, the robots used for this work will be constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{../robot_makers_2/tiny_tank}
+\caption{A tank-drive toy with a 3.7V lithium polymer battery and a TinyRobo control board mounted to it.}
+\end{figure}
+
+In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
 The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
-The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
 However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
@@ -1020,27 +1027,104 @@ All of these toys can be controlled by the hardware described in this work.
 
 TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
 While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
-The software framework in development to support TinyRobos is based on ROS, and so will allow modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+
+%Toys cost $24, $16, $15, $21/2, 
+\begin{table}
+	\begin{tabular}{l l l l}
+	Part & Price & Quantity & Subtotal\\
+	\hline
+	Mobile Toy & 14-20 & 1 & 20 \\
+	Battery & 2.54 & 1 & 2.54 \\
+	Main PCB & 2.75 &  1 & 2.75 \\
+	ESP8266 Module & 2-7 & 1 & 7.0 \\
+	DRV8830 & 2.30 & 2 & 4.60 \\
+	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
+	MCP73831 & 0.58 & 1 & 0.58 \\
+	\hline
+	Total & & & 27.83-38.83\\
+	\end{tabular}
+	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
+\end{table}
 
 The processor of the TinyRobo controller is an ESP-8266 wifi module.
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++.   
+The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
 The ESP-8266 is available in several form factors, each designated by a different suffix. 
 The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
 
-The motor controller in the TinyRobo boards is the DRV8830 IC by Texas Instruments. 
-The DRV8830 provides 1A of drive current, and is controlled by the ESP-8266 over an I2C serial interface. 
+In addition to 802.11 b/g/n WiFi, the ESP-8266 supports a variety of serial protocols, including a UART, I$^2$C, SPI. 
+The I$^2$C interfaces is used on the TinyRobo board to connect to two DRV8830 motor driver ICs by Texas Instruments. 
+The DRV8830 provides 1A of drive current.
 Experimental tests with 8 different toys indicate that small toys draw well under 1A while moving freely, and peak around 2A when the motors are stalled. 
 The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
 The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
+
 
 The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
 The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
 
-The robot described in this work is intended to occupy a theoretical ``sweet spot'' at the high end of the tabletop swarms or the low end of the room-scale swarms, depending on how large of a mobility platform is used. 
-As a result, if it is configured for tabletop operation, the system can be used with a minimum of available space. 
-If, on the other hand, it is configured for room-scale operations, the system can be tested in natural or naturalistic human environments. 
+\subsection{Toy Compatibility}
+
+Children's toys normally use inexpensive brushed DC motors in their construction. 
+These motors have not been the subject of extensive study, as they are commodity parts. 
+However, it is useful to quantify their behavior to some extent, to determine which kinds of toys can be used with the TinyRobo controller. 
+
+Two common types of motors found in children's toys are the RE and FA series of motors produced by Mabuchi Motor, or imitations of these motors produced by other companies. 
+These motors use simple metal brushes and are constructed to be inexpensive, rather than precise. 
+The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
+
+\begin{table}
+	\begin{tabular}{l l l l l}
+	Model & Voltage & No Load Current & Max Efficiency & Stall Current\\
+	\hline
+	RE-140RA-2270 & 1.5-3 & 0.21 & 0.66 & 2.1 \\
+	RE-140RA-18100 & 1.5-3 & 0.13 & 0.37 & 1.07 \\
+	RE-140RA-12240 & 3-6 & 0.05 & 0.14 & 0.39 \\
+	FA-130RA-2270 & 1.5-3 & 0.2 & 0.66 & 2.2\\
+	FA-130RA-18100 & 1.5-3 & 0.15 & 0.56 & 2.1\\
+	FA-130RA-14150 & 1.5-4.5 & 0.11 & 0.31 & 0.9\\
+	\end{tabular}
+	\caption{Current draw for Mabuchi-branded motors.}
+	\label{tab:properBrandedMotors}
+\end{table}
+
+These are somewhat large brushed motors. 
+For smaller toys, coreless motors are more common. 
+The values in table \ref{tab:coreless} were measured from six of the toys used in constructing the TinyRobo swarm.
+The measurements from the toy helicopter and toy quadcopter are included for comparison.
+While the TinyRobo board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
+
+\begin{table}
+	\begin{tabular}{l l l}
+	Motor number & No Load Current & Stall Current (measured)\\
+	\hline 
+	Hexbug brand mini spider & 0.03A & 0.13A* \\
+	Hexbug brand 6-legged insect & 0.06A & 0.25A \\
+	Miniature toy RC car & 0.21A & 0.8A \\
+	Miniature toy RC insect & 0.19A & 1.13A \\
+	Miniature toy RC vehicle & 0.37A & 0.8A \\
+	Miniature toy RC vehicle & 0.06A & 0.74A \\
+	Toy helicopter & 0.07A & 1.12A \\
+	Toy quadcopter & 0.74A & 1.99A \\
+	\end{tabular}
+	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. * The Hexbug mini spider includes a slip clutch, so attempting to stall the motors by holding the toy still does not prevent the motor from turning}
+	\label{tab:coreless}
+\end{table}
+
+
+\subsection{Potential for Expansion}
+
+The current design for TinyRobo does not include sensors as a cost-saving decision. 
+However, the communication between the ESP-8266 and the motor drivers uses the industry standard I2C bus serial interface. 
+Due to the non-proprietary nature of this interface standard, it has been widely adopted, and many sensors are available to connect to an I2C bus. 
+For example, Vishay Semiconductor makes the VCNL3020, which is an infrared proximity sensor with a 20mm range. 
+If greater range is required, The ST Microelectronics VL53L0X Time-of-flight (ToF) laser ranger and gesture sensor provides a 2M range and 1D gesture sensing in a 4.4mm x 2.4mm package. 
+As of this writing, the VCNL3020 is \$3.44 and the VL53L0X costs \$6.28 in single quantities.
+These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with the TinyRobo platform. 
+Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the TinyRobo platform. 
+
 
 \bibliography{swarm.bib}
 \bibliographystyle{apalike}

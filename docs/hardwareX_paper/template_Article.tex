@@ -23,6 +23,10 @@
 \maketitle
 
 \begin{abstract}
+Because simulations are necessarily incomplete, it is desirable to test algorithms for swarm robots on physical robots, rather than in simulation. 
+However, the cost of robot hardware is high, and the larger a swarm, the more it will cost. 
+This paper presents an inexpensive, open source hardware platform for converting toys into swarm robots, and a software infrastructure for controlling the swarm nodes. 
+The resulting system was designed as a tabletop swarm, but has the ability to be expanded both in the area used by the swarm, and the capabilities of the individual swarm members. 
 
 \end{abstract}
 
@@ -333,7 +337,7 @@ Since all of the robots are controlled by a single computer, it may appear that 
 However, the central computer provides a framework for implementing a decentralized control scheme on the individual robots. 
 
 %Graphic of the software environment as a whole
-\begin{figure}[h]
+\begin{figure}
 	\centering
 	\digraph[scale=0.6]{Framework}{
 	
@@ -490,7 +494,7 @@ The apriltags\_ros node publishes the detected locations of the tags in meters, 
 In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
 The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 
-\begin{figure}[h]
+\begin{figure}
 	\centering
 	\digraph[scale=0.6]{VirtualLaserSystem}{
 	
@@ -519,7 +523,7 @@ By changing how the messages are delivered by the central system, the virtual ne
 The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
 For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver. 
 
-\begin{figure}[h]
+\begin{figure}
 	\centering
 	\digraph[scale=0.6]{VirtualNetwork}{
 	
