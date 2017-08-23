@@ -132,7 +132,7 @@ class MultiImage(Image):
 
         #Set ourselves up with the inital image
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
-        self.tr.log_meta_event(self.source)
+        self.tr.log_meta_event("Loaded {0}".format(self.source))
         self.canvas.ask_update()
 
     def nextSlide(self):
@@ -144,7 +144,8 @@ class MultiImage(Image):
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
 
         #Log what file was loaded
-        self.tr.log_meta_event(self.source)
+        self.tr.log_meta_event("Loaded {0}".format(self.source))
+        
 
         #Widget is the same size as the image
         self.canvas.ask_update()

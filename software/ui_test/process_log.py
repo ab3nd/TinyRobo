@@ -26,7 +26,7 @@ import uuid
 
 
 class imageLogger():
-	def __init__(self):
+	def __init__(self, path=None):
 		#Create a new image
 		#TODO base this on the size of the screen or the output available
 		self.img = Image.new("RGB", (1000,750))
@@ -64,6 +64,7 @@ with open(infile, 'r') as inputData:
 			if isMeta(event):
 				print "MetaEvent", event["desc"]
 				if event["desc"].startswith("Advanced"):
+
 					imlog.finish()
 					imlog = imageLogger()
 			else:
