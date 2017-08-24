@@ -26,19 +26,32 @@ import uuid
 import numpy as np
 
 class imageLogger():
-	def __init__(self, path=None):
+	def __init__(self, path=None, suffix=None):
 		#Create a new image
 		#TODO base this on the size of the screen or the output available
 		if path is None:
 			self.img = Image.new("RGB", (1000,750))
 		else:
 			self.img = Image.open(path)
+
 		
 		#Set up a draw object for the image
 		self.draw = ImageDraw.Draw(self.img)
 
 		#Set up a list to store events
 		self.logged_events = []
+
+		#File name to store output in
+		if path is None and suffix is None:
+			self.outfile = "{0}.png".format(uuid.uuid4())
+		elif path is None:
+			self.outfile = "{0}_{1}.png".format(uuid.uuid4(), suffix)
+		elif suffix is None:
+			#The find-based cut throws away a relative path so the image ends up in this directory
+			self.outfile = "{0}_{1}.png".format(uuid.uuid4(), path[path.find('-')+2:-4])
+		else:
+			self.outfile = "{0}_{1}.png".format(path[path.find('-')+2:-4], suffix)
+		print self.outfile
 
 	def finish(self):
 		#TODO This is where we'd do something clever for event detection
@@ -61,7 +74,7 @@ class imageLogger():
 
 		#Write the image 
 		#TODO do something smarter with file names
-		self.img.save("{0}.png".format(uuid.uuid4()))
+		self.img.save(self.outfile)
 
 	#Kivy coordinates put (0,0) at the bottom left corner of the window
 	#PIL puts (0,0) in the top left		
@@ -91,13 +104,16 @@ def isMeta(event):
 	return False
 
 with open(infile, 'r') as inputData:
+
+	#Cut the extension off the input file name
+	outfile_suffix = infile[:-7]
 	imlog = None
 
 	try:
 		event = pickle.load(inputData)
 		while event is not None:
 			if isMeta(event):
-				print "MetaEvent", event["desc"]
+				#print "MetaEvent", event["desc"]
 				if event["desc"].startswith("Loaded"):
 					#Close the existing image logger, if any
 					if imlog is not None:
@@ -106,9 +122,9 @@ with open(infile, 'r') as inputData:
 					#Get the path to the slide out of the event
 					fpath = event['desc'].split()[1]
 					#Start a new logger with that path
-					imlog = imageLogger(path=fpath)
+					imlog = imageLogger(path=fpath, suffix=outfile_suffix)
 			else:
-				print "Event"
+				#print "Event"
 				imlog.addEvent(event)
 			event = pickle.load(inputData)
 	except EOFError:
