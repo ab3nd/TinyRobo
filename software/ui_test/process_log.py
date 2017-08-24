@@ -23,32 +23,67 @@
 
 import Image, ImageDraw
 import uuid
-
+import numpy as np
 
 class imageLogger():
 	def __init__(self, path=None):
 		#Create a new image
 		#TODO base this on the size of the screen or the output available
-		self.img = Image.new("RGB", (1000,750))
+		if path is None:
+			self.img = Image.new("RGB", (1000,750))
+		else:
+			self.img = Image.open(path)
+		
+		#Set up a draw object for the image
 		self.draw = ImageDraw.Draw(self.img)
 
+		#Set up a list to store events
+		self.logged_events = []
+
 	def finish(self):
+		#TODO This is where we'd do something clever for event detection
+
+		#Set up the colors of the logged events by time
+		color_length = len(self.logged_events)/3
+		reds = np.linspace(0,255, color_length, dtype=int)
+		reds = np.append(reds[:-1], np.fliplr([reds])[0])
+		reds = np.append(reds, np.zeros(2*color_length, dtype = int))
+		greens = np.roll(reds, color_length)
+		blues = np.roll(greens, color_length)
+		#Combine them all
+		colors = zip(reds, greens, blues)
+
+		#Draw all of the logged events as dots
+		for event in self.logged_events:
+			x = event["event_x"]
+			y = event["event_y"]
+			self.draw.ellipse([(x-2,y-2),(x+2,y+2)], fill=colors.pop(0))
+
 		#Write the image 
 		#TODO do something smarter with file names
 		self.img.save("{0}.png".format(uuid.uuid4()))
+
+	#Kivy coordinates put (0,0) at the bottom left corner of the window
+	#PIL puts (0,0) in the top left		
+	def kivyToPIL(self, coords):
+		x = coords[0]
+		y = coords[1] #TODO I guess I could have a point class...
+		maxX, maxY = self.img.size
+		return (x, maxY - y) #Flip around horizontal center of image
 		
 	def addEvent(self, event):
 		if isMeta(event):
 			pass #Ignore it
 		else:
+			#Convert event coordinates from Kivy to PIL coordinates
 			x = int(event["event_x"])
 			y = int(event["event_y"])
-			print x, y
-			self.draw.ellipse([(x-2,y-2),(x+2,y+2)], fill=(255,255,255))
+			event["event_x"], event["event_y"] = self.kivyToPIL((x,y))
+			self.logged_events.append(event)
 
 import pickle
 
-infile = "17-08-17_16:57:56_s666_c10.pickle"
+infile = "24-08-17_15:37:36_s666_c10.pickle"
 
 def isMeta(event):
 	if "desc" in event.keys():
@@ -56,17 +91,22 @@ def isMeta(event):
 	return False
 
 with open(infile, 'r') as inputData:
-	imlog = imageLogger()
+	imlog = None
 
 	try:
 		event = pickle.load(inputData)
 		while event is not None:
 			if isMeta(event):
 				print "MetaEvent", event["desc"]
-				if event["desc"].startswith("Advanced"):
-
-					imlog.finish()
-					imlog = imageLogger()
+				if event["desc"].startswith("Loaded"):
+					#Close the existing image logger, if any
+					if imlog is not None:
+						imlog.finish()
+					
+					#Get the path to the slide out of the event
+					fpath = event['desc'].split()[1]
+					#Start a new logger with that path
+					imlog = imageLogger(path=fpath)
 			else:
 				print "Event"
 				imlog.addEvent(event)
