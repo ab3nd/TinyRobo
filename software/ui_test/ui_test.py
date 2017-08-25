@@ -15,16 +15,19 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
-from kivy.uix.image import Image
+from kivy.uix.image import Image as kvImage
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
-#For keyboard listener
+#For keyboard listener and automatic sizing to slides
 from kivy.core.window import Window
 
 import pickle
 import datetime
 import time
+
+#Just for getting the size of images
+import Image 
 
 import sys
 
@@ -111,7 +114,7 @@ class FingerDrawer(Widget):
     def clean_up(self):
         self.canvas.clear()
 
-class MultiImage(Image):
+class MultiImage(kvImage):
     def __init__(self, **kwargs):
         super(MultiImage, self).__init__(**kwargs)
         
@@ -127,12 +130,18 @@ class MultiImage(Image):
         #We're looking at the first slide
         self.slideIndex = 1
 
-
         #Record touch events
         self.tr = TouchRecorder()
 
         #Set ourselves up with the inital image
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
+        
+        #Resize to match the initial image. They're all the same size, so this is legit
+        img = Image.open(self.source)
+        width, height = img.size
+        Window.size = (width, height)
+        
+        #Log that we loaded it and refresh the view
         self.tr.log_meta_event("Loaded {0}".format(self.source))
         self.canvas.ask_update()
 
@@ -146,7 +155,6 @@ class MultiImage(Image):
 
         #Log what file was loaded
         self.tr.log_meta_event("Loaded {0}".format(self.source))
-        
 
         #Widget is the same size as the image
         self.canvas.ask_update()
