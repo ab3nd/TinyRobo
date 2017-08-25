@@ -55,6 +55,7 @@ class TouchRecorder():
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
+        print event.x, event.y
         event = {"time": event.time_update,
                  "uid": event.uid,
                  "start_time" : event.time_start,
