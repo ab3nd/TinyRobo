@@ -70,7 +70,13 @@ class imageLogger():
 		for event in self.logged_events:
 			x = event["event_x"]
 			y = event["event_y"]
-			self.draw.ellipse([(x-2,y-2),(x+2,y+2)], fill=colors.pop(0))
+			#Draw rectangular events as rectangles instead of circles
+			if event["shape"]["height"] is not None:
+				h = event["shape"]["height"]
+				w = event["shape"]["width"]
+				self.draw.rectangle([(x-(w/2), y-(h/2)), (x+(w/2), y+(h/2))], fill=colors.pop(0))
+			else:
+				self.draw.ellipse([(x-2,y-2),(x+2,y+2)], fill=colors.pop(0))
 
 		#Write the image 
 		#TODO do something smarter with file names
@@ -96,7 +102,7 @@ class imageLogger():
 
 import pickle
 
-infile = "24-08-17_15:37:36_s666_c10.pickle"
+infile = "26-08-17_16_43_57_s5_c10.pickle"
 
 def isMeta(event):
 	if "desc" in event.keys():

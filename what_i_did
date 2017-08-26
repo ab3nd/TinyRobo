@@ -323,8 +323,16 @@ To Do:
 - Improvements to log processor, not sure how much more work it really needs
 - Don't have the gesture recognizer yet
 
+8/25
+- Kivy includes some gesture recognition, may be able to roll into UI easily
+- Can't seem to get multitouch monitor working with kivy on laptop, may try on desktop
 
-
+8/26
+- Got the touchscreen.... mostly working with mtdev and the line 
+	microtouch = mtdev, /dev/input/by-id/usb-3M_3M_MicroTouch_USB_controller-event-if00
+- Shape quality of the events isn't picklable, so I may have to do something a little fancy to deal with that
+  - I probably do care if they e.g. use their hands for it. 
+  - events are only either rectangles or None, so I save either the width/height of the rectangle or None for the width/height
 
 Wheelchair:
 
