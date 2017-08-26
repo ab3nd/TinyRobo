@@ -7,7 +7,7 @@ kivy.require('1.9.1') # replace with your current kivy version !
 from kivy.config import Config
 #Don't resize the window
 #This has to be before any other Kivy imports, or it fails quietly
-#Config.set('graphics', 'resizable', False)
+Config.set('graphics', 'resizable', False)
 #Config.set('graphics', 'fullscreen', 'fake')
 Config.set('graphics', 'borderless', False)
 from kivy.app import App
