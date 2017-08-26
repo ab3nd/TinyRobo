@@ -60,11 +60,11 @@ class TouchRecorder():
     def log_touch_event(self, event):
         print event.x, event.y
         
+        #Kivy shapes can't be pickled, but as of 1.10, they're only ever either rectangular or None
         if event.shape is not None:
-            shape_width = event.shape.width
-            shape_height = event.shape.height
+            shape = {"width" : event.shape.width, "height" : event.shape.height}
         else:
-            shape_width = shape_height = None
+            shape = None
 
         event = {"time": event.time_update,
                  "uid": event.uid,
@@ -73,9 +73,7 @@ class TouchRecorder():
                  "event_x" : event.x,
                  "event_y" : event.y,
                  "update_time" : event.time_update,
-                 #"shape" : event.shape} Shapes are not picklable
-                 #but as of kivy 1.10, they're only ever rectangular...
-                 "shape" : {"width" : shape_width, "height" : shape_height}}
+                 "shape" : shape}
         pickle.dump(event, self.outfile)
         #Paranoia
         self.outfile.flush()

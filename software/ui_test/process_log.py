@@ -71,7 +71,7 @@ class imageLogger():
 			x = event["event_x"]
 			y = event["event_y"]
 			#Draw rectangular events as rectangles instead of circles
-			if event["shape"]["height"] is not None:
+			if event["shape"] is not None:
 				h = event["shape"]["height"]
 				w = event["shape"]["width"]
 				self.draw.rectangle([(x-(w/2), y-(h/2)), (x+(w/2), y+(h/2))], fill=colors.pop(0))
