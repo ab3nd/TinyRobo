@@ -59,6 +59,13 @@ class TouchRecorder():
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
         print event.x, event.y
+        
+        if event.shape is not None:
+            shape_width = event.shape.width
+            shape_height = event.shape.height
+        else:
+            shape_width = shape_height = None
+
         event = {"time": event.time_update,
                  "uid": event.uid,
                  "start_time" : event.time_start,
@@ -66,7 +73,9 @@ class TouchRecorder():
                  "event_x" : event.x,
                  "event_y" : event.y,
                  "update_time" : event.time_update,
-                 "shape" : event.shape}
+                 #"shape" : event.shape} Shapes are not picklable
+                 #but as of kivy 1.10, they're only ever rectangular...
+                 "shape" : {"width" : shape_width, "height" : shape_height}}
         pickle.dump(event, self.outfile)
         #Paranoia
         self.outfile.flush()
