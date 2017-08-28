@@ -726,50 +726,35 @@ The presence of this information in turn implies that the localization informati
 For example, if the task assigned to the swarm is to surround a fixed point, and localization information is available, then each robot can be given a program that instructs it to move towards a known location, based on its current known location.
 Even if the robots cannot determine their location, but the UI and program generator have it, the robots closest to the point can be assigned programs that cause them to act as beacons, while all the other robots are assigned programs to wander until they see a beacon and then move towards it. 
 If, instead, neither the robots nor the program generator have information on the location of the robots, then all of the robots can be assigned programs that instruct them to wander until they detect the target point, and then act as beacons, at which point the overall behavior of the system returns to the previous example.
-In the most extreme case, neither the robots nor the user interface have any information about the location of the robots. This extreme is outside the scope of this work, as it is more suited to an interface that permits the provisioning of the robots with a description of the target point. A method for providing such a description through multitouch gestures is likely to be mNSFore tedious than other approaches, e.g. summarizing desired sensor precepts or including an image of the target area for the robots to recognize. 
+In the most extreme case, neither the robots nor the user interface have any information about the location of the robots. 
+This extreme is outside the scope of this work, as it is more suited to an interface that permits the provisioning of the robots with a description of the target point. 
+A method for providing such a description through multitouch gestures is likely to be more tedious than other approaches, e.g. summarizing desired sensor precepts or including an image of the target area for the robots to recognize. 
+However, if the user task is expressible in terms of the overhead view of the area, the user interface could simply allow the user to issue commands that are situated in that view, such as rallying at a certain point or moving an object that is visible in overhead view. 
+Without information about the robot positions, the user would not be able to watch the motion of the robots to see that the commands were being followed. 
 
 All of the valid expressions possible in the command language should be converted into programs for the robots, or the user must be usefully informed as to why it was not possible. 
 The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
-Clearly, in a developing situation in the real world, success may be impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
-However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. %TODO STAY OUT OF GRIDWORLD FORMAL GROTESQUERY
+Clearly, in a developing situation in the real world, success may become impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
+However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. 
 
 \subsection{Swarm Robot Software Framework}
 
-The individual robots being developed for this research do not have very powerful processors. 
-The majority of the processing will be performed on a host computer running the ROS software framework. 
-Each robot's processor will mostly be concerned with interfacing with the robot's sensors, if any, and controlling the motors of the robot. 
-The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall behavior of the system.
 
-In order to locate the robots within the experiment area, an overhead camera will be used to detect machine-readable symbols on each robot. 
-The symbols provide location, heading, and a unique identifier for each robot. 
-Because the system has an omniscient-view camera, other objects in the robot arena can also be tracked. 
-For example, obstacles can be created by drawing lines on the floor of the robot enclosure. 
-Different colors could represent different types of obstacles, or qualities of the obstacles that are relevant to the software under test.
+The individual robots being developed for this research have minimal sensing capacity and relatively weak processors. 
+The majority of the processing is performed on a host computer running the ROS software framework. 
+Each robot's processor is mostly concerned with interfacing with the robot's sensors, if any, and controlling the motors of the robot. 
+The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall design of the system.
 
-Since the robots will all be reporting to a central server, and the central server will also be receiving the video from the overhead camera, it may appear that this is a highly centralized system. 
-However, the central computer will provide a framework for implementing a decentralized control scheme on the individual robots. 
-Rather than controlling each robot, the central computer will maintain a separate process for each robot in the swarm. 
-Each of these robot processes will only have access to the information that would be available to that robot, and so will act as a local control program for the robot, but will have the full processing resources of the host computer. 
-As a result, the individual robots can be small, lightweight, and consume relatively little electrical power, but the system as a whole will endow them with significant computing power. 
-As a result, the overall system will behave as though the individual robots each had a powerful computer. 
-As more powerful and lower power consumption processors become available, more of the processing can be moved from the virtualized robot processors and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
-
-Similarly, it should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
-The code virtually operating on the robot may be neither aware of its own position in the world, or the location of other robots, if the experiment calls for such a lack of information. 
-However, the central computer can use the location information to create ``virtual sensors'' for each robot. 
-The sensor precepts from virtual sensors would be simulated, but their magnitude or direction may be based on the location of a real robot relative to a real object in the experiment area. 
-For example, collision avoidance between two could be implemented by a virtual sensor on each robot that indicates the direction and heading of the nearest robot. 
+The central computer has a top-down camera over the ``arena'' the robots are active in. 
+Each robot has an AprilTag \cite{olson2011tags} on top of it, so that the central computer can localize them within the arena. 
+The central computer uses the location information to create ``virtual sensors'' for each robot. 
 Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
-The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
-Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
-
-If the robots are required to communicate directly with each other, the communication will pass through a virtual network. 
-From the point of view of the robots, messages sent into the virtual network will be delivered to other robots as if the messages were sent directly from one robot to another. 
-However, all the communication will be taking place between processes running on the central computer.
-By changing how the messages are delivered by the central system, we can implement full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
-We can also vary the reliability of the network, by dropping some messages or reducing parameters based on elements of the virtual environments. 
-For example, signals that pass through a virtual wall may have a reduced virtual signal strength and range, or may not arrive. 
-Having communication mediated by software on the host will allow for simple experimentation with variable network bandwidth and reliability. 
+For example, since the central computer knows the location, adding a range and bearing sensor that allows each robot to detect the distance and angle of the nearby robots is simple to implement. 
+This functionality is available in hardware on Epucks and Marxbots, but since each robot must be equipped with it, the cost scales linearly with the number of robots to equip.  
+It is possible to calculate the odometry for individual robots by watching the change in position in their tags over time. 
+The calculated odometry could then be published as a ROS topic, just like odometry collected from e.g. wheel encoders. 
+Because the system has an omniscient-view camera, other objects in the robot arena can also be tracked. 
+The system currently treats blue tape on the floor of the arena as obstacles.
 
 %Graphic of the software environment as a whole
 \begin{figure}[h]
@@ -839,50 +824,166 @@ Having communication mediated by software on the host will allow for simple expe
 	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
 \end{figure}
 
+Since the robots are reporting to a central server, and the central server also receives the video from the overhead camera, it may appear that this is a highly centralized system. 
+However, the central computer provides a framework for implementing a decentralized control scheme on the individual robots. 
+Rather than controlling each robot, the central computer maintains a separate process for each robot in the swarm. 
+Each of these robot processes only has access to the information that would be available to that robot, and so acts as a local control program for the robot, but with the full processing resources of the host computer. 
+As a result, the individual robots can be small, lightweight, and consume relatively little electrical power, but the system as a whole gives them with significant computing power. 
+When more powerful and lower power consumption processors become available, more of the processing can be moved from the virtualized robot processors and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
+
+Similarly, it should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
+The code virtually operating on the robot may be neither aware of its own position in the world, or the location of other robots, if the experiment calls for such a lack of information. 
+However, the central computer can use the location information to create ``virtual sensors'' for each robot. 
+The sensor precepts from virtual sensors would be simulated, but their magnitude or direction is be based on the location of a real robot relative to a real object in the experiment area. 
+For example, collision avoidance between two robots can be implemented by a virtual sensor on each robot that indicates the direction and heading of the nearest robot. 
+Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
+The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
+Virtual parameter tweaking allows fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
+
+\subsection{Virtual Localization}
+
+The AprilTag tracking of the robots provides localization of the robots within a common coordinate frame. 
+It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
+The code virtually operating on the robot may be neither aware of its own position in the world, nor the location of other robots, if the experiment calls for such a lack of information. 
+
+Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokoyu brand laser scanners used on larger robots. 
+It is also used to limit the range of messages sent between the robots through a virtual network. 
+
+\subsection{Virtual Laser Scanners}
+
+The AprilTag localizations and the image of the arena are used to provide virtual laser rangers for each robot. 
+The virtual laser ranger consists of two ROS nodes, a service and clients for the service. 
+The service is called ``laser\_oracle\_server''. 
+It subscribes to the AprilTag detections and the images from the arena overhead camera. 
+ 
+When a client requests a laser scan, the virtual laser service masks the modified arena image with a circle with a radius of the laser range, centered on the robot requesting the scan.
+This masking removes all of the objects that are out of range of the laser, and so reduces the time spent calculating the laser scan points. 
+
+Each sample of the laser scan is represented as a line segment, located based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
+Each line segment is checked for intersection with the lines defining the contours of the blue objects in the image. 
+As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
+This dot provides the outer edge of each robot in the virtual laser scan. 
+The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
+If multiple intersections are found for a line segment, the intersection closest to the robot is used, as the laser would stop after reflecting off an object.
+The service then formats the distances to the intersection points as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
+
+The virtual laser clients take the place of the laser driver ROS nodes that would be used to control a real linear laser scanner. 
+The laser client is initialized with some parameters, such as the sweep angle and angular resolution of the virtual laser, and polls the laser service regularly. 
+As it receives laser scans from the service, it publishes them to a ROS topic in the same manner as a ROS node for a hardware laser. 
+
+The apriltags\_ros node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
+In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
+The modified version is available at https://github.com/ab3nd/apriltags\_ros.
+
+\begin{figure}
+	\centering
+	\digraph[scale=0.6]{VirtualLaserSystem}{
+	
+	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
+	vsc -> vls [label=<sensor\string_msgs/LaserScan>];
+	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
+	cam -> vls [label=<sensor\string_msgs/Image>];
+	cam -> atag	[label=<sensor\string_msgs/Image>];
+	atag -> vls [label=<apriltags\string_ros/TagDetections>];	
+		 
+	vls [label="Virtual Laser Service"];
+	vsc [label="Virtual Laser Client"];
+	atag [label="AprilTag Detector"];
+	cam [label="Arena Camera"];
+	sub1 [label="Subscriber"];
+	}
+	\caption{Data flow in the virtual laser service}
+\end{figure}
+
+\subsection{Virtual Networking}
+
+If the robots are required to communicate directly with each other, the communication passes through a virtual network.
+From the point of view of the robots, messages sent into the virtual network are delivered to other robots as if the messages were sent directly from one robot to another. 
+However, all the communication is taking place between processes running on the central computer.
+By changing how the messages are delivered by the central system, the virtual network can provide full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
+The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
+For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver, or signals that pass through a virtual wall may have a reduced virtual signal strength and range.
+
+\begin{figure}
+	\centering
+	\digraph[scale=0.6]{VirtualNetwork}{
+	
+	{rank=same atag dist}
+	{rank=same tx rx}
+
+	vns -> dist [label="Robot IDs"];
+	dist -> vns [label="Distance"];
+	cam -> atag	[label=<sensor\string_msgs/Image>];
+	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
+	vns -> rx [label="Network Message"];
+	tx -> vns [label="Network Message"];	 
+	
+		
+	vns [label="Virtual Network Service"];
+	dist [label="Distance Service"];
+	atag [label="AprilTag Detector"];
+	cam [label="Arena Camera"];
+	tx [label="Transmitter"];
+	rx [label="Receiver"];
+	}
+	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
+\end{figure}
 
 
-It will also indicate the presence or absence of problems with the I2C interface of the controller, and validate the current PCB layout. 
-Development of ROS nodes to communicate with the individual boards must be done. 
-Automated discovery of boards and configuration of ROS nodes will accelerate development and make swarm use more flexible. 
-Core functionality required is Twist (or similar) message from ROS causing motion of toy, end-to-end from PC to motors. 
-Current board has known bugs, which will be fixed by respin of PCB. 
-This work will proceed in parallel with data collection for the gesture set, and be completed by the end of the summer of 2016.
-Completion of the swarm control hardware means that the board will control the motors and software will be loaded to the board and executed to accept incoming motor control commands.
-The swarm hardware development and results will be collected in a paper for publication.  
 
-Swarm robot control software framework. 
-Automate creation of configuration files that load ROS nodes to speak to each individual robot as if those nodes were running on that robot. 
-Each robot will have a ``motor driver'' node that forwards motion commands over the wifi link to the robot platform for interpretation. 
-Implement virtual sensing. 
+\section {Firmware}
 
-\subsection{Summer 2016}
+The current version of the robots' firmware is developed in the open-source Arduino development environment.
+Arduino programs are written in a dialect of C++. 
 
-Gestures - The paperwork to run user tests with the UML student population will be completed. 
-A pilot of the test will be run with users in the robotics lab in order to determine how long each user test is expected to take, and to work on the script for interacting with users. 
+Every robot runs the same firmware. 
+The firmware listens for connections on port 4321 for TCP/IP packets containing one of two types of messages. 
+Messages starting with a 0x51 byte (ASCII 'Q') cause the firmware to respond with a message containing the ASCII string "TinyRobo". 
+This function is to allow automatic detection of robots on a network by querying all connected systems to determine if they respond in this way. 
+
+Messages starting with a 0x4D byte (ASCII 'M') followed by four bytes are motor speed commands.
+The firmware interprets the first two bytes as the speed and direction for the first motor, and the second two bytes as speed and direction for the second motor.
+The control bytes are converted to a single byte command for the DRV8830 motor driver and transmitted over the I2C bus to set the motor speed.
+ 
+The DRV8830 driver is a voltage-controlled motor driver. 
+It accepts a single-byte command for each motor. 
+Bits 7-2 of the byte define the output voltage to be applied to a motor, and the driver attempts to maintain that output voltage.
+The valid range of motor voltage commands for the DRV8830 driver is 0x06 to 0x3F, which corresponds to a range of 0.48V to 5.06V in 0.08V increments. 
+Because the robot battery is nominally 3.7V, the motor command 0x30 is the highest output available. 
+Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor, as per table \ref{tab:DRV8830_truth}.
+
+\begin{table}
+	\begin{tabular}{l l l l l}
+	Bit 1 & Bit 0 & Out 1 & Out 2 & Function\\
+	\hline
+	0 & 0 & Z & Z & Coast\\
+	0 & 1 & L & H & Reverse\\
+	1 & 0 & H & L & Forward\\
+	1 & 1 & H & H & Brake\\				
+	\end{tabular}
+	
+	\caption{Truth table for DRV8830 drive direction bits. Coast allows the motor to turn freely. Brake connects the motor leads, which results in braking using the motor's back-EMF}
+	\label{tab:DRV8830_truth}
+\end{table}
+
+Once the motor speed is set, the firmware reads the fault bytes from the DRV8830, and sends the motor command and the fault bytes for each motor back to the client over WiFi. 
+The client uses the fault bytes to detect overcurrent conditions in the motor drivers and reduce output power. 
+
+The decision to have all of the robots have the same firmware and control the speed of the motors from ROS was made because different toys have different control schemes. 
+Toy tanks use differential drive, toy cars have Ackerman steering, and so forth. 
+By moving the control to the main computer, the firmware can be kept simple while still allowing researchers to adapt the system to the available toys.
+
+\section{Timeline}
+
+\subsection{September}
+
+Gestures - The paperwork to run user tests with the UML student population will be completed.  
 For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
 Each user is assigned to one case, and then performs all the tasks using that case. 
 Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
 There are 18 tasks. 
-The tasks do have some degree of order to their complexity, but maybe randomizing would be better so that users don't try to reuse gestures that might not make sense. 
 Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
-
-Hardware - The bugs in version one of the swarm control boards have been fixed, and a working version is available. 
-5 boards have been assembled and mounted to robots. 
-Parts have been ordered to assemble and connect another 5 boards.  
-
-Software - The core function of the swarm board is a Twist (or similar) message from ROS causing motion of toy, from input to the control PC to the motors. 
-This level of functionality, enabling individual swarm members to be driven from the keyboard, is in process and will be completed over the summer. 
-A simulated world and robot models have been developed to avoid having the software development be blocked by the development of the hardware, but the simulator is at this point incomplete. 
-The automatic swarm configuration will be extended to bluetooth, so that the Epucks can be added to the swarm as well. 
-Creation of configuration files that load ROS nodes to communicate each individual robot will be automated. 
-Each robot will have a ``motor driver'' node that forwards motion commands over the wifi or bluetooth link to the robot platform for interpretation. 
-The camera over the table will be calibrated to provide a minimally distorted image over the whole table. 
-An ROS node will provide robot and object detection on the table surface. 
-
-Writing - This document has been revised to the point of being ready to defend. 
-The hardware design has been documented in a workshop paper for Robotics: Science and Systems to be presented in mid-June, and the text of that paper has been used to improve this proposal. 
-
-\subsection{Fall 2016}
+Pilot runs of the study indicate that it can be completed in one hour. 
 
 Gestures - The main experiment to collect the gesture set will be performed. 
 5-10 users per case would be sufficient, so I hope to recruit 25-50 users. 
@@ -893,38 +994,28 @@ If the first data collection was sufficient, perform a second data collection to
 Determine if users use different signals to command drones in groups than they do with ground robots, particularly around obstacles. 
 This work can also be written up for publication. 
 
-Hardware - The swarm control boards should be complete and installed in swarm robots. The performance of the system as a whole will be tested, especially the behavior of the network and load on the central computer with Epucks and swarm robots in the same area. 
+Software - The gesture data set provides the starting point for writing a compiler. The intermediate representation will be designed. The ability to have virtual failures will be added to the virtual network and virtual sensors for the swarm robots. 
 
-Software - The basic functionality of the virtual sensors, virtual network, and virtual localization will be implemented. 
-The implementation will be such that a non-virtual method of performing those actions could be substituted for the real senses.
-Virtual networking can be viewed as an extension of sensing, in that network data arrives as a consequence of proximity to other robots, and so has range, as well as informational content. 
-Robot localization is also a sense. 
-Localization in the most abstract can be viewed as a sense of place. 
-
-Writing - Assuming data set for gestures is useful for a paper, it will be written up and published. The resulting write up, as well as expansion on experimental methodology will be added to my thesis. 
-
-\subsection{Winter 2016}
+\subsection{October}
 
 Gestures - Any remaining analysis of gesture data set will be finished. 
 The results will be written up and published if possible. 
 At this point, it should be clear that there either is or is not a transition point where the user changes the gestures they use for a bigger swarm. 
 If there is no transition, then it would seem to indicate that the same UI can be used for individual robots and swarms. 
 
-Hardware - Done. 
+Writing - Assuming data set for gestures is useful for a paper, it will be written up and published. The resulting write up, as well as expansion on experimental methodology will be added to my thesis. 
 
-Software - The gesture data set provides the starting point for writing a compiler. The intermediate representation will be designed. The ability to have virtual failures will be added to the virtual network and virtual sensors for the swarm robots. 
+\subsection{November}
 
-Writing - If a second data collection for gestures was done, the results from that will be compared and contrasted with the first. Any information learned from this work will be added to my thesis and written up as a paper for publication. 
+Software - Finishing and cleanup work will be done on gesture compiler. Test suite for all of the tasks used in the gesture collection user tests will be automated and used to test the compiler. Design experiment to test gesture compiler and run it to demonstrate the test cases used for collecting gestures, and new tasks to avoid overfitting. 
+
+Writing - Notes on gesture compiler design and development will be added to thesis, and possibly developed towards a paper. Thesis defense presentation will be started. 
+
+\subsection{December}
+
+Fucking madness ensues
 
 \subsection{Spring 2017}
-
-Gestures - Done. 
-
-Hardware - Done. 
-
-Software - Gesture compiler development will continue.  
-
-Writing - The swarm control framework will be complete enough to release, so documentation for it will be written. This writeup will also be added to my thesis. 
 
 \subsection{Summer 2017}
 
@@ -932,9 +1023,6 @@ Gestures - Done.
 
 Hardware - Done. 
 
-Software - Finishing and cleanup work will be done on gesture compiler. Test suite for all of the tasks used in the gesture collection user tests will be automated and used to test the compiler. Design experiment to test gesture compiler and run it to demonstrate the test cases used for collecting gestures, and new tasks to avoid overfitting. 
-
-Writing - Notes on gesture compiler design and development will be added to thesis, and possibly developed towards a paper. Thesis defense presentation will be started. 
 
 \subsection{Fall 2017}
 
