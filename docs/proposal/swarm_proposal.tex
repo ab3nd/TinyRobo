@@ -977,77 +977,55 @@ By moving the control to the main computer, the firmware can be kept simple whil
 
 \subsection{September}
 
-Gestures - The paperwork to run user tests with the UML student population will be completed.  
-For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, cloud (unknown robot count). 
-Each user is assigned to one case, and then performs all the tasks using that case. 
-Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
-There are 18 tasks. 
-Some of the tasks do not make sense with the cloud case, so users who are assigned to the cloud case will not view the tasks that do not make sense with the cloud case. 
-Pilot runs of the study indicate that it can be completed in one hour. 
+Gestures - The experiment to collect the gesture data set will be performed in September.   
 
-Gestures - The main experiment to collect the gesture set will be performed. 
-5-10 users per case would be sufficient, so I hope to recruit 25-50 users. 
-The data set will be analyzed and compared to existing work on multitouch gestures for command and control. 
-The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
-If there is sufficient data, the gesture set data collection and analysis will be documented in a paper for publication. 
-If the first data collection was sufficient, perform a second data collection to add drone tasks. 
-Determine if users use different signals to command drones in groups than they do with ground robots, particularly around obstacles. 
-This work can also be written up for publication. 
-
-Software - The gesture data set provides the starting point for writing a compiler. The intermediate representation will be designed. The ability to have virtual failures will be added to the virtual network and virtual sensors for the swarm robots. 
+Software - A preliminary gesture recognition system will be developed, although it may have to be amended to reflect the gestures collected in the experiment. 
+Preliminary versions of the gesture compiler and the infrastructure for running the resulting programs on the robots are written, but they will be refined and extended.
 
 \subsection{October}
 
-Gestures - Any remaining analysis of gesture data set will be finished. 
+Gestures - The experiment to collect the gesture data set will be completed, and analysis of the gesture data set will be done. 
 The results will be written up and published if possible. 
 At this point, it should be clear that there either is or is not a transition point where the user changes the gestures they use for a bigger swarm. 
 If there is no transition, then it would seem to indicate that the same UI can be used for individual robots and swarms. 
 
 Writing - Assuming data set for gestures is useful for a paper, it will be written up and published. The resulting write up, as well as expansion on experimental methodology will be added to my thesis. 
 
+Software - The gesture recognizer will be extended with the gestures collected from the experiment.
+Automation will be put in place to have the pipeline from gestures to program deployment on the robots occur without user intervention. 
+
 \subsection{November}
 
-Software - Finishing and cleanup work will be done on gesture compiler. Test suite for all of the tasks used in the gesture collection user tests will be automated and used to test the compiler. Design experiment to test gesture compiler and run it to demonstrate the test cases used for collecting gestures, and new tasks to avoid overfitting. 
+As of this writing, the deadline to submit a Declaration of Intent to Graduate form for the fall is unknown (https://www.uml.edu/Registrar/Calendars/2017-fall-grad.aspx lists it as "TBD"), but it is likely in early December. It should be submitted sometime this month. 
 
-Writing - Notes on gesture compiler design and development will be added to thesis, and possibly developed towards a paper. Thesis defense presentation will be started. 
+Software - Finishing and cleanup work will be done on gesture compiler. It may be possible to connect the UI from the experiment to the overhead camera for the swarm, resulting in a complete overhead view interface for real robots. 
+
+Writing - Notes on gesture compiler design and development will be added to thesis, and possibly developed towards a paper. Thesis defense presentation will be written.
 
 \subsection{December}
 
-Fucking madness ensues
+Defend Thesis
 
-\subsection{Spring 2017}
+Print copies of the thesis for submission to the library. 
 
-\subsection{Summer 2017}
-
-Gestures - Done. 
-
-Hardware - Done. 
-
-
-\subsection{Fall 2017}
-
-Gestures - Done. 
-
-Hardware - Done. 
-
-Software - Finish gesture compiler. Extend test suite. 
-
-Writing - Experiments to test gesture compiler will be written up as a paper for publication. The resulting paper will be used to extend my thesis. Presentation for thesis defense will be in progress. 
-
-\subsection{Winter 2017}
-
-Gestures - Done. 
-
-Hardware - Done. 
-
-Software - Done. 
-
-Writing - Thesis writing and defense presentation will be complete, thesis will be defended. 
+As of this writing, the deadline to submit the thesis/dissertation to the library is unknown, but it is likely around the last day of fall semester classes, Dec 13th. 
 
 \section{Expected Contributions}
 
 \subsection{Multitouch Gesture set for Swarm Control}
 This work will attempt to determine if there is an intuitive multitouch gesture set for a single user to command a large swarm of robots.
+For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, and cloud (unknown robot count). 
+In all the cases except the cloud case, the robots are represented as individual robots on the screen of the interaction device. 
+In the cloud case, the robots are presented as a cloud covering the area that the robots are present in, but without precise representation of each individual robot. 
+
+There are 18 tasks. 
+Each user is assigned to one case, and then performs all the tasks using that case. 
+Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
+Some of the tasks do not make sense with the cloud case, such as interactions with a single robot, so users who are assigned to the cloud case will not view the tasks that are impossible in that case.
+Pilot runs of the study indicate that it can be completed in one hour. 
+
+The data set will be analyzed and compared to existing work on multitouch gestures for command and control. 
+The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
 The influence of the presentation of the interface on the gesture set will be examined. 
 The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
 
@@ -1082,21 +1060,21 @@ The hardware resulting from this work is designed so that it can be duplicated b
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{../robot_makers_2/tiny_tank}
-\caption{A tank-drive toy with a 3.7V lithium polymer battery and a TinyRobo control board mounted to it.}
+\caption{A tank-drive toy with a 3.7V lithium polymer battery and a control board mounted to it.}
 \end{figure}
 
 In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
 The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
-The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
-However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
+The controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+However, unlike the Spider-Bots and COTSBots, this work does not specify a particular toy chassis to use for mobility. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
 All of these toys can be controlled by the hardware described in this work. 
 
-TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
+The robots are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
 While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
-The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+The software framework in development to support the robots is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
 
 %Toys cost $24, $16, $15, $21/2, 
 \begin{table}
@@ -1116,29 +1094,28 @@ The software framework in development to support TinyRobos is based on ROS, and 
 	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
 \end{table}
 
-The processor of the TinyRobo controller is an ESP-8266 wifi module.
+The processor of the controller is an ESP-8266 wifi module.
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
 The ESP-8266 is available in several form factors, each designated by a different suffix. 
 The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
 
 In addition to 802.11 b/g/n WiFi, the ESP-8266 supports a variety of serial protocols, including a UART, I$^2$C, SPI. 
-The I$^2$C interfaces is used on the TinyRobo board to connect to two DRV8830 motor driver ICs by Texas Instruments. 
+The I$^2$C interface is used on the board to connect to two DRV8830 motor driver ICs by Texas Instruments. 
 The DRV8830 provides 1A of drive current.
 Experimental tests with 8 different toys indicate that small toys draw well under 1A while moving freely, and peak around 2A when the motors are stalled. 
 The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
 The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
 
-
-The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
-The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
+The control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
+The charge controller allows the robot to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
-Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
+Moving this functionality to the adapter board reduces the size and cost of the control module. 
 
 \subsection{Toy Compatibility}
 
 Children's toys normally use inexpensive brushed DC motors in their construction. 
 These motors have not been the subject of extensive study, as they are commodity parts. 
-However, it is useful to quantify their behavior to some extent, to determine which kinds of toys can be used with the TinyRobo controller. 
+However, it is useful to quantify their behavior to some extent, to determine which kinds of toys can be used with the controller. 
 
 Two common types of motors found in children's toys are the RE and FA series of motors produced by Mabuchi Motor, or imitations of these motors produced by other companies. 
 These motors use simple metal brushes and are constructed to be inexpensive, rather than precise. 
@@ -1161,9 +1138,9 @@ The intended voltage range of the motors varies with different winding types, bu
 
 These are somewhat large brushed motors. 
 For smaller toys, coreless motors are more common. 
-The values in table \ref{tab:coreless} were measured from six of the toys used in constructing the TinyRobo swarm.
+The values in table \ref{tab:coreless} were measured from six of the toys used in constructing the swarm.
 The measurements from the toy helicopter and toy quadcopter are included for comparison.
-While the TinyRobo board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
+While the board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
 
 \begin{table}
 	\begin{tabular}{l l l}
@@ -1185,14 +1162,14 @@ While the TinyRobo board can supply sufficient current to control all of these t
 
 \subsection{Potential for Expansion}
 
-The current design for TinyRobo does not include sensors as a cost-saving decision. 
+The current design for the robots does not include sensors as a cost-saving decision. 
 However, the communication between the ESP-8266 and the motor drivers uses the industry standard I2C bus serial interface. 
 Due to the non-proprietary nature of this interface standard, it has been widely adopted, and many sensors are available to connect to an I2C bus. 
 For example, Vishay Semiconductor makes the VCNL3020, which is an infrared proximity sensor with a 20mm range. 
 If greater range is required, The ST Microelectronics VL53L0X Time-of-flight (ToF) laser ranger and gesture sensor provides a 2M range and 1D gesture sensing in a 4.4mm x 2.4mm package. 
 As of this writing, the VCNL3020 is \$3.44 and the VL53L0X costs \$6.28 in single quantities.
-These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with the TinyRobo platform. 
-Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the TinyRobo platform. 
+These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with this platform. 
+Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the platform. 
 
 
 \bibliography{swarm.bib}
