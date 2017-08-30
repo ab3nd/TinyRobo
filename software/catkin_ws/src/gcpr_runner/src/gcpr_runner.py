@@ -9,6 +9,7 @@ from time import sleep
 
 # Basic action of moving along an arc
 def move_arc(rot_speed, trans_speed):
+	#TODO this is where we'd actually have ROS send the message to the robot
 	print "move_arc({0}, {1})".format(rot_speed, trans_speed)
 	pass
 
@@ -30,48 +31,46 @@ def stop():
 # questions so that 
 
 def is_near_anything():
-	return is_near_left() && is_near_right() && is_near_center()
+	return is_near_left() and is_near_right() and is_near_center()
 
 def is_near_right():
 	span = len(laser_readings)/3
 	#Right side of readings
-	for reading in laser_readings[span+span:]
+	for reading in laser_readings[span+span:]:
 		#If there's a close object, return true
-		if reading < max_range / 2
+		if reading < max_range / 2:
 			return True
 	return False
 
 def is_near_left():
 	span = len(laser_readings)/3
 	#Left side of readings
-	for reading in laser_readings[:span]
+	for reading in laser_readings[:span]:
 		#If there's a close object, return true
-		if reading < max_range / 2
+		if reading < max_range / 2:
 			return True
 	return False
 
 def is_near_center():
 	span = len(laser_readings)/3
 	#Center of readings
-	for reading in laser_readings[span:span+span]
+	for reading in laser_readings[span:span+span]:
 		#If there's a close object, return true
-		if reading < max_range / 2
+		if reading < max_range / 2:
 			return True
 	return False
 
 # Some state 
 max_range = 10
-laser_readings = [10, 10, 10, 10, 10, 10, 10, 10, 10]
+laser_readings = [10, 10, 10, 10, 10, 10, 4, 10, 10]
 
 # Example program, this will be loaded from a file in later versions
 # What this should do is make the robot avoid obstacles and stop when
 # it isn't near anything.
-prog = [("not(is_near_anything())", 1.0, "stop"),
-		("is_near_left()", 0.8, "move_arc(-3, 2)"),
-		("is_near_left()", 0.2, "move_arc(-5, 2)"),
-		("is_near_right()", 0.8, "move_arc(3, 2)"),
-		("is_near_right()", 0.2, "move_arc(5, 2)"),
-		("is_near_center()", 1.0, "move_turn(8)")]
+program = [("not(is_near_anything())", 1.0, "stop"),
+		   ("is_near_left() and not is_near_center()", 1.0, "move_arc(-5, 2)"),
+		   ("is_near_right() and not is_near_center()", 1.0, "move_arc(5, 2)"),
+		   ("is_near_center()", 1.0, "move_turn(8)")]
 
 # Loader and runner
 
@@ -91,8 +90,11 @@ while(True):
 	
 	random.shuffle(todo_list)
 
+	#This needs some smarter method to unify the drive commands than just FIFO
+	#Or does it? FIFO fast enough, plus a short-cycle time would be a sort of
+	#stochastic PWM effect
 	for item in todo_list:
-		eval(rule)
+		eval(item)
 
 	sleep(2)
 	print "----"
