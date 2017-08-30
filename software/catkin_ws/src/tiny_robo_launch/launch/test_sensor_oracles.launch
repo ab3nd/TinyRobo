@@ -1,27 +1,18 @@
 <launch>
-   <!-- launch video stream -->
-   <include file="$(find video_stream_opencv)/launch/camera.launch" >
-   		<!-- node name and ros graph name -->
-	  	<arg name="camera_name" value="overhead_camera" />
-	  	<!-- url of the video stream -->
-	  	<arg name="video_stream_provider" value="rtsp://b34.nrv/live.sdp"/>
-	  	<!-- throttling the querying of frames to -->
-	  	<arg name="fps" value="30" />
-	  	<!-- setting frame_id -->
-	  	<arg name="frame_id" value="rtsp_frame" />
-	  	<!-- camera info loading, take care as it needs the "file:///" at the start , e.g.:
-	  	"file:///$(find your_camera_package)/config/your_camera.yaml" -->
-	  	<arg name="camera_info_url" value="file:///$(find camera_cal)/overhead_camera_calibration.yaml" />
-	  	<!-- flip the image horizontally (mirror it) -->
-	  	<arg name="flip_horizontal" value="false" />
-	  	<!-- flip the image vertically -->
-	  	<arg name="flip_vertical" value="false" />
-	  	<!-- visualize on an image_view window the stream generated -->
-	  	<arg name="visualize" value="false" />
-   </include>
+
+   <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+      <param name="video_device" value="/dev/video0" />
+      <param name="image_width" value="800" />
+      <param name="image_height" value="600" />
+      <param name="pixel_format" value="yuyv" />
+      <param name="camera_frame_id" value="usb_cam" />
+      <param name="camera_name" value="narrow_stereo" />
+      <param name="camera_info_url" value="file:///$(find camera_cal)/usb_cam_800x600.yml"/> 
+      <param name="io_method" value="mmap"/>
+   </node>
 
    <!-- Video un-distorting -->
-   <node name="image_proc" pkg="image_proc" type="image_proc" ns="overhead_camera"/>
+   <node name="image_proc" pkg="image_proc" type="image_proc" ns="usb_cam"/>
 
    <!-- April tags -->
    <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />

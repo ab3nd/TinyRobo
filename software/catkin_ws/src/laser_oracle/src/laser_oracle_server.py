@@ -289,7 +289,7 @@ def init_oracle():
 	rospy.Subscriber("/tag_detections", AprilTagDetectionArray, ls.update_tags)
 
 	#Subscribe to images from the overhead camera
-	rospy.Subscriber("/overhead_camera/image_rect_color", Image, ls.update_image)
+	rospy.Subscriber("/usb_cam/image_rect_color", Image, ls.update_image)
 
 	rate = rospy.Rate(3)
 	while not ls.isReady():
