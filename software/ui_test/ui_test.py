@@ -8,22 +8,26 @@ from kivy.config import Config
 #Don't resize the window
 #This has to be before any other Kivy imports, or it fails quietly
 Config.set('graphics', 'resizable', False)
-
+#Config.set('graphics', 'fullscreen', 'fake')
+Config.set('graphics', 'borderless', False)
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
-from kivy.uix.image import Image
+from kivy.uix.image import Image as kvImage
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
-#For keyboard listener
+#For keyboard listener and automatic sizing to slides
 from kivy.core.window import Window
 
 import pickle
 import datetime
 import time
+
+#Just for getting the size of images
+import Image 
 
 import sys
 
@@ -54,6 +58,14 @@ class TouchRecorder():
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
+        print event.x, event.y
+        
+        #Kivy shapes can't be pickled, but as of 1.10, they're only ever either rectangular or None
+        if event.shape is not None:
+            shape = {"width" : event.shape.width, "height" : event.shape.height}
+        else:
+            shape = None
+
         event = {"time": event.time_update,
                  "uid": event.uid,
                  "start_time" : event.time_start,
@@ -61,7 +73,7 @@ class TouchRecorder():
                  "event_x" : event.x,
                  "event_y" : event.y,
                  "update_time" : event.time_update,
-                 "shape" : event.shape}
+                 "shape" : shape}
         pickle.dump(event, self.outfile)
         #Paranoia
         self.outfile.flush()
@@ -109,7 +121,7 @@ class FingerDrawer(Widget):
     def clean_up(self):
         self.canvas.clear()
 
-class MultiImage(Image):
+class MultiImage(kvImage):
     def __init__(self, **kwargs):
         super(MultiImage, self).__init__(**kwargs)
         
@@ -125,21 +137,34 @@ class MultiImage(Image):
         #We're looking at the first slide
         self.slideIndex = 1
 
-        #Set ourselves up with the inital image
-        self.source = self.cfg.get(self.condition, str(self.slideIndex))
-        self.canvas.ask_update()
-
         #Record touch events
         self.tr = TouchRecorder()
+
+        #Set ourselves up with the inital image
+        self.source = self.cfg.get(self.condition, str(self.slideIndex))
+        
+        #Resize to match the initial image. They're all the same size, so this is legit
+        img = Image.open(self.source)
+        width, height = img.size
+        Window.size = (width, height)
+        
+        #Log that we loaded it and refresh the view
+        self.tr.log_meta_event("Loaded {0}".format(self.source))
+        self.canvas.ask_update()
 
     def nextSlide(self):
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
-        if self.slideIndex > self.slideCount:
+        if self.slideIndex >= self.slideCount:
             self.slideIndex = 1
         #New image for the background
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
+
+        #Log what file was loaded
+        self.tr.log_meta_event("Loaded {0}".format(self.source))
+
         #Widget is the same size as the image
+        self.canvas.ask_update()
         self.canvas.ask_update()
 
     def on_touch_down(self, touch):
@@ -217,6 +242,7 @@ class UITestApp(App):
             config.set('Condition', 'type', 'files_unknown')
 
         config.set("Subject", 'id', self.subject)
+        #config.set('graphics', 'fullscreen', 'auto')
 
     def build(self):
         pass
