@@ -119,11 +119,11 @@ def dumpStroke(stroke):
 		capped = clamp((pow(d1, 2) + pow(d2, 2) - pow(d3, 2))/(2 * d1 * d2), -1, 1)
 		angle = math.acos(capped)
 		if angle < 1:
-			draw.text((0, 0), "Circle" ,(255,255,255),font=font)
+			draw.text((0, 0), "Circle {0} points".format(len(stroke.events)) ,(255,255,255),font=font)
 		elif angle < 2.5:
-			draw.text((0, 0), "Arc" ,(255,255,255),font=font)
+			draw.text((0, 0), "Arc {0} points".format(len(stroke.events)) ,(255,255,255),font=font)
 		else:
-			draw.text((0, 0), "Line" ,(255,255,255),font=font)		
+			draw.text((0, 0), "Line {0} points".format(len(stroke.events)) ,(255,255,255),font=font)		
 	else:
 		draw.text((0, 0), "Point" ,(255,255,255),font=font)
 	#Write the file
