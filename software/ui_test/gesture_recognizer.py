@@ -15,17 +15,32 @@
 #          "desc": desc}
 
 
-import Image, ImageDraw
+import Image, ImageDraw, ImageFont
 import uuid
 import numpy as np
 import pickle
+import math
 
-infile = "26-08-17_17_10_15_s555_c10.pickle"
+infile = "26-08-17_17-10-15_s555_c10.pickle"
 
 def isMeta(event):
 	if "desc" in event.keys():
 		return True
 	return False
+
+def distanceEvents(eventA, eventB):
+	x1 = eventA["event_x"]
+	y1 = eventA["event_y"]
+	x2 = eventB["event_x"]
+	y2 = eventB["event_y"]
+
+	return math.sqrt(pow(x1 - x2, 2) + pow(y1 -y2, 2))
+
+def distance(x1, y1, x2, y2):
+	return math.sqrt(pow(x1 - x2, 2) + pow(y1 -y2, 2))
+
+def clamp(n, minn, maxn):
+    return max(min(maxn, n), minn)
 
 #Debug function, dumps strokes to image files for viewing
 def dumpStroke(stroke):
@@ -79,6 +94,38 @@ def dumpStroke(stroke):
 	draw.line([(x-3,y-3),(x+3,y+3)], fill=(255, 0, 0))
 	draw.line([(x-3,y+3),(x+3,y-3)], fill=(255, 0, 0))
 
+	font = ImageFont.truetype("DejaVuSans.ttf", 16)
+		
+	#Can't have an angle between less than two events
+	if len(stroke.events) > 2:
+		#Get the angle between the end points around the centroid
+		#Start by getting the distances between the start and end events and the centroid
+		x1 = stroke.events[0]["event_x"]
+		y1 = stroke.events[0]["event_y"]
+		x2, y2 = stroke.centroid
+		d1 = distance(x1, y1, x2, y2)
+		x1 = stroke.events[-1]["event_x"]
+		y1 = stroke.events[-1]["event_y"]
+		d2 = distance(x1, y1, x2, y2)
+		#Distance between the start and end events
+		d3 = distanceEvents(stroke.events[0], stroke.events[-1])
+		#From the law of cosines and https://stackoverflow.com/questions/1211212/how-to-calculate-an-angle-from-three-points
+		#This should be in radians, math.acos is in radians, according to the docs
+		#value is capped at 1 because numerical imprecision was causing math domain errors by feeding
+		#acos values like -1.00000000002, which is, technically, out of ranges
+		if (d1 * d2) == 0:
+			draw.text((0, 0),"d1 or d2 was zero",(255,255,255),font=font)
+			return
+		capped = clamp((pow(d1, 2) + pow(d2, 2) - pow(d3, 2))/(2 * d1 * d2), -1, 1)
+		angle = math.acos(capped)
+		if angle < 1:
+			draw.text((0, 0), "Circle" ,(255,255,255),font=font)
+		elif angle < 2.5:
+			draw.text((0, 0), "Arc" ,(255,255,255),font=font)
+		else:
+			draw.text((0, 0), "Line" ,(255,255,255),font=font)		
+	else:
+		draw.text((0, 0), "Point" ,(255,255,255),font=font)
 	#Write the file
 	img.save(path)
 
@@ -163,5 +210,7 @@ with open(infile, 'r') as inputData:
 
 #Now strokes contains every touch event series
 for stroke in strokes.values():
+
 	dumpStroke(stroke)
+
 
