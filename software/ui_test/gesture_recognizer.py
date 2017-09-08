@@ -152,14 +152,14 @@ def dumpStroke(stroke, fname=None, image=None):
 		capped = clamp((pow(d1, 2) + pow(d2, 2) - pow(d3, 2))/(2 * d1 * d2), -1, 1)
 		angle = math.acos(capped)
 		if angle < 1:
-			draw.text(textLocation, "Circle {0} points".format(len(stroke.events)) ,(255,255,255),font=font)
+			draw.text(textLocation, "Circle ID:{0} ({1})".format(stroke.id, len(stroke.events)) ,(255,255,255),font=font)
 		elif angle < 2.5:
-			draw.text(textLocation, "Arc {0} points".format(len(stroke.events)) ,(255,255,255),font=font)
+			draw.text(textLocation, "Arc ID:{0} ({1})".format(stroke.id, len(stroke.events)) ,(255,255,255),font=font)
 		else:
-			draw.text(textLocation, "Line {0} points".format(len(stroke.events)) ,(255,255,255),font=font)		
+			draw.text(textLocation, "Line ID:{0} ({1})".format(stroke.id, len(stroke.events)) ,(255,255,255),font=font)		
 	else:
 		textLocation = (stroke.centroid[0] + 5, 750-(stroke.centroid[1] - 5))
-		draw.text(textLocation, "Point" ,(255,255,255),font=font)
+		draw.text(textLocation, "Point ID:{0} ({1})".format(stroke.id, len(stroke.events)) ,(255,255,255),font=font)
 	#Write the file
 	image.save(fname)
 
@@ -169,6 +169,7 @@ class GestureStroke():
 		self.startTime = event['start_time']
 		self.endTime = None
 		self.centroid = [event['event_x'], event['event_y']]
+		self.avg_center_dist = None #Don't calculate until needed
 		self.isEnded = False
 		self.events = [event]
 		#Lucky me, Kivy doesn't use negative coordinates or put the origin in the middle of the screen
@@ -179,7 +180,7 @@ class GestureStroke():
 		#Events have ends, and stuff can't occur after the end of the event
 		#It does happen, there appear to be some duplicate events, but not often
 		if self.isEnded:
-			print "Attempt to add event to ended stroke {0}".format(self.id)
+			#print "Attempt to add event to ended stroke {0}".format(self.id)
 			return None
 
 		self.events.append(event)
@@ -206,7 +207,7 @@ class GestureStroke():
 			self.centroid[0] = self.centroid[0]/len(self.events)
 			self.centroid[1] = self.centroid[1]/len(self.events)
 
-	def overlaps(otherEvent):
+	def overlaps(self, otherEvent):
 		if otherEvent.startTime < self.startTime < otherEvent.endTime:
 			#This event started while the other event was going on
 			return True
@@ -215,11 +216,22 @@ class GestureStroke():
 			return True
 		return False
 
-	def width():
+	def width(self):
 		return self.maxX - self.minX
 
-	def height():
+	def height(self):
 		return self.maxY - self.minY
+
+	def avgCenterDist(self):
+		if self.avg_center_dist == None:
+			self.avg_center_dist = 0
+			for event in self.events:
+				x1 = event["event_x"]
+				y1 = event["event_y"]
+				x2, y2 = self.centroid
+				self.avg_center_dist += distance(x1, y1, x2, y2)
+			self.avg_center_dist = self.avg_center_dist/len(self.events)
+		return self.avg_center_dist
 
 class GestureCommand():
 	def __init__(self):
@@ -227,8 +239,23 @@ class GestureCommand():
 
 	#Expects a dictionary of strokes
 	def addStrokes(self, strokes):
-		print "adding {0}".format(strokes.keys())
+		#print "adding {0}".format(strokes.keys())
+
+		#Do some preliminary cleanup on the strokes
+		#Any stroke with less than ten points
+		for strokeID in strokes:
+			if len(strokes[strokeID].events) <= 10:
+				print " -- > Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
+			else:
+				print "Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
 		self.strokes = strokes
+
+	def coalesceStrokes():
+		#Convert any lines of fewer than 3 points to their centroid, consider them a point
+		#Combine any strokes that overlap by a very small amount, or don't start far enough apart into a single stroke
+		#But only if they are also long enough that they aren't points themselves?
+		#Convert sets of two or three points into double or triple-tap events
+		pass
 
 
 commands = []
@@ -249,7 +276,7 @@ with open(infile, 'r') as inputData:
 
 		while event is not None:
 			if isMeta(event):
-				print event
+				#print event
 				if event['desc'].startswith("Advanced") or event['desc'].startswith("Quit"):
 					#This is the delimiter between events in the log file
 					#TODO for parsing in realtime, it would have to be some recognition of an end of the command
@@ -276,4 +303,26 @@ with open(infile, 'r') as inputData:
 for command in commands:
 	dumpCommand(command)
 
+#Do an all pairs comparison to figure out whether any of the strokes in each of the commands should be merged,
+# This is to determine what the time threshold is between commands that are deliberately 
+# seperate from each other, and commands that are the same, but seperated by finger stutter on the screen
+# for cmd in commands:
+# 	#Each command has strokes, each stroke is a canidate for merging with each other stroke
+# 	for strokeA in cmd.strokes.values():
+# 		for strokeB in cmd.strokes.values():
+# 			if strokeA.overlaps(strokeB):
+# 				#The events overlap. Either A starts first or B does
+# 				overlapTime = min(strokeA.endTime, strokeB.endTime) - max(strokeA.startTime, strokeB.startTime)
+
+# 				if strokeA.startTime < strokeB.startTime:
+# 					print "{0} overlaps {1} by {2}".format(strokeA.id, strokeB.id, overlapTime)
+# 				else:
+# 					print "{0} overlaps {1} by {2}".format(strokeA.id, strokeB.id, overlapTime)
+# 			else:
+# 				#The events don't overlap
+# 				#TODO this doesn't need to be all pairs, I only care about sequences
+# 				if strokeA.endTime < strokeB.startTime:
+# 					if (strokeB.id - strokeA.id) == 1:
+# 						print "{0} ends {1} before {2} begins".format(strokeA.id, strokeB.startTime - strokeA.endTime, strokeB.id)
+# 	print "---"		
 
