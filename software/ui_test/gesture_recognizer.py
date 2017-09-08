@@ -60,8 +60,8 @@ def dumpStroke(stroke):
 		#This flips the image, kivy coordinates are upside-down relative to PIL coordinates
 		y = stroke.maxY - int(event['event_y'])
 		#Then move them from full screen space to the smaller image, including padding
-		x = x - stroke.minX + pxlPad/2
-		y = y - stroke.minY + pxlPad/2
+		x = x - (stroke.minX + pxlPad)/2
+		y = y - (stroke.minY + pxlPad)/2
 
 		#Draw the event
 		draw.ellipse([(x-3,y-3),(x+3,y+3)], fill=colors.pop(0))
