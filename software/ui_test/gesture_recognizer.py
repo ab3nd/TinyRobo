@@ -201,8 +201,32 @@ class GestureStroke():
 			self.centroid[1] = self.centroid[1]/len(self.events)
 
 	def merge(self,otherEvent):
-		print "Would merge {0} with {1}".format(self.id, otherEvent.id)
-		
+		#This is multitouch, so instead of deleting multiple overlapping events, 
+		#we just slap the other stroke's events into this one and then clean up 
+		self.events.extend(otherEvent.events)
+
+		#Sort the events by time, increasing?
+		self.events.sort(key=lambda evt: evt['time'])
+
+		#Fix the IDs and event end time, recalculate centroid
+		centroidX = centroidY = 0
+		for index, event in enumerate(self.events):
+			
+			event['uid'] = self.id #Normalize ID
+			
+			if index != len(self.events)-1:
+				event['end_time'] = -1 #No event except the end knows the end time
+
+			#Acuumulate the centroid position
+			centroidX += event['event_x']
+			centroidY += event['event_y']
+
+		#AvgCenterDist and centroid have changed
+		self.avg_center_dist = None #Triggers recalculation
+		self.centroid[0] = centroidX/len(self.events)
+		self.centroid[1] = centroidY/len(self.events)
+
+
 	def overlaps(self, otherEvent):
 		if otherEvent.startTime < self.startTime < otherEvent.endTime:
 			#This event started while the other event was going on
@@ -242,7 +266,7 @@ class GestureCommand():
 
 		#Stutter removal. For each stroke and the stroke after it, if they are seperated by less than 
 		#the stutter thresholds in both time and space, they are a product of a poor finger tracking over 
-		#the screen, not atually intended to be seperate events. This merges some strokes.
+		#the screen, not actually intended to be seperate events. This merges some strokes.
 		ids = self.strokes.keys() #TODO is this ordered? I want them ordered by time...
 		for index, item in enumerate(ids):
 			if index > 0: 
@@ -259,13 +283,15 @@ class GestureCommand():
 					# 	print "{0} overlaps {1} by {2}".format(prev.id, current.id, overlapTime)
 					if overlapTime < 0.01:
 						current.merge(prev)
-						#TODO also need to remove previous from dict? How does this affect indexing?
+						#TODO Is this going to give me a bad day? I'm not mutating the thing I'm enumerating...
+						del(self.strokes[ids[index-1]])
 				else:
 					#The events don't overlap
 					if prev.endTime < current.startTime:
 						#print "{0} ends {1} before {2} begins".format(prev.id, current.startTime - prev.endTime, current.id)
 						if current.startTime - prev.endTime < 0.099:
 							current.merge(prev)
+							del(self.strokes[ids[index-1]])
 
 
 
