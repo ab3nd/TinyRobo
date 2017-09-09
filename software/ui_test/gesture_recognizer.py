@@ -48,14 +48,7 @@ def dumpCommand(cmd):
 	#Generate a file name from the IDs of all the strokes in this command
 	fname = "{0}.png".format("_".join([str(x) for x in cmd.strokes.keys()]))
 
-	#Calculate the widths and heights
-	# minX = maxX = minY = maxY = 0
-	# for stroke in cmd.strokes.keys():
-	# 	minX = min(minX, cmd.strokes[stroke].minX)
-	# 	minY = min(minY, cmd.strokes[stroke].minY)
-	# 	maxX = max(maxX, cmd.strokes[stroke].maxX)
-	# 	maxY = max(maxY, cmd.strokes[stroke].maxY)
-
+	#This is hardcoded because this is how big my images are. Stylistically not great. 
 	width = 1000 #int(maxX - minX)
 	height = 750 #int(maxY - minY)
 
@@ -126,7 +119,7 @@ def dumpStroke(stroke, fname=None, image=None):
 
 	#font = ImageFont.truetype("DejaVuSansMono.ttf", 16)
 	#Specify font path precisely if just the file name doesn't work
-	font = ImageFont.truetype("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 10)
+	font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 10)
 		
 	#Can't have an angle between less than two events
 	if len(stroke.events) > 2:
@@ -207,6 +200,9 @@ class GestureStroke():
 			self.centroid[0] = self.centroid[0]/len(self.events)
 			self.centroid[1] = self.centroid[1]/len(self.events)
 
+	def merge(self,otherEvent):
+		print "Would merge {0} with {1}".format(self.id, otherEvent.id)
+		
 	def overlaps(self, otherEvent):
 		if otherEvent.startTime < self.startTime < otherEvent.endTime:
 			#This event started while the other event was going on
@@ -239,16 +235,48 @@ class GestureCommand():
 
 	#Expects a dictionary of strokes
 	def addStrokes(self, strokes):
-		#print "adding {0}".format(strokes.keys())
-
-		#Do some preliminary cleanup on the strokes
-		#Any stroke with less than ten points
-		for strokeID in strokes:
-			if len(strokes[strokeID].events) <= 10:
-				print " -- > Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
-			else:
-				print "Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
+		
 		self.strokes = strokes
+		
+		#Clean up the strokes
+
+		#Stutter removal. For each stroke and the stroke after it, if they are seperated by less than 
+		#the stutter thresholds in both time and space, they are a product of a poor finger tracking over 
+		#the screen, not atually intended to be seperate events. This merges some strokes.
+		ids = self.strokes.keys() #TODO is this ordered? I want them ordered by time...
+		for index, item in enumerate(ids):
+			if index > 0: 
+				current = self.strokes[ids[index]]
+				prev = self.strokes[ids[index - 1]]
+
+				if prev.overlaps(current):
+					#The events overlap. Either the current one started first or the previous one die
+					overlapTime = min(prev.endTime, current.endTime) - max(prev.startTime, current.startTime)
+
+					# if prev.startTime < current.startTime:
+					# 	print "{0} overlaps {1} by {2}".format(prev.id, current.id, overlapTime)
+					# else:
+					# 	print "{0} overlaps {1} by {2}".format(prev.id, current.id, overlapTime)
+					if overlapTime < 0.01:
+						current.merge(prev)
+						#TODO also need to remove previous from dict? How does this affect indexing?
+				else:
+					#The events don't overlap
+					if prev.endTime < current.startTime:
+						#print "{0} ends {1} before {2} begins".format(prev.id, current.startTime - prev.endTime, current.id)
+						if current.startTime - prev.endTime < 0.099:
+							current.merge(prev)
+
+
+
+		# #Any stroke with less than ten points
+		# for strokeID in strokes:
+		# 	if len(strokes[strokeID].events) <= 10:
+		# 		print " -- > Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
+		# 	else:
+		# 		print "Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
+
+		
 
 	def coalesceStrokes():
 		#Convert any lines of fewer than 3 points to their centroid, consider them a point
