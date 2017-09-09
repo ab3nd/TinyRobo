@@ -267,6 +267,7 @@ class GestureCommand():
 		#Stutter removal. For each stroke and the stroke after it, if they are seperated by less than 
 		#the stutter thresholds in both time and space, they are a product of a poor finger tracking over 
 		#the screen, not actually intended to be seperate events. This merges some strokes.
+		#TODO may need a spatial as well as chronological component for properly resolving multitouch membership
 		ids = self.strokes.keys() #TODO is this ordered? I want them ordered by time...
 		for index, item in enumerate(ids):
 			if index > 0: 
@@ -293,8 +294,11 @@ class GestureCommand():
 							current.merge(prev)
 							del(self.strokes[ids[index-1]])
 
-
-
+		#TODO: Any stroke with less than ~10 points is a tap
+		#Detect taps, and reduce to one point at the centroid
+		#Detect double taps and triple taps 1 or three taps, within a small distance, within a small time
+		#TODO: Stutter detection will combine some taps into other strokes if it's not configured right
+		
 		# #Any stroke with less than ten points
 		# for strokeID in strokes:
 		# 	if len(strokes[strokeID].events) <= 10:
