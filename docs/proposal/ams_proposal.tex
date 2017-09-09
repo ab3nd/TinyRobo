@@ -1,5 +1,8 @@
-\documentclass[]{article}
+\documentclass[12pt,english]{report}
 
+\usepackage{umlthesistemplate}
+
+% % % These packages imported by Abe
 \usepackage{xargs} 
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
@@ -13,18 +16,31 @@
 \usepackage{graphviz}
 \usepackage{microtype}
 \usepackage{enumitem}
+\usepackage{multicol}
+% % % End Abe's stuff
 
-%not allowed to call it "Seize them, my minions"
 \title{Command Language for Single-User, Multi-Robot Swarm Control}
-\author{Abraham Shultz}
+\author{Abraham M. Shultz}
+\pastdegrees{B.S. Worcester Polytechnic Institute (2004) \and M.S. University of Massachusetts Lowell (2014)}
+\degree{Doctor of Philosophy}
+\department{Computer Science}
+\university{University of Massachusetts Lowell}
+\majorprofessor{Dr. Holly A. Yanco}
+\majorproftitle{Dissertation Chair}
+\members{Dr. Radhika Nagpal \and Dr. Jay McCarthy}
+\date{ 20 August, 2017}
+%\abstract{ \input{abstract.tex} }
+%\acknowledgments{ \input{ack.tex} }
+%\includetoc 
+%\maketitle
+\includeapproval
+
 
 \begin{document}
 
-\maketitle
+\clearpage
 
-\begin{abstract}
-
-\end{abstract}
+\section{Intro/Research Statement}
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \cite{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
@@ -35,8 +51,6 @@ Centralizing the control of a large group of robots (a swarm) makes the system a
 To avoid this type of failure, the overall action of the swarm should be guided by decentralized emergent behavior, rather than a centralized orchestration. 
 Each robot receives its own program, and the sum of the execution of the programs on each robot results in completion of the task.
 The various approaches to development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
-
-\section{Intro/Research Statement}
 
 \subsection{Problem Statement}
 
@@ -631,9 +645,9 @@ However, individually evolved primitives could be saved in a library of primitiv
 Such a library could take advantage of the possible overfitting of GA evolution by storing primitives intentionally overfitted to specific situations and robots, and using the best matches. 
 For example, a controller that aggregates small-scale UAVs outdoors is likely quite different from one that aggregates medium-scale wheeled robots indoors, even though they are both aggregation controllers. 
 
-\subsubsection{Domain-Specific Languages for Swarm Robotics}
+\subsection{Domain-Specific Languages for Swarm Robotics}
 
-Proto and other programming languages for amorphous computers provide abstractions for computation performed on homogeneous spatially-distributed computing nodes, but do not generally support motion of nodes within the space. 
+Proto and other programming languages for amorphous computers provide abstractions for compuation performed on homogeneous spatially-distributed computating nodes, but do not generally support motion of nodes within the space. 
 Other versions of tuple-space based amorphous computation include motion of the agents, but do not explicitly support heterogeneity \cite{viroli2012linda}.
 
 The Voltron programming language provides what its authors describe as ``team-level programming'' for autonomous drones \cite{mottola2014team}.
@@ -846,7 +860,7 @@ The AprilTag tracking of the robots provides localization of the robots within a
 It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
 The code virtually operating on the robot may be neither aware of its own position in the world, nor the location of other robots, if the experiment calls for such a lack of information. 
 
-Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokuyo brand laser scanners used on larger robots. 
+Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokyuo brand laser scanners used on larger robots. 
 It is also used to limit the range of messages sent between the robots through a virtual network. 
 
 \subsection{Virtual Laser Scanners}
@@ -931,7 +945,7 @@ For example, the likelihood that a message arrives at the robot to which it was 
 
 
 
-\subsection {Firmware}
+\section {Firmware}
 
 The current version of the robots' firmware is developed in the open-source Arduino development environment.
 Arduino programs are written in a dialect of C++. 
@@ -1176,42 +1190,3 @@ Numerous multichannel ADC ICs with I2C interfaces are also available, which perm
 \bibliographystyle{apalike}
 
 \end{document}
-
-%Papers to read
-
-%Cooperative interaction of walking human and distributed robot maintaining stability of swarm 
-
-%Development of IR-based short-range communication techniques for swarm robot applications 
-
-%The Wanda Robot and Its Development System for Swarm Algorithms
-
-%Stability of swarm robot based on local forces of local swarms
-
-%Swarm robot pattern formation using a morphogenetic multi-cellular based self-organizing algorithm 
-
-%A particle-swarm-optimized fuzzy-neural network for voice-controlled robot systems 
-
-%The I-SWARM project 
-%
-%\subsection{Current Consumption of Children's Toys}
-%Motor driver test required, a well as quantification of motor current draw for children's toys. 
-%Quantification of required power may indicate that larger motor driver power is needed.
-%
-%Toys are effectively black boxes to the end user.
-%Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
-%In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
-%The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
-%
-%All of the motors were driven at 3.7VDC. 
-%This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
-%Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
-%Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
-%
-%Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
-%Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
-%Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
-%Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
-%Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
-%Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
-%Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
-%Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A

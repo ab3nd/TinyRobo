@@ -33,7 +33,7 @@ The resulting system was designed as a tabletop swarm, but has the ability to be
 \section{Motivation}
 
 Simulation of robots is clearly the lowest cost option for performing tests with large collections of robots. 
-Once the simulation environment is created, adding additional robots does not incur any financial cost. 
+Once the simulation environment is created, adding additional robots does not cost more. 
 Larger simulations may of course require more computer time, but by running at less than realtime, or improving the hardware the simulation runs on, this problem can be ameliorated. 
 
 However, simulation brings with it a number of problems. 
@@ -42,6 +42,12 @@ The use of genetic algorithms is particularly prone to these problems, as the ge
 In one system, the fitness function for evolved simulated creature designs awarded high fitness to creatures that moved a long distance, quickly. 
 This resulted in creatures that were very tall, and fell over as soon as the simulation started, resulting in a rapid horizontal movement as measured from the track of the creature's center of gravity over the ground \cite{brooks2000artificial, sims1994evolving}. 
 A bug in the conservation of momentum in the same simulation resulted in creatures that moved by hitting themselves on the back. 
+
+Additionally, simulations are often more perfect than the real world. 
+In simulation, factors such as wheel slip, which adds error to robot odometry, and other forms of noise and sensor error can be left out of the simulation. 
+Range limitations for sensors and communications can also be ignored, as distances in simulation are abstractions. 
+These sorts of departures from reality are tempting, because they save processor time and development effort. 
+With real hardware, these effects are included at no cost, and instead, substantial effort is put into minimizing them.
 
 Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be a cause of substantial expense. 
 This paper presents a hardware platform and the associated software framework to make a tabletop research robot swarm for about \$30 per robot. 
@@ -64,7 +70,7 @@ They require larger storage areas, possibly teamwork to lift or repair, and so f
 The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
-This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
+This scale range can be divided into robots that can operate in swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
@@ -76,7 +82,7 @@ At the low end, in terms of size, the I-SWARM Project was intended to create a 2
 Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
 Other techniques have been developed to use magnetic fields to apply force to small magnetic objects, resulting in controlled motion of the objects \cite{floyd2008untethered, pelrine2012diamagnetically}.
 These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
-The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
+The moving parts are more accurately viewed as manipulators, with the instrumented environment and the manipulators themselves comprising a single robot. 
 
 Alice, by Caprari et al. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
@@ -110,20 +116,20 @@ The design of the r-one is open source, but it does not appear to be commerciall
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
 Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
 The Kilobots are intended for research in a highly homogeneous environment, with most or all of the robots executing the same program. 
-As a result, they are designed to be programmed in parallel using an IR interface. 
+They are designed to be programmed in parallel using an IR interface. 
 For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
+The Kilobots move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
 
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
 The first COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board \cite{bergbreiter2003cotsbots}. 
 The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
-At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
+At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100 (US) per unit. 
 COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
 TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
-The second COTSBots is larger, and will be discussed in the next section. 
+The second COTSBots platform is larger, and will be discussed in the next section. 
 
 \subsubsection{Room-sized Swarms}
 
@@ -168,7 +174,7 @@ If, on the other hand, it is configured for room-scale operations, the system ca
 
 The robot swarm developed for this work consists of a hardware module for controlling two motors of a toy, such as a small RC car, for mobility. 
 The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
-Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
+Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware is the primary difficulty. 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
 If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
 The hardware resulting from this work is designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
@@ -179,13 +185,13 @@ The hardware resulting from this work is designed so that it can be duplicated b
 \caption{A tank-drive toy with a 3.7V lithium polymer battery and a TinyRobo control board mounted to it.}
 \end{figure}
 
-In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
+In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by connecting a control hardware platform to children's toys. 
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
 The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
 The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
 However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
-Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
+Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provides steering. 
 All of these toys can be controlled by the hardware described in this work. 
 
 TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
@@ -215,8 +221,8 @@ The ESP-8266 costs approximately \$3-5, and contains both a wireless interface a
 The ESP-8266 is available in several form factors, each designated by a different suffix. 
 The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
 
-In addition to 802.11 b/g/n WiFi, the ESP-8266 supports a variety of serial protocols, including a UART, I$^2$C, SPI. 
-The I$^2$C interfaces is used on the TinyRobo board to connect to two DRV8830 motor driver ICs by Texas Instruments. 
+In addition to 802.11 b/g/n WiFi, the ESP-8266 supports a variety of serial protocols, including a UART, I$^2$C, and SPI. 
+The I$^2$C interface is used on the TinyRobo board to connect to two DRV8830 motor driver ICs by Texas Instruments. 
 The DRV8830 provides 1A of drive current.
 Experimental tests with 8 different toys indicate that small toys draw well under 1A while moving freely, and peak around 2A when the motors are stalled. 
 The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
@@ -294,9 +300,9 @@ The current version of the TinyRobo firmware is developed in the open-source Ard
 Arduino programs are written in a dialect of C++. 
 
 Every robot runs the same firmware. 
-The firmware listens for connections on port 4321 for TCP/IP packet containing two types of messages. 
+The firmware listens for connections on port 4321 for TCP/IP packets containing one of two types of messages. 
 Messages starting with a 0x51 byte (ASCII 'Q') cause the firmware to respond with a message containing the ASCII string "TinyRobo". 
-This function is to allow automatic detection of TinyRobos on a network by testing all connected systems to determine if they respond in this way to a query. 
+This function is to allow automatic detection of TinyRobos on a network by querying all connected systems to determine if they respond in this way. 
 
 Messages starting with a 0x4D byte (ASCII 'M') followed by four bytes are motor speed commands.
 The firmware interprets the first two bytes as the speed and direction for the first motor, and the second two bytes as speed and direction for the second motor.
@@ -326,7 +332,7 @@ Bits 1 and 0 of the command byte control the polarity of the output voltage, and
 Once the motor speed is set, the firmware reads the fault bytes from the DRV8830, and sends the motor command and the fault bytes for each motor back to the client over WiFi. 
 The client uses the fault bytes to detect overcurrent conditions in the motor drivers and reduce output power. 
 
-The decision to have all of the robots have the same firmware, and simply control the speed of the motors from ROS was made because different toys have different control schemes. 
+The decision to have all of the robots have the same firmware and control the speed of the motors from ROS was made because different toys have different control schemes. 
 Toy tanks use differential drive, toy cars have Ackerman steering, and so forth. 
 By moving the control to the main computer, the firmware can be kept simple while still allowing researchers to adapt the system to the available toys. 
 
@@ -471,24 +477,21 @@ The AprilTag localizations and the image of the arena are used to provide virtua
 The virtual laser ranger consists of two ROS nodes, a service and clients for the service. 
 The service is called ``laser\_oracle\_server''. 
 It subscribes to the AprilTag detections and the images from the arena overhead camera. 
-
-As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
-This dot provides the outer edge of each robot in the virtual laser scan. 
-The image is then converted to HSV and binarized by setting all pixels that are not sufficiently saturated blue to black. 
-The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
  
 When a client requests a laser scan, the virtual laser service masks the modified arena image with a circle with a radius of the laser range, centered on the robot requesting the scan.
 This masking removes all of the objects that are out of range of the laser, and so reduces the time spent calculating the laser scan points. 
-Contour detection is used to find the outlines of everything within the laser range. 
 
 Each sample of the laser scan is represented as a line segment, located based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
 Each line segment is checked for intersection with the lines defining the contours of the blue objects in the image. 
+As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
+This dot provides the outer edge of each robot in the virtual laser scan. 
+The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
 If multiple intersections are found for a line segment, the intersection closest to the robot is used, as the laser would stop after reflecting off an object.
 The service then formats the distances to the intersection points as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
 
 The virtual laser clients take the place of the laser driver ROS nodes that would be used to control a real linear laser scanner. 
 The laser client is initialized with some parameters, such as the sweep angle and angular resolution of the virtual laser, and polls the laser service regularly. 
-As it receives laser scans from the service, it publishes them to a ROS topic in the same manner as a ROS node for a hardware laser would. 
+As it receives laser scans from the service, it publishes them to a ROS topic in the same manner as a ROS node for a hardware laser. 
 
 The apriltags\_ros node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
 In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
@@ -560,7 +563,6 @@ While this paper presents it in the context of a complete system, the software f
 The combination of hardware and software presented in this work makes it possible to construct swarm robots at a cost of around \$30 per robot. 
 The resulting robots are useful for swarm robotics research, and the price point is accessible to many institutions, as well as private individuals. 
 All of the software used is open source, and available for no cost. 
-
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
