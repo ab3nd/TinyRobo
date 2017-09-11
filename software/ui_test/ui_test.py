@@ -155,7 +155,7 @@ class MultiImage(kvImage):
     def nextSlide(self):
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
-        if self.slideIndex >= self.slideCount:
+        if self.slideIndex > self.slideCount:
             self.slideIndex = 1
         #New image for the background
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
