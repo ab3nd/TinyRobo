@@ -253,6 +253,9 @@ class GestureStroke():
 			self.avg_center_dist = self.avg_center_dist/len(self.events)
 		return self.avg_center_dist
 
+	def isTap(self):
+		return (len(self.events) <= 10) and (self.avgCenterDist() < 20)
+
 class GestureCommand():
 	def __init__(self):
 		self.strokes = {}
@@ -299,13 +302,22 @@ class GestureCommand():
 		#Detect double taps and triple taps 1 or three taps, within a small distance, within a small time
 		#TODO: Stutter detection will combine some taps into other strokes if it's not configured right
 		
-		# #Any stroke with less than ten points
-		# for strokeID in strokes:
-		# 	if len(strokes[strokeID].events) <= 10:
-		# 		print " -- > Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
-		# 	else:
-		# 		print "Stroke {0} has average distance to centroid {1}".format(strokeID, strokes[strokeID].avgCenterDist())
+		ids = self.strokes.keys() #TODO is this ordered? I want them ordered by time...
+		for index, item in enumerate(ids):
+			if index > 0:
+				current = self.strokes[ids[index]]
+				prev = self.strokes[ids[index - 1]]
+				if current.isTap() and prev.isTap():
+					#Distance between previous starting and next ending
+					timeDistance = current.startTime - prev.endTime
+					#Distance between start locations
+					spaceDistance = distanceEvents(current.events[0], prev.events[0])
+					if timeDistance < 0.5 and spaceDistance < 10:
+						#print "{0} -> {1}: {2} {3}".format(prev.id, current.id, timeDistance, spaceDistance)
+						print "{0} -> {1} is a double-click".format(prev.id, current.id)
 
+
+			
 		
 
 	def coalesceStrokes():
