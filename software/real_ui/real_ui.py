@@ -15,11 +15,14 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.image import Image as kvImage
+from kivy.graphics.texture import Texture
 
 import rospy
 from std_msgs.msg import Header
 from sensor_msgs.msg import Image as rosImage
 from cv_bridge import CvBridge, CvBridgeError
+import io
+import cv2
 
 #TODO this should probably be customizable
 cam_topic = "/usb_cam/image_raw"
@@ -52,6 +55,9 @@ class ROSImage(kvImage):
     def __init__(self, **kwargs):
         super(ROSImage, self).__init__(**kwargs)
         
+        #For converting the image
+        self.bridge = CvBridge()
+
         #Subscribe to images from the overhead camera
         self.cfg = Config.get_configparser('app')
         print self.cfg.get("CamTopic", "path")
@@ -70,11 +76,54 @@ class ROSImage(kvImage):
             pass
 
     def update_image(self, msg):
-        print "Got an image"
         img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
-        self.source = img
-        self.canvas.ask_update()
+        #Kivy uses this for loading images in memory:
+        #data = io.BytesIO(open("image.png", "rb").read())
+        #im = CoreImage(data, ext="png")
+        #A ros image message is of the form 
+        # This message contains an uncompressed image
+        # # (0, 0) is at top-left corner of image
+        # #
 
+        # Header header        # Header timestamp should be acquisition time of image
+        #                      # Header frame_id should be optical frame of camera
+        #                      # origin of frame should be optical center of cameara
+        #                      # +x should point to the right in the image
+        #                      # +y should point down in the image
+        #                      # +z should point into to plane of the image
+        #                      # If the frame_id here and the frame_id of the CameraInfo
+        #                      # message associated with the image conflict
+        #                      # the behavior is undefined
+
+        # uint32 height         # image height, that is, number of rows
+        # uint32 width          # image width, that is, number of columns
+
+        # # The legal values for encoding are in file src/image_encodings.cpp
+        # # If you want to standardize a new string format, join
+        # # ros-users@lists.sourceforge.net and send an email proposing a new encoding.
+
+        # string encoding       # Encoding of pixels -- channel meaning, ordering, size
+        #                       # taken from the list of strings in include/sensor_msgs/image_encodings.h
+
+        # uint8 is_bigendian    # is this data bigendian?
+        # uint32 step           # Full row length in bytes
+        # uint8[] data          # actual matrix data, size is (step * rows)
+
+        #So in theory, I can copy the data into a BytesIO object, and display that...
+        #img_data = io.BytesIO(msg.data)
+        #img_data.seek(0)
+        #img = kvImage(img_data, ext="png")
+        #self.source = img
+        
+        # create a 64x64 texture, defaults to rgb / ubyte
+        #texture = Texture.create(size=(msg.width, msg.height), colorfmt ='rgb')
+
+        success, img_buffer = cv2.imencode('.jpg', img)
+        # then blit the buffer
+        texture.blit_buffer(img_buffer.flatten())
+        self.texture = texture
+        self.canvas.ask_update()
+        
 class RobotUIMainApp(App):
     def __init__(self, **kwargs):
         super(RobotUIMainApp, self).__init__(**kwargs)
