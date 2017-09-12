@@ -17,6 +17,8 @@ from kivy.uix.widget import Widget
 from kivy.uix.image import Image as kvImage
 from kivy.graphics.texture import Texture
 
+from kivy.core.image import Image as kvCoreImg
+
 import rospy
 from std_msgs.msg import Header
 from sensor_msgs.msg import Image as rosImage
@@ -76,7 +78,6 @@ class ROSImage(kvImage):
             pass
 
     def update_image(self, msg):
-        img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         #Kivy uses this for loading images in memory:
         #data = io.BytesIO(open("image.png", "rb").read())
         #im = CoreImage(data, ext="png")
@@ -109,20 +110,31 @@ class ROSImage(kvImage):
         # uint32 step           # Full row length in bytes
         # uint8[] data          # actual matrix data, size is (step * rows)
 
-        #So in theory, I can copy the data into a BytesIO object, and display that...
-        #img_data = io.BytesIO(msg.data)
-        #img_data.seek(0)
-        #img = kvImage(img_data, ext="png")
-        #self.source = img
-        
-        # create a 64x64 texture, defaults to rgb / ubyte
-        #texture = Texture.create(size=(msg.width, msg.height), colorfmt ='rgb')
+        cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="rgb8")
+        success, img_buffer = cv2.imencode('.png', cv_img)
 
-        success, img_buffer = cv2.imencode('.jpg', img)
-        # then blit the buffer
-        texture.blit_buffer(img_buffer.flatten())
-        self.texture = texture
+        #So in theory, I can copy the data into a BytesIO object, and display that...
+        img_data = io.BytesIO(img_buffer.flatten())
+        img_data.seek(0)
+        img = kvCoreImg(img_data, ext="png")
+        
+        print "have image"
+        tex = img.texture
+        print img.height, img.width
+        import pdb; pdb.set_trace()
+        #Write that image to my canvas
+        with self.canvas:
+            Rectangle(texture = tex, pos=self.pos, size=self.size)
+
+            
+        #Attempt to create a buffer and use it results in segfault
+        # texture = Texture.create(size=(msg.width, msg.height), colorfmt ='rgb', bufferfmt='ubyte')
+        # success, img_buffer = cv2.imencode('.jpg', img)
+        # # then blit the buffer
+        # texture.blit_buffer(img_buffer.flatten())
+        # self.texture = texture
         self.canvas.ask_update()
+        print "Ended"
         
 class RobotUIMainApp(App):
     def __init__(self, **kwargs):
