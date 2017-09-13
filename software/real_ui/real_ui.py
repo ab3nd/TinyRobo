@@ -118,13 +118,16 @@ class ROSImage(kvImage):
         #img_data = io.BytesIO(img_buffer.flatten())
         #img_data.seek(0)
         #img = kvCoreImg(img_buffer.to_string(), ext="png")
-        tex = Texture.create(size=(msg.width, msg.height), colorfmt='rgb')
-        arr = array('B', msg.data)
+        print "1"
+        tex = Texture.create(size=(64,64), colorfmt='rgb')
+        print "2"
+        arr = array('B', msg.data[:64*64*3])
+        print "3"
         tex.blit_buffer(arr, colorfmt='rgb', bufferfmt='ubyte')
-
+        print "4"
         #Write that image to my canvas
         with self.canvas:
-            Rectangle(texture = tex, pos=self.pos, size=self.size)
+            Rectangle(texture = tex)#, pos=self.pos, size=self.size)
 
             
         #Attempt to create a buffer and use it results in segfault
