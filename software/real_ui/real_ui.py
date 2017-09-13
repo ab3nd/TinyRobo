@@ -25,6 +25,7 @@ from sensor_msgs.msg import Image as rosImage
 from cv_bridge import CvBridge, CvBridgeError
 import io
 import cv2
+from array import array
 
 #TODO this should probably be customizable
 cam_topic = "/usb_cam/image_raw"
@@ -110,18 +111,17 @@ class ROSImage(kvImage):
         # uint32 step           # Full row length in bytes
         # uint8[] data          # actual matrix data, size is (step * rows)
 
-        cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="rgb8")
-        success, img_buffer = cv2.imencode('.png', cv_img)
+        #cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="rgb8")
+        #success, img_buffer = cv2.imencode('.png', cv_img)
 
         #So in theory, I can copy the data into a BytesIO object, and display that...
-        img_data = io.BytesIO(img_buffer.flatten())
-        img_data.seek(0)
-        img = kvCoreImg(img_data, ext="png")
-        
-        print "have image"
-        tex = img.texture
-        print img.height, img.width
-        import pdb; pdb.set_trace()
+        #img_data = io.BytesIO(img_buffer.flatten())
+        #img_data.seek(0)
+        #img = kvCoreImg(img_buffer.to_string(), ext="png")
+        tex = Texture.create(size=(msg.width, msg.height), colorfmt='rgb')
+        arr = array('B', msg.data)
+        tex.blit_buffer(arr, colorfmt='rgb', bufferfmt='ubyte')
+
         #Write that image to my canvas
         with self.canvas:
             Rectangle(texture = tex, pos=self.pos, size=self.size)
