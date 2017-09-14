@@ -17,6 +17,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.image import Image as kvImage
 from kivy.graphics.texture import Texture
 from kivy.uix.camera import Camera
+from kivy.graphics import Color, Ellipse, Line
 
 #At the moment, just listens for the quit command
 class KeyboardListener(Widget):
@@ -46,9 +47,8 @@ class KeyboardListener(Widget):
 class FingerWatcher(Widget):
 
     def __init__(self, **kwargs):
-        super(FingerDrawer, self).__init__(**kwargs)
+        super(FingerWatcher, self).__init__(**kwargs)
         self.d = 8.
-        self.tr = TouchRecorder()
         Window.bind(size=self.reSize)
 
     def on_touch_down(self, touch):
