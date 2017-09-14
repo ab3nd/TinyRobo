@@ -42,6 +42,39 @@ class KeyboardListener(Widget):
         # the system.
         return True
 
+#Widget that records all finger motion events on it
+class FingerWatcher(Widget):
+
+    def __init__(self, **kwargs):
+        super(FingerDrawer, self).__init__(**kwargs)
+        self.d = 8.
+        self.tr = TouchRecorder()
+        Window.bind(size=self.reSize)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            with self.canvas:
+                Color(0.5, 0.8, 0)
+                Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+                touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
+
+    def on_touch_up(self, touch):
+        if self.collide_point(*touch.pos):
+            with self.canvas:
+                Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+
+    def on_touch_move(self, touch):
+        if self.collide_point(*touch.pos):
+            touch.ud['line'].points += [touch.x, touch.y]
+
+    def reSize(self, width, height):
+        self.width = self.parent.ids["slide_show"].texture.width
+        self.height = self.parent.ids["slide_show"].texture.height
+        print self.size
+
+    def clean_up(self):
+        self.canvas.clear()
+
 class RobotUIMainApp(App):
     def __init__(self, **kwargs):
         super(RobotUIMainApp, self).__init__(**kwargs)
