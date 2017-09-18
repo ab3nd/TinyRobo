@@ -19,6 +19,9 @@ from kivy.graphics.texture import Texture
 from kivy.uix.camera import Camera
 from kivy.graphics import Color, Ellipse, Line
 
+#My gesture recognizer
+import gesture_recognition
+
 #At the moment, just listens for the quit command
 class KeyboardListener(Widget):
     def __init__(self, **kwargs):
@@ -50,28 +53,52 @@ class FingerWatcher(Widget):
         super(FingerWatcher, self).__init__(**kwargs)
         self.d = 8.
         Window.bind(size=self.reSize)
+        self.eventStack = {}
+        self.drawEvents = True
+        self.gr = gesture_recognition.getRecognizer()
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            with self.canvas:
-                Color(0.5, 0.8, 0)
-                Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
-                touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
+            if self.drawEvents:
+                with self.canvas:
+                    Color(0.5, 0.8, 0)
+                    Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+                    touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
+            #This touch just started, so create a new stack for events in this touch
+            self.eventStack[touch.uid] = [touch]
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
-            with self.canvas:
-                Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+            if self.drawEvents:
+                with self.canvas:
+                    Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
+            #Add this event to the stack of all events for this touch
+            self.eventStack[touch.uid].append(touch)
+            #Invoke the recognizer for this event
+            gesture = self.gr.recognize(self.eventStack[touch.uid])
+            if gesture == gesture_recognition.GestureType.CMD_GO:
+                #Invoke the compiler of gestures to robot programs
+                print "*********THIS IS WHEN YOU INVOKE THE COMPILER*********"
+            elif gesture == gesture_recognition.GestureType.TAP:
+                print "Tap"
+            elif gesture == gesture_recognition.GestureType.DOUBLE_TAP:
+                print "Double tap"
+            elif gesture == gesture_recognition.GestureType.TRIPLE_TAP:
+                print "Triple tap"
+            else:
+                print "Unknown Gesture"
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
-            touch.ud['line'].points += [touch.x, touch.y]
+            if self.drawEvents:
+                touch.ud['line'].points += [touch.x, touch.y]
+            #Add this event to the stack of all events for this touch
+            self.eventStack[touch.uid].append(touch)
 
     def reSize(self, width, height):
         self.width = self.parent.ids["slide_show"].texture.width
         self.height = self.parent.ids["slide_show"].texture.height
-        print self.size
-
+    
     def clean_up(self):
         self.canvas.clear()
 

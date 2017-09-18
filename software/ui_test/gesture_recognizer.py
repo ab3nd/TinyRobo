@@ -76,8 +76,8 @@ def dumpStroke(stroke, fname=None, image=None):
 		image = Image.new("RGB", (width, height))
 	
 	draw = ImageDraw.Draw(image)
-
-	#Set up the colors of the logged events by time
+	
+#Set up the colors of the logged events by time
 	color_length = (len(stroke.events) + 3)/3
 	reds = np.linspace(0,255, color_length, dtype=int)
 	reds = np.append(reds[:-1], np.fliplr([reds])[0])
@@ -278,7 +278,7 @@ class GestureCommand():
 				prev = self.strokes[ids[index - 1]]
 
 				if prev.overlaps(current):
-					#The events overlap. Either the current one started first or the previous one die
+					#The events overlap. Either the current one started first or the previous one did
 					overlapTime = min(prev.endTime, current.endTime) - max(prev.startTime, current.startTime)
 
 					# if prev.startTime < current.startTime:
