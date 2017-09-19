@@ -6,9 +6,9 @@ kivy.require('1.9.1')
 
 #Don't resize the window
 #This has to be before any other Kivy imports, or it fails quietly
-from kivy.config import Config
-Config.set('graphics', 'resizable', False)
-#Config.set('graphics', 'fullscreen', "auto") #Setting this to 1 leaves screen in wrong resolution
+#from kivy.config import Config
+#Config.set('graphics', 'resizable', False)
+#Config.set('graphics', 'fullscreen', 0) #Setting this to 1 leaves screen in wrong resolution
 #Config.set('graphics', 'borderless', False)
 from kivy.app import App
 
@@ -57,8 +57,19 @@ class FingerWatcher(Widget):
         self.drawEvents = True
         self.gr = gesture_recognition.getRecognizer()
 
+        print "Self :{0}".format(self.size)
+        
+        print "Window :{0}".format(Window.size)
+
+        print "Window top and left {0} {1}".format(Window.top, Window.left)
+        #self.size = Window.size
+
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
+            # touch.push()
+            # touch.apply_transform_2d(self.to_window)
+            # ret = super(FingerWatcher, self).on_touch_down(touch)
+
             if self.drawEvents:
                 with self.canvas:
                     Color(0.5, 0.8, 0)
@@ -66,9 +77,15 @@ class FingerWatcher(Widget):
                     touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
             #This touch just started, so create a new stack for events in this touch
             self.eventStack[touch.uid] = [touch]
+            # touch.pop()
+            # return ret
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
+            # touch.push()
+            # touch.apply_transform_2d(self.to_window)
+            # ret = super(FingerWatcher, self).on_touch_down(touch)
+
             if self.drawEvents:
                 with self.canvas:
                     Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
@@ -88,16 +105,27 @@ class FingerWatcher(Widget):
             else:
                 print "Unknown Gesture"
 
+            # touch.pop()
+            # return ret
+
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
+            # touch.push()
+            # touch.apply_transform_2d(self.to_window)
+            # ret = super(FingerWatcher, self).on_touch_down(touch)
+
             if self.drawEvents:
                 touch.ud['line'].points += [touch.x, touch.y]
             #Add this event to the stack of all events for this touch
             self.eventStack[touch.uid].append(touch)
 
+            # touch.pop()
+            # return ret
+
     def reSize(self, width, height):
-        self.width = self.parent.ids["slide_show"].texture.width
-        self.height = self.parent.ids["slide_show"].texture.height
+        self.width = Window.width
+        self.height = Window.height
+        print self.size
     
     def clean_up(self):
         self.canvas.clear()
