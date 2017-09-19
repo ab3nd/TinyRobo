@@ -60,6 +60,8 @@ class FingerWatcher(Widget):
         print "Self :{0}".format(self.size)
         
         print "Window :{0}".format(Window.size)
+
+        print "Window top and left {0} {1}".format(Window.top, Window.left)
         #self.size = Window.size
 
     def on_touch_down(self, touch):
