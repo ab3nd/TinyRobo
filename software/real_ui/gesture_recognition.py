@@ -10,7 +10,7 @@ class Enum(set):
 
 GestureType = Enum(["LINE", "POLY", "ARC", "TAP", "DOUBLE_TAP", "TRIPLE_TAP", "CMD_GO"])
 
-class GestureRecognizer():
+class GestureRecognizer(object):
     def __init__(self):
         self.name = "GestureRecognizer"
 
@@ -50,14 +50,18 @@ class GestureRecognizer():
 
     def getEndAngle(self, gesture):
         #Get coordinates for start and end of gesture, and gesture centroid
+        #import pdb; pdb.set_trace()
         x1 = gesture[0].x
         y1 = gesture[0].y
         x2 = gesture[-1].x
         y2 = gesture[-1].y
         xc, yc = self.getCentroid(gesture)
-        d1 = distance(x1, y1, xc, yc) #Distance from start to centroid
-        d2 = distance(x2, y2, xc, yc) #Distance from end to centroid
-        d3 = distance(x1, y1, x2, y2) #Distance from start to end
+        d1 = self.distance(x1, y1, xc, yc) #Distance from start to centroid
+        print "d1", d1
+        d2 = self.distance(x2, y2, xc, yc) #Distance from end to centroid
+        print "d2", d2
+        d3 = self.distance(x1, y1, x2, y2) #Distance from start to end
+        print "d3", d3
         if d1 == 0 or d2 == 0:
             #The start or end being on the centroid means this is probably a tap, not a line of any sort
             return 0
@@ -66,8 +70,10 @@ class GestureRecognizer():
         #value is capped at 1 because numerical imprecision was causing math domain errors by feeding
         #acos values like -1.00000000002, which is, technically, out of range
         capped = self.clamp((pow(d1, 2) + pow(d2, 2) - pow(d3, 2))/(2 * d1 * d2), -1, 1)
-        return math.acos(capped)
-        
+        angle = math.acos(capped)
+        print angle
+        return angle
+
     #Accepts a gesture, tries to recognize it, returns None if the gesture isn't recognized
     def recognize(self, gesture):
         #This isn't something you should just be calling, it's the superclass for the others
@@ -87,7 +93,7 @@ class TapRecognizer(GestureRecognizer):
 
 class DoubleTapRecognizer(GestureRecognizer):
     def __init__(self):
-        super(TapRecognizer, self).__init__()
+        super(DoubleTapRecognizer, self).__init__()
         self.name = "DoubleTapRecognizer"
 
     def recognize(self, gesture):
@@ -95,7 +101,7 @@ class DoubleTapRecognizer(GestureRecognizer):
 
 class TripleTapRecognizer(GestureRecognizer):
     def __init__(self):
-        super(TapRecognizer, self).__init__()
+        super(TripleTapRecognizer, self).__init__()
         self.name = "TripleTapRecognizer"
 
     def recognize(self, gesture):
@@ -103,18 +109,17 @@ class TripleTapRecognizer(GestureRecognizer):
 
 class LineRecognizer(GestureRecognizer):
     def __init__(self):
-        super(TapRecognizer, self).__init__()
+        super(LineRecognizer, self).__init__()
         self.name = "LineRecognizer"
 
     def recognize(self, gesture):
         if self.getEndAngle(gesture) > 2.5:
             return True
-        else
-            return False
+        return False
 
 class ArcRecognizer(GestureRecognizer):
     def __init__(self):
-        super(TapRecognizer, self).__init__()
+        super(ArcRecognizer, self).__init__()
         self.name = "ArcRecognizer"
 
     def recognize(self, gesture):
@@ -125,13 +130,13 @@ class ArcRecognizer(GestureRecognizer):
 
 class CircleRecognizer(GestureRecognizer):
     def __init__(self):
-        super(TapRecognizer, self).__init__()
+        super(CircleRecognizer, self).__init__()
         self.name = "CircleRecognizer"
 
     def recognize(self, gesture):
-        if self.getEndAngle < 1:
+        if self.getEndAngle(gesture) < 1:
             return True
-
+        return False
 
 class RecognitionEngine():
 	def __init__(self):
@@ -156,6 +161,6 @@ def getRecognizer():
 	recEng.addRecognizer(TripleTapRecognizer())
 	recEng.addRecognizer(LineRecognizer())
 	recEng.addRecognizer(ArcRecognizer())
-	recEng.addRecognizer(PolyRecognizer())
+	recEng.addRecognizer(CircleRecognizer())
 	#recEng.addRecognizer(GoRecognizer())
 	return recEng
