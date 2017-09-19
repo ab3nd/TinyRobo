@@ -390,6 +390,19 @@ Wheelchair:
 - Basic kivy app that reads camera works, but will fight anything else acessing the camera
 - v4l2loopback looks like an interesting way forward, but having issues
 
+9/14
+- Added touch events to real ui, started gesture recognition for it
+
+9/15
+- Lab clean-up
+
+9/18
+- Working on gesture recognition
+- Kivy pygst camera provider works on desktop, but not on laptop
+- Kivy problems with touches being registered all over screen, not just on window
+
+
+
 Gesture Experiment
 - Add image of robot to recruitment poster
 - Set up a single-page website with a map to the experiment location
