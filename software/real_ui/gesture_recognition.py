@@ -129,6 +129,8 @@ class CircleRecognizer(GestureRecognizer):
         self.name = "CircleRecognizer"
 
     def recognize(self, gesture):
+        #Emperically derived constant, is the angle around 
+        #the centroid between the start and end points, in radians
         if self.getEndAngle < 1:
             return True
 
