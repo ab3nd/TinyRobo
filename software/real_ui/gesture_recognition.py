@@ -39,12 +39,8 @@ class GestureRecognizer(object):
     def distance(self, aX, aY, bX, bY):
         if (aX == bX) and (aY == bY):
             return 0
-        try:
-            return math.sqrt((pow(aX,2) - pow(bX, 2)) + (pow(aY, 2) - pow(bY, 2)))
-        except ValueError:
-            print aX, aY, bX, bY
-            return 0
-
+        return math.sqrt((pow(aX - bX, 2)) + (pow(aY - bY, 2)))
+       
     def clamp(self, n, minn, maxn):
         return max(min(maxn, n), minn)
 

@@ -61,10 +61,6 @@ class FingerWatcher(Widget):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            # touch.push()
-            # touch.apply_transform_2d(self.to_window)
-            # ret = super(FingerWatcher, self).on_touch_down(touch)
-
             if self.drawEvents:
                 with self.canvas:
                     Color(0.5, 0.8, 0)
@@ -72,15 +68,9 @@ class FingerWatcher(Widget):
                     touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
             #This touch just started, so create a new stack for events in this touch
             self.eventStack[touch.uid] = [copy.deepcopy(touch)]
-            # touch.pop()
-            # return ret
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
-            # touch.push()
-            # touch.apply_transform_2d(self.to_window)
-            # ret = super(FingerWatcher, self).on_touch_down(touch)
-
             if self.drawEvents:
                 with self.canvas:
                     Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
@@ -100,28 +90,16 @@ class FingerWatcher(Widget):
             else:
                 print "Unknown Gesture"
 
-            # touch.pop()
-            # return ret
-
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
-            # touch.push()
-            # touch.apply_transform_2d(self.to_window)
-            # ret = super(FingerWatcher, self).on_touch_down(touch)
-
             if self.drawEvents:
                 touch.ud['line'].points += [touch.x, touch.y]
             #Add this event to the stack of all events for this touch
-            print touch.x, touch.y
             self.eventStack[touch.uid].append(copy.deepcopy(touch))
-
-            # touch.pop()
-            # return ret
 
     def reSize(self, width, height):
         self.width = Window.width
         self.height = Window.height
-        print self.size
     
     def clean_up(self):
         self.canvas.clear()
