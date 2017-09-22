@@ -7,6 +7,7 @@ from geometry_msgs.msg import Twist
 from apriltags_ros.msg import *
 import random
 import math
+from tf import transformations as trans
 
 class Point_Driver():
 	def __init__(self):
@@ -28,10 +29,38 @@ class Point_Driver():
 			return 
 
 		#Calculate the error between the rotation of the robot and orientation towards the point
+		x = self.targetX - tag.pose.pose.position.x 
+		y = self.targetY - tag.pose.pose.position.y
+		z = tag.pose.pose.position.z #I don't care about the height of the tag
+
+		#Get the robot's orientation vector by multiplying its orientation quaternion with an unrotated vector
+		#Of length one pointing forwards (x is forwards in ROS)
+		p = [1,0,0,0]
+		q = tag.pose.pose.orientation
+		q = [q.x, q.y, q.z, q.z]
+
+		q_prime = trans.quaternion_conjugate(q)
+		p_prime = trans.quaternion_multiply(trans.quaternion_multiply(q,p), q_prime)
+
+		#Get the vector out
+		x1 = p_prime[0]
+		y1 = p_prime[1]
+		z1 = p_prime[2]
+
+		#Angle between two vectors 
+		v1 = [x,y,z]
+		v2 = [x1,y1,z1]
+		mag1 = math.sqrt(sum([pow(v, 2) for v in v1]))
+		mag2 = math.sqrt(sum([pow(v, 2) for v in v2]))
+		dot = sum([v[0] * v[1] for v in zip(v1,v2)])
+
+		#Angle
+		print math.acos(dot/(mag1*mag2))
+
 
 		#Caclulate the error between the location of the robot and the location of the point
 		errDist = math.sqrt(pow(tag.pose.pose.position.x - self.targetX,2) + pow(tag.pose.pose.position.y - self.targetY,2))
-		print errDist
+		print "distance", errDist
 
 		#Generate a twist message and send it to the robot
 

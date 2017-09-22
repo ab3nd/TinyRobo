@@ -42,4 +42,7 @@
 	<param name="rangeMin" type="double" value="0.1"/>
 	<param name="rangeMax" type="double" value="0.8"/>
    </node>
+
+   <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base usb_cam 50" />
+
 </launch>
