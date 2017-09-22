@@ -30,17 +30,12 @@
 
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
-   	<param name="robot_id" value="9" type="int"/>
-   </node>
-   
-   <!-- client for the laser ranges -->
-   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_2" output="screen">
-   	<param name="robot_id" value="2" type="int"/>
+   	<param name="robot_id" value="7" type="int"/>
    </node>
    
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client_6" output="screen">
-   	<param name="robot_id" value="6" type="int"/>
+   	<param name="robot_id" value="23" type="int"/>
    	<param name="angleMin" type="double" value="-1.745"/>
 	<param name="angleMax" type="double" value="1.745"/>
 	<param name="angleIncrement" type="double" value="0.1745"/>
