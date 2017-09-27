@@ -67,7 +67,7 @@ Any software that purports to control a swarm under these conditions cannot rely
 
 Robots' perception of their environment is frequently limited. 
 Objects can block the sensing field of sensors.
-Even without obstructions, most sensors have a limited effective range. 
+Even without obstructions, most sensors have a limited effective range.
 Because the real world is dynamic, robots can make only limited assumptions about what they cannot sense, and can only sense a limited area. 
 Algorithms to control robots must primarily make use of locally sensed information, and secondarily make use of information received in communications from other robots. 
 
@@ -98,12 +98,12 @@ Because the proposed control software generation scheme is intended to potential
 There exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
 This transition point will be apparent because of a change in the gesture set that the user uses to interact with the swarm. 
 It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
-The user will instead use commands that control the bulk of the robots the robots as a cloud or flock, but may leave some robots unused. 
+The user will instead use commands that control the bulk of the robots as a cloud or flock, but may leave some robots unused. 
 For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to ``carry'' groups around. 
 The user may also change how they indicate which robots are to be interacted with. 
 Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use, or draw a circle around them. 
 The size of the swarm where changes in the user gestures occur will indicate the transition point between the user intent to interact with individual robots as opposed to interacting with the swarm as a whole. 
-%Harriet et al also put the estimated transition point between multi-agent control and swarm around 50 individuals \cite{harriott2014biologically}.  
+%Harriet \emph{et al}. also put the estimated transition point between multi-agent control and swarm around 50 individuals \cite{harriott2014biologically}.  
 %Above that threshold, human interaction may be able to remain focused on macro level behavior, influencing the overall behavior of the swarm rather than control of individuals.
 %TODO is this relevant, if so, how?
 
@@ -158,7 +158,7 @@ Other techniques have been developed to use magnetic fields to apply force to sm
 These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
 The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
 
-Alice, by Caprari et al. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$. 
+Alice, by Caprari \emph{et al}. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
 Alice robots are no longer available for purchase. 
 The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
@@ -389,7 +389,7 @@ One approach to the conversion of the command language to programs for the robot
 As a consequence, input in the command language defines a program which is compiled and loaded onto the robots. 
 Another possibility is the composition of preexisting behaviors that each satisfy part of the user's desired behavior. 
 Pheromone robotics provides one possible method of controlling this composition dynamically. 
-Still another approach is to allowing the user to specify a desired behavior and evolving controllers to match it. 
+Still another approach is to allow the user to specify a desired behavior and evolving controllers to match it. 
 
 \subsubsection{Amorphous Computing}
 
@@ -571,7 +571,7 @@ However, it is still useful to examine the possibility of developing a fitness f
 Without some way of determining the ``goodness'' of a swarm's behavior, it is useless to say that one algorithm or design paradigm is better or worse than another. 
 
 In order to determine the quality of the behavior of the swarm, its behavior must be measured.
-Harriott et al. propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots, and can be broken down into 9 classes \cite{harriott2014biologically}. 
+Harriott \emph{et al}. propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots, and can be broken down into 9 classes \cite{harriott2014biologically}. 
 \begin{itemize}[noitemsep]
 \item Human attributes - Interaction, trust, intervention frequency 
 \item Task performance - Ability to accomplish task, speed, accuracy, cost
@@ -619,7 +619,7 @@ Genetic algorithims have also been used to develop aggregation behavior in swarm
 Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object, attacking together, etc.
 The resulting controllers only controls aggregation behavior, so each behavioral primitive would require its own evolutionary development. 
 Solutions discovered by genetic algorithms are also prone to overfitting. 
-The swarms described in Dorigo et al. decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
+The swarms described in Dorigo \emph{et al}. decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
 
 The common hope of users of genetic algorithms is that they can reduce the complexity of directly specifying the task to the (hopefully lower) complexity of describing the results in the fitness function.
 Rather than describing how to solve a problem, one simply describes what the solution would look like. 
@@ -631,9 +631,9 @@ However, individually evolved primitives could be saved in a library of primitiv
 Such a library could take advantage of the possible overfitting of GA evolution by storing primitives intentionally overfitted to specific situations and robots, and using the best matches. 
 For example, a controller that aggregates small-scale UAVs outdoors is likely quite different from one that aggregates medium-scale wheeled robots indoors, even though they are both aggregation controllers. 
 
-\subsection{Domain-Specific Languages for Swarm Robotics}
+\subsubsection{Domain-Specific Languages for Swarm Robotics}
 
-Proto and other programming languages for amorphous computers provide abstractions for compuation performed on homogeneous spatially-distributed computating nodes, but do not generally support motion of nodes within the space. 
+Proto and other programming languages for amorphous computers provide abstractions for computation performed on homogeneous spatially-distributed computing nodes, but do not generally support motion of nodes within the space. 
 Other versions of tuple-space based amorphous computation include motion of the agents, but do not explicitly support heterogeneity \cite{viroli2012linda}.
 
 The Voltron programming language provides what its authors describe as ``team-level programming'' for autonomous drones \cite{mottola2014team}.
@@ -846,7 +846,7 @@ The AprilTag tracking of the robots provides localization of the robots within a
 It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
 The code virtually operating on the robot may be neither aware of its own position in the world, nor the location of other robots, if the experiment calls for such a lack of information. 
 
-Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokoyu brand laser scanners used on larger robots. 
+Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokuyo brand laser scanners used on larger robots. 
 It is also used to limit the range of messages sent between the robots through a virtual network. 
 
 \subsection{Virtual Laser Scanners}
@@ -931,7 +931,7 @@ For example, the likelihood that a message arrives at the robot to which it was 
 
 
 
-\section {Firmware}
+\subsection {Firmware}
 
 The current version of the robots' firmware is developed in the open-source Arduino development environment.
 Arduino programs are written in a dialect of C++. 

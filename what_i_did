@@ -334,6 +334,9 @@ To Do:
   - I probably do care if they e.g. use their hands for it. 
   - events are only either rectangles or None, so I save either the width/height of the rectangle or None for the width/height
 
+9/5
+- Gesture recognizer
+  - I don't have a slide for "zoom the map" as a task
 
 8/27
 - Paper edits
@@ -358,7 +361,46 @@ To Do:
   - Have the compiler generate a program that the GCPR evaluator can deal with
 - Probably leave early to head home?
 
+9/2-9/5
+- Home
+
+9/6
+- WFH, gesture compiler, out sick
+
+9/8
+- Made index card stack for tracking tasks
+- Started to combine gesture recognizer and compiler
+
+9/9
+- Stutter removal in parsing of gestures 
+
+9/11
+- Debugged slide loading
+- Added double-clicks to gesture recognizer
+
+9/12
+- Fixed apt, was using apt cache server on subtle, caused problems when subtle was down
+- Hoping to run more pilots with lab people
+
 Wheelchair:
+
+9/13
+- Lots of messing around with kivy image creation
+- Lots of tinkering with python memmaping 
+- Basic kivy app that reads camera works, but will fight anything else acessing the camera
+- v4l2loopback looks like an interesting way forward, but having issues
+
+9/14
+- Added touch events to real ui, started gesture recognition for it
+
+9/15
+- Lab clean-up
+
+9/18
+- Working on gesture recognition
+- Kivy pygst camera provider works on desktop, but not on laptop
+- Kivy problems with touches being registered all over screen, not just on window
+
 
 
 Gesture Experiment
