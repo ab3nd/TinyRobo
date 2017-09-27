@@ -1213,3 +1213,7 @@ Ok, so there are a host of bug algorithims
 https://mobile.aau.at/publications/jdeed-2017-Spiderino_low-cost_robot_for_swarm_research_and_educational_purposes.pdf
 
 Well damnit 
+
+gst-launch-1.0 v4l2src device=/dev/video0 ! "image/jpeg,width=1024,height=768" ! jpegdec ! videoconvert ! tee name=f ! queue ! v4l2sink device=/dev/video1 f. ! queue ! v4l2sink device=/dev/video2
+
+Updated gstreamer invocation for my camera, seems to have good framerate but bad lag. I don't want any lower of a resolution, so maybe dropping the framerate will help matters?
