@@ -13,7 +13,7 @@ import rospy
 from std_msgs.msg import String
 import json 
 
-#I'm not sure how quotes should be escaped here
+#Quotes in quotes need escaping
 test_prog = [("True", 1.0, "dbg_print(\"Test Program is running\")")]
 
 rospy.init_node("gcpr_deployer")
