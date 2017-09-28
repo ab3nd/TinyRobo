@@ -1,0 +1,37 @@
+<launch>
+        <!-- Set this to your camera's name -->
+        <arg name="cam_name" value="overhead_cam" />
+        <arg name="GST10" value="true" />
+
+        <!-- Start the GSCAM node -->
+        <!-- Note that some settings of videocrop will cause a double-free error -->
+        <env name="GSCAM_CONFIG" value="v4l2src device=/dev/video1 ! videocrop top=160 left=10 right=30 bottom=20 ! ffmpegcolorspace " />
+        <node pkg="gscam" type="gscam" name="$(arg cam_name)">
+                <param name="camera_name" value="$(arg cam_name)" />
+                <param name="camera_info_url" value="file:///$(find camera_cal)/usb_cam_cropped.yml" />
+                <remap from="camera/image_raw" to="$(arg cam_name)/image_raw" />
+        </node>
+
+        <!-- Provide rectification -->
+        <node pkg="image_proc" type="image_proc" name="overhead_image_proc" ns="$(arg cam_name)" />
+
+        <arg name="marker_size" default="5" />
+        <arg name="max_new_marker_error" default="0.08" />
+        <arg name="max_track_error" default="0.2" />
+        
+        <arg name="cam_image_topic" default="/$(arg cam_name)/image_rect_color" />
+        <arg name="cam_info_topic" default="/$(arg cam_name)/camera_info" />
+        <arg name="output_frame" default="/overhead_cam" />
+
+        <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkersNoKinect" respawn="false" output="screen">
+                <param name="marker_size"           type="double" value="$(arg marker_size)" />
+                <param name="max_new_marker_error"  type="double" value="$(arg max_new_marker_error)" />
+                <param name="max_track_error"       type="double" value="$(arg max_track_error)" />
+                <param name="output_frame"          type="string" value="$(arg output_frame)" />
+
+                <remap from="camera_image"  to="$(arg cam_image_topic)" />
+                <remap from="camera_info"   to="$(arg cam_info_topic)" />
+        </node>
+
+
+</launch>
