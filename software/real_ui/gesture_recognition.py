@@ -10,7 +10,7 @@ class Enum(set):
 
 GestureType = Enum(["LINE", "POLY", "ARC", "TAP", "DOUBLE_TAP", "TRIPLE_TAP", "CMD_GO"])
 
-class GestureRecognizer():
+class GestureRecognizer(object):
     def __init__(self):
         self.name = "GestureRecognizer"
 
