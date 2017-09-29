@@ -22,6 +22,8 @@ from kivy.graphics import Color, Ellipse, Line
 #My gesture recognizer
 import gesture_recognition
 
+import copy
+
 #At the moment, just listens for the quit command
 class KeyboardListener(Widget):
     def __init__(self, **kwargs):
@@ -57,40 +59,23 @@ class FingerWatcher(Widget):
         self.drawEvents = True
         self.gr = gesture_recognition.getRecognizer()
 
-        print "Self :{0}".format(self.size)
-        
-        print "Window :{0}".format(Window.size)
-
-        print "Window top and left {0} {1}".format(Window.top, Window.left)
-        #self.size = Window.size
-
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            # touch.push()
-            # touch.apply_transform_2d(self.to_window)
-            # ret = super(FingerWatcher, self).on_touch_down(touch)
-
             if self.drawEvents:
                 with self.canvas:
                     Color(0.5, 0.8, 0)
                     Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
                     touch.ud['line'] = Line(points=(touch.x, touch.y), width=self.d)
             #This touch just started, so create a new stack for events in this touch
-            self.eventStack[touch.uid] = [touch]
-            # touch.pop()
-            # return ret
+            self.eventStack[touch.uid] = [copy.deepcopy(touch)]
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
-            # touch.push()
-            # touch.apply_transform_2d(self.to_window)
-            # ret = super(FingerWatcher, self).on_touch_down(touch)
-
             if self.drawEvents:
                 with self.canvas:
                     Ellipse(pos=(touch.x - self.d, touch.y - self.d), size=(self.d * 2, self.d * 2))
             #Add this event to the stack of all events for this touch
-            self.eventStack[touch.uid].append(touch)
+            self.eventStack[touch.uid].append(copy.deepcopy(touch))
             #Invoke the recognizer for this event
             gesture = self.gr.recognize(self.eventStack[touch.uid])
             if gesture == gesture_recognition.GestureType.CMD_GO:
@@ -105,27 +90,16 @@ class FingerWatcher(Widget):
             else:
                 print "Unknown Gesture"
 
-            # touch.pop()
-            # return ret
-
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
-            # touch.push()
-            # touch.apply_transform_2d(self.to_window)
-            # ret = super(FingerWatcher, self).on_touch_down(touch)
-
             if self.drawEvents:
                 touch.ud['line'].points += [touch.x, touch.y]
             #Add this event to the stack of all events for this touch
-            self.eventStack[touch.uid].append(touch)
-
-            # touch.pop()
-            # return ret
+            self.eventStack[touch.uid].append(copy.deepcopy(touch))
 
     def reSize(self, width, height):
         self.width = Window.width
         self.height = Window.height
-        print self.size
     
     def clean_up(self):
         self.canvas.clear()

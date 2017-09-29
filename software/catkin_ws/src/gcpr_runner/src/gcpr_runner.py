@@ -3,6 +3,10 @@
 import random
 from time import sleep
 
+import rospy
+from std_msgs.msg import String
+import json
+
 # Load and run GCPR files
 
 # Define the actions that can be run with the GCPR actions and the conditionals that can be detected
@@ -25,7 +29,9 @@ def move_turn(speed):
 def stop():
 	move_arc(0,0)
 
-
+def dbg_print(message):
+	print message
+	
 # Define the guards that can be sensed. Guards are boolean, so they should return either a boolean
 # or something that python is going to treat as a boolean. I've decided to name the guards as 
 # questions so that 
@@ -64,24 +70,38 @@ def is_near_center():
 max_range = 10
 laser_readings = [10, 10, 10, 10, 10, 10, 4, 10, 10]
 
-# Example program, this will be loaded from a file in later versions
-# What this should do is make the robot avoid obstacles and stop when
-# it isn't near anything.
-program = [("not(is_near_anything())", 1.0, "stop"),
-		   ("is_near_left() and not is_near_center()", 1.0, "move_arc(-5, 2)"),
-		   ("is_near_right() and not is_near_center()", 1.0, "move_arc(5, 2)"),
-		   ("is_near_center()", 1.0, "move_turn(8)")]
+class ProgramLoader(object):
+	def __init__(self):
+		rospy.Subscriber("/robot_prog/{0}".format(7), String, self.replaceProgram)
+		# Example program, will get replaced
+		# What this should do is make the robot avoid obstacles and stop when
+		# it isn't near anything.
+		self.program = [("not(is_near_anything())", 1.0, "stop()"),
+				   ("is_near_left() and not is_near_center()", 1.0, "move_arc(-5, 2)"),
+				   ("is_near_right() and not is_near_center()", 1.0, "move_arc(5, 2)"),
+				   ("is_near_center()", 1.0, "move_turn(8)")]
 
-# Loader and runner
+	#This is how programs get deployed to this runner instance
+	#Currently just a string containing a set of GCPR tuples
+	#This isn't anything like secure, since eval is getting used. 
+	#There also may be threads afety concerns
+	def replaceProgram(self, msg):
+		rospy.logwarn("Got {0}".format(msg.data))
+		self.program = json.loads(msg.data)
 
-# This is where we'd load the program
+	def getProgram(self):
+		return self.program
+
+rospy.init_node("gcpr_runner")
+pl = ProgramLoader()
+
 
 random.seed()
 
 while(True):
 	todo_list = []
 
-	for rule in program:
+	for rule in pl.getProgram():
 		if eval(rule[0]):
 			#Check the rate
 			if random.random() < rule[1]:

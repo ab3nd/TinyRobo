@@ -29,6 +29,24 @@
 import uuid
 
 
+import rospy
+
+
+# class RobotInterface(object):
+
+# 	def __init__(self):
+# 		pass
+
+# 	def getAvailableRobots(self):
+# 		#Return a list of the available robots
+# 		pass
+
+# 	def selectRobots(self):
+# 		#map a UI gesture onto a set of robots
+# 		pass
+
+# 	def 
+
 #Convert a command into a GCPR expression of that command
 gcprLookup = {
 	"SelectAll": "Foo selectall",

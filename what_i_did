@@ -402,6 +402,24 @@ Wheelchair:
 - Kivy problems with touches being registered all over screen, not just on window
 
 
+9/26
+- Worked on program distribution for compiler
+- Currently using ROS String messages with the code as a json string in them
+- Much messing around with gstreamer to get
+  gst-launch-1.0 v4l2src device=/dev/video0 ! "image/jpeg,width=1024,height=768" ! tee name=f ! queue ! v4l2sink device=/dev/video1 f. ! queue ! v4l2sink device=/dev/video2
+  which works with ROS's gscam, but not usb_cam
+
+9/27
+- Swtched to gscam on main swarm box, usb_cam doesn't play well with v4l2loopback
+- Tried to get kivy/real_ui.py working on main swarm box
+- Tested Alvar tag tracker for ROS, got 1Hz in a configuration where APRIL tags get 4Hz
+- 
+
+
+
+
+
+
 
 Gesture Experiment
 - Add image of robot to recruitment poster
