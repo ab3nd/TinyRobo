@@ -31,6 +31,13 @@ import Image
 
 import sys
 
+#Let's make everything emit ROS messages!
+import rospy
+from std_msgs.msg import Bool                   #Whether the "interesting" key was pressed
+from geometry_msgs.msg import PointStamped      #The point the user is touching
+from sensor_msgs.msg import Image as ROSImgMsg  #The slide the user is viewing
+from std_msgs.msg import String as ROSStrMsg    #Metaevents like quitting the app
+
 #Singleton-ifies things, so you only get one instance
 def singleton(cls):
     instances = {}
@@ -41,7 +48,7 @@ def singleton(cls):
     return getinstance
 
 @singleton
-class TouchRecorder():
+class TouchRecorder(object):
     def __init__(self, prefix=None):
 
         #Get the subject id and condition from the app config
@@ -58,8 +65,6 @@ class TouchRecorder():
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
-        print event.x, event.y
-        
         #Kivy shapes can't be pickled, but as of 1.10, they're only ever either rectangular or None
         if event.shape is not None:
             shape = {"width" : event.shape.width, "height" : event.shape.height}
@@ -84,6 +89,31 @@ class TouchRecorder():
         pickle.dump(event, self.outfile)
         #Paranoia
         self.outfile.flush()
+
+
+@singleton
+class ROSTouchRecorder(TouchRecorder):
+    def __init__(self, prefix=None):
+        super(ROSTouchRecorder, self).__init__(prefix)
+        self.touch_pub = rospy.Publisher('touches', PointStamped, queue_size=10)
+        self.meta_pub = rospy.Publisher('meta_events', ROSStrMsg, queue_size=10)
+
+    #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
+    def log_touch_event(self, event):
+        super(ROSTouchRecorder, self).log_touch_event(event) 
+
+        #Create a point and publish it. This loses a lot of the event data, 
+        #but the superclass is logging that
+        ps = PointStamped()
+        ps.header.frame_id = event.uid
+        ps.point.x = event.x
+        ps.point.y = event.y
+        self.touch_pub.publish(ps)
+
+    #Just publish event messages as strings
+    def log_meta_event(self, desc):
+        super(ROSTouchRecorder, self).log_meta_event(desc)
+        self.meta_pub.publish(RosStrMsg(desc))
 
 #Widget that records all finger motion events on it
 class FingerDrawer(Widget):
@@ -138,7 +168,7 @@ class MultiImage(kvImage):
         self.slideIndex = 1
 
         #Record touch events
-        self.tr = TouchRecorder()
+        self.tr = ROSTouchRecorder()
 
         #Set ourselves up with the inital image
         self.source = self.cfg.get(self.condition, str(self.slideIndex))
@@ -147,7 +177,7 @@ class MultiImage(kvImage):
         img = Image.open(self.source)
         width, height = img.size
         Window.size = (width, height)
-        
+
         #Log that we loaded it and refresh the view
         self.tr.log_meta_event("Loaded {0}".format(self.source))
         self.canvas.ask_update()
@@ -179,6 +209,31 @@ class MultiImage(kvImage):
         if self.collide_point(*touch.pos):
             self.tr.log_touch_event(touch)
 
+
+class ROSMultiImage(MultiImage):
+    def __init__(self, **kwargs):
+        super(ROSMultiImage, self).__init__(**kwargs)
+        self.imgPub = rospy.Publisher("ui_image", ROSImgMsg, queue_size=2)
+        #Apparently self exists as soon as init is called, so I can call object methods from init!
+        self.pubImage()
+
+    def next_slide(self):
+        super(ROSMultiImage, self).next_slide()
+        self.pubImage()
+
+    def pubImage(self):
+        #Superclass sets self.source, load that and put it in a ROS image message
+        img = Image.open(self.source)
+        imgmsg = ROSImgMsg()
+        #This is an assumption, we're loading a PNG created from a PDF 
+        imgmsg.encoding = "rgb8"
+        (imgmsg.width, imgmsg.height) = img.size
+        #Assuming RGB here, so three channels. This will work but mangle colors for YCbCr.
+        imgmsg.step = (3 * imgmsg.width)
+        imgmsg.data = img.tostring()
+        #Ship it!
+        self.imgPub.publish(imgmsg)
+
 #A lot of this was copied from the kivy example at 
 #https://kivy.org/docs/api-kivy.core.window.html
 class KeyboardListener(Widget):
@@ -190,9 +245,8 @@ class KeyboardListener(Widget):
             # to change the keyboard layout.
             pass
         self._kbrd.bind(on_key_down=self._on_keyboard_down)
-        self.tr = TouchRecorder()
+        self.tr = ROSTouchRecorder()
 
-    
     def _keyboard_closed(self):
         self._kbrd.unbind(on_key_down=self._on_keyboard_down)
         self._kbrd = None
@@ -212,7 +266,8 @@ class KeyboardListener(Widget):
             keyboard.release()
             App.get_running_app().stop()
             #self.parent.ids["finger_draw"].clean_up()
-
+        if keycode[1] == 'i':
+            self.tr.log_meta_event("That's interesting")
         # Return True to accept the key. Otherwise, it will be used by
         # the system.
         return True
@@ -223,6 +278,7 @@ class UITestApp(App):
         super(UITestApp, self).__init__(**kwargs)
         self.condition = condition
         self.subject = subject
+        rospy.init_node("multitouch_user_interface")
 
     def build_config(self, config):
         #If you don't set any defaults, Kivy won't load your config at all 
