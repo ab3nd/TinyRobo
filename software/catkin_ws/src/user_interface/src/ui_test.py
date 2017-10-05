@@ -113,7 +113,7 @@ class ROSTouchRecorder(object):
 
     #Just publish event messages as strings
     def log_meta_event(self, desc):
-        self.meta_pub.publish(RosStrMsg(desc))
+        self.meta_pub.publish(ROSStrMsg(desc))
 
 #Widget that records all finger motion events on it
 class FingerDrawer(Widget):
