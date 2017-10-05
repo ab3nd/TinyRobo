@@ -48,6 +48,11 @@ def singleton(cls):
         return instances[cls]
     return getinstance
 
+#The decorator changes the type of TouchRecorder  
+#into a function, which can't be subclassed, causing the error 
+# TypeError: Error when calling the metaclass bases
+#     function() argument 1 must be code, not str
+@singleton
 class TouchRecorder(object):
     def __init__(self, prefix=None):
 
@@ -90,21 +95,14 @@ class TouchRecorder(object):
         #Paranoia
         self.outfile.flush()
 
-#TouchRecorder was originally decorated as a singleton, but the decorator changes it 
-#into a function, which can't be subclassed, causing the error 
-# TypeError: Error when calling the metaclass bases
-#     function() argument 1 must be code, not str
 @singleton
-class ROSTouchRecorder(TouchRecorder):
+class ROSTouchRecorder(object):
     def __init__(self, prefix=None):
-        super(ROSTouchRecorder, self).__init__(prefix)
         self.touch_pub = rospy.Publisher('touches', PointStamped, queue_size=10)
         self.meta_pub = rospy.Publisher('meta_events', ROSStrMsg, queue_size=10)
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
-        super(ROSTouchRecorder, self).log_touch_event(event) 
-
         #Create a point and publish it. This loses a lot of the event data, 
         #but the superclass is logging that
         ps = PointStamped()
@@ -115,7 +113,6 @@ class ROSTouchRecorder(TouchRecorder):
 
     #Just publish event messages as strings
     def log_meta_event(self, desc):
-        super(ROSTouchRecorder, self).log_meta_event(desc)
         self.meta_pub.publish(RosStrMsg(desc))
 
 #Widget that records all finger motion events on it
@@ -171,10 +168,11 @@ class MultiImage(kvImage):
         self.slideIndex = 1
 
         #Record touch events
-        self.tr = ROSTouchRecorder()
+        self.rtr = ROSTouchRecorder()
+        self.tr = TouchRecorder()
 
         #Set ourselves up with the inital image
-        self.source = self.cfg.get(self.condition, str(self.slideIndex))
+        self.source = self.cfg.get('FilePath', 'path') + self.cfg.get(self.condition, str(self.slideIndex))
         
         #Resize to match the initial image. They're all the same size, so this is legit
         img = Image.open(self.source)
@@ -183,6 +181,7 @@ class MultiImage(kvImage):
 
         #Log that we loaded it and refresh the view
         self.tr.log_meta_event("Loaded {0}".format(self.source))
+        self.rtr.log_meta_event("Loaded {0}".format(self.source))
         self.canvas.ask_update()
 
     def nextSlide(self):
@@ -191,10 +190,11 @@ class MultiImage(kvImage):
         if self.slideIndex > self.slideCount:
             self.slideIndex = 1
         #New image for the background
-        self.source = self.cfg.get(self.condition, str(self.slideIndex))
+        self.source = self.cfg.get('FilePath', 'path') + self.cfg.get(self.condition, str(self.slideIndex))
 
         #Log what file was loaded
         self.tr.log_meta_event("Loaded {0}".format(self.source))
+        self.rtr.log_meta_event("Loaded {0}".format(self.source))
 
         #Widget is the same size as the image
         self.canvas.ask_update()
@@ -203,14 +203,17 @@ class MultiImage(kvImage):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.tr.log_touch_event(touch)
+            self.rtr.log_touch_event(touch)
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
             self.tr.log_touch_event(touch)
+            self.rtr.log_touch_event(touch)
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
             self.tr.log_touch_event(touch)
+            self.rtr.log_touch_event(touch)
 
 
 class ROSMultiImage(MultiImage):
@@ -248,7 +251,8 @@ class KeyboardListener(Widget):
             # to change the keyboard layout.
             pass
         self._kbrd.bind(on_key_down=self._on_keyboard_down)
-        self.tr = ROSTouchRecorder()
+        self.rtr = ROSTouchRecorder()
+        self.tr = TouchRecorder()
 
     def _keyboard_closed(self):
         self._kbrd.unbind(on_key_down=self._on_keyboard_down)
@@ -258,19 +262,23 @@ class KeyboardListener(Widget):
         # Keycode is composed of an integer + a string
         if keycode[1] == 'n':
             self.tr.log_meta_event("Advanced slide")
+            self.rtr.log_meta_event("Advanced slide")
             #TODO THIS FAILS IF THE WIDGET TREE CHANGES
             self.parent.ids["slide_show"].nextSlide()
             #self.parent.ids["finger_draw"].clean_up()
         if keycode[1] == 'c':
             self.tr.log_meta_event("Cleared screen for user")
+            self.rtr.log_meta_event("Cleared screen for user")
             #self.parent.ids["finger_draw"].clean_up()
         if keycode[1] == 'q':
             self.tr.log_meta_event("Quit experiment")
+            self.rtr.log_meta_event("Quit experiment")
             keyboard.release()
             App.get_running_app().stop()
             #self.parent.ids["finger_draw"].clean_up()
         if keycode[1] == 'i':
             self.tr.log_meta_event("That's interesting")
+            self.rtr.log_meta_event("That's interesting")
         # Return True to accept the key. Otherwise, it will be used by
         # the system.
         return True
@@ -278,15 +286,18 @@ class KeyboardListener(Widget):
 class UITestApp(App):
 
     def __init__(self, **kwargs):
+        #import pdb; pdb.set_trace()
         super(UITestApp, self).__init__(**kwargs)
         self.condition = condition
         self.subject = subject
+        self.images = kwargs["imagepath"] #For some reason this doesn't work like the other two
 
     def build_config(self, config):
         #If you don't set any defaults, Kivy won't load your config at all 
         config.setdefaults('Condition', {'type': 'files_unknown'})
         config.setdefaults('Subject', {'id': '--undef--'})
-        
+        config.setdefaults('FilePath', {'path': '--undef--'})
+
         #Using the parameters, set the configuration section
         if self.condition == '1':
             config.set('Condition', 'type', 'files_single')
@@ -300,7 +311,7 @@ class UITestApp(App):
             config.set('Condition', 'type', 'files_unknown')
 
         config.set("Subject", 'id', self.subject)
-        #config.set('graphics', 'fullscreen', 'auto')
+        config.set('FilePath', 'path', self.images)
 
     def build(self):
         pass
@@ -338,7 +349,8 @@ if __name__ == '__main__':
 
     rospy.init_node("multitouch_user_interface")
 
-    condition = rospy.get_param("cond") 
-    subject = rospy.get_param("id")
+    condition = rospy.get_param("/ui/cond") 
+    subject = rospy.get_param("/ui/id")
+    img_path = rospy.get_param("/ui/fpath")
 
-    UITestApp(condition = condition, subject = subject).run()
+    UITestApp(condition = condition, subject = subject, imagepath = img_path).run()
