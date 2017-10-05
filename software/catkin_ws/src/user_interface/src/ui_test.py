@@ -278,7 +278,6 @@ class UITestApp(App):
         super(UITestApp, self).__init__(**kwargs)
         self.condition = condition
         self.subject = subject
-        rospy.init_node("multitouch_user_interface")
 
     def build_config(self, config):
         #If you don't set any defaults, Kivy won't load your config at all 
@@ -313,25 +312,30 @@ class UITestApp(App):
 
 
 if __name__ == '__main__':
-    #Kivy apparently ignores things after --
-    import argparse
-    conditions = ['1', '10', '100', '1000','X']
-    parser = argparse.ArgumentParser(description = "Display and log contact points for PhD experiment")
-    parser.add_argument('-i', nargs='?', default=0, type=int, required=True, help='Numerical subject identifier')
-    helptext = "One of " + ", ".join(conditions)
-    parser.add_argument('-c', nargs='?', required=True, help=helptext)
-    args = parser.parse_args()
+    # #Kivy apparently ignores things after --
+    # import argparse
+    # conditions = ['1', '10', '100', '1000','X']
+    # parser = argparse.ArgumentParser(description = "Display and log contact points for PhD experiment")
+    # parser.add_argument('-i', nargs='?', default=0, type=int, required=True, help='Numerical subject identifier')
+    # helptext = "One of " + ", ".join(conditions)
+    # parser.add_argument('-c', nargs='?', required=True, help=helptext)
+    # args = parser.parse_args()
 
-    condition = 0
-    subject = 0
+    # condition = 0
+    # subject = 0
 
-    #Check if the condition argument makes sense. 
-    if vars(args)['c'] not in conditions:
-        print "Condition must be one of " + ", ".join(conditions)
-        sys.exit(-1)
-    else:
-        condition = vars(args)['c']
+    # #Check if the condition argument makes sense. 
+    # if vars(args)['c'] not in conditions:
+    #     print "Condition must be one of " + ", ".join(conditions)
+    #     sys.exit(-1)
+    # else:
+    #     condition = vars(args)['c']
     
-    subject = vars(args)['i']
+    # subject = vars(args)['i']
+
+    rospy.init_node("multitouch_user_interface")
+
+    condition = rospy.get_param("cond") 
+    subject = rospy.get_param("id")
 
     UITestApp(condition = condition, subject = subject).run()
