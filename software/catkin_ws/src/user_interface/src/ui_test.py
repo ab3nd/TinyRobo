@@ -186,7 +186,6 @@ class MultiImage(kvImage):
         self.canvas.ask_update()
 
     def nextSlide(self):
-        Logger.info("nextSlide called")
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
         if self.slideIndex > self.slideCount:
@@ -222,23 +221,20 @@ class ROSMultiImage(MultiImage):
         super(ROSMultiImage, self).__init__(**kwargs)
         self.imgPub = rospy.Publisher("ui_image", ROSImgMsg, queue_size=2)
         #Apparently self exists as soon as init is called, so I can call object methods from init!
-        Logger.info("ROSMultiImage: init")
         self.pubImage()
 
     def nextSlide(self):
-        Logger.info("ROSMultiImage: next_slide called")
         super(ROSMultiImage, self).nextSlide()
         self.pubImage()
 
     def pubImage(self):
         #Superclass sets self.source, load that and put it in a ROS image message
-        Logger.info("ROSMultiImage: Started")
         img = Image.open(self.source)
         
         #From https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
         PIL_MODE_CHANNELS = {'L': 1, 'RGB': 3, 'RGBA': 4, 'YCbCr': 3}
         ENCODINGMAP_PY_TO_ROS = {'L': 'mono8', 'RGB': 'rgb8', 'RGBA': 'rgba8', 'YCbCr': 'yuv422'}
-        
+
         if img.mode == 'P':
             img = img.convert('RGB')
 
