@@ -7,9 +7,9 @@ kivy.require('1.9.1') # replace with your current kivy version !
 from kivy.config import Config
 #Don't resize the window
 #This has to be before any other Kivy imports, or it fails quietly
-Config.set('graphics', 'resizable', False)
+#Config.set('graphics', 'resizable', False)
 #Config.set('graphics', 'fullscreen', 'fake')
-Config.set('graphics', 'borderless', False)
+#Config.set('graphics', 'borderless', False)
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
@@ -21,6 +21,7 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
 #For keyboard listener and automatic sizing to slides
 from kivy.core.window import Window
+from kivy.logger import Logger
 
 import pickle
 import datetime
@@ -106,7 +107,7 @@ class ROSTouchRecorder(object):
         #Create a point and publish it. This loses a lot of the event data, 
         #but the superclass is logging that
         ps = PointStamped()
-        ps.header.frame_id = event.uid
+        ps.header.frame_id = str(event.uid)
         ps.point.x = event.x
         ps.point.y = event.y
         self.touch_pub.publish(ps)
@@ -185,6 +186,7 @@ class MultiImage(kvImage):
         self.canvas.ask_update()
 
     def nextSlide(self):
+        Logger.info("nextSlide called")
         #Increment the slide index and wrap if needed
         self.slideIndex += 1
         if self.slideIndex > self.slideCount:
@@ -197,7 +199,6 @@ class MultiImage(kvImage):
         self.rtr.log_meta_event("Loaded {0}".format(self.source))
 
         #Widget is the same size as the image
-        self.canvas.ask_update()
         self.canvas.ask_update()
 
     def on_touch_down(self, touch):
@@ -221,24 +222,33 @@ class ROSMultiImage(MultiImage):
         super(ROSMultiImage, self).__init__(**kwargs)
         self.imgPub = rospy.Publisher("ui_image", ROSImgMsg, queue_size=2)
         #Apparently self exists as soon as init is called, so I can call object methods from init!
+        Logger.info("ROSMultiImage: init")
         self.pubImage()
 
-    def next_slide(self):
-        super(ROSMultiImage, self).next_slide()
+    def nextSlide(self):
+        Logger.info("ROSMultiImage: next_slide called")
+        super(ROSMultiImage, self).nextSlide()
         self.pubImage()
 
     def pubImage(self):
         #Superclass sets self.source, load that and put it in a ROS image message
+        Logger.info("ROSMultiImage: Started")
         img = Image.open(self.source)
-        imgmsg = ROSImgMsg()
-        #This is an assumption, we're loading a PNG created from a PDF 
-        imgmsg.encoding = "rgb8"
-        (imgmsg.width, imgmsg.height) = img.size
-        #Assuming RGB here, so three channels. This will work but mangle colors for YCbCr.
-        imgmsg.step = (3 * imgmsg.width)
-        imgmsg.data = img.tostring()
+        
+        #From https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
+        PIL_MODE_CHANNELS = {'L': 1, 'RGB': 3, 'RGBA': 4, 'YCbCr': 3}
+        ENCODINGMAP_PY_TO_ROS = {'L': 'mono8', 'RGB': 'rgb8', 'RGBA': 'rgba8', 'YCbCr': 'yuv422'}
+        
+        if img.mode == 'P':
+            img = img.convert('RGB')
+
+        rosimage = ROSImgMsg()
+        rosimage.encoding = ENCODINGMAP_PY_TO_ROS[img.mode]
+        (rosimage.width, rosimage.height) = img.size
+        rosimage.step = (PIL_MODE_CHANNELS[img.mode] * rosimage.width)
+        rosimage.data = img.tostring()
         #Ship it!
-        self.imgPub.publish(imgmsg)
+        self.imgPub.publish(rosimage)
 
 #A lot of this was copied from the kivy example at 
 #https://kivy.org/docs/api-kivy.core.window.html
