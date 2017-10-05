@@ -43,11 +43,11 @@ def singleton(cls):
     instances = {}
     def getinstance():
         if cls not in instances:
+            print "NewInstance of {0}".format(cls)
             instances[cls] = cls()
         return instances[cls]
     return getinstance
 
-@singleton
 class TouchRecorder(object):
     def __init__(self, prefix=None):
 
@@ -90,7 +90,10 @@ class TouchRecorder(object):
         #Paranoia
         self.outfile.flush()
 
-
+#TouchRecorder was originally decorated as a singleton, but the decorator changes it 
+#into a function, which can't be subclassed, causing the error 
+# TypeError: Error when calling the metaclass bases
+#     function() argument 1 must be code, not str
 @singleton
 class ROSTouchRecorder(TouchRecorder):
     def __init__(self, prefix=None):

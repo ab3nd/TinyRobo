@@ -2,7 +2,7 @@
   <arg name="id" doc="Numerical user id"/>
   <arg name="cond" doc="One of 1, 10, 100, 1000, X"/>
   
-  <node pkg="user_interface" type="ui_test.py" name="ui" launch-prefix="sudo PYTHONPATH=$(env PYTHONPATH)">
+  <node pkg="user_interface" type="ui_test.py" name="ui" launch-prefix="sudo ROS_PACKAGE_PATH=$(env ROS_PACKAGE_PATH) PYTHONPATH=$(env PYTHONPATH) ROS_DISTRO=$(env ROS_DISTRO) ROS_ETC_DIR=$(env ROS_ETC_DIR)ROSLISP_PACKAGE_DIRECTORIES=$(env ROSLISP_PACKAGE_DIRECTORIES) ROS_MASTER_URI=$(env ROS_MASTER_URI) ROS_ROOT=$(env ROS_ROOT)" output="screen">
     <param name="id" value="$(arg id)"/>
     <param name="cond" value="$(arg cond)"/>
   </node>
