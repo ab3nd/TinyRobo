@@ -1,0 +1,10 @@
+<launch>
+  <arg name="id" doc="Numerical user id"/>
+  <arg name="cond" doc="One of 1, 10, 100, 1000, X"/>
+  
+  <node pkg="user_interface" type="ui_test.py" name="ui" output="screen" required="true">
+    <param name="id" value="$(arg id)"/>
+    <param name="cond" value="$(arg cond)"/>
+    <param name="fpath" value="/home/csrobot/TinyRobo/software/catkin_ws/src/user_interface/src/"/>
+  </node>
+</launch>   
