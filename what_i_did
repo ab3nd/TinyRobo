@@ -401,6 +401,16 @@ Wheelchair:
 - Kivy pygst camera provider works on desktop, but not on laptop
 - Kivy problems with touches being registered all over screen, not just on window
 
+9/19
+- Tried to fix kivy app getting multiple touches all over the screen
+    - Not fixable, that's just How Kivy Is. Run app in fullscreen as workaround
+
+9/22
+- Attempt to do drive to point
+- got sidetracked by quaternion math work
+    - now have a rough idea of how quaternions are used
+
+Spent a lot of time around here having a cold and not being able to think well
 
 9/26
 - Worked on program distribution for compiler
@@ -410,10 +420,27 @@ Wheelchair:
   which works with ROS's gscam, but not usb_cam
 
 9/27
+- worked on deployment of program to tiny robots
+    - currently sends a json representation of a GCPR program
+
+9/28
 - Swtched to gscam on main swarm box, usb_cam doesn't play well with v4l2loopback
 - Tried to get kivy/real_ui.py working on main swarm box
 - Tested Alvar tag tracker for ROS, got 1Hz in a configuration where APRIL tags get 4Hz
-- 
+
+9/28
+-  
+
+Where did my early October entries go?
+
+It was mostly setting up the inner lab, installing the cameras, configuring the cameras, adding ROS logging to the test version of the user interface (I kept the pickle files just in case). 
+
+10/6
+- Edited paper for Holly
+- Started applicaiton for National Geographic grant to fly a drone around sculptures and scan them
+   - because I'm clearly insane. 
+- Got Dan's camera code and rosbag playing well with the UI, now records everything except sound
+
 
 
 
