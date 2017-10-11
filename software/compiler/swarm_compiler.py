@@ -27,10 +27,165 @@
 # That way also leaves it open to highly heterogeneous swarms, as they may end up with different primitive availabilities.
 
 import uuid
-
-
 import rospy
 
+#State machine for Python, install with 'sudo pip install transitions' (on Ubuntu at least)
+#If you're not on Ubuntu, https://github.com/pytransitions/transitions
+from transitions import Machine, MachineError
+
+#Core of the translator, gets sequences of user input gestures and attempts to convert them to a 
+#program to run on the robot. Largely from Mark J. Micire. PhD Thesis: Multi-Touch Interaction for 
+#Robot Command and Control. University of Massachusetts Lowell, Lowell, MA. December 2010. 
+class GestureTranslator(object):
+	states = ['start', 'subject', 'verb', 'predicate']
+
+	def __init__(self):
+		self.machine = Machine(model = self, states = GestureTranslator.states, initial="start")
+
+		#Transitions based on gestures as they arrive
+		#Selection gestures first, tapping a single robot or lassoing a set of robots
+		self.machine.add_transition(trigger='tap_robot', source='start', dest='subject')
+		self.machine.add_transition(trigger='lasso_robots', source='start', dest='subject')
+
+		#Special case of selection, tap-and-drag a robot to select it and set path
+		self.machine.add_transition(trigger='drag_robot', source='start', dest='verb')
+
+		#Adding robots to the gesture
+		self.machine.add_transition(trigger='tap_robot', source='subject', dest='subject')
+
+		#Double-tap on a destination to finish command
+		self.machine.add_transition(trigger='doubletap_ground', source='subject', dest='predicate')
+
+		#Tap to set waypoint or drag to set path
+		self.machine.add_transition(trigger='tap_ground', source='subject', dest='verb')
+		self.machine.add_transition(trigger='drag_ground', source='subject', dest='verb')
+
+		#Tap or lasso robot while in verb state starts next command with new (just-tapped) robot
+		self.machine.add_transition(trigger='tap_robot', source='verb', dest="subject")
+		self.machine.add_transition(trigger='lasso_robots', source='verb', dest="subject")
+
+		#Add waypoints to path by tapping or dragging
+		self.machine.add_transition(trigger='tap_ground', source='verb', dest='verb')
+		self.machine.add_transition(trigger='drag_ground', source='verb', dest='verb')
+
+		#Explicit end-of-command gesture
+		self.machine.add_transition(trigger='doubletap_ground', source='verb', dest='predicate')
+
+		#TODO can have hooks 'on_enter_<statename>' and 'on_exit_<statename>' that will
+		#fire at the appropriate time to do stuff, e.g. generate code
+
+		#TODO probably needs transitions back to start to reject invalid sequences?
+		#State machine will fire a transitions.core.MachineError if an invalid transition
+		#is called, but what to do in that case is unclear. Dump the invalid command?
+		#transitions adds a to_<state>() that can be used to return to start.
+
+		#TODO this doesn't deal with objects in the world
+
+		#TODO this doesn't deal with formations (lines, boxes)
+
+		#TODO this doesn't deal with patrols
+
+
+def testTranslator():
+	#Get a translator instance 
+	tr = GestureTranslator()
+
+	########### Positive examples (should generate code) ###########
+	#Tap a single robot, then double-tap a location ("This robot, go here")
+	tr.to_start()
+	tr.tap_robot()
+	tr.doubletap_ground()
+	assert(tr.is_predicate())
+	print "Tapping a robot worked"
+
+	#Drag a robot to a location ("This robot, go here")
+	tr.to_start()
+	tr.drag_robot()
+	assert(tr.is_verb()) #needs double-tap to end
+	tr.doubletap_ground()
+	assert(tr.is_predicate())
+	print "Dragging a robot worked"
+
+	#Tap a sequence of robots, then drag a path ("These robots, go here")
+	tr.to_start()
+	tr.tap_robot()
+	tr.tap_robot()
+	tr.tap_robot()
+	tr.drag_ground()
+	assert(tr.is_verb()) #needs double-tap to end
+	tr.doubletap_ground()
+	assert(tr.is_predicate())
+	print "Tapping a bunch of robots worked"
+
+	#Lasso a set of robots, then drag a path ("These robots, go here")
+	tr.to_start()
+	tr.lasso_robots()
+	tr.drag_ground()
+	assert(tr.is_verb()) #needs double-tap to end
+	tr.doubletap_ground()
+	assert(tr.is_predicate())
+	print "Lassoing a bunch of robots worked"
+
+	#Tap a robot, then drag a path, then tap a robot, then drag a path
+	#("First robot go here, second robot go there")
+	tr.to_start()
+	tr.tap_robot()
+	tr.drag_ground()
+	assert(tr.is_verb())
+	tr.tap_robot() #This starts a new command on a new robot
+	tr.drag_ground()
+	assert(tr.is_verb()) #needs double-tap to end
+	tr.doubletap_ground()
+	assert(tr.is_predicate())
+	print "Tapping a robot and then dragging a robot worked"
+
+	#Tap a robot, then drag a path, then lasso a set of robots, then drag a path
+	#("First robot go here, other robots go there")
+	tr.to_start()
+	tr.tap_robot()
+	tr.drag_ground()
+	assert(tr.is_verb())
+	tr.lasso_robots()
+	tr.drag_ground()
+	assert(tr.is_verb()) #needs double-tap to end
+	tr.doubletap_ground()
+	assert(tr.is_predicate())
+	print "Dragging a robot and then lassoing some other robots worked"
+	
+	#TODO add positive cases for objects, formations, and patrols
+
+	########### Negative examples (should throw exceptions) ###########
+
+	#Drag ground without selecting a robot
+	try:
+		tr.to_start()
+		tr.drag_ground()
+	except MachineError:
+		print "Got expected exception, dragging ground is not valid in start state"
+
+	#Doubletap on nothing, no robot selected
+	try:
+		tr.to_start()
+		tr.doubletap_ground()
+	except MachineError:
+		print "Got expected exception, double-tapping ground is not valid in start state"
+
+	#Tap ground with no selected robot
+	try:
+		tr.to_start()
+		tr.tap_ground()
+	except MachineError:
+		print "Got expected exception, tapping ground is not valid in start state"
+
+	#TODO Tap selected robot after issuing command (requires idea of selection vs. non-selection)
+	#TODO this may not be an error, could be selecting to cancel command
+	
+	#Note that double-tapping a robot after selecting it isn't an 
+	#error, but means "This robot, go where you are". Similarly, selecting another
+	#robot as the end of a motion just means "Selected robot, go where this other robot is"
+
+if __name__ == "__main__":
+	testTranslator()
 
 # class RobotInterface(object):
 
@@ -47,83 +202,83 @@ import rospy
 
 # 	def 
 
-#Convert a command into a GCPR expression of that command
-gcprLookup = {
-	"SelectAll": "Foo selectall",
-	"DisperseMax" : "Bar dispersemax",
-	"MoveTo" : "moveto {0} {1}"
-}
+# #Convert a command into a GCPR expression of that command
+# gcprLookup = {
+# 	"SelectAll": "Foo selectall",
+# 	"DisperseMax" : "Bar dispersemax",
+# 	"MoveTo" : "moveto {0} {1}"
+# }
 
-#TODO this is probably overly simplistic
-def lookupGCPR(command):
-	if hasParams(command):
-		command, paramList = getList(command)
-		return gcprLookup[command].format(*paramList)
-	return gcprLookup[command]
+# #TODO this is probably overly simplistic
+# def lookupGCPR(command):
+# 	if hasParams(command):
+# 		command, paramList = getList(command)
+# 		return gcprLookup[command].format(*paramList)
+# 	return gcprLookup[command]
 
-def deployProg(robot, fname):
-	print "Would deploy program in {0} to robot {1}".format(fname, robot)
+# def deployProg(robot, fname):
+# 	print "Would deploy program in {0} to robot {1}".format(fname, robot)
 	
-#Converts a command of the form CommandName[int,int,int,int] into a list of ints
-def getList(command):
-	return command.split("[")[0], [int(x) for x in command.split("[")[1][:-1].split(",")]
+# #Converts a command of the form CommandName[int,int,int,int] into a list of ints
+# def getList(command):
+# 	return command.split("[")[0], [int(x) for x in command.split("[")[1][:-1].split(",")]
 
-def hasParams(command):
-	#Just check if it has an open bracket in it
-	return (command.find("[") > 0)
+# def hasParams(command):
+# 	#Just check if it has an open bracket in it
+# 	return (command.find("[") > 0)
 
-if __name__=="__main__":
-	#Do the simplest thing that could possibly work
+# if __name__=="__main__":
+# 	#Do the simplest thing that could possibly work
 	
-	#The list of known robots gets populated somehow
-	knownRobots = [1,2,3,4,5,6,7,8,9]
+# 	#The list of known robots gets populated somehow
+# 	knownRobots = [1,2,3,4,5,6,7,8,9]
 
-	#command sequence for prototyping is select all, disperse
-	commandSeq = ["SelectAll", "DisperseMax"]
+# 	#command sequence for prototyping is select all, disperse
+# 	commandSeq = ["SelectAll", "DisperseMax"]
 
-	#command sequence that selects a group and moves them to a point
-	#then selects another group and moves to a different point
-	commandSeq = ["SelectGroup[1,2,4,6,8,9]", "MoveTo[132,23]", "SelectGroup[3,5,7,8]", "MoveTo[107,98]"]
+# 	#command sequence that selects a group and moves them to a point
+# 	#then selects another group and moves to a different point
+# 	commandSeq = ["SelectGroup[1,2,4,6,8,9]", "MoveTo[132,23]", "SelectGroup[3,5,7,8]", "MoveTo[107,98]"]
 
-	#The commands can be divided into meta-commands, which e.g. affect
-	#the state of this code, and commands that are actually run on the robots
-	metaCommands = ["SelectAll", "SelectGroup"] 
+# 	#The commands can be divided into meta-commands, which e.g. affect
+# 	#the state of this code, and commands that are actually run on the robots
+# 	metaCommands = ["SelectAll", "SelectGroup"] 
 
-	#Storage of mapping of groups to programs
-	groupProgs = []
+# 	#Storage of mapping of groups to programs
+# 	groupProgs = []
 
-	#Group of robots to get a command and the command they get
-	commandBots = None
-	gcprFile = None
+# 	#Group of robots to get a command and the command they get
+# 	commandBots = None
+# 	gcprFile = None
 
-	#Assumes that commands are ordered
-	for command in commandSeq:
+# 	#Assumes that commands are ordered
+# 	for command in commandSeq:
 		
-		cmdPrefix, args = getList(command)
+# 		cmdPrefix, args = getList(command)
 
-		if cmdPrefix in metaCommands:
-			#This command influences the state of this program
-			if command == "SelectAll":
-				commandBots = knownRobots
-				#Generate the program file name
-				outputProgFile = "{0}.gcpr".format(uuid.uuid4())
-				gcprFile = open(outputProgFile, 'w')
-				groupProgs.append([commandBots, outputProgFile])
-			if command.startswith("SelectGroup"):
-				#Parse the command to get the group members
-				command, commandBots = getList(command)
-				#Generate the program file name
-				outputProgFile = "{0}.gcpr".format(uuid.uuid4())
-				gcprFile = open(outputProgFile, 'w')
-				groupProgs.append([commandBots, outputProgFile])
-		else:
-			#This is a command to run on a robot
-			gcprExpr = lookupGCPR(command)
-			gcprFile.write(gcprExpr)
+# 		if cmdPrefix in metaCommands:
+# 			#This command influences the state of this program
+# 			if command == "SelectAll":
+# 				commandBots = knownRobots
+# 				#Generate the program file name
+# 				outputProgFile = "{0}.gcpr".format(uuid.uuid4())
+# 				gcprFile = open(outputProgFile, 'w')
+# 				groupProgs.append([commandBots, outputProgFile])
+# 			if command.startswith("SelectGroup"):
+# 				#Parse the command to get the group members
+# 				command, commandBots = getList(command)
+# 				#Generate the program file name
+# 				outputProgFile = "{0}.gcpr".format(uuid.uuid4())
+# 				gcprFile = open(outputProgFile, 'w')
+# 				groupProgs.append([commandBots, outputProgFile])
+# 		else:
+# 			#This is a command to run on a robot
+# 			gcprExpr = lookupGCPR(command)
+# 			gcprFile.write(gcprExpr)
 	
 
-	#Program the GCPR programs to the robots
-	for commandGroup, file in groupProgs:
-		for robot in commandGroup:
-			deployProg(robot, file)
+# 	#Program the GCPR programs to the robots
+# 	for commandGroup, file in groupProgs:
+# 		for robot in commandGroup:
+# 			deployProg(robot, file)
 
