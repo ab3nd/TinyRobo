@@ -432,6 +432,16 @@ Spent a lot of time around here having a cold and not being able to think well
 9/29
 - Cleaned inner lab for experiment
 
+Where did my early October entries go?
+
+It was mostly setting up the inner lab, installing the cameras, configuring the cameras, adding ROS logging to the test version of the user interface (I kept the pickle files just in case). 
+
+10/6
+- Edited paper for Holly
+- Started applicaiton for National Geographic grant to fly a drone around sculptures and scan them
+   - because I'm clearly insane. 
+- Got Dan's camera code and rosbag playing well with the UI, now records everything except sound
+
 10/2
 - Set up cameras
 - Physical therapy appointment
@@ -446,10 +456,14 @@ Spent a lot of time around here having a cold and not being able to think well
 - Figured out recording with VLC, but will probably use rosbag and ROS camera drivers
 - Added ROS messaging to user interface for logging with rosbag
 
-10/5
-- TODO finish poster
-- TODO test rosbag logging
-- TODO run pilot
+10/5-10/10
+- finished poster
+- added and tested rosbag logging
+- arts and crafts day to add Aruco tags to robots
+
+10/11
+- Implemented state machine for core of compiler, not complete yet
+   - Based on Mark's gesture language, will add my own extensions later
 
 Gesture Experiment
 - Add image of robot to recruitment poster
