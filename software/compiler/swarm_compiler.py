@@ -38,7 +38,7 @@ from transitions import Machine, MachineError
 # Interaction for Robot Command and Control. University of Massachusetts Lowell, Lowell, MA. December 2010. 
 #There are extensions for handling objects in the world (box-pushing) and formations of robots
 class GestureTranslator(object):
-	states = ['start', 'subject', 'verb', 'predicate']
+	states = ['start', 'subject', 'verb', 'predicate', 'end']
 
 	def __init__(self):
 		#A list of the IDs of the robots that the command will be applied to
@@ -46,7 +46,7 @@ class GestureTranslator(object):
 		#Not sure about the type here yet, but the verb of the command gets passed in with some gestures
 		self.verb = []
 
-		self.machine = Machine(model = self, states = GestureTranslator.states, initial="start")
+		self.machine = Machine(model = self, states = GestureTranslator.states, initial="start", send_event=True)
 
 		##### Mark's basic language ####
 		#Transitions based on gestures as they arrive
@@ -61,22 +61,22 @@ class GestureTranslator(object):
 		self.machine.add_transition(trigger='tap_robot', source='subject', dest='subject', before="addRobots")
 
 		#Double-tap on a destination to finish command
-		self.machine.add_transition(trigger='doubletap_ground', source='subject', dest='predicate', before='addCommand')
+		self.machine.add_transition(trigger='doubletap_ground', source='subject', dest='predicate')
 
 		#Tap to set waypoint or drag to set path
-		self.machine.add_transition(trigger='tap_ground', source='subject', dest='verb', before='addCommand')
-		self.machine.add_transition(trigger='drag_ground', source='subject', dest='verb', before='addCommand')
+		self.machine.add_transition(trigger='tap_ground', source='subject', dest='verb')
+		self.machine.add_transition(trigger='drag_ground', source='subject', dest='verb')
 
 		#Tap or lasso robot while in verb state starts next command with new (just-tapped) robot
 		self.machine.add_transition(trigger='tap_robot', source='verb', dest="subject", before="addRobots")
 		self.machine.add_transition(trigger='lasso_robots', source='verb', dest="subject", before="addRobots")
 
 		#Add waypoints to path by tapping or dragging
-		self.machine.add_transition(trigger='tap_ground', source='verb', dest='verb', before='addCommand')
-		self.machine.add_transition(trigger='drag_ground', source='verb', dest='verb', before='addCommand')
+		self.machine.add_transition(trigger='tap_ground', source='verb', dest='verb', before="addCommand")
+		self.machine.add_transition(trigger='drag_ground', source='verb', dest='verb', before="addCommand")
 
 		#Explicit end-of-command gesture
-		self.machine.add_transition(trigger='doubletap_ground', source='verb', dest='predicate', before='addCommand')
+		self.machine.add_transition(trigger='doubletap_ground', source='verb', dest='predicate')
 
 
 		##### Extensions for dealing with objects #####
@@ -99,19 +99,29 @@ class GestureTranslator(object):
 		self.machine.on_enter_predicate('finish_command')
 
 	#When we enter the predicate state, it's time to actually do the command
-	def finish_command(self):
-		print "Entered predicate, time to do the thing!"
-		#TODO this is where we deploy the action to the robots, and THEN clean out the list
-		self.robots = []
+	def finish_command(self, event):
+		command = event.kwargs.get("command", None)
+		if command is not None:
+			self.verb.extend(command)
+			print "Added {0}, now have {1}".format(command, self.verb)
 
-	def addRobots(self, robots=[]):
-		self.robots.extend(robots)
-		print "Added {0}, now have {1}".format(robots, self.robots)
+		print "Entered predicate, time to do the thing! {0} -> {1}".format(self.robots, self.verb)
+		#TODO this is where we deploy the action to the robots, and THEN clean out the lists
+		self.robots = []
+		self.verb = []
+
+	def addRobots(self, event):
+		robots = event.kwargs.get("robots", None)
+		if robots is not None:
+			self.robots.extend(robots)
+			print "Added {0}, now have {1}".format(robots, self.robots)
 
 	#TODO the command is probably more complex than just a list of points
-	def addCommand(self, command=[])
-		self.verb.extend(command)
-		print "Added {0}, now have {1}".format(command, self.verb)
+	def addCommand(self, command=[]):
+		command = event.kwargs.get("command", None)
+		if command is not None:
+			self.verb.extend(command)
+			print "Added {0}, now have {1}".format(command, self.verb)
 
 #TODO define a receiver for (ROS?) messages containing the gestures as they arrive
 
@@ -126,6 +136,7 @@ def testTranslator():
 	tr.doubletap_ground(command=['p1'])
 	assert(tr.is_predicate())
 	print "Tapping a robot worked"
+	print "---"
 
 	#Drag a robot to a location ("This robot, go here")
 	tr.to_start()
@@ -134,6 +145,7 @@ def testTranslator():
 	tr.doubletap_ground(command=['p1'])
 	assert(tr.is_predicate())
 	print "Dragging a robot worked"
+	print "---"
 
 	#Tap a sequence of robots, then drag a path ("These robots, go here")
 	tr.to_start()
@@ -145,6 +157,7 @@ def testTranslator():
 	tr.doubletap_ground(command=['p4'])
 	assert(tr.is_predicate())
 	print "Tapping a bunch of robots worked"
+	print "---"
 
 	#Lasso a set of robots, then drag a path ("These robots, go here")
 	tr.to_start()
@@ -154,6 +167,7 @@ def testTranslator():
 	tr.doubletap_ground(command=['p4'])
 	assert(tr.is_predicate())
 	print "Lassoing a bunch of robots worked"
+	print "---"
 
 	#Tap a robot, then drag a path, then tap a robot, then drag a path
 	#("First robot go here, second robot go there")
@@ -167,6 +181,7 @@ def testTranslator():
 	tr.doubletap_ground(command=['p7'])
 	assert(tr.is_predicate())
 	print "Tapping a robot and then dragging a robot worked"
+	print "---"
 
 	#Tap a robot, then drag a path, then lasso a set of robots, then drag a path
 	#("First robot go here, other robots go there")
@@ -180,6 +195,7 @@ def testTranslator():
 	tr.doubletap_ground(command=['p7'])
 	assert(tr.is_predicate())
 	print "Dragging a robot and then lassoing some other robots worked"
+	print "---"
 
 	#TODO add positive cases for objects, formations, and patrols
 
