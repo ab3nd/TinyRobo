@@ -55,7 +55,7 @@ class GestureTranslator(object):
 		self.machine.add_transition(trigger='lasso_robots', source='start', dest='subject', before="addRobots")
 
 		#Special case of selection, tap-and-drag a robot to select it and set path
-		self.machine.add_transition(trigger='drag_robot', source='start', dest='verb')
+		self.machine.add_transition(trigger='drag_robot', source='start', dest='verb', before="addRobots")
 
 		#Adding robots to the gesture
 		self.machine.add_transition(trigger='tap_robot', source='subject', dest='subject', before="addRobots")
@@ -140,7 +140,7 @@ def testTranslator():
 
 	#Drag a robot to a location ("This robot, go here")
 	tr.to_start()
-	tr.drag_robot()
+	tr.drag_robot(robots=[1])
 	assert(tr.is_verb()) #needs double-tap to end
 	tr.doubletap_ground(command=['p1'])
 	assert(tr.is_predicate())
