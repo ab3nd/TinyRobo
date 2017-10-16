@@ -427,29 +427,47 @@ Spent a lot of time around here having a cold and not being able to think well
 - Swtched to gscam on main swarm box, usb_cam doesn't play well with v4l2loopback
 - Tried to get kivy/real_ui.py working on main swarm box
 - Tested Alvar tag tracker for ROS, got 1Hz in a configuration where APRIL tags get 4Hz
+- Got IRB approval (finally!)
 
-9/28
--  
+9/29
+- Cleaned inner lab for experiment
 
-Where did my early October entries go?
+10/2
+- Set up cameras
+- Physical therapy appointment
+- Job fair at CIC
 
-It was mostly setting up the inner lab, installing the cameras, configuring the cameras, adding ROS logging to the test version of the user interface (I kept the pickle files just in case). 
+10/3
+- Wired network for experiment
+- Tested survey
 
-10/6
+10/4
+- Set up camera angles for recording screen
+- Figured out recording with VLC, but will probably use rosbag and ROS camera drivers
+- Added ROS messaging to user interface for logging with rosbag
+
+10/5-10/10
 - Edited paper for Holly
 - Started applicaiton for National Geographic grant to fly a drone around sculptures and scan them
    - because I'm clearly insane. 
 - Got Dan's camera code and rosbag playing well with the UI, now records everything except sound
+- finished poster
+- added and tested rosbag logging
+- arts and crafts day to add Aruco tags to robots
 
+10/11
+- Implemented state machine for core of compiler, not complete yet
+   - Based on Mark's gesture language, will add my own extensions later
 
+10/12 
+- More work on state machine
+- Cut tabs on a lot of flyers
 
-
-
-
+10/13 (Friday the 13th! Auspicious!)
+- Put up more flyers
 
 
 Gesture Experiment
-- Add image of robot to recruitment poster
 - Set up a single-page website with a map to the experiment location
 - Post flyers
 
