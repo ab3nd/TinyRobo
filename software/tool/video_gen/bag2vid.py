@@ -83,7 +83,7 @@ class VideoGenerator(object):
 		#Draw a dot on the screen at the touch point
 		draw = ImageDraw.Draw(self.frameImage)
 		dotSize = 2
-		draw.ellipse([(x-dotSize, y-dotSize), (x+dotSize, y+dotSize)], fill='red')
+		draw.ellipse([(x-dotSize, y-dotSize), (x+dotSize, y+dotSize)], fill='blue')
 		del draw
 		self.drawFrame(msgTime)
 
