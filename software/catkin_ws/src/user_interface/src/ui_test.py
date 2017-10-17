@@ -294,9 +294,11 @@ class UITestApp(App):
     def __init__(self, **kwargs):
         #import pdb; pdb.set_trace()
         super(UITestApp, self).__init__(**kwargs)
-        self.condition = condition
-        self.subject = subject
+        self.condition = kwargs['condition']
+        self.subject = kwargs['subject']
         self.images = kwargs["imagepath"] #For some reason this doesn't work like the other two
+
+        print self.condition, self.subject
 
     def build_config(self, config):
         #If you don't set any defaults, Kivy won't load your config at all 
@@ -304,14 +306,15 @@ class UITestApp(App):
         config.setdefaults('Subject', {'id': '--undef--'})
         config.setdefaults('FilePath', {'path': '--undef--'})
 
+        print self.condition == 10, self.subject
         #Using the parameters, set the configuration section
-        if self.condition == '1':
+        if self.condition == 1:
             config.set('Condition', 'type', 'files_single')
-        if self.condition == '10':
+        if self.condition == 10:
             config.set('Condition', 'type', 'files_10')
-        if self.condition == '100':
+        if self.condition == 100:
             config.set('Condition', 'type', 'files_100')
-        if self.condition == '1000':
+        if self.condition == 1000:
             config.set('Condition', 'type', 'files_1000')
         if self.condition == 'X':
             config.set('Condition', 'type', 'files_unknown')
@@ -358,5 +361,7 @@ if __name__ == '__main__':
     condition = rospy.get_param("/ui/cond") 
     subject = rospy.get_param("/ui/id")
     img_path = rospy.get_param("/ui/fpath")
+
+    print "Subject: {0}, Condition {1}".format(subject, condition)
 
     UITestApp(condition = condition, subject = subject, imagepath = img_path).run()
