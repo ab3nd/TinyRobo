@@ -3,13 +3,20 @@
 # Given a bag file, write a video file using the images and points, with accompanying audio 
 
 import rosbag
+import rospy
 import yaml
 
 from sensor_msgs.msg import Image as ImageMsg
 from sensor_msgs.msg import CompressedImage as CompImageMsg
 
+#for building the frame
 from PIL import Image as PILImage
+from PIL import ImageDraw
 import StringIO
+
+#For writing video
+import cv2
+import numpy as np
 
 bag = rosbag.Bag('./id_2_cond_1_2017-10-16-15-00-48.bag')
 
@@ -17,14 +24,19 @@ bag = rosbag.Bag('./id_2_cond_1_2017-10-16-15-00-48.bag')
 class VideoGenerator(object):
 
 	def __init__(self, frameDelay):
-		self.frameDelay = frameDelay
+		self.frameDelay = rospy.Duration(frameDelay)
 		self.lastMsgTime = None
 		#This is the sum of the video images I'm working with
-		self.frameImage = PILImage.new("RGB", (1800,1246))
+		self.frameSize = (1800,1246)
+		self.frameImage = PILImage.new("RGB", self.frameSize)
+		
+		#Set up a video writer instance
+		self.fourcc = cv2.cv.FOURCC('m','j','p','g')
+		#TODO set the fps correctly
+		self.vidWriter = cv2.VideoWriter("./test.avi", self.fourcc, 30, self.frameSize, True)
 
 	def updateImage(self, imgMsg, msgTime, isCompressed = False):
 		if isCompressed:
-			pass
 			stio = StringIO.StringIO(imgMsg.data)
 			img = PILImage.open(stio)
 			#TODO this is specific to the image sizes I'm working with because I'm not writing
@@ -34,13 +46,14 @@ class VideoGenerator(object):
 				#The 800x600 image, do nothing
 				pass
 			else:
-				offset = (30, 750)
+				#All the way over, under the UI view
+				offset = (554, 750)
 			#Stick it in the frame image at the right spot
 			self.frameImage.paste(img, offset)	
 		else:
 			#These are 1000x750, like the display images
-			print imgMsg.width, imgMsg.height
-			#Convert to a PIL image
+			#print imgMsg.width, imgMsg.height
+			#Convert to a PIL image, mapping is from https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
 			_ENCODINGMAP_ROS_TO_PY = {'mono8': 'L', 'rgb8': 'RGB','rgba8': 'RGBA', 'yuv422': 'YCbCr'}
 			encoding = _ENCODINGMAP_ROS_TO_PY[imgMsg.encoding]
 			img = PILImage.fromstring(encoding, (imgMsg.width, imgMsg.height), imgMsg.data)
@@ -48,7 +61,7 @@ class VideoGenerator(object):
 			offset=(800,0)
 			self.frameImage.paste(img, offset)
 
-			self.drawFrame(msgTime)
+		self.drawFrame(msgTime)
 
 	def updateAudio(self, audMsg, msgTime):
 		# Extend the audio track
@@ -56,31 +69,47 @@ class VideoGenerator(object):
 
 	def addPoint(self, pointMsg, msgTime):
 		# Draw a new point on the UI Image
-		pass
+		#Scale the points from the full screen to the active area
+		#xConv = 1000.0/1680.0
+		#yConv = 750.0/1050.0
+		x = pointMsg.point.x #* xConv
+		y = pointMsg.point.y #* yConv
+		# the UI image is at 800 px off from the corner of the frame
+		x += 800
+		# Kivy points are upside down from PIL points
+		y = max(750 - y, 0)
+
+		#Draw a dot on the screen at the touch point
+		draw = ImageDraw.Draw(self.frameImage)
+		dotSize = 2
+		draw.ellipse([(x-dotSize, y-dotSize), (x+dotSize, y+dotSize)], fill='red')
+		del draw
+		self.drawFrame(msgTime)
 
 	def drawFrame(self, msgTime):
-		#self.frameImage.save("test{0}.png".format(msgTime))
-		self.frameImage.save("test.png".format(msgTime))
 		# If a new frame is generated for each image, the framerate of the video will be absurd. At worst,
 		# it could be the sum of the framerate of all the video streams in the bag. To prevent this, the
 		# framerate is precalculated, and frames are generated when enough time in the bag has passed to 
 		# keep the frame rate under the precalculated rate. 
 		#Check if this message is beyond self.frameDelay from self.lastMsgTime,
 		#If it is, draw another frame and update the last message time
-		#if self.lastMsgTime is None:
-		#	self.lastMsgTime = msgTime
-		#	return
+		if self.lastMsgTime is None:
+			self.lastMsgTime = msgTime
+		else:
+			if msgTime - self.lastMsgTime > self.frameDelay:
+				#Convert the whole frame to an OpenCV image in the right color space
+				data = self.frameImage.tostring()
+				cols, rows = self.frameImage.size
+				#We can get away with the 3 here because we know it's RGB (or BGR, apparently)
+				img = np.fromstring(data, dtype=np.uint8).reshape(rows,cols,3)
+				#Make Robots Red Again!
+				img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+				self.vidWriter.write(img)
 
 	def finalizeVideo(self):
 		#Clean up, possibly involving combining audio with video
+		self.vidWriter.release()
 		pass
-
-
-#Get the topics and types from the bag
-#topics = bag.get_type_and_topic_info()[1].keys()
-#types = []
-#for i in range(0,len(bag.get_type_and_topic_info()[1].values())):
-#    types.append(bag.get_type_and_topic_info()[1].values()[i][0])
 
 #Get info about the bag
 bagInfo = yaml.load(bag._get_yaml_info())
@@ -106,7 +135,9 @@ for topic, msg, t in bag.read_messages():
 		vg.updateImage(msg, t)
 	if topic == "/audio":
 		#New sound
-		vg.updateAudio
+		pass #vg.updateAudio(msg, t)
+	if topic == "/touches":
+		vg.addPoint(msg, t)
 
 vg.finalizeVideo()
 
