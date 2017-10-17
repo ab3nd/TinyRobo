@@ -18,6 +18,10 @@ import StringIO
 import cv2
 import numpy as np
 
+#for writing an audio file
+#import wave
+#It's apparently mp3 frames?
+
 bag = rosbag.Bag('./id_2_cond_1_2017-10-16-15-00-48.bag')
 
 
@@ -34,6 +38,11 @@ class VideoGenerator(object):
 		self.fourcc = cv2.cv.FOURCC('m','j','p','g')
 		#TODO set the fps correctly
 		self.vidWriter = cv2.VideoWriter("./test.avi", self.fourcc, 30, self.frameSize, True)
+
+		#Write audio to a file
+		self.audioFile = open('soundtrack.mp3', 'w')
+		#Params are channels, sample width (in bytes), framerate, number of frames, compression type, compression name
+		#self.audioFile.setparams((1, 1, 44100, 0, 'NONE', 'not compressed'))
 
 	def updateImage(self, imgMsg, msgTime, isCompressed = False):
 		if isCompressed:
@@ -64,8 +73,8 @@ class VideoGenerator(object):
 		self.drawFrame(msgTime)
 
 	def updateAudio(self, audMsg, msgTime):
-		# Extend the audio track
-		pass
+		#Timewise, this isn't the most efficient way to do it, see https://soledadpenades.com/2009/10/29/fastest-way-to-generate-wav-files-in-python-using-the-wave-module/
+		self.audioFile.write(audMsg.data)
 
 	def addPoint(self, pointMsg, msgTime):
 		# Draw a new point on the UI Image
@@ -110,7 +119,10 @@ class VideoGenerator(object):
 	def finalizeVideo(self):
 		#Clean up, possibly involving combining audio with video
 		self.vidWriter.release()
-		pass
+
+		#Write all the audio data to a .wav file
+		self.audioFile.close()
+
 
 #Get info about the bag
 bagInfo = yaml.load(bag._get_yaml_info())
@@ -130,15 +142,15 @@ vg = VideoGenerator(secPerFrame)
 for topic, msg, t in bag.read_messages():
 	if topic.startswith("/experiment/c"):
 		#Output from one of the cameras
-		vg.updateImage(msg, t, isCompressed=True)
+		pass #vg.updateImage(msg, t, isCompressed=True)
 	if topic == "/ui_image":
 		#New UI screen
-		vg.updateImage(msg, t)
+		pass #vg.updateImage(msg, t)
 	if topic == "/audio":
 		#New sound
-		pass #vg.updateAudio(msg, t)
+		vg.updateAudio(msg, t)
 	if topic == "/touches":
-		vg.addPoint(msg, t)
+		pass #vg.addPoint(msg, t)
 
 vg.finalizeVideo()
 
