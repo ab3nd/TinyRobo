@@ -72,8 +72,9 @@ class VideoGenerator(object):
 		#Scale the points from the full screen to the active area
 		#xConv = 1000.0/1680.0
 		#yConv = 750.0/1050.0
-		x = pointMsg.point.x #* xConv
-		y = pointMsg.point.y #* yConv
+		#Magic numbers are half of the difference in screen sizes...
+		x = pointMsg.point.x - 340#* xConv
+		y = pointMsg.point.y - 150#* yConv
 		# the UI image is at 800 px off from the corner of the frame
 		x += 800
 		# Kivy points are upside down from PIL points
