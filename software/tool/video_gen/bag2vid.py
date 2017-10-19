@@ -22,13 +22,15 @@ import numpy as np
 #import wave
 #It's apparently mp3 frames?
 
+import subprocess
+
 bag = rosbag.Bag('./id_2_cond_1_2017-10-16-15-00-48.bag')
 
 
 class VideoGenerator(object):
 
-	def __init__(self, frameDelay):
-		self.frameDelay = rospy.Duration(frameDelay)
+	def __init__(self, frameRate):
+		#self.frameDelay = rospy.Duration(frameRate)
 		self.lastMsgTime = None
 		#This is the sum of the video images I'm working with
 		self.frameSize = (1800,1246)
@@ -37,7 +39,7 @@ class VideoGenerator(object):
 		#Set up a video writer instance
 		self.fourcc = cv2.cv.FOURCC('m','j','p','g')
 		#TODO set the fps correctly
-		self.vidWriter = cv2.VideoWriter("./test.avi", self.fourcc, 30, self.frameSize, True)
+		self.vidWriter = cv2.VideoWriter("./test.avi", self.fourcc, frameRate * 2, self.frameSize, True)
 
 		#Write audio to a file
 		self.audioFile = open('soundtrack.mp3', 'w')
@@ -73,7 +75,6 @@ class VideoGenerator(object):
 		self.drawFrame(msgTime)
 
 	def updateAudio(self, audMsg, msgTime):
-		#Timewise, this isn't the most efficient way to do it, see https://soledadpenades.com/2009/10/29/fastest-way-to-generate-wav-files-in-python-using-the-wave-module/
 		self.audioFile.write(audMsg.data)
 
 	def addPoint(self, pointMsg, msgTime):
@@ -103,25 +104,32 @@ class VideoGenerator(object):
 		# keep the frame rate under the precalculated rate. 
 		#Check if this message is beyond self.frameDelay from self.lastMsgTime,
 		#If it is, draw another frame and update the last message time
-		if self.lastMsgTime is None:
-			self.lastMsgTime = msgTime
-		else:
-			if msgTime - self.lastMsgTime > self.frameDelay:
-				#Convert the whole frame to an OpenCV image in the right color space
-				data = self.frameImage.tostring()
-				cols, rows = self.frameImage.size
-				#We can get away with the 3 here because we know it's RGB (or BGR, apparently)
-				img = np.fromstring(data, dtype=np.uint8).reshape(rows,cols,3)
-				#Make Robots Red Again!
-				img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-				self.vidWriter.write(img)
+		#if self.lastMsgTime is None:
+		#	self.lastMsgTime = msgTime
+		#else:
+		#	if msgTime - self.lastMsgTime > self.frameDelay:
+		
+		#Convert the whole frame to an OpenCV image in the right color space
+		data = self.frameImage.tostring()
+		cols, rows = self.frameImage.size
+		#We can get away with the 3 here because we know it's RGB (or BGR, apparently)
+		img = np.fromstring(data, dtype=np.uint8).reshape(rows,cols,3)
+		#Make Robots Red Again!
+		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+		self.vidWriter.write(img)
 
 	def finalizeVideo(self):
-		#Clean up, possibly involving combining audio with video
+		#Release the video writer
 		self.vidWriter.release()
-
-		#Write all the audio data to a .wav file
+		#Close the audio file
 		self.audioFile.close()
+
+		#Add the audio file to the video file
+		# This command does it from the command line
+		#mencoder -ovc copy -audiofile  ./soundtrack_bak.mp3 -oac copy video_bak.avi -o cmd_line_output.avi
+		#TODO use less crap file names
+		subprocess.call(['mencoder', '-ovc', 'copy', '-audiofile', './soundtrack.mp3', '-oac', 'copy', 'test.avi', '-o', 'cmd_line_output.avi'])
+
 
 
 #Get info about the bag
@@ -137,20 +145,20 @@ rate2 = bag.get_type_and_topic_info()[1]['/experiment/c35/camera/image/compresse
 framerate = max(rate1, rate2)
 secPerFrame = framerate/bagInfo['duration']
 
-vg = VideoGenerator(secPerFrame)
+vg = VideoGenerator(framerate)
 
 for topic, msg, t in bag.read_messages():
 	if topic.startswith("/experiment/c"):
 		#Output from one of the cameras
-		pass #vg.updateImage(msg, t, isCompressed=True)
+		vg.updateImage(msg, t, isCompressed=True)
 	if topic == "/ui_image":
 		#New UI screen
-		pass #vg.updateImage(msg, t)
+		vg.updateImage(msg, t)
 	if topic == "/audio":
 		#New sound
 		vg.updateAudio(msg, t)
 	if topic == "/touches":
-		pass #vg.addPoint(msg, t)
+		vg.addPoint(msg, t)
 
 vg.finalizeVideo()
 
