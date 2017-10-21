@@ -14,8 +14,8 @@
    <!-- Video un-distorting -->
    <node name="image_proc" pkg="image_proc" type="image_proc" ns="usb_cam"/>
 
-   <!-- April tags -->
-   <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
+   <!-- Fiducial tags -->
+   <include file="$(find tiny_robo_launch)/launch/aruco_tags.launch" />
 
    <!-- Fake laser readings --> 
    <node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen"/>

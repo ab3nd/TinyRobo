@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
-  apriltags_ros
+  aruco_detect
   message_generation
   cv_bridge
 )
@@ -75,7 +75,7 @@ generate_messages(
   DEPENDENCIES
   sensor_msgs
   std_msgs
-  apriltags_ros
+  aruco_detect
 )
 
 ################################################

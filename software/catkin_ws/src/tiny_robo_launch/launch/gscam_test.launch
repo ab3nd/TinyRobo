@@ -24,8 +24,8 @@
     <remap from="image" to="/$(arg cam_name)/image_rect_color" />
   </node> 
 
-  <!-- April tags -->
-  <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
+  <!-- Fiducial tags -->
+  <include file="$(find tiny_robo_launch)/launch/aruco_tags.launch" />
 
   <!-- Fake laser readings --> 
   <node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen"/>
