@@ -46,7 +46,7 @@ class Transformer(object):
 			points = [(tag.x0, tag.y0),(tag.x1, tag.y1),(tag.x2, tag.y2),(tag.x3, tag.y3)]
 			for point in points:
 				marker = Marker()
-				marker.header.frame_id = vtxMsg.header.frame_id
+				marker.header.frame_id = "robot_id_{0}".format(tag.fiducial_id)#vtxMsg.header.frame_id
 				marker.header.stamp = rospy.Time.now()
 				marker.ns = "does_this_do_anything"
 				marker.id = tag.fiducial_id
@@ -59,13 +59,14 @@ class Transformer(object):
 				marker.pose.orientation.y = 0.0
 				marker.pose.orientation.z = 0.0
 				marker.pose.orientation.w = 1.0
-				marker.scale.x = 1
-				marker.scale.y = 0.1
-				marker.scale.z = 0.1
+				marker.scale.x = 3
+				marker.scale.y = 3
+				marker.scale.z = 3
 				marker.color.a = 1.0 # Don't forget to set the alpha!
 				marker.color.r = 0.0
 				marker.color.g = 1.0
 				marker.color.b = 0.0
+				marker.lifetime = rospy.Time(10)
 				self.markerPub.publish(marker)
 
 #Not a lot to do here
