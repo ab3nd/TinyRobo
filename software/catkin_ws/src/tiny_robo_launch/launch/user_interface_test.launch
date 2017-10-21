@@ -28,7 +28,10 @@
     <rosparam param="topic">/experiment/c09/camera/image/compressed</rosparam>
   </node>
 
+  <!-- start the microphone -->
+  <include file="$(find audio_capture)/launch/capture.launch" />
+
   <!-- rosbag everything in a bag file named for the participant and condition -->
-  <node pkg="rosbag" type="record" name="rosbag_record_run" args="record -o id_$(arg id)_cond_$(arg cond) /meta_events /rosout /touches /ui_image /experiment/c09/camera/image/compressed /experiment/c35/camera/image/compressed"/>  
+  <node pkg="rosbag" type="record" name="rosbag_record_run" args="record -o id_$(arg id)_cond_$(arg cond) /meta_events /rosout /touches /ui_image /experiment/c09/camera/image/compressed /experiment/c35/camera/image/compressed /audio"/>  
 
 </launch>   
