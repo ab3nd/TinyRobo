@@ -19,7 +19,7 @@ class Transformer(object):
 		self.tfSub = rospy.Subscriber("/fiducial_transforms", FiducialTransformArray, self.update_transforms)
 		self.pointSub = rospy.Subscriber("/fiducial_vertices", FiducialArray, self.update_points)
 		self.tfBcast = tf.TransformBroadcaster()
-		rospy.logwarn("Done with init")
+		#rospy.logwarn("Done with init")
 
 	def update_transforms(self, tfMsg):
 		#Rebroadcast all of the transforms as TF messages
@@ -41,7 +41,7 @@ class Transformer(object):
 
 	def update_points(self, vtxMsg):
 		#Rebroadcast all the verticies as ROS markers
-		rospy.logwarn("Got verticies")
+		#rospy.logwarn("Got verticies")
 		for tag in vtxMsg.fiducials:
 			points = [(tag.x0, tag.y0),(tag.x1, tag.y1),(tag.x2, tag.y2),(tag.x3, tag.y3)]
 			for point in points:
