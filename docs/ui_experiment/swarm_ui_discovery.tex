@@ -1,5 +1,16 @@
 \documentclass[]{article}
 
+\usepackage{xargs} 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+
+\usepackage{enumitem}
+\usepackage{multicol}
+
 %opening
 \title{}
 \author{}
@@ -18,9 +29,28 @@
 
 \section{Experiment Setup}
 
-TODO put a picture of the experiment setup here
+\todo{put a picture of the experiment setup here}
+
+The multitouch user interface device used in this experiment is a 3M \todo{Exact model here} screen. 
+This screen can track up to 20 simultaneous points, but reports only points, rather than shapes or areas of contact. \todo{pressure information? I think I had this in my initial drawing scripts}
+
 
 \subsection{Experiment Conditions}
+
+Users were given tasks in one of five conditions, varying by how many robots were in each condition. 
+The conditions consisted of 1-2 robots, 10 robots, 100 robots, 1000 robots, or an unknown number of robots, represented by a cloud. 
+For each condition, the user was requested to perform a sequence of tasks. 
+The exact number of tasks varied between conditions due to some tasks not making sense with the number of robots involved. 
+
+\begin{multicols}{2}
+	\begin{enumerate}[noitemsep]
+	\item 1-2
+	\item 10
+	\item 100
+	\item 1000
+	\item Unknown
+	\end{enumerate}
+\end{multicols} 	
 
 \section{Analysis}
 
