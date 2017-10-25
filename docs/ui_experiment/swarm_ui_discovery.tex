@@ -38,6 +38,24 @@
 The multitouch user interface device used in this experiment is a 3M \todo{Exact model here} screen. 
 This screen can track up to 20 simultaneous points, but reports only points, rather than shapes or areas of contact. \todo{pressure information? I think I had this in my initial drawing scripts}
 
+Script read to each user to direct them to think aloud and use the user interface to direct the robots. 
+
+While the user interacted with the touch screen, their touches and the positions of their hands were recorded by the computer connected to the screen and by the video cameras. 
+One video camera was placed high, looking down at the screen, to track where the user's hand was on the screen. 
+The other video camera was placed in front of the screen at a low angle, in order to observe whether the user's hands were touching the screen, or moving above it. 
+
+In addition to touches and video, users were asked to think aloud about their actions.
+This audio was recorded as well. 
+
+The software used to record all of this information is ROS, the Robot Operating System \todo{cite}. 
+ROS was developed as a message-passing framework for connecting modular programs on a robot \todo{explain better when not tired}. 
+It may seem unusual to use a framework intended for operating robots as a recording program for collecting experiment data, but ROS provides a utility called rosbag that records some or all of the messages emitted by the robot's sensors in a "bag" file. 
+In this case, the cameras, microphone, and UI application are the ``sensors'' for rosbag to record.
+A ROS launch file starts multiple ROS nodes to record image data from the cameras, audio from the microphone, and touch events and screen updates from the UI.
+ROS also provides tools for manipulating these bag files, and playing them back. 
+All of the data in the file is timestamped, so it plays back with the audio, video, and UI interactions all accurately synchronized. 
+Because all of the data is treated as standard ROS message types, it is relatively easy to write custom processors for the recorded data.
+For example, a node was written that accepts the replayed UI screen changes and touch events, and renders them as a stream of ROS image messages showing the contact points overlaid on the UI screen. 
 
 \subsection{Experiment Conditions}
 
@@ -46,9 +64,28 @@ The conditions consisted of 1-2 robots, 10 robots, 100 robots, 1000 robots, or a
 For each condition, the user was requested to perform a sequence of tasks. 
 The exact number of tasks varied between conditions due to some tasks not making sense with the number of robots involved. 
 
-
+The single robot case has 11 tasks:
+\begin{enumerate}[noitemsep]
+	\item Move to area A
+	\item Move to area A with a wall in the way
+	\item Stop the robot
+	\item Orange robot to area A, red robot to area B
+	\item Orange robot to area B, red robot to area A
+	\item Divide group
+	\item Move the crate to area A
+	\item Mark defective robot \todo{check what people's interpretation of this is}
+	\item Remove defective robot
+	\item Patrol the screen border
+	\item Patrol area A
+\end{enumerate}
 
 \section{Analysis}
+
+Some people take the directions on the slides very literally. 
+For example, users who had been solely using the touch interface read the slides that instructed "Tell the robots to form a line" to indicate that they should speak the words "Form a line", addressed to the robots.
+
+People who didn't otherwise want voice commands would use them for the task of stopping the robots. 
+Since this task assumes the robots are already moving towards a goal, attempts to interact with all of them while they are moving could be difficult. 
 
 \subsection{Participant Demographics}
 
