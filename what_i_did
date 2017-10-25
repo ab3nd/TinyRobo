@@ -480,6 +480,9 @@ Spent a lot of time around here having a cold and not being able to think well
 
 10/19
 - 5 experiement particpants
+- Video dump from bagfile doesn't synch with audio
+- wrote a script to draw contacts on the UI image and publish as a ROS image topic
+- can now code direct from bagfile, which is syncronized
 
 10/20
 - 5 experiement particpants
@@ -489,9 +492,23 @@ Spent a lot of time around here having a cold and not being able to think well
 - Worked on removing april tags in favor of aruco tags. 
 - The package to use is http://wiki.ros.org/aruco_detect
 
-Gesture Experiment
-- Set up a single-page website with a map to the experiment location
-- Post flyers
+10/22
+- Tested aruco tags in rviz
+	- too noisy at the scale I want
+- april tags can be sped up a little by setting compiler flags (-DCMAKE_BUILD_TYPE=Release or thereabouts)
+
+10/23
+- 2 subjects
+- set up backups for my data
+- checked and labled a bunch of the hard drives from around the lab
+
+10/24 
+- 2 subjects, one no-show
+- Reading up on Grounded Theory for coding
+    - Based on social sciences
+    - the main aspects we care about are open coding of gesture, then axial coding to refine gesture defs
+- Wrote up how to code data
+
 
 Swarm control software
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 
