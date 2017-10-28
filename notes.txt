@@ -1217,3 +1217,35 @@ Well damnit
 gst-launch-1.0 v4l2src device=/dev/video0 ! "image/jpeg,width=1024,height=768" ! jpegdec ! videoconvert ! tee name=f ! queue ! v4l2sink device=/dev/video1 f. ! queue ! v4l2sink device=/dev/video2
 
 Updated gstreamer invocation for my camera, seems to have good framerate but bad lag. I don't want any lower of a resolution, so maybe dropping the framerate will help matters?
+
+Distributed efficient localization in swarm robotic systems using swarm intelligence algorithms
+Alan Oliveira de Sá, Nadia Nedjah, Luizade Macedo Mourelle
+	Uses position of reference nodes
+	Range-based method
+		Actual ranges can be measured
+	Range-free method
+		Hops, signal propagation techniques
+	Paper cites a lot of other papers that do positioning
+	For my work, since the actual formation of the coordinate system is out of scope, I can assume there is some form of coordinate system available, produced via one or more of these methods, and the robots can use that. 
+		Should have some possible error in it. 
+
+Swarm robotics search & rescue: A novel artificial intelligence-inspired optimization approach
+M.Bakhshipour, M.Jabbari Ghadi, F.Namdari
+	
+
+Feature matching based positioning algorithm for swarm robotics☆
+Ahmet Çağdaş Seçkin, Ceyhun Karpuz, Ahmet Özek
+	Uses cameras under the robots, they try to align common areas of their images
+	Aimed more at drones than ground robots
+
+Efficient Strategy for Collective Navigation Control in Swarm Robotics☆
+Luneque Silva Junior, Nadia Nedjah
+	Wave algorithms
+
+Multiscale Modelling and Analysis of Collective Decision Making in Swarm Robotics
+Matthias Vigelius, Bernd Meyer, Geoffrey Pascoe
+	Density estimation
+	Robots wander randomly, bumping into each other
+	Observe color (red or green) of bumped robots
+	After N bumps, change to most-often observed color
+	Stable, converges to most common color
