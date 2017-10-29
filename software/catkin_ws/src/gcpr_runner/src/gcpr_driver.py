@@ -1,9 +1,14 @@
 #!/usr/bin/python
 
 import random
+import json
+
 from time import sleep
 
 import rospy
+from sensor_msgs.msg import LaserScan
+from standard_msgs.msg import String
+from geometry_msgs.msg import Twist
 
 # Ties together "laser" scanner, gcpr programs, and a physical robot
 # There should be an instance of this for each robot
@@ -33,12 +38,16 @@ class ProgramLoader(object):
 class GCPR_driver(object):
 	def __init__(self):
 		self.programLoader = ProgramLoader()
-		pass
+		self.laser_readings = []
+		self.max_range = 0.4 #TODO TOTALLY ARBITARY THRESHOLD FIXME
+		#TODO probably should name this topic better
+		self.twistPub = rospy.Publisher('robot_twists', Twist, queue_size=0)
 
 	def update_laser(self, laserMsg):
-		pass
+		self.laser_readings = laserMsg.ranges
 
 	def recv_msg(self, msg):
+		rospy.logwarn("Got a message {0}".format(msg.data))
 		pass
 
 	def replace_program(self, msg):
@@ -63,15 +72,23 @@ class GCPR_driver(object):
 		#stochastic PWM effect
 		for item in todo_list:
 			#TODO, add "self." to calls in the program...
+			#https://stackoverflow.com/questions/1911281/how-do-i-get-list-of-methods-in-a-python-class
+			#might be of help for figuring out what substrings are callable
 			eval(item)
-
 
 	# Basic action of moving along an arc
 	def move_arc(self, rot_speed, trans_speed):
-		#TODO this is where we'd actually have ROS send the message to the robot
-		print "move_arc({0}, {1})".format(rot_speed, trans_speed)
-		pass
+		rTwist = Twist()
+		#only two params are used for robots on a table
+		rTwist.linear.x = trans_speed
+		rTwist.angular.z = rot_speed
+		#The rest are not used
+		rTwist.linear.y = rTwist.linear.z = 0
+		rTwist.angular.x = rTwist.angular.y = 0
 
+		#publish it and wait
+		self.twistPub.publish(rTwist)
+		
 	# Moving straight is moving in an arc with no rotational speed
 	def move_fwd(self, speed):
 		move_arc(0, speed)
@@ -84,8 +101,9 @@ class GCPR_driver(object):
 	def stop(self):
 		move_arc(0,0)
 
+	# This is for doing printouts from inside the GCPR code and having it get out to ROS
 	def dbg_print(self, message):
-		print message
+		rospy.logwarn(message)
 		
 	# Define the guards that can be sensed. Guards are boolean, so they should return either a boolean
 	# or something that python is going to treat as a boolean. I've decided to name the guards as 
@@ -95,29 +113,29 @@ class GCPR_driver(object):
 		return is_near_left() and is_near_right() and is_near_center()
 
 	def is_near_right(self):
-		span = len(laser_readings)/3
+		span = len(self.laser_readings)/3
 		#Right side of readings
-		for reading in laser_readings[span+span:]:
+		for reading in self.laser_readings[span+span:]:
 			#If there's a close object, return true
-			if reading < max_range / 2:
+			if reading < self.max_range / 2:
 				return True
 		return False
 
 	def is_near_left(self):
-		span = len(laser_readings)/3
+		span = len(self.laser_readings)/3
 		#Left side of readings
-		for reading in laser_readings[:span]:
+		for reading in self.laser_readings[:span]:
 			#If there's a close object, return true
-			if reading < max_range / 2:
+			if reading < self.max_range / 2:
 				return True
 		return False
 
 	def is_near_center(self):
-		span = len(laser_readings)/3
+		span = len(self.laser_readings)/3
 		#Center of readings
-		for reading in laser_readings[span:span+span]:
+		for reading in self.laser_readings[span:span+span]:
 			#If there's a close object, return true
-			if reading < max_range / 2:
+			if reading < self.max_range / 2:
 				return True
 		return False
 
@@ -132,17 +150,17 @@ robot_id = rospy.get_param("~robot_id")
 #Subscribe to laser for this robot
 laser_sub = rospy.Subscriber("/laser_driver_{0}".format(robot_id), Laser, gDriver.update_laser)
 
-#TODO support for passing messages in and out
+#Recieve messages over the simulated network
 net_sub = rospy.Subscriber("/messages_to_{0}".format(robot_id), String, gDriver.recv_msg)
 
-#Load new programs
+#Listen for new programs to load
 prog_sub = rospy.Subscriber("/robot_prog/{0}".format(robot_id), String, gDriver.replaceProgram)
-#TODO publish twist messages
 
 
 #TODO figure out what a good rate for the driver to run at is,
 # and update at that rate
 r = rospy.Rate(10) # 10hz
 while not rospy.is_shutdown():
-    #TODO update the GCPR driver
+    #Update the GCPR driver
+    gDriver.run_gcpr()
     r.sleep()
