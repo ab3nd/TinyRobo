@@ -371,13 +371,158 @@ To Do:
 - Made index card stack for tracking tasks
 - Started to combine gesture recognizer and compiler
 
+9/9
+- Stutter removal in parsing of gestures 
+
+9/11
+- Debugged slide loading
+- Added double-clicks to gesture recognizer
+
+9/12
+- Fixed apt, was using apt cache server on subtle, caused problems when subtle was down
+- Hoping to run more pilots with lab people
+
 Wheelchair:
 
+9/13
+- Lots of messing around with kivy image creation
+- Lots of tinkering with python memmaping 
+- Basic kivy app that reads camera works, but will fight anything else acessing the camera
+- v4l2loopback looks like an interesting way forward, but having issues
 
-Gesture Experiment
-- Add image of robot to recruitment poster
-- Set up a single-page website with a map to the experiment location
-- Post flyers
+9/14
+- Added touch events to real ui, started gesture recognition for it
+
+9/15
+- Lab clean-up
+
+9/18
+- Working on gesture recognition
+- Kivy pygst camera provider works on desktop, but not on laptop
+- Kivy problems with touches being registered all over screen, not just on window
+
+9/19
+- Tried to fix kivy app getting multiple touches all over the screen
+    - Not fixable, that's just How Kivy Is. Run app in fullscreen as workaround
+
+9/22
+- Attempt to do drive to point
+- got sidetracked by quaternion math work
+    - now have a rough idea of how quaternions are used
+
+Spent a lot of time around here having a cold and not being able to think well
+
+9/26
+- Worked on program distribution for compiler
+- Currently using ROS String messages with the code as a json string in them
+- Much messing around with gstreamer to get
+  gst-launch-1.0 v4l2src device=/dev/video0 ! "image/jpeg,width=1024,height=768" ! tee name=f ! queue ! v4l2sink device=/dev/video1 f. ! queue ! v4l2sink device=/dev/video2
+  which works with ROS's gscam, but not usb_cam
+
+9/27
+- worked on deployment of program to tiny robots
+    - currently sends a json representation of a GCPR program
+
+9/28
+- Swtched to gscam on main swarm box, usb_cam doesn't play well with v4l2loopback
+- Tried to get kivy/real_ui.py working on main swarm box
+- Tested Alvar tag tracker for ROS, got 1Hz in a configuration where APRIL tags get 4Hz
+- Got IRB approval (finally!)
+
+9/29
+- Cleaned inner lab for experiment
+
+10/2
+- Set up cameras
+- Physical therapy appointment
+- Job fair at CIC
+
+10/3
+- Wired network for experiment
+- Tested survey
+
+10/4
+- Set up camera angles for recording screen
+- Figured out recording with VLC, but will probably use rosbag and ROS camera drivers
+- Added ROS messaging to user interface for logging with rosbag
+
+10/5-10/10
+- Edited paper for Holly
+- Started applicaiton for National Geographic grant to fly a drone around sculptures and scan them
+   - because I'm clearly insane. 
+- Got Dan's camera code and rosbag playing well with the UI, now records everything except sound
+- finished poster
+- added and tested rosbag logging
+- arts and crafts day to add Aruco tags to robots
+
+10/11
+- Implemented state machine for core of compiler, not complete yet
+   - Based on Mark's gesture language, will add my own extensions later
+
+10/12 
+- More work on state machine
+- Cut tabs on a lot of flyers
+
+10/13 (Friday the 13th! Auspicious!)
+- Put up more flyers
+
+10/16 
+- Ran two users through the experiment
+- Debugged a problem with running the script from the launchfile
+- Worked on a program to dump video from the bagfile
+
+10/17
+- 2 Participants
+- distance hacking for nat geo thing
+
+10/18
+- 3 participants, psych appointment, meeting with Holly
+
+10/19
+- 5 experiement particpants
+- Video dump from bagfile doesn't synch with audio
+- wrote a script to draw contacts on the UI image and publish as a ROS image topic
+- can now code direct from bagfile, which is syncronized
+
+10/20
+- 5 experiement particpants
+- 2-opt routing for nat geo budget calculations
+
+10/21
+- Worked on removing april tags in favor of aruco tags. 
+- The package to use is http://wiki.ros.org/aruco_detect
+
+10/22
+- Tested aruco tags in rviz
+	- too noisy at the scale I want
+- april tags can be sped up a little by setting compiler flags (-DCMAKE_BUILD_TYPE=Release or thereabouts)
+
+10/23
+- 2 subjects
+- set up backups for my data
+- checked and labled a bunch of the hard drives from around the lab
+
+10/24 
+- 2 subjects, one no-show
+- Reading up on Grounded Theory for coding
+    - Based on social sciences
+    - the main aspects we care about are open coding of gesture, then axial coding to refine gesture defs
+- Wrote up how to code data
+
+10/25
+- test subjects
+- started writing up experiment
+
+
+10/28
+- Attempts at camera cal again
+- Rebuilt camera mount (no more tape)
+
+10/29
+- Installed new camera mount
+- wrote a lot of the gcpr-to-robot code
+    - Still needs testing
+
 
 Swarm control software
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 

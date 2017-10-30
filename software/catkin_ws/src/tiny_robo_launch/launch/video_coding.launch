@@ -1,0 +1,30 @@
+<launch>
+
+	<!-- play a bagfile -->
+	<node pkg="rosbag" type="play" name="player" output="screen" args="--clock $(arg bagfile)"/>
+
+	<!-- image viewers for the video feeds -->
+	<node pkg="image_view" type="image_view" name="cam09" output="screen">
+		<param name="image_transport" value="compressed"/>
+		<remap from="image" to="/experiment/c09/camera/image"/>
+	</node>
+	
+	<node pkg="image_view" type="image_view" name="cam35" output="screen">
+		<param name="image_transport" value="compressed"/>
+		<remap from="image" to="/experiment/c35/camera/image"/>
+	</node>
+
+	<!-- instance of the program that publishes touches on the ui view -->
+	<node pkg="ui_drawer" type="ui_drawer.py" name="ui_images" output="screen" />
+
+	<!-- and an image-view instance to watch it -->
+	<node pkg="image_view" type="image_view" name="ui_view" output="screen">
+		<remap from="image" to="/ui_interactions"/>
+	</node>
+
+	<!-- audio player -->
+	<node name="audio_play" pkg="audio_play" type="audio_play">
+    	<param name="dst" value="alsasink"/>
+  	</node>
+
+</launch>

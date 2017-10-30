@@ -1,0 +1,37 @@
+<launch>
+  <arg name="id" doc="Numerical user id"/>
+  <arg name="cond" doc="One of 1, 10, 100, 1000, X"/>
+  
+  <node pkg="user_interface" type="ui_test.py" name="ui" output="screen" required="true">
+    <param name="id" value="$(arg id)"/>
+    <param name="cond" value="$(arg cond)"/>
+    <param name="fpath" value="/home/csrobot/TinyRobo/software/catkin_ws/src/user_interface/src/"/>
+  </node>
+
+  <!-- Get the mjpg streams from the cameras -->
+  <arg name="port" value="80"/>
+  <arg name="request" value="/video.mjpg"/>
+
+  <node name="c35" pkg="mjpeg_network_camera2" type="streamed_camera.py" output="screen">
+    <rosparam param="host">c35.lan</rosparam>
+    <rosparam param="port" subst_value="True">$(arg port)</rosparam>
+    <rosparam param="request" subst_value="True">$(arg request)</rosparam>
+    <rosparam param="frame_id">/experiment/c35/camera</rosparam>
+    <rosparam param="topic">/experiment/c35/camera/image/compressed</rosparam>
+  </node>
+
+  <node name="c09" pkg="mjpeg_network_camera2" type="streamed_camera.py" output="screen">
+    <rosparam param="host">c09.lan</rosparam>
+    <rosparam param="port" subst_value="True">$(arg port)</rosparam>
+    <rosparam param="request" subst_value="True">$(arg request)</rosparam>
+    <rosparam param="frame_id">/experiment/c09/camera</rosparam>
+    <rosparam param="topic">/experiment/c09/camera/image/compressed</rosparam>
+  </node>
+
+  <!-- start the microphone -->
+  <include file="$(find audio_capture)/launch/capture.launch" />
+
+  <!-- rosbag everything in a bag file named for the participant and condition -->
+  <node pkg="rosbag" type="record" name="rosbag_record_run" args="record -o id_$(arg id)_cond_$(arg cond) /meta_events /rosout /touches /ui_image /experiment/c09/camera/image/compressed /experiment/c35/camera/image/compressed /audio"/>  
+
+</launch>   

@@ -154,7 +154,7 @@ if __name__ == "__main__":
 	rospy.init_node('motor_speed_limiter')
 
 	#Get the IP address of the robot to connect to
-	ipAddr = rospy.get_param("~robot_addr".format(rospy.get_name()))
+	ipAddr = rospy.get_param("~robot_addr")
 
 	#TODO I may want to set up static leases in the wifi router to attempt 
 	#ipAddr = '192.168.1.119' #hexbugbase

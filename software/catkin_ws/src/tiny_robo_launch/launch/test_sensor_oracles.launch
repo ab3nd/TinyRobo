@@ -1,20 +1,22 @@
 <launch>
 
-   <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
-      <param name="video_device" value="/dev/video0" />
-      <param name="image_width" value="800" />
-      <param name="image_height" value="600" />
-      <param name="pixel_format" value="yuyv" />
-      <param name="camera_frame_id" value="usb_cam" />
-      <param name="camera_name" value="narrow_stereo" />
-      <param name="camera_info_url" value="file:///$(find camera_cal)/usb_cam_800x600.yml"/> 
-      <param name="io_method" value="mmap"/>
-   </node>
+  <arg name="cam_name" value="overhead_cam" />
+  <arg name="GST10" value="true" />
+
+  <!-- Start the GSCAM node -->
+  <!-- Note that some settings of videocrop will cause a double-free error -->
+  <!-- ! videocrop top=200 left=10 right=30 bottom=20 -->
+  <env name="GSCAM_CONFIG" value="v4l2src device=/dev/video1 ! ffmpegcolorspace " />
+  <node pkg="gscam" type="gscam" name="$(arg cam_name)">
+          <param name="camera_name" value="$(arg cam_name)" />
+          <param name="camera_info_url" value="file:///$(find camera_cal)/usb_cam_1024x768.yml" />
+          <remap from="camera/image_raw" to="$(arg cam_name)/image_raw" />
+  </node>
 
    <!-- Video un-distorting -->
-   <node name="image_proc" pkg="image_proc" type="image_proc" ns="usb_cam"/>
+   <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg cam_name)"/>
 
-   <!-- April tags -->
+   <!-- Fiducial tags -->
    <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
 
    <!-- Fake laser readings --> 
@@ -30,21 +32,24 @@
 
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
-   	<param name="robot_id" value="9" type="int"/>
-   </node>
-   
-   <!-- client for the laser ranges -->
-   <node pkg="laser_oracle" type="laser_client.py" name="laser_client_2" output="screen">
-   	<param name="robot_id" value="2" type="int"/>
+   	<param name="robot_id" value="7" type="int"/>
+      <param name="angleMin" type="double" value="-3"/>
+      <param name="angleMax" type="double" value="3"/>
+      <param name="angleIncrement" type="double" value="0.05"/>
+      <param name="rangeMin" type="double" value="0.03"/>
+      <param name="rangeMax" type="double" value="0.8"/>
    </node>
    
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client_6" output="screen">
-   	<param name="robot_id" value="6" type="int"/>
+   	<param name="robot_id" value="3" type="int"/>
    	<param name="angleMin" type="double" value="-1.745"/>
-	<param name="angleMax" type="double" value="1.745"/>
-	<param name="angleIncrement" type="double" value="0.1745"/>
-	<param name="rangeMin" type="double" value="0.1"/>
-	<param name="rangeMax" type="double" value="0.8"/>
+   	<param name="angleMax" type="double" value="1.745"/>
+   	<param name="angleIncrement" type="double" value="0.01745"/>
+   	<param name="rangeMin" type="double" value="0.03"/>
+   	<param name="rangeMax" type="double" value="0.8"/>
    </node>
+
+   <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
+
 </launch>
