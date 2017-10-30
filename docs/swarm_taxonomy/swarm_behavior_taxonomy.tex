@@ -35,13 +35,13 @@ An action, such as sensing or moving forward, does not have a context, whereas b
 For example, the swimming of fish is an action, but when a group of fish swim close together in the same direction, this schooling is a behaviour. 
 Examined individually, each fish is simply swimming, but their attention to the other fish around them and reaction to it while swimming makes up the behaviour of schooling. 
 
-Numerous papers provide catalogues of primitive behaviours for robots 
+Numerous papers provide catalogues of primitive behaviours for robots \cite{nagpal2004catalog, mclurkin2004stupid, evans2000programming}
 The descriptions of these behaviours as ``primitive'' is sometimes meant to indicate that they are building blocks of more complex behaviours, or that they are not decomposable into smaller behaviours themselves. 
 Other papers describe behaviours as primitive because while the behaviour does not complete a task in itself, it can be combined with other behaviours or actions to perform a useful task. 
 
 Designating some behaviours as primitive, while others are regarded as more advanced or complex, implies the existence of a hierarchy of behaviours, where complex behaviours are composed of more primitive behaviours, with the most primitive behaviours being closer to actions, as defined above. 
 The purpose of this paper is to explore which behaviours are available or not from given sets of basic actions.
-Such exploration is useful for creating a catalogue of primitives that can be used in a compositional approach to program generation, both to define the primitives out of which programs can be composed, and provide some degree of assurance that these primitives can cover the space of possible tasks required from the swarm. 
+Such exploration is useful for creating a catalogue of primitives that can be used in a compositional approach to program generation, both to define the set of primitives out of which programs can be composed, and provide some degree of assurance that this set of primitives can cover the space of possible tasks required from the swarm. 
 
 \section{When We Say ``Swarm Robots''...}
 
@@ -60,13 +60,11 @@ Examining these assumptions may reveal unexplored regions of the space of possib
 
 One possible list of primitives is disperse (no other nodes within distance d), general disperse (no more than n nodes within distance d), clump/cluster, attract to location, swarm in a direction, and scan area \cite{evans2000programming}.
 
-McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved, but also grouped into six groups: motion, navigation, dispersion, clustering, orientation, and utility.
-
+McLurkin proposes a large set of behaviors, broken into categories by the number of robots involved, but also grouped into six groups: motion, navigation, dispersion, clustering, orientation, and ``utility''\cite{mclurkin2004stupid}.
 McLurkin uses the term ``primitive'' to refer to behaviours of a single robot, ``pair behaviours'' for two robots, and group behaviors for more than two robots. 
 Under the proposed distinction between actions and behaviours above, the motion group is composed only of actions except for Avoid Bump, the collision avoidance behaviour. Move Arc, Move Forward, Rotate To Angle, and Move Stop are all actions. 
 Move Arc moves the robot on an arc, composed of forward and rotational velocity. Move Forward, Rotate To Angle, and Move Stop are special cases of Move Arc, with, respectively, the rotational, translational, or both velocities set to zero. 
  
-\cite{mclurkin2004stupid}.
 \begin{multicols}{2}
 	\begin{enumerate}[noitemsep]
 	\item Motion
@@ -141,7 +139,7 @@ In a large group, a random countdown can lead to ties.
 If two robots elect themselves within a time window smaller than that required for the suppressing message to propagate between them, they will both think they are leaders.
 Self-election timestamps could be used as tiebreakers in this case. 
 McLurkin suggests using globally unique robot IDs included in the suppression message, with each robot being suppressed if its ID is higher than the ID in the suppression message.
-This can still have ties while the gradient propagates, but will converge to one elected robot.
+Unique ID in messages still permits ties until the gradient propagation is complete, but will converge to one elected robot.
  
 Local monitoring uses heartbeat messages between local agents to keep track of the presence and activity of those neighbours. Failure to receive a message could trigger a response, such as moving to occupy a previously-occupied area to maintain sensor coverage.
 
@@ -210,7 +208,7 @@ This assumption is made with the understanding that by specializing the sensors 
 For example, dispersion on the general robot is defined as dispersing so that no robot is within less than a fixed distance of any other robot. 
 By adding a sensor that determines if the robot is within a desired area, area coverage can be specified from general dispersion. 
  
-The general robot is mobile, and communicate locally. 
+The general robot is mobile, and can communicate locally. 
 No restriction is placed on its ability to store messages from other robots or state information from those messages. 
 Local communication refers to the ability to communicate with some subset of the swarm.
 Depending on the implementation, particularly radio vs. infra-red, this communication may depend on a clear line of sight between the robots.
@@ -278,8 +276,7 @@ The resulting shapes are regular polygons, but with somewhat ``blobby'' rather t
 \subsection{Navigational Structures} \label{pheremone_nav_struct}
 
 Communicating robots can arrive at a consensus coordinate system using trilateration based on range sensors \cite{cheng2005robust}, or use lateral inhibition to select individual robots to serve as beacons which create gradients for trilateration via hop counts \cite{nagpal1999organizing}.
-Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by communicating.
-Rather than directly determining range and bearing from sensors, the communicating robots exchange their coordinates, and calculate the ranges and bearings from their positions. 
+Robots with a consensus coordinate system can perform range and bearing calculations in relation to each other by exchanging their coordinates, and calculating the ranges and bearings from the exchanged positions. 
 
 Assuming that the robots have unique identifiers, the range and bearing provided by the consensus coordinate system provides the other basic functionality needed to perform any of the behaviours from Stupid Robot Tricks \cite{mclurkin2004stupid}.
 
