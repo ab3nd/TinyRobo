@@ -1241,11 +1241,76 @@ Ahmet Çağdaş Seçkin, Ceyhun Karpuz, Ahmet Özek
 Efficient Strategy for Collective Navigation Control in Swarm Robotics☆
 Luneque Silva Junior, Nadia Nedjah
 	Wave algorithms
+	Network of conneted robots
+	Wave Swarm strategy to sequentialize subtasks
+	Wave algo has requirements
+		1. Computation is finite sequence of events
+		2. Computation includes decision event
+		3. In each computation ever decide-event is caused by an event in each node
+	some node (initiator) starts the local algorithm and broadcasts
+	others start when they get the message
+	Messages don't return to nodes that they were from
+	Initiator has to know when all nodes have received the message
+		Propagation of information with feedback PIF
+	"In the context of robotic swarms, it is necessary that all robots do the same subtask in a given instant."
+		Well, no, actually it isn't. 
+	Navigation together as recruitment, alignment, and movement
+		Recruit to form group
+		Align to all point the same way (tank-style steering)
+		Move keeping distance to others
+		
 
 Multiscale Modelling and Analysis of Collective Decision Making in Swarm Robotics
 Matthias Vigelius, Bernd Meyer, Geoffrey Pascoe
 	Density estimation
-	Robots wander randomly, bumping into each other
-	Observe color (red or green) of bumped robots
-	After N bumps, change to most-often observed color
-	Stable, converges to most common color
+		Robots wander randomly, bumping into each other
+		Observe color (red or green) of bumped robots
+		After N bumps, change to most-often observed color
+		Stable, converges to most common color
+	Largely done in simulation, numerical solutions to behavior of system
+	Kilobot tests
+		Much noisier results, but ok agreement with sim
+
+
+Potential Limitations of Multi-touch Gesture Vocabulary: Differentiation, Adoption, Fatigue
+Wendy Yee
+	Direct gestures, like grabing/moving content (NUI basis)
+	Need more abstract/indirect gestures
+		Action on groups, motions through hierarchy
+	Main criteria
+		1. High context, should be clear that gestures can be used, and gesture should realae to task
+		2. minimal effort, not a lot of dexterity
+		3. Appropriate metaphors, logical relationship with the functionality
+		4. Not fatiguing, ok for repetitive use
+		5. Easy for the applicaiton to recognize well
+	Gestures have to be distinct enough for the user to remember and execute with minimal cuing
+	Full hand/arm involvement in gesture leads to fatigue
+
+There are a lot of papers on various sensing technologies, and sub-divisons of them (e.g. camera tracking with or without fiducials, capacitive sensing, acoustic/knock approaches)
+
+A Multi-Touch Natural User Interface Framework
+Jialiang Yao, Terrence Fernando, Hongxia Wang
+	Design of multitouch gestures based on field study
+		Consolidated into lowlevel actions
+	Aware of users inheriting preferences from the applicaitons they use (iOS & Android)
+	Paper prototyped
+	Designed for a VERY specific tool
+		Gestures for that tool, although somewhat applicable to similar tools
+		Not an attempt at a universal gesture interface (which probably wouldn't make sense)
+
+Squidy: A Zoomable Design Environment for Natural User Interfaces
+Werner A. Konig, Roman Radle, Harald Reiterer
+	"post-WIMP user interfaces"
+	Characterizes design and hardware support space as very fragmented
+	MAX/MSP and vvvv as visual represesntations of data flow
+		Hierarchical representations so that subunits can be represented as one block
+	Squidy ties together a bunch of device toolkits and NUI frameworks
+	Kind of like GStreamer
+		sources, filters, sinks
+	Graphic like vvvv or Max/MSP
+		Zoomable for more info 
+			Zoom in on node, get info about how it works
+			Parameter setting also done in zoom
+	Prototyping environmnet for NUI
+
+

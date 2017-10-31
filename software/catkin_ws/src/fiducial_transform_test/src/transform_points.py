@@ -56,9 +56,9 @@ class Transformer(object):
 			marker.pose.orientation.y = quaternion[1]
 			marker.pose.orientation.z = quaternion[2]
 			marker.pose.orientation.w = quaternion[3]
-			marker.scale.x = 0.3
-			marker.scale.y = 0.3
-			marker.scale.z = 0.3
+			marker.scale.x = 0.03
+			marker.scale.y = 0.03
+			marker.scale.z = 0.03
 			marker.color.a = 1.0 # Don't forget to set the alpha!
 			marker.color.r = 0.0
 			marker.color.g = 1.0

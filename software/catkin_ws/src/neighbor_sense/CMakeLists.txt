@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(neighbor_sense)
 
 find_package(catkin REQUIRED COMPONENTS
-  aruco_detect
+  apriltags_ros
   roscpp
   rospy
   std_msgs
@@ -10,11 +10,10 @@ find_package(catkin REQUIRED COMPONENTS
 
 
 ## Generate added messages and services with any dependencies listed here#
-#generate_messages(
-#  DEPENDENCIES
-#  std_msgs
-#  aruco_detect
-#)
+generate_messages(
+  DEPENDENCIES
+  apriltags_ros
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -28,7 +27,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES neighbor_sense
-#  CATKIN_DEPENDS aruco_detect roscpp rospy std_msgs
+  CATKIN_DEPENDS apriltags_ros roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
