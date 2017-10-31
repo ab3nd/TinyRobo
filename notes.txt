@@ -1313,4 +1313,130 @@ Werner A. Konig, Roman Radle, Harald Reiterer
 			Parameter setting also done in zoom
 	Prototyping environmnet for NUI
 
+Multitouch Interaction for Tangible User Interfaces
+Hartmut Seichter, Raphael Grasset, Julian Looser, Mark Billinghurst
+	AR + computer vision-based touch interaction
+	Tangible usier interface TUI
+		Physical stuff you can touch
 
+Informing the Design of Direct-Touch Tabletops
+Chia Shen, Kathy Ryall, Clifton Forlines, Alan Esenther, Frederic Vernier, Katherine Everitt, Mike Wu, Daniel Wigdor, Meredith Ringel Morris, Mark Hancock, Edward Tse
+	From MERL, the DiamondTouch people
+	Table as external memory, stuff on it as reminders of an ongoing task/process
+	Table as collaboration point, multiple workers
+	Experiments in document orientation
+	Occlusion and reach
+	Modal regions for gesture re-use
+		use depends on mode, mode is spatial region (e.g. "edit area")
+	"registration" for gesture re-use
+		register gesture, then action gesture
+			Kind of like Mark's gesture grammar
+
+Experiences with and Observations of Direct-Touch Tabletops
+Kathy Ryall, Meredith Ringel Morris, Katherine Everitt, Clifton Forlines, Chia Shen
+	Unstructured free-form interactions
+	Some people hesitate to touch the table while others are touching it
+		Not a thing with my single-user interface
+	Novice users prefer single-touch interaction
+		"intuiutive" - probably from mouse interaction
+	Midas touch problems
+	Big fingers have problems with small buttons
+	Hygene concerns with lots of users touching table
+		...I've thought about this with my experiment too
+	Users want "elbow room"
+	Fingers are not good enough for touch input
+		Did they explore virtual keyboards? Swype/google predictive keyboard is good
+	Not all docs have orientation problems (photos less than text)
+
+The Design and Evaluation of Multitouch Marking Menus
+G. Julian Lepinski, Tovi Grossman, George Fitzmaurice
+	Menus are not great on Multitouch due to low pointing accuracy
+	Marking menus have high angular accuracy
+	AKA radial menus
+		Appear around cursor
+	Backs up my assertion that gestures have scale problems in complex applicaitons
+	5-finger down as in DREAM, then lift some set to chord, then stroke
+
+User-Defined Gestures for Surface Computing
+Jacob O. Wobbrock, Meredith Ringel Morris, Andrew D. Wilson
+	Showed effect of gesture, asked users to perform its cause
+	"Our findings indicate that users rarely care about the number of fingers they employ, that one hand is preferred to two, that desktop idioms strongly influence users’ mental models, and that some commands elicit little gestural agreement, suggesting the need for on-screen widgets"
+	Backs up my assertion that designers come up with gestures and teach them to users
+	Also suggests that there is a linguistic dimension to gestures
+		citations of research on gesture, rather than UI design
+	Users are sometimes poor at picking differentiable gestures
+		I've seen users notice that they're doing this, e.g. realizing that forming a line formation and driving to a location can't both be "select robots -> draw line"
+		"patrol" vs. "form a box"
+			or not care that these are subtly different
+	Taxonomy v. different from Mark's
+	Very general gesture set, not tied to a specific task
+	Interesting points about users wanting to be consistent
+	Good paper, work into related work
+
+ShadowGuides: Visualizations for In-Situ Learning of Multi-Touch and Whole-Hand Gestures
+Dustin Freeman, Hrvoje Benko, Meredith Ringel Morris, Daniel Wigdor
+	On-demand assistance
+	Shows possible completions of gesture within interface display
+		Context-aware
+	Registration, continuation, movement, end life cycle for gestures
+	Better-liked than video
+
+Gesture Studio: Authoring Multi-Touch Interactions through Demonstration and Declaration
+Hao Lü, Yang Li
+	Tool for creating interactions, extension of Gesture Coder
+	Proton uses regular expressions of gestures
+		Which I think implies that a DFA can accept gestures (may have automata wrong...)
+	Has to use very few examples, as otherwise it won't save dev time
+	Suggests PFSM to avoid making an over-complex FSM
+		Better for ambiguious gestures
+	Composes state machines to recognize gestures
+		May be a useful tactic for my recognizer?
+
+
+Everything is a Window: Utilizing the Window Manager for Multi-Touch Interaction
+Raphael Wimmer, Fabian Hennecke
+	Big curved desk
+	Blend of multitouch and legacy apps
+
+Magic Desk: Bringing Multi-Touch Surfaces into Desktop Work
+Xiaojun Bi, Tovi Grossman, Justin Matejka, George Fitzmaurice
+	This is fitting the work to the tool rather than the other way around
+	Checking where users could make gestures and how easily
+	Dragging finger, docking boxes to each other
+	Measured execution time and fatigue
+
+Multitouch Finger Registration and Its Applications
+Oscar Kin-Chung Au, Chiew-Lan Tai
+	Seems a lot like DREAM
+	Applied to pulling up a menu with menu items at finger locations
+
+Towards a Formalization of Multi-touch Gestures 
+Dietrich Kammer, Jan Wojdziak, Mandy Keck, Rainer Groh, Severin Taranko
+	Lots of UI toolkits
+		Each has standard set of gestures
+		Adding new ones is doable but hard
+	Formalizaton of gesture building blocks 
+	Windows touch and TUIO lack abstraction
+	Semiotics for multi-touch gestures
+	Sequences of atomic gestures in a text format
+	EBNF of syntax for the gesture formalism is provided
+	Could use this as the intermediate language output by the gesture recognition software
+		Can probably build state machine directly from EBNF
+	Mapping between gestures and actual GeForMT stuff is hard
+		Wiggly line "move" shape of line actually matters for my application
+			Does say "Fine-grained information for each atomic gesture has to be available within the framework."
+		Has no temporal character
+			So no time-outs, no press&hold for N sec
+
+Using the PyMT toolkit for HCI Research
+Thomas Hansen, Christopher Denter, Mathieu Virbel
+	Tech report on the framework
+	Doesn't mention gestures or NUI 
+
+Ghosts in the Interface: Meta-user Interface Visualizations as Guides for Multi-touch Interaction
+Davy Vanacken, Alexandre Demeure, Kris Luyten, Karin Coninx
+	Users tend to operate using one finger (I should look at this in my system)
+	Invisibility/directness of interface is a leaky metaphor
+		Picture of a picture isn't a picture
+		So users are caught between "natural" interactions and a non-natural interface
+		Invisible UI has no affordances
