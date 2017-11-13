@@ -1,5 +1,5 @@
 
-\section{Intro/Research Statement}
+\chapter{Intro/Research Statement}
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \cite{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
@@ -11,7 +11,7 @@ To avoid this type of failure, the overall action of the swarm should be guided 
 Each robot receives its own program, and the sum of the execution of the programs on each robot results in completion of the task.
 The various approaches to development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
 
-\subsection{Problem Statement}
+\section{Problem Statement}
 
 One potential method to control a swarm of robots is having a central computer dictate to individual robots how the robots should move.
 However, centralized control is only as robust as the central controller. 
@@ -66,7 +66,7 @@ Because the proposed control software generation scheme is intended to potential
 %TODO: investigate CEBOT work 
 %TODO: Is it possible to have the compiler compile to ALLIANCE specifications of task ability for each robot? Still has problems with sensing that task is done or other robots are doing it.
 %TODO: ALLIANCE doesn't have an idea of minimum robots needed because even one robot can do the job, just more slowly. 
-\subsection{Hypothesis}
+\section{Hypothesis}
 
 There exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
 This transition point will be apparent because of a change in the gesture set that the user uses to interact with the swarm. 
