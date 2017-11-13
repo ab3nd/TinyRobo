@@ -56,7 +56,7 @@ def drawPoint(pointMsg):
     rosimage.encoding = ENCODINGMAP_PY_TO_ROS[currentImage.mode]
     (rosimage.width, rosimage.height) = currentImage.size
     rosimage.step = (PIL_MODE_CHANNELS[currentImage.mode] * rosimage.width)
-    rosimage.data = currentImage.tostring()
+    rosimage.data = currentImage.tobytes()
     #Ship it!
     imgPub.publish(rosimage)
 
@@ -65,7 +65,8 @@ def updateImage(imgMsg):
     #Convert to a PIL image, mapping is from https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
     encoding = ENCODINGMAP_ROS_TO_PY[imgMsg.encoding]
     #This overwrites the previous drawn points (I hope...)
-    currentImage = PILImage.fromstring(encoding, (imgMsg.width, imgMsg.height), imgMsg.data)
+    #currentImage = PILImage.fromstring(encoding, (imgMsg.width, imgMsg.height), imgMsg.data)
+    currentImage = PILImage.frombytes(encoding, (imgMsg.width, imgMsg.height), imgMsg.data)
     #Republish the un-edited image
     imgPub.publish(imgMsg)
 
