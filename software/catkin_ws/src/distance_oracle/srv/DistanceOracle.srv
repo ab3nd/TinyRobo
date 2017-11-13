@@ -1,4 +1,5 @@
 uint32 toID
 uint32 fromID
+bool getAll
 ---
-float32 distance
+float32[] distances

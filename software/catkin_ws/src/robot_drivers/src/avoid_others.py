@@ -11,10 +11,14 @@ class AvoidOthersDriver():
 
 	def __init__(self, robotID):
 		#Subscribe to the twist messages from the joystick for this robot
-		self.twistSub = rospy.Subscriber('/laser_driver_{0}'.format(robotID), Twist, self.js_handler)
+		self.twistSub = rospy.Subscriber('/js_twists_{0}'.format(robotID), Twist, self.js_handler)
 
 		#Publish twist messages that control the robot
 		self.twistPub = rospy.Publisher('/avoid_twists_{0}'.format(robotID), Twist, queue_size=0)
+
+		#Sense range and bearing to other robots
+		self.rabSub = rospy.Subscriber('/rab_sense_{0}'.format(robotID), RangeAndBearing, self.update_rab)
+		self.ranges = {}
 
 
 	def js_handler(self, msg):

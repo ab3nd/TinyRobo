@@ -25,6 +25,9 @@
    <!-- Distance oracle -->
    <node pkg="distance_oracle" type="distance_oracle_server.py" name="fake_range_service" output="screen"/>
 
+   <!-- Bearing oracle -->
+   <node pkg="bearing_oracle" type="bearing_oracle_server.py" name="fake_bearing_service" output="screen"/>
+
    <!-- Network service -->
    <node pkg="network_service" type="network_server.py" name="fake_net_service" output="screen">
       <param name="txRange" value="2" type="double"/>
@@ -51,5 +54,10 @@
    </node>
 
    <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
+
+   <!-- client for bearing service -->
+   <node pkg="range_and_bearing_sensor" type="range_and_bearing_sensor.py" name="rab_sensor_test" output="screen">
+      <param name="robot_id" value="3" type="int"/>
+   </node>
 
 </launch>
