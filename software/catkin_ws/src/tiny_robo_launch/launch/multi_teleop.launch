@@ -1,0 +1,66 @@
+<launch>
+
+	<node pkg="joy" type="joy_node" name="joystick_node" output="screen">
+		<param name="/coalesce_interval" value="0.1" type="double"/>
+		<remap from="joy" to="joy_1"/>
+	</node>
+
+	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist" output="screen">
+		<remap from="joy" to="joy_1"/>
+	</node>
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
+		<param name="/driver_name" value="/cmd_vel" type="str" />
+	</node>
+
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
+		<param name="robot_addr" value="192.168.1.218" type="str" />
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
+	</node>
+
+
+	<!-- second joystick -->
+
+	<node pkg="joy" type="joy_node" name="joystick_node_2" output="screen">
+		<param name="/coalesce_interval" value="0.1" type="double"/>
+		<param name="/dev" value="/dev/input/js1"/>
+		<remap from="joy" to="joy_2"/>
+	</node>
+
+	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist_2" output="screen">
+		<remap from="joy" to="joy_2"/>
+		<remap from="cmd_vel" to="cmd_vel_2"/>
+	</node>
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node_2" output="screen">
+		<param name="/driver_name" value="/cmd_vel_2" type="str" />
+	</node>
+
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node_2" output="screen">
+		<param name="robot_addr" value="192.168.1.180" type="str" />
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node_2/drive_cmd"/>
+	</node>
+
+	<!-- third joystick -->
+
+	<node pkg="joy" type="joy_node" name="joystick_node_3" output="screen">
+		<param name="/coalesce_interval" value="0.1" type="double"/>
+		<param name="/dev" value="/dev/input/js2"/>
+		<remap from="joy" to="joy_3"/>
+	</node>
+
+	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist_3" output="screen">
+		<remap from="joy" to="joy_3"/>
+		<remap from="cmd_vel" to="cmd_vel_3"/>
+	</node>
+
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node_3" output="screen">
+		<param name="/driver_name" value="/cmd_vel_3" type="str" />
+	</node>
+
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node_3" output="screen">
+		<param name="robot_addr" value="192.168.1.176" type="str" />
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node_3/drive_cmd"/>
+	</node>	
+
+</launch>
