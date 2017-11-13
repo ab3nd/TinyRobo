@@ -66,7 +66,7 @@
    <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
    <!-- client for bearing service -->
-   <node pkg="range_and_bearing_sensor" type="range_and_bearing_sensor.py" name="rab_sensor_test" output="screen">
+   <node pkg="range_and_bearing" type="range_and_bearing_sensor.py" name="rab_sensor_test" output="screen">
       <param name="robot_id" value="3" type="int"/>
    </node>
 

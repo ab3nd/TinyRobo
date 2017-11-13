@@ -25,16 +25,16 @@ def RaBSensor():
 	while not rospy.is_shutdown():
 		#Try the service call
 		try:
-			distMsg = rospy.ServiceProxy("distance_oracle", DistanceOracle)
-			dResponse = distMsg(fromID = id, toID = 0, getAll = True)
+			#TODO THIS IS A GRODY HACK
+			robots = [0,1,3]
+			for ii in robots:
+				distMsg = rospy.ServiceProxy("distance_oracle", DistanceOracle)
+				dResponse = distMsg(fromID = id, toID = ii)
 
-			bearingMsg = rospy.ServiceProxy("bearing_oracle", BearingOracle)
-			bResponse = bearingMsg(fromID = id, toID = 0, getAll = True)
+				bearingMsg = rospy.ServiceProxy("bearing_oracle", BearingOracle)
+				bResponse = bearingMsg(fromID = id, toID = ii)
 
-			for value in bResponse.bearings:
-				rospy.logwarn(bearing)
-			rospy.logwarn("---")
-			
+				rospy.logwarn("{0} -> {1}, {2}, {3}".format(id, ii, dResponse.distance, bResponse.bearing))
 
 		except rospy.ServiceException, e:
 			print "Service call failed: {0}".format(e)
