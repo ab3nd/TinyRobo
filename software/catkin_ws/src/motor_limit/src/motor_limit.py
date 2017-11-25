@@ -125,7 +125,7 @@ class motorLimiter:
 		m1_speed, m1_dir = self.mapSpeed(m1_cmd, 0)
 		m2_speed, m2_dir = self.mapSpeed(m2_cmd, 1)
 
-		rospy.logwarn("({0},{1}), ({2},{3})".format(m1_speed, m1_dir, m2_speed, m2_dir))
+		#rospy.logwarn("({0},{1}), ({2},{3})".format(m1_speed, m1_dir, m2_speed, m2_dir))
 		#Send the speed/direction values
 		#Result is [motor1 speed, motor1 dir, motor1 status, motor2 speed, motor2 dir, motor2 status]
 		result = self.robot.sendMotor([m1_speed, m1_dir, m2_speed, m2_dir])
