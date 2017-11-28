@@ -1,0 +1,164 @@
+\section{Expected Contributions}
+
+\subsection{Multitouch Gesture set for Swarm Control}
+This work will attempt to determine if there is an intuitive multitouch gesture set for a single user to command a large swarm of robots.
+For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, and cloud (unknown robot count). 
+In all the cases except the cloud case, the robots are represented as individual robots on the screen of the interaction device. 
+In the cloud case, the robots are presented as a cloud covering the area that the robots are present in, but without precise representation of each individual robot. 
+
+There are 18 tasks. 
+Each user is assigned to one case, and then performs all the tasks using that case. 
+Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
+Some of the tasks do not make sense with the cloud case, such as interactions with a single robot, so users who are assigned to the cloud case will not view the tasks that are impossible in that case.
+Pilot runs of the study indicate that it can be completed in one hour. 
+
+The data set will be analyzed and compared to existing work on multitouch gestures for command and control. 
+The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
+The influence of the presentation of the interface on the gesture set will be examined. 
+The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
+
+\subsection{Compilation of User Gestures into Robot Programs}
+The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
+One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \cite{ayanian2014controlling}. 
+As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
+However, this work assumes that the individual swarm units can localize themselves, and that there is constant availability of communications between all swarm members and the central controller. 
+For a number of reasons, these assumptions frequently fail to hold, and so a more robust system can be designed by assuming that localization and communication are difficult. 
+This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
+The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
+
+Previous work in gesture control for small groups of robots was able to recognize a grammar of user inputs using a finite state machine \cite{micire2010multi}.
+The intent of this work is to implement basic robot behaviors as statements in an implementation of guarded control programming with rates (GCPR), which can then be composed into more complex behaviors based on the recognized user gestures \cite{napp2011compositional}.  
+
+
+\subsection{Inexpensive Swarm Hardware}
+
+The previously described swarm robot platforms tend to fall into one of two groups, from a hardware perspective. 
+The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap.
+This group includes Alice, Jasmine, AmIR, and the other tabletop systems. 
+Due to their limited computation, these systems do not generally support complex algorithms such as vision processing. 
+The second group use more powerful computers, but at a significant cost in weight, power consumption, and financial outlay.
+
+The robot described in this work is intended to occupy a theoretical ``sweet spot'' at the high end of the tabletop swarms or the low end of the room-scale swarms, depending on how large of a mobility platform is used. 
+As a result, if it is configured for tabletop operation, the system can be used with a minimum of available space. 
+If, on the other hand, it is configured for room-scale operations, the system can be tested in natural or naturalistic human environments. 
+
+The robot swarm developed for this work consists of a hardware module for controlling two motors of a toy, such as a small RC car, for mobility. 
+The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
+Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware becomes the primary difficulty. 
+The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
+If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
+The hardware resulting from this work is designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
+
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.8\textwidth]{../robot_makers_2/tiny_tank}
+%\caption{A tank-drive toy with a 3.7V lithium polymer battery and a control board mounted to it.}
+%\end{figure}
+%
+%In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
+%Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
+%The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
+%The controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+%However, unlike the Spider-Bots and COTSBots, this work does not specify a particular toy chassis to use for mobility. 
+%Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
+%Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
+%All of these toys can be controlled by the hardware described in this work. 
+%
+%The robots are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
+%While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
+%The software framework in development to support the robots is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+%
+%%Toys cost $24, $16, $15, $21/2, 
+%\begin{table}
+%	\begin{tabular}{l l l l}
+%	Part & Price & Quantity & Subtotal\\
+%	\hline
+%	Mobile Toy & 14-20 & 1 & 20 \\
+%	Battery & 2.54 & 1 & 2.54 \\
+%	Main PCB & 2.75 &  1 & 2.75 \\
+%	ESP8266 Module & 2-7 & 1 & 7.0 \\
+%	DRV8830 & 2.30 & 2 & 4.60 \\
+%	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
+%	MCP73831 & 0.58 & 1 & 0.58 \\
+%	\hline
+%	Total & & & 27.83-38.83\\
+%	\end{tabular}
+%	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
+%\end{table}
+%
+%The processor of the controller is an ESP-8266 wifi module.
+%The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
+%The ESP-8266 is available in several form factors, each designated by a different suffix. 
+%The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
+%
+%In addition to 802.11 b/g/n WiFi, the ESP-8266 supports a variety of serial protocols, including a UART, I$^2$C, SPI. 
+%The I$^2$C interface is used on the board to connect to two DRV8830 motor driver ICs by Texas Instruments. 
+%The DRV8830 provides 1A of drive current.
+%Experimental tests with 8 different toys indicate that small toys draw well under 1A while moving freely, and peak around 2A when the motors are stalled. 
+%The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
+%The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
+%
+%The control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
+%The charge controller allows the robot to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
+%Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
+%Moving this functionality to the adapter board reduces the size and cost of the control module. 
+%
+%\subsection{Toy Compatibility}
+%
+%Children's toys normally use inexpensive brushed DC motors in their construction. 
+%These motors have not been the subject of extensive study, as they are commodity parts. 
+%However, it is useful to quantify their behavior to some extent, to determine which kinds of toys can be used with the controller. 
+%
+%Two common types of motors found in children's toys are the RE and FA series of motors produced by Mabuchi Motor, or imitations of these motors produced by other companies. 
+%These motors use simple metal brushes and are constructed to be inexpensive, rather than precise. 
+%The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
+%
+%\begin{table}
+%	\begin{tabular}{l l l l l}
+%	Model & Voltage & No Load Current & Max Efficiency & Stall Current\\
+%	\hline
+%	RE-140RA-2270 & 1.5-3 & 0.21 & 0.66 & 2.1 \\
+%	RE-140RA-18100 & 1.5-3 & 0.13 & 0.37 & 1.07 \\
+%	RE-140RA-12240 & 3-6 & 0.05 & 0.14 & 0.39 \\
+%	FA-130RA-2270 & 1.5-3 & 0.2 & 0.66 & 2.2\\
+%	FA-130RA-18100 & 1.5-3 & 0.15 & 0.56 & 2.1\\
+%	FA-130RA-14150 & 1.5-4.5 & 0.11 & 0.31 & 0.9\\
+%	\end{tabular}
+%	\caption{Current draw for Mabuchi-branded motors.}
+%	\label{tab:properBrandedMotors}
+%\end{table}
+%
+%These are somewhat large brushed motors. 
+%For smaller toys, coreless motors are more common. 
+%The values in table \ref{tab:coreless} were measured from six of the toys used in constructing the swarm.
+%The measurements from the toy helicopter and toy quadcopter are included for comparison.
+%While the board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
+%
+%\begin{table}
+%	\begin{tabular}{l l l}
+%	Motor number & No Load Current & Stall Current (measured)\\
+%	\hline 
+%	Hexbug brand mini spider & 0.03A & 0.13A* \\
+%	Hexbug brand 6-legged insect & 0.06A & 0.25A \\
+%	Miniature toy RC car & 0.21A & 0.8A \\
+%	Miniature toy RC insect & 0.19A & 1.13A \\
+%	Miniature toy RC vehicle & 0.37A & 0.8A \\
+%	Miniature toy RC vehicle & 0.06A & 0.74A \\
+%	Toy helicopter & 0.07A & 1.12A \\
+%	Toy quadcopter & 0.74A & 1.99A \\
+%	\end{tabular}
+%	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. *The Hexbug mini spider includes a slip clutch, so attempting to stall the motors by holding the toy still does not prevent the motor from turning}
+%	\label{tab:coreless}
+%\end{table}
+%
+%
+%\subsection{Potential for Expansion}
+%
+%The current design for the robots does not include sensors as a cost-saving decision. 
+%However, the communication between the ESP-8266 and the motor drivers uses the industry standard I2C bus serial interface. 
+%Due to the non-proprietary nature of this interface standard, it has been widely adopted, and many sensors are available to connect to an I2C bus. 
+%For example, Vishay Semiconductor makes the VCNL3020, which is an infrared proximity sensor with a 20mm range. 
+%If greater range is required, The ST Microelectronics VL53L0X Time-of-flight (ToF) laser ranger and gesture sensor provides a 2M range and 1D gesture sensing in a 4.4mm x 2.4mm package. 
+%As of this writing, the VCNL3020 is \$3.44 and the VL53L0X costs \$6.28 in single quantities.
+%These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with this platform. 
+%Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the platform. 

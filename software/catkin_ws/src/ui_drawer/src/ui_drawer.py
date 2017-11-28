@@ -33,7 +33,7 @@ def drawPoint(pointMsg):
     if currentImage is None:
         return
     #Magic numbers are half of the difference in screen sizes between the UI image
-    #and the 3M multitiouch display, so the points end up in the right locations
+    #and the 3M multitiouch display, so the points end up in the right location
     x = pointMsg.point.x - 340
     y = pointMsg.point.y - 150
 
