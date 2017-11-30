@@ -16,6 +16,9 @@ space_paren = re.compile("([\S])\(")
 #for putting spaces around arrows
 space_arrow = re.compile("([\s]?)->([\s]?)")
 
+#for removing anything in parens
+strip_paren = re.compile("\([^\)]*\)")
+
 def add_code(code):
 	#break up at semicolons
 	codes = code.split(';')
@@ -28,6 +31,11 @@ def add_code(code):
 		#put spaces around arrows
 		code = re.sub(space_arrow, lambda x: "{0}->{1}".format(x.group(1) if x.group(1) else " ", x.group(2) if x.group(2) else " "), code)		
 
+		#Drop targets (in parens) and only log the code
+		code = re.sub(strip_paren, "", code)
+		code = code.strip()
+
+		print code
 		#Update the counts of all codes
 		if code in all_codes.keys():
 			all_codes[code] += 1
