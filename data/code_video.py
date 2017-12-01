@@ -34,8 +34,8 @@ class VideoCodeCmd(cmd.Cmd):
 		self.drag_parser.add_argument('-h', '--hands', help="Number of hands user used for command", type=int, default=1)
 		self.drag_parser.add_argument('-d', '--draw', help="What user drew with drag command", nargs='*')
 		self.drag_parser.add_argument('-w', '--write', help="What user wrote with drag command", nargs='*')
-		#I'm using -h and not adding help
-		self.drag_parser.add_argument('--help', action='help', help='show this help message and exit')
+		#I'm using -h and not adding help, so add it explicitly
+		self.drag_parser.add_argument('--help', action='help', help='show this help message')
 		self.drag_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.drag_parser.add_argument('-o','--objects', help="the targets of the drag option", nargs='*')
 		
