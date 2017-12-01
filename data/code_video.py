@@ -179,9 +179,6 @@ class VideoCodeCmd(cmd.Cmd):
 			self.state["participant"] = self.participant_number
 			self.state["tasks"] = {}
 			
-			#Write it to the new file
-			self.write_state()
-
 		except SystemExit:
 			return
 
@@ -196,8 +193,6 @@ class VideoCodeCmd(cmd.Cmd):
 			else:
 				print "Added task {0}".format(self.task_number)
 				self.state["tasks"][self.task_number] = []
-			#Write the change to the new file
-			self.write_state()
 		except SystemExit:
 			return
 
@@ -207,33 +202,38 @@ class VideoCodeCmd(cmd.Cmd):
 			self.out_file.truncate(0)
 			self.out_file.write(json.dumps(self.state))
 
-	# def precmd(self, line):
-	# 	#So quit still works even if things are not set
-	# 	if line.startswith("quit"):
-	# 		return cmd.Cmd.precmd(self, line)
+	def precmd(self, line):
+		#So quit still works even if things are not set
+		if line.startswith("quit"):
+			return cmd.Cmd.precmd(self, line)
 
-	# 	if self.participant_number is None:
-	# 		if line.startswith("participant"):
-	# 			return cmd.Cmd.precmd(self, line)
-	# 		else:
-	# 			print "Set participant number with 'participant <number>'"
-	# 			return ""
+		#Check if participant number and task number are set, and demand that they be set
+		#if they are not. 
+		if self.participant_number is None:
+			if line.startswith("participant"):
+				return line
+			else:
+				print "Set participant number with 'participant <number>'"
+				return ""
 
-	# 	if self.task_number is None:
-	# 		if line.startswith("task"):
-	# 			return cmd.Cmd.precmd(self, line)
-	# 		else:
-	# 			print "Set task number with 'task <number>'"
-	# 			return ""
+		if self.task_number is None:
+			if line.startswith("task"):
+				return line
+			else:
+				print "Set task number with 'task <number>'"
+				return ""
 
-	# 	else:
-	# 		#We're good, call the superclass version
-	# 		return cmd.Cmd.precmd(self, line)
-    
+		else:
+			#We're good, call the superclass version
+			return cmd.Cmd.precmd(self, line)
+
+	#Actually want to do nothing, not execute the last command
+	def emptyline(self):
+		pass
+
 	def postcmd(self, stop, line):
 		self.write_state()
 		return cmd.Cmd.postcmd(self, stop, line)
-
 
 if __name__ == '__main__':
 	VideoCodeCmd().cmdloop()
