@@ -105,12 +105,18 @@ class VideoCodeCmd(cmd.Cmd):
 		except SystemExit:
 			return
 
+	def help_drag(self):
+		self.drag_parser.print_help()
+
 	def do_voice(self, options):
 		try:
 			args = self.voice_parser.parse_args(options.split())
 			self.state["tasks"][self.task_number].append(args.__dict__)
 		except SystemExit:
 			return
+
+	def help_voice(self):
+		self.voice_parser.print_help()
 
 	def do_tap(self, options):
 		try:
@@ -119,12 +125,18 @@ class VideoCodeCmd(cmd.Cmd):
 		except SystemExit:
 			return
 
+	def help_tap(self):
+		self.tap_parser.print_help()
+
 	def do_lasso(self, options):
 		try:
 			args = self.lasso_parser.parse_args(options.split())
 			self.state["tasks"][self.task_number].append(args.__dict__)
 		except SystemExit:
 			return
+
+	def help_lasso(self):
+		self.lasso_parser.print_help()
 
 	def do_pinch(self, options):
 		try:
@@ -133,12 +145,18 @@ class VideoCodeCmd(cmd.Cmd):
 		except SystemExit:
 			return
 
+	def help_pinch(self):
+		self.pinch_parser.print_help()
+
 	def do_box(self, options):
 		try:
 			args = self.box_parser.parse_args(options.split())
 			self.state["tasks"][self.task_number].append(args.__dict__)
 		except SystemExit:
 			return
+
+	def help_box(self):
+		self.box_parser.print_help()
 
 	def do_ui(self, options):
 		try:
@@ -147,12 +165,18 @@ class VideoCodeCmd(cmd.Cmd):
 		except SystemExit:
 			return
 
+	def help_ui(self):
+		self.ui_parser.print_help()
+
 	def do_memo(self, options):
 		try:
 			args = self.memo_parser.parse_args(options.split())
 			self.state["tasks"][self.task_number].append(args.__dict__)
 		except SystemExit:
 			return
+
+	def help_memo(self):
+		self.memo_parser.print_help()
 
 	def do_quit(self, options):
 		self.write_state()
