@@ -45,12 +45,15 @@ class VideoCodeCmd(cmd.Cmd):
 		self.voice_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 
 		#For tap commands
-		self.tap_parser = argparse.ArgumentParser(prog="tap")
+		self.tap_parser = argparse.ArgumentParser(add_help=False, prog="tap")
 		self.tap_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.tap_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.tap_parser.add_argument('-c', '--count', help="how many taps", type=int, default=1)
 		self.tap_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
-		
+		self.tap_parser.add_argument('-h', '--hold', help="this tap ends in a hold", nargs=0, default=False, action="store_true")
+		#I'm using -h and not adding help, so add it explicitly
+		self.tap_parser.add_argument('--help', action='help', help='show this help message')	
+
 		#lasso commands
 		self.lasso_parser = argparse.ArgumentParser(prog="lasso")
 		self.lasso_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
@@ -58,9 +61,13 @@ class VideoCodeCmd(cmd.Cmd):
 		self.lasso_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
 		
 		#pinch commands
-		self.pinch_parser = argparse.ArgumentParser(prog="pinch")
+		self.pinch_parser = argparse.ArgumentParser(add_help=False, prog="pinch")
 		self.pinch_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.pinch_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
+		self.pinch_parser.add_argument('-h', '--hands', help="Number of hands user used for command", type=int, default=1)
+		self.pinch_parser.add_argument('-r', '--reverse', help="this is a reverse pinch (hands/fingers move apart)", nargs=0, default=False, action="store_true")
+		#I'm using -h and not adding help, so add it explicitly
+		self.pinch_parser.add_argument('--help', action='help', help='show this help message')		
 
 		#box selection
 		self.box_parser = argparse.ArgumentParser(prog="box")
@@ -72,6 +79,7 @@ class VideoCodeCmd(cmd.Cmd):
 		#ui element
 		self.ui_parser = argparse.ArgumentParser(prog="ui")
 		self.ui_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
+		self.ui_parser.add_argument('-k', '--kind', help="element type", choices=["button", "menu", "other"])
 		self.ui_parser.add_argument('-d', '--description', help="description of ui element", nargs ='*')
 
 		#other command
