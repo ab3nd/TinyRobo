@@ -6,7 +6,6 @@ import re
 
 #Go through all the data files and suggest validation/normalization stuff
 
-
 #Store counts of all of the codes
 all_codes={}
 
@@ -25,7 +24,6 @@ def add_code(code):
 	for code in codes:
 		code = code.strip()
 		#put a single space before parens
-		print code
 		code = re.sub(space_paren, lambda x: "{0} (".format(x.group(1)), code)
 
 		#put spaces around arrows
@@ -35,7 +33,6 @@ def add_code(code):
 		code = re.sub(strip_paren, "", code)
 		code = code.strip()
 
-		print code
 		#Update the counts of all codes
 		if code in all_codes.keys():
 			all_codes[code] += 1
@@ -47,7 +44,6 @@ files = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith(".csv")]
 for f in files:
 	with open(f,"r") as infile:
 		csvFile = csv.DictReader(infile,delimiter=',')
-		print "=== {0} ===".format(f)
 		#Used to check if timestamps are monotonically increasing
 		lastLineStamp = None
 
@@ -73,5 +69,8 @@ for f in files:
 					print "p{0}.csv timestamp {1} exhibits retrochronality".format(line["user"], line["time"])
 
 #list all unique codes
-for code in all_codes.keys():
-	print code, all_codes[code]
+#for code in all_codes.keys():
+#	print code, all_codes[code]
+codeList = sorted(zip(all_codes.values(),all_codes.keys()), key=lambda item:item[0])
+for item in codeList:
+	print "{0}\t{1}".format(item[0], item[1])
