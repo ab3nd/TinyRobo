@@ -50,7 +50,7 @@ class VideoCodeCmd(cmd.Cmd):
 		self.tap_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.tap_parser.add_argument('-c', '--count', help="how many taps", type=int, default=1)
 		self.tap_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
-		self.tap_parser.add_argument('-h', '--hold', help="this tap ends in a hold", nargs=0, default=False, action="store_true")
+		self.tap_parser.add_argument('-h', '--hold', help="this tap ends in a hold", default=False, action="store_true")
 		#I'm using -h and not adding help, so add it explicitly
 		self.tap_parser.add_argument('--help', action='help', help='show this help message')	
 
@@ -65,7 +65,7 @@ class VideoCodeCmd(cmd.Cmd):
 		self.pinch_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.pinch_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.pinch_parser.add_argument('-h', '--hands', help="Number of hands user used for command", type=int, default=1)
-		self.pinch_parser.add_argument('-r', '--reverse', help="this is a reverse pinch (hands/fingers move apart)", nargs=0, default=False, action="store_true")
+		self.pinch_parser.add_argument('-r', '--reverse', help="this is a reverse pinch (hands/fingers move apart)",default=False, action="store_true")
 		#I'm using -h and not adding help, so add it explicitly
 		self.pinch_parser.add_argument('--help', action='help', help='show this help message')		
 
@@ -74,13 +74,13 @@ class VideoCodeCmd(cmd.Cmd):
 		self.box_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.box_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.box_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
-		self.box_parser.add_argument('-s', '--start', help="start point of selection", choices=["tl", "tr", "bl", "br"])
+		self.box_parser.add_argument('-s', '--start', help="start point of selection", choices=["tl", "tr", "bl", "br"], required = True)
 		
 		#ui element
 		self.ui_parser = argparse.ArgumentParser(prog="ui")
 		self.ui_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.ui_parser.add_argument('-k', '--kind', help="element type", choices=["button", "menu", "other"])
-		self.ui_parser.add_argument('-d', '--description', help="description of ui element", nargs ='*')
+		self.ui_parser.add_argument('-d', '--description', help="description of ui element", nargs ='*', required=True)
 
 		#other command
 		self.other_parser = argparse.ArgumentParser(prog="other")
@@ -185,6 +185,16 @@ class VideoCodeCmd(cmd.Cmd):
 
 	def help_memo(self):
 		self.memo_parser.print_help()
+
+	def do_other(self, options):
+		try:
+			args = self.other_parser.parse_args(options.split())
+			self.state["tasks"][self.task_number].append(args.__dict__)
+		except SystemExit:
+			return
+
+	def help_other(self):
+		self.other_parser.print_help()
 
 	def do_quit(self, options):
 		self.write_state()
