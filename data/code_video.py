@@ -19,6 +19,7 @@ import cmd
 import csv
 import argparse
 import json
+import getpass
 
 
 
@@ -32,12 +33,12 @@ class VideoCodeCmd(cmd.Cmd):
 		self.drag_parser = argparse.ArgumentParser(add_help=False, prog="drag")
 		self.drag_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.drag_parser.add_argument('-h', '--hands', help="Number of hands user used for command", type=int, default=1)
+		self.drag_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
+		self.drag_parser.add_argument('-o','--objects', help="the targets of the drag option", nargs='*', required=True)
 		self.drag_parser.add_argument('-d', '--draw', help="What user drew with drag command", nargs='*')
 		self.drag_parser.add_argument('-w', '--write', help="What user wrote with drag command", nargs='*')
 		#I'm using -h and not adding help, so add it explicitly
 		self.drag_parser.add_argument('--help', action='help', help='show this help message')
-		self.drag_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
-		self.drag_parser.add_argument('-o','--objects', help="the targets of the drag option", nargs='*')
 		
 		#For voice commands
 		self.voice_parser = argparse.ArgumentParser(prog="voice")
@@ -109,7 +110,9 @@ class VideoCodeCmd(cmd.Cmd):
 		"""A drag consists of 'drag' fingers used, draw or write, hands used, and a sequence of targets """
 		try:
 			args = self.drag_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "drag"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -119,7 +122,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_voice(self, options):
 		try:
 			args = self.voice_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "voice_command"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -129,7 +134,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_tap(self, options):
 		try:
 			args = self.tap_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "tap"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -139,7 +146,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_lasso(self, options):
 		try:
 			args = self.lasso_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "lasso"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -149,7 +158,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_pinch(self, options):
 		try:
 			args = self.pinch_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "pinch"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -159,7 +170,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_box(self, options):
 		try:
 			args = self.box_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "box_select"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -169,7 +182,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_ui(self, options):
 		try:
 			args = self.ui_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "ui"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -179,7 +194,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_memo(self, options):
 		try:
 			args = self.memo_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "memo"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -189,7 +206,9 @@ class VideoCodeCmd(cmd.Cmd):
 	def do_other(self, options):
 		try:
 			args = self.other_parser.parse_args(options.split())
-			self.state["tasks"][self.task_number].append(args.__dict__)
+			event = args.__dict__
+			event["event_type"] = "other"
+			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
 			return
 
@@ -214,7 +233,7 @@ class VideoCodeCmd(cmd.Cmd):
 			self.participant_number = args.number
 			print "Starting new file for participant {0}".format(self.participant_number)
 			#TODO this will clobber the file
-			self.out_file = open("p_{0}.json".format(self.participant_number), 'w')
+			self.out_file = open("p_{0}_{1}.json".format(self.participant_number, getpass.getuser()), 'w')
 
 			#Set up the new state
 			self.state = {}
