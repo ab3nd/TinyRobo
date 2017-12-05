@@ -29,12 +29,18 @@ class VideoCodeCmd(cmd.Cmd):
 		#Call the superclass init
 		cmd.Cmd.__init__(self, *args, **kwargs)
 
+		#base parser with some common options
+		self.base_parser = argparse.ArgumentParser(add_help=False)
+		self.base_parser.add_argument('-x','--example', help="motion was done as an example or repetition of previous command", default=False, action="store_true")
+		self.base_parser.add_argument('-n','--no-contact', help="motion was done without touching the screen", default=False, action="store_true")
+
+
 		#Argument parser for drag commands
-		self.drag_parser = argparse.ArgumentParser(add_help=False, prog="drag")
+		self.drag_parser = argparse.ArgumentParser(add_help=False, prog="drag", parents=[self.base_parser])
 		self.drag_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.drag_parser.add_argument('-h', '--hands', help="Number of hands user used for command", type=int, default=1)
 		self.drag_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
-		self.drag_parser.add_argument('-o','--objects', help="the targets of the drag option", nargs='*', required=True)
+		self.drag_parser.add_argument('-o', '--objects', help="the targets of the drag option", nargs='*', required=True)
 		self.drag_parser.add_argument('-d', '--draw', help="What user drew with drag command", nargs='*')
 		self.drag_parser.add_argument('-w', '--write', help="What user wrote with drag command", nargs='*')
 		#I'm using -h and not adding help, so add it explicitly
@@ -46,23 +52,23 @@ class VideoCodeCmd(cmd.Cmd):
 		self.voice_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 
 		#For tap commands
-		self.tap_parser = argparse.ArgumentParser(add_help=False, prog="tap")
+		self.tap_parser = argparse.ArgumentParser(add_help=False, prog="tap", parents=[self.base_parser])
 		self.tap_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.tap_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.tap_parser.add_argument('-c', '--count', help="how many taps", type=int, default=1)
-		self.tap_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
+		self.tap_parser.add_argument('-o', '--objects', help="the target of the tap", nargs='*', required = True)
 		self.tap_parser.add_argument('-h', '--hold', help="this tap ends in a hold", default=False, action="store_true")
 		#I'm using -h and not adding help, so add it explicitly
 		self.tap_parser.add_argument('--help', action='help', help='show this help message')	
 
 		#lasso commands
-		self.lasso_parser = argparse.ArgumentParser(prog="lasso")
+		self.lasso_parser = argparse.ArgumentParser(prog="lasso", parents=[self.base_parser])
 		self.lasso_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.lasso_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
-		self.lasso_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
+		self.lasso_parser.add_argument('-o', '--objects', help="the target of the tap", nargs='*', required = True)
 		
 		#pinch commands
-		self.pinch_parser = argparse.ArgumentParser(add_help=False, prog="pinch")
+		self.pinch_parser = argparse.ArgumentParser(add_help=False, prog="pinch", parents=[self.base_parser])
 		self.pinch_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.pinch_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.pinch_parser.add_argument('-h', '--hands', help="Number of hands user used for command", type=int, default=1)
@@ -71,23 +77,23 @@ class VideoCodeCmd(cmd.Cmd):
 		self.pinch_parser.add_argument('--help', action='help', help='show this help message')		
 
 		#box selection
-		self.box_parser = argparse.ArgumentParser(prog="box")
+		self.box_parser = argparse.ArgumentParser(prog="box", parents=[self.base_parser])
 		self.box_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
 		self.box_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
-		self.box_parser.add_argument('-o','--objects', help="the target of the tap", nargs='*', required = True)
+		self.box_parser.add_argument('-o', '--objects', help="the target of the tap", nargs='*', required = True)
 		self.box_parser.add_argument('-s', '--start', help="start point of selection", choices=["tl", "tr", "bl", "br"], required = True)
 		
 		#ui element
-		self.ui_parser = argparse.ArgumentParser(prog="ui")
+		self.ui_parser = argparse.ArgumentParser(prog="ui", parents=[self.base_parser])
 		self.ui_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.ui_parser.add_argument('-k', '--kind', help="element type", choices=["button", "menu", "other"])
 		self.ui_parser.add_argument('-d', '--description', help="description of ui element", nargs ='*', required=True)
 
 		#other command
-		self.other_parser = argparse.ArgumentParser(prog="other")
+		self.other_parser = argparse.ArgumentParser(prog="other", parents=[self.base_parser])
 		self.other_parser.add_argument('-t', '--time', help="timestamp of action",type=float, required=True)
 		self.other_parser.add_argument('-d', '--description', help="description of command", nargs ='*', required = True)
-		self.other_parser.add_argument('-o','--objects', help="the target of the command", nargs='*', required = True)
+		self.other_parser.add_argument('-o', '--objects', help="the target of the command", nargs='*', required = True)
 		
 		#memo
 		self.memo_parser = argparse.ArgumentParser(prog="memo")
