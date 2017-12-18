@@ -40,7 +40,7 @@ def add_code(code):
 			all_codes[code] = 1
 
 #Get all csv files in the directory
-files = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith(".csv")]
+files = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith(".csv") and f.startswith('p')]
 for f in files:
 	with open(f,"r") as infile:
 		csvFile = csv.DictReader(infile,delimiter=',')
