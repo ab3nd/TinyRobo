@@ -171,25 +171,55 @@ Codes can be consolidated or divided until repeated passes of coding and compari
 During each iteration of coding and comparison, the coder makes memos as well, describing the links they see between related coded elements and higher-level abstractions that relate the elements. 
 These memos are eventually written up as the social scientific theory, which is believed to be grounded in the data because it arises from the coding process. 
 
-We had NNN coders, and performed NNN \todo{I hope this is "2" at most} passes through the data.
-Coding based on Mark's paper for initial pass, plus open coding to encompass anything that that didn't cover. 
-After the first pass of coding, the coders met to compare memos and coding elements. During this meeting, we created a code book based on the codes that each coder developed. All of the video was then recoded using the common codebook. 
+\subsection{Initial coding pass}
+
+The inital pass used open coding, where the ``codes'' were essentially free-form text entry. 
+Rough counts of the open codes for the first 10 participants indicated that ten of the codes covered 81\% of the 580 total coded events. 
+The ten most heavily used codes are, in order of occurrence: drag, tap, voice command, box select, 2 finger drag, double-tap, lasso, tap and hold, 2 handed drag, reverse pinch, and parallel hands. 
+This pass of coding indicated that a majority of the user actions could be coded as some form of drag, some form of tap, box or lasso selection, pinch, and parallel hands. 
+
+The most common code was drag, which accounts for 37.58\% of the rough coding, or 42.07\% if all forms of drag in the top ten codes are considered. ``Drag'' is when the user places one finger down, moves it to another location, and raises it again. Two finger drag is the same, only with two fingers on the same hand placed on the screen rather than one. Two-handed drag is single-finger drag, but executed with both hands at the same time. 
+
+The second most common code was ``tap'', with 20.34\% of the rough coding, or 25.34\% if tap, doubletap, and tap and hold are all considered. Tap is when the user places a finger down and then very quickly raises it again. Double-tap is two taps in the same location in quick succession. Tap and hold is when the user places their finger on the screen and leaves it in one place for more than a second before raising it. 
+
+Box select consists of a diagonal (relative to the screen edges) drag gesture over the robots or another object on screen, with the intent to select everything within the box whose diagonal is represented by the drag. 
+Lasso select is a drag which ends near where it began, forming a loop, with the intent to select everything inside the loop. 
+
+Pinch and reverse pinch are essentially two-hand drag or two-fingered drag but with the hands or fingers moving towards (pinch) or away (reverse pinch) from each other.
+This gesture is common for zooming in multitouch user interfaces on smartphones. 
+
+Voice command was used to code when a user spoke a command out loud, rather than using gestures. The high incidence of voice commands (7.07\% of all codes) in the first ten users can be attributed to a single user who issued commands almost exclusively through voice. 
+
+The final gesture, ``parallel hands'' is placement of the hands, palms facing each other, over some area of the screen. This gesture was used many times by the same user who issued voice commands, to indicate where the robots should form a line. Because parallel hands only accounted for 0.69\% of the gestures, it was left out of the development of the coding application for the second stage of coding. 
+
+
+ 
+\subsection{Second coding pass}
+
+To facilitate coding in the second pass, an application was developed to record codes. 
+The application has coding functions for the six most common gestures: drag, tap, voice command, box select, lasso select, and pinch. 
+It also includes coding functions for user interface elements described by the user, such as buttons or menus, a function to code user gestures not covered by the six most common gestures, and a function for coders to enter free-form text memos. 
+
+\todo{Need to make the call as to whether example gestures that users made should be counted along with ``real'' gestures, or left out. Maybe go both ways and see if it affects anything.}
+
+A second pass of coding of the first ten user recordings was performed by two coders. 
 
 [DATA INTENSIFIES]
  
-Some people take the directions on the slides very literally. 
-For example, users who had been solely using the touch interface read the slides that instructed "Tell the robots to form a line" to indicate that they should speak the words "Form a line", addressed to the robots.
+Some people \todo{how many people?} take the directions on the slides very literally. 
+For example, users who had been solely using the touch interface read the slides that instructed ``Tell the robots to form a line" to indicate that they should speak the words ``Form a line", addressed to the robots.
 
-People who didn't otherwise want voice commands would use them for the task of stopping the robots. 
+People \todo{how many people?} who didn't otherwise want voice commands would use them for the task of stopping the robots. 
 Since this task assumes the robots are already moving towards a goal, attempts to interact with all of them while they are moving could be difficult. 
 
 For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al}.
 
 \todo{go over metaphor failure in NUI. People know things are just pictures, so we get things like moving the wall to stop the robots (in the real world, mobile walls are rare).}
 
+\todo{Wobbrock et. al. style would have been a better way to structure this experiment. Some users were initially confused with the interface not responding, so showing the response, and then asking for the gesture may have been a better idea. Some users also didn't try to do the task (no color sorting) or got it wrong (no cross-over in crossover condition.) Showing the response may have prompted that better. }
 \subsection{Participant Demographics}
 
-The experiment had 51 participants, 11 in the unknown number of robots condition and 10 in all other conditions. 29 of the participants were male, 22 were female. The average age of participants was 22.1, with a standard deviation of 3.16. 
+The experiment had 51 participants, 11 in the unknown number of robots condition and 10 in all other conditions. 29 of the participants were male, 22 were female. The average age of participants was 22.1 years, with a standard deviation of 3.16. 
 
 These demographics are representative of the location that the study was performed, the campus of an American college. 
 It has been suggested that research in psychology focuses too much on a population that is WEIRD (Western, Educated, Industrialized, Rich, and Democratic), and that the results of such studies may not generalize beyond that population \cite{arnett2008neglected}.
@@ -200,7 +230,7 @@ It is not proposed that the results of this work generalize to humanity as a who
 
 In future, it would be interesting to repeat this work with a condition that does not display the robots in the user interface at all. 
 We expect that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
-However, such an interface would not afford indicating particular robots or groups, so tasks such as dividing the robots around an obstacle may become difficult to perform. 
+However, such an interface would not afford indicating particular robots or groups, so tasks such as dividing the robots around an obstacle may become impossible to perform. 
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
