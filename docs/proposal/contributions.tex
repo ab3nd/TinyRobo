@@ -19,15 +19,15 @@ The gesture set will also be analyzed to determine if the size of the swarm has 
 
 \subsection{Compilation of User Gestures into Robot Programs}
 The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
-One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \cite{ayanian2014controlling}. 
+One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \citep{ayanian2014controlling}. 
 As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
 However, this work assumes that the individual swarm units can localize themselves, and that there is constant availability of communications between all swarm members and the central controller. 
 For a number of reasons, these assumptions frequently fail to hold, and so a more robust system can be designed by assuming that localization and communication are difficult. 
 This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
 The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
 
-Previous work in gesture control for small groups of robots was able to recognize a grammar of user inputs using a finite state machine \cite{micire2010multi}.
-The intent of this work is to implement basic robot behaviors as statements in an implementation of guarded control programming with rates (GCPR), which can then be composed into more complex behaviors based on the recognized user gestures \cite{napp2011compositional}.  
+Previous work in gesture control for small groups of robots was able to recognize a grammar of user inputs using a finite state machine \citep{micire2010multi}.
+The intent of this work is to implement basic robot behaviors as statements in an implementation of guarded control programming with rates (GCPR), which can then be composed into more complex behaviors based on the recognized user gestures \citep{napp2011compositional}.  
 
 
 \subsection{Inexpensive Swarm Hardware}
@@ -58,7 +58,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 %In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
 %Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
 %The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
-%The controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+%The controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \citep{lairdspider, bergbreiter2003cotsbots}.
 %However, unlike the Spider-Bots and COTSBots, this work does not specify a particular toy chassis to use for mobility. 
 %Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 %Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 

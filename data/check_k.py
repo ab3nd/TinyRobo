@@ -11,6 +11,13 @@ def load_file(fname):
 		data = json.loads(infile.read())
 		return data
 
+def print_event_list(event_list):
+	for event in event_list:
+		print event['event_type'],
+		if 'description' in event.keys():
+			print "({0})".format(" ".join(event['description'])),
+	print "--"
+
 #The only two arguments are the file names
 parser = argparse.ArgumentParser()
 parser.add_argument("first", nargs = 1, help="First file, from one coder")
@@ -42,6 +49,10 @@ for task1, task2 in zip (tasks_1, tasks_2):
 
 	if len(events_1) != len(events_2):
 		print "Error: the event lists are different lengths for task {0}".format(task1)	
+		print "{0}\n\t".format(args.first[0]),
+		print_event_list(events_1)
+		print "{0}\n\t".format(args.second[0]),
+		print_event_list(events_2)
 		#TODO this should probably be fatal, leaving non-fatal for debugging
 		#continue
 

@@ -214,9 +214,100 @@ Since this task assumes the robots are already moving towards a goal, attempts t
 
 For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al}.
 
+\subsection{Robot Count in Unknown Number Case}
+
+In the condition where the exact number of robots was unknown, and the swarm was depicted as a cloud, participants were asked to say how many robots they felt the cloud represented. 
+Generally, the participant expectation was that the cloud represented tens of robots, but simply averaging the responses would not be useful, as one participant said that it ``could be millions''. 
+For those that did answer with a single number or range, the answers were 10-20, 10-``hundreds'', 12, 7, 10, 2-10, 10-12, 2-``millions', 5-10, 8, and 50. 
+If the endpoints of ranges are treated as answers, with ``hundreds'' and ``millions'' set to 500 and 5,000,000 respectively, the median answer is 10, but the mean and standard deviation are not illustrative of the user responses. 
+Rejecting ``hundreds'' and ``millions'' as outliers gives a mean of 11.86, with a standard deviation of 11.04, which adequately covers the common intuition that the swarm contains at least 2 members and many have tens, but not likely hundreds, of robots in it.
+
+Participant comments may shed some light on the source of this intuition. 
+One participant indicated during the study that they interpreted the corners of the polygonal cloud as possible robot locations, and so drew an idea of the scale of the swarm from the number of corners. 
+The cloud has 11 corners, 7 convex and 4 concave, which is consistent with the estimated robot count. 
+
+Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in fig. \ref{instructional_slides}. 
+These slides depicted 10 robots, and so may have biased participants to expect that the cloud had 10 robots in it. 
+However, multiple participants stated that the cloud represented an unknown number, or estimated more or less than 10 robots.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.3\textwidth}
+		\includegraphics[width=\linewidth]{slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0001.png}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\includegraphics[width=\linewidth]{slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0002.png}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\includegraphics[width=\linewidth]{slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0003.png}
+	\end{subfigure}
+	\caption{Instructional slides for the unknown number of robots condition, showing cloud representation of robot swarm.}
+	\label{instructional_slides}
+\end{figure}
+
+\subsection{Selection Strategy}
+
+At the end of the experiment, users were shown an image of a robot swarm, with a dotted line around it depicting a finger drag path around some of the robots. 
+The users were told that the intent of this gesture was to select robots, and asked to indicate which robots in the image were selected, or in the unknown number of robots case, whether the gesture selected all of the robots or left any out. 
+Users in the single robot case were shown the selection image with ten robots in it, because the with one robot, there are not enough robots to have a selection which may exclude some robots and include others. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{../Selection_Fuzz_X.png}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{../Selection_Fuzz_10.png}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{../Selection_Fuzz_100.png}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{../Selection_Fuzz_1000.png}
+	\end{subfigure}
+		\caption{Images for selection strategy question.}
+	\label{strategy_question}
+\end{figure}
+
+In the unknown number of robots case, 7 participants indicated that all the robots were selected, 3 of the participants indicated that some robots were left out, and one participant indicated that whether the selection included all of the robots could depend on the task. 
+
+Because the 1 and 10 robot cases saw the same selection image, they are reported together. 
+12 participants indicated that robots that were inside the selection or touched by the selection line should be considered selected. 
+2 participants indicated that robots depicted with half or more of the robot inside the circle should be considered selected. 
+One participant indicated that the robot half out of the circle should \emph{not} be selected. 
+One participant indicated that robots on the border should be included or not included in the selection, depending on the task. \todo{Three answers are missing, find those and fix}
+One user indicated that only the first robot touched should be selected, which is consistent with control strategies that move each robot individually. 
+
+For the hundred robot case, 3 participants indicated that robots inside or touching the line were selected. 
+3 participants said that robots should be mostly inside the line to be counted, with one participant stating that robots should be 80\% or more inside the line to count. 
+2 participants indicated that robots should be more than halfway inside the line to be selected. 
+One participant stated that only robots completely inside the line should be counted. \todo{One answer missing, find and fix}
+ 
+In the thousand robot case, 7 participants indicated that robots inside or touching the line should be selected. 
+2 participants indicated that robots must be completely inside the line to be selected. 
+1 participant indicated that robots mostly inside the line should be selected. 
+
+Overall, participants generally err on the side of inclusion, rather than exclusion of robots from selection.
+If a user interface is required to include or exclude ambiguous elements from a selection, it appears that including ambiguous elements will satisfy users. 
+User comments also suggested that ways to amend selections before further commanding the robots would be desirable. \todo{was there any consistency in \emph{how} to do this} 
+
+ \begin{tabular}{ l l l l l}
+   Condition & Completely inside & Half or more in & Touching line & Other\\
+   \hline
+   10 & 0 & 2 & 12 & 3 \\
+   100 & 1 & 5 & 3 & 0 \\
+   1000 & 2 & 1 & 7 & 0\\
+   \hline
+   Totals & 3 & 8 & 22 & 2 \\
+ \end{tabular}
+
+%It is interesting to note that two participants, one from the unknown number of robots case, and one from the 10 robot case, said that in cases of ambiguous selection, the system should add or remove robots from the selection based on the task. 
+%As the system cannot predict the task it is about to be commanded to perform, it is likely best to err on the side of selecting too many robots, rather than too few. 
+
 \todo{go over metaphor failure in NUI. People know things are just pictures, so we get things like moving the wall to stop the robots (in the real world, mobile walls are rare).}
 
 \todo{Wobbrock et. al. style would have been a better way to structure this experiment. Some users were initially confused with the interface not responding, so showing the response, and then asking for the gesture may have been a better idea. Some users also didn't try to do the task (no color sorting) or got it wrong (no cross-over in crossover condition.) Showing the response may have prompted that better. }
+
 \subsection{Participant Demographics}
 
 The experiment had 51 participants, 11 in the unknown number of robots condition and 10 in all other conditions. 29 of the participants were male, 22 were female. The average age of participants was 22.1 years, with a standard deviation of 3.16. 

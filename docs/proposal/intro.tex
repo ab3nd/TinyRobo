@@ -1,7 +1,7 @@
 
 \chapter{Introduction and Research Statement}
 
-Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \cite{WangSearchScale}.
+Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \citep{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
 Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
 While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
@@ -19,7 +19,7 @@ Distributed control systems do not have the single point of failure that central
 In order to create reliable and useful swarm robotic systems, users must be able to specify a desired end state of the system that the swarm can converge to without reliable orchestration from a central controller. 
 Moreover, this convergence must occur in the face of unreliability on the part of the individual swarm members. 
 
-The current state of development of emergent control of swarms is guided by ad-hoc, iterative development models that are somewhat suited to software developers, but not suited to use by non-programming end users \cite{palmer2005behavioral}.
+The current state of development of emergent control of swarms is guided by ad-hoc, iterative development models that are somewhat suited to software developers, but not suited to use by non-programming end users \citep{palmer2005behavioral}.
 The motivating examples of uses for swarms are task oriented, such as sending swarm robots into disaster zones to search for survivors. 
 While first responders are frequently trained in many specialized skills to perform their jobs, adding programming swarm robots to their training would be impractical. 
 Even if first responders could be expected to develop software in a disaster zone, the situation frequently develops faster than the build/test cycles of software development can react. 
@@ -49,13 +49,13 @@ GPS provides a global coordinate system in which robots can easily localize, but
 The GPS signal is also weak, and so can easily be jammed by ambient RF interference or by malicious actors. 
 
 Robots can also fail. 
-The harsh conditions of the WTC rubble pile destroyed many of the robots sent in \cite{Micire02analysisof}.
+The harsh conditions of the WTC rubble pile destroyed many of the robots sent in \citep{Micire02analysisof}.
 In order to remain robust in the face of failures, algorithms should not be developed to depend on the perfect functioning of any individual robot. 
 Rather, the behavior should emerge from the interaction of multiple, interchangeable robots, and tolerate the loss of individual robots up to some limit. 
 In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable. 
 
 %A reliable robotic system is one that performs the required task, within some set of constraints, despite failures of some parts of the system. 
-Cooperating systems can be broken down into two major classes, those that intentionally cooperate, and those that coopererate in the manner of ants or other swarm insects, without explicit agreements and planning \cite{parker1998alliance}.
+Cooperating systems can be broken down into two major classes, those that intentionally cooperate, and those that coopererate in the manner of ants or other swarm insects, without explicit agreements and planning \citep{parker1998alliance}.
 The swarm-like approaches generally assume that the robots are homogeneous and all have the same control software. 
 For the work described in this proposal, it may be that neither of these assumptions hold. 
 The proposed hardware enables the creation of highly heterogeneous swarms, including variation in scale of the robots involved. 
@@ -76,15 +76,15 @@ For example, the user may switch from selecting robots as individuals to shaping
 The user may also change how they indicate which robots are to be interacted with. 
 Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use, or draw a circle around them. 
 The size of the swarm where changes in the user gestures occur will indicate the transition point between the user intent to interact with individual robots as opposed to interacting with the swarm as a whole. 
-%Harriet \emph{et al}. also put the estimated transition point between multi-agent control and swarm around 50 individuals \cite{harriott2014biologically}.  
+%Harriet \emph{et al}. also put the estimated transition point between multi-agent control and swarm around 50 individuals \citep{harriott2014biologically}.  
 %Above that threshold, human interaction may be able to remain focused on macro level behavior, influencing the overall behavior of the swarm rather than control of individuals.
 %TODO is this relevant, if so, how?
 
 Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
-This problem will arise at smaller scales if the swarm robots are themselves quite tiny, and some of the available swarm robots are indeed small \cite{pelrine2012diamagnetically}.
+This problem will arise at smaller scales if the swarm robots are themselves quite tiny, and some of the available swarm robots are indeed small \citep{pelrine2012diamagnetically}.
 Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
 Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
-This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \cite{ayanian2014controlling}.
+This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \citep{ayanian2014controlling}.
 Altering how the user interface displays the location of the robots in the swarm will affect the transition point. 
 More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use different gestures. 
 
