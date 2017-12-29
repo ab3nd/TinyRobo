@@ -5,6 +5,7 @@ import json
 import argparse
 import sys
 import krippendorff
+import numpy as np
 
 def load_file(fname):
 	with open(fname, "r") as infile:
@@ -50,18 +51,42 @@ for task1, task2 in zip (tasks_1, tasks_2):
 	events_1 = [x for x in data_1['tasks'][task1] if x['event_type'] != 'memo']
 	events_2 = [x for x in data_2['tasks'][task2] if x['event_type'] != 'memo']
 
-	if len(events_1) != len(events_2):
-		print "Error: the event lists are different lengths for task {0}".format(task1)	
+	#if len(events_1) != len(events_2):
+		#print "Error: the event lists are different lengths for task {0}".format(task1)	
 		#TODO this should probably be fatal, leaving non-fatal for debugging
 		#continue
 
-	print "{0}\n".format(args.first[0]),
-	print_event_list(events_1)
-	print "{0}\n".format(args.second[0]),
-	print_event_list(events_2)
+	#print "{0}\n".format(args.first[0]),
+	#print_event_list(events_1)
+	#print "{0}\n".format(args.second[0]),
+	#print_event_list(events_2)
 	
 	#At this point we have two lists of events, of the same length, describing the same real-world happenings
 	#Sort the lists by time
 	events_1 = sorted(events_1, key=lambda event: event['time'])
 	events_2 = sorted(events_2, key=lambda event: event['time'])
 
+ 	event_length = max(len(events_1), len(events_2))
+ 	#This is totally arbitrary, the krippendorf library just can't use strings
+ 	translate_to_int = {'drag':9, 'voice_command':1, 'tap':2, 'lasso':3, 'pinch':4, 'box_select':5, 'ui':6, 'memo':7, 'other':8}
+
+ 	#Set up the codings, with np.nan for missing events
+ 	#This isn't accurate, since the missing events don't have to be at the _end_ of the list...
+ 	coder_1 = []
+ 	coder_2 = []
+ 	for ii in range(event_length):
+ 		try:
+ 			coder_1.append(translate_to_int[events_1[ii]['event_type']])
+ 		except IndexError:
+ 			coder_1.append(np.nan)
+
+ 		try:
+ 			coder_2.append(translate_to_int[events_2[ii]['event_type']])
+ 		except IndexError:
+ 			coder_2.append(np.nan)
+
+ 	k_data = [coder_1, coder_2]
+ 	#print k_data
+ 	print "---"
+ 	print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
+ 		
