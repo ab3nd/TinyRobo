@@ -87,9 +87,9 @@ for task1, task2 in zip (tasks_1, tasks_2):
 
  	#Pair the events in the shorter list with the closest events in time in the longer list
  	shortlist = events_1 if len(events_1) < len(events_2) else events_2
- 	longlist = events1 if len(events_1) >= len(events_2) else events_2
+ 	longlist = events_1 if len(events_1) >= len(events_2) else events_2
  	for event in shortlist:
- 		minTime = float(inf)
+ 		minTime = float('inf')
  		match = None
  		for canidate in longlist:
  			delta_t = abs(float(event['time']) - float(canidate['time']))
@@ -99,15 +99,15 @@ for task1, task2 in zip (tasks_1, tasks_2):
  		#TODO we're losing which coder the events come from, although all pairs are from differing coders...
  		coder_1.append(translate_to_int[event['event_type']])
  		coder_2.append(translate_to_int[match['event_type']])
- 		longlist.pop(match)
+ 		longlist.remove(match)
  	#Longlist now contains unmatched events
  	for event in longlist:
- 		coder_1.append(numpy.nan)
+ 		coder_1.append(np.nan)
  		coder_2.append(translate_to_int[event['event_type']])
 
 
  	k_data = [coder_1, coder_2]
  	print k_data
- 	print "---"
  	print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
+ 	print "---"
  		
