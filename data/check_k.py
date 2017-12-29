@@ -13,9 +13,12 @@ def load_file(fname):
 
 def print_event_list(event_list):
 	for event in event_list:
-		print event['event_type'],
+		print "\t{0}".format(event['event_type']),
 		if 'description' in event.keys():
-			print "({0})".format(" ".join(event['description'])),
+			print "({0})".format((" ".join(event['description'])).encode("utf-8")),
+		if event['example']:
+			print "<=== EXAMPLE",
+		print ""
 	print "--"
 
 #The only two arguments are the file names
@@ -49,13 +52,14 @@ for task1, task2 in zip (tasks_1, tasks_2):
 
 	if len(events_1) != len(events_2):
 		print "Error: the event lists are different lengths for task {0}".format(task1)	
-		print "{0}\n\t".format(args.first[0]),
-		print_event_list(events_1)
-		print "{0}\n\t".format(args.second[0]),
-		print_event_list(events_2)
 		#TODO this should probably be fatal, leaving non-fatal for debugging
 		#continue
 
+	print "{0}\n".format(args.first[0]),
+	print_event_list(events_1)
+	print "{0}\n".format(args.second[0]),
+	print_event_list(events_2)
+	
 	#At this point we have two lists of events, of the same length, describing the same real-world happenings
 	#Sort the lists by time
 	events_1 = sorted(events_1, key=lambda event: event['time'])
