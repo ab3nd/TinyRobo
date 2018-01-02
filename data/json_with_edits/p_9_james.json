@@ -1,0 +1,459 @@
+{
+   "participant": 9, 
+   "tasks": {
+      "1": [
+         {
+            "description": [
+               "a", 
+               "few", 
+               "aborted", 
+               "gestures;", 
+               "the", 
+               "user", 
+               "changed", 
+               "his/her", 
+               "mind", 
+               "before", 
+               "completing", 
+               "them"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "command": [
+               "\u201cmove\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 198.38
+         }, 
+         {
+            "command": [
+               "\u201cmove", 
+               "to", 
+               "area", 
+               "A\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 206.0
+         }
+      ], 
+      "10": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "form", 
+               "a", 
+               "single", 
+               "line", 
+               "with", 
+               "the", 
+               "back", 
+               "of", 
+               "one", 
+               "robot", 
+               "facing", 
+               "the", 
+               "front", 
+               "of", 
+               "another\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 396.34
+         }
+      ], 
+      "11": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "form", 
+               "a", 
+               "square", 
+               "with", 
+               "the", 
+               "smallest", 
+               "area\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 690.85
+         }
+      ], 
+      "12": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "position", 
+               "yourselves", 
+               "around", 
+               "the", 
+               "crate", 
+               "equally,", 
+               "and", 
+               "move", 
+               "it", 
+               "to", 
+               "area", 
+               "A\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 452.57
+         }
+      ], 
+      "13": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "position", 
+               "yourselves", 
+               "around", 
+               "a", 
+               "crate", 
+               "on", 
+               "three", 
+               "of", 
+               "the", 
+               "sides", 
+               "which", 
+               "are", 
+               "not", 
+               "facing", 
+               "area", 
+               "A,", 
+               "and", 
+               "move", 
+               "the", 
+               "crate", 
+               "to", 
+               "its", 
+               "area", 
+               "A\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 478.8
+         }
+      ], 
+      "14": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "detect", 
+               "heat", 
+               "release", 
+               "rate,", 
+               "and", 
+               "if", 
+               "heat", 
+               "release", 
+               "rate", 
+               "above", 
+               "the", 
+               "minimum", 
+               "rate,", 
+               "please", 
+               "move", 
+               "to", 
+               "the", 
+               "corner\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 505.67
+         }
+      ], 
+      "15": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "detect", 
+               "total", 
+               "heat", 
+               "release", 
+               "rate,", 
+               "and", 
+               "if", 
+               "total", 
+               "heat", 
+               "release", 
+               "rate", 
+               "is", 
+               "above", 
+               "a", 
+               "minimum", 
+               "level,", 
+               "please", 
+               "move", 
+               "to", 
+               "the", 
+               "side", 
+               "away", 
+               "from", 
+               "the", 
+               "other", 
+               "robots\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 541.68
+         }
+      ], 
+      "16": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "align", 
+               "yourselves", 
+               "in", 
+               "a", 
+               "straight", 
+               "line", 
+               "with", 
+               "the", 
+               "back", 
+               "of", 
+               "each", 
+               "robot", 
+               "facing", 
+               "the", 
+               "front", 
+               "of", 
+               "the", 
+               "other,", 
+               "and", 
+               "move", 
+               "across", 
+               "the", 
+               "screen", 
+               "\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 568.29
+         }
+      ], 
+      "17": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "position", 
+               "yourselves", 
+               "in", 
+               "a", 
+               "straight", 
+               "line", 
+               "along", 
+               "the", 
+               "edge", 
+               "of", 
+               "area", 
+               "A,", 
+               "and", 
+               "patrol", 
+               "across", 
+               "area", 
+               "A\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 591.78
+         }
+      ], 
+      "18": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "disperse", 
+               "over", 
+               "the", 
+               "screen", 
+               "area", 
+               "without", 
+               "exceeding", 
+               "the", 
+               "border\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 617.13
+         }
+      ], 
+      "2": [
+         {
+            "command": [
+               "\u201cjump", 
+               "over", 
+               "the", 
+               "wall", 
+               "and", 
+               "move", 
+               "to", 
+               "area", 
+               "A\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 224.94
+         }
+      ], 
+      "3": [
+         {
+            "command": [
+               "\u201cstop", 
+               "where", 
+               "you", 
+               "are\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 239.07
+         }
+      ], 
+      "4": [
+         {
+            "command": [
+               "\u201chalf", 
+               "of", 
+               "the", 
+               "robots,", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "go", 
+               "to", 
+               "area", 
+               "A,", 
+               "and", 
+               "the", 
+               "other", 
+               "half", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "go", 
+               "to", 
+               "area", 
+               "B\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 264.4
+         }
+      ], 
+      "5": [
+         {
+            "command": [
+               "\u201corange", 
+               "robots,", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "proceed", 
+               "to", 
+               "area", 
+               "B,", 
+               "while", 
+               "red", 
+               "robots,", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "proceed", 
+               "to", 
+               "area", 
+               "A\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 287.15
+         }
+      ], 
+      "6": [
+         {
+            "command": [
+               "\u201corange", 
+               "robots,", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "proceed", 
+               "to", 
+               "area", 
+               "A,", 
+               "and", 
+               "red", 
+               "robots,", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "proceed", 
+               "to", 
+               "area", 
+               "B\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 303.64
+         }
+      ], 
+      "7": [
+         {
+            "command": [
+               "\u201corange", 
+               "robots,", 
+               "move...around", 
+               "the", 
+               "wall", 
+               "and", 
+               "proceed", 
+               "to", 
+               "area", 
+               "A,", 
+               "and", 
+               "red", 
+               "robots,", 
+               "move", 
+               "around", 
+               "the", 
+               "wall", 
+               "and", 
+               "proceed", 
+               "to", 
+               "area", 
+               "B\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 325.96
+         }
+      ], 
+      "8": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "divide", 
+               "yourselves", 
+               "amongst", 
+               "two", 
+               "groups,", 
+               "half", 
+               "and", 
+               "half.\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 350.87
+         }
+      ], 
+      "9": [
+         {
+            "command": [
+               "\u201cboth", 
+               "groups", 
+               "merge...with", 
+               "each", 
+               "other\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 379.1
+         }
+      ]
+   }
+}
