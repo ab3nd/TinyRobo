@@ -393,11 +393,7 @@
       ], 
       "11": [
          {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
+            "draw": [
                "whitespace;", 
                "a", 
                "square", 
@@ -408,14 +404,24 @@
                "the", 
                "screen"
             ], 
-            "time": 647.81
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 647.81, 
+            "write": null
          }, 
          {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
+            "draw": [
                "whitespace;", 
                "a", 
                "rounded", 
@@ -427,110 +433,139 @@
                "the", 
                "screen"
             ], 
-            "time": 653.77
-         }, 
-         {
-            "event_type": "lasso", 
-            "example": true, 
+            "event_type": "drag", 
+            "example": false, 
             "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
-               "whitespace;", 
-               "a", 
-               "circle", 
-               "in", 
-               "the", 
-               "center", 
-               "of", 
-               "the", 
-               "screen"
-            ], 
-            "time": 654.14
-         }, 
-         {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
-               "whitespace;", 
-               "a", 
-               "circle", 
-               "(traced", 
-               "twice)", 
-               "in", 
-               "the", 
-               "center", 
-               "of", 
-               "the", 
-               "screen"
-            ], 
-            "time": 658.42
-         }, 
-         {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
-               "whitespace;", 
-               "a", 
-               "circle", 
-               "(traced", 
-               "twice)", 
-               "in", 
-               "the", 
-               "center", 
-               "of", 
-               "the", 
-               "screen"
-            ], 
-            "time": 660.89
-         }, 
-         {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
-               "whitespace;", 
-               "a", 
-               "circle", 
-               "(traced", 
-               "twice)", 
-               "in", 
-               "the", 
-               "center", 
-               "of", 
-               "the", 
-               "screen"
-            ], 
-            "time": 666.81
-         }, 
-         {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
-            "no_contact": true, 
-            "objects": [
-               "whitespace;", 
-               "a", 
-               "square", 
-               "in", 
-               "the", 
-               "center", 
-               "of", 
-               "the", 
-               "screen"
-            ], 
-            "time": 670.93
-         }, 
-         {
-            "event_type": "lasso", 
-            "example": true, 
-            "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 653.77, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "whitespace;", 
+               "a", 
+               "circle", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": ["distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 654.14, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "whitespace;", 
+               "a", 
+               "circle", 
+               "(traced", 
+               "twice)", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": ["distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 658.42, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "whitespace;", 
+               "a", 
+               "circle", 
+               "(traced", 
+               "twice)", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 660.89, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "whitespace;", 
+               "a", 
+               "circle", 
+               "(traced", 
+               "twice)", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],"time": 666.81, 
+            "write": null
+         }, 
+         {
+            "draw": [
                "whitespace;", 
                "a", 
                "square", 
@@ -541,14 +576,52 @@
                "the", 
                "screen"
             ], 
-            "time": 676.55
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 670.93, 
+            "write": null
          }, 
          {
-            "event_type": "lasso", 
-            "example": true, 
+            "draw": [
+               "whitespace;", 
+               "a", 
+               "square", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
             "fingers": 1, 
-            "no_contact": true, 
+            "hands": 1, 
+            "no_contact": false, 
             "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 676.55, 
+            "write": null
+         }, 
+         {
+            "draw": [
                "whitespace;", 
                "a", 
                "square", 
@@ -562,7 +635,21 @@
                "the", 
                "screen"
             ], 
-            "time": 685.36
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "distributed", 
+               "case,", 
+               "so", 
+               "robots", 
+               "&", 
+               "screen"
+            ],
+            "time": 685.36, 
+            "write": null
          }
       ], 
       "12": [
@@ -952,21 +1039,29 @@
       ], 
       "18": [
          {
-            "event_type": "pinch", 
+            "description": [
+               "5f", 
+               "scatter"
+            ], 
+            "event_type": "other", 
             "example": false, 
-            "fingers": 5, 
-            "hands": 1, 
             "no_contact": false, 
-            "reverse": true, 
+            "objects": [
+               "robots"
+            ], 
             "time": 999.34
          }, 
          {
-            "event_type": "pinch", 
+            "description": [
+               "5f", 
+               "scatter"
+            ], 
+            "event_type": "other", 
             "example": true, 
-            "fingers": 5, 
-            "hands": 1, 
-            "no_contact": false, 
-            "reverse": true, 
+            "no_contact": true, 
+            "objects": [
+               "robots"
+            ], 
             "time": 1001.06
          }
       ], 

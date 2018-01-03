@@ -95,24 +95,26 @@
       ], 
       "11": [
          {
-            "event_type": "lasso", 
-            "example": false, 
-            "fingers": 1, 
-            "no_contact": false, 
-            "objects": [
-               "whitespace;", 
-               "draw", 
-               "a", 
-               "large", 
+            "draw": [
                "square", 
                "in", 
-               "the", 
-               "center", 
+               "middle", 
                "of", 
-               "the", 
                "screen"
             ], 
-            "time": 417.44
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots/open", 
+               "area", 
+               "(dispersed", 
+               "condition)"
+            ], 
+            "time": 417.44, 
+            "write": null
          }
       ], 
       "12": [

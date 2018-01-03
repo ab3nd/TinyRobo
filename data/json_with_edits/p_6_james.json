@@ -556,17 +556,21 @@
             "write": null
          }, 
          {
-            "event_type": "lasso", 
+           "draw": [
+               "circle", 
+               "on", 
+               "robots"
+            ], 
+            "event_type": "drag", 
             "example": false, 
             "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
-               "center", 
-               "of", 
-               "the", 
-               "swarm"
+               "robots"
             ], 
-            "time": 532.2
+            "time": 532.2, 
+            "write": null
          }, 
          {
             "count": 1, 
@@ -593,17 +597,21 @@
             "event_type": "memo"
          }, 
          {
-            "event_type": "lasso", 
-            "example": false, 
+            "draw": [
+               "circle", 
+               "on", 
+               "robots"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
             "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
-               "center", 
-               "of", 
-               "the", 
-               "swarm"
+               "robots"
             ], 
-            "time": 547.72
+            "time": 547.72, 
+            "write": null
          }, 
          {
             "draw": [
@@ -632,30 +640,42 @@
       ], 
       "16": [
          {
-            "event_type": "pinch", 
+            "description": [
+               "5f", 
+               "scatter"
+            ], 
+            "event_type": "other", 
             "example": false, 
-            "fingers": 5, 
-            "hands": 1, 
             "no_contact": false, 
-            "reverse": true, 
+            "objects": [
+               "robots"
+            ], 
             "time": 565.81
          }, 
          {
-            "event_type": "pinch", 
+            "description": [
+               "5f", 
+               "scatter"
+            ], 
+            "event_type": "other", 
             "example": true, 
-            "fingers": 5, 
-            "hands": 1, 
             "no_contact": false, 
-            "reverse": true, 
+            "objects": [
+               "robots"
+            ], 
             "time": 568.11
          }, 
          {
-            "event_type": "pinch", 
+            "description": [
+               "5f", 
+               "scatter"
+            ], 
+            "event_type": "other", 
             "example": true, 
-            "fingers": 5, 
-            "hands": 1, 
             "no_contact": true, 
-            "reverse": true, 
+            "objects": [
+               "robots"
+            ], 
             "time": 569.71
          }
       ], 

@@ -1021,7 +1021,7 @@
       ], 
       "14": [
          {
-            "description": [
+            "draw": [
                "draw", 
                "an", 
                "\u201cx\u201d", 
@@ -1029,17 +1029,19 @@
                "the", 
                "defective", 
                "robot"
-            ], 
-            "event_type": "other", 
+            ],  
+            "event_type": "drag", 
             "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
                "the", 
                "defective", 
                "robot"
             ], 
-            "time": 776.28
-         }
+            "time": 776.28 
+         }  
       ], 
       "15": [
          {
@@ -1198,12 +1200,18 @@
       ], 
       "18": [
          {
-            "event_type": "pinch", 
+            "description": [
+               "five", 
+               "fingers", 
+               "scatter"
+            ], 
+            "event_type": "other", 
             "example": false, 
-            "fingers": 5, 
-            "hands": 1, 
             "no_contact": false, 
-            "reverse": true, 
+            "objects": [
+               "the", 
+               "robots"
+            ], 
             "time": 959.45
          }
       ], 

@@ -180,45 +180,32 @@
             "event_type": "memo"
          }, 
          {
-            "event_type": "lasso", 
-            "example": true, 
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
             "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
-               "area", 
-               "A;", 
-               "draw", 
-               "a", 
-               "bunch", 
-               "of", 
-               "horizontal", 
-               "squiggles", 
-               "covering", 
-               "area", 
+               "scribble", 
                "A"
             ], 
-            "time": 797.22
+            "time": 795.39, 
+            "write": null
          }, 
          {
-            "event_type": "lasso", 
+            "draw": null, 
+            "event_type": "drag", 
             "example": true, 
             "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
-               "area", 
-               "A;", 
-               "traverse", 
-               "the", 
-               "border", 
-               "of", 
-               "area", 
-               "A", 
-               "in", 
-               "a", 
-               "clockwise", 
-               "direction"
+               "around", 
+               "A"
             ], 
-            "time": 804.33
+            "time": 804.06, 
+            "write": null
          }
       ], 
       "2": [

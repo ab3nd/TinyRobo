@@ -519,11 +519,19 @@
       ], 
       "11": [
          {
-            "event_type": "lasso", 
+            "event_type": "drag", 
             "example": false, 
             "fingers": 1, 
+            "hands": 1, 
             "no_contact": false, 
             "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "write": null,
+            "fingers": 1, 
+            "no_contact": false, 
+            "draw": [
                "the", 
                "swarm;", 
                "draw", 

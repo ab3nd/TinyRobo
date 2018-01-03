@@ -183,19 +183,17 @@
             "time": 1004.82
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cform", 
                "around", 
                "a", 
                "waypoint\u201d"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false,
             "time": 1013.32
          }, 
          {
@@ -213,17 +211,15 @@
             "time": 1021.33
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": true, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cmove", 
                "object\u201d"
-            ], 
+            ],
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false,  
             "time": 1023.4
          }, 
          {
@@ -357,51 +353,30 @@
       ], 
       "13": [
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201csettings\u201d", 
                "menu"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
             "time": 1191.58
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
+            "description": [
+               "imaginary", 
+               "\u201cmove\u201d", 
+               "or", 
+               "\u201cmove", 
+               "object\u201d", 
+               "option"
+            ], 
+            "event_type": "ui", 
             "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
-               "imaginary", 
-               "\u201cmove\u201d", 
-               "or", 
-               "\u201cmove", 
-               "object\u201d", 
-               "option"
-            ], 
-            "time": 1192.64
-         }, 
-         {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": true, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
-               "imaginary", 
-               "\u201cmove\u201d", 
-               "or", 
-               "\u201cmove", 
-               "object\u201d", 
-               "option"
-            ], 
+            "kind": "button", 
+            "no_contact": false, 
             "time": 1192.64
          }, 
          {
@@ -485,31 +460,27 @@
       ], 
       "14": [
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201csettings\u201d", 
                "menu"
-            ], 
+            ],
+             "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false, 
             "time": 1273.51
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": true, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201csettings\u201d", 
                "menu"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,            
             "time": 1298.89
          }, 
          {
@@ -672,31 +643,27 @@
             "time": 1468.14
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201csettings\u201d", 
                "menu"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1473.44
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cpatrol\u201d", 
                "option"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1476.24
          }, 
          {
@@ -711,34 +678,30 @@
             "event_type": "memo"
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cknown", 
                "visible", 
                "edge\u201d", 
                "option"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1476.24
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": true, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cpatrolling", 
                "parameters\u201d", 
                "option"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1557.98
          }
       ], 
@@ -852,41 +815,31 @@
             "time": 1698.43
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201csettings\u201d", 
                "menu"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1709.27
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cactions\u201d", 
                "option"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1710.02
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cdisperse\u201d", 
                "option", 
@@ -896,6 +849,10 @@
                "option", 
                "list"
             ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 1759.21
          }
       ], 
@@ -1014,42 +971,40 @@
       ], 
       "3": [
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
-               "an", 
-               "imaginary", 
-               "\u201coptions\u201d", 
-               "button", 
-               "on", 
-               "the", 
-               "bottom", 
-               "right"
+            "description": [
+               "context", 
+               "menu", 
+               "that", 
+               "comes", 
+               "up", 
+               "when", 
+               "robots", 
+               "are", 
+               "selected", 
+               "with", 
+               "extra", 
+               "actions"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 223.906
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
-               "an", 
-               "imaginary", 
-               "\u201cselect", 
-               "individuals\u201d", 
+            "description": [
+               "tap", 
+               "select", 
+               "individual", 
                "button", 
                "on", 
-               "the", 
-               "bottom", 
-               "right"
+               "context", 
+               "menu"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
             "time": 228.097
          }, 
          {
@@ -1077,13 +1032,7 @@
             "event_type": "memo"
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "an", 
                "imaginary", 
                "\u201cstop\u201d", 
@@ -1093,6 +1042,10 @@
                "bottom", 
                "right"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false,
             "time": 251.076
          }
       ], 
@@ -1469,13 +1422,7 @@
             "time": 555.335
          }, 
          {
-            "count": 2, 
-            "event_type": "tap", 
-            "example": true, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": true, 
-            "objects": [
+            "description": [
                "double", 
                "tap", 
                "imaginary", 
@@ -1487,6 +1434,10 @@
                "bottom", 
                "right"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false,
             "time": 574.66
          }, 
          {
@@ -1502,13 +1453,7 @@
             "event_type": "memo"
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cselect", 
                "all", 
@@ -1519,6 +1464,10 @@
                "bottom", 
                "right"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false,
             "time": 584.649
          }, 
          {
@@ -1659,29 +1608,21 @@
             "time": 758.977
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201ccombine\u201d", 
                "button", 
                "bottom", 
                "right"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false,
             "time": 762.312
          }, 
          {
-            "count": 10, 
-            "event_type": "tap", 
-            "example": true, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "\u201cincrement", 
                "select\u201d", 
@@ -1697,6 +1638,10 @@
                "\u201cmake", 
                "group\u201d"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false,
             "time": 762.312
          }
       ]

@@ -26,32 +26,28 @@
       ], 
       "10": [
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "the", 
                "imaginary", 
                "robot"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 472.02
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "select", 
                "\u201cwaypoints", 
                "from", 
                "menu\u201d"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 473.29
          }, 
          {
@@ -117,29 +113,25 @@
             "write": null
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "menu"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 548.23
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "\u201cselect", 
                "waypoints\u201d", 
                "option"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 550.37
          }, 
          {
@@ -436,13 +428,7 @@
       ], 
       "7": [
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "menu", 
                "bottom", 
@@ -456,19 +442,21 @@
                "open", 
                "menu\u201d"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 326.7
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "select", 
                "\u201cwaypoint\u201d"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 328.26
          }, 
          {
@@ -515,30 +503,26 @@
       ], 
       "8": [
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "imaginary", 
                "menu"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 359.0
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
+            "description": [
                "select", 
                "\u201cDefective", 
                "Robot\u201d"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false,
             "time": 362.85
          }, 
          {
