@@ -389,7 +389,7 @@
       ], 
       "13": [
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -398,7 +398,18 @@
             "objects": [
                "the", 
                "box,", 
-               "area", 
+            ], 
+            "time": 436.30
+         },
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+              "area", 
                "A"
             ], 
             "time": 437.04
@@ -939,7 +950,7 @@
             "event_type": "memo"
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -951,13 +962,24 @@
                "(left)", 
                "robot", 
                "swarm,", 
+            ], 
+            "time": 204.53
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "B"
             ], 
             "time": 204.93
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -969,6 +991,17 @@
                "(right)", 
                "robot", 
                "swarm,", 
+            ], 
+            "time": 205.04
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "A"
             ], 
@@ -1024,7 +1057,7 @@
             "event_type": "memo"
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1033,14 +1066,25 @@
             "objects": [
                "the", 
                "orange", 
-               "swarm,", 
+               "swarm," 
+            ], 
+            "time": 225.3
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "A"
             ], 
             "time": 226.07
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1050,7 +1094,18 @@
                "the", 
                "red", 
                "swarm,", 
-               "are", 
+            ], 
+            "time": 226.3
+         },
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
                "B"
             ], 
             "time": 226.73

@@ -1307,7 +1307,7 @@
             "time": 351.246
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1319,7 +1319,17 @@
                "left", 
                "of", 
                "the", 
-               "wall;", 
+               "wall"], 
+            "time": 351.98
+         },
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "A"
             ], 
@@ -1352,9 +1362,9 @@
             ], 
             "start": "tl", 
             "time": 466.955
-         }, 
+         },
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1366,7 +1376,18 @@
                "left", 
                "of", 
                "the", 
-               "wall;", 
+               "wall"
+            ], 
+            "time": 468.88
+         },  
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "A"
             ], 
@@ -1386,7 +1407,7 @@
             "time": 474.547
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1398,7 +1419,18 @@
                "right", 
                "of", 
                "the", 
-               "wall;", 
+               "wall"], 
+            "time":474.99
+         },
+         {
+
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "B"
             ], 
@@ -1471,7 +1503,7 @@
             "time": 584.649
          }, 
          {
-            "count": 3, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1480,16 +1512,38 @@
             "objects": [
                "a", 
                "swarm,", 
+            ], 
+            "time": 698.2               
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "right", 
                "of", 
                "wall,", 
+            ], 
+            "time": 601.34         
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
                "area", 
                "B"
             ], 
             "time": 601.736
          }, 
          {
-            "count": 3, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
             "fingers": 1, 
@@ -1498,10 +1552,33 @@
             "objects": [
                "the", 
                "other", 
-               "swarm,", 
+               "swarm,"
+            ], 
+            "time": 602.23
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [ 
                "left", 
                "of", 
-               "wall,", 
+               "wall,"
+            ], 
+            "time": 602.3
+
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [ 
                "area", 
                "A"
             ], 
@@ -1594,18 +1671,30 @@
             "time": 736.895
          }, 
          {
-            "count": 2, 
+            "count": 1, 
             "event_type": "tap", 
             "example": false, 
-            "fingers": 2, 
+            "fingers": 1, 
             "hold": true, 
             "no_contact": false, 
             "objects": [
-               "both", 
-               "robot", 
-               "swarms"
+               "left", 
+               "robots"
             ], 
-            "time": 758.977
+            "time": 758.97
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "right", 
+               "robots"
+            ], 
+            "time": 759.15
          }, 
          {
             "description": [
