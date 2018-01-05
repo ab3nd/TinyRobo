@@ -108,6 +108,13 @@ for task1, task2 in zip (tasks_1, tasks_2):
 
  	k_data = [coder_1, coder_2]
  	print k_data
- 	print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
- 	print "---"
+ 	if k_data[0] == k_data[1]:
+ 		#Actually calculating k can cause numerical problems, usually reported as 
+ 		#/usr/local/lib/python2.7/dist-packages/krippendorff/krippendorff.py:249: RuntimeWarning: invalid value encountered in double_scalars
+		#return 1 - np.sum(o * d) / np.sum(e * d)
+		#Because np.sum(e*d) ends up being 0, and even numpy can't divide by zero
+		#They're the same, so just print 1.0
+ 		print 1.0
+ 	else:
+ 		print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
  		
