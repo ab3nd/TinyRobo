@@ -102,8 +102,8 @@ for task1, task2 in zip (tasks_1, tasks_2):
  		longlist.remove(match)
  	#Longlist now contains unmatched events
  	for event in longlist:
- 		coder_1.append(np.nan)
- 		coder_2.append(translate_to_int[event['event_type']])
+ 		coder_1.append(translate_to_int[event['event_type']])
+ 		coder_2.append(np.nan)
 
 
  	k_data = [coder_1, coder_2]
