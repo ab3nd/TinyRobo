@@ -1443,3 +1443,153 @@ Davy Vanacken, Alexandre Demeure, Kris Luyten, Karin Coninx
 
 Taxonomy and Overview of Multi-touch Frameworks: Architecture, Scope and Features
 Dietrich Kammer, Mandy Keck, Georg Freitag, Markus Wacker
+
+
+Validation study papers that might be useful
+
+Extracting Usability Information from User Interface Events
+DAVID M. HILBERT AND DAVID F. REDMILES
+	User interface clicks and typing need automated processing to be useful as information
+	Covers techniques for workign with interaction data stream
+	Application to usability
+		Formative - research that guides the creation of a UI
+		Summative - research that compares a UI to e.g. previous versions, judgement about finished UI
+	Evaluation approaches
+		Predictive - based on psych modeling approaches (GOMS (John & Kieras), Cognitive Walkthrough (Lewis et al 1992)), or expertise (Heuristic (Neilsen & Mack 1994))
+		Observational - observing users interacting with the system
+			What I'm planning so far
+		Participative - Collecting data directly from the users, interviews and such
+	Indicators
+		Online behavior/performance
+		Offline behavior
+		Cognition/understanding
+		Attitude/opinion
+		Stress/anxiety (e.g. EKG/GSR)
+	Events can be compose of other, usually higher-frequency events
+		e.g. filling a form is composed of filling textboxes (which is composed of keystrokes) and mousing between them
+	Events may have context
+		click is on something, might be on a menu brought up by a previous click
+	Bulk of paper is reporting on tools
+
+Teaching Natural User Interaction Using OpenNI and the Microsoft Kinect Sensor
+Norman Villaroman, Dale Rowe, Bret Swan
+	Has a nice history of NUI devices
+	Mostly about teaching UI design for NUI, not evaluation
+
+
+The GOMS Family of User Interface Analysis Techniques: Comparison and Contrast
+BONNIE E. JOHN and DAVID E. KIERAS
+	By the original GOMS authors
+	Goals, Operators, Methods, and Selections
+	Goals
+		What the user wants to do
+		Can have (nested) subgoals
+		multiple active at once
+	Operators
+		Actions the user does in service of a goal
+		peception, cognition, UI interaction, etc. 
+		Changes either the user's internal state or the stae of the environment
+		Usually has parameters like execution time
+	Methods
+		Sequences of operators and subgoals to accomplish a goal
+	Selections
+		How the user chooses which operators and methods to use
+	Method vs Operator is level of detail chosen by the person doing the study
+	Rest of paper compares some GOMS-descended models
+	Seems to be about evaluating UI that already has commands, rather than finding the commands
+	May be worth revisiting, but seems more for optimization than creation
+
+
+Gestures without Libraries, Toolkits or Training: A $1 Recognizer for User Interface Prototypes
+Jacob O. Wobbrock, Andrew D. Wilson, Yang Li
+	Gesture recognition can be tricky
+	Mentions Dynamic Time Warping, HMM, ANN, feature-based classifiers
+	single-stroke gestures
+	4 steps
+		1 resample the point path (velocity invariance)
+			convert to N equidistant points
+			N=64 found to be pretty good, 32 <= N <= 256 seemed fine
+			squares well with speed to point density relation on the 3M screen
+			calculate the overall path lenght, divide by N-1, linear interpolate
+		2 rotate based on the "indicatitive angle" (rotation invariance)
+			angle between first point and centroid
+			rotate to point to 0 (off to the left), or really any fixed angle
+		3 scale and translate (location and scale invariance)
+			scale to a fixed size square and put the centroid at the origin
+		4 find angle for best score
+			compare to each template based on distance between corresponding points
+			rotate to best match 
+				continuious, so can do searches
+				can brute force, paper lists a better approach
+	Can probably be extended to multitouch
+		Points ordered by contact point and by time
+		possibly doesn't even need that, as long as the gesture is bounded
+		seperating two gestures at the same time from one multi-point gesture is problematic
+			Try all contact points together, then pairs?
+			Or the other way around. Which is better?
+	Can't tell e.g. rectangle from square, up from down arrow
+	Can't actually recognize my "drag" command, as it has no fixed shape
+	Can't tell the various box selects apart
+	Can detect pinch, tap, lasso (as circle)
+	Circle is lasso based on context
+		box select and cut-line divide are ambiguious, esp. under this recognizer
+
+Wiimote and Kinect: Gestural User Interfaces add a Natural third dimension to HCI.
+Rita Francese, Ignazio Passero, Genoveffa Tortora
+	Evaluation metrics are subjective usability, presence, immersion
+	"Natural user interfaces disappear behind the content, and
+direct manipulation style (e.g., touch, voice commands and
+gestures) is the primary interaction method adopted [2, 10].
+Despite that, too often the window/icons/mouse metaphors
+contaminate the gestural interfaces vanishing their efficacy
+[28], the user is involved in a frustrating experience: the
+motion capture based interface fails in being effective since
+it’s used only for mimicking the classic mouse interaction."
+		Yeah, that would be nice. What actually happens is that the users drag that stuff in anyway. 
+		Describes a couple of intefaces using Kinect and Wiimote to fly around Bing maps
+
+Touch-Based User Interface for Elderly Users
+Juha Häikiö et al
+	Touch phone to appropriate tag for NFC communication to order food
+	"elderly persons who were eligible for home care provided by the town."
+		Living in a first-world country must be nice
+	Not entirely NUI, but easy to use, even on limited UI cell phone
+
+USABILITY ENGINEERING METHODS FOR SOFTWARE Developers
+Andreas Holzinger
+	Inspection
+		Cognitive Walkthrough
+			Task oriented
+			analyist steps through a task taking notes
+		Heuristic (Neilsen)
+		Action Analysis
+	Test
+		Think-aloud
+		Field Observation
+		Questionnaires
+	Qualities
+		Learnability - rapid start to working with the system
+		Efficiency - high productivity in use
+		Memorability - minimal need to relearn after non-use
+		low error rate - few and easy-to-fix errors
+		satisfaction - pleasant to use (subjective, unless you count stress via GSR)
+	My design is intended to get:
+		learnability and memorability by discovery of gestures
+		efficiency by hopefully having users make good choices for gestures
+	Validataion should check
+		low error rate - users complete tasks
+		satisfaction - what did users think of system results
+
+The Future of Natural User Interfaces
+Jhilmil Jain, Arnie Lund, Dennis Wixon
+	Just a description of a SIG
+
+Using Metaphors to Create a Natural User Interface for Microsoft Surface
+Kay Hofmeester, Dennis Wixon
+	Metaphors as guides to understanding and prediction
+	UI as a world with rules and behaviors
+	"During the sessions, we asked participants to sketch out their ideas on napkins."
+		This is too twee for words
+	Early surface, emphasis on multi-person computing
+	Interesting overview of design process, not relevant to my work
+
