@@ -1593,3 +1593,73 @@ Kay Hofmeester, Dennis Wixon
 	Early surface, emphasis on multi-person computing
 	Interesting overview of design process, not relevant to my work
 
+Heuristic Evaluation of UI
+Jakob Nielsen and Rolf Molich
+	Evaluators are presented with a design and asked to comment on it
+	Individial evaluators are pretty bad (they miss a lot)
+	Aggregating them covers the gaps
+	Distinct from 
+		Formal
+			some analysis technique (GOMS?)
+		Automatic
+			Computerized proceedure for testing
+		Empirically
+			Experiments with test users
+	Molich/Nielsen 9 principles
+		Simple and Natural dialog
+		Speak the user's language
+		Minimize memory load
+		Be consistent
+		Provide feedback
+		Provide clearly marked exits
+		Provide shortcuts
+		Have good error messages 
+		Prevent errors
+	Not going to cut it for my PhD, though, since I have to do an emperical test
+
+Usability Inspection Methods
+Jakob Nielsen
+	Heursitic
+		Experts judge the interface using established rules
+	Cognitive walkthrough
+		detailed proceedure to simulate user problem solving
+	Formal inspection
+		Combines Heuristic & Cognitive Walkthrough in a detailed proceedure
+	Pluralistic Walkthrough
+		User, devs, human-factors people all do Cog. Walk. together
+	Feature inspection
+		sequence of features to accomplish a task, looking for long/cumbersome sequences
+	Consistency inspection
+		Devs from other projects check that interface does things the same way as theirs
+	Standards inspection
+		Expert on a standard checks for compliance with it
+			Nielsen has a paper on the usability of usability standards that addresses this
+				People following a standard are like people following a heuristic
+				They miss a lot of things, but if you have enough of them, it will still help
+
+The conceptualization and empirical validation of web site user satisfaction
+Steve Muylle a,* , Rudy Moenaert b , Marc Despontin c
+	Very web-site oriented
+	Interesting dimensional breakdown of "satisfaction", but not relevant for my system
+		Large elements of satsifaction were based in hyper-media specific attributes
+
+
+TASK-CENTERED USER INTERFACE DESIGN
+A Practical Introduction
+by Clayton Lewis and John Rieman
+	Points out that test users should be representative of target population
+	I don't, at this point, have a target population
+	That said, "college-educated people" seems like something I'd expect of swarm robot users
+	Has some math for doing comparisons
+	Interesting overview
+
+Since I don't have a target population, the main things I'm looking for are that the user interface
+	1. Allows the users to complete the tasks, and
+	2. Doesn't have them do a lot of unneeded flailing
+
+Detecting flailing
+	-making gestures that the system cannot interpret as commands
+	-making gestures that are interpreted as commands, but miss the user's intention
+		- for the experiment, have the user state their high-level intention before interacting
+		- plan-out-loud before doing the actual interactions, describe their strategy
+
