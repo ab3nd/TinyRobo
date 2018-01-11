@@ -1663,3 +1663,82 @@ Detecting flailing
 		- for the experiment, have the user state their high-level intention before interacting
 		- plan-out-loud before doing the actual interactions, describe their strategy
 
+Beyond Fingers and Thumbs – A Graceful Touch UI
+Elegant Multi-touch and Gesture UI with Context Dependent Prompting
+Sue Hessey, Szu Han Chen, and Catherine White
+	Leap-motion-based approach with in-air finger sensing
+
+A review of swarm robotics tasks (2014)
+Levent Bayındır
+	Seems to pretty much be the hierarchy paper I was working on
+	Good paper to cite for overview reasons
+
+
+Evolution of swarm robotics systems with novelty search
+Jorge Gomes, Paulo Urbano, Anders Lyhne Christensen
+	Search rewards novelty (difference from previous solutions) rather than fitness
+	Has to be combined with fitness in some way 
+		Otherwise you get "solutions" that are novel but bad
+	Interesting approach, I'm not doing evolution for time reasons
+
+The TAM: abstracting complex tasks in swarm robotics research
+Arne Brutschy · Lorenzo Garattoni · Manuele Brambilla ·
+Gianpiero Francesca · Giovanni Pini · Marco Dorigo · Mauro Birattari
+	e.g. foraging doesn't actually handle the object, just goes between locations
+	A little booth for an e-puck
+		Being in the booth for a given amount of time is "doing the task"
+	TAM can react to e-puck with changing colors
+	Has a citation for Arduino, which would be good to have for my hardware paper
+
+Beyond kappa: A review of interrater agreement measures
+Mousumi BANERJEE, Michelle CAPOZZOLI, Laura McSWEENEY, and Debajyoti SINHA
+	C's K is to avoid agreement by chance
+	Fleiss generalized to >2 raters
+	K is biased by true prevalence of a label in the population
+		Can get high K just by having a thing that's way more common
+			Drag gestures are SUPER common
+	Covers a lot of genrealizations of Kappa, predates Krippendorff
+
+Massive Uniform Manipulation:
+Controlling Large Populations of Simple Robots with a Common Input Signal
+Aaron Becker, Golnaz Habibi, Justin Werfel, Michael Rubenstein, and James McLurkin
+	All robots get the same inputs and move uniformly
+	Apparently having one obstacle to pile up against allows many manipulation tasks
+	Fig. 1 shows a lot of different obstacles
+	Apparently a single square obstacle is sufficient for controlling the final position of every robot
+	Later figures show that you can draw the Mona Lisa with it
+
+Collective decision with 100 Kilobots: speed versus accuracy in binary discrimination problems
+Gabriele Valentini · Eliseo Ferrante 2 · Heiko Hamann · Marco Dorigo 
+	Collective decision making
+	Not sure any of my swarm tasks require decision at collective level
+		In fact, I don't add a lot of autonomy at all
+	Iterative, local, asynchronous
+	Agents advertise opinion for time based on assessed quality
+		Better quality, longer time
+	Agents change their opinion to majority of neighbors
+		See a lot more of option A if it's the better option, because more time is spent signalling it
+	Neightborhood size affects time/accuracy tradeoff
+	Can be represened as differential equations or chemical reaction network
+
+Leader Election Algorithims for Static Swarms
+Valery Karpov, Irina Karpova
+	Keeps using "simple" in different ways
+	Iterative voting with local sensing of votes, v. like quorum and "Collective decision with 100 Kilobots"
+
+Topological Mapping of Unknown Environments using an Unlocalized Robotic Swarm
+Alireza Dirafzoon and Edgar Lobaton
+	Uses proximity of other anges and times of encounter
+	Gives topology (connectedness, holes)
+	Does not give metrics 
+
+Exploring a user‐defined gesture vocabulary for descriptive mid‐air interactions
+Hessam Jahani · Manolya Kavakli
+	Analysis techniques may be useful, also my brain isn't working, WTF
+
+Design and Development of an Inexpensive Aquatic Swarm Robotics System
+Vasco Costa, Miguel Duarte, Tiago Rodrigues, Sancho Moura Oliveira and Anders Lyhne Christensen
+	Inexpensive swarm robot aquatic surface vessels
+	300EU materials
+	Pi 2, GPS, magnetic heading sensor, dual brusheless motors
+	
