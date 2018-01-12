@@ -105,12 +105,13 @@ for task1, task2 in zip (tasks_1, tasks_2):
  	min_err_t = float('inf')
  	best_match = None
 
-	for idx in itertools.permutations(range(len(shortlist)+1), unmatched):
-		with_gaps = copy.deepcopy(shortlist)
+ 	for idx in itertools.permutations(range(len(longlist)), len(shortlist)):
+		with_gaps = [None for _ in longlist]
+
 		idx = list(idx)
 		idx.reverse()
-		for id in idx:
-			with_gaps.insert(id, None)
+		for from_idx, to_idx in enumerate(idx):
+			with_gaps[to_idx] = shortlist[from_idx] 
 
 		#Check if the time error is less than the minimum observed so far	
 		t = time_err(with_gaps, longlist) 
