@@ -29,6 +29,42 @@
          }
       ], 
       "10": [
+
+         {
+            "draw": [
+               "line", 
+               "on", 
+               "r", 
+               "side", 
+               "of", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "open", 
+               "area"
+            ], 
+            "time": 437.89, 
+            "write": null
+         }, 
+         {
+            "count": 3, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "whitespace"
+            ], 
+            "time": 439.18
+         }
+      ],
+      "11":[
          {
             "event_type": "lasso", 
             "example": false, 
@@ -82,7 +118,7 @@
             "time": 471.14
          }
       ], 
-      "11": [
+      "12": [
          {
             "description": [
                "asked", 
@@ -255,7 +291,7 @@
             "write": null
          }
       ], 
-      "12": [
+      "13": [
          {
             "event_type": "lasso", 
             "example": false, 
@@ -385,7 +421,7 @@
             "write": null
          }
       ], 
-      "13": [
+      "14": [
          {
             "event_type": "lasso", 
             "example": false, 
@@ -434,7 +470,7 @@
             "event_type": "memo"
          }
       ], 
-      "14": [
+      "15": [
          {
             "description": [
                "user", 
@@ -589,7 +625,7 @@
             "write": null
          }
       ], 
-      "15": [
+      "16": [
          {
             "event_type": "lasso", 
             "example": false, 
@@ -648,7 +684,7 @@
             "event_type": "memo"
          }
       ], 
-      "16": [
+      "17": [
          {
             "event_type": "lasso", 
             "example": false, 
@@ -792,7 +828,7 @@
             "write": null
          }
       ], 
-      "17": [
+      "18": [
          {
             "event_type": "lasso", 
             "example": false, 
@@ -1385,39 +1421,6 @@
                "robots"
             ], 
             "time": 433.2
-         }, 
-         {
-            "draw": [
-               "line", 
-               "on", 
-               "r", 
-               "side", 
-               "of", 
-               "screen"
-            ], 
-            "event_type": "drag", 
-            "example": false, 
-            "fingers": 1, 
-            "hands": 1, 
-            "no_contact": false, 
-            "objects": [
-               "open", 
-               "area"
-            ], 
-            "time": 437.89, 
-            "write": null
-         }, 
-         {
-            "count": 3, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
-               "whitespace"
-            ], 
-            "time": 439.18
          }
       ]
    }

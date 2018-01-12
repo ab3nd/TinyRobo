@@ -22,6 +22,15 @@ def print_event_list(event_list):
 		print ""
 	print "--"
 
+
+def print_2d_array(arr):
+	h = len(arr)
+	w = len(arr[0])
+	for y in range(h):
+		for x in range(w):
+			print "{:6,.4}".format(float(arr[y][x])),
+		print " "
+
 #The only two arguments are the file names
 parser = argparse.ArgumentParser()
 parser.add_argument("first", nargs = 1, help="First file, from one coder")
@@ -50,71 +59,86 @@ for task1, task2 in zip (tasks_1, tasks_2):
 	#Discard memos, they don't contribute to K
 	events_1 = [x for x in data_1['tasks'][task1] if x['event_type'] != 'memo']
 	events_2 = [x for x in data_2['tasks'][task2] if x['event_type'] != 'memo']
-
-	#if len(events_1) != len(events_2):
-		#print "Error: the event lists are different lengths for task {0}".format(task1)	
-		#TODO this should probably be fatal, leaving non-fatal for debugging
-		#continue
-
-	#print "{0}\n".format(args.first[0]),
-	#print_event_list(events_1)
-	#print "{0}\n".format(args.second[0]),
-	#print_event_list(events_2)
 	
 	#At this point we have two lists of events, of the same length, describing the same real-world happenings
 	#Sort the lists by time
 	events_1 = sorted(events_1, key=lambda event: event['time'])
 	events_2 = sorted(events_2, key=lambda event: event['time'])
+ 	
+ 	#The lists are sorted, but may not be aligned. Alignment in this case means that each item in the longer list is paired 
+ 	#with an item in shorter list, or with no item, because the item is something one coder saw and the other coder missed. 
+ 	#The pairing should be such that it minimizes the total time difference between paired items (so that each pair consists
+ 	#of items as close together as possible)
 
- 	event_length = max(len(events_1), len(events_2))
+ 	#Set up the costs
+ 	w = len(events_1) 
+ 	h = len(events_2) 
+ 	costs = [[float('inf') for x in range(w)] for y in range(h)]
+ 	
+ 	costs[0][0] = 0.0
+
+ 	#Calculate dynamic time warping cost
+ 	for y in range(1,h):
+ 		for x in range(1,w):
+ 			delta_t = abs(events_1[x-1]['time'] - events_2[y-1]['time'])
+ 			costs[y][x] = delta_t + min(costs[y-1][x], costs[y][x-1], costs[y-1][x-1])
+
+ 	print_2d_array(costs)
+ 	print "---"
  	#This is totally arbitrary, the krippendorf library just can't use strings
  	translate_to_int = {'drag':9, 'voice_command':1, 'tap':2, 'lasso':3, 'pinch':4, 'box_select':5, 'ui':6, 'memo':7, 'other':8}
 
- 	#Set up the codings, with np.nan for missing events
- 	#This isn't accurate, since the missing events don't have to be at the _end_ of the list...
- 	coder_1 = []
- 	coder_2 = []
- 	# for ii in range(event_length):
- 	# 	try:
- 	# 		coder_1.append(translate_to_int[events_1[ii]['event_type']])
- 	# 	except IndexError:
- 	# 		coder_1.append(np.nan)
-
- 	# 	try:
- 	# 		coder_2.append(translate_to_int[events_2[ii]['event_type']])
- 	# 	except IndexError:
- 	# 		coder_2.append(np.nan)
-
- 	#Pair the events in the shorter list with the closest events in time in the longer list
- 	shortlist = events_1 if len(events_1) < len(events_2) else events_2
- 	longlist = events_1 if len(events_1) >= len(events_2) else events_2
- 	for event in shortlist:
- 		minTime = float('inf')
- 		match = None
- 		for canidate in longlist:
- 			delta_t = abs(float(event['time']) - float(canidate['time']))
- 			if delta_t < minTime:
- 				minTime = delta_t
- 				match = canidate
- 		#TODO we're losing which coder the events come from, although all pairs are from differing coders...
- 		coder_1.append(translate_to_int[event['event_type']])
- 		coder_2.append(translate_to_int[match['event_type']])
- 		longlist.remove(match)
- 	#Longlist now contains unmatched events
- 	for event in longlist:
- 		coder_1.append(translate_to_int[event['event_type']])
- 		coder_2.append(np.nan)
+ 	# import pprint
+ 	# pprint.pprint(costs)
+ 	# print "---"
 
 
- 	k_data = [coder_1, coder_2]
- 	print k_data
- 	if k_data[0] == k_data[1]:
- 		#Actually calculating k can cause numerical problems, usually reported as 
- 		#/usr/local/lib/python2.7/dist-packages/krippendorff/krippendorff.py:249: RuntimeWarning: invalid value encountered in double_scalars
-		#return 1 - np.sum(o * d) / np.sum(e * d)
-		#Because np.sum(e*d) ends up being 0, and even numpy can't divide by zero
-		#They're the same, so just print 1.0
- 		print 1.0
- 	else:
- 		print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
+ 	# #Set up the codings, with np.nan for missing events
+ 	# #This isn't accurate, since the missing events don't have to be at the _end_ of the list...
+ 	# coder_1 = []
+ 	# coder_2 = []
+ 	# event_length = max(len(events_1), len(events_2))
+ 	# # for ii in range(event_length):
+ 	# # 	try:
+ 	# # 		coder_1.append(translate_to_int[events_1[ii]['event_type']])
+ 	# # 	except IndexError:
+ 	# # 		coder_1.append(np.nan)
+
+ 	# # 	try:
+ 	# # 		coder_2.append(translate_to_int[events_2[ii]['event_type']])
+ 	# # 	except IndexError:
+ 	# # 		coder_2.append(np.nan)
+
+ 	# #Pair the events in the shorter list with the closest events in time in the longer list
+ 	# shortlist = events_1 if len(events_1) < len(events_2) else events_2
+ 	# longlist = events_1 if len(events_1) >= len(events_2) else events_2
+ 	# for event in shortlist:
+ 	# 	minTime = float('inf')
+ 	# 	match = None
+ 	# 	for canidate in longlist:
+ 	# 		delta_t = abs(float(event['time']) - float(canidate['time']))
+ 	# 		if delta_t < minTime:
+ 	# 			minTime = delta_t
+ 	# 			match = canidate
+ 	# 	#TODO we're losing which coder the events come from, although all pairs are from differing coders...
+ 	# 	coder_1.append(translate_to_int[event['event_type']])
+ 	# 	coder_2.append(translate_to_int[match['event_type']])
+ 	# 	longlist.remove(match)
+ 	# #Longlist now contains unmatched events
+ 	# for event in longlist:
+ 	# 	coder_1.append(translate_to_int[event['event_type']])
+ 	# 	coder_2.append(np.nan)
+
+
+ 	# k_data = [coder_1, coder_2]
+ 	# print k_data
+ 	# if k_data[0] == k_data[1]:
+ 	# 	#Actually calculating k can cause numerical problems, usually reported as 
+ 	# 	#/usr/local/lib/python2.7/dist-packages/krippendorff/krippendorff.py:249: RuntimeWarning: invalid value encountered in double_scalars
+		# #return 1 - np.sum(o * d) / np.sum(e * d)
+		# #Because np.sum(e*d) ends up being 0, and even numpy can't divide by zero
+		# #They're the same, so just print 1.0
+ 	# 	print 1.0
+ 	# else:
+ 	# 	print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
  		
