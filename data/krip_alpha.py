@@ -75,13 +75,18 @@ for task1, task2 in zip (tasks_1, tasks_2):
  	h = len(events_2) 
  	costs = [[float('inf') for x in range(w)] for y in range(h)]
  	
- 	costs[0][0] = 0.0
+ 	# costs[0][0] = 0.0
 
- 	#Calculate dynamic time warping cost
- 	for y in range(1,h):
- 		for x in range(1,w):
- 			delta_t = abs(events_1[x-1]['time'] - events_2[y-1]['time'])
- 			costs[y][x] = delta_t + min(costs[y-1][x], costs[y][x-1], costs[y-1][x-1])
+ 	# #Calculate dynamic time warping cost
+ 	# for y in range(1,h):
+ 	# 	for x in range(1,w):
+ 	# 		delta_t = abs(events_1[x-1]['time'] - events_2[y-1]['time'])
+ 	# 		costs[y][x] = delta_t + min(costs[y-1][x], costs[y][x-1], costs[y-1][x-1])
+
+
+ 	for y in range(h):
+ 		for x in range(w):
+ 			costs[y][x] = abs(events_1[x-1]['time'] - events_2[y-1]['time'])
 
  	print_2d_array(costs)
  	print "---"
