@@ -39,6 +39,16 @@ def print_2d_str_array(arr):
 			print " {0}".format(arr[y][x]),
 		print " "
 
+def time_err(a1, a2):
+	total_error = 0
+	#These arrays are the same length
+	for event1, event2 in zip(a1,a2):
+		if event1 is None or event2 is None:
+			continue
+		else:
+			total_error += abs(event1['time'] - event2['time'])
+	return total_error
+
 #The only two arguments are the file names
 parser = argparse.ArgumentParser()
 parser.add_argument("first", nargs = 1, help="First file, from one coder")
@@ -107,101 +117,36 @@ for task1, task2 in zip (tasks_1, tasks_2):
 		if t < min_err_t:
 			min_err_t = t
 			best_match = with_gaps #TODO is this a potential scoping problem?
-	
 
- 	# #Set up the costs
- 	# w = len(events_1) 
- 	# h = len(events_2) 
- 	# costs = [[0 for x in range(w)] for y in range(h)]
- 	# arrows = [[" " for x in range(w)] for y in range(h)]
-
- 	# #First row and column
- 	# for y in range(h):
- 	# 	costs[y][0] = abs(events_1[0]['time'] - events_2[y]['time'])
-
- 	# for x in range(w):
- 	# 	costs[0][x] = abs(events_1[x]['time'] - events_2[0]['time'])
-
- 	# for y in range(1, h):
- 	# 	for x in range(1, w):
- 	# 		delta_t = abs(events_1[x]['time'] - events_2[y]['time'])
- 	# 		top = costs[y-1][x]
- 	# 		left = costs[y][x-1]
- 	# 		diag = costs[y-1][x-1]
- 	# 		smallest = min([top, left, diag])
- 	# 		if diag == smallest:
- 	# 			arrows[y][x] = 'd'
- 	# 		else:
- 	# 			arrows[y][x] = '_'
- 	# 		if top == smallest:
- 	# 			arrows[y][x] += 't'
- 	# 		else:
- 	# 			arrows[y][x] += '_'
- 	# 		if left == smallest:
- 	# 			arrows[y][x] += 'l'
- 	# 		else:
- 	# 			arrows[y][x] += '_'
-
- 	#  		costs[y][x] = delta_t + min([top, left, diag])
-
- 	# print_2d_array(costs)
- 	# print_2d_str_array(arrows)
-
- 	# print "---"
- 	#This is totally arbitrary, the krippendorf library just can't use strings
+	#This is totally arbitrary, the krippendorf library just can't use strings
  	translate_to_int = {'drag':9, 'voice_command':1, 'tap':2, 'lasso':3, 'pinch':4, 'box_select':5, 'ui':6, 'memo':7, 'other':8}
 
- 	# import pprint
- 	# pprint.pprint(costs)
- 	# print "---"
+ 	#TODO we're losing which coder the events come from, although all pairs are from differing coders...
+ 	coder_1 = []
+ 	coder_2 = []
+ 	
+ 	#They're the same length because we put some gaps in
+ 	for event1, event2 in zip(best_match, longlist):
+ 		if event1 is None:
+ 			coder_1.append(np.nan)
+ 		else:
+ 	 		coder_1.append(translate_to_int[event1['event_type']])
 
+ 	 	if event2 is None:
+ 	 		coder_2.append(np.nan)
+ 	 	else:
+ 	 		coder_2.append(translate_to_int[event2['event_type']])
+ 	
 
- 	# #Set up the codings, with np.nan for missing events
- 	# #This isn't accurate, since the missing events don't have to be at the _end_ of the list...
- 	# coder_1 = []
- 	# coder_2 = []
- 	# event_length = max(len(events_1), len(events_2))
- 	# # for ii in range(event_length):
- 	# # 	try:
- 	# # 		coder_1.append(translate_to_int[events_1[ii]['event_type']])
- 	# # 	except IndexError:
- 	# # 		coder_1.append(np.nan)
-
- 	# # 	try:
- 	# # 		coder_2.append(translate_to_int[events_2[ii]['event_type']])
- 	# # 	except IndexError:
- 	# # 		coder_2.append(np.nan)
-
- 	# #Pair the events in the shorter list with the closest events in time in the longer list
- 	# shortlist = events_1 if len(events_1) < len(events_2) else events_2
- 	# longlist = events_1 if len(events_1) >= len(events_2) else events_2
- 	# for event in shortlist:
- 	# 	minTime = float('inf')
- 	# 	match = None
- 	# 	for canidate in longlist:
- 	# 		delta_t = abs(float(event['time']) - float(canidate['time']))
- 	# 		if delta_t < minTime:
- 	# 			minTime = delta_t
- 	# 			match = canidate
- 	# 	#TODO we're losing which coder the events come from, although all pairs are from differing coders...
- 	# 	coder_1.append(translate_to_int[event['event_type']])
- 	# 	coder_2.append(translate_to_int[match['event_type']])
- 	# 	longlist.remove(match)
- 	# #Longlist now contains unmatched events
- 	# for event in longlist:
- 	# 	coder_1.append(translate_to_int[event['event_type']])
- 	# 	coder_2.append(np.nan)
-
-
- 	# k_data = [coder_1, coder_2]
- 	# print k_data
- 	# if k_data[0] == k_data[1]:
- 	# 	#Actually calculating k can cause numerical problems, usually reported as 
- 	# 	#/usr/local/lib/python2.7/dist-packages/krippendorff/krippendorff.py:249: RuntimeWarning: invalid value encountered in double_scalars
+ 	k_data = [coder_1, coder_2]
+ 	print k_data
+ 	if k_data[0] == k_data[1]:
+ 		#Actually calculating k can cause numerical problems, usually reported as 
+ 	 	#/usr/local/lib/python2.7/dist-packages/krippendorff/krippendorff.py:249: RuntimeWarning: invalid value encountered in double_scalars
 		# #return 1 - np.sum(o * d) / np.sum(e * d)
 		# #Because np.sum(e*d) ends up being 0, and even numpy can't divide by zero
 		# #They're the same, so just print 1.0
- 	# 	print 1.0
- 	# else:
- 	# 	print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
+ 	 	print 1.0
+ 	else:
+ 	 	print krippendorff.alpha(reliability_data=k_data, level_of_measurement='nominal')
  		
