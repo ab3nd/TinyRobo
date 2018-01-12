@@ -105,11 +105,9 @@ for task1, task2 in zip (tasks_1, tasks_2):
  	min_err_t = float('inf')
  	best_match = None
 
- 	for idx in itertools.permutations(range(len(longlist)), len(shortlist)):
+ 	for idx in itertools.combinations(range(len(longlist)), len(shortlist)):
 		with_gaps = [None for _ in longlist]
 
-		idx = list(idx)
-		idx.reverse()
 		for from_idx, to_idx in enumerate(idx):
 			with_gaps[to_idx] = shortlist[from_idx] 
 
