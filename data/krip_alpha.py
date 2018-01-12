@@ -31,6 +31,14 @@ def print_2d_array(arr):
 			print "{:6,.4}".format(float(arr[y][x])),
 		print " "
 
+def print_2d_str_array(arr):
+	h = len(arr)
+	w = len(arr[0])
+	for y in range(h):
+		for x in range(w):
+			print " {0}".format(arr[y][x]),
+		print " "
+
 #The only two arguments are the file names
 parser = argparse.ArgumentParser()
 parser.add_argument("first", nargs = 1, help="First file, from one coder")
@@ -70,26 +78,76 @@ for task1, task2 in zip (tasks_1, tasks_2):
  	#The pairing should be such that it minimizes the total time difference between paired items (so that each pair consists
  	#of items as close together as possible)
 
- 	#Set up the costs
- 	w = len(events_1) 
- 	h = len(events_2) 
- 	costs = [[float('inf') for x in range(w)] for y in range(h)]
- 	
- 	# costs[0][0] = 0.0
+ 	#Dynamic time warping doesn't work because it can map multiple points to one point, but I need actual pairs
+ 	#Needleman-Wunsch doesn't work because it can insert arbitrary numbers of indels, and I have a bounded number
 
- 	# #Calculate dynamic time warping cost
- 	# for y in range(1,h):
- 	# 	for x in range(1,w):
- 	# 		delta_t = abs(events_1[x-1]['time'] - events_2[y-1]['time'])
- 	# 		costs[y][x] = delta_t + min(costs[y-1][x], costs[y][x-1], costs[y-1][x-1])
+ 	#Can get away with brute forcing this because it's usually small sets
+ 	import itertools
+ 	import copy
+	
+	unmatched = abs(len(events_1) - len(events_2))
+	
+ 	shortlist = events_1 if len(events_1) < len(events_2) else events_2
+ 	longlist = events_1 if len(events_1) >= len(events_2) else events_2
 
+ 	#For all combinations of the shorter list and some non-events, check the time error
+ 	#Save the one with minimum time error
+ 	min_err_t = float('inf')
+ 	best_match = None
 
- 	for y in range(h):
- 		for x in range(w):
- 			costs[y][x] = abs(events_1[x-1]['time'] - events_2[y-1]['time'])
+	for idx in itertools.permutations(range(len(shortlist)+1), unmatched):
+		with_gaps = copy.deepcopy(shortlist)
+		idx = list(idx)
+		idx.reverse()
+		for id in idx:
+			with_gaps.insert(id, None)
 
- 	print_2d_array(costs)
- 	print "---"
+		#Check if the time error is less than the minimum observed so far	
+		t = time_err(with_gaps, longlist) 
+		if t < min_err_t:
+			min_err_t = t
+			best_match = with_gaps #TODO is this a potential scoping problem?
+	
+
+ 	# #Set up the costs
+ 	# w = len(events_1) 
+ 	# h = len(events_2) 
+ 	# costs = [[0 for x in range(w)] for y in range(h)]
+ 	# arrows = [[" " for x in range(w)] for y in range(h)]
+
+ 	# #First row and column
+ 	# for y in range(h):
+ 	# 	costs[y][0] = abs(events_1[0]['time'] - events_2[y]['time'])
+
+ 	# for x in range(w):
+ 	# 	costs[0][x] = abs(events_1[x]['time'] - events_2[0]['time'])
+
+ 	# for y in range(1, h):
+ 	# 	for x in range(1, w):
+ 	# 		delta_t = abs(events_1[x]['time'] - events_2[y]['time'])
+ 	# 		top = costs[y-1][x]
+ 	# 		left = costs[y][x-1]
+ 	# 		diag = costs[y-1][x-1]
+ 	# 		smallest = min([top, left, diag])
+ 	# 		if diag == smallest:
+ 	# 			arrows[y][x] = 'd'
+ 	# 		else:
+ 	# 			arrows[y][x] = '_'
+ 	# 		if top == smallest:
+ 	# 			arrows[y][x] += 't'
+ 	# 		else:
+ 	# 			arrows[y][x] += '_'
+ 	# 		if left == smallest:
+ 	# 			arrows[y][x] += 'l'
+ 	# 		else:
+ 	# 			arrows[y][x] += '_'
+
+ 	#  		costs[y][x] = delta_t + min([top, left, diag])
+
+ 	# print_2d_array(costs)
+ 	# print_2d_str_array(arrows)
+
+ 	# print "---"
  	#This is totally arbitrary, the krippendorf library just can't use strings
  	translate_to_int = {'drag':9, 'voice_command':1, 'tap':2, 'lasso':3, 'pinch':4, 'box_select':5, 'ui':6, 'memo':7, 'other':8}
 
