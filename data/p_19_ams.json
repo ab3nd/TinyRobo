@@ -387,18 +387,17 @@
             "time": 704.52
          }, 
          {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
-               "top", 
-               "r", 
-               "of", 
-               "screen"
+            "description": [
+               "\"check\"", 
+               "to", 
+               "fire", 
+               "self", 
+               "diagnostic"
             ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false, 
             "time": 706.46
          }, 
          {
@@ -414,28 +413,6 @@
                "leave", 
                "it", 
                "behind"
-            ], 
-            "event_type": "memo"
-         }, 
-         {
-            "description": [
-               "\"tap", 
-               "top", 
-               "r", 
-               "of", 
-               "screen", 
-               "t", 
-               "706.46\"", 
-               "should", 
-               "have", 
-               "been", 
-               "ui,", 
-               "unknown", 
-               "\"check\"", 
-               "to", 
-               "fire", 
-               "self", 
-               "diagnostic"
             ], 
             "event_type": "memo"
          }
@@ -769,7 +746,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.02
+            "time": 948.02
          }, 
          {
             "count": 1, 
@@ -783,7 +760,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.12
+            "time": 948.12
          }, 
          {
             "count": 1, 
@@ -797,7 +774,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.23
+            "time": 948.23
          }, 
          {
             "count": 1, 
@@ -811,7 +788,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.35
+            "time": 948.35
          }, 
          {
             "count": 1, 
@@ -825,7 +802,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.5
+            "time": 948.5
          }, 
          {
             "count": 1, 
@@ -839,7 +816,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.62
+            "time": 948.62
          }, 
          {
             "count": 1, 
@@ -853,7 +830,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.75
+            "time": 948.75
          }, 
          {
             "count": 1, 
@@ -867,7 +844,7 @@
                "of", 
                "A"
             ], 
-            "time": 493.81
+            "time": 948.81
          }, 
          {
             "count": 1, 
@@ -896,19 +873,7 @@
                "A"
             ], 
             "time": 949.12
-         }, 
-         {
-            "description": [
-               "fix", 
-               "times", 
-               "on", 
-               "first", 
-               "few", 
-               "taps,", 
-               "948.wahtever"
-            ], 
-            "event_type": "memo"
-         }, 
+         },  
          {
             "draw": null, 
             "event_type": "drag", 

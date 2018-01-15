@@ -97,29 +97,7 @@
             "objects": [
                "robots"
             ], 
-            "time": 355.01
-         }, 
-         {
-            "count": 1, 
-            "event_type": "tap", 
-            "example": false, 
-            "fingers": 1, 
-            "hold": false, 
-            "no_contact": false, 
-            "objects": [
-               "robots"
-            ], 
             "time": 349.55
-         }, 
-         {
-            "description": [
-               "tap", 
-               "at", 
-               "355", 
-               "is", 
-               "error"
-            ], 
-            "event_type": "memo"
          }, 
          {
             "description": [
@@ -226,16 +204,7 @@
             "no_contact": false, 
             "reverse": false, 
             "time": 433.39
-         }, 
-         {
-            "event_type": "pinch", 
-            "example": false, 
-            "fingers": 2, 
-            "hands": 2, 
-            "no_contact": false, 
-            "reverse": false, 
-            "time": 433.39
-         }, 
+         },  
          {
             "event_type": "pinch", 
             "example": false, 
@@ -244,16 +213,6 @@
             "no_contact": false, 
             "reverse": false, 
             "time": 434.66
-         }, 
-         {
-            "description": [
-               "pinch", 
-               "at", 
-               "433.39", 
-               "was", 
-               "error"
-            ], 
-            "event_type": "memo"
          }, 
          {
             "event_type": "lasso", 
@@ -517,7 +476,7 @@
             "objects": [
                "robots"
             ], 
-            "time": 336.23
+            "time": 536.23
          }, 
          {
             "count": 1, 
@@ -530,17 +489,6 @@
                "crate"
             ], 
             "time": 537.22
-         }, 
-         {
-            "description": [
-               "tap", 
-               "at", 
-               "336.23", 
-               "is", 
-               "at", 
-               "536.23"
-            ], 
-            "event_type": "memo"
          }, 
          {
             "count": 1, 
@@ -617,7 +565,7 @@
          {
             "draw": null, 
             "event_type": "drag", 
-            "example": false, 
+            "example": true, 
             "fingers": 1, 
             "hands": 1, 
             "no_contact": false, 
@@ -628,16 +576,6 @@
             ], 
             "time": 572.58, 
             "write": null
-         }, 
-         {
-            "description": [
-               "drag", 
-               "at", 
-               "572.58", 
-               "is", 
-               "example"
-            ], 
-            "event_type": "memo"
          }
       ], 
       "13": [
