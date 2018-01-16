@@ -1741,4 +1741,42 @@ Vasco Costa, Miguel Duarte, Tiago Rodrigues, Sancho Moura Oliveira and Anders Ly
 	Inexpensive swarm robot aquatic surface vessels
 	300EU materials
 	Pi 2, GPS, magnetic heading sensor, dual brusheless motors
+
+Investigating the effect of increasing robot group sizes on the human psychophysiological state in the context of human–swarm interaction
+Gaëtan Podevijn, Rehan O’Grady, Nithin Mathews, Audrey Gilles 2, Carole Fantini-Hauwel, Marco Dorigo
+	GSR and heart rate, plus self-reported metrics
+	N=24
+	"Passive interaction"
+		Human sits in chair, robots come out of a little compartment and surround them
+	1, 3, or 24 robots
+	45s of exposure
+	Robots do random walk with obstacle avoid
+	E-pucks, so about the size of a coffee cup
+	Results: 24 robots gets stronger reaction
+		Reaction is generally positive, people are happy/excited
+
+
+Electroencephalography as implicit communication channel for proximal interaction between humans and robot swarms
+Luca Mondada, Mohammad Ehsanul Karim, Francesco Mondada
+	LED on robot blinks at fixed frequency
+	Steady-state visually-evoked potential in human checked for frequency
+	Match human frequency to robot, and you know what robot they are paying attention to
+	Simplified selection
+	Used Emotive EPOC (looked at OpenEEG too, v. difficult to deploy)
+	Works, but not terribly great, 75% average correct recognition
+
+Evolving Neural Networks through Augmenting Topologies
+Kenneth O. Stanley, Risto Miikkulainen
+	Evolving topology to save humans the time of picking a topology
+		Afer all, a fully connected network can approximate any continuious function
+		...so why not choose a fully connected network every time?
+	Keeps historical information on origin of genes
+		Used to ensure that crossover doesn't trash useful genes
+			E.g. an organism needs at least one copy of gene A to be useful, so keep at least one gene that is A-descended
+	Random starting population is bad
+		Some chance that members have e.g. no path from input to output
+		Lots of unneeded parameters
+			Want to start minimal, for fast searching
+	Similar topologies are assigned to niches, compete with each other
+		Allows topological changes that may initially reduce fitness to become useful
 	
