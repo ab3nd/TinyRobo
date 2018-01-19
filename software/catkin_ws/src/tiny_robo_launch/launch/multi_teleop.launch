@@ -14,7 +14,7 @@
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
-		<param name="robot_addr" value="192.168.1.218" type="str" />
+		<param name="robot_addr" value="192.168.1.101" type="str" />
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
 	</node>
 
@@ -63,4 +63,23 @@
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node_3/drive_cmd"/>
 	</node>	
 
+  <!-- fun visuals -->
+  <arg name="cam_name" value="overhead_cam" />
+  <arg name="GST10" value="true" />
+
+  <!-- Start the GSCAM node -->
+  <!-- Note that some settings of videocrop will cause a double-free error -->
+  <!-- ! videocrop top=200 left=10 right=30 bottom=20 -->
+  <env name="GSCAM_CONFIG" value="v4l2src device=/dev/video1 ! ffmpegcolorspace " />
+  <node pkg="gscam" type="gscam" name="$(arg cam_name)">
+          <param name="camera_name" value="$(arg cam_name)" />
+          <param name="camera_info_url" value="file:///$(find camera_cal)/usb_cam_1024x768.yml" />
+          <remap from="camera/image_raw" to="$(arg cam_name)/image_raw" />
+  </node>
+
+   <!-- Video un-distorting -->
+   <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg cam_name)"/>
+
+   <!-- Fiducial tags -->
+   <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
 </launch>
