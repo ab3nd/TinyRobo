@@ -20,7 +20,7 @@ from kivy.core.image import Image as CoreImage
 from kivy.uix.button import Button
 from kivy.graphics import Rectangle
 from array import array
-
+from kivy.core.image.img_pil import ImageLoaderPIL 
 #From the Kivy example this is based on, remove later
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
@@ -35,7 +35,7 @@ from PIL import Image as PILImage
 
 import numpy as np
 from io import BytesIO  
-
+from StringIO import StringIO
 import cv2
 
 # rospy for the subscriber
@@ -71,21 +71,21 @@ class StupidApp(App):
         wid.canvas.clear()
 
     def build(self):
-        wid = Widget()
+        self.wid = Widget()
 
         label = Label(text='0')
 
         btn_add100 = Button(text='+ 100 rects',
-                            on_press=partial(self.add_rects, label, wid, 100))
+                            on_press=partial(self.add_rects, label, self.wid, 100))
 
         btn_add500 = Button(text='+ 500 rects',
-                            on_press=partial(self.add_rects, label, wid, 500))
+                            on_press=partial(self.add_rects, label, self.wid, 500))
 
         btn_double = Button(text='x 2',
-                            on_press=partial(self.double_rects, label, wid))
+                            on_press=partial(self.double_rects, label, self.wid))
 
         btn_reset = Button(text='Reset',
-                           on_press=partial(self.reset_rects, label, wid))
+                           on_press=partial(self.reset_rects, label, self.wid))
 
         layout = BoxLayout(size_hint=(1, None), height=50)
         layout.add_widget(btn_add100)
@@ -95,7 +95,7 @@ class StupidApp(App):
         layout.add_widget(label)
 
         root = BoxLayout(orientation='vertical')
-        root.add_widget(wid)
+        root.add_widget(self.wid)
         root.add_widget(layout)
 
         return root
@@ -107,17 +107,72 @@ class StupidApp(App):
         return True
 
     def update_image(self, imgMsg):
-        #file = io.BytesIO()
-        print "About to do the other thing!"
-        image = PILImage.new('RGBA', size=(50, 50), color=(155, 255, 0))
-        #image.save(file, 'png')
-        #file.name = 'test.png'
-        #im = CoreImage(file, ext="png")
+        try:
+            image = PILImage.new('RGBA', size=(64, 64), color=(155, 255, 0))
+            # #file = BytesIO()
+            # file=StringIO()
+            # image = PILImage.new('RGBA', size=(50, 50), color=(155, 255, 0))
+            # image.save(file, 'png')
+            # file.name = 'test.png'
+        
+            # from kivy.core.image.img_pygame import ImageLoaderPygame
+            # with self.wid.canvas:
+            #     texture = ImageLoaderPygame(file).texture
+            # #im = CoreImage(file, ext="png")
+           
+            #Attempt two
+            # image = PILImage.new('RGBA', size=(50, 50), color=(155, 255, 0))
+            # f = StringIO()
+            # image.save(f, format="PNG")
+            # f.seek(0)
 
+            # im = CoreImage(f.getvalue(), ext="png") #imgTexture = ImageLoaderPygame(f).texture
+
+
+            #Attempt 3
+            # file = BytesIO()
+            # image.save(file, 'png')
+            # file.seek(0)
+            # im = CoreImage(file, ext="png")
+            
+            #Causes segfault
+            #UIXImage(texture = im.texture)
+
+            #Attempt 4
+            # #f = StringIO(image)
+            # f = StringIO(image)
+            # #image.save(f, "png")
+            # f.seek(0)
+            # byteimg=f.read()
+            # from kivy.core.image.img_pil import ImageLoaderPIL 
+            # imgTexture = ImageLoaderPIL(BytesIO(byteimg)).texture
+
+            # This portion is part of my test code
+            byteImgIO = BytesIO()
+            image.save(byteImgIO, "PNG")
+            byteImgIO.seek(0)
+            
+            im = CoreImage(byteImgIO, ext='png')
+
+            #Create a texture explicitly
+            tex = Texture.create(size=(64,64))
+            tex.blit_buffer(byteImgIO, colorfmt='rgba', bufferfmt='ubyte')
+
+            with self.wid.canvas:
+                Rectangle(size=(64,64), pos=(40, 40), texture=tex)
+
+            #with self.wid.canvas:
+            #    texture = im.texture
+            # with self.wid.canvas:
+            #     Rectangle(texture=im.texture)
+
+        except Exception as inst:
+            print inst
+        
         #Put it into the canvas
-        #wid.add(Rectangle(size=(50,50), texture=im.texture))
-
-        print "Did the thing!"
+        #with wid.canvas:
+        #    Rectangle(size=(50,50), pos=(40, 40), texture=im.texture)
+        
 
 
 if __name__ == '__main__':
