@@ -650,6 +650,14 @@ Spent a lot of time around here having a cold and not being able to think well
 - Coded 5 particpants
 - Read some more swarm papers
 
+1/23
+- Lots of thinking and writing on paper
+- no internet and no coding from James, so couldn't check agreement
+- Programs might not be GCPR, or expressing them in GCPR might not be useful
+  - Actually, the composition stuff could be good
+- tinkered with Kivy UI for swarm validataion
+- https://answers.ros.org/question/277859/ros-kinetic-opencv3-and-apriltags-regression/
+  - had to apply that change after updates to OpenCV
 
 Swarm control software
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 
