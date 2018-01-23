@@ -78,11 +78,12 @@ class StupidApp(App):
                 
             im = CoreImage(self.imageData, ext='png')
 
-            with self.image:
-                texture=im.texture
+            with self.image.canvas:
+                Rectangle(texture = im.texture)
+                
         except Exception as e:
             print e
-            
+
     def update_image(self, imgMsg):
 
         #This is all apparently happening outside the GL context?
