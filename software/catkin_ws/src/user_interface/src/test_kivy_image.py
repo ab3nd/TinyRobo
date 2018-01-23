@@ -63,11 +63,21 @@ class StupidApp(App):
         byteImgIO.seek(0)
             
         im = CoreImage(byteImgIO, ext='png')
-            
-        return UIXImage(texture=im.texture)
+        
+        self.image = UIXImage(texture=im.texture)
+
+        return self.image
 
     def update_image(self, imgMsg):
-        pass
+
+        image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 0))
+        byteImgIO = BytesIO()
+        image.save(byteImgIO, "PNG")
+        byteImgIO.seek(0)
+            
+        im = CoreImage(byteImgIO, ext='png')
+        
+        self.image.texture = im.texture
         
 if __name__ == '__main__':
     StupidApp().run()
