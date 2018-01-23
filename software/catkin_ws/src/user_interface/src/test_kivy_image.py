@@ -17,7 +17,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image as UIXImage
 from kivy.core.image import Image as CoreImage
 from kivy.graphics import Rectangle
-
+from kivy.clock import Clock
 from kivy.base import EventLoop
 
 #For test, remove later
@@ -42,6 +42,7 @@ class StupidApp(App):
         rospy.init_node('kivy_img_mauler')
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
+        self.imageData = BytesIO()
 
     def build(self):
         imgPath = "/usr/share/icons/Tango/16x16/actions/gnome-shutdown.png"
@@ -58,18 +59,34 @@ class StupidApp(App):
 
         #This also works if the window is assured, but not from update_image
         image = PILImage.new('RGBA', size=(64, 64), color=(155, 255, 0))
-        byteImgIO = BytesIO()
-        image.save(byteImgIO, "PNG")
-        byteImgIO.seek(0)
+        image.save(self.imageData, "PNG")
+        self.imageData.seek(0)
             
-        im = CoreImage(byteImgIO, ext='png')
+        im = CoreImage(self.imageData, ext='png')
         
         self.image = UIXImage(texture=im.texture)
 
+        Clock.schedule_interval(self.display_image, 4.0) #1.0 / 30.0)
+
         return self.image
 
+    def display_image(self):
+        try:
+            image = PILImage.new('RGBA', size=(64, 64), color=(155, 55, 0))
+            image.save(self.imageData, "PNG")
+            self.imageData.seek(0)
+                
+            im = CoreImage(self.imageData, ext='png')
+
+            with self.image:
+                texture=im.texture
+        except Exception as e:
+            print e
+            
     def update_image(self, imgMsg):
 
+        #This is all apparently happening outside the GL context?
+        
         image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 0))
         byteImgIO = BytesIO()
         image.save(byteImgIO, "PNG")
@@ -77,7 +94,16 @@ class StupidApp(App):
             
         im = CoreImage(byteImgIO, ext='png')
         
-        self.image.texture = im.texture
-        
+        # try:
+        #     t = im.texture
+        #     #self.image = UIXImage(texture=im.texture)
+        # except Exception as inst:
+        #     print inst
+
 if __name__ == '__main__':
     StupidApp().run()
+
+#Might come in handy later
+# from threading import Thread
+# spin_thread = Thread(target=lambda: rospy.spin())
+# spin_thread.start()
