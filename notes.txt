@@ -1440,3 +1440,343 @@ Davy Vanacken, Alexandre Demeure, Kris Luyten, Karin Coninx
 		Picture of a picture isn't a picture
 		So users are caught between "natural" interactions and a non-natural interface
 		Invisible UI has no affordances
+
+Taxonomy and Overview of Multi-touch Frameworks: Architecture, Scope and Features
+Dietrich Kammer, Mandy Keck, Georg Freitag, Markus Wacker
+
+
+Validation study papers that might be useful
+
+Extracting Usability Information from User Interface Events
+DAVID M. HILBERT AND DAVID F. REDMILES
+	User interface clicks and typing need automated processing to be useful as information
+	Covers techniques for workign with interaction data stream
+	Application to usability
+		Formative - research that guides the creation of a UI
+		Summative - research that compares a UI to e.g. previous versions, judgement about finished UI
+	Evaluation approaches
+		Predictive - based on psych modeling approaches (GOMS (John & Kieras), Cognitive Walkthrough (Lewis et al 1992)), or expertise (Heuristic (Neilsen & Mack 1994))
+		Observational - observing users interacting with the system
+			What I'm planning so far
+		Participative - Collecting data directly from the users, interviews and such
+	Indicators
+		Online behavior/performance
+		Offline behavior
+		Cognition/understanding
+		Attitude/opinion
+		Stress/anxiety (e.g. EKG/GSR)
+	Events can be compose of other, usually higher-frequency events
+		e.g. filling a form is composed of filling textboxes (which is composed of keystrokes) and mousing between them
+	Events may have context
+		click is on something, might be on a menu brought up by a previous click
+	Bulk of paper is reporting on tools
+
+Teaching Natural User Interaction Using OpenNI and the Microsoft Kinect Sensor
+Norman Villaroman, Dale Rowe, Bret Swan
+	Has a nice history of NUI devices
+	Mostly about teaching UI design for NUI, not evaluation
+
+
+The GOMS Family of User Interface Analysis Techniques: Comparison and Contrast
+BONNIE E. JOHN and DAVID E. KIERAS
+	By the original GOMS authors
+	Goals, Operators, Methods, and Selections
+	Goals
+		What the user wants to do
+		Can have (nested) subgoals
+		multiple active at once
+	Operators
+		Actions the user does in service of a goal
+		peception, cognition, UI interaction, etc. 
+		Changes either the user's internal state or the stae of the environment
+		Usually has parameters like execution time
+	Methods
+		Sequences of operators and subgoals to accomplish a goal
+	Selections
+		How the user chooses which operators and methods to use
+	Method vs Operator is level of detail chosen by the person doing the study
+	Rest of paper compares some GOMS-descended models
+	Seems to be about evaluating UI that already has commands, rather than finding the commands
+	May be worth revisiting, but seems more for optimization than creation
+
+
+Gestures without Libraries, Toolkits or Training: A $1 Recognizer for User Interface Prototypes
+Jacob O. Wobbrock, Andrew D. Wilson, Yang Li
+	Gesture recognition can be tricky
+	Mentions Dynamic Time Warping, HMM, ANN, feature-based classifiers
+	single-stroke gestures
+	4 steps
+		1 resample the point path (velocity invariance)
+			convert to N equidistant points
+			N=64 found to be pretty good, 32 <= N <= 256 seemed fine
+			squares well with speed to point density relation on the 3M screen
+			calculate the overall path lenght, divide by N-1, linear interpolate
+		2 rotate based on the "indicatitive angle" (rotation invariance)
+			angle between first point and centroid
+			rotate to point to 0 (off to the left), or really any fixed angle
+		3 scale and translate (location and scale invariance)
+			scale to a fixed size square and put the centroid at the origin
+		4 find angle for best score
+			compare to each template based on distance between corresponding points
+			rotate to best match 
+				continuious, so can do searches
+				can brute force, paper lists a better approach
+	Can probably be extended to multitouch
+		Points ordered by contact point and by time
+		possibly doesn't even need that, as long as the gesture is bounded
+		seperating two gestures at the same time from one multi-point gesture is problematic
+			Try all contact points together, then pairs?
+			Or the other way around. Which is better?
+	Can't tell e.g. rectangle from square, up from down arrow
+	Can't actually recognize my "drag" command, as it has no fixed shape
+	Can't tell the various box selects apart
+	Can detect pinch, tap, lasso (as circle)
+	Circle is lasso based on context
+		box select and cut-line divide are ambiguious, esp. under this recognizer
+
+Wiimote and Kinect: Gestural User Interfaces add a Natural third dimension to HCI.
+Rita Francese, Ignazio Passero, Genoveffa Tortora
+	Evaluation metrics are subjective usability, presence, immersion
+	"Natural user interfaces disappear behind the content, and
+direct manipulation style (e.g., touch, voice commands and
+gestures) is the primary interaction method adopted [2, 10].
+Despite that, too often the window/icons/mouse metaphors
+contaminate the gestural interfaces vanishing their efficacy
+[28], the user is involved in a frustrating experience: the
+motion capture based interface fails in being effective since
+it’s used only for mimicking the classic mouse interaction."
+		Yeah, that would be nice. What actually happens is that the users drag that stuff in anyway. 
+		Describes a couple of intefaces using Kinect and Wiimote to fly around Bing maps
+
+Touch-Based User Interface for Elderly Users
+Juha Häikiö et al
+	Touch phone to appropriate tag for NFC communication to order food
+	"elderly persons who were eligible for home care provided by the town."
+		Living in a first-world country must be nice
+	Not entirely NUI, but easy to use, even on limited UI cell phone
+
+USABILITY ENGINEERING METHODS FOR SOFTWARE Developers
+Andreas Holzinger
+	Inspection
+		Cognitive Walkthrough
+			Task oriented
+			analyist steps through a task taking notes
+		Heuristic (Neilsen)
+		Action Analysis
+	Test
+		Think-aloud
+		Field Observation
+		Questionnaires
+	Qualities
+		Learnability - rapid start to working with the system
+		Efficiency - high productivity in use
+		Memorability - minimal need to relearn after non-use
+		low error rate - few and easy-to-fix errors
+		satisfaction - pleasant to use (subjective, unless you count stress via GSR)
+	My design is intended to get:
+		learnability and memorability by discovery of gestures
+		efficiency by hopefully having users make good choices for gestures
+	Validataion should check
+		low error rate - users complete tasks
+		satisfaction - what did users think of system results
+
+The Future of Natural User Interfaces
+Jhilmil Jain, Arnie Lund, Dennis Wixon
+	Just a description of a SIG
+
+Using Metaphors to Create a Natural User Interface for Microsoft Surface
+Kay Hofmeester, Dennis Wixon
+	Metaphors as guides to understanding and prediction
+	UI as a world with rules and behaviors
+	"During the sessions, we asked participants to sketch out their ideas on napkins."
+		This is too twee for words
+	Early surface, emphasis on multi-person computing
+	Interesting overview of design process, not relevant to my work
+
+Heuristic Evaluation of UI
+Jakob Nielsen and Rolf Molich
+	Evaluators are presented with a design and asked to comment on it
+	Individial evaluators are pretty bad (they miss a lot)
+	Aggregating them covers the gaps
+	Distinct from 
+		Formal
+			some analysis technique (GOMS?)
+		Automatic
+			Computerized proceedure for testing
+		Empirically
+			Experiments with test users
+	Molich/Nielsen 9 principles
+		Simple and Natural dialog
+		Speak the user's language
+		Minimize memory load
+		Be consistent
+		Provide feedback
+		Provide clearly marked exits
+		Provide shortcuts
+		Have good error messages 
+		Prevent errors
+	Not going to cut it for my PhD, though, since I have to do an emperical test
+
+Usability Inspection Methods
+Jakob Nielsen
+	Heursitic
+		Experts judge the interface using established rules
+	Cognitive walkthrough
+		detailed proceedure to simulate user problem solving
+	Formal inspection
+		Combines Heuristic & Cognitive Walkthrough in a detailed proceedure
+	Pluralistic Walkthrough
+		User, devs, human-factors people all do Cog. Walk. together
+	Feature inspection
+		sequence of features to accomplish a task, looking for long/cumbersome sequences
+	Consistency inspection
+		Devs from other projects check that interface does things the same way as theirs
+	Standards inspection
+		Expert on a standard checks for compliance with it
+			Nielsen has a paper on the usability of usability standards that addresses this
+				People following a standard are like people following a heuristic
+				They miss a lot of things, but if you have enough of them, it will still help
+
+The conceptualization and empirical validation of web site user satisfaction
+Steve Muylle a,* , Rudy Moenaert b , Marc Despontin c
+	Very web-site oriented
+	Interesting dimensional breakdown of "satisfaction", but not relevant for my system
+		Large elements of satsifaction were based in hyper-media specific attributes
+
+
+TASK-CENTERED USER INTERFACE DESIGN
+A Practical Introduction
+by Clayton Lewis and John Rieman
+	Points out that test users should be representative of target population
+	I don't, at this point, have a target population
+	That said, "college-educated people" seems like something I'd expect of swarm robot users
+	Has some math for doing comparisons
+	Interesting overview
+
+Since I don't have a target population, the main things I'm looking for are that the user interface
+	1. Allows the users to complete the tasks, and
+	2. Doesn't have them do a lot of unneeded flailing
+
+Detecting flailing
+	-making gestures that the system cannot interpret as commands
+	-making gestures that are interpreted as commands, but miss the user's intention
+		- for the experiment, have the user state their high-level intention before interacting
+		- plan-out-loud before doing the actual interactions, describe their strategy
+
+Beyond Fingers and Thumbs – A Graceful Touch UI
+Elegant Multi-touch and Gesture UI with Context Dependent Prompting
+Sue Hessey, Szu Han Chen, and Catherine White
+	Leap-motion-based approach with in-air finger sensing
+
+A review of swarm robotics tasks (2014)
+Levent Bayındır
+	Seems to pretty much be the hierarchy paper I was working on
+	Good paper to cite for overview reasons
+
+
+Evolution of swarm robotics systems with novelty search
+Jorge Gomes, Paulo Urbano, Anders Lyhne Christensen
+	Search rewards novelty (difference from previous solutions) rather than fitness
+	Has to be combined with fitness in some way 
+		Otherwise you get "solutions" that are novel but bad
+	Interesting approach, I'm not doing evolution for time reasons
+
+The TAM: abstracting complex tasks in swarm robotics research
+Arne Brutschy · Lorenzo Garattoni · Manuele Brambilla ·
+Gianpiero Francesca · Giovanni Pini · Marco Dorigo · Mauro Birattari
+	e.g. foraging doesn't actually handle the object, just goes between locations
+	A little booth for an e-puck
+		Being in the booth for a given amount of time is "doing the task"
+	TAM can react to e-puck with changing colors
+	Has a citation for Arduino, which would be good to have for my hardware paper
+
+Beyond kappa: A review of interrater agreement measures
+Mousumi BANERJEE, Michelle CAPOZZOLI, Laura McSWEENEY, and Debajyoti SINHA
+	C's K is to avoid agreement by chance
+	Fleiss generalized to >2 raters
+	K is biased by true prevalence of a label in the population
+		Can get high K just by having a thing that's way more common
+			Drag gestures are SUPER common
+	Covers a lot of genrealizations of Kappa, predates Krippendorff
+
+Massive Uniform Manipulation:
+Controlling Large Populations of Simple Robots with a Common Input Signal
+Aaron Becker, Golnaz Habibi, Justin Werfel, Michael Rubenstein, and James McLurkin
+	All robots get the same inputs and move uniformly
+	Apparently having one obstacle to pile up against allows many manipulation tasks
+	Fig. 1 shows a lot of different obstacles
+	Apparently a single square obstacle is sufficient for controlling the final position of every robot
+	Later figures show that you can draw the Mona Lisa with it
+
+Collective decision with 100 Kilobots: speed versus accuracy in binary discrimination problems
+Gabriele Valentini · Eliseo Ferrante 2 · Heiko Hamann · Marco Dorigo 
+	Collective decision making
+	Not sure any of my swarm tasks require decision at collective level
+		In fact, I don't add a lot of autonomy at all
+	Iterative, local, asynchronous
+	Agents advertise opinion for time based on assessed quality
+		Better quality, longer time
+	Agents change their opinion to majority of neighbors
+		See a lot more of option A if it's the better option, because more time is spent signalling it
+	Neightborhood size affects time/accuracy tradeoff
+	Can be represened as differential equations or chemical reaction network
+
+Leader Election Algorithims for Static Swarms
+Valery Karpov, Irina Karpova
+	Keeps using "simple" in different ways
+	Iterative voting with local sensing of votes, v. like quorum and "Collective decision with 100 Kilobots"
+
+Topological Mapping of Unknown Environments using an Unlocalized Robotic Swarm
+Alireza Dirafzoon and Edgar Lobaton
+	Uses proximity of other anges and times of encounter
+	Gives topology (connectedness, holes)
+	Does not give metrics 
+
+Exploring a user‐defined gesture vocabulary for descriptive mid‐air interactions
+Hessam Jahani · Manolya Kavakli
+	Analysis techniques may be useful, also my brain isn't working, WTF
+
+Design and Development of an Inexpensive Aquatic Swarm Robotics System
+Vasco Costa, Miguel Duarte, Tiago Rodrigues, Sancho Moura Oliveira and Anders Lyhne Christensen
+	Inexpensive swarm robot aquatic surface vessels
+	300EU materials
+	Pi 2, GPS, magnetic heading sensor, dual brusheless motors
+
+Investigating the effect of increasing robot group sizes on the human psychophysiological state in the context of human–swarm interaction
+Gaëtan Podevijn, Rehan O’Grady, Nithin Mathews, Audrey Gilles 2, Carole Fantini-Hauwel, Marco Dorigo
+	GSR and heart rate, plus self-reported metrics
+	N=24
+	"Passive interaction"
+		Human sits in chair, robots come out of a little compartment and surround them
+	1, 3, or 24 robots
+	45s of exposure
+	Robots do random walk with obstacle avoid
+	E-pucks, so about the size of a coffee cup
+	Results: 24 robots gets stronger reaction
+		Reaction is generally positive, people are happy/excited
+
+
+Electroencephalography as implicit communication channel for proximal interaction between humans and robot swarms
+Luca Mondada, Mohammad Ehsanul Karim, Francesco Mondada
+	LED on robot blinks at fixed frequency
+	Steady-state visually-evoked potential in human checked for frequency
+	Match human frequency to robot, and you know what robot they are paying attention to
+	Simplified selection
+	Used Emotive EPOC (looked at OpenEEG too, v. difficult to deploy)
+	Works, but not terribly great, 75% average correct recognition
+
+Evolving Neural Networks through Augmenting Topologies
+Kenneth O. Stanley, Risto Miikkulainen
+	Evolving topology to save humans the time of picking a topology
+		Afer all, a fully connected network can approximate any continuious function
+		...so why not choose a fully connected network every time?
+	Keeps historical information on origin of genes
+		Used to ensure that crossover doesn't trash useful genes
+			E.g. an organism needs at least one copy of gene A to be useful, so keep at least one gene that is A-descended
+	Random starting population is bad
+		Some chance that members have e.g. no path from input to output
+		Lots of unneeded parameters
+			Want to start minimal, for fast searching
+	Similar topologies are assigned to niches, compete with each other
+		Allows topological changes that may initially reduce fitness to become useful
+	

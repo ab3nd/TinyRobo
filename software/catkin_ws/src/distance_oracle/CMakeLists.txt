@@ -10,7 +10,7 @@ project(distance_oracle)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
-  apriltags_ros
+  apriltags_ros 
   message_generation
 )
 
