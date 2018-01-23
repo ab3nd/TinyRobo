@@ -107,15 +107,15 @@ class StupidApp(App):
         return True
 
     def update_image(self, imgMsg):
-        file = io.BytesIO()
+        #file = io.BytesIO()
         print "About to do the other thing!"
         image = PILImage.new('RGBA', size=(50, 50), color=(155, 255, 0))
-        image.save(file, 'png')
-        file.name = 'test.png'
-        im = CoreImage(file, ext="png")
+        #image.save(file, 'png')
+        #file.name = 'test.png'
+        #im = CoreImage(file, ext="png")
 
         #Put it into the canvas
-        wid.add(Rectangle(size=(50,50), texture=im.texture))
+        #wid.add(Rectangle(size=(50,50), texture=im.texture))
 
         print "Did the thing!"
 
