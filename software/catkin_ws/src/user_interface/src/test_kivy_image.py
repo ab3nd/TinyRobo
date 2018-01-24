@@ -85,21 +85,18 @@ class StupidApp(App):
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
         
-        self.imageData = BytesIO()
         self.rosImage = None
         self.width = 1024
         self.height = 768
         
-    def build(self):
-
         EventLoop.ensure_window()
-
         Clock.schedule_interval(self.display_image, 3.0) #1.0 / 30.0)
-        Clock.schedule_interval(self.widget.canvas.ask_update(), 1.0)
+        
+
+    def build(self):
         self.layout = FloatLayout()
         self.widget = Widget()
         self.layout.add_widget(self.widget)
-
         return self.layout
 
     def display_image(self, dt):
@@ -107,10 +104,10 @@ class StupidApp(App):
         try:
             if self.rosImage is None:
                 return
-
-            self.rosImage.save(self.imageData, "PNG")
-            self.imageData.seek(0)
-            im = CoreImage(self.imageData, ext='png')
+            imageData = BytesIO()
+            self.rosImage.save(imageData, "PNG")
+            imageData.seek(0)
+            im = CoreImage(imageData, ext='png')
 
             self.widget.canvas.clear()
             with self.widget.canvas:
@@ -122,11 +119,7 @@ class StupidApp(App):
         return True
 
     def update_image(self, imgMsg):
-        try:
-            self.rosImage = ImageConverter.from_ros(imgMsg)
-            print imgMsg.width, imgMsg.height
-        except Exception as e:
-            print e
+        self.rosImage = ImageConverter.from_ros(imgMsg)
         return True
 
     def on_pause(self):
