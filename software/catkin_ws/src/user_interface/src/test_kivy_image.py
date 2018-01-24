@@ -11,6 +11,7 @@ from kivy.graphics import Rectangle
 from kivy.clock import Clock
 from kivy.base import EventLoop
 from kivy.uix.floatlayout import FloatLayout
+from kivy.core.window import Window
 
 #For image conversion to Kivy textures
 from PIL import Image as PILImage
@@ -138,7 +139,10 @@ class StupidApp(App):
 
             self.uiImage.canvas.clear()
             with self.uiImage.canvas:
-                Rectangle(texture = im.texture, size=(self.width, self.height))
+                Rectangle(texture = im.texture, size=(im.texture.width, im.texture.height))
+
+            #Set our window size to the size of the texture
+            Window.size = (im.texture.width, im.texture.height)
 
         except Exception as e:
             print e
