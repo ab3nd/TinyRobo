@@ -19,6 +19,8 @@ from kivy.core.image import Image as CoreImage
 from kivy.graphics import Rectangle
 from kivy.clock import Clock
 from kivy.base import EventLoop
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.widget import Widget
 
 #For test, remove later
 from PIL import Image as PILImage
@@ -42,6 +44,7 @@ class StupidApp(App):
         rospy.init_node('kivy_img_mauler')
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
+        
         self.imageData = BytesIO()
 
     def build(self):
@@ -64,42 +67,65 @@ class StupidApp(App):
             
         im = CoreImage(self.imageData, ext='png')
         
-        self.image = UIXImage(texture=im.texture)
+        #self.image = UIXImage(texture=im.texture)
 
         Clock.schedule_interval(self.display_image, 4.0) #1.0 / 30.0)
 
-        return self.image
+        try:
+            #Set up the layout, and add a widget to it
+            self.layout = FloatLayout()
+            self.widget = Widget()
+            self.layout.add_widget(self.widget)
+
+            self.widget.canvas.clear()
+            with self.widget.canvas:
+                Rectangle(texture=im.texture)
+        except Exception as e:
+            print e
+
+        return self.layout
 
     def display_image(self):
         try:
-            image = PILImage.new('RGBA', size=(64, 64), color=(155, 55, 0))
+            image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 100))
             image.save(self.imageData, "PNG")
             self.imageData.seek(0)
                 
             im = CoreImage(self.imageData, ext='png')
 
-            with self.image.canvas:
+            self.widget.canvas.clear()
+            with self.widget.canvas:
                 Rectangle(texture = im.texture)
-                
+
         except Exception as e:
             print e
 
-    def update_image(self, imgMsg):
+        return True
 
+    def update_image(self, imgMsg):
         #This is all apparently happening outside the GL context?
         
-        image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 0))
-        byteImgIO = BytesIO()
-        image.save(byteImgIO, "PNG")
-        byteImgIO.seek(0)
+        # image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 0))
+        # byteImgIO = BytesIO()
+        # image.save(byteImgIO, "PNG")
+        # byteImgIO.seek(0)
             
-        im = CoreImage(byteImgIO, ext='png')
+        # im = CoreImage(byteImgIO, ext='png')
         
         # try:
         #     t = im.texture
         #     #self.image = UIXImage(texture=im.texture)
         # except Exception as inst:
         #     print inst
+        return True
+
+    def on_pause(self):
+        #Not sure this should do anything
+        return True
+
+    def on_stop(self):
+        #Unsubscribe from ROS messages
+        return True
 
 if __name__ == '__main__':
     StupidApp().run()
