@@ -47,18 +47,11 @@ class StupidApp(App):
         
         self.imageData = BytesIO()
 
-    def build(self):
-        imgPath = "/usr/share/icons/Tango/16x16/actions/gnome-shutdown.png"
+        Clock.schedule_interval(self.display_image, 4.0) #1.0 / 30.0)
 
-        #This works
-        #return UIXImage(source=imgPath)
+    def build(self):
 
         EventLoop.ensure_window()
-        
-        #This works if the window is assured
-        # data = BytesIO(open(imgPath, "rb").read())
-        # im = CoreImage(data, ext="png")
-        # return UIXImage(texture=im.texture)
 
         #This also works if the window is assured, but not from update_image
         image = PILImage.new('RGBA', size=(64, 64), color=(155, 255, 0))
@@ -67,10 +60,6 @@ class StupidApp(App):
             
         im = CoreImage(self.imageData, ext='png')
         
-        #self.image = UIXImage(texture=im.texture)
-
-        Clock.schedule_interval(self.display_image, 4.0) #1.0 / 30.0)
-
         try:
             #Set up the layout, and add a widget to it
             self.layout = FloatLayout()
@@ -85,18 +74,20 @@ class StupidApp(App):
 
         return self.layout
 
-    def display_image(self):
+    def display_image(self, dt):
+        print "CALLED"
         try:
             image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 100))
             image.save(self.imageData, "PNG")
             self.imageData.seek(0)
-                
+            print "Did the first thing"
             im = CoreImage(self.imageData, ext='png')
-
+            print "Did the second thing"
             self.widget.canvas.clear()
             with self.widget.canvas:
                 Rectangle(texture = im.texture)
 
+            print "Did the thing"
         except Exception as e:
             print e
 
