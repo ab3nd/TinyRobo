@@ -1,17 +1,8 @@
 #!/usr/bin/python
 
-#An attempt at an utterly basic kivy program that creates an image from memory
-#In this case, from an array of uint8 values that represent R,G,B values, so 
-# [r,g,b,r,g,b,r,g....]
-
 import kivy
 kivy.require('1.9.1') # replace with your current kivy version !
 from kivy.config import Config
-#Don't resize the window
-#This has to be before any other Kivy imports, or it fails quietly
-#Config.set('graphics', 'resizable', False)
-#Config.set('graphics', 'fullscreen', 'fake')
-#Config.set('graphics', 'borderless', False)
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image as UIXImage
@@ -20,19 +11,15 @@ from kivy.graphics import Rectangle
 from kivy.clock import Clock
 from kivy.base import EventLoop
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.widget import Widget
 
-#For test, remove later
+#For image conversion to Kivy textures
 from PIL import Image as PILImage
-
-import numpy as np
 from io import BytesIO  
-import cv2
 
-# rospy for the subscriber
+#For ROS interfacing
 import rospy
-# ROS Image message
 from sensor_msgs.msg import Image
+from geometry_msgs.msg import PointStamped
 
 class ImageConverter(object):
     """
@@ -73,6 +60,45 @@ class ImageConverter(object):
         """
         return PILImage.frombytes(ImageConverter._ENCODINGMAP_ROS_TO_PY[rosMsg.encoding], (rosMsg.width, rosMsg.height), rosMsg.data)
 
+class ROSTouchRecorder(object):
+    def __init__(self, prefix=None):
+        self.touch_pub = rospy.Publisher('touches', PointStamped, queue_size=10)
+
+    #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
+    def log_touch_event(self, event):
+        #Create a point and publish it. This loses a lot of the event data, 
+        ps = PointStamped()
+        ps.header.frame_id = str(event.uid)
+        ps.point.x = event.x
+        ps.point.y = event.y
+        self.touch_pub.publish(ps)
+
+
+class ROSTouchImage(UIXImage):
+    def __init__(self, **kwargs):
+        super(UIXImage, self).__init__(**kwargs)
+        
+        #Record touch events
+        self.rtr = ROSTouchRecorder()
+        
+        #Resize to match the initial image. They're all the same size, so this is legit
+        # img = Image.open(self.source)
+        # width, height = img.size
+        # Window.size = (width, height)
+
+        self.canvas.ask_update()
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.rtr.log_touch_event(touch)
+
+    def on_touch_up(self, touch):
+        if self.collide_point(*touch.pos):
+            self.rtr.log_touch_event(touch)
+
+    def on_touch_move(self, touch):
+        if self.collide_point(*touch.pos):
+            self.rtr.log_touch_event(touch)
 
 class StupidApp(App):
 
@@ -92,11 +118,13 @@ class StupidApp(App):
         EventLoop.ensure_window()
         Clock.schedule_interval(self.display_image, 1.0 / 30.0)
         
-
     def build(self):
         self.layout = FloatLayout()
-        self.widget = Widget()
-        self.layout.add_widget(self.widget)
+        try:
+            self.uiImage = ROSTouchImage()
+        except Exception as e:
+            print e
+        self.layout.add_widget(self.uiImage)
         return self.layout
 
     def display_image(self, dt):
@@ -108,8 +136,8 @@ class StupidApp(App):
             imageData.seek(0)
             im = CoreImage(imageData, ext='png')
 
-            self.widget.canvas.clear()
-            with self.widget.canvas:
+            self.uiImage.canvas.clear()
+            with self.uiImage.canvas:
                 Rectangle(texture = im.texture, size=(self.width, self.height))
 
         except Exception as e:
