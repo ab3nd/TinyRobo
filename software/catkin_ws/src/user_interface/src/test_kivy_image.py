@@ -90,7 +90,7 @@ class StupidApp(App):
         self.height = 768
         
         EventLoop.ensure_window()
-        Clock.schedule_interval(self.display_image, 3.0) #1.0 / 30.0)
+        Clock.schedule_interval(self.display_image, 1.0 / 30.0)
         
 
     def build(self):
