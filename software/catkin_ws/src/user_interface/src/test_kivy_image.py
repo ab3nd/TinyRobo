@@ -95,7 +95,7 @@ class StupidApp(App):
         EventLoop.ensure_window()
 
         Clock.schedule_interval(self.display_image, 3.0) #1.0 / 30.0)
-
+        Clock.schedule_interval(self.widget.canvas.ask_update(), 1.0)
         self.layout = FloatLayout()
         self.widget = Widget()
         self.layout.add_widget(self.widget)
@@ -115,7 +115,6 @@ class StupidApp(App):
             self.widget.canvas.clear()
             with self.widget.canvas:
                 Rectangle(texture = im.texture, size=(self.width, self.height))
-            self.widget.canvas.ask_update()
 
         except Exception as e:
             print e
