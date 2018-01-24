@@ -100,7 +100,6 @@ class StupidApp(App):
         return self.layout
 
     def display_image(self, dt):
-        print "CALLED"
         try:
             if self.rosImage is None:
                 return
