@@ -47,7 +47,7 @@ class StupidApp(App):
         
         self.imageData = BytesIO()
 
-        Clock.schedule_interval(self.display_image, 4.0) #1.0 / 30.0)
+        Clock.schedule_interval(self.display_image, 1.0) #1.0 / 30.0)
 
     def build(self):
 
@@ -86,7 +86,7 @@ class StupidApp(App):
             self.widget.canvas.clear()
             with self.widget.canvas:
                 Rectangle(texture = im.texture)
-                ask_update()
+            self.widget.canvas.ask_update()
             print "Did the thing"
         except Exception as e:
             print e
