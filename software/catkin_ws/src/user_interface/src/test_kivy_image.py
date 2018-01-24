@@ -47,12 +47,13 @@ class StupidApp(App):
         
         self.imageData = BytesIO()
 
-        Clock.schedule_interval(self.display_image, 1.0) #1.0 / 30.0)
+        
 
     def build(self):
 
         EventLoop.ensure_window()
 
+        Clock.schedule_interval(self.display_image, 3.0) #1.0 / 30.0)
         #This also works if the window is assured, but not from update_image
         image = PILImage.new('RGBA', size=(64, 64), color=(155, 255, 0))
         image.save(self.imageData, "PNG")
@@ -77,7 +78,7 @@ class StupidApp(App):
     def display_image(self, dt):
         print "CALLED"
         try:
-            image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 100))
+            image = PILImage.new('RGBA', size=(64, 64), color=(0, 5, 100))
             image.save(self.imageData, "PNG")
             self.imageData.seek(0)
             print "Did the first thing"
@@ -85,7 +86,7 @@ class StupidApp(App):
             print "Did the second thing"
             self.widget.canvas.clear()
             with self.widget.canvas:
-                Rectangle(texture = im.texture)
+                Rectangle(texture = im.texture, pos=(40,40), size=(64,64))
             self.widget.canvas.ask_update()
             print "Did the thing"
         except Exception as e:
@@ -108,6 +109,7 @@ class StupidApp(App):
         #     #self.image = UIXImage(texture=im.texture)
         # except Exception as inst:
         #     print inst
+        print "Callback"
         return True
 
     def on_pause(self):
