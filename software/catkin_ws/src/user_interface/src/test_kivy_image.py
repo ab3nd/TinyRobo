@@ -73,6 +73,7 @@ class ImageConverter(object):
         """
         return PILImage.frombytes(ImageConverter._ENCODINGMAP_ROS_TO_PY[rosMsg.encoding], (rosMsg.width, rosMsg.height), rosMsg.data)
 
+
 class StupidApp(App):
 
     def __init__(self, **kwargs):
@@ -86,77 +87,47 @@ class StupidApp(App):
         
         self.imageData = BytesIO()
         self.rosImage = None
+        self.width = 1024
+        self.height = 768
         
-
     def build(self):
 
         EventLoop.ensure_window()
 
         Clock.schedule_interval(self.display_image, 3.0) #1.0 / 30.0)
-        #This also works if the window is assured, but not from update_image
-        #image = PILImage.new('RGBA', size=(64, 64), color=(5, 55, 0))
-        #image.save(self.imageData, "PNG")
-        #self.imageData.seek(0)
-            
-        #im = CoreImage(self.imageData, ext='png')
-        
-        try:
-            #Set up the layout, and add a widget to it
-            self.layout = FloatLayout()
-            self.widget = Widget()
-            self.layout.add_widget(self.widget)
 
-            #self.widget.canvas.clear()
-            #with self.widget.canvas:
-            #    Rectangle(texture=im.texture)
-        except Exception as e:
-            print e
+        self.layout = FloatLayout()
+        self.widget = Widget()
+        self.layout.add_widget(self.widget)
 
         return self.layout
 
     def display_image(self, dt):
         print "CALLED"
         try:
-            #image = PILImage.new('RGBA', size=(64, 64), color=(0, 5, 100))
             if self.rosImage is None:
                 return
+
             self.rosImage.save(self.imageData, "PNG")
             self.imageData.seek(0)
-            print "Did the first thing"
             im = CoreImage(self.imageData, ext='png')
-            print "Did the second thing"
+
             self.widget.canvas.clear()
             with self.widget.canvas:
-                Rectangle(texture = im.texture, pos=(40,40), size=(64,64))
+                Rectangle(texture = im.texture, size=(self.width, self.height))
             self.widget.canvas.ask_update()
-            print "Did the thing"
+
         except Exception as e:
             print e
 
         return True
 
     def update_image(self, imgMsg):
-        #This is all apparently happening outside the GL context?
-        
-        # image = PILImage.new('RGBA', size=(64, 64), color=(155, 5, 0))
-        # byteImgIO = BytesIO()
-        # image.save(byteImgIO, "PNG")
-        # byteImgIO.seek(0)
-            
-        # im = CoreImage(byteImgIO, ext='png')
-        
-        # try:
-        #     t = im.texture
-        #     #self.image = UIXImage(texture=im.texture)
-        # except Exception as inst:
-        #     print inst
-
-        #Convert incoming message to PIL image 
         try:
             self.rosImage = ImageConverter.from_ros(imgMsg)
+            print imgMsg.width, imgMsg.height
         except Exception as e:
             print e
-        print "Callback"
         return True
 
     def on_pause(self):
