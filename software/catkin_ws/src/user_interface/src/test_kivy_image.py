@@ -86,7 +86,7 @@ class StupidApp(App):
             self.widget.canvas.clear()
             with self.widget.canvas:
                 Rectangle(texture = im.texture)
-
+                ask_update()
             print "Did the thing"
         except Exception as e:
             print e
