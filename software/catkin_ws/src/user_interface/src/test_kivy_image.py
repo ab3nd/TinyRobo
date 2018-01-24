@@ -34,6 +34,45 @@ import rospy
 # ROS Image message
 from sensor_msgs.msg import Image
 
+class ImageConverter(object):
+    """
+    Based on https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
+    Convert images/compressedimages to and from ROS
+    """
+
+    _ENCODINGMAP_PY_TO_ROS = {'L': 'mono8', 'RGB': 'rgb8',
+                              'RGBA': 'rgba8', 'YCbCr': 'yuv422'}
+    _ENCODINGMAP_ROS_TO_PY = {'mono8': 'L', 'rgb8': 'RGB',
+                              'rgba8': 'RGBA', 'yuv422': 'YCbCr'}
+    _PIL_MODE_CHANNELS = {'L': 1, 'RGB': 3, 'RGBA': 4, 'YCbCr': 3}
+
+    @staticmethod
+    def to_ros(img):
+        """
+        Convert a PIL/pygame image to a ROS compatible message (sensor_msgs.Image).
+        """
+
+        # Everything ok, convert PIL.Image to ROS and return it
+        if img.mode == 'P':
+            img = img.convert('RGB')
+
+        rosimage = sensor_msgs.msg.Image()
+        rosimage.encoding = ImageConverter._ENCODINGMAP_PY_TO_ROS[img.mode]
+        (rosimage.width, rosimage.height) = img.size
+        rosimage.step = (ImageConverter._PIL_MODE_CHANNELS[img.mode]
+                         * rosimage.width)
+        rosimage.data = img.tostring()
+        return rosimage
+
+    @staticmethod
+    def from_ros(rosMsg):
+        """
+        Converts a ROS sensor_msgs.Image to a PIL image
+        :param rosMsg: The message to convert
+        :return: an alpha-converted pygame Surface
+        """
+        return PILImage.frombytes(ImageConverter._ENCODINGMAP_ROS_TO_PY[rosMsg.encoding], (rosMsg.width, rosMsg.height), rosMsg.data)
+
 class StupidApp(App):
 
     def __init__(self, **kwargs):
@@ -46,7 +85,7 @@ class StupidApp(App):
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
         
         self.imageData = BytesIO()
-
+        self.rosImage = None
         
 
     def build(self):
@@ -55,11 +94,11 @@ class StupidApp(App):
 
         Clock.schedule_interval(self.display_image, 3.0) #1.0 / 30.0)
         #This also works if the window is assured, but not from update_image
-        image = PILImage.new('RGBA', size=(64, 64), color=(155, 255, 0))
-        image.save(self.imageData, "PNG")
-        self.imageData.seek(0)
+        #image = PILImage.new('RGBA', size=(64, 64), color=(5, 55, 0))
+        #image.save(self.imageData, "PNG")
+        #self.imageData.seek(0)
             
-        im = CoreImage(self.imageData, ext='png')
+        #im = CoreImage(self.imageData, ext='png')
         
         try:
             #Set up the layout, and add a widget to it
@@ -67,9 +106,9 @@ class StupidApp(App):
             self.widget = Widget()
             self.layout.add_widget(self.widget)
 
-            self.widget.canvas.clear()
-            with self.widget.canvas:
-                Rectangle(texture=im.texture)
+            #self.widget.canvas.clear()
+            #with self.widget.canvas:
+            #    Rectangle(texture=im.texture)
         except Exception as e:
             print e
 
@@ -78,8 +117,10 @@ class StupidApp(App):
     def display_image(self, dt):
         print "CALLED"
         try:
-            image = PILImage.new('RGBA', size=(64, 64), color=(0, 5, 100))
-            image.save(self.imageData, "PNG")
+            #image = PILImage.new('RGBA', size=(64, 64), color=(0, 5, 100))
+            if self.rosImage is None:
+                return
+            self.rosImage.save(self.imageData, "PNG")
             self.imageData.seek(0)
             print "Did the first thing"
             im = CoreImage(self.imageData, ext='png')
@@ -109,6 +150,12 @@ class StupidApp(App):
         #     #self.image = UIXImage(texture=im.texture)
         # except Exception as inst:
         #     print inst
+
+        #Convert incoming message to PIL image 
+        try:
+            self.rosImage = ImageConverter.from_ros(imgMsg)
+        except Exception as e:
+            print e
         print "Callback"
         return True
 
