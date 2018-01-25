@@ -16,3 +16,4 @@ def touch_event_callback(event):
 topic = "/touches"
 rospy.init_node('touch_destutter')
 touchSub = rospy.Subscriber(topic, PointStamped, touch_event_callback)
+rospy.spin()

@@ -22,7 +22,7 @@ import pickle
 import math
 
 #infile = "26-08-17_17-10-15_s555_c10.pickle"
-infile = "26-08-17_17_10_15_s555_c10.pickle"
+#infile = "26-08-17_17_10_15_s555_c10.pickle"
 
 def isMeta(event):
 	if "desc" in event.keys():
@@ -328,50 +328,50 @@ class GestureCommand():
 		pass
 
 
-commands = []
+# commands = []
 
-#Load the recorded strokes from the user interface
-with open(infile, 'r') as inputData:
+# #Load the recorded strokes from the user interface
+# with open(infile, 'r') as inputData:
 
-	#Cut the extension off the input file name
-	outfile_suffix = infile[:-7]
+# 	#Cut the extension off the input file name
+# 	outfile_suffix = infile[:-7]
 	
-	try:
-		event = pickle.load(inputData)
+# 	try:
+# 		event = pickle.load(inputData)
 		
-		#Build a dictionary of strokes 
-		strokes = {}
-		commands = []
-		gc = GestureCommand()
+# 		#Build a dictionary of strokes 
+# 		strokes = {}
+# 		commands = []
+# 		gc = GestureCommand()
 
-		while event is not None:
-			if isMeta(event):
-				#print event
-				if event['desc'].startswith("Advanced") or event['desc'].startswith("Quit"):
-					#This is the delimiter between events in the log file
-					#TODO for parsing in realtime, it would have to be some recognition of an end of the command
-					if strokes:
-						#Don't add anything if there aren't any
-						gc.addStrokes(strokes)
-						commands.append(gc) #May be setting myself up for copy problems here
-						gc = GestureCommand()
-						strokes = {}
- 			else:
-				if event['uid'] not in strokes.keys():
-					#If this event is just starting, create a new entry for it in strokes
-					strokes[event['uid']] = GestureStroke(event)
-				else:
-					#Event already started, extend its entry
-					strokes[event['uid']].addEvent(event)
+# 		while event is not None:
+# 			if isMeta(event):
+# 				#print event
+# 				if event['desc'].startswith("Advanced") or event['desc'].startswith("Quit"):
+# 					#This is the delimiter between events in the log file
+# 					#TODO for parsing in realtime, it would have to be some recognition of an end of the command
+# 					if strokes:
+# 						#Don't add anything if there aren't any
+# 						gc.addStrokes(strokes)
+# 						commands.append(gc) #May be setting myself up for copy problems here
+# 						gc = GestureCommand()
+# 						strokes = {}
+#  			else:
+# 				if event['uid'] not in strokes.keys():
+# 					#If this event is just starting, create a new entry for it in strokes
+# 					strokes[event['uid']] = GestureStroke(event)
+# 				else:
+# 					#Event already started, extend its entry
+# 					strokes[event['uid']].addEvent(event)
 
-			event = pickle.load(inputData)
-	except EOFError:
-		print "Done loading events"
+# 			event = pickle.load(inputData)
+# 	except EOFError:
+# 		print "Done loading events"
 	
 
-#Now strokes contains every touch event series
-for command in commands:
-	dumpCommand(command)
+# #Now strokes contains every touch event series
+# for command in commands:
+# 	dumpCommand(command)
 
 #Do an all pairs comparison to figure out whether any of the strokes in each of the commands should be merged,
 # This is to determine what the time threshold is between commands that are deliberately 
