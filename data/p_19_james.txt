@@ -21,9 +21,10 @@ p_19_james.json
 	290.99	lasso right swarm
 	291.39	tap area B
 	309.88	lasso the left swarm
-	312.96	tap imaginary buttons
-	317.34	tap imaginary buttons
-	318.48	tap imaginary buttons
+	311.42	ui  (imaginary “select robots”/”filter [specific] robots”)
+	312.96	ui  (imaginary “select robots”/”filter [specific] robots”)
+	316.34	tap area A
+	318.48	ui  (imaginary “select robots”)
 	320.25	tap area B
 6
 	231.93	box_select the left swarm
@@ -42,9 +43,10 @@ p_19_james.json
 	383.03	tap area B
 8
 	422.36	box_select the swarm
-	424.62	tap imaginary button
-	437.15	tap imaginary button
-	473.86	tap imaginary button
+	424.62	ui  (“split [swarm]”)
+	431.56	other swarm (“maybe enter a quantity [via typing or voice]”)
+	437.15	tap left area of screen
+	473.86	ui  (“select group A”)
 9
 	499.13	box_select left swarm
 	506.32	box_select left swarm
@@ -56,55 +58,56 @@ p_19_james.json
 	521.83	tap center of screen
 10
 	540.25	box_select the swarm
-	553.6	tap imaginary “select shape” button
+	553.6	ui  (imaginary “select shape”)
 	555.02	drag whitespace
 	555.31	drag whitespace
 11
-	575.9	tap imaginary “select all” button
+	575.9	ui  (imaginary “select all”)
 	584.13	drag whitespace
-	587.06	tap imaginary “draw square” button
+	587.06	ui  (imaginary “draw square”)
 	588.3	box_select whitespace
 	589.11	box_select whitespace
 12
 	619.34	box_select the swarm
-	625.98	tap imaginary button “what do you want to move?”
+	625.98	ui  (imaginary button “what do you want to move?”)
 	631.95	lasso the crate
 	633.76	drag the crate
 13
-	660.89	tap imaginary “select all” button
+	660.89	ui  (imaginary “select all”)
 	664.11	tap whitespace
-	665.47	tap imaginary “select all” button
-	666.97	tap imaginary “move” button
+	665.47	ui  (imaginary “select all”)
+	666.97	ui  (imaginary “move”)
 	671.14	lasso the crate
 	673.12	drag the crate
 14
 	689.71	tap the defective robot
-	693.2	tap imaginary “trash” button
-	704.22	tap imaginary button
-	708.11	tap imaginary button
+	693.2	ui  (imaginary “trash” button)
+	704.22	ui  (“check robot status”)
+	708.11	ui  (“check robot status”)
 15
 	742.57	tap the defective robot
-	757.09	tap imaginary button
-	761.55	tap imaginary button
-	772.41	tap imaginary button
-	774.25	tap imaginary button
+	757.09	ui  (“select all”)
+	761.55	tap defective robot
+	768.34	tap defective robot
+	772.41	ui  (“select all”)
+	774.25	tap off the white part of the screen (bottom left)
 	776.13	tap defective robot
 	780.12	lasso the defective robot
 	781.18	drag the defective robot
-	826.73	tap imaginary button
-	837.45	tap imaginary button
-	844.22	tap imaginary button
-	845.97	tap imaginary button
-	848.53	tap imaginary button
+	826.73	ui  (“select all”)
+	837.45	ui  (“what path they (the robots) would keep going around”)
+	844.22	ui  (“select all”)
+	845.97	ui  (“form geometry”)
+	848.53	ui  (“move around geometry”)
 	854.15	box_select the whole screen,
 	855.56	box_select the whole screen,
-	867.76	tap imaginary button
+	867.76	ui  (“patrol”)
 16
-	810.34	tap imaginary button
-	811.13	tap imaginary button
 	894.68	lasso the swarm
-	896.24	tap imaginary “patrol” button
+	896.24	ui  (“patrol”)
 	901.85	box_select area A
+	910.34	ui  (“a button”)
+	911.13	ui  (“a button”)
 	943.28	box_select the swarm
 	946.88	box_select area A
 	949.33	drag area A
@@ -115,7 +118,7 @@ p_19_james.json
 	993.02	box_select the swarm
 	997.55	tap center of screen
 	1001.23	other the swarm (the classic five-finger “disperse” gesture)
-	1008.29	tap imaginary button
-	1009.62	tap imaginary button
+	1008.29	ui  (“select”)
+	1009.62	tap whitespace bottom right (“where to disperse”)
 	1012.11	box_select the swarm
 	1018.34	other the swarm (the classic five-finger “disperse” gesture)
