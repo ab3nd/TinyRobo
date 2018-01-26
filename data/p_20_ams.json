@@ -86,6 +86,26 @@
             "event_type": "memo"
          }
       ], 
+      "10": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 2, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "from", 
+               "robots", 
+               "to", 
+               "middle", 
+               "of", 
+               "screen"
+            ], 
+            "time": 316.99, 
+            "write": null
+         }
+      ], 
       "11": [
          {
             "draw": [
@@ -584,26 +604,6 @@
             "no_contact": false, 
             "reverse": false, 
             "time": 290.8
-         } 
-      ], 
-      "10": [
-         {
-            "draw": null, 
-            "event_type": "drag", 
-            "example": false, 
-            "fingers": 2, 
-            "hands": 1, 
-            "no_contact": false, 
-            "objects": [
-               "from", 
-               "robots", 
-               "to", 
-               "middle", 
-               "of", 
-               "screen"
-            ], 
-            "time": 316.99, 
-            "write": null
          }
       ]
    }
