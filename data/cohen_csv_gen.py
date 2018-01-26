@@ -4,8 +4,6 @@
 import json
 import argparse
 import sys
-import krippendorff
-import numpy as np
 
 def load_file(fname):
 	with open(fname, "r") as infile:
@@ -68,6 +66,12 @@ if len(tasks_2) != len(tasks_1):
 	print "Error: sets of tasks in files being compared are not the same length"
 	sys.exit(1)
 
+#Start the csv output with a format line
+print "participant,trial,time,type,time,type,agree,counter" 
+
+#Get the participant number
+participant = data_1["participant"]
+
 for task1, task2 in zip (tasks_1, tasks_2):
 	#Make sure we're comparing the same tasks
 	if task1 != task2:
@@ -121,11 +125,9 @@ for task1, task2 in zip (tasks_1, tasks_2):
  	coder_1 = []
  	coder_2 = []
  	
- 	#Start the csv output with a format line
- 	print "participant,trial,time,type,time,type,agree" 
  	#They're the same length because we put some gaps in
  	for event1, event2 in zip(best_match, longlist):
- 		csv_line = "0,0,"
+ 		csv_line = "{},{},".format(participant,task1)
  		if event1 is None:
  			csv_line += "0.0,MISS,"
  		else:
@@ -136,6 +138,20 @@ for task1, task2 in zip (tasks_1, tasks_2):
  			csv_line += "0.0,MISS,"
  		else:
  	 		csv_line += str(event2["time"]) + ","
- 	 		csv_line += event2['event_type'] #No comma, this is the end of the line
+ 	 		csv_line += event2['event_type'] + ","
+
+ 	 	#Include the agreement
+ 	 	#None/missed events don't agree
+ 	 	if event1 == None or event2 == None:
+ 	 		csv_line += "0,"
+ 	 	else:
+ 	 		#Check if events match
+	 	 	if event2['event_type'] == event1['event_type']:
+	 	 		csv_line += "1,"
+	 	 	else:
+	 	 		csv_line += "0,"
+
+ 	 	#counter is just to get population size
+ 	 	csv_line += "1"
  	 	print csv_line
  	
