@@ -1,0 +1,126 @@
+p_19_ams.json
+1
+	99.69	drag lines around three sides of robots
+	103.33	tap A
+2
+	121.03	drag along top of robot group
+	121.96	box_select robots
+	124.33	tap space to l of wall
+	126.45	tap A
+3
+	157.45	tap open area in r corner
+4
+	230.58	box_select all robots
+	253.34	tap A
+	260.17	tap B
+5
+	286.12	lasso orange robots
+	287.54	tap Area A
+	290.72	lasso red robots
+	291.18	tap Area B
+	301.74	tap upper l screen
+	309.16	lasso all robots
+	311.15	tap upper l screen
+	316.85	tap A
+	320.89	tap B
+6
+	338.32	box_select orange robots
+	339.57	tap A
+	341.08	box_select red robots
+	342.2	tap B
+	345.6	lasso all robots
+	348.02	ui  (select filter)
+	352.06	tap A
+	353.32	tap B
+7
+	362.65	box_select all robots
+	380.45	voice_command 
+	380.54	tap A
+	382.32	voice_command 
+	382.75	tap B
+8
+	421.73	box_select all robots
+	424.51	ui  ("split action or button on menu")
+	437.31	tap left side of screen
+	473.38	ui  (group selection on a menu)
+9
+	498.66	box_select left group
+	503.34	box_select left group
+	507.98	box_select right group
+	508.65	tap bottom l of screen
+	509.18	tap middle of screen
+	511.34	voice_command 
+	512.3	tap middle of screen
+	512.59	box_select right group
+	513.23	voice_command 
+	518.08	ui  (select group A button)
+	519.79	voice_command 
+10
+	539.91	box_select robots
+	551.64	box_select robots
+	552.399	ui  ("draw geometry button")
+	553.84	drag open space
+	554.87	drag open space
+11
+	577.23	tap off screen
+	582.38	ui  ("draw geometry button")
+	583.8	drag middle of screen
+	586.86	ui  (square button)
+	587.8	drag middle of screen
+12
+	619.19	box_select all robots
+	625.98	ui  (button for move action)
+	632.39	lasso crate
+	633.18	drag crate to A
+13
+	660.65	tap off screen
+	663.09	tap bottom l of screen
+	665.15	tap off screen
+	666.58	ui  (button for move action)
+	669.35	lasso crate
+	672.62	drag crate to A
+14
+	689.771	tap defective robot
+	692.92	ui  ("trash" (unknown if this is a button or what))
+	704.52	tap top l of screen
+	706.46	ui  ("check" to fire self diagnostic)
+15
+	746.45	tap defective robot
+	757.3	tap top l of screen
+	762.02	tap defective robot
+	768.83	tap defective robot
+	772.38	tap top l of screen
+	776.04	tap defective robot
+	777.53	tap off screen (allows tap on defective to be deselection)
+	780.06	drag defective robot
+	781.29	drag defective robot off bottom l corner
+16
+	827.54	tap top l of screen
+	837.45	ui  (set a patrol path)
+	845.45	tap top l of screen
+	847.58	ui  (set a patrol path, move around geometry)
+	854.1	drag diagonal across entire screen area
+	867.83	ui  (set a patrol path, move around geometry)
+17
+	893.84	box_select all robots
+	896.38	ui  (set a patrol path, move around geometry)
+	900.01	drag diagonal across A
+	911.0	ui  (to set patrol modes)
+	943.14	box_select all robots
+	946.1	drag diagonal across A
+	948.02	tap edge of A
+	948.12	tap edge of A
+	948.23	tap edge of A
+	948.35	tap edge of A
+	948.5	tap edge of A
+	948.62	tap edge of A
+	948.75	tap edge of A
+	948.81	tap edge of A
+	948.92	tap edge of A
+	949.12	tap edge of A
+	950.93	drag diagonal across A
+	956.78	drag area A
+	963.85	drag area A
+18
+	992.47	box_select all robots
+	1001.04	other robots (5f scatter)
