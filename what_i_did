@@ -666,6 +666,14 @@ Spent a lot of time around here having a cold and not being able to think well
   - this may not be sufficient to do things like dejittering
 - started work on ROS wrappers for dejitterer and gesture recognizer
 
+1/25
+- Helped James reassemble scooter
+- Got scooter more-or-less running again
+
+1/26
+- Checked Cohen's K for p15-20 (or maybe everything?)
+- The sed invocation to clean json is sed -i 's/\x0//g' *.json
+
 
 Swarm control software
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 
