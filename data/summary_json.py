@@ -2,7 +2,7 @@
 
 #Prettyprint json files
 # To call on every file in a directory, you can do this:
-# for file in `ls *.json`; do outfile=$(basename "$file"); outfile="${outfile%.*}"; echo $file > $outfile.txt; ./ppjson.py $file >> $outfile.txt; done
+# for file in `ls *.json`; do outfile=$(basename "$file"); outfile="${outfile%.*}"; echo $file > $outfile.txt; ./summary_json.py $file >> $outfile.txt; done
 
 import json
 import argparse
@@ -31,4 +31,7 @@ with open(fname, "r") as infile:
 			if 'description' in event.keys():
 				desc_str +=  " (" + (" ".join(event['description'])).encode("utf-8") + ")"
 			#print the result with nice(ish) tabulation
-			print "\t{0}\t{1} {2}".format(event['time'], event['event_type'], desc_str)
+			isExample = ""
+			if "example" in event.keys() and event["example"]:
+				isExample = "X"
+			print "\t{0}\t{1} {2} {3}".format(event['time'], event['event_type'], desc_str, isExample)
