@@ -689,6 +689,33 @@ Spent a lot of time around here having a cold and not being able to think well
 - Got confusion & etc. for 1-10
 - Started trying to pull data into R for Cohen's k
 
+1/30
+- R version of Cohen's K is way worse than other versions
+   - I'm probably using it wrong 
+- Met with Jay to talk about intermediate representation for compiler
+
+1/31
+- Rethought coding, tried coding 20-25 with a new coding scheme
+   - still has ambiguity with circle drag vs lasso
+- Probably other stuff, I'm filling this out late
+
+2/1
+- Asked James to do coding for first 10 without constraints
+   - want to try to match his open coding with mine to see what we're both seeing
+- Reread papers on GCPR to figure out what I can and can't say about the formalism
+- Thinking about GCPR and reactive elements like obstacle avoidance
+- Using virtual breadcrumbs for range/bearing allows obstacle avoidance
+   - In multiple robot case, can do this by R&B off other robots
+   - In single robot case, needs the assumption that the robot can move to a point
+
+2/2
+- Put tags on the new robots
+- Configured network for swarm robots
+- 
+
+
+
+
 Swarm control software
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 
 - look for papers on follow-the-leader, ant mills in robots

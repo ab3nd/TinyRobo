@@ -34,7 +34,7 @@
 
   <!-- Set up for robot 0, the green tank -->
   <arg name="robot_id" value="0" />
-  <arg name="robot_ip_addr" value="192.168.1.218"/>
+  <arg name="robot_ip_addr" value="192.168.1.176"/>
 
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
@@ -46,7 +46,7 @@
       <param name="rangeMax" type="double" value="0.8"/>
    </node>
 
-  <node pkg="gcpr_driver" type="gcpr_driver.py" name="gcpr" output="screen">
+  <node pkg="gcpr_runner" type="gcpr_driver.py" name="gcpr" output="screen">
     <param name="robot_id" value="$(arg robot_id)"/>
   </node>
 
