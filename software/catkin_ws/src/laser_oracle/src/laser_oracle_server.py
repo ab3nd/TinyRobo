@@ -16,6 +16,9 @@ import numpy as np
 import math
 from tf import transformations as transf
 
+#For debugging
+import random
+
 lower_blue, upper_blue = np.array([100,70,30]), np.array([130,255,255])
 kernel = np.ones([3,3], np.uint8)
 
@@ -28,7 +31,7 @@ class LaserServer():
 		self.image = None
 		self.bridge = CvBridge()
 		#Debug image publisher, to publish the results of the image pipeline
-		#self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
+		self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
 		#Most of the parameters of the laser scan are passed in the 
 		#request. The requester should fill these two, since it knows
@@ -66,7 +69,7 @@ class LaserServer():
 			maxRangePx = self.avgPxPerM * req.rangeMax
 			#Minimum scan must be outside of robot's radius
 			minRangePx = max(self.robotRad + 1, self.avgPxPerM * req.rangeMin)
-			
+
 			#Mask off everything in the image that's not within the 
 			#laser range of the robot
 			mask = np.zeros(imgCpy.shape, dtype=np.uint8)
@@ -76,7 +79,28 @@ class LaserServer():
 			#Find the contours in the image, as a list
 			#and compressed with chain approximation. 
 			cImg, contours, hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
-			
+
+			#approximate each contour with a polygon approximation
+			approximations = []
+			for index, contour in enumerate(contours):
+				isClosed = (hierarchy[0][index][2] < 0) and (hierarchy[0][index][3] < 0)
+				epsilon = 0.01 * cv2.arcLength(contour, isClosed)
+				approx = cv2.approxPolyDP(contour, epsilon, isClosed)
+				approximations.append(approx)
+
+			#For debugging reasons, try drawing the approximations on the image
+			# colorImg = cv2.cvtColor(imgCpy, cv2.COLOR_GRAY2BGR)
+			# for approx in approximations:
+			# 	#Pick a random color
+			# 	color = (random.randint(80,255), random.randint(80,255), random.randint(80,255))
+			# 	for index in range(len(approx) -1):
+			# 		#Draw a line from this point to the next one
+			# 		p1 = (approx[index][0][0], approx[index][0][1])
+			# 		p2 = (approx[index+1][0][0], approx[index+1][0][1])
+			# 		colorImg = cv2.line(colorImg, p1, p2, color, thickness = 3)
+			# self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(colorImg, "bgr8"))
+
+
 			#Convert robot quaternion to RPY, then check the line segment from the center
 			#of each robot to the max range for intersection with a segment of a contour,
 			#and find the minimum-distance intersection. That minimum-distance intersection 
@@ -141,6 +165,7 @@ class LaserServer():
 			scanMsg.ranges = scan
 			scanMsg.intensities = []
 
+			
 			return LaserOracleResponse(scanMsg)
 		else:
 			rospy.logwarn("Can't see robot {0}, only {1}".format(req.robotID, self.currentTags.keys()))

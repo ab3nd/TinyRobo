@@ -19,7 +19,7 @@ class ProgramLoader(object):
 		# Example program, will get replaced
 		# What this should do is make the robot avoid obstacles and stop when
 		# it isn't near anything.
-		self.program = [("not(self.is_near_anything())", 1.0, "self.stop()"),
+		self.program = [("not(self.is_near_anything())", 1.0, "self.move_fwd(0.1)"),
 				   ("self.is_near_left() and not self.is_near_center()", 1.0, "self.move_arc(-0.5, 0.2)"),
 				   ("self.is_near_right() and not self.is_near_center()", 1.0, "self.move_arc(-0.5, 0.2)"),
 				   ("self.is_near_center()", 1.0, "self.move_turn(0.3)")]
@@ -37,12 +37,12 @@ class ProgramLoader(object):
 
 
 class GCPR_driver(object):
-	def __init__(self):
+	def __init__(self, robot_id):
 		self.programLoader = ProgramLoader()
 		self.laser_readings = []
-		self.max_range = 0.4 #TODO TOTALLY ARBITARY THRESHOLD FIXME
+		self.max_range = 0.2 #TODO TOTALLY ARBITARY THRESHOLD FIXME
 		#TODO probably should name this topic better
-		self.twistPub = rospy.Publisher('/gcpr_drive_0', Twist, queue_size=0)
+		self.twistPub = rospy.Publisher('/gcpr_drive_{}'.format(robot_id), Twist, queue_size=0)
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -143,10 +143,13 @@ class GCPR_driver(object):
 
 rospy.init_node("gcpr_driver", anonymous=True)
 
-gDriver = GCPR_driver()
+
 
 #Get the ID of the robot that this instance of the driver is driving
 robot_id = rospy.get_param("/gcpr/robot_id")
+
+#Set up an instance of the GCPR driver
+gDriver = GCPR_driver(robot_id)
 
 #Subscribe to laser for this robot
 laser_sub = rospy.Subscriber("/laser_driver_{0}".format(robot_id), LaserScan, gDriver.update_laser)
@@ -157,6 +160,9 @@ net_sub = rospy.Subscriber("/messages_to_{0}".format(robot_id), NetMsgToRobot, g
 #Listen for new programs to load
 prog_sub = rospy.Subscriber("/robot_prog/{0}".format(robot_id), String, gDriver.replace_program)
 
+#Cleanup code to make sure the robot stops moving when ros is shut down
+#Not guaranteed, because the message might not make it out
+rospy.on_shutdown(gDriver.stop)	
 
 #TODO figure out what a good rate for the driver to run at is,
 # and update at that rate

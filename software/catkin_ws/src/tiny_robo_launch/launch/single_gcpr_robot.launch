@@ -20,7 +20,7 @@
    <include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
 
    <!-- Fake laser readings --> 
-   <node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen"/>
+   <node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen" />
 
    <!-- Distance oracle -->
    <node pkg="distance_oracle" type="distance_oracle_server.py" name="fake_range_service" output="screen"/>
@@ -37,13 +37,15 @@
   <arg name="robot_ip_addr" value="192.168.1.176"/>
 
    <!-- client for the laser ranges -->
-   <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
+   <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen"> 
+   <!-- Can add launch-prefix="python -m cProfile -s time" for profiling -->
    	<param name="robot_id" value="$(arg robot_id)" type="int"/>
       <param name="angleMin" type="double" value="-3"/>
       <param name="angleMax" type="double" value="3"/>
       <param name="angleIncrement" type="double" value="0.05"/>
       <param name="rangeMin" type="double" value="0.03"/>
       <param name="rangeMax" type="double" value="0.8"/>
+      <param name="scanRate" type="double" value="20"/>
    </node>
 
   <node pkg="gcpr_runner" type="gcpr_driver.py" name="gcpr" output="screen">
