@@ -42,7 +42,7 @@
    	<param name="robot_id" value="$(arg robot_id)" type="int"/>
       <param name="angleMin" type="double" value="-3"/>
       <param name="angleMax" type="double" value="3"/>
-      <param name="angleIncrement" type="double" value="0.05"/>
+      <param name="angleIncrement" type="double" value="0.16"/>
       <param name="rangeMin" type="double" value="0.03"/>
       <param name="rangeMax" type="double" value="0.8"/>
       <param name="scanRate" type="double" value="20"/>

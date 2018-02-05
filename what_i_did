@@ -711,7 +711,17 @@ Spent a lot of time around here having a cold and not being able to think well
 2/2
 - Put tags on the new robots
 - Configured network for swarm robots
-- 
+- Got GCPR runner to control a robot and avoid obstacles (sort-of)
+  - Virtual laser is slow, around 1 hz
+- Profiling virtual laser, found that intersection with points on contours is bottleneck
+
+2/4
+- Switched to polygon simplification of contours
+  - Doubled speed to 2.5 or so Hz
+  - LIDARs are supposed to be tens of Hz
+
+2/5
+- Got signature on proposed committee form and submitted
 
 
 

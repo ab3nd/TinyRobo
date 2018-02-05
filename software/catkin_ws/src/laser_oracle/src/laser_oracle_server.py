@@ -87,7 +87,7 @@ class LaserServer():
 				epsilon = 0.01 * cv2.arcLength(contour, isClosed)
 				approx = cv2.approxPolyDP(contour, epsilon, isClosed)
 				approximations.append(approx)
-
+				
 			#For debugging reasons, try drawing the approximations on the image
 			# colorImg = cv2.cvtColor(imgCpy, cv2.COLOR_GRAY2BGR)
 			# for approx in approximations:
@@ -130,17 +130,17 @@ class LaserServer():
 				endX = int(cX + maxRangePx*(math.cos(angle)))
 				endY = int(cY + maxRangePx*(math.sin(angle)))
 				
-				for contour in contours:
+				for approx in approximations:
 					#Get pairs of points
-					for pointIdx in range(1, len(contour)):
-						p1 = contour[pointIdx]
-						p2 = contour[pointIdx-1]
+					for pointIdx in range(len(approx) - 1):
+						p1 = (approx[pointIdx][0][0], approx[pointIdx][0][1])
+						p2 = (approx[pointIdx+1][0][0], approx[pointIdx+1][0][1])
 						#Fast check if the line between the contour points intersects the line
 						#made by the laser scan
 						#import pdb; pdb.set_trace()
-						if self.intersects((startX, startY), (endX, endY), p1[0], p2[0]):
+						if self.intersects((startX, startY), (endX, endY), p1, p2):
 							#Calculate intersection
-							x,y = self.calcIntersection((startX, startY), (endX, endY), p1[0], p2[0])
+							x,y = self.calcIntersection((startX, startY), (endX, endY), p1, p2)
 							#Put it in meters and see if it's the smallest
 							distMeters = self.distance((cX, cY), (x,y))/self.avgPxPerM
 							if distMeters < currentMinDistance:
