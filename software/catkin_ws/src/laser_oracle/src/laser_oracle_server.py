@@ -33,9 +33,9 @@ class LaserServer():
 		#Debug image publisher, to publish the results of the image pipeline
 		self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
-		#Most of the parameters of the laser scan are passed in the 
+		#Most of the parameters of the laser scan are passed in the
 		#request. The requester should fill these two, since it knows
-		#how often it is making requests. 
+		#how often it is making requests.
 		self.time_increment = 0.0
 		self.scan_time = 0.0
 
@@ -63,21 +63,21 @@ class LaserServer():
 			cX=self.currentTags[req.robotID].tagCenterPx.x
 			cY=self.currentTags[req.robotID].tagCenterPx.y
 
-			#The laser scan lines are from the min to max scan distance, 
+			#The laser scan lines are from the min to max scan distance,
 			#translated to pixels, and are at angles around the orientation
 			#of the robot
 			maxRangePx = self.avgPxPerM * req.rangeMax
 			#Minimum scan must be outside of robot's radius
 			minRangePx = max(self.robotRad + 1, self.avgPxPerM * req.rangeMin)
 
-			#Mask off everything in the image that's not within the 
+			#Mask off everything in the image that's not within the
 			#laser range of the robot
 			mask = np.zeros(imgCpy.shape, dtype=np.uint8)
 			cv2.circle(mask, (int(cX), int(cY)), int(maxRangePx) + 5, 255, -1)
 			masked = cv2.bitwise_and(imgCpy, mask)
 
 			#Find the contours in the image, as a list
-			#and compressed with chain approximation. 
+			#and compressed with chain approximation.
 			cImg, contours, hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
 
 			#approximate each contour with a polygon approximation
@@ -87,7 +87,7 @@ class LaserServer():
 				epsilon = 0.01 * cv2.arcLength(contour, isClosed)
 				approx = cv2.approxPolyDP(contour, epsilon, isClosed)
 				approximations.append(approx)
-				
+
 			#For debugging reasons, try drawing the approximations on the image
 			# colorImg = cv2.cvtColor(imgCpy, cv2.COLOR_GRAY2BGR)
 			# for approx in approximations:
@@ -103,24 +103,41 @@ class LaserServer():
 
 			#Convert robot quaternion to RPY, then check the line segment from the center
 			#of each robot to the max range for intersection with a segment of a contour,
-			#and find the minimum-distance intersection. That minimum-distance intersection 
+			#and find the minimum-distance intersection. That minimum-distance intersection
 			#is the laser range for that robot and that scan.
 			w = self.currentTags[req.robotID].pose.pose.orientation.w
 			x = self.currentTags[req.robotID].pose.pose.orientation.x
 			y = self.currentTags[req.robotID].pose.pose.orientation.y
 			z = self.currentTags[req.robotID].pose.pose.orientation.z
 
-			#The roll direction is what I'd call yaw. 
+			#The roll direction is what I'd call yaw.
 			#RPY are ambiguious, nothing to be done for it.
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z])
 
-			#Calculate the number of scans 
+			#Calculate the number of scans
 			scanCount = int((abs(req.angleMin) + abs(req.angleMax))/req.angleIncrement)
 
-			#This evenly spaces the scans, which may be a little off from the behavior of 
-			#a real laser scanner. Note that this assumes self.angle_min is negative, so 
+			#This evenly spaces the scans, which may be a little off from the behavior of
+			#a real laser scanner. Note that this assumes self.angle_min is negative, so
 			#the scan is centered on the robot's heading
 			scan = []
+            line_segments = []
+            for approx in approximations:
+                for pointIdx in range(len(approx) - 1):
+                    line_segments.append(approx[pointIdx][0][0])
+                    line_segments.append(approx[pointIdx][0][1])
+                    line_segments.append(approx[pointIdx+1][0][0])
+                    line_segments.append(approx[pointIdx+1][0][1])
+
+            scan_angle_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)))
+            prg = cl.Program(ctx, """
+            __kernel void raycast(
+                __global const float *scan_angles, __global const float *b_g, __global float *res_g)
+            {
+              int gid = get_global_id(0);
+              res_g[gid] = a_g[gid] + b_g[gid];
+            }
+            """).build()
 			for angle in np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount):
 				#Set the current closest point seen to the max range
 				currentMinDistance = req.rangeMax
@@ -129,7 +146,7 @@ class LaserServer():
 				startY = int(cY + minRangePx*(math.sin(angle)))
 				endX = int(cX + maxRangePx*(math.cos(angle)))
 				endY = int(cY + maxRangePx*(math.sin(angle)))
-				
+
 				for approx in approximations:
 					#Get pairs of points
 					for pointIdx in range(len(approx) - 1):
@@ -147,7 +164,7 @@ class LaserServer():
 								currentMinDistance = distMeters
 				#Store this laser scan distance
 				scan.append(currentMinDistance)
-			
+
 			#Generate a laser scan message and return it
 			scanMsg = LaserScan()
 			h = Header()
@@ -165,7 +182,7 @@ class LaserServer():
 			scanMsg.ranges = scan
 			scanMsg.intensities = []
 
-			
+
 			return LaserOracleResponse(scanMsg)
 		else:
 			rospy.logwarn("Can't see robot {0}, only {1}".format(req.robotID, self.currentTags.keys()))
@@ -178,7 +195,7 @@ class LaserServer():
 	def distancePose(self, p1, p2):
 		return (math.sqrt(
 			(math.pow(p1.position.x - p2.position.x, 2)) +
-			(math.pow(p1.position.y - p2.position.y, 2)) + 
+			(math.pow(p1.position.y - p2.position.y, 2)) +
 			(math.pow(p1.position.z - p2.position.z, 2))
 				))
 
@@ -191,7 +208,7 @@ class LaserServer():
 	def orientation(self, a,b,c):
 		orient = ((c[1]-a[1]) * (b[0]-a[0])) - ((b[1]-a[1]) * (c[0] - a[0]))
 		if orient == 0: #Collinear
-			return 0 
+			return 0
 		if orient > 0: #clockwise
 			return 1
 		return 2 #counterclockwise
@@ -233,10 +250,10 @@ class LaserServer():
 		if den == 0:
 			#Lines are parallel or coincident
 			rospy.logwarn("About to divide by zero because of parallel or coincident lines!")
-			
+
 			#Return a distance reading that is infinitely far away. Since this is compared
-			#to the max range, and the smaller value is used, it will get clamped 
-			#to the max range of the sensor. 
+			#to the max range, and the smaller value is used, it will get clamped
+			#to the max range of the sensor.
 			#TODO it's bad coding practice to assume knowldege of what your caller will do
 			#TOnotDO it's good coding practice to know what the code you call will do :-)
 			return (float('inf'), float('inf'))
@@ -261,7 +278,7 @@ class LaserServer():
 				self.avgPxPerM = d/tag.size
 			else:
 				#Calculate pixels per meter from inter-tag distances
-				#This is pretty heavy (all pairs) and may not need to be 
+				#This is pretty heavy (all pairs) and may not need to be
 				for tagA in self.currentTags.values():
 					for tagB in self.currentTags.values():
 						if tagA == tagB:
@@ -271,7 +288,7 @@ class LaserServer():
 							dPx = self.distancePixels(tagA.tagCenterPx, tagB.tagCenterPx)
 							self.avgPxPerM += dPx/dMeters
 				self.avgPxPerM = self.avgPxPerM/(len(self.currentTags)**2)
-	
+
 
 	def drawRobots(self, image):
 		#Draw a blue circle for each robot so they avoid each other
@@ -283,7 +300,7 @@ class LaserServer():
 			except KeyError, e:
 				#The list changed while we were drawing, do nothing
 				pass
-				
+
 		return image
 			#Optional, draw the robot ID on the robot
 			#cv2.putText(self.image, str(robotID), (x-robotRad/2, y), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.3, np.array([115,255,30]))
@@ -295,7 +312,7 @@ class LaserServer():
 
 		#Draw blue dots over all the robots so they get detected as obstacles
 		img = self.drawRobots(img)
-		
+
 		#B&W image that is white for every pixel in the range
 		mask = cv2.inRange(img, lower_blue, upper_blue)
 		#Erode the mask to remove little noise pixels
