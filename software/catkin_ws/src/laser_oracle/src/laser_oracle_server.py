@@ -31,7 +31,7 @@ class LaserServer():
 		self.image = None
 		self.bridge = CvBridge()
 		#Debug image publisher, to publish the results of the image pipeline
-		self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
+		#self.dbg_pub = rospy.Publisher("/oracle_dbg/image", Image, queue_size=5)
 
 		#Most of the parameters of the laser scan are passed in the 
 		#request. The requester should fill these two, since it knows

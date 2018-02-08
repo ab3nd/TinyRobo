@@ -722,9 +722,14 @@ Spent a lot of time around here having a cold and not being able to think well
 
 2/5
 - Got signature on proposed committee form and submitted
+- read up a lot on Alloy for possible assessment of markov chain representation of GCPR
 
+2/6
+- More reading about Alloy
+- Faculty canidate talk
+- Collected data for John to speed up laser scanner (woo GPU)
 
-
+It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 
 Swarm control software
 - Implement a simulation of attempting to vector towards a point, and doing wall follow to get around obstacles. Robots will have to have volume/area, so they don't just pile up in a point. Intent is to see what's a solid strategy for going somewhere with obstacle avoidance. 

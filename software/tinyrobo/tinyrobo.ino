@@ -100,6 +100,13 @@ void printWiFiStatus()
 byte motor_cmd[4] = {0, 0, 0, 0};
 int cmd_index = 0;
 
+//For storing the previous speed instruction so a high-speed kick can 
+//be given if the robot is starting from stopped
+byte last_speed_1 = 0x00;
+bool kick1 = false;
+byte last_speed_2 = 0x00;
+bool kick2 = false;
+
 //Stores fault codes (one per motor) to send to client
 byte fault[2] = {0x00, 0x00};
 
@@ -250,9 +257,35 @@ void loop() {
           yield();
           break;
         case MOTOR_DRV:
+          //Check if these are low power settings, if they are,
+          //give the motor a high-power kick to get over inertia
+          kick1 = (motor_cmd[0] < 0x17 && last_speed_1 == 0x00);
+          kick2 = (motor_cmd[2] < 0x17 && last_speed_2 == 0x00);
+          
+          if(kick1)
+          {
+            setMotor(addr1, 0x20, motor_cmd[1]);
+          }
+
+          if(kick2)
+          {
+            setMotor(addr2, 0x20, motor_cmd[3]);
+          }          
+        
+          if(kick1 || kick2)
+          {
+            //TODO experimentally determine needed kick time
+            delay(50);
+          }
+          
           //Set the motor state from what the client sent
           setMotor(addr1, motor_cmd[0], motor_cmd[1]);
           setMotor(addr2, motor_cmd[2], motor_cmd[3]);
+
+          //Save last speeds for determining if a kick is needed
+          last_speed_1 = motor_cmd[0];
+          last_speed_2 = motor_cmd[2];
+          
           //Get the fault bits
           fault[0] = getFault(addr1);
           fault[1] = getFault(addr2);

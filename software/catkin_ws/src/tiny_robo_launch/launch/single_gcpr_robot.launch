@@ -32,9 +32,9 @@
 
    <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
-  <!-- Set up for robot 0, the green tank -->
-  <arg name="robot_id" value="0" />
-  <arg name="robot_ip_addr" value="192.168.1.176"/>
+  <!-- Set up for robot 1, the big wheel -->
+  <arg name="robot_id" value="21" />
+  <arg name="robot_ip_addr" value="192.168.1.209"/>
 
    <!-- client for the laser ranges -->
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen"> 
