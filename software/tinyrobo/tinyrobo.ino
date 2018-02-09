@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
-#define DEBUG
+//#define DEBUG
 char ssid[] = "TinyRoboBase";     //  your network SSID (name)
 //char pass[] = "sofullsuchinternets";  // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status

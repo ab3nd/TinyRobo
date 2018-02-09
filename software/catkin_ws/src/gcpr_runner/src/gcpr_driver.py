@@ -19,10 +19,10 @@ class ProgramLoader(object):
 	def __init__(self):
 		# Example program, will get replaced
 		# Hopefully makes the robot drive and not hit things
-		self.program = [("not(self.is_near_anything())", 1.0, "self.move_fwd(0.25)"),
-				   ("self.is_near_left() and not self.is_near_center()", 1.0, "self.move_arc(0.25, 0.13)"),
-				   ("self.is_near_right() and not self.is_near_center()", 1.0, "self.move_arc(-0.25, 0.13)"),
-				   ("self.is_near_center()", 1.0, "self.move_turn(0.25)")]
+		self.program = [("not(self.is_near_anything())", 1.0, "self.move_fwd(0.3)"),
+				   ("self.is_near_left() and not self.is_near_center()", 1.0, "self.move_arc(-0.3, 0.25)"),
+				   ("self.is_near_right() and not self.is_near_center()", 1.0, "self.move_arc(0.3, 0.25)"),
+				   ("self.is_near_center()", 1.0, "self.move_turn(0.3)")]
 
 	#This is how programs get deployed to this runner instance
 	#Currently just a string containing a set of GCPR tuples
@@ -40,7 +40,7 @@ class GCPR_driver(object):
 	def __init__(self, robot_id):
 		self.programLoader = ProgramLoader()
 		self.laser_readings = []
-		self.max_range = 0.2 #TODO TOTALLY ARBITARY THRESHOLD FIXME
+		self.max_range = 0.6 #TODO TOTALLY ARBITARY THRESHOLD FIXME
 		#TODO probably should name this topic better
 		self.twistPub = rospy.Publisher('/gcpr_drive_{}'.format(robot_id), Twist, queue_size=0)
 		self.laser_msg = None
@@ -119,56 +119,33 @@ class GCPR_driver(object):
 	def is_near_right(self):
 		# For a 2pi (all-around) laser, this doesn't restrict to the right front
 		# but also covers the rear of the laser. Changed to look more at only right front.
-		# span = len(self.laser_readings)/3
-		# #Right side of readings
-		# for reading in self.laser_readings[span+span:]:
-		# 	#If there's a close object, return true
-		# 	if reading < self.max_range / 2:
-		# 		return True
-		# return False
 		if self.laser_msg is not None:
 			center = len(self.laser_readings)/2
 			count = int((math.pi/2)/self.laser_msg.angle_increment)
 			#Check the right front quarter of the laser scans
 			for reading in range(center, center + count):
-				if reading < self.max_range/2 :
+				if self.laser_readings[reading] < self.max_range/2 :
 					return True
 			return False
 
 
 	def is_near_left(self):
-		span = len(self.laser_readings)/3
-		#Left side of readings
-		# for reading in self.laser_readings[:span]:
-		# 	#If there's a close object, return true
-		# 	if reading < self.max_range / 2:
-		# 		return True
-		# return False
-
 		if self.laser_msg is not None:
 			center = len(self.laser_readings)/2
 			count = int((math.pi/2)/self.laser_msg.angle_increment)
 			#Check the left front quarter of the laser scans
 			for reading in range(center - count, center):
-				if reading < self.max_range/2 :
+				if self.laser_readings[reading] < self.max_range/2 :
 					return True
 			return False
 
 	def is_near_center(self):
-		# span = len(self.laser_readings)/3
-		# #Center of readings
-		# for reading in self.laser_readings[span:span+span]:
-		# 	#If there's a close object, return true
-		# 	if reading < self.max_range / 2:
-		# 		return True
-		# return False
-
 		if self.laser_msg is not None:
 			center = len(self.laser_readings)/2
 			count = int((math.pi/2)/self.laser_msg.angle_increment)
 			#Check the left front quarter of the laser scans
 			for reading in range(center - count/2, center + count/2):
-				if reading < self.max_range/2 :
+				if self.laser_readings[reading] < self.max_range/2 :
 					return True
 			return False
 
