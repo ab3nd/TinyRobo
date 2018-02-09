@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
-//#define DEBUG
+#define DEBUG
 char ssid[] = "TinyRoboBase";     //  your network SSID (name)
 //char pass[] = "sofullsuchinternets";  // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -56,6 +56,7 @@ typedef enum {
   QUERY_RESP,
   MOTOR_READ,
   MOTOR_DRV,
+  HEARTBEAT_STOP,
 } machine_state;
 
 void printWiFiStatus()
@@ -100,15 +101,13 @@ void printWiFiStatus()
 byte motor_cmd[4] = {0, 0, 0, 0};
 int cmd_index = 0;
 
-//For storing the previous speed instruction so a high-speed kick can 
-//be given if the robot is starting from stopped
-byte last_speed_1 = 0x00;
-bool kick1 = false;
-byte last_speed_2 = 0x00;
-bool kick2 = false;
+uint8_t motStatus[6] = {0,0,0,0,0,0};
 
 //Stores fault codes (one per motor) to send to client
 byte fault[2] = {0x00, 0x00};
+
+//For heartbeat
+unsigned long lastMsgTime = 0;
 
 machine_state state = CONN_WAIT; //Waiting for connection from client
 
@@ -191,46 +190,62 @@ void setup() {
 */
 void loop() {
   WiFiClient client = server.available();
-  uint8_t motStatus[6] = {0,0,0,0,0,0};
-  yield();
+  
+  yield();  
   //client goes out of scope when it gets redeclared there
   if (client) {
     state = CLI_READ; //start reading from the client
-#ifdef DEBUG    
-    Serial.println("Got a client");    
-#endif
+
     while (client.connected()) {
+
+      //Heartbeat check. If no messages within 1/4 second, all stop
+      if((millis() - lastMsgTime > 250) && (lastMsgTime != 0))
+      {
+        state = HEARTBEAT_STOP;
+        lastMsgTime = 0;
+      }
+          
       switch (state)
       {
+        case HEARTBEAT_STOP:
+          //stop motors
+          setMotor(addr1, 0x00, 0x00);
+          setMotor(addr2, 0x00, 0x00);
+            
+          //wait for new messages
+          state = CLI_READ;
+#ifdef DEBUG
+            Serial.println("Heartbeat stop");
+#endif
+
+          //Let ESP process
+          yield();
+          break;
         case CLI_READ:
           if (client.available()) {
+      
+            //update the heartbeat timer
+            lastMsgTime = millis();
+
+#ifdef DEBUG
+            Serial.println(lastMsgTime);
+#endif
             //Read from client
             char c = client.read();
-#ifdef DEBUG
-//            Serial.print("Read: ");
-//            Serial.print(c);
-//            Serial.print(" (");
-//            Serial.print(c, HEX);
-//            Serial.println(")");
-#endif
+
             if ( c == 'Q') {
               state = QUERY_RESP;
             } else if ( c == 'M') {
               cmd_index = 0; //start of new motor command
               state = MOTOR_READ;
             } else {
-#ifdef DEBUG
               //This is an error, how to deal with it?
-              Serial.println("Got something weird");
-#endif              
+              //Serial.println("Got something weird");
             }
           }
           yield();
           break;
         case QUERY_RESP:
-#ifdef DEBUG
-          Serial.println("TinyRobo");
-#endif          
           client.println("TinyRobo"); //TODO include the fault byte
           state = CLI_READ;
           yield();
@@ -240,13 +255,6 @@ void loop() {
           if (client.available()) {
             //Read command from client and store in buffer
             motor_cmd[cmd_index] = client.read();
-#ifdef DEBUG
-//            Serial.print("Motor read: ");
-//            Serial.print(motor_cmd[cmd_index]);
-//            Serial.print(" (");
-//            Serial.print(motor_cmd[cmd_index], HEX);
-//            Serial.println(")");
-#endif            
             cmd_index++;
             //If we have received 4 bytes (2 speed, 2 direction), then change the motors
             if (cmd_index == 4) {
@@ -257,52 +265,14 @@ void loop() {
           yield();
           break;
         case MOTOR_DRV:
-          //Check if these are low power settings, if they are,
-          //give the motor a high-power kick to get over inertia
-          kick1 = (motor_cmd[0] < 0x17 && last_speed_1 == 0x00);
-          kick2 = (motor_cmd[2] < 0x17 && last_speed_2 == 0x00);
-          
-          if(kick1)
-          {
-            setMotor(addr1, 0x20, motor_cmd[1]);
-          }
-
-          if(kick2)
-          {
-            setMotor(addr2, 0x20, motor_cmd[3]);
-          }          
-        
-          if(kick1 || kick2)
-          {
-            //TODO experimentally determine needed kick time
-            delay(50);
-          }
-          
           //Set the motor state from what the client sent
           setMotor(addr1, motor_cmd[0], motor_cmd[1]);
           setMotor(addr2, motor_cmd[2], motor_cmd[3]);
-
-          //Save last speeds for determining if a kick is needed
-          last_speed_1 = motor_cmd[0];
-          last_speed_2 = motor_cmd[2];
           
           //Get the fault bits
           fault[0] = getFault(addr1);
           fault[1] = getFault(addr2);
 
-#ifdef DEBUG
-//          //Debug print everything
-//          Serial.print("Set motor state");
-//          for (int ii = 0; ii < 4; ii++) {
-//            Serial.print(" ");
-//            Serial.print(motor_cmd[ii], HEX);
-//          }
-//          for (int ii = 0; ii < 2; ii++) {
-//            Serial.print(" ");
-//            Serial.print(fault[ii], HEX);
-//          }
-//          Serial.println(' ');
-#endif
           //Send it back to the commander as 6 bytes
           motStatus[0] = motor_cmd[0];
           motStatus[1] = motor_cmd[1];
@@ -312,17 +282,15 @@ void loop() {
           motStatus[5] = fault[1];
           //The cast is a hack, may cause nasal demons
           client.write((const uint8_t*)motStatus, 6); 
-#ifdef DEBUG
-          Serial.print(".");
-#endif
+
           state = CLI_READ;
           yield();
           break;
         default:
           //This shouldn't happen
-          Serial.println("Got a bogus state value, check yo stack before you wreck yo frames.");
-          Serial.print("State was ");
-          Serial.println(state);
+//          Serial.println("Got a bogus state value, check yo stack before you wreck yo frames.");
+//          Serial.print("State was ");
+//          Serial.println(state);
           state = CLI_READ;
       }
     }

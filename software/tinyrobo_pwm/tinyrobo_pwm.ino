@@ -1,13 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
-//#define DEBUG
-char ssid[] = "TinyRoboBase";     //  your network SSID (name)
-//char pass[] = "sofullsuchinternets";  // your network password
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
-
-WiFiServer server(4321); //Totally arbitrary port number
-
+#define DEBUG
 /*
     Test the I2C motor drivers on the TinyRobo board
 
@@ -49,68 +43,8 @@ byte faultVals = 0x00;
     0   FAULT, if set, a fault condition exists
 */
 
-typedef enum {
-  CONN_WAIT,
-  CONNECTED,
-  CLI_READ,
-  QUERY_RESP,
-  MOTOR_READ,
-  MOTOR_DRV,
-} machine_state;
-
-void printWiFiStatus()
-{
-#ifdef DEBUG
-  if(Serial.availableForWrite())
-  {
-    switch(status){
-      case WL_CONNECTED:
-        Serial.println("Connected: WL_CONNECTED");
-        break;
-      case WL_NO_SHIELD:
-        Serial.println("No WiFi Shield: WL_NO_SHIELD");
-        break;
-      case WL_IDLE_STATUS:
-        Serial.println("Idle: WL_IDLE_STATUS");
-        break;
-      case WL_NO_SSID_AVAIL:
-        Serial.println("SSID not found: WL_NO_SSID_AVAILABLE");
-        break;
-      case WL_SCAN_COMPLETED:
-        Serial.println("Scan Completed: WL_SCAN_COMPLETED");
-        break;
-      case WL_CONNECT_FAILED:
-        Serial.println("Failed: WL_CONNECT_FAILED");
-        break;
-      case WL_CONNECTION_LOST:
-        Serial.println("Lost Connection: WL_CONNECTION_LOST");
-        break;
-      case WL_DISCONNECTED:
-        Serial.println("Disconnected: WL_DISCONNECTED");
-        break;
-      default:
-        Serial.println("Undefined state");
-        break;
-    }
-  }
-#endif
-}
-//Stores the motor commands [speed1, direction1, speed2, direction2]
-//received from the client
-byte motor_cmd[4] = {0, 0, 0, 0};
-int cmd_index = 0;
-
-//For storing the previous speed instruction so a high-speed kick can 
-//be given if the robot is starting from stopped
-byte last_speed_1 = 0x00;
-bool kick1 = false;
-byte last_speed_2 = 0x00;
-bool kick2 = false;
-
 //Stores fault codes (one per motor) to send to client
 byte fault[2] = {0x00, 0x00};
-
-machine_state state = CONN_WAIT; //Waiting for connection from client
 
 void setMotor(byte address, byte vel, byte dir)
 {
@@ -143,37 +77,7 @@ void setup() {
 #ifdef DEBUG
   Serial.begin(115200);
 #endif
-  // attempt to connect to Wifi network:
-  WiFi.mode(WIFI_STA);
-  
-  //No password needed, TinyRoboBase is unecrypted
-#ifdef DEBUG
-  Serial.print("Attempting to connect to SSID: ");
-  Serial.println(ssid);  
-#endif
-  status = WiFi.begin(ssid);//, pass);
 
-  //Wait for the connection
-  while ( WiFi.status() != WL_CONNECTED) {
-    // let the ESP8266 do stuff and wait for connection:
-    yield();
-    delay(2000);
-    printWiFiStatus();
-  }
-
-  //Now connected to WiFi
-  //Print the IP address
-#ifdef DEBUG
-  Serial.print("You're connected to the network ");
-  IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
-#endif
-  
-  //Start the server
-  server.begin();
-
-  //Blink the LED to indicate connection
   pinMode(2, OUTPUT);
   for(int ii = 0; ii < 10; ii++)
   {
@@ -185,146 +89,42 @@ void setup() {
   }
 }
 
-/* Protocol from the client is as follows:
-   Q - version query, send back some kind of ident string
-   M[m1 speed][m1 direction][m2 speed][m2 direction] - motor control command
-*/
 void loop() {
-  WiFiClient client = server.available();
   uint8_t motStatus[6] = {0,0,0,0,0,0};
   yield();
-  //client goes out of scope when it gets redeclared there
-  if (client) {
-    state = CLI_READ; //start reading from the client
-#ifdef DEBUG    
-    Serial.println("Got a client");    
-#endif
-    while (client.connected()) {
-      switch (state)
-      {
-        case CLI_READ:
-          if (client.available()) {
-            //Read from client
-            char c = client.read();
-#ifdef DEBUG
-//            Serial.print("Read: ");
-//            Serial.print(c);
-//            Serial.print(" (");
-//            Serial.print(c, HEX);
-//            Serial.println(")");
-#endif
-            if ( c == 'Q') {
-              state = QUERY_RESP;
-            } else if ( c == 'M') {
-              cmd_index = 0; //start of new motor command
-              state = MOTOR_READ;
-            } else {
-#ifdef DEBUG
-              //This is an error, how to deal with it?
-              Serial.println("Got something weird");
-#endif              
-            }
-          }
-          yield();
-          break;
-        case QUERY_RESP:
-#ifdef DEBUG
-          Serial.println("TinyRobo");
-#endif          
-          client.println("TinyRobo"); //TODO include the fault byte
-          state = CLI_READ;
-          yield();
-          break;
-        case MOTOR_READ:
-          //Read a byte for motors
-          if (client.available()) {
-            //Read command from client and store in buffer
-            motor_cmd[cmd_index] = client.read();
-#ifdef DEBUG
-//            Serial.print("Motor read: ");
-//            Serial.print(motor_cmd[cmd_index]);
-//            Serial.print(" (");
-//            Serial.print(motor_cmd[cmd_index], HEX);
-//            Serial.println(")");
-#endif            
-            cmd_index++;
-            //If we have received 4 bytes (2 speed, 2 direction), then change the motors
-            if (cmd_index == 4) {
-              cmd_index = 0;
-              state = MOTOR_DRV;
-            }
-          }
-          yield();
-          break;
-        case MOTOR_DRV:
-          //Check if these are low power settings, if they are,
-          //give the motor a high-power kick to get over inertia
-          kick1 = (motor_cmd[0] < 0x17 && last_speed_1 == 0x00);
-          kick2 = (motor_cmd[2] < 0x17 && last_speed_2 == 0x00);
+  //setMotor(addr1, 0x20, motor_cmd[1]);
           
-          if(kick1)
-          {
-            setMotor(addr1, 0x20, motor_cmd[1]);
-          }
+  //Get the fault bits
+  fault[0] = getFault(addr1);
+  fault[1] = getFault(addr2);
 
-          if(kick2)
-          {
-            setMotor(addr2, 0x20, motor_cmd[3]);
-          }          
-        
-          if(kick1 || kick2)
-          {
-            //TODO experimentally determine needed kick time
-            delay(50);
-          }
-          
-          //Set the motor state from what the client sent
-          setMotor(addr1, motor_cmd[0], motor_cmd[1]);
-          setMotor(addr2, motor_cmd[2], motor_cmd[3]);
-
-          //Save last speeds for determining if a kick is needed
-          last_speed_1 = motor_cmd[0];
-          last_speed_2 = motor_cmd[2];
-          
-          //Get the fault bits
-          fault[0] = getFault(addr1);
-          fault[1] = getFault(addr2);
-
+  //count up
+  for(byte spd = 0x06; spd < 0x16; spd++)
+  {
+    setMotor(addr1, spd, 0x01);
+    setMotor(addr2, spd, 0x01); 
+    yield();
+    digitalWrite(2, HIGH);
+    delay(100);
+    digitalWrite(2, LOW);
+    delay(1000);
 #ifdef DEBUG
-//          //Debug print everything
-//          Serial.print("Set motor state");
-//          for (int ii = 0; ii < 4; ii++) {
-//            Serial.print(" ");
-//            Serial.print(motor_cmd[ii], HEX);
-//          }
-//          for (int ii = 0; ii < 2; ii++) {
-//            Serial.print(" ");
-//            Serial.print(fault[ii], HEX);
-//          }
-//          Serial.println(' ');
-#endif
-          //Send it back to the commander as 6 bytes
-          motStatus[0] = motor_cmd[0];
-          motStatus[1] = motor_cmd[1];
-          motStatus[2] = fault[0];
-          motStatus[3] = motor_cmd[2];
-          motStatus[4] = motor_cmd[3];
-          motStatus[5] = fault[1];
-          //The cast is a hack, may cause nasal demons
-          client.write((const uint8_t*)motStatus, 6); 
+    Serial.println(spd, HEX);
+#endif      
+  }
+
+  //count down
+  for(byte spd = 0x16; spd > 0x06; spd--)
+  {
+    setMotor(addr1, spd, 0x01);
+    setMotor(addr2, spd, 0x01); 
+    yield();
+    digitalWrite(2, HIGH);
+    delay(100);
+    digitalWrite(2, LOW);
+    delay(1000);
 #ifdef DEBUG
-          Serial.print(".");
-#endif
-          state = CLI_READ;
-          yield();
-          break;
-        default:
-          //This shouldn't happen
-          Serial.println("Got a bogus state value, check yo stack before you wreck yo frames.");
-          Serial.print("State was ");
-          Serial.println(state);
-          state = CLI_READ;
-      }
-    }
+    Serial.println(spd, HEX);
+#endif    
   }
 }

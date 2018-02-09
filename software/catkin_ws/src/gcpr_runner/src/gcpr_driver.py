@@ -19,10 +19,10 @@ class ProgramLoader(object):
 	def __init__(self):
 		# Example program, will get replaced
 		# Hopefully makes the robot drive and not hit things
-		self.program = [("not(self.is_near_anything())", 1.0, "self.move_fwd(0.1)"),
-				   ("self.is_near_left() and not self.is_near_center()", 1.0, "self.move_arc(0.1, 0.05)"),
-				   ("self.is_near_right() and not self.is_near_center()", 1.0, "self.move_arc(-0.1, 0.05)"),
-				   ("self.is_near_center()", 1.0, "self.move_turn(0.1)")]
+		self.program = [("not(self.is_near_anything())", 1.0, "self.move_fwd(0.25)"),
+				   ("self.is_near_left() and not self.is_near_center()", 1.0, "self.move_arc(0.25, 0.13)"),
+				   ("self.is_near_right() and not self.is_near_center()", 1.0, "self.move_arc(-0.25, 0.13)"),
+				   ("self.is_near_center()", 1.0, "self.move_turn(0.25)")]
 
 	#This is how programs get deployed to this runner instance
 	#Currently just a string containing a set of GCPR tuples
