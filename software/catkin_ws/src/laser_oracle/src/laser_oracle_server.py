@@ -14,18 +14,33 @@ from cv_bridge import CvBridge, CvBridgeError
 import cv2
 import numpy as np
 import math
+import array
 from tf import transformations as transf
 
+import pyopencl as cl
 #For debugging
 import random
 
 lower_blue, upper_blue = np.array([100,70,30]), np.array([130,255,255])
 kernel = np.ones([3,3], np.uint8)
-
+class Object(object):
+	pass
 class LaserServer():
 
 	def __init__(self):
 		self.currentTags = {}
+		"""self.thing=Object()
+		self.thing.tagCenterPx=Object()
+		self.thing.pose=Object()
+		self.thing.pose.pose=Object()
+		self.thing.pose.pose.orientation=Object()
+		self.currentTags[5]=self.thing
+		self.currentTags[5].tagCenterPx.x=100
+		self.currentTags[5].tagCenterPx.y=100
+		self.currentTags[5].pose.pose.orientation.w = 1
+		self.currentTags[5].pose.pose.orientation.x = 0
+		self.currentTags[5].pose.pose.orientation.y = 0
+		self.currentTags[5].pose.pose.orientation.z = 0"""
 		#Factor for pixel/meter conversion
 		self.avgPxPerM = 0
 		self.image = None
@@ -78,7 +93,8 @@ class LaserServer():
 
 			#Find the contours in the image, as a list
 			#and compressed with chain approximation.
-			cImg, contours, hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
+			#cImg, contours, hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
+			contours,hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
 
 			#approximate each contour with a polygon approximation
 			approximations = []
@@ -121,50 +137,96 @@ class LaserServer():
 			#a real laser scanner. Note that this assumes self.angle_min is negative, so
 			#the scan is centered on the robot's heading
 			scan = []
-            line_segments = []
-            for approx in approximations:
-                for pointIdx in range(len(approx) - 1):
-                    line_segments.append(approx[pointIdx][0][0])
-                    line_segments.append(approx[pointIdx][0][1])
-                    line_segments.append(approx[pointIdx+1][0][0])
-                    line_segments.append(approx[pointIdx+1][0][1])
+			line_segments_x = []
+			line_segments_y = []
+			for approx in approximations:
+				for pointIdx in range(len(approx) - 1):
+					line_segments_x.append(approx[pointIdx][0][0])
+					line_segments_y.append(approx[pointIdx][0][1])
+					line_segments_x.append(approx[pointIdx+1][0][0])
+					line_segments_y.append(approx[pointIdx+1][0][1])
+		
+			#print line_segments_x
+			ctx = cl.create_some_context()
+			queue = cl.CommandQueue(ctx)
+			mf = cl.mem_flags
+			scan_angle_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)))
+			line_segments_x_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_x).tostring()))
+			line_segments_y_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_y).tostring()))
+			ray_lengths = np.zeros(scanCount,np.float32)
+			ray_lengths_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
+			prg = cl.Program(ctx, """
+			__kernel void raycast(
+				__global const float *scan_angles, __global const float *line_segments_x, __global const float *line_segments_y, __global float *ray_lengths,
+				float center_x, float center_y, float min_range, float max_range, int line_segment_count)
+			{
+				int gid = get_global_id(0);
+				float current_min_distance = max_range;
+				float start_x = center_x + min_range*cos((scan_angles[gid]));
+				float start_y = center_y + min_range*sin((scan_angles[gid]));
+				float end_x = center_x + max_range*cos((scan_angles[gid]));
+				float end_y = center_y + max_range*sin((scan_angles[gid]));
+				float min_x = start_x<end_x?start_x:end_x;
+				float max_x = start_x>end_x?start_x:end_x;
+				float min_y = start_y<end_y?start_y:end_y;
+				float max_y = start_y>end_y?start_y:end_y;
+				int i=0;
+				while(i<line_segment_count){
+					float seg_start_x=line_segments_x[2*i];
+					float seg_start_y=line_segments_y[2*i];
+					float seg_end_x=line_segments_x[2*i+1];
+					float seg_end_y=line_segments_y[2*i+1];
+					float seg_min_x = seg_start_x<seg_end_x?seg_start_x:seg_end_x;
+					float seg_max_x = seg_start_x>seg_end_x?seg_start_x:seg_end_x;
+					float seg_min_y = seg_start_y<seg_end_y?seg_start_y:seg_end_y;
+					float seg_max_y = seg_start_y>seg_end_y?seg_start_y:seg_end_y;
+					float den = (start_x-end_x)*(seg_start_y-seg_end_y)-(start_y-end_y)*(seg_start_x-seg_end_x);
+					if(den == 0){
+						i++;
+						continue;
+					}
+					float intersect_x = (((start_x*end_y)-(start_y*end_x))*(seg_start_x-seg_end_x)-(start_x-end_x)*((seg_start_x*seg_end_y)-(seg_start_y*seg_end_x)))/den;
+					float intersect_y = (((start_x*end_y)-(start_y*end_x))*(seg_start_y-seg_end_y)-(start_y-end_y)*((seg_start_x*seg_end_y)-(seg_start_y*seg_end_x)))/den;
 
-            scan_angle_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)))
-            prg = cl.Program(ctx, """
-            __kernel void raycast(
-                __global const float *scan_angles, __global const float *b_g, __global float *res_g)
-            {
-              int gid = get_global_id(0);
-              res_g[gid] = a_g[gid] + b_g[gid];
-            }
-            """).build()
-			for angle in np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount):
-				#Set the current closest point seen to the max range
-				currentMinDistance = req.rangeMax
+					if(
+					(intersect_x>min_x &&
+					intersect_x<max_x &&
 
-				startX = int(cX + minRangePx*(math.cos(angle)))
-				startY = int(cY + minRangePx*(math.sin(angle)))
-				endX = int(cX + maxRangePx*(math.cos(angle)))
-				endY = int(cY + maxRangePx*(math.sin(angle)))
+					intersect_y>min_y &&
+					intersect_y<max_y &&
 
-				for approx in approximations:
-					#Get pairs of points
-					for pointIdx in range(len(approx) - 1):
-						p1 = (approx[pointIdx][0][0], approx[pointIdx][0][1])
-						p2 = (approx[pointIdx+1][0][0], approx[pointIdx+1][0][1])
-						#Fast check if the line between the contour points intersects the line
-						#made by the laser scan
-						#import pdb; pdb.set_trace()
-						if self.intersects((startX, startY), (endX, endY), p1, p2):
-							#Calculate intersection
-							x,y = self.calcIntersection((startX, startY), (endX, endY), p1, p2)
-							#Put it in meters and see if it's the smallest
-							distMeters = self.distance((cX, cY), (x,y))/self.avgPxPerM
-							if distMeters < currentMinDistance:
-								currentMinDistance = distMeters
-				#Store this laser scan distance
-				scan.append(currentMinDistance)
+					intersect_x>seg_min_x &&
+					intersect_x<seg_max_x &&
 
+					intersect_y>seg_min_y &&
+					intersect_y<seg_max_y)
+					){
+						float dist = sqrt(pown(intersect_x-center_x,2)+pown(intersect_y-center_y,2));
+						if(dist<current_min_distance ){
+							current_min_distance=dist;
+						}
+						//current_min_distance=500;
+					}
+					i++;
+					//float dist = sqrt(pown(intersect_x-center_x,2)+pown(intersect_y-center_y,2));
+					//current_min_distance=dist;
+				}
+				ray_lengths[gid]=current_min_distance;
+			}
+			""").build()
+
+			#float den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0]);
+			#float intersect_x = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))/den;
+			#float intersect_y = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))/den;
+			print(line_segments_x)
+			print(line_segments_y)
+			print(self.avgPxPerM)
+			print(np.float32(cX))
+			print(np.float32(cY))
+			print(scanCount)
+			prg.raycast(queue, ray_lengths.shape, None, scan_angle_buffer, line_segments_x_buffer, line_segments_y_buffer, ray_lengths_buffer, np.float32(cX), np.float32(cY), np.float32(minRangePx), np.float32(maxRangePx), np.int32(len(line_segments_x)/2))
+			cl.enqueue_copy(queue,ray_lengths,ray_lengths_buffer)
+			#print ray_lengths
 			#Generate a laser scan message and return it
 			scanMsg = LaserScan()
 			h = Header()
@@ -176,9 +238,10 @@ class LaserServer():
 			scanMsg.angle_increment = req.angleIncrement
 			scanMsg.time_increment = self.time_increment
 			scanMsg.scan_time = self.scan_time
-			scanMsg.range_max = req.rangeMax
+			scanMsg.range_max = req.rangeMax+.01
 			scanMsg.range_min = req.rangeMin
-
+			#self.avgPxPerM=1000
+			scan=[i/self.avgPxPerM for i in ray_lengths]
 			scanMsg.ranges = scan
 			scanMsg.intensities = []
 
@@ -297,7 +360,7 @@ class LaserServer():
 				x=int(self.currentTags[robotID].tagCenterPx.x)
 				y=int(self.currentTags[robotID].tagCenterPx.y)
 				cv2.circle(image, (x,y), self.robotRad, np.array([115,255,255]), -1)
-			except KeyError, e:
+			except KeyError as e:
 				#The list changed while we were drawing, do nothing
 				pass
 
