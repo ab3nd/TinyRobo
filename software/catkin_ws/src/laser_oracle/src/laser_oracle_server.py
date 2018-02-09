@@ -145,19 +145,29 @@ class LaserServer():
 					line_segments_y.append(approx[pointIdx][0][1])
 					line_segments_x.append(approx[pointIdx+1][0][0])
 					line_segments_y.append(approx[pointIdx+1][0][1])
-		
+			line_segments_x=[500,600,600,600,600,500]
+			line_segments_y=[500,500,500,600,600,600]
+			cX=550
+			cY=550
+			minRangePx=20
+			maxRangePx=300
+			roll=0
 			#print line_segments_x
 			ctx = cl.create_some_context()
 			queue = cl.CommandQueue(ctx)
 			mf = cl.mem_flags
-			scan_angle_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)))
+			scan_angle_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",[i for i in np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)]).tostring()))
 			line_segments_x_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_x).tostring()))
 			line_segments_y_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_y).tostring()))
 			ray_lengths = np.zeros(scanCount,np.float32)
 			ray_lengths_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
+			debug_1 = np.zeros(scanCount,np.float32)
+			debug_1_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
+			debug_2 = np.zeros(scanCount,np.float32)
+			debug_2_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
 			prg = cl.Program(ctx, """
 			__kernel void raycast(
-				__global const float *scan_angles, __global const float *line_segments_x, __global const float *line_segments_y, __global float *ray_lengths,
+				__global const float *scan_angles, __global const float *line_segments_x, __global const float *line_segments_y, __global float *ray_lengths, __global float *debug_1, __global float *debug_2,
 				float center_x, float center_y, float min_range, float max_range, int line_segment_count)
 			{
 				int gid = get_global_id(0);
@@ -187,46 +197,58 @@ class LaserServer():
 					}
 					float intersect_x = (((start_x*end_y)-(start_y*end_x))*(seg_start_x-seg_end_x)-(start_x-end_x)*((seg_start_x*seg_end_y)-(seg_start_y*seg_end_x)))/den;
 					float intersect_y = (((start_x*end_y)-(start_y*end_x))*(seg_start_y-seg_end_y)-(start_y-end_y)*((seg_start_x*seg_end_y)-(seg_start_y*seg_end_x)))/den;
-
+					debug_1[gid]=seg_min_x;
+					debug_2[gid]=seg_max_x;
 					if(
-					(intersect_x>min_x &&
-					intersect_x<max_x &&
+					(intersect_x>=min_x &&
+					intersect_x<=max_x &&
 
-					intersect_y>min_y &&
-					intersect_y<max_y &&
+					intersect_y>=min_y &&
+					intersect_y<=max_y &&
 
-					intersect_x>seg_min_x &&
-					intersect_x<seg_max_x &&
+					intersect_x>=seg_min_x &&
+					intersect_x<=seg_max_x &&
 
-					intersect_y>seg_min_y &&
-					intersect_y<seg_max_y)
+					intersect_y>=seg_min_y &&
+					intersect_y<=seg_max_y)
 					){
 						float dist = sqrt(pown(intersect_x-center_x,2)+pown(intersect_y-center_y,2));
 						if(dist<current_min_distance ){
 							current_min_distance=dist;
 						}
-						//current_min_distance=500;
 					}
 					i++;
 					//float dist = sqrt(pown(intersect_x-center_x,2)+pown(intersect_y-center_y,2));
 					//current_min_distance=dist;
 				}
-				ray_lengths[gid]=current_min_distance;
+				//if(scan_angles[gid]>0 && scan_angles[gid]<1.6)
+				//	ray_lengths[gid]=100;
+				//else
+					ray_lengths[gid]=current_min_distance;
 			}
 			""").build()
 
 			#float den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0]);
 			#float intersect_x = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))/den;
 			#float intersect_y = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))/den;
-			print(line_segments_x)
-			print(line_segments_y)
-			print(self.avgPxPerM)
-			print(np.float32(cX))
-			print(np.float32(cY))
-			print(scanCount)
-			prg.raycast(queue, ray_lengths.shape, None, scan_angle_buffer, line_segments_x_buffer, line_segments_y_buffer, ray_lengths_buffer, np.float32(cX), np.float32(cY), np.float32(minRangePx), np.float32(maxRangePx), np.int32(len(line_segments_x)/2))
+			#print(np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount))
+			#print(scan_angle_buffer)
+			#import pdb
+			#pdb.set_trace()
+			#print(line_segments_y)
+			#print(self.avgPxPerM)
+			#print(np.float32(cX))
+			#print(np.float32(cY))
+			#print(scanCount)
+			prg.raycast(queue, ray_lengths.shape, None, scan_angle_buffer, line_segments_x_buffer, line_segments_y_buffer, ray_lengths_buffer, debug_1_buffer, debug_2_buffer, np.float32(cX), np.float32(cY), np.float32(minRangePx), np.float32(maxRangePx), np.int32(len(line_segments_x)/2))
 			cl.enqueue_copy(queue,ray_lengths,ray_lengths_buffer)
-			#print ray_lengths
+			print ray_lengths
+			cl.enqueue_copy(queue,debug_1,debug_1_buffer)
+			print debug_1
+			cl.enqueue_copy(queue,debug_2,debug_2_buffer)
+			print debug_2
+			for i in range(0,len(debug_1)):
+				print(debug_1[i]<=debug_2[i])
 			#Generate a laser scan message and return it
 			scanMsg = LaserScan()
 			h = Header()
