@@ -58,7 +58,7 @@ class LaserServer():
 	def handle_laser_req(self, req):
 		#Get the origin from the ID of the robot, if we can see it
 		if req.robotID in self.currentTags.keys() and self.image is not None:
-			start=time.time()
+			#start=time.time()
 			#Use a copy of the existing image, not the original, or else
 			#you get threading-related issues
 			imgCpy = self.image.copy()
@@ -83,7 +83,7 @@ class LaserServer():
 			#Find the contours in the image, as a list
 			#and compressed with chain approximation.
 			#cImg, contours, hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
-			contours,hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
+			cImg,contours,hierarchy = cv2.findContours(masked, cv2.RETR_LIST, cv2.CHAIN_APPROX_TC89_KCOS)#, cv2.CHAIN_APPROX_SIMPLE)
 
 			#approximate each contour with a polygon approximation
 			approximations = []
@@ -214,7 +214,7 @@ class LaserServer():
 			scan=[i/self.avgPxPerM for i in ray_lengths]
 			scanMsg.ranges = scan
 			scanMsg.intensities = []
-			print (time.time()-start)*1000
+			#print (time.time()-start)*1000
 			return LaserOracleResponse(scanMsg)
 		else:
 			rospy.logwarn("Can't see robot {0}, only {1}".format(req.robotID, self.currentTags.keys()))
@@ -278,7 +278,7 @@ class LaserServer():
 				x=int(self.currentTags[robotID].tagCenterPx.x)
 				y=int(self.currentTags[robotID].tagCenterPx.y)
 				cv2.circle(image, (x,y), self.robotRad, np.array([115,255,255]), -1)
-			except KeyError as e:
+			except KeyError, e:
 				#The list changed while we were drawing, do nothing
 				pass
 
