@@ -15,6 +15,7 @@ import cv2
 import numpy as np
 import math
 import array
+import time
 from tf import transformations as transf
 
 import pyopencl as cl
@@ -23,24 +24,11 @@ import random
 
 lower_blue, upper_blue = np.array([100,70,30]), np.array([130,255,255])
 kernel = np.ones([3,3], np.uint8)
-class Object(object):
-	pass
 class LaserServer():
 
 	def __init__(self):
+		self.ctx = cl.create_some_context()
 		self.currentTags = {}
-		"""self.thing=Object()
-		self.thing.tagCenterPx=Object()
-		self.thing.pose=Object()
-		self.thing.pose.pose=Object()
-		self.thing.pose.pose.orientation=Object()
-		self.currentTags[5]=self.thing
-		self.currentTags[5].tagCenterPx.x=100
-		self.currentTags[5].tagCenterPx.y=100
-		self.currentTags[5].pose.pose.orientation.w = 1
-		self.currentTags[5].pose.pose.orientation.x = 0
-		self.currentTags[5].pose.pose.orientation.y = 0
-		self.currentTags[5].pose.pose.orientation.z = 0"""
 		#Factor for pixel/meter conversion
 		self.avgPxPerM = 0
 		self.image = None
@@ -70,6 +58,7 @@ class LaserServer():
 	def handle_laser_req(self, req):
 		#Get the origin from the ID of the robot, if we can see it
 		if req.robotID in self.currentTags.keys() and self.image is not None:
+			start=time.time()
 			#Use a copy of the existing image, not the original, or else
 			#you get threading-related issues
 			imgCpy = self.image.copy()
@@ -104,18 +93,17 @@ class LaserServer():
 				approx = cv2.approxPolyDP(contour, epsilon, isClosed)
 				approximations.append(approx)
 
-			#For debugging reasons, try drawing the approximations on the image
-			# colorImg = cv2.cvtColor(imgCpy, cv2.COLOR_GRAY2BGR)
-			# for approx in approximations:
-			# 	#Pick a random color
-			# 	color = (random.randint(80,255), random.randint(80,255), random.randint(80,255))
-			# 	for index in range(len(approx) -1):
-			# 		#Draw a line from this point to the next one
-			# 		p1 = (approx[index][0][0], approx[index][0][1])
-			# 		p2 = (approx[index+1][0][0], approx[index+1][0][1])
-			# 		colorImg = cv2.line(colorImg, p1, p2, color, thickness = 3)
-			# self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(colorImg, "bgr8"))
-
+			"""#For debugging reasons, try drawing the approximations on the image
+			colorImg = cv2.cvtColor(imgCpy, cv2.COLOR_GRAY2BGR)
+			for approx in approximations:
+				#Pick a random color
+				color = (random.randint(80,255), random.randint(80,255), random.randint(80,255))
+				for index in range(len(approx) -1):
+					#Draw a line from this point to the next one
+					p1 = (approx[index][0][0], approx[index][0][1])
+					p2 = (approx[index+1][0][0], approx[index+1][0][1])
+					colorImg = cv2.line(colorImg, p1, p2, color, thickness = 3)
+			self.dbg_pub.publish(self.bridge.cv2_to_imgmsg(colorImg, "bgr8"))"""
 
 			#Convert robot quaternion to RPY, then check the line segment from the center
 			#of each robot to the max range for intersection with a segment of a contour,
@@ -145,29 +133,16 @@ class LaserServer():
 					line_segments_y.append(approx[pointIdx][0][1])
 					line_segments_x.append(approx[pointIdx+1][0][0])
 					line_segments_y.append(approx[pointIdx+1][0][1])
-			line_segments_x=[500,600,600,600,600,500]
-			line_segments_y=[500,500,500,600,600,600]
-			cX=550
-			cY=550
-			minRangePx=20
-			maxRangePx=300
-			roll=0
-			#print line_segments_x
-			ctx = cl.create_some_context()
-			queue = cl.CommandQueue(ctx)
+			queue = cl.CommandQueue(self.ctx)
 			mf = cl.mem_flags
-			scan_angle_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",[i for i in np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)]).tostring()))
-			line_segments_x_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_x).tostring()))
-			line_segments_y_buffer = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_y).tostring()))
+			scan_angle_buffer = cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",[i for i in np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount)]).tostring()))
+			line_segments_x_buffer = cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_x).tostring()))
+			line_segments_y_buffer = cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=memoryview(array.array("f",line_segments_y).tostring()))
 			ray_lengths = np.zeros(scanCount,np.float32)
-			ray_lengths_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
-			debug_1 = np.zeros(scanCount,np.float32)
-			debug_1_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
-			debug_2 = np.zeros(scanCount,np.float32)
-			debug_2_buffer = cl.Buffer(ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
-			prg = cl.Program(ctx, """
+			ray_lengths_buffer = cl.Buffer(self.ctx, mf.WRITE_ONLY, ray_lengths.nbytes)
+			prg = cl.Program(self.ctx, """
 			__kernel void raycast(
-				__global const float *scan_angles, __global const float *line_segments_x, __global const float *line_segments_y, __global float *ray_lengths, __global float *debug_1, __global float *debug_2,
+				__global const float *scan_angles, __global const float *line_segments_x, __global const float *line_segments_y, __global float *ray_lengths,
 				float center_x, float center_y, float min_range, float max_range, int line_segment_count)
 			{
 				int gid = get_global_id(0);
@@ -197,8 +172,6 @@ class LaserServer():
 					}
 					float intersect_x = (((start_x*end_y)-(start_y*end_x))*(seg_start_x-seg_end_x)-(start_x-end_x)*((seg_start_x*seg_end_y)-(seg_start_y*seg_end_x)))/den;
 					float intersect_y = (((start_x*end_y)-(start_y*end_x))*(seg_start_y-seg_end_y)-(start_y-end_y)*((seg_start_x*seg_end_y)-(seg_start_y*seg_end_x)))/den;
-					debug_1[gid]=seg_min_x;
-					debug_2[gid]=seg_max_x;
 					if(
 					(intersect_x>=min_x &&
 					intersect_x<=max_x &&
@@ -218,37 +191,13 @@ class LaserServer():
 						}
 					}
 					i++;
-					//float dist = sqrt(pown(intersect_x-center_x,2)+pown(intersect_y-center_y,2));
-					//current_min_distance=dist;
 				}
-				//if(scan_angles[gid]>0 && scan_angles[gid]<1.6)
-				//	ray_lengths[gid]=100;
-				//else
-					ray_lengths[gid]=current_min_distance;
+				ray_lengths[gid]=current_min_distance;
 			}
 			""").build()
 
-			#float den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0]);
-			#float intersect_x = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))/den;
-			#float intersect_y = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))/den;
-			#print(np.linspace(roll + req.angleMin, roll + req.angleMax, scanCount))
-			#print(scan_angle_buffer)
-			#import pdb
-			#pdb.set_trace()
-			#print(line_segments_y)
-			#print(self.avgPxPerM)
-			#print(np.float32(cX))
-			#print(np.float32(cY))
-			#print(scanCount)
-			prg.raycast(queue, ray_lengths.shape, None, scan_angle_buffer, line_segments_x_buffer, line_segments_y_buffer, ray_lengths_buffer, debug_1_buffer, debug_2_buffer, np.float32(cX), np.float32(cY), np.float32(minRangePx), np.float32(maxRangePx), np.int32(len(line_segments_x)/2))
+			prg.raycast(queue, ray_lengths.shape, None, scan_angle_buffer, line_segments_x_buffer, line_segments_y_buffer, ray_lengths_buffer, np.float32(cX), np.float32(cY), np.float32(minRangePx), np.float32(maxRangePx), np.int32(len(line_segments_x)/2))
 			cl.enqueue_copy(queue,ray_lengths,ray_lengths_buffer)
-			print ray_lengths
-			cl.enqueue_copy(queue,debug_1,debug_1_buffer)
-			print debug_1
-			cl.enqueue_copy(queue,debug_2,debug_2_buffer)
-			print debug_2
-			for i in range(0,len(debug_1)):
-				print(debug_1[i]<=debug_2[i])
 			#Generate a laser scan message and return it
 			scanMsg = LaserScan()
 			h = Header()
@@ -262,17 +211,14 @@ class LaserServer():
 			scanMsg.scan_time = self.scan_time
 			scanMsg.range_max = req.rangeMax+.01
 			scanMsg.range_min = req.rangeMin
-			#self.avgPxPerM=1000
 			scan=[i/self.avgPxPerM for i in ray_lengths]
 			scanMsg.ranges = scan
 			scanMsg.intensities = []
-
-
+			print (time.time()-start)*1000
 			return LaserOracleResponse(scanMsg)
 		else:
 			rospy.logwarn("Can't see robot {0}, only {1}".format(req.robotID, self.currentTags.keys()))
 			return None
-
 
 	def distance(self, p1, p2):
 		return math.sqrt(math.pow(p1[0]-p2[0],2) + math.pow(p1[1]-p2[1],2))
@@ -297,56 +243,6 @@ class LaserServer():
 		if orient > 0: #clockwise
 			return 1
 		return 2 #counterclockwise
-
-	#Check if b is on segment ac
-	def onSegment(self, a, b, c):
-		if b[0] <= max(a[0], c[0]) and b[0] >= min(a[0], c[0]) and b[1] <= max(a[1], c[1]) and b[1] >= min(a[1], c[1]):
-			return True
-		return False
-
-	#Check if ab intersects cd
-	def intersects(self, a, b, c, d):
-		o1 = self.orientation(a, b, c)
-		o2 = self.orientation(a, b, d)
-		o3 = self.orientation(c, d, a)
-		o4 = self.orientation(c, d, b)
-
-		if (o1 != o2) and (o3 != o4):
-			#Not collinear and intersect
-			return True
-		else:
-			#Colinear special cases
-			if (o1 == 0) and (self.onSegment(a,c,d)):
-				return True
-			if (o2 == 0) and (self.onSegment(a,d,b)):
-				return True
-			if (o3 == 0) and (self.onSegment(c,a,d)):
-				return True
-			if (o4 == 0) and (self.onSegment(c,b,d)):
-				return True
-		#All other cases
-		return False
-
-	#Calculate the point of intersection of two lines
-	#Might behave badly if lines are parallel or coincident
-	def calcIntersection(self, a, b, c, d):
-		#From wikipedia https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Intersection_of_two_lines
-		den = (a[0]-b[0])*(c[1]-d[1])-(a[1]-b[1])*(c[0]-d[0])
-		if den == 0:
-			#Lines are parallel or coincident
-			rospy.logwarn("About to divide by zero because of parallel or coincident lines!")
-
-			#Return a distance reading that is infinitely far away. Since this is compared
-			#to the max range, and the smaller value is used, it will get clamped
-			#to the max range of the sensor.
-			#TODO it's bad coding practice to assume knowldege of what your caller will do
-			#TOnotDO it's good coding practice to know what the code you call will do :-)
-			return (float('inf'), float('inf'))
-
-		numX = ((a[0]*b[1])-(a[1]*b[0]))*(c[0]-d[0])-(a[0]-b[0])*((c[0]*d[1])-(c[1]*d[0]))
-		numY = ((a[0]*b[1])-(a[1]*b[0]))*(c[1]-d[1])-(a[1]-b[1])*((c[0]*d[1])-(c[1]*d[0]))
-
-		return (int(numX/den), int(numY/den))
 
 	def update_tags(self, msg):
 		self.currentTags = {}

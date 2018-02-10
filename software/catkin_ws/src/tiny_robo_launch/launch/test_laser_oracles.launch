@@ -15,9 +15,10 @@
    	<param name="robot_id" value="5" type="int"/>
    	<param name="angleMin" type="double" value="-3.14"/>
    	<param name="angleMax" type="double" value="3.14"/>
-   	<param name="angleIncrement" type="double" value="0.0175"/>
+   	<param name="angleIncrement" type="double" value="0.00175"/>
    	<param name="rangeMin" type="double" value="0.03"/>
    	<param name="rangeMax" type="double" value="1.0"/>
+   	<param name="scanRate" type="double" value="200"/>
    </node>
 
    <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
