@@ -26,15 +26,19 @@
 
 \end{abstract}
 
+The contributions of this thesis are a new swarm hardware platform, software to support it, and a user interface which converts user commands into programs for each robot in the swarm. 
+The new swarm platform combines a wifi-enabled microcontroller with commodity mobility platforms sourced from children's toys to allow large swarms to be built at a low cost. 
+Because the design does not bind the implementation to a specific mobility platform, heterogeneous swarms can be constructed, using different toys. 
+The hardware is also adaptable to new toys as older ones become unavailable, and could be used with custom-designed or 3-D printed mobility platforms. 
+In order to maintain the low cost, sensors for the swarm robots are simulated with a top down camera. The use of simulation allows individual swarm members to be constructed cheaply in the present, while leaving the path clear in the future to push computation to the individual members as computer hardware becomes cheaper and smaller. 	
+
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \cite{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
-Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
-While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
-Until computational power in the individual swarm units does reach the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
-Centralizing the control of a large group of robots (a swarm) makes the system as a whole sensitive to the failure of the central controller. 
-To avoid this type of failure, the overall action of the swarm should be guided by decentralized emergent behavior, rather than a centralized orchestration. 
-Each robot receives its own program, and the sum of the execution of the programs on each robot results in completion of the task.
-The various approaches to development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
+Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}.
+This thesis presents an interface which extends previous work on multitouch interfaces for small swarms to larger swarms, and automates the process of converting command gestures into programs for each robot. 
+The use of individual control programs rather than centralized control is important to realize the potential of swarms to continue to operate despite the possible failure of individual swarm robots. 
+
+
 
 \section{Intro/Research Statement}
 

@@ -2,6 +2,8 @@
 
 	<node pkg="joy" type="joy_node" name="joystick_node" output="screen">
 		<param name="/coalesce_interval" value="0.1" type="double"/>
+		<!-- Added to allow heartbeat to keep robot moving -->
+		<param name="/autorepeat_rate" value="8" type="double"/>
 	</node>
 
 	<node pkg="teleop_twist_joy" type="teleop_node" name="joystick_to_twist" output="screen"/>
@@ -11,7 +13,7 @@
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
-		<param name="robot_addr" value="192.168.1.218" type="str" />
+		<param name="robot_addr" value="192.168.1.209" type="str" />
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
 	</node>
 

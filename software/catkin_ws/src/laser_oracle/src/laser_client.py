@@ -20,21 +20,21 @@ def LaserDriver():
 	angleIncrement = rospy.get_param("~angleIncrement", 20 * (math.pi/180))
 	rangeMin = rospy.get_param("~rangeMin", 0.0)
 	rangeMax = rospy.get_param("~rangeMax", 0.3)
+	scanRate = rospy.get_param("~scanRate", 3)
 
 	pub = rospy.Publisher('laser_driver_{0}'.format(id), LaserScan, queue_size=0)
 	
-	#TODO make this a parameter
-	rate = rospy.Rate(3)
+	rate = rospy.Rate(scanRate)
 
 	lastScan = None
 
+	rospy.wait_for_service("laser_oracle")
+		
 	while not rospy.is_shutdown():
-		rospy.wait_for_service("laser_oracle")
 		#Try the service call
 		try:
 			laserMsg = rospy.ServiceProxy("laser_oracle", LaserOracle)
 			response = laserMsg(robotID = id, angleMin = angleMin, angleMax = angleMax, angleIncrement = angleIncrement, rangeMin = rangeMin, rangeMax = rangeMax)
-
 			#Calculate and update the scanTime and time_increment
 			if lastScan is not None:
 				nowTime = rospy.Time.now()
@@ -52,11 +52,11 @@ def LaserDriver():
 				#TODO this probably isn't perfect, esp. if tag is rotated relative to robot
 				response.laserScan.header.frame_id="tag_{0}".format(id)
 				response.laserScan.header.stamp = nowTime
-
+				
+	
 			pub.publish(response.laserScan)
 			#Update time last message was published
 			lastScan = rospy.Time.now()
-
 		except rospy.ServiceException, e:
 			print "Service call failed: {0}".format(e)
 
