@@ -24,7 +24,7 @@ import numpy as np
 
 import subprocess
 
-bag = rosbag.Bag('./id_2_cond_1_2017-10-16-15-00-48.bag')
+bag = rosbag.Bag('/media/ams/f242e352-181f-4d0c-80a1-117b951fd37f/Experiment_Run_Bags/p1/id_1_cond_X_2017-10-16-13-09-10.bag')
 
 
 class VideoGenerator(object):
@@ -37,10 +37,11 @@ class VideoGenerator(object):
 		self.frameImage = PILImage.new("RGB", self.frameSize)
 		
 		#Set up a video writer instance
-		self.fourcc = cv2.cv.FOURCC('m','j','p','g')
+		self.fourcc = cv2.VideoWriter_fourcc(*'xvid')
 		#TODO set the fps correctly
 		self.vidWriter = cv2.VideoWriter("./test.avi", self.fourcc, frameRate * 2, self.frameSize, True)
-
+		#self.vidWriter = cv2.VideoWriter("./test.avi", self.fourcc, frameRate, self.frameSize, True)
+		
 		#Write audio to a file
 		self.audioFile = open('soundtrack.mp3', 'w')
 		#Params are channels, sample width (in bytes), framerate, number of frames, compression type, compression name
@@ -67,7 +68,7 @@ class VideoGenerator(object):
 			#Convert to a PIL image, mapping is from https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
 			_ENCODINGMAP_ROS_TO_PY = {'mono8': 'L', 'rgb8': 'RGB','rgba8': 'RGBA', 'yuv422': 'YCbCr'}
 			encoding = _ENCODINGMAP_ROS_TO_PY[imgMsg.encoding]
-			img = PILImage.fromstring(encoding, (imgMsg.width, imgMsg.height), imgMsg.data)
+			img = PILImage.frombytes(encoding, (imgMsg.width, imgMsg.height), imgMsg.data)
 			#Insert into the frame image
 			offset=(800,0)
 			self.frameImage.paste(img, offset)
@@ -95,7 +96,7 @@ class VideoGenerator(object):
 		dotSize = 2
 		draw.ellipse([(x-dotSize, y-dotSize), (x+dotSize, y+dotSize)], fill='blue')
 		del draw
-		self.drawFrame(msgTime)
+		#self.drawFrame(msgTime)
 
 	def drawFrame(self, msgTime):
 		# If a new frame is generated for each image, the framerate of the video will be absurd. At worst,
@@ -110,7 +111,7 @@ class VideoGenerator(object):
 		#	if msgTime - self.lastMsgTime > self.frameDelay:
 		
 		#Convert the whole frame to an OpenCV image in the right color space
-		data = self.frameImage.tostring()
+		data = self.frameImage.tobytes()
 		cols, rows = self.frameImage.size
 		#We can get away with the 3 here because we know it's RGB (or BGR, apparently)
 		img = np.fromstring(data, dtype=np.uint8).reshape(rows,cols,3)
@@ -124,13 +125,40 @@ class VideoGenerator(object):
 		#Close the audio file
 		self.audioFile.close()
 
+		#Get the ratio of the audio file to the video file
+		#TODO use better file names
+		# aLen = get_length("./soundtrack.mp3")
+		# vLen = get_length("./test.avi")
+		# tempo = aLen/vLen
+		#convert_wav("./soundtrack.mp3")
+		#scale_wav("temp.wav")
+
 		#Add the audio file to the video file
 		# This command does it from the command line
 		#mencoder -ovc copy -audiofile  ./soundtrack_bak.mp3 -oac copy video_bak.avi -o cmd_line_output.avi
 		#TODO use less crap file names
-		subprocess.call(['mencoder', '-ovc', 'copy', '-audiofile', './soundtrack.mp3', '-oac', 'copy', 'test.avi', '-o', 'cmd_line_output.avi'])
+		# subprocess.call(['mencoder', '-ovc', 'copy', '-audiofile', './temp2.wav', '-oac', 'copy', 'test.avi', '-o', 'cmd_line_output.avi'])
+		subprocess.call(['ffmpeg', '-y', '-i', 'soundtrack.mp3', '-i', 'test.avi', '-acodec', 'copy', '-vcodec', 'copy', '-shortest', 'output.avi'])
 
+def get_length_ff(fileName):
+	#Invoke mplayer to get length, and fold stderr into stdout
+	#stderr gets ignored by later string processing
+	output = subprocess.check_output(['ffprobe', '-show_entries', 'stream=duration', '-of', 'compact', '-v', '0', fileName], stderr=subprocess.STDOUT)	
+	output = output.split('\n')
+	for item in output:
+		if item.startswith("stream|duration"):
+			#Just get the value
+			length = item.split('=')[1]
+			return float(length)
 
+def scale_wav(fileName):
+	vidLen = get_length_ff("test.avi")
+	audLen = get_length_ff(fileName)
+	scale = audLen/vidLen
+	subprocess.call(['ffmpeg', '-y', '-i', fileName, '-filter:a', 'atempo={}'.format(scale), 'temp2.wav'])
+
+def convert_wav(fileName):
+	subprocess.call(['ffmpeg', '-y', '-i', fileName, 'temp.wav'])
 
 #Get info about the bag
 bagInfo = yaml.load(bag._get_yaml_info())
@@ -140,9 +168,21 @@ for topic in bagInfo['topics']:
 
 #Precalculate the video framerate
 #For now, it's just the same as the greater of the two compressed streams
-rate1 = bag.get_type_and_topic_info()[1]['/experiment/c09/camera/image/compressed'][3]
-rate2 = bag.get_type_and_topic_info()[1]['/experiment/c35/camera/image/compressed'][3]
-framerate = max(rate1, rate2)
+#rate1 = bag.get_type_and_topic_info()[1]['/experiment/c09/camera/image/compressed'][3]
+#rate2 = bag.get_type_and_topic_info()[1]['/experiment/c35/camera/image/compressed'][3]
+#framerate = float(rate1 + rate2)/2.0
+#framerate = max(rate1, rate2)
+
+#That was a bad way to get the framerate. What I really want is the number of video frames
+#that arrived, divided by the duration of the bagfile, which is something like 5fps smaller
+#for the bagfile I was testing with
+msg_count_1 = bag.get_type_and_topic_info()[1]['/experiment/c09/camera/image/compressed'][1]
+msg_count_2 = bag.get_type_and_topic_info()[1]['/experiment/c35/camera/image/compressed'][1]
+avg_msgs = float(msg_count_2 + msg_count_1)/2.0
+framerate = avg_msgs/bagInfo['duration']
+
+print "Calculated framerate: {}".format(framerate)  
+
 secPerFrame = framerate/bagInfo['duration']
 
 vg = VideoGenerator(framerate)
