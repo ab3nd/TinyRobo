@@ -26,18 +26,20 @@
 
 \end{abstract}
 
+Command and control systems designed for a single operator to operate a single robot do not scale to control of swarms \cite{WangSearchScale}. User interfaces that require the user to attend to each robot overwhelm the controller when the number of robots increases beyond 12 or 13 for UAVs and 3-9 for UGVs \cite{WangSearchScale}.
+As robot swarms increase beyond these bounds, the control system must shift to controlling the swarm as a single entity. 
+However, the form this interface should take to permit easy and understandable control of the swarm is largely undefined. 
+
+Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}.
+By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
+This thesis presents an interface which extends previous work on multitouch interfaces for small swarms to larger swarms, and automates the process of converting command gestures into programs for each robot. 
+The use of individual control programs rather than centralized control is important to realize the potential of swarms to continue to operate despite the possible failure of individual swarm robots. 
+
 The contributions of this thesis are a new swarm hardware platform, software to support it, and a user interface which converts user commands into programs for each robot in the swarm. 
 The new swarm platform combines a wifi-enabled microcontroller with commodity mobility platforms sourced from children's toys to allow large swarms to be built at a low cost. 
 Because the design does not bind the implementation to a specific mobility platform, heterogeneous swarms can be constructed, using different toys. 
 The hardware is also adaptable to new toys as older ones become unavailable, and could be used with custom-designed or 3-D printed mobility platforms. 
-In order to maintain the low cost, sensors for the swarm robots are simulated with a top down camera. The use of simulation allows individual swarm members to be constructed cheaply in the present, while leaving the path clear in the future to push computation to the individual members as computer hardware becomes cheaper and smaller. 	
-
-Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \cite{WangSearchScale}.
-By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
-Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}.
-This thesis presents an interface which extends previous work on multitouch interfaces for small swarms to larger swarms, and automates the process of converting command gestures into programs for each robot. 
-The use of individual control programs rather than centralized control is important to realize the potential of swarms to continue to operate despite the possible failure of individual swarm robots. 
-
+In order to maintain the low cost, sensors for the swarm robots are simulated with a top down camera. The use of simulation allows individual swarm members to be constructed cheaply in the present, while leaving the path clear in the future to push computation to the individual members as computer hardware becomes cheaper and smaller.
 
 
 \section{Intro/Research Statement}
@@ -883,8 +885,10 @@ The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 	\centering
 	\digraph[scale=0.6]{VirtualLaserSystem}{
 	
-	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
-	vsc -> vls [label=<sensor\string_msgs/LaserScan>];
+	{rank=same atag vls}
+	
+	vls -> vsc [label=<sensor\string_msgs/LaserScan>];
+	vsc -> vls [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
 	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
 	cam -> vls [label=<sensor\string_msgs/Image>];
 	cam -> atag	[label=<sensor\string_msgs/Image>];

@@ -1,0 +1,18 @@
+digraph FullSystem{
+		
+	multitouch -> gesture_rec [label="Touch events"];
+	gesture_rec -> compiler [label="Recognized gestures"];
+	compiler -> rp1 [label="Program 1"];
+	compiler -> rp2 [label="Program 2"];
+	compiler -> rp3 [label="Program 3"];
+	compiler -> rpN [label="Program N"];
+
+	multitouch [label="Multitouch Screen"];	 
+	gesture_rec [label="Gesture Recognizer"];
+	compiler [label="Gesture Compiler"];
+	rp1 [label=<Robot <br/> Process 1>];
+	rp2 [label=<Robot <br/> Process 2>];
+	rp3 [label=<Robot <br/> Process 3>];
+	rpN [label=<Robot <br/> Process N>];
+
+}
