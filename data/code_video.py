@@ -75,7 +75,8 @@ class VideoCodeCmd(cmd.Cmd):
 		self.pinch_parser.add_argument('-r', '--reverse', help="this is a reverse pinch (hands/fingers move apart)",default=False, action="store_true")
 		#I'm using -h and not adding help, so add it explicitly
 		self.pinch_parser.add_argument('--help', action='help', help='show this help message')		
-
+		self.pinch_parser.add_argument('-o', '--objects', help="the targets of the pinch action", nargs='*', required=True)
+		
 		#box selection
 		self.box_parser = argparse.ArgumentParser(prog="box", parents=[self.base_parser])
 		self.box_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)
