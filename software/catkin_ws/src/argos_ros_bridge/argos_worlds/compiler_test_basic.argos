@@ -12,7 +12,7 @@
   <!-- * Controllers * -->
   <!-- *************** -->
   <controllers>
-    <argos_ros_bot_controller id="tiny_robo_ros" library="libtiny_robo_ros.so">
+    <tiny_robo_ros id="tiny_robo_controller" library="libtiny_robo_ros.so">
       <actuators>
         <differential_steering implementation="default"/>
       </actuators>
@@ -23,7 +23,7 @@
       <!-- After the following number of time steps without receiving a
            commanded velocity, the robots will stop. -->
       <params stopWithoutSubscriberCount="10" />
-    </argos_ros_bot_controller>
+    </tiny_robo_ros>
   </controllers>
 
   <!-- *********************** -->
@@ -55,7 +55,7 @@
       <entity quantity="6" max_trials="100">
 
         <foot-bot id="bot">
-          <controller config="tiny_robo_ros"/>
+          <controller config="tiny_robo_controller"/>
         </foot-bot>
 
       </entity>
