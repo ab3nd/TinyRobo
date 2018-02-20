@@ -49,8 +49,8 @@
         by 'launch_demo.sh').
     -->
     <distribute>
-      <position method="uniform" min="-0.25,-1,0" max="0.25,1,0"/>
-      <orientation method="constant" values="0,0,0"/>
+      <position method="uniform" min="-3.8,-1.8, 0" max="-2.5,-0.5,0"/>
+      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0"/>
 
       <entity quantity="6" max_trials="100">
 

@@ -14,7 +14,7 @@ echo "<launch>" > $LAUNCH_FILE
 for ((i=0; i<n; i++)); do
     namespace="bot$i"
     echo -e "\t<group ns=\"$namespace\">"
-    echo -e "\t\t<node pkg=\"argos_bridge\" type=\"demo_controller.py\" name=\"demo_controller\" output=\"screen\" />"
+    echo -e "\t\t<node pkg=\"gcpr_runner\" type=\"argos_gcpr.py\" name=\"bot_controller\" output=\"screen\" />"
     echo -e "\t</group>"
 done >> $LAUNCH_FILE
 echo -e "</launch>" >> $LAUNCH_FILE

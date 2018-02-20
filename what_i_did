@@ -768,6 +768,20 @@ Spent a lot of time around here having a cold and not being able to think well
 - Updated abstract, sent full proposal to graduate coordinator and Haim
 - Worked on slides
 
+2/16
+- more work on slides
+- Got Dalton started on p1-p5
+
+2/17
+- Wrote notecards for slides
+
+2/18
+- Added Hypotheses to slides
+- Got argos to start with a 4x8 (meter, but the ratio is the same) arena
+- Wrote a tinyrobo implementation for ARGoS/ros bridge to ARGoS
+- Started basic path compiler
+- Got collision avoidance in GCPR at least a little tuned
+
 
 It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 

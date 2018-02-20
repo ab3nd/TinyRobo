@@ -77,7 +77,14 @@ void CTinyRobo::ControlStep() {
   /* Get reading from position sensor */
   const CCI_PositioningSensor::SReading& posReading = m_pcPosition->GetReading();
   geometry_msgs::Pose Pose;
-  //TODO put the reading into the pose
+  Pose.position.x = posReading.Position.GetX();
+  Pose.position.y = posReading.Position.GetY();
+  Pose.position.z = posReading.Position.GetZ();
+  Pose.orientation.x = posReading.Orientation.GetX();
+  Pose.orientation.y = posReading.Orientation.GetY();
+  Pose.orientation.z = posReading.Orientation.GetZ();
+  Pose.orientation.w = posReading.Orientation.GetW();
+
   posePub.publish(Pose);
 
   /* Get readings from proximity sensor */
