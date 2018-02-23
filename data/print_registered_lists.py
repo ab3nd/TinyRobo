@@ -153,12 +153,12 @@ for task1, task2 in zip (tasks_1, tasks_2):
  		isExample = " "
  		if "example" in event1.keys() and event1["example"]:
 				isExample = "X"
- 		event1_summary = "\t{0}\t{1} {2}".format(event1['time'], event1['event_type'], isExample)
+ 		event1_summary = "\t{0:0.2f}\t{1} {2}".format(event1['time'], event1['event_type'][:5], isExample)
 
 		isExample = " "
  		if "example" in event2.keys() and event2["example"]:
 				isExample = "X"
- 		event2_summary = "\t{0}\t{1} {2}".format(event2['time'], event2['event_type'], isExample)
+ 		event2_summary = "\t{0:0.2f}\t{1} {2}".format(event2['time'], event2['event_type'][:5], isExample)
 
  		delta_T = event1["time"] - event2["time"]
  		#Swap print order based on who had the short codes

@@ -62,7 +62,16 @@ box -s tl -o "all robots" -t 12:17.018
 tap -h -o "left group" -t 12:39.090
 tap -h -o "right group" -t 12:39.090
 ui -k button -d "combine button (tap)" -t 12:42.139
-ui -k button -d "incremental select (~12 taps) -x -t 12:53.301
+ui -k button -d "incremental select" -x -t 12:51.301
+ui -k button -d "incremental select" -x -t 12:51.502
+ui -k button -d "incremental select" -x -t 12:51.767
+ui -k button -d "incremental select" -x -t 12:52.110
+ui -k button -d "incremental select" -x -t 12:52.378
+ui -k button -d "incremental select" -x -t 12:52.678
+ui -k button -d "incremental select" -x -t 12:52.89
+ui -k button -d "incremental select" -x -t 12:53.012
+ui -k button -d "incremental select" -x -t 12:53.204
+ui -k button -d "incremental select" -x -t 12:53.301
 ui -k button -d "incremental select (tap & hold) -x -t 12:54.441
 ui -k button -d "make group (tap)" -x -t 12:54.648
 
@@ -71,13 +80,25 @@ box -s tl -o robots -t 13:29.769
 ui -k menu -n -d "formation - line menu (no contact)" -t 13:45.866
 
 task 11
-ui -k button -d "incremental select (3 taps)" -t 15:02.827
-ui -k button -d "incremental select (2 taps)" -t 15:03.267
+ui -k button -d "incremental select" -t 15:02.325
+ui -k button -d "incremental select" -t 15:02.485
+ui -k button -d "incremental select" -t 15:02.827
+ui -k button -d "incremental select" -t 15:036.7
+ui -k button -d "incremental select" -t 15:03.267
 ui -k button -d "incremental select (tap & hold)" -t 15:05.188
 ui -k button -d "select all (tap)" -t 15:06.524
 ui -k menu -d "formation - square (tap?)" -t 15:13.615
 ui -k menu -d "formation - sqaure (tap)" -t 15:23.591
-ui -k button -d "incremental select (~10 taps)" -t 15:02.827
+ui -k button -d "incremental select" -t 15:31.532
+ui -k button -d "incremental select" -t 15:31.612
+ui -k button -d "incremental select" -t 15:31.701
+ui -k button -d "incremental select" -t 15:31.877
+ui -k button -d "incremental select" -t 15:32.48
+ui -k button -d "incremental select" -t 15:32.122
+ui -k button -d "incremental select" -t 15:32.210
+ui -k button -d "incremental select" -t 15:32.342
+ui -k button -d "incremental select" -t 15:32.482
+ui -k button -d "incremental select" -t 15:32.581
 
 task 12
 box -s tl -o "all robots" -t 16:28.624
