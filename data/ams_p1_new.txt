@@ -41,8 +41,8 @@ task 9
 pinch -f 2 -h 2 -o "both groups" -t 4:45.189
 
 task 10
-drag -d "line" -t 5:15.811
-drag -d "line" -t 5:17.235
+drag -d "line" -o whitespace -t 5:15.811
+drag -d "line" -o whitespace -t 5:17.235
 tap -h -o "whitespace" -t 5:17.235
 
 task 11

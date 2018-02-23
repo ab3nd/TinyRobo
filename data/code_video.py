@@ -220,7 +220,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.memo_parser.parse_args(options.split())
 			event = args.__dict__
-			event["time"] = self.convert_time(event["time"])
+			#event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "memo"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
