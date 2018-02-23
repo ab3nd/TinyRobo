@@ -113,11 +113,23 @@ class VideoCodeCmd(cmd.Cmd):
 
 		self.state={}
 
+	def convert_time(timecode):
+		if ':' in timecode:
+			#This timecode is in minutes:seconds.fraction format
+			mins, secs = timecode.split(':')
+			mins = float(mins) * 60
+			secs = float(secs)
+			return str(mins + secs)
+		else:
+			#already in seconds.fractions format, so keep it
+			return timecode
+
 	def do_drag(self, options):
 		"""A drag consists of 'drag' fingers used, draw or write, hands used, and a sequence of targets """
 		try:
 			args = self.drag_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "drag"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -130,6 +142,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.voice_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "voice_command"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -142,6 +155,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.tap_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "tap"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -154,6 +168,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.lasso_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "lasso"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -166,6 +181,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.pinch_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "pinch"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -178,6 +194,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.box_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "box_select"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -190,6 +207,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.ui_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "ui"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -202,6 +220,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.memo_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "memo"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
@@ -214,6 +233,7 @@ class VideoCodeCmd(cmd.Cmd):
 		try:
 			args = self.other_parser.parse_args(options.split())
 			event = args.__dict__
+			event["time"] = self.convert_time(event["time"])
 			event["event_type"] = "other"
 			self.state["tasks"][self.task_number].append(event)
 		except SystemExit:
