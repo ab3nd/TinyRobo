@@ -1,0 +1,63 @@
+participant 2
+
+task 1
+drag -o "robot to A" -t 1:36.460
+
+task 2
+drag -o "robot to A" -t 2:10.101
+
+task 3
+drag -o "whitespace to offscreen" -t 2:43.855
+
+task 4
+drag -o "red to A" -t 3:09.616
+drag -o "orange to B" -t 3:09.616
+memo -d "asked to reset"
+drag -o "red to A" -t 3:42.961
+drag -o "orange to B" -t 3:42.961
+
+task 5
+drag -o "red to B" -t 4:10.513
+drag -o "orange to A" -t 4:10.513
+
+task 6
+tap -c 2 -o "robots" -t 4:34.56
+drag -d "line between robots" -o "robots" -t 4:37.65
+pinch -r -f 2 -h 2 -o "robots" -t 4:39.257
+
+task 7
+ui -k "menu" -d "bring up menu (drag)" -t 5:26.986
+ui -k "menu" -d "select waypoint (tap)" -t 5:27.786
+tap -o "behind box (set waypoint)" -t 5:29.516
+tap -o "area A (waypoint)" -t 5:32.22
+tap -o "robot" -t 5:35.068
+
+task 8
+ui -k "menu" -d "bring up menu (drag)" -t 5:59.756
+ui -k "menu" -d "select mark (tap)" -t 6:03.093
+tap -o "robot" -t 6:05.477
+
+task 9
+ui -k "menu" -d "context menu (doubletap robot)" -t 6:47.856
+ui -k "other" -d "disable option (tap)" -t 6:58.976
+ui -k "other" -d "confirm disable (tap)" -t 7:05.512
+
+task 10
+ui -k "menu" -d "drag menu up" -t 7:52.265
+ui -k "menu" -d "select waypoint (tap)" -t 7:53.009
+tap -o "left bottom corner" -t 8:07.473
+tap -o "left top corner" -t 8:08.576
+tap -o "right top corner" -t 8:09.961
+tap -o "right bottom corner" -t 8:10.448
+tap -h -o "left bottom corner" -t 8:13.681
+tap -o "robot" -t 8:14.912
+
+task 11
+drag -o "robot to r bottom corner" -t 9:06.977
+ui -k "menu" -d "drag up" -t 9:08.678
+ui -k "menu" -d "waypoints" -t 9:09.326
+tap -o "above A" -t 9:14.471
+tap -o "l of A" -t 9:15.479
+tap -o "below A" -t 9:16.727
+tap -o "above A" -t 9:17.463
+tap -o "robot" -t 9:25.713

@@ -1,0 +1,130 @@
+participant 3
+
+task 1
+box -s tl -o robots -t 1:32.817
+drag -o "robots to A" -t 1:38.241
+
+task 2
+box -s tl -o robots -t 1:38.241
+drag -o "robots to r of wall" -t 2:56.555
+drag -o "from r of wall to A" -t 3:04.084
+
+task 3
+ui -k button -d "(tap)" -t 3:43.387
+ui -k "other" -d "Select individuals (tap)" -t 3:47.307  
+
+task 4
+box -s tl -o robots -t 4:24.341
+memo -d "asked to restart"
+box -s tl -o "half of robots" -t 4:43.42
+drag -o "selected robots to A" -t 4:47.405
+box -s tl -o "other half of robots" -t 4:50.348
+drag -o "whitespace to B" -t 4:52.440
+ui -k button -d "incremental selection button (tap)" -t 5:02.152
+ui -k button -d "ok/confirm button (tap? maybe no contact)" -n -t 5:10.608
+
+task 5
+box -s tl -o "orange robots" -t 5:42.862
+tap -o "right center of screen" -t 5:46.881
+drag -o "right center of screen to B" -t 5:48.321
+box -s tl -o "red robots" -t 5:51.266
+tap -o "left center of screen" -t 5:52.266
+tap -o "area A" -t 5:53.474
+box -s tl -o "orange and some red" -x -t 6:33.388
+box -s tl -o "orange and some red" -x -t 7:02.101
+
+task 6
+box -s tl -o "orange robots" -t 7:46.887
+tap -o "l of region b" -t 7:48.408
+tap -o "area B" -t 7:49.160
+box -s tl -o "red robots" -t 7:54.352
+tap -o "r of A" -t 7:55.352
+tap -o "B" -t 7:55.537
+
+task 7
+ui -k button -d "select by color orange (tap)" -t 9:44.411
+ui -k button -d "select by color red (tap)" -t 9:45.675
+tap -o "right of B" -t 10:01.925
+tap -o "B" -t 10:02.38
+tap -o "l of A" -t 10:03.208
+tap -o "A" -t 10:03.616
+
+task 8
+box -s tl -o "l half robots" -t 10:29.737
+ui -k button -n -d "assign group button (no contact)" -t 11:00.824
+box -s tl -o "r half robots" -t 11:20.982
+box -s tl -o "l half robots" -x -t 11:21.568
+box -s tl -o "l half robots" -x -t 11:40.472
+box -s tl -o "r half robots" -x -t 11:44.145
+
+task 9
+box -s tl -o "all robots" -t 12:17.018
+tap -h -o "left group" -t 12:39.090
+tap -h -o "right group" -t 12:39.090
+ui -k button -d "combine button (tap)" -t 12:42.139
+ui -k button -d "incremental select (~12 taps) -x -t 12:53.301
+ui -k button -d "incremental select (tap & hold) -x -t 12:54.441
+ui -k button -d "make group (tap)" -x -t 12:54.648
+
+task 10
+box -s tl -o robots -t 13:29.769
+ui -k menu -n -d "formation - line menu (no contact)" -t 13:45.866
+
+task 11
+ui -k button -d "incremental select (3 taps)" -t 15:02.827
+ui -k button -d "incremental select (2 taps)" -t 15:03.267
+ui -k button -d "incremental select (tap & hold)" -t 15:05.188
+ui -k button -d "select all (tap)" -t 15:06.524
+ui -k menu -d "formation - square (tap?)" -t 15:13.615
+ui -k menu -d "formation - sqaure (tap)" -t 15:23.591
+ui -k button -d "incremental select (~10 taps)" -t 15:02.827
+
+task 12
+box -s tl -o "all robots" -t 16:28.624
+ui -k button -d "Form on waypoint (tap)" -t 16:28.624
+tap -o crate -t 17:11.777
+tap -o crate -x -t 17:31.314
+ui -k menu -d "context menu 'move'" -t 17:44.522
+tap -c 2 -o "area A" -t 17:45.624
+tap -h -o "area A" -x 17:49.5
+tap -h -o "crate" -x 17:49.5
+tap -o crate -x -t 17:50.638
+tap -o "area A" -x 17:51.007
+ui -k button -d "individual/increment select (2 taps)" -t 19:07.355
+ui -k button -d "individual/increment select (hold)" -t 19:08.73
+tap -o crate -t 19:10.373
+ui -k menu -d "Move (tap)" -t 19:11.333
+tap -o "area A" -t 19:12.309
+
+task 13
+ui -k button -d "move button, (no contact)" -n -t 19:52.141
+tap -o crate -t 19:55.237
+tap -o "area a" -t 19:56.101
+
+task 14
+ui -k button -d "mark defective (tap)" -t 21:40.087
+box -s tl -o "all robots" -t 21:58.696
+
+task 15
+ui -k button -d "mark defective (tap)" -t 22:41.211
+tap -o "defective robot" -t 22:42.538
+box -s tl -o "robots" -t 22:54.186
+tap -o "whitespace" -t 23.08.09
+tap -o "whitespace" -t 23.08.986
+
+task 16
+box -s tl -o robots -t 24:28.546
+ui -k menu -d "special actions (tap)" -t 24:34.468
+ui -k menu -d "patrol (tap)" -t 24:37.436
+ui -k menu -d "known area edge (said 'click')" -n -t 25:50.260
+
+task 17
+box -s tl -o robots -t 26:34.975
+ui -k menu -d "parameterized patrol (tap)" -t 26:43.479
+drag -o "center of A to corner of A" -t 26:49.312
+
+task 18
+box -s tl -o robots -t 28:19.226
+ui -k menu -d "special actions (tap)" -t 29:29.326
+ui -k button -d "disperse" -t 28:30.282
+ui -k button -d "disperse" -t 29:19.923

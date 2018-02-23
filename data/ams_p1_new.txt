@@ -1,0 +1,84 @@
+participant 1
+
+task 1
+drag -o "robots to A" -t 1:27.766
+drag -o "robots to A" -x -t 1:39.406
+
+task 2
+drag -o "robots to A through wall" -t 1:59.703
+tap -h -o "wall" -t 1:59.703
+
+task 3
+tap -c 2 -o "robots" -t 2:19.215
+drag -o "robots" -t 2:24.071
+tap -c 2 -o robots -t 2:24.071
+
+task 4
+drag -o "robots to A" -t 2:50.303
+drag -o "robots to B" -t 2:50.303
+
+task 5
+drag -o "red robots to A" -t 3:14.004
+drag -o "orange robots to B" -t 3:14.004
+drag -o "red robots to A" -x -t 3:18.844
+drag -o "orange robots to B" -x -t 3:19.925
+
+task 6
+drag -o "orange to A" -t 3:36.462
+drag -o "red to B" -t 3:38.086
+drag -o "orange to A" -x -t 3:39.951
+drag -o "red to B" -x -t 3:39.951
+
+task 7
+drag -o "orange to B" -t 4:07.343
+drag -o "red to A" -t 4:09.447
+
+task 8 
+pinch -f 2 -h 1 -r -o "robots" -t 4:26.503
+pinch -f 2 -h 1 -r -o "robots" -x -t 4:28.037
+
+task 9
+pinch -f 2 -h 2 -o "both groups" -t 4:45.189
+
+task 10
+drag -d "line" -t 5:15.811
+drag -d "line" -t 5:17.235
+tap -h -o "whitespace" -t 5:17.235
+
+task 11
+tap -h -o "whitespace/robots" -t 5:39.34
+drag -d "draw square" -o "robots/whitespace" -t 5:39.95
+tap -h -o "whitespace/robots" -t 5:41.220
+drag -d "top part of square" -o "robots/whitespace" -t 5:44.234
+drag -d "rest of square" -o "robots/whitespace" -t 5:47.043
+tap -h -o "robots/whitespace" -t 5:47.043
+
+task 12
+tap -o "crate" -t 6:18.308
+tap -o 'crate' -x -t 6:19.811
+drag -o "drag swarm to crate to A" -t 6:24.291
+drag -o "drag swarm to crate to A" -x -t 6:25.995
+tap -c 2 -o "crate" -x -t 6:28.267
+drag -o "drag swarm to crate to A" -x -t 6:31.819
+
+task 13
+tap -c 2 -o "crate" -t 6:48.532
+drag -o "swarm to crate to A" -t 6:53.828
+
+task 14
+drag -o "swarm around screen border" -t 7:17.772
+
+task 15
+drag -f 3 -o "robots" -t 8:04.903
+tap -c 2 -o "area A" -t 8:05.558
+drag -f 3 -o "robots to A" -t 8:07.283
+
+task 16
+tap -c 2 -o "whitespace" -t 8:22.801
+drag -f 3 -o "robots" -t 8:25.881
+tap -c 2 -o "whitespace" -x -t 8:33.945 
+drag -f 3 -o "robots" -x -t 8:37.265
+drag -f 3 -o "robots" -x -t 8:38.113
+drag -f 3 -o "robots" -x -t 8:38.833
+drag -f 3 -o "robots" -x -t 8:39.464
+
