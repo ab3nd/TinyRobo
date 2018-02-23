@@ -1,0 +1,103 @@
+participant 4
+task 1
+lasso -n -f 1 -t 113.7 -o "All Red Robots"
+lasso -x -n -f 1 -t 114.4 -o "All Red Robots"
+lasso -x -n -f 1 -t 114.4 -o "Some Red Robots"
+lasso -x -n -f 1 -t 117.1 -o "All Red Robots"
+tap -n -f1 -t 122.1 -c 1 -o "Box A" -h
+tap -n -f1 -t 136.7 -c 1 -o "Box A"
+
+task 2
+lasso -n -f 1 -t 160.9 -o "All Red Robots"
+lasso -x -n -f 1 -t 161.8 -o "All Red Robots"
+lasso -x -n -f 1 -t 163.1 -o "All Red Robots"
+drag -f 1 -h 1 -t 170.1 -o "All Red Robots, Ground" -d "Line from the Red Robots to a point beside the wall"
+drag -x -f 1 -h 1 -t 171.0 -o "All Red Robots, Ground" -d "Line from the Red Robots to a point beside the wall"
+drag -f 1 -h 1 -t 174.4 -o "All Red Robots, Box A" -d "Line from the Red Robots around the wall to Box A"
+lasso -x -f 1 -t 197.7 -o "All Red Robots"
+drag -x -f 1 -h 1 -t 204.5 -o "All Red Robots, Ground" -d "Line from the Red Robots around the wall ending slightly above and toward the right of the wall"
+drag -x -f 1 -h 1 -t 205.7 -o "All Red Robots, Box A" -d "Line from the Red Robots around the wall and into Box A"
+
+task 3
+drag -f 1 -h 1 -t 241.6 -o "All Red Robots" -d "Line curving through the center of the Red Robots"
+memo -d "Participant is assuming the group of robots are following their finger as they drag allong the screen and lifting their finger stops their movement."
+
+task 4
+lasso -f 1 -t 283.2 -o "Some Red Robots"
+drag -f 1 -h 1 -t 287.9 -o "Some Red Robots, Box B" -d "Line from a selection of Red Robots around the wall to Box B"
+lasso -f 1 -t 290.8 -o "Some Red Robots"
+drag -f 1 -h 1 -t 295.3 -o "Some Red Robots, Box A" -d "Line from a selection of Red Robots around the wall to Box A"
+
+task 5 
+lasso -f 1 -t 316.3 -o "All Orange Robots"
+drag -f 1 -h 1 -t 318.3 -o "All Orange Robots, Box A" -d "Line from All Orange Robots to Box A"
+lasso -f 1 -t 321.3 -o "All Red Robots"
+drag -f 1 -h 1 -t 323.0 -o "All Red Robots, Box B"
+
+task 6
+lasso -f 1 -t 346.9 -o "All Orange Robots"
+drag -f 1 -h 1 -t 348.2 -o "All Orange Robots, Box A" -d "Line from All Orange Robots around the wall to Box A"
+lasso -f 1 -t 350.4 -o "All Red Robots" 
+drag -f 1 -h 1 -t 351.7 -o "All Red Robots, Box B" -d "Line from All Red Robots around the wall to Box B"
+
+task 7
+memo -d "Screen touch by accident when picking something off the screen"
+lasso -f 1 -t 407.6 -o "All Red Robots"
+lasso -f 2 -t 411.7 -o "All Orange Robots"
+memo -d "The lassos encompass the entire set of All Red and All Orange Robots, though the intent with one vs. the other was to have finger count be a function of what color"
+memo -d "Participant doesn't command the robots to move toward either box"
+
+task 8
+lasso -f 1 -t 460.6 -o "Some Red Robots"
+pinch -f 2 -t 466.4 -h 1 -r -o "All Red Robots"
+
+task 9
+lasso -f 1 -t 529.5 -o "All Red Robots"
+tap -f 1 -t 537.0 -c 1 -o "Ground" -h
+
+task 10
+drag -f 1 -h 1 -t 574.5 -o "Ground" -d "A line from the top right of All Red Robots and outside their perimeter going diagonal toward the top right of the screen"
+drag -f 1 -h 1 -t 576.9 -o "All Red Robots, Ground" -d "A line from approximately the top right of All Red Robots going diagonal toward the top right of the screen"
+drag -x -f 1 -h 1 -t 582.3 -o "All Red Robots, Ground" -d "A line from approximately the top right of All Red Robots going diagonal toward the top right of the screen"
+drag -f 2 -h 1 -t 595.6 -o "All Red Robots, Ground" -d "A line from approximately the top right of All Red Robots going diagonal toward the top right of the screen"
+drag -x -f 1 -h 1 -t 620.9  -o "All Red Robots, Ground" -d "A line from approximately the top right of All Red Robots going diagonal toward the top right of the screen"
+memo -d "Participant describes the difference between drawing a formation with their finger vs. having the robots follow their finger as the speed in which their draging on the screen. A fast drag is a formation like a line a slow drag tells the robots to follow them."
+
+task 11
+drag -f 1 -h 1 -t 676.6 -o "All Red Robots" -d "A box approximately in the center of the Ground"
+drag -x -n -f 1 -h 1 -t 685.4 -o "All Red Robots" -d "A box approximately in the center of the Ground"
+
+task 12
+drag -f 1 -h 1 -t 715.1 -o "Ground" -d "A line from above and toward the left of All Red Robots going up and slightly right behind the Wooden Box"
+tap -f 1 -t 718.9 -c 1 -o "Box A" -h
+drag -x -f 1 -h 1 -t 725.5 -o "Ground" -d "A line from above and toward the left of All Red Robots going up and slightly right behind the Wooden Box"
+drag -f 1 -h 1 -t 730.5 -o "Ground, Box A" "A line from the bottom and slightly toward the right of the Wooden Box going toward the bottom and center of Box A"
+
+task 13
+drag -f 1 -h 1 -t 757.0 -o "Ground" -d "A line along the top left corner of the Ground behind the Wooden Box"
+drag -f 1 -h 1 -t 761.5 -o "Ground, Box A" "A line from the bottom and slightly toward the right of the Wooden Box going toward the bottom and center of Box A"
+
+task 14
+tap -f 1 -t 775.7 -c 2 -o "Defective Red Robot"
+
+task 15
+tap -f 1 -t 815.0 -c 2 -o "Defective Red Robot"
+tap -x -f 1 -t 840 -c 2 -o "Defective Red Robot"
+ui -t 843.0 -k button -d "Participant described a set of options that appear in the lower right corner of the screen after selecting a robot. The participant chose the 'recyle bin'."
+lasso -n -f 1 -t 867.8 -o "All Red Robots"
+ui -x -n -t 868.7 -k button -d "Participant described a set of options that appear in the lower right corner of the screen after selecting a robot. The participant chose the 'recyle bin'."
+
+task 16
+lasso -f 1 -t 914.5 -o "All Red Robots"
+drag -f 1 -h 1 -t 917.0 -o "Ground" -d "Draws box along the perimeter of the screen"
+
+task 17
+drag -f 1 -h 1 -t 971.5 -o "Box A" -d "Draws a box approximately along the perimeter of Box A"
+drag -x -f 1 -h 1 -t 974.2 -o "Ground" -d "A small box slightly toward the right of All Red Robots and below Box A"
+memo -d "I made the smaller box an example since the participant was demonstrating the previous command but with a smaller perimeter"
+drag -x -f 1 -h 1 -t 980.9 -o "Box A" -d "Draws a box approximately along the perimeter of Box A"
+
+task 18
+pinch -f 5 -t 999.4 -h 1 -r -o "All Red Robots"
+pinch -x -f 5 -t 1001.5 -h 1 -r -o "All Red Robots"
+memo -d "Participant says 'disperse' while doing the last gesture, I don't think it was intended to be apart of the action though that wasn't made clear."
