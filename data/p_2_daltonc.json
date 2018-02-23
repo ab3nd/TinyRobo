@@ -1,0 +1,885 @@
+{
+   "participant": 2, 
+   "tasks": {
+      "1": [
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "Red", 
+               "Robot", 
+               "to", 
+               "Box", 
+               "A\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot,", 
+               "Box", 
+               "A\""
+            ], 
+            "time": 96.4, 
+            "write": null
+         }
+      ], 
+      "10": [
+         {
+            "description": [
+               "\"Drags", 
+               "upward", 
+               "on", 
+               "the", 
+               "lower", 
+               "right", 
+               "corner", 
+               "to", 
+               "bring", 
+               "up", 
+               "a", 
+               "menu\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 472.1
+         }, 
+         {
+            "description": [
+               "\"Taps", 
+               "on", 
+               "the", 
+               "'waypoint", 
+               "function'\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 472.7
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 487.6
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 488.8
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 489.7
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 490.7
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 493.4
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot\""
+            ], 
+            "time": 494.4
+         }
+      ], 
+      "11": [
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Red", 
+               "Robot", 
+               "toward", 
+               "the", 
+               "right", 
+               "of", 
+               "the", 
+               "screen", 
+               "ending", 
+               "parallel", 
+               "and", 
+               "approximately", 
+               "below", 
+               "the", 
+               "center", 
+               "of", 
+               "Box", 
+               "A\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot,", 
+               "Ground\""
+            ], 
+            "time": 546.7, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "\"Drags", 
+               "upward", 
+               "on", 
+               "the", 
+               "lower", 
+               "right", 
+               "corner", 
+               "to", 
+               "bring", 
+               "up", 
+               "a", 
+               "menu\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 548.5
+         }, 
+         {
+            "description": [
+               "\"Taps", 
+               "on", 
+               "the", 
+               "'waypoint", 
+               "function'\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 549.1
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 554.3
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 555.4
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 556.5
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 557.3
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot\""
+            ], 
+            "time": 565.8
+         }
+      ], 
+      "2": [
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "Red", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "A\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot,", 
+               "Box", 
+               "A\""
+            ], 
+            "time": 129.8, 
+            "write": null
+         }
+      ], 
+      "3": [
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "right", 
+               "most", 
+               "3rd", 
+               "and", 
+               "upper", 
+               "half", 
+               "going", 
+               "toward", 
+               "the", 
+               "top", 
+               "right", 
+               "corner", 
+               "off", 
+               "the", 
+               "screen\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 163.5, 
+            "write": null
+         }
+      ], 
+      "4": [
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Red", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "A\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot,", 
+               "Box", 
+               "A\""
+            ], 
+            "time": 189.1, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Orange", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "B\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Orange", 
+               "Robot,", 
+               "Box", 
+               "B\""
+            ], 
+            "time": 189.1, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "\"Drags", 
+               "were", 
+               "done", 
+               "simultaneously\""
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Red", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "A\""
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot,", 
+               "Box", 
+               "A\""
+            ], 
+            "time": 222.8, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Orange", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "B\""
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Orange", 
+               "Robot,", 
+               "Box", 
+               "B\""
+            ], 
+            "time": 222.8, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "\"Participant", 
+               "requested", 
+               "to", 
+               "do", 
+               "the", 
+               "run", 
+               "again", 
+               "so", 
+               "the", 
+               "robots", 
+               "wouldn't", 
+               "crash,", 
+               "was", 
+               "virtually", 
+               "the", 
+               "same", 
+               "except", 
+               "the", 
+               "two", 
+               "dragged", 
+               "paths", 
+               "just", 
+               "barely", 
+               "intersected.\""
+            ], 
+            "event_type": "memo"
+         }
+      ], 
+      "5": [
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Red", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "B\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot,", 
+               "Box", 
+               "B\""
+            ], 
+            "time": 250.4, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "\"Line", 
+               "from", 
+               "the", 
+               "Orange", 
+               "Robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "to", 
+               "Box", 
+               "B\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Orange", 
+               "Robot,", 
+               "Box", 
+               "A\""
+            ], 
+            "time": 250.4, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "\"Drags", 
+               "were", 
+               "done", 
+               "simultaneously\""
+            ], 
+            "event_type": "memo"
+         }
+      ], 
+      "6": [
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 274.8
+         }, 
+         {
+            "draw": [
+               "\"Line", 
+               "approximately", 
+               "down", 
+               "the", 
+               "middle", 
+               "of", 
+               "the", 
+               "screen", 
+               "dividing", 
+               "the", 
+               "two", 
+               "Red", 
+               "Robots\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 277.5, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "\"Lines", 
+               "on", 
+               "either", 
+               "side", 
+               "of", 
+               "the", 
+               "divider", 
+               "going", 
+               "in", 
+               "an", 
+               "equal", 
+               "and", 
+               "opposite", 
+               "direction\""
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 2, 
+            "hands": 2, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 279.5, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "\"Area", 
+               "was", 
+               "approximately", 
+               "divided", 
+               "into", 
+               "quadrants", 
+               "where", 
+               "the", 
+               "two", 
+               "robots", 
+               "are", 
+               "each", 
+               "in", 
+               "their", 
+               "own", 
+               "quadrant\""
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "description": [
+               "\"Participant", 
+               "gestures", 
+               "his", 
+               "hand", 
+               "over", 
+               "the", 
+               "screen", 
+               "explaining", 
+               "how", 
+               "robots", 
+               "could", 
+               "be", 
+               "divided", 
+               "into", 
+               "different", 
+               "regions", 
+               "based", 
+               "on", 
+               "drag", 
+               "slection.\""
+            ], 
+            "event_type": "other", 
+            "example": true, 
+            "no_contact": true, 
+            "objects": [
+               "\"Ground,", 
+               "Red", 
+               "Robots\""
+            ], 
+            "time": 285.6
+         }
+      ], 
+      "7": [
+         {
+            "description": [
+               "\"Drags", 
+               "upward", 
+               "on", 
+               "the", 
+               "lower", 
+               "right", 
+               "corner", 
+               "to", 
+               "bring", 
+               "up", 
+               "a", 
+               "menu\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 326.8
+         }, 
+         {
+            "description": [
+               "\"Taps", 
+               "on", 
+               "the", 
+               "'waypoint", 
+               "function'\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 328.0
+         }, 
+         {
+            "description": [
+               "\"I", 
+               "clasified", 
+               "the", 
+               "waypoint", 
+               "selection", 
+               "as", 
+               "a", 
+               "menu", 
+               "since", 
+               "it", 
+               "is", 
+               "within", 
+               "the", 
+               "menu", 
+               "as", 
+               "apposed", 
+               "to", 
+               "a", 
+               "button", 
+               "press\""
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Ground\""
+            ], 
+            "time": 329.7
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Box", 
+               "A\""
+            ], 
+            "time": 331.9
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot\""
+            ], 
+            "time": 334.7
+         }
+      ], 
+      "8": [
+         {
+            "description": [
+               "\"Drags", 
+               "upward", 
+               "on", 
+               "the", 
+               "lower", 
+               "right", 
+               "corner", 
+               "to", 
+               "bring", 
+               "up", 
+               "a", 
+               "menu\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 359.5
+         }, 
+         {
+            "description": [
+               "\"Taps", 
+               "on", 
+               "the", 
+               "'defective", 
+               "robot'", 
+               "function\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 362.7
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"Red", 
+               "Robot\""
+            ], 
+            "time": 364.8
+         }
+      ], 
+      "9": [
+         {
+            "description": [
+               "\"Double", 
+               "taps", 
+               "on", 
+               "robot", 
+               "to", 
+               "bring", 
+               "up", 
+               "menu\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 407.8
+         }, 
+         {
+            "description": [
+               "\"Taps", 
+               "\"Disable", 
+               "option\"", 
+               "on", 
+               "the", 
+               "drop", 
+               "down", 
+               "menu\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 418.7
+         }, 
+         {
+            "description": [
+               "\"A", 
+               "confirmation", 
+               "screen", 
+               "appears", 
+               "and", 
+               "he", 
+               "clicks", 
+               "yes\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 425.4
+         }
+      ]
+   }
+}

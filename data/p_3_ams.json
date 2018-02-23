@@ -1,1 +1,1236 @@
-{"tasks": {"1": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 92.81700000000001, "example": false}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"robots", "to", "A\""], "time": 98.241, "example": false}], "2": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 98.241, "example": false}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"robots", "to", "r", "of", "wall\""], "time": 176.555, "example": false}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"from", "r", "of", "wall", "to", "A\""], "time": 184.084, "example": false}], "3": [{"kind": "button", "event_type": "ui", "no_contact": false, "time": 223.387, "example": false, "description": ["\"(tap)\""]}, {"kind": "other", "event_type": "ui", "no_contact": false, "time": 227.30700000000002, "example": false, "description": ["\"Select", "individuals", "(tap)\""]}], "4": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 264.341, "example": false}, {"description": ["\"asked", "to", "restart\""], "event_type": "memo"}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"half", "of", "robots\""], "time": 283.42, "example": false}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"selected", "robots", "to", "A\""], "time": 287.405, "example": false}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"other", "half", "of", "robots\""], "time": 290.348, "example": false}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"whitespace", "to", "B\""], "time": 292.44, "example": false}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 302.152, "example": false, "description": ["\"incremental", "selection", "button", "(tap)\""]}, {"kind": "button", "event_type": "ui", "no_contact": true, "time": 310.608, "example": false, "description": ["\"ok/confirm", "button", "(tap?", "maybe", "no", "contact)\""]}], "5": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"orange", "robots\""], "time": 342.862, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"right", "center", "of", "screen\""], "time": 346.881, "hold": false, "example": false}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"right", "center", "of", "screen", "to", "B\""], "time": 348.321, "example": false}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"red", "robots\""], "time": 351.266, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"left", "center", "of", "screen\""], "time": 352.266, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "A\""], "time": 353.474, "hold": false, "example": false}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"orange", "and", "some", "red\""], "time": 393.388, "example": true}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"orange", "and", "some", "red\""], "time": 422.101, "example": true}], "6": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"orange", "robots\""], "time": 466.887, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"l", "of", "region", "b\""], "time": 468.408, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "B\""], "time": 469.15999999999997, "hold": false, "example": false}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"red", "robots\""], "time": 474.352, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"r", "of", "A\""], "time": 475.352, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"B\""], "time": 475.537, "hold": false, "example": false}], "7": [{"kind": "button", "event_type": "ui", "no_contact": false, "time": 584.4110000000001, "example": false, "description": ["\"select", "by", "color", "orange", "(tap)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 585.675, "example": false, "description": ["\"select", "by", "color", "red", "(tap)\""]}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"right", "of", "B\""], "time": 601.925, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"B\""], "time": 602.38, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"l", "of", "A\""], "time": 603.208, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"A\""], "time": 603.616, "hold": false, "example": false}], "8": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"l", "half", "robots\""], "time": 629.737, "example": false}, {"kind": "button", "event_type": "ui", "no_contact": true, "time": 660.824, "example": false, "description": ["\"assign", "group", "button", "(no", "contact)\""]}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"r", "half", "robots\""], "time": 680.982, "example": false}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"l", "half", "robots\""], "time": 681.568, "example": true}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"l", "half", "robots\""], "time": 700.472, "example": true}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"r", "half", "robots\""], "time": 704.145, "example": true}], "9": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"all", "robots\""], "time": 737.018, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"left", "group\""], "time": 759.09, "hold": true, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"right", "group\""], "time": 759.09, "hold": true, "example": false}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 762.139, "example": false, "description": ["\"combine", "button", "(tap)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 773.301, "example": true, "description": ["\"incremental", "select", "(~12", "taps)"]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 774.441, "example": true, "description": ["\"incremental", "select", "(tap", "&", "hold)"]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 774.648, "example": true, "description": ["\"make", "group", "(tap)\""]}], "10": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 809.769, "example": false}, {"kind": "menu", "event_type": "ui", "no_contact": true, "time": 825.866, "example": false, "description": ["\"formation", "-", "line", "menu", "(no", "contact)\""]}], "11": [{"kind": "button", "event_type": "ui", "no_contact": false, "time": 902.827, "example": false, "description": ["\"incremental", "select", "(3", "taps)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 903.267, "example": false, "description": ["\"incremental", "select", "(2", "taps)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 905.188, "example": false, "description": ["\"incremental", "select", "(tap", "&", "hold)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 906.524, "example": false, "description": ["\"select", "all", "(tap)\""]}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 913.615, "example": false, "description": ["\"formation", "-", "square", "(tap?)\""]}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 923.591, "example": false, "description": ["\"formation", "-", "sqaure", "(tap)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 902.827, "example": false, "description": ["\"incremental", "select", "(~10", "taps)\""]}], "12": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"all", "robots\""], "time": 988.624, "example": false}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 988.624, "example": false, "description": ["\"Form", "on", "waypoint", "(tap)\""]}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["crate"], "time": 1031.777, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["crate"], "time": 1051.314, "hold": false, "example": true}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 1064.522, "example": false, "description": ["\"context", "menu", "'move'\""]}, {"count": 2, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "A\""], "time": 1065.624, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "A\""], "time": 1069.5, "hold": true, "example": true}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"crate\""], "time": 1069.5, "hold": true, "example": true}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["crate"], "time": 1070.638, "hold": false, "example": true}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "A\""], "time": 1071.007, "hold": false, "example": true}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 1147.355, "example": false, "description": ["\"individual/increment", "select", "(2", "taps)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 1148.73, "example": false, "description": ["\"individual/increment", "select", "(hold)\""]}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["crate"], "time": 1150.373, "hold": false, "example": false}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 1151.333, "example": false, "description": ["\"Move", "(tap)\""]}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "A\""], "time": 1152.309, "hold": false, "example": false}], "13": [{"kind": "button", "event_type": "ui", "no_contact": true, "time": 1192.141, "example": false, "description": ["\"move", "button,", "(no", "contact)\""]}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["crate"], "time": 1195.237, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"area", "a\""], "time": 1196.101, "hold": false, "example": false}], "14": [{"kind": "button", "event_type": "ui", "no_contact": false, "time": 1300.087, "example": false, "description": ["\"mark", "defective", "(tap)\""]}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"all", "robots\""], "time": 1318.696, "example": false}], "15": [{"kind": "button", "event_type": "ui", "no_contact": false, "time": 1361.211, "example": false, "description": ["\"mark", "defective", "(tap)\""]}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"defective", "robot\""], "time": 1362.538, "hold": false, "example": false}, {"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["\"robots\""], "time": 1374.186, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"whitespace\""], "time": 1388.09, "hold": false, "example": false}, {"count": 1, "event_type": "tap", "fingers": 1, "no_contact": false, "objects": ["\"whitespace\""], "time": 1388.986, "hold": false, "example": false}], "16": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 1468.546, "example": false}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 1474.468, "example": false, "description": ["\"special", "actions", "(tap)\""]}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 1477.436, "example": false, "description": ["\"patrol", "(tap)\""]}, {"kind": "menu", "event_type": "ui", "no_contact": true, "time": 1550.26, "example": false, "description": ["\"known", "area", "edge", "(said", "'click')\""]}], "17": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 1594.975, "example": false}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 1603.479, "example": false, "description": ["\"parameterized", "patrol", "(tap)\""]}, {"draw": null, "event_type": "drag", "hands": 1, "fingers": 1, "no_contact": false, "write": null, "objects": ["\"center", "of", "A", "to", "corner", "of", "A\""], "time": 1609.312, "example": false}], "18": [{"event_type": "box_select", "fingers": 1, "no_contact": false, "start": "tl", "objects": ["robots"], "time": 1699.226, "example": false}, {"kind": "menu", "event_type": "ui", "no_contact": false, "time": 1769.326, "example": false, "description": ["\"special", "actions", "(tap)\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 1710.282, "example": false, "description": ["\"disperse\""]}, {"kind": "button", "event_type": "ui", "no_contact": false, "time": 1759.923, "example": false, "description": ["\"disperse\""]}]}, "participant": 3}
+{
+   "participant": 3, 
+   "tasks": {
+      "1": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 92.81700000000001
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robots", 
+               "to", 
+               "A\""
+            ], 
+            "time": 98.241, 
+            "write": null
+         }
+      ], 
+      "10": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 809.769
+         }, 
+         {
+            "description": [
+               "\"formation", 
+               "-", 
+               "line", 
+               "menu", 
+               "(no", 
+               "contact)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": true, 
+            "time": 825.866
+         }
+      ], 
+      "11": [
+         {
+            "description": [
+               "\"incremental", 
+               "select", 
+               "(3", 
+               "taps)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 902.827
+         }, 
+         {
+            "description": [
+               "\"incremental", 
+               "select", 
+               "(2", 
+               "taps)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 903.267
+         }, 
+         {
+            "description": [
+               "\"incremental", 
+               "select", 
+               "(tap", 
+               "&", 
+               "hold)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 905.188
+         }, 
+         {
+            "description": [
+               "\"select", 
+               "all", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 906.524
+         }, 
+         {
+            "description": [
+               "\"formation", 
+               "-", 
+               "square", 
+               "(tap?)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 913.615
+         }, 
+         {
+            "description": [
+               "\"formation", 
+               "-", 
+               "sqaure", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 923.591
+         }, 
+         {
+            "description": [
+               "\"incremental", 
+               "select", 
+               "(~10", 
+               "taps)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 902.827
+         }
+      ], 
+      "12": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"all", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 988.624
+         }, 
+         {
+            "description": [
+               "\"Form", 
+               "on", 
+               "waypoint", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 988.624
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 1031.777
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": true, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 1051.314
+         }, 
+         {
+            "description": [
+               "\"context", 
+               "menu", 
+               "'move'\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 1064.522
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "A\""
+            ], 
+            "time": 1065.624
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": true, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "A\""
+            ], 
+            "time": 1069.5
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": true, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "\"crate\""
+            ], 
+            "time": 1069.5
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": true, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 1070.638
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": true, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "A\""
+            ], 
+            "time": 1071.007
+         }, 
+         {
+            "description": [
+               "\"individual/increment", 
+               "select", 
+               "(2", 
+               "taps)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 1147.355
+         }, 
+         {
+            "description": [
+               "\"individual/increment", 
+               "select", 
+               "(hold)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 1148.73
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 1150.373
+         }, 
+         {
+            "description": [
+               "\"Move", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 1151.333
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "A\""
+            ], 
+            "time": 1152.309
+         }
+      ], 
+      "13": [
+         {
+            "description": [
+               "\"move", 
+               "button,", 
+               "(no", 
+               "contact)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": true, 
+            "time": 1192.141
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 1195.237
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "a\""
+            ], 
+            "time": 1196.101
+         }
+      ], 
+      "14": [
+         {
+            "description": [
+               "\"mark", 
+               "defective", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 1300.087
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"all", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 1318.696
+         }
+      ], 
+      "15": [
+         {
+            "description": [
+               "\"mark", 
+               "defective", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 1361.211
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"defective", 
+               "robot\""
+            ], 
+            "time": 1362.538
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robots\""
+            ], 
+            "start": "tl", 
+            "time": 1374.186
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"whitespace\""
+            ], 
+            "time": 1388.09
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"whitespace\""
+            ], 
+            "time": 1388.986
+         }
+      ], 
+      "16": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 1468.546
+         }, 
+         {
+            "description": [
+               "\"special", 
+               "actions", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 1474.468
+         }, 
+         {
+            "description": [
+               "\"patrol", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 1477.436
+         }, 
+         {
+            "description": [
+               "\"known", 
+               "area", 
+               "edge", 
+               "(said", 
+               "'click')\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": true, 
+            "time": 1550.26
+         }
+      ], 
+      "17": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 1594.975
+         }, 
+         {
+            "description": [
+               "\"parameterized", 
+               "patrol", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 1603.479
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"center", 
+               "of", 
+               "A", 
+               "to", 
+               "corner", 
+               "of", 
+               "A\""
+            ], 
+            "time": 1609.312, 
+            "write": null
+         }
+      ], 
+      "18": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 1699.226
+         }, 
+         {
+            "description": [
+               "\"special", 
+               "actions", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "menu", 
+            "no_contact": false, 
+            "time": 1769.326
+         }, 
+         {
+            "description": [
+               "\"disperse\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 1710.282
+         }, 
+         {
+            "description": [
+               "\"disperse\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 1759.923
+         }
+      ], 
+      "2": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 98.241
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robots", 
+               "to", 
+               "r", 
+               "of", 
+               "wall\""
+            ], 
+            "time": 176.555, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"from", 
+               "r", 
+               "of", 
+               "wall", 
+               "to", 
+               "A\""
+            ], 
+            "time": 184.084, 
+            "write": null
+         }
+      ], 
+      "3": [
+         {
+            "description": [
+               "\"(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 223.387
+         }, 
+         {
+            "description": [
+               "\"Select", 
+               "individuals", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false, 
+            "time": 227.30700000000002
+         }
+      ], 
+      "4": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "start": "tl", 
+            "time": 264.341
+         }, 
+         {
+            "description": [
+               "\"asked", 
+               "to", 
+               "restart\""
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"half", 
+               "of", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 283.42
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"selected", 
+               "robots", 
+               "to", 
+               "A\""
+            ], 
+            "time": 287.405, 
+            "write": null
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"other", 
+               "half", 
+               "of", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 290.348
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"whitespace", 
+               "to", 
+               "B\""
+            ], 
+            "time": 292.44, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "\"incremental", 
+               "selection", 
+               "button", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 302.152
+         }, 
+         {
+            "description": [
+               "\"ok/confirm", 
+               "button", 
+               "(tap?", 
+               "maybe", 
+               "no", 
+               "contact)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": true, 
+            "time": 310.608
+         }
+      ], 
+      "5": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"orange", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 342.862
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"right", 
+               "center", 
+               "of", 
+               "screen\""
+            ], 
+            "time": 346.881
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"right", 
+               "center", 
+               "of", 
+               "screen", 
+               "to", 
+               "B\""
+            ], 
+            "time": 348.321, 
+            "write": null
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"red", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 351.266
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"left", 
+               "center", 
+               "of", 
+               "screen\""
+            ], 
+            "time": 352.266
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "A\""
+            ], 
+            "time": 353.474
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"orange", 
+               "and", 
+               "some", 
+               "red\""
+            ], 
+            "start": "tl", 
+            "time": 393.388
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"orange", 
+               "and", 
+               "some", 
+               "red\""
+            ], 
+            "start": "tl", 
+            "time": 422.101
+         }
+      ], 
+      "6": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"orange", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 466.887
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"l", 
+               "of", 
+               "region", 
+               "b\""
+            ], 
+            "time": 468.408
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"area", 
+               "B\""
+            ], 
+            "time": 469.15999999999997
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"red", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 474.352
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"r", 
+               "of", 
+               "A\""
+            ], 
+            "time": 475.352
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"B\""
+            ], 
+            "time": 475.537
+         }
+      ], 
+      "7": [
+         {
+            "description": [
+               "\"select", 
+               "by", 
+               "color", 
+               "orange", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 584.4110000000001
+         }, 
+         {
+            "description": [
+               "\"select", 
+               "by", 
+               "color", 
+               "red", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 585.675
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"right", 
+               "of", 
+               "B\""
+            ], 
+            "time": 601.925
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"B\""
+            ], 
+            "time": 602.38
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"l", 
+               "of", 
+               "A\""
+            ], 
+            "time": 603.208
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"A\""
+            ], 
+            "time": 603.616
+         }
+      ], 
+      "8": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"l", 
+               "half", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 629.737
+         }, 
+         {
+            "description": [
+               "\"assign", 
+               "group", 
+               "button", 
+               "(no", 
+               "contact)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": true, 
+            "time": 660.824
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"r", 
+               "half", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 680.982
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"l", 
+               "half", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 681.568
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"l", 
+               "half", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 700.472
+         }, 
+         {
+            "event_type": "box_select", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"r", 
+               "half", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 704.145
+         }
+      ], 
+      "9": [
+         {
+            "event_type": "box_select", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"all", 
+               "robots\""
+            ], 
+            "start": "tl", 
+            "time": 737.018
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "\"left", 
+               "group\""
+            ], 
+            "time": 759.09
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "\"right", 
+               "group\""
+            ], 
+            "time": 759.09
+         }, 
+         {
+            "description": [
+               "\"combine", 
+               "button", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 762.139
+         }, 
+         {
+            "description": [
+               "\"incremental", 
+               "select", 
+               "(~12", 
+               "taps)"
+            ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 773.301
+         }, 
+         {
+            "description": [
+               "\"incremental", 
+               "select", 
+               "(tap", 
+               "&", 
+               "hold)"
+            ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 774.441
+         }, 
+         {
+            "description": [
+               "\"make", 
+               "group", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "button", 
+            "no_contact": false, 
+            "time": 774.648
+         }
+      ]
+   }
+}
