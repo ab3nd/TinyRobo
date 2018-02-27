@@ -1,0 +1,40 @@
+digraph FullSystem{
+
+	subgraph clustergesture_rec{
+		destutter[label="De-stutter"];
+		recognize[label="Recognize"];
+		destutter -> recognize [label="Strokes"];
+		label="Gesture Recognizer";
+		shape=box;
+	}
+
+	subgraph clusterComp {
+		concentrate=true;
+		label="Control Computer";
+		vrSense [label="Virtual Sensors"];
+		vrNet [label="Virtual Network"];
+		worldModel [label="World Model"];
+		worldModel -> vrSense;
+		worldModel -> vrNet;
+		
+	}
+
+	camera[label=<Overhead<br/>Camera>;shape=box;]
+	camera->worldModel;
+
+	multitouch [label="Multitouch Screen", shape=box];	 
+	compiler [label="Gesture Compiler"];
+	rp1 [label=<Robot <br/> Process 1>];
+	rp2 [label=<Robot <br/> Process 2>];
+	
+
+	multitouch -> destutter [label="Touch events"];
+	
+	recognize -> compiler [label="Recognized gestures"];
+	compiler -> rp1 [label="Program 1"];
+	compiler -> rp2 [label="Program 2"];
+	
+	vrNet -> {rp1, rp2} [dir="both";];
+	vrSense -> {rp1, rp2};
+
+}

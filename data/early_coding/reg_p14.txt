@@ -1,0 +1,104 @@
+14
+1
+		0.0	MISS  		174.66	drag X	-174.66
+		202.74	drag  		201.51	drag  	1.23
+		206.98	drag  		206.82	drag  	0.16
+		208.52	drag  		208.11	drag  	0.41
+2
+		234.15	drag  		234.22	drag  	0.07
+		238.16	drag  		238.09	drag  	-0.07
+		239.94	drag  		239.31	drag  	-0.63
+3
+		286.46	drag  		386.36	drag  	99.9
+4
+		393.02	drag  		392.04	drag  	-0.98
+		395.56	drag  		395.41	drag  	-0.15
+		406.67	drag  		405.54	drag  	-1.13
+		406.98	drag  		406.27	drag  	-0.71
+5
+		457.64	drag  		457.52	drag  	0.12
+		469.74	drag  		469.42	drag  	0.32
+		0.0	MISS  		472.11	drag X	-472.11
+		0.0	MISS  		473.44	drag X	-473.44
+6
+		490.93	drag  		490.99	drag  	0.06
+		502.15	drag  		502.29	drag  	0.14
+7
+		563.17	drag  		562.83	drag  	0.34
+		575.17	drag  		574.66	drag  	0.51
+		579.28	drag  		579.25	drag X	0.03
+		587.44	drag  		587.09	drag  	0.35
+		611.19	drag  		611.01	drag  	0.18
+		613.92	drag  		613.69	drag  	0.23
+		637.15	drag  		637.06	drag  	0.09
+		645.24	drag  		644.98	drag  	0.26
+		0.0	MISS  		649.12	drag X	-649.12
+8
+		779.82	drag  		779.53	drag  	-0.29
+9
+		858.76	drag  		859.53	drag  	0.77
+		861.16	drag  		861.14	drag  	-0.02
+10
+		947.89	drag  		945.11	drag  	2.78
+		952.81	drag  		952.63	drag  	0.18
+		993.89	drag  		993.51	drag  	0.38
+		0.0	MISS  		1007.8	drag X	-1007.8
+		0.0	MISS  		1017.32	drag X	-1017.32
+		0.0	MISS  		1018.8	drag X	-1018.8
+		1019.8	drag  		1020.32	drag X	-0.52
+		1021.69	drag  		1021.73	drag X	-0.04
+11
+		1137.96	drag  		1137.97	drag X	0.00999999999999
+		1200.12	other  		1199.66	other  	-0.46
+		1269.22	other  		1269.09	other  	-0.13
+12
+		1365.78	other  		1364.84	pinch  	-0.94
+		1372.29	drag  		1372.05	drag  	-0.24
+		1377.28	drag  		1377.12	drag  	-0.16
+		1385.87	drag  		0.0	MISS  	-1385.87
+		1386.54	drag  		1386.55	drag  	0.00999999999999
+13
+		1455.08	drag  		1454.9	drag  	-0.18
+		1464.65	drag  		1464.56	drag  	-0.0900000000001
+		1467.66	drag  		1467.74	drag  	0.0799999999999
+		1471.47	drag  		0.0	MISS  	-1471.47
+		1473.29	drag  		1472.68	drag  	-0.61
+14
+		1534.63	drag  		1534.5	drag  	-0.13
+		1537.1	drag  		1536.89	drag  	-0.21
+15
+		1633.1	drag  		1631.75	drag  	1.35
+		1637.92	drag  		1638.0	drag  	-0.0799999999999
+		0.0	MISS  		1643.26	tap X	-1643.26
+		1651.36	drag  		1650.75	drag  	0.61
+		1677.73	drag  		1677.22	drag  	0.51
+		1679.11	drag  		1678.53	drag X	0.58
+16
+		1733.79	drag  		1734.17	drag  	0.38
+		1736.79	drag  		1735.35	drag  	-1.44
+		1752.42	drag  		1752.42	drag  	0.0
+17
+		1775.72	other  		1775.12	pinch  	-0.6
+		1788.51	drag  		1788.73	drag  	0.22
+		1793.39	drag  		1795.15	drag  	1.76
+		1795.03	drag  		1808.9	drag  	13.87
+		1808.8	drag  		1829.11	drag X	20.31
+		1829.31	drag X		1840.85	drag  	11.54
+		1840.81	drag X		1842.48	drag X	1.67
+		1844.82	drag X		1844.41	drag X	-0.41
+18
+		1866.64	drag  		1866.21	other  	-0.43
+		1867.84	drag  		1867.56	other  	-0.28
+		1870.51	drag  		0.0	MISS  	-1870.51
+
+Confusion
+	drag	voice_c	tap	lasso	pinch	box_sel	ui	other	MISS	
+drag	56	0	0	0	0	0	0	2	3	
+voice_c	0	0	0	0	0	0	0	0	0	
+tap	0	0	0	0	0	0	0	0	0	
+lasso	0	0	0	0	0	0	0	0	0	
+pinch	0	0	0	0	0	0	0	0	0	
+box_sel	0	0	0	0	0	0	0	0	0	
+ui	0	0	0	0	0	0	0	0	0	
+other	0	0	0	0	2	0	0	2	0	
+MISS	7	0	1	0	0	0	0	0	0	

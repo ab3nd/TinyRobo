@@ -1,0 +1,113 @@
+15
+1
+		85.98	drag  		86.6	lasso  	0.62
+		85.98	drag  		0.0	MISS  	-85.98
+		86.95	drag  		86.96	drag  	0.00999999999999
+		91.23	lasso  		91.88	lasso  	0.65
+		91.98	drag  		92.01	drag  	0.03
+2
+		0.0	MISS  		141.12	lasso  	-141.12
+		142.55	other  		142.71	drag  	-0.16
+3
+		158.65	drag  		158.74	drag  	0.09
+4
+		191.43	drag  		191.46	drag  	-0.03
+		194.04	drag  		194.99	drag  	-0.95
+		0.0	MISS  		195.1	drag  	-195.1
+		0.0	MISS  		197.03	lasso  	-197.03
+		198.15	other  		197.52	drag  	0.63
+		0.0	MISS  		199.92	drag  	-199.92
+		0.0	MISS  		211.23	lasso X	-211.23
+		0.0	MISS  		212.42	drag X	-212.42
+		0.0	MISS  		215.81	lasso X	-215.81
+		0.0	MISS  		216.65	drag X	-216.65
+		0.0	MISS  		223.87	lasso X	-223.87
+		0.0	MISS  		224.14	drag X	-224.14
+5
+		0.0	MISS  		239.26	drag  	-239.26
+		241.61	drag  		241.33	lasso  	0.28
+		242.08	other  		242.12	drag  	-0.04
+		0.0	MISS  		244.66	lasso  	-244.66
+		245.85	other  		246.52	drag  	-0.67
+		0.0	MISS  		249.52	drag X	-249.52
+6
+		266.52	lasso  		266.19	lasso  	0.33
+		267.36	drag  		267.56	drag  	-0.2
+		0.0	MISS  		268.49	drag  	-268.49
+		269.92	lasso  		270.11	lasso  	-0.19
+		0.0	MISS  		271.45	drag  	-271.45
+		271.77	drag  		272.05	drag  	-0.28
+7
+		298.81	lasso  		296.1	lasso  	-2.71
+		299.76	drag  		298.16	drag  	-1.6
+8
+		315.0	drag  		314.82	drag  	-0.18
+9
+		328.86	pinch  		330.04	drag  	1.18
+		386.65	pinch X		384.5	drag  	-2.15
+10
+		404.11	drag  		402.78	drag  	-1.33
+		619.35	drag  		403.67	drag X	-215.68
+11
+		418.45	drag  		418.78	voice_command  	0.33
+		419.31	drag  		419.3	drag  	-0.00999999999999
+12
+		0.0	MISS  		434.65	drag  	-434.65
+		435.69	drag  		435.47	drag  	0.22
+13
+		0.0	MISS  		450.38	drag  	-450.38
+		451.06	drag  		451.12	drag  	-0.06
+14
+		466.98	lasso  		465.69	lasso  	-1.29
+		476.88	lasso X		476.62	lasso X	-0.26
+		478.16	lasso X		477.83	lasso X	-0.33
+15
+		495.21	lasso  		495.02	lasso  	0.19
+		0.0	MISS  		498.53	drag  	-498.53
+		500.19	drag  		499.73	drag  	0.46
+16
+		556.55	drag  		558.11	drag  	1.56
+		556.95	drag  		558.36	drag  	1.41
+		557.52	drag  		558.87	drag  	1.35
+		558.09	drag  		559.21	drag  	1.12
+		558.71	drag  		559.44	drag  	0.73
+		559.87	drag  		559.84	drag  	-0.03
+17
+		571.45	lasso  		571.51	lasso  	-0.0599999999999
+		0.0	MISS  		572.98	drag  	-572.98
+		573.74	drag  		574.01	drag  	-0.27
+		574.64	drag  		575.13	drag  	-0.49
+		575.8	drag  		575.83	drag  	-0.0300000000001
+		0.0	MISS  		576.32	drag  	-576.32
+		577.13	drag  		577.1	drag  	0.03
+		0.0	MISS  		577.33	drag  	-577.33
+18
+		591.6	drag  		593.11	drag  	-1.51
+		592.32	drag  		593.29	drag  	-0.97
+		0.0	MISS  		593.31	drag  	-593.31
+		593.36	drag  		593.34	drag  	0.02
+		0.0	MISS  		593.39	drag  	-593.39
+		0.0	MISS  		593.45	drag  	-593.45
+		0.0	MISS  		593.48	drag  	-593.48
+		0.0	MISS  		593.57	drag  	-593.57
+		0.0	MISS  		593.59	drag  	-593.59
+		0.0	MISS  		593.66	drag  	-593.66
+		593.88	drag  		593.68	drag  	0.2
+		594.39	drag  		593.76	drag  	0.63
+		595.07	drag  		593.79	drag  	1.28
+		596.62	drag  		593.81	drag  	2.81
+		597.16	drag  		593.83	drag  	3.33
+		597.96	drag  		593.93	drag  	4.03
+		599.09	drag  		599.89	drag  	-0.8
+
+Confusion
+	drag	voice_c	tap	lasso	pinch	box_sel	ui	other	MISS	
+drag	35	1	0	2	0	0	0	0	1	
+voice_c	0	0	0	0	0	0	0	0	0	
+tap	0	0	0	0	0	0	0	0	0	
+lasso	0	0	0	9	0	0	0	0	0	
+pinch	2	0	0	0	0	0	0	0	0	
+box_sel	0	0	0	0	0	0	0	0	0	
+ui	0	0	0	0	0	0	0	0	0	
+other	4	0	0	0	0	0	0	0	0	
+MISS	22	0	0	6	0	0	0	0	0	

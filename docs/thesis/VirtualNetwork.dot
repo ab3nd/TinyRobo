@@ -1,0 +1,20 @@
+digraph VirtualNetwork {
+
+{rank=same atag dist}
+{rank=same tx rx}
+
+vns -> dist [label="Robot IDs"];
+dist -> vns [label="Distance"];
+cam -> atag [label=<sensor_msgs/Image>];
+atag -> dist [label=<apriltags_ros/TagDetections>];
+vns -> rx [label="Network Message"];
+tx -> vns [label="Network Message"];
+
+
+vns [label="Virtual Network Service"];
+dist [label="Distance Service"];
+atag [label="AprilTag Detector"];
+cam [label="Arena Camera"];
+tx [label="Transmitter"];
+rx [label="Receiver"];
+}

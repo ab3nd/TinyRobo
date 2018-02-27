@@ -729,6 +729,60 @@ Spent a lot of time around here having a cold and not being able to think well
 - Faculty canidate talk
 - Collected data for John to speed up laser scanner (woo GPU)
 
+2/7
+- Looks like camera may have trouble tracking moving robots if they blur the camera
+- Can I use a faster/better camera?
+
+2/8
+- Researched a bunch of ways to overcome inability of robots to move slow
+- Found that I can drive them slowly with joystick, ~0.25-0.3 in the twist will do it
+- Tried to add heartbeat
+- Faculty canidate talk
+- Abstract updates
+
+2/9
+- Debugged laser checking in GCPR driver, now does mostly avoid obstacles
+- Finished new abstract
+- Faculty canidate talk
+
+2/10
+- Jon's pull request for hardware-acclerated virtual laser
+
+2/12
+- Lab meeting
+- New faculty canidate talk
+- Trying to figure out what to do about coding
+
+2/13
+- Met with James to sort out coding
+- Tried to convert bags into video
+  - bagfile is 730s, video comes out 748.49s, audio is 652s 
+  - What is going on here?
+
+2/14
+- Fixed synch problem
+  - error was adding a new frame for each contact point
+  - problem was hidden by CV videowriter appearing to generate a normal framerate video
+
+2/15
+- Updated abstract, sent full proposal to graduate coordinator and Haim
+- Worked on slides
+
+2/16
+- more work on slides
+- Got Dalton started on p1-p5
+
+2/17
+- Wrote notecards for slides
+
+2/18
+- Added Hypotheses to slides
+- Got argos to start with a 4x8 (meter, but the ratio is the same) arena
+- Wrote a tinyrobo implementation for ARGoS/ros bridge to ARGoS
+- Started basic path compiler
+- Got collision avoidance in GCPR at least a little tuned
+
+
 It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 
 Swarm control software

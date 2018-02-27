@@ -1,0 +1,27 @@
+digraph FullSystem{
+		
+
+	subgraph clustergesture_rec{
+		destutter[label="De-stutter"];
+		recognize[label="Recognize"];
+		destutter -> recognize [label="Strokes"];
+		label="Gesture Recognizer";
+		shape=box;
+	}
+
+	multitouch [label="Multitouch Screen"];	 
+	compiler [label="Gesture Compiler"];
+	rp1 [label=<Robot <br/> Process 1>];
+	rp2 [label=<Robot <br/> Process 2>];
+	rp3 [label=<Robot <br/> Process 3>];
+	rpN [label=<Robot <br/> Process N>];
+
+	multitouch -> destutter [label="Touch events"];
+	
+	recognize -> compiler [label="Recognized gestures"];
+	compiler -> rp1 [label="Program 1"];
+	compiler -> rp2 [label="Program 2"];
+	compiler -> rp3 [label="Program 3"];
+	compiler -> rpN [label="Program N"];
+
+}
