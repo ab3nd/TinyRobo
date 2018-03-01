@@ -261,6 +261,29 @@ A. Paul Hare
 	Leaders have more influence in small groups
 	Larger groups take longer to come to consensus
 
+
+Overall, it feels like the research in social psychology for how groups are perceived as groups vs. aggregations and how much of an entity the group is are highly dependant on a large number of distinct factors. My robot groups have color, heading, spacing, but beyond that don't display a lot of the variation that people display, even when the group they are in has strong entiativity (also depends on context, the robotics club is an entity, the same people standing in line at a bank would be way less of an entity). Human perception of groups has less to do with exact count of people, and far more to do with common cause, visible similarity, tasks, interpersonal relations, etc. 
+
+Unified Human and Robot Command for Disaster Recovery Situations
+Carlos Ibarra Lopez, James Kuczynski, Holly A. Yanco
+	(Hey, I know that guy!)
+	Multi-agent command software
+		Expanded on Mark's work, small group and individual C&C, not swarm scale
+		DREAM controller
+	People are willing to use manual control mode on people
+		if they're inexperienced with robots, they're more likely to use it on people than on robots
+		If they're experinced with robots, they use it more on robots than on people
+	Similar level of success with both people and robots and mixte teams
+
+So driving real robots vs. driving people does affect human behavior, what about driving real robots vs. simulated robots?
+
+
+Carlos cites Humphrey et. al. 2007 for interface for control, but it's for multiple individuals, not swarms
+	What does Humphrey cite? Can talk about distinction between multi-individual and swarm
+
+
+
+
 Spontaneous, Short-term Interaction with Mobile Robots
 J. Schulte, C. Rosenberg, S. Thrun
 	Single robot interacting with crowds, not single person interacting with crowd of robots
@@ -304,9 +327,8 @@ Muncey, Andrew
 Skeu the Evolution: Skeuomorphs, Style, and the Material of Tangible Interactions
 Shad Gross, Jeffrey Bardzell, Shaowen Bardzell
 	Interesting points about skueomorphs kept around as kitsch (deliberately) vs kept around because no one thought to do it a different way
-	
 
-Overall, it feels like the research in social psychology for how groups are perceived as groups vs. aggregations and how much of an entity the group is are highly dependant on a large number of distinct factors. My robot groups have color, heading, spacing, but beyond that don't display a lot of the variation that people display, even when the group they are in has strong entiativity (also depends on context, the robotics club is an entity, the same people standing in line at a bank would be way less of an entity). Human perception of groups has less to do with exact count of people, and far more to do with common cause, visible similarity, tasks, interpersonal relations, etc. 
+
 
 Affordances for designing natural user interfaces for 3D modelling
 Zoltán Rusák, Ismail Cimen, Imre Horváth and Aadjan van der Helm
@@ -339,3 +361,162 @@ Jan Derboven, Dries De Roeck, Mathijs Verstraete
 	Users interact in a direct, unmediated way
 		In theory, no icons, no metaphors
 			But anything on a screen is a metaphor
+
+Game UIs
+
+FIFA 17 - Soccer, full teams on field, console, so gamepad interface
+	move on l stick, sprint/dribble/stop ball (so moderate-level abstraction of play commands)
+	Attacking (various kinds of fake/real shots, passes)
+	tactics on d-pad
+	Defence (tackles, changing player, jockey, etc.) mostly on buttons and triggers
+	Set pieces on buttons (free kick, corners and throw-ins)
+	Goalkeeper has its own controls
+	Generally, interface is controlling a single player, probably the one with the ball
+
+Age of empires - RTS
+	has fog of war
+		Unexplored, explored but not occupied, currently occupied
+	Panning around world map appears to be off hand from mouse
+	Box select for units 
+	Multiplayer, appears to have context menu for actions in the bottom left corner
+		May actually be key-related actions, mouse cursor stays over screen
+
+Battlefield - FPS
+	Radial menu
+	WASD for move, mouse look (pretty standard RTS)
+	jump, many other moves are on the left side of the keyboard around wasd
+	weapon controls on mouse
+
+Battlefront - FPS
+	WASD move, mouse look, spacebar jump, powerups on 1-4, gun and zoom controls on mouse clicks
+
+Borderlands standard FPS controls
+	PC adds inventory, callenges, skills, and a map that don't appear to have matches on console (and are on IJKM, so not around WASD constellation)
+
+Brawlhalla
+	Keyboard A Controls
+
+    Up - Jump
+    C or Left Click - Light Attack
+    X or Right Click - Heavy Attack
+    Z - Dodge
+    V or Middle Click - Throw
+
+	Keyboard B Controls
+
+    W - Jump
+    4 or Left Click - Light Attack
+    5 or Right Click - Heavy Attack
+    8 - Dodge
+    6 or Middle Click - Throw
+
+    Keys all placed very close to each other
+
+Bubble witch saga
+	Mobile, aim and fire bubbles, make matches to get screen clear
+
+Call of Duty, CoD Zombies - FPS
+	Had trouble finding the controls, probably typical FPS
+
+Civ V - Turn-based strategy
+	Mouse interaction, pop-up menus around the edge of the screen
+	isometric view map
+	Map in hex grid
+
+Clash of clans
+	Train troops in your base, attack others, try to destroy entire base
+	defence is passive
+	appears to be mouse-driven
+
+Crash Bandicoot - platformer, console
+	Character move on dpad or left stick
+	attac - square
+	inventory - triangle
+	jump - x 
+
+Crypt of the Necrodancer
+	Has Fog of War
+	Moving, digging and attacking: 	up, right, down, left
+	To use your Bombs: 	down + left
+	To use your first item: 	up + left
+	To use your second item or
+
+	To swap weapons:
+		left + right
+	To use your first spell: 	up + right
+	To use your second spell: 	down + right
+	Reload/Throw Weapon: 	up + down 
+	So it's like DDR on a keyboard, can only act in time with the beat of the music
+
+Dark Souls Console  and PC action rpg
+	l stick player
+	r stick camera 
+	d-pad weapon/magic controls
+	triggers have a lot of modifiers for combat (block types, dash, backstab, etc.)
+
+	PC
+		WASD run, l control + WASD = walk
+		camera IJKL, just like WASD
+		VCFR switch equipment
+		a lot of keys on the right hand do weapon action / item actions
+		No mouse at all, but this is 3rd-person rather than first-person, so no splitting body into upper and lower control
+
+DOTA - Realtime 3rd person battle
+	https://dota2.gamepedia.com/Controls
+	l click, l click and drag for box select
+	shift click to add
+	right click is do (move to, attack, shift queues order)
+	esc to stop/undo
+
+	alt + left click does communication actions
+	WASD for moving camera (overhead/isometric view)
+
+Europa Universialis
+	doesn't appear to show actual units, map/overhead view
+	Does appear to have box selection
+	doesnt' appear to be realtime
+	Regiments listed as units, strength by numbers
+	Pop-up menus 
+	https://eu4.paradoxwikis.com/Controls
+	Uses entire keyboard, no mapping of key to action as WASD, although slight mnemonics
+
+Fire Emblem
+	Appears to have perfect information
+	Battles appear automated, moves appear semi-turn-based
+	Menu-based weapon selection 
+	D-pad for cursor, scrolling in menus
+	A - confirm, context-sensitive map menu or dialog scrolling
+	B - cancel/undo
+	L - scrol between uncommanded units
+	R - Data for the unit the cursor is over, info on items during battle
+
+RimE - exploration? 3d 3rd person view
+	WASD move, space jump, e interact, shift roll/dive, l mouse "shout"
+	Doesn't appear to even have an "attack"?
+
+Seems like games that require real-time interaction (FPS, RPG) keep the keys close to each other, games that don't have the keys laid out however the designers felt like it (EU4). DOTA interesting because it's almost all mouse and modifiers. 
+
+FPS very standard, wasd move, mouse look and fire control, space jump
+
+Intel shooting star drones (from Intel-Shooting-Star-Tech-Fact-Sheet-073117-1.pdf)
+	"proprietary algorithms"
+	Automated creation of image, calculation of drones needed to form it
+	Controlled by a single computer (what happens if it goes down?)
+	Max range is 1.5km (is that drone travel or wireles range?)
+
+	From video screenshots, appears to be a 3D rendering suite similar to Blender
+	GPS + barometer (that's not enough resoultion, they're doing something else)
+	Can apparently import some form of GIS data to place drones relative to ground level, avoid hills
+	Has tabs for "Curves/Surfaces", "Poly modeling" and "Sculpting" in UI
+	Also "Rigging", "Animation", FX & FX Caching, HEALTH, and some stuff I can't make out
+	Seems like a 3d CGI suite, but rendering to drones rather than rendering to an STL file
+
+	Coachella video has touch interaction with 3d display of drones in a volume of space
+
+	UI in 500 drone video seems to be earlier version? Still has GIS import
+	Also shows single point scrolling and rotation of swarm with touch commands
+	Talks about changing thinking "from many individual drones to one single fleet of drones"
+
+	Automated health monitoring and drone selection for better deployment
+	Red/yellow/green dot interface for at-a-glance health monitor, probably battery status
+	
