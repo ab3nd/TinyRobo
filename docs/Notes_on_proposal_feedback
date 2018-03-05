@@ -689,3 +689,114 @@ Zsolt Kira, Mitchell A. Potter
 	Bottom up control
 		Virtual agents exert forces on the real agents as if they were present in the space
 	Physicomimetic control scheme
+	Virtual particle parameters evolved in simulation, and then used by the user to perform split and follow operations on swarm
+
+Assessing the Scalability of a Multiple Robot Interface
+Curtis M. Humphrey, Christopher Henk, George Sewell, Brian W. Williams, Julie A. Adams
+	Halo display that shows were other robts are with respect to selected robot
+	Supervisory control usuaally top-down, assumes known map (which USAR may not have)
+	Halo kind of like HUD/radar displays in video games
+	Tapping halo robot switches to that view
+		So this is a many-individuals kind of interface, not a swarm interface
+	Increase in workload with bounded time diminishes success
+		Adding robots increases workload
+	SA didn't appear to drop with more robots
+		6 robots vs. 9 robots, which is still in the human-handlable fan-out that other papers have seen
+	Experiment proposed halo display, but doesn't appear to have a non-halo test case?
+		So they were testing the display in 6 vs. 9 robot cases, but not halo vs. non-halo case
+		So the experiment doesn't say anything about the halo case
+			Except in comparision to other studies, which they don't compare it to...
+
+
+Symbolic Planning and Control of Robot Motion
+BY CALIN BELTA, ANTONIO BICCHI, MAGNUS EGERSTEDT, EMILIO FRAZZOLI, ERIC KLAVINS, AND GEORGE J. PAPPAS
+	Shows that Klavins, among others was interested in the general problem
+	And also that it was considered open as of March 2007
+	Gets into LTL descriptions of environment to synthesize controllers
+		Points out that "if a solution is found, it might still exist"
+		Doesn't work well with incomplete knowledge
+		Doesn't work well with dynamic worlds, as they imply incomplete knowledge
+	Symbolic approaches make assumptions about holonomic drive
+		car-style steering complicates things
+	Some approaches work by minimizing/collecting possible control into small segments (motion primitives) and composing those
+		Trades completeness/optimiaility for conciseness
+		Want to capture an idea of how expressive a given motion primive set is
+	Embedded graph grammars as a protocol for controlling robots
+		Robots are nodes and have states, communications are edges and change states
+		Transitions between states change robot behavior
+		Robots update their state based on their surroundings/messages from other robots
+
+Reactive mission and motion planning with deadlock resolution avoiding dynamic obstacles
+Javier Alonso-Mora, Jonathan A. DeCastro, Vasumathi Raman, Daniela Rus, Hadas Kress-Gazit
+	Small robot team, mission specification written in LTL
+	Automaton plus motion planner to avoid moving obstacles
+	Scalable with the number of moving obstacles
+	Some assumptions about atomic actions and perfect sensing
+		Which, sadly, don't really hold
+	This system works as long as the obstacles are not intentionally adversarial
+		By which they mean "won't block the robot forever"
+	Doesn't attempt to model agents at build time
+		Modifies plans at runtime instead (to avoid state explosion related to agent count)
+	Still for fixed maps, though
+	Assumes moving obstacles: 
+		Maintain constant velocity during planning (to project motion)
+		or try to avoid collisions using the same algorithm as the robots
+		are not out to get the robots
+	Certifies solution about things like doors
+		"This task will complete if the door is opened eventually"
+	Has an exponential blow-up in number of robots in team
+		Single robot has 16 revisions
+		Two robots have 1306 revisions
+		Optimization can bring this down some, but still exponential
+
+Decentralized Control of Robotic Swarms from High-Level Temporal Logic Specifications
+Salar Moarref and Hadas Kress-Gazit
+	High level temporal logic to controllers for safe nav of area
+	Imperfect synchronization
+	Again with the known map
+	This paper assumes static and known environment, but the approach used doesn't rule out reaction to dynamic environment
+
+An Integrated System for Perception-Driven Autonomy with Modular Robots
+Jonathan Daudelin, Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit, and Mark Campbell
+	Modular robot that reconfigures in response to previously unknown environment
+		But known task types, classifies task as discovered and shapeshifts to match
+	Does permit exploring and figuring things out about the environment
+	Sensitive to failure of modules
+
+From High-level Task Specification to Robot Operating System (ROS) Implementation
+Kai Weng Wong and Hadas Kress-Gazit
+	Automatically suggests possible fixes for mapping from controller to ROS
+	"While many of these approaches have been demonstrated on physical robots, the low-level integration of the provably-correct, typically symbolic, controller with the hardware is usually a manual and robot-specific ad-hoc process"
+		MURI integration 
+	Assumes single rosmaster, and no node launches another node as part of execution
+		Pretty reasonable
+	Talks about a boolean person detector
+		This stuff frequently gets really noisy, people can be hard to detect
+		Although hitting a person you fail to detect is provably correct, it's not great
+	Permits easy integration of provably correct controllers to ROS
+		Doesn't deal with the problems with provably correct controllers
+			Perfect information
+			Perfect sensors/actuators
+
+
+Robot Creation from Functional Specifications 
+Ankur M. Mehta, Joseph DelPreto, Kai Weng Wong, Scott Hamill, Hadas Kress-Gazit, and Daniela Rus
+	3D prints the entire robot from the specification, as well as synthesizing the controller for it
+	Still has binary sensors in the form of prepositions such as "seeObject_d" where d is an object
+		This blows up because the number of possible states is 2^cardnality(objects)
+	Maps propositions to components, so the actuations the robot can take and the senses it needs get added to the robot
+	This is actually a pretty cool argument for heterogeneity, in that the software can design the robot for you and add it to the swarm
+
+An End-to-End System for Accomplishing Tasks with Modular Robots
+Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit
+	V similar to "An Integrated System for Perception-Driven Autonomy with Modular Robots"
+	LTL controller isn't specified in terms of forms, but in terms of desired behaviors
+	Properties of robot action and of environment dictate selected forms
+
+
+What about the possibility of no interface at all?
+	Design the robots from the ground up so that their behavior under physics is as desired by the user
+	Sci-fi, but kind of ideal
+	Maybe in a stochastic way, spread like dust, etc. 
+	Assumes the limit case that robots are so cheap and so fast to build that it's easier to make piles of them than it is to reprogram the ones you already have
+	End case of physicomimetics as well: the robots actually _are_ particles and interact through attractive/repelling forces
