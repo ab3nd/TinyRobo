@@ -358,6 +358,37 @@ Such a projection allows the user to easily relate visual and range information,
 Previous work in multi-touch interfaces directly satisfies these requirements of EID by providing both an omniscient camera view for direct manipulation of the high-level, functional actions of the entire swarm, and the ability to move down the hierarchy to control individual swarm members \cite{Micire:2009:ANG:1731903.1731912}.
 The ability to display information about individual robots along side or on top of the interface representation of the robot is an important method of providing feedback to the user \cite{Kato:2009:MIC:1520340.1520500}. 
 
+\subsection{Existing UI Designs}
+
+\subsection{Video Game UI Design}
+
+Mobile video game design similar to top-down interaction with the 3M Multitouch monitor. 
+
+\todo{Mark's work on video games, RTS gamers want menus}
+
+Games with a similar top-down interface for control of multiple units generally appear in the genres of Real Time Strategy (RTS) games, Turn-based strategy games, and Multiplayer Online Battle Arena (MOBA). 
+
+Realtime strategy games generally have the player playing against multiple other players, some or all of which may be controlled by the computer. The goal of the game is typically to acquire some form of resources, which are used to develop military units. The military units are then used to attack the other players, with the goal of the game being to be the only remaining player. 
+
+Turn-based strategy games are similar to RTSs, but instead of all players acting simultaneously, each players actions are taken on their turn. 
+
+MOBAs have a smaller focus and more rapid play than RTS or turn-based strategy games. Typically, there are multiple players, but each player is on one of two sides battling over some set of objectives on the world map. Rather than controlling multiple units, each player controls a single, powerful unit, and may be able to influence weaker, semi-autonomous computer-controlled units.  There may be resources as in RTS games, but typically they are far more limited in number.   
+
+MOBAs, RTSs, and turn-based strategy games all have a similar user interface. The ``world'' or area of play is depicted as a map, typically viewed either top-down or an axonometric perspective. The map is where the main action of the game takes place, and displays the relative position of the characters and other elements of the game. Around the map are typically displays and interactive elements such as menus or buttons to interact with the game. 
+
+The control of units in the game is typically done using the mouse to select units and send commands via mouse clicks, while one hand operates keys, typically on the left side of the keyboard, for other functions. 
+How the keyboard is mapped depends on the pace of gameplay. For extremely rapid games, such as Defense of the Ancients (DoTA, a MOBA), there are a small number of key commands that can all be operated without removing the fingers of the left hand from the keyboard. DotA in particular uses mouse clicking, combined with the control, shift, and alt keys in various combinations, to perform all of the actions of gameplay \todo(cite https://dota2.gamepedia.com/Controls). 
+
+Age of Empires is a RTS. It is less fast-paced than DotA, but still takes place in realtime. Most of the keys of the keyboard are mapped to various commands, such as locating and selecting different types of units or buildings, or commanding those units and buildings. Commands to buildings typically cause the construction of various units, while consuming resources. For example, pressing `D' would find a Dock, and then pressing `A' would command the Dock to start work on a Fishing boat \todo{cite http://ageofempiresonline.wikia.com/wiki/List\_of\_Hotkeys }. 
+
+Europa Universalis 4 uses the entire top row of letters on the keyboard to switch between different map modes, and every other key to activate some feature of the game, as well as mouse controls for interactions with individual units and locations \todo{cite https://eu4.paradoxwikis.com/Controls}. Europa Universalis gameplay does not take place in realtime, and the player may speed or slow the game clock, as well as pausing the game. 
+
+Another common feature of MOBA, RTS, and turn-based strategy games is the ``fog of war". The entire map is normally hidden from the player until they command their units to enter an area, whereupon the area is revealed. In gameplay, the intent of fog of war is to prevent players from knowing about the opposing player's location without sending sorties. This lack of information is almost identical to that experienced by a teleoperator of a robot exploring an area with a SLAM algorithm, as the map is revealed to the operator as the robot moves into the area. 
+
+\todo{graphic here to depict typical game UI}
+
+Previous work with top-down multitouch user interfaces has found that users who play video games express a desire for more UI ``widget'' interactions, that is, interacting with buttons, menus, or specialized user interface components \cite{Micire:2009:ANG:1731903.1731912}. Gamers who play RTS games also used fewer pinch gestures in a multitouch context, possibly because RTS games are typically played with a mouse and keyboard, which does not have a pinch-like gesture. 
+
 % TODO: Maybe use some of this stuff, but I don't have a good idea where
 %Emergent behaviors arise from the interactions of actors with each other and the world around them. 
 %In the face of uncertainty in the world, the behaviors will also become uncertain. \change{cite trust work}
