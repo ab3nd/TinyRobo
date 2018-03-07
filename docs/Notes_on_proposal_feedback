@@ -793,6 +793,74 @@ Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit
 	LTL controller isn't specified in terms of forms, but in terms of desired behaviors
 	Properties of robot action and of environment dictate selected forms
 
+Kilobot: A Low Cost Scalable Robot System for Collective Behaviors
+Michael Rubenstein, Christian Ahler, and Radhika Nagpal
+	Original Kilobot hardware announcement
+	$14 worth of parts and 5 minutes to assemble (assuming you're not assembling the PCB)
+	Indicates that it's still hard to model robots interactions with each other and the environment, so the stuff from the Brooks paper still holds
+	Gives a price point for Jasmine of $130
+	Kilobots don't shut off
+		time to program, etc is constant 
+		Because every robot gets the same program
+	Heh. Kilobot parts cost is for 1000 units. 
+		My price is close to theirs at that level
+		And my robots don't need a whiteboard
+	
+Can deep-sleep a esp-8266 for 20uA, but no wifi
+Has no wifi-enabled sleep mode, radios are just power-hungry
+
+Automatic Synthesis of Controllers for Distributed Assembly and Formation Forming
+Eric Klavins
+	Controlled self-assembly of intelligent parts
+	Controllers syntehsized from some sort of description of the higher-level form
+	Forms forms in space, but has no notion of position within that space
+		So can't really go to a goal location
+	Focused on tree-graph structures
+	So, very close to being scooped maybe, but different enough 
+		He does call the controller synthesizer a compiler, though
+
+Translating Temporal Logic to Controller Specifications
+Georgios E. Fainekos, Savvas G. Loizou and George J. Pappas
+	LTL -> Hybrid automaton -> control spec
+	Control specification is probably for movement, continuious moves despite discrete states
+	Event-based semantics for LTL can't distingish events that must hold at an instant from those that must hold over a time period
+	Combines continuious flows (vector field) with discrete control transitions
+	I think this is making some assumptions of a pure holonomic robot on the ideal plane
+
+Neglect Benevolence in Human Control of Swarms in the Presence of Latency
+Phillip Walker, Steven Nunnally, and Mike Lewis, Andreas Kolling, Nilanjan Chakraborty, and Katia Sycara 
+	Claims to introduce neglect benevolence, first paper on HSI under latency
+		Published...?
+	Leader-follower control mentioned
+	Prev user studies had no delay, or had continuious input
+		which is a problem if the user is doing anything else
+	Swarm takes time to stabilize
+		Cites a lot of HSI papers
+		Neglect benevolence is leaving the swarm alone to stabilize
+	3 commands: Stop swarm, send heading to swarm, apply boids-style constraints
+	Latency adversly impacts finding targets
+	Adding a predictive display mitigates it
+	Paper never really shows their UI
+
+Virtual Synergy: A Human-Robot Interface for Urban Search and Rescue
+Sheila Tejada, Andrew Cristina, Priscilla Goodwyne, Eric Normand, Ryan O’Hara, and Shahrukh Tarapore
+	Robots build 3d VR map (Aibos + 2 blimps)
+	Virtual world acts as "memory" of the system, stores the things it has seen
+	System is based on Tekkotsu
+	Humans can interact with robots in VR
+	Student paper, probably undergrads
+	Not a lot of detail on UI evaluation
+
+Emergent Structures Assembled by Large Swarms of Simple Robots 
+David Andréen, Petra Jenning, Nils Napp, Kirstin Petersen
+	Robot behavior based on physical form
+	Bristlebots with laser-cut foam hats
+		Controller synthesis for this would be an interesting feat...
+	Not a lot of data, but description of the overall process
+		Has human-level interactive design
+			Really sounds like a job for genetic design, though
+	200 robots, pretty cheap swarm
+
 
 What about the possibility of no interface at all?
 	Design the robots from the ground up so that their behavior under physics is as desired by the user
@@ -800,3 +868,35 @@ What about the possibility of no interface at all?
 	Maybe in a stochastic way, spread like dust, etc. 
 	Assumes the limit case that robots are so cheap and so fast to build that it's easier to make piles of them than it is to reprogram the ones you already have
 	End case of physicomimetics as well: the robots actually _are_ particles and interact through attractive/repelling forces
+
+A Flexible Delegation-Type Interface Enhances System Performance in Human Supervision of Multiple Robots: Empirical Studies With RoboFlag
+Raja Parasuraman, Scott Galster, Peter Squire, Hiroshi Furukawa, and Christopher Miller
+	Addresses whether encreasing autonomy can help
+	Playbook control, waypoint control, or both
+	Delegation decreases mission time and increases successes
+	Only 8 robots
+	Cost of developing automation tradeoff for gains in efficency
+	Simulated red vs. blue teams playing capture the flag
+	Second experiment, users don't use automated plays as often as they could have
+		And some plays were prefered over others
+		And manual control reduced mission time (automation wasn't optimal)
+		Having manual and automation is best control, but higher workload
+	Seems a lot like the precursor to Perdix, and they mention control of military drones at the end of the paper "Other ongoing work [49], [50] on
+the implementation and application of such interfaces provides
+further support for their use in complex human–robot systems.
+This work has been conducted in a high-fidelity simulation em-
+ulating multiple small UAVs (fixed and rotary wing) operating
+in an urban environment to perform useful support services for
+small units of infantry soldiers."
+
+How Search and its Subtasks Scale in N Robots
+Huadong Wang, Michael Lewis, Prasanna Velagapudi, Paul Scerri, Katia Sycara
+	Full task - users directed robots and looked for victims
+	Explore - users just directed robots
+	Perceptual search - Users just looked for victims
+	Workload increases monotonically with robot count
+	Task performance on full task increased up to four robots, then decreased
+	Increasing autonomy decreases overload
+		Depends on task characteristics as well
+		Fan-out is higher with simpler tasks
+	
