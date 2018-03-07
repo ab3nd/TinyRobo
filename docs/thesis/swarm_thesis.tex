@@ -363,6 +363,18 @@ Level five, operation by consent, is a fairly high level of autonomy, but with a
 Increasing the autonomy to level nine, so that the robots are only checking in with the operator when an exceptional situation occurs, may still overwhelm the operator if enough robots are active.
 Increasing the use of automation may also create new difficulties by leaving operator out of practice, or encouraging mis-placed trust in the automation's ability \cite{lee2004trust}. 
 
+
+How Search and its Subtasks Scale in N Robots
+Huadong Wang, Michael Lewis, Prasanna Velagapudi, Paul Scerri, Katia Sycara
+	Full task - users directed robots and looked for victims
+	Explore - users just directed robots
+	Perceptual search - Users just looked for victims
+	Workload increases monotonically with robot count
+	Task performance on full task increased up to four robots, then decreased
+	Increasing autonomy decreases overload
+		Depends on task characteristics as well
+		Fan-out is higher with simpler tasks
+
 In fact, any kind of multitasking may prove insufficient for large swarms. 
 For teleoperation, the best case is uncrewed aerial vehicles (UAVs), which require relatively little oversight. 
 Uncrewed ground vehicles (UGVs) require more oversight than UAVs, due to the higher complexity of the ground environment. 
@@ -1871,29 +1883,44 @@ The software framework in development to support the robots is based on ROS, and
 
 \begin{table}
 	\begin{tabular}{l l l l l l l l }
-	Name & Part number & Value & Cost for 1 & Price break for 100 & Count & Subtotal & Subtotal (100)\\
-Battery &  &  & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
-C1, C2 &  & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
-C3 &  & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-C4 &  & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
-Charge IC & MCP73831 &  & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
-Charge LED &  &  & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
-Diode & GF1A &  & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
-DRV8830 &  &  & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
-Header &  & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
-PCB &  &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
-R1 &  & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-R2 &  & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-R3, R4 &  & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
-R5, R8, R9, R10, R11, R12 &  & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
-R6, R7 &  & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
-Switch & 410-2016 &  & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
-Thermal Fuse & 0zb0050FF2G1 &  & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
-V Regulator & MIC5265 &  & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
-Wifi & ESP-8266-03 &  & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
- &  &  &  &  &  & 23.38 & 11.9\\
+	Name & Value & Cost (1) & Cost (100) & Count & Subtotal & Subtotal (100)\\
+	\hline
+Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
+C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
+C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+C4 & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
+Charge IC & MCP73831 & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
+Charge LED & Green & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
+Diode & GF1A & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
+Motor driver & DRV8830 & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
+Header & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
+PCB &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
+R1 & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+R2 & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+R3, R4 & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
+R5, R8-12 & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
+R6, R7 & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
+Switch & 410-2016 & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
+Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
+V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
+Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
+\hline
+Total Cost &  &  &  &  & 23.38 & 11.9\\
 	\end{tabular}
 \end{table}
+
+Kilobot: A Low Cost Scalable Robot System for Collective Behaviors
+Michael Rubenstein, Christian Ahler, and Radhika Nagpal
+	Original Kilobot hardware announcement
+	\$14 worth of parts and 5 minutes to assemble (assuming you're not assembling the PCB)
+	Indicates that it's still hard to model robots interactions with each other and the environment, so the stuff from the Brooks paper still holds
+	Gives a price point for Jasmine of \$130
+	Kilobots don't shut off
+		time to program, etc is constant 
+		Because every robot gets the same program
+	Heh. Kilobot parts cost is for 1000 units. 
+		My price is close to theirs at that level
+		And my robots don't need a whiteboard
 
 The processor of the controller is an ESP-8266 wifi module.
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
