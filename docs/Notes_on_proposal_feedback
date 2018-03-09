@@ -899,4 +899,57 @@ Huadong Wang, Michael Lewis, Prasanna Velagapudi, Paul Scerri, Katia Sycara
 	Increasing autonomy decreases overload
 		Depends on task characteristics as well
 		Fan-out is higher with simpler tasks
+	Lower workload for perceptual search implies bandwidth for more robots
+
+Fan-out: Measuring Human Control of Multiple Robots
+Dan R. Olsen Jr., Stephen Bart Wood
+	Improved neglect time means more robots can be controlled
+	Fan out = active time/interaction time
+		Active time != neglect time, 
+			how long the robot can be active without human intervention
+			neglect time is not terribly well explained in this paper, check others
+		interaction time == how long it takes to interact with the robot
+	Fan out seems to plateau
+		for a fixed capability of robot, adding more robots doesn't get more effective
+	Task saturation 
+		User may not need all the robots
+	Also has fog of war in test interfaces for robot control
+	this isn't a swarm, robots are individually tasked
+	Fan-out masks some factors
+		very simple robots occupied user entirely with interaction, no planning for it
+
+
+A robot swarm assisting a human fire-fighter
+PENDERS, Jacques, ALBOUL, Lyuba, WITKOWSKI, Ulf, NAGHSH,
+Amir, SAEZ-PONS, Joan, HERBRECHTSMEIER, Stefan and HABBAL,
+Mohamed El
+	Guardians system
+	Robots are totally autonomous
+	Provide guidance information for fierfighters
+	Robots don't enter parts of building actually on fire
+	In smoke-filled areas of warehouse,though
+	Need relatively unobstructed floor
+	Robots do ad-hoc mesh networking
+		Overcomes metal in warehouse construction
+		Move to try to maintain connectivity
+	Phsyciomimetic/potential field control
+	Robots swarm around person
+	Person does not send explict commands to swarm
+
+If the robots are commanded in VR, would a VR flight between them help improve SA? 
+
+Programmable Parts: A Demonstration of the Grammatical Approach to Self-Organization
+J. Bishop, S. Burden, E. Klavins ∗ , R. Kreisberg, W. Malone, N. Napp and T. Nguyen
+	Self-organizing parts
+	parts float on an air table
+	Connect or disconnect based on local rules
+	Graph grammar running on each robot
+	Similar to chemical reaction rules, which is similar to state behavior of GCPR 
+		Not surprising, N. Napp and E. Klavins authors for this too
+	Some grammars are better than others for forming specific shapes
+
+A Grammatical Approach to Self-Organizing Robotic Systems
+Eric Klavins, Robert Ghrist, and David Lipsky
+	Looks v. similar to above 
+	Much more about the grammar, not so much about the hardware
 	
