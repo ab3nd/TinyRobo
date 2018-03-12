@@ -1,36 +1,36 @@
 participant 12
 task 1
+drag -o "robot to A" -t 1:11.908
 
 task 2
+drag -o "robot to A around wall" -t 1:45.759
 
 task 3
+drag -d "line in front of robot" -t 1:56.177
 
 task 4
+drag -o "red robot to a" -t 2:29.437
+drag -o "orange robot to b" -t 2:35.824
 
 task 5
+drag -o "red robot to b" -t 2:52.008
+drag -o "orange robot to a" -t 2:56.764
 
 task 6
+drag -d "line between robots" -o whitespace -t 3:06.716
 
 task 7 
+drag -o "from robot to crate to a" -t 3:42.095
 
 task 8
+lasso -o "defective robot " t 3:50.962
 
 task 9
+lasso -o "defective robot" -t 4:10.818
+drag -o "robot off screen" -t 4:13.319
 
 task 10
+drag -o "robot around border of screen" -t 4:35.790
 
 task 11
-
-task 12
-
-task 13
-
-task 14
-
-task 15
-
-task 16 
-
-task 17
-
-task 18
+drag -o "robot around area a" -t 4:55.518 

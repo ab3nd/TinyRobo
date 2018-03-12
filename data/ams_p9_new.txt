@@ -1,36 +1,61 @@
 participant 9
 task 1
+drag -o "robots" -t 2:43.965
+drag -o "robots" -f2 -t 2:46.586
+drag -o "robots" -t 2:48.950
+drag -o "robots" -t 2:56.799
+drag -o "area A towards robots" -t 2:57.571
+drag -o "robots" -t 3:00.568
+voice -c "move" -t 3:18.497
+voice -c "move to area A" -t 3:25.852
 
 task 2
+voice -c "jump over the wall and move to area A" -t 3:44.677
 
 task 3
+voice -c "stop where you are" -t 3:58.799
 
 task 4
+voice -c "half of the robots move around the wall and go to area a and the other half move around the wall and go to area b" -t 4:24.309
 
 task 5
+voice -c "orange robots move around the wall and proceed to area B while the red robots move around the wall and proceed to area A" -t 4:46.825
 
 task 6
+voice -c "orange robots move around the wall and proceed to area A and red robots move around the wall and proceed to area B" -t 5:03.322
 
 task 7 
+voice -c "orange robots move around the wall and proceed to area A and red robots move around the wall and proceed to area B" -t 5:25.073
 
 task 8
+voice -c "robots, divide yourselves amongst two groups, half and half" -t 5:50.240
 
 task 9
+voice -c "both groups, merge with each other" -t 6:18.995
 
 task 10
+voice -c "robots form a single line with the back of one robot facing the front of another" -t 6:36.276 	
 
 task 11
+voice -c "robots form a square with the smallest area" -t 7:14.653
 
 task 12
+voice -c "robots position yourselves around the crate equally and move it to area a" -t 7:32.622
 
 task 13
+voice -c "robots position yourselves around the crate on three of the sides that are not facing towards area a and move the crate to area a" -t 7:58.926
 
 task 14
+voice -c "robots detect heat release rate and if the heat release rate is above the minumum rate please move to the corner" -t 8:24.601
 
 task 15
+voice -c "robots detect total heat release rate and if heat release rate is above a minimum level please move to the side away from all the other robots" -t 9:01.355
 
 task 16 
+voice -c "robots align yourselves in a straight line with the back of each robot facing the front of another and move across the screen" -t 9:26.759
 
 task 17
+voice -c "robots position yourselves in a straight line along the edge of area a and patrol across area a" -t 9:51.381
 
 task 18
+voice -c "robots disperse over the screen area without exiting the border"

@@ -1,36 +1,59 @@
 participant 11
 task 1
+drag -o "robots to A" -t 1:41.937
+drag -o "robots to A" -x -t 1:54.659
+drag -o "robots to A" -x -t 1:58.633
+drag -o "robots to A" -x -t 2:02.429
 
 task 2
+drag -o "robots to A" -x -t 2:38.799
+drag -o "robots to A" -x -t 2:46.886
 
 task 3
+tap -h -o robots -t 3:22.313
 
 task 4
+drag -o "robots to a" -t 3:56.101
+drag -o "robots to b" -t 4:00.617
+drag -o "robots to a" -t 4:05.085
+drag -o "robots to b" -t 4:09.953
 
 task 5
+drag -o "orange robots to b" -t 4:26.699
+drag -o "red robots to a" -t 4:30.279
 
 task 6
+drag -o "orange robots to a" -t 4:45.963
+drag -o "red robots to b" -t 4:49.159
 
 task 7 
+drag -o "orange robots to a" -t 5:10.447
+drag -o "red robots to b" -t 5:13.595
 
 task 8
+drag -d "line diagonally through robots" -t 6:01.958
 
 task 9
+pinch -f2 -h2 -o "robot groups" -t 6:17.822
 
 task 10
+voice -c "form a line" -t 6:36.150
 
 task 11
+voice -c "form a square" -t 6:45.985
+drag -d square -o "robots" -t 7:00.907
 
 task 12
+drag -o "crate to a" -t 7:17.308
 
 task 13
+drag -o "crate to a" -t 7:35.038 
 
 task 14
+drag -o "edges of screen, no contact w/ robots" -t 8:07.361
 
 task 15
+drag -d "circle around area A" -o "area a" -t 8:19.715
 
 task 16 
-
-task 17
-
-task 18
+other -d "5f scatter " -o "robots" -t 8:30.629
