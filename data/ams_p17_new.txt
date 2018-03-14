@@ -1,36 +1,38 @@
 particpant 17
 task 1
+drag -o "robot to area A" -t 1:22.672
 
 task 2
+drag -o "robot around wall to area A" -t 1:41.501
 
 task 3
+tap -h -o robot -t 1:56.527
 
 task 4
+drag -o "red robot to a" -t 2:41.574
+drag -o "orange robot to b" -t 2:46.467
 
 task 5
+drag -o "orange robot to a" -t 3:01.458
+drag -o "red robot to b" -t 3:05.719
 
 task 6
+drag -o "right robot to the right" -t 3:23.093
+drag -o "left robot to the left" -t 3:27.062
 
 task 7
+drag -o "crate to A" -x -n -t 4:01.594
+drag -o "robot to crate to A" -x -n -t 4:14.884
+drag -o "crate to A" -t 4:29.645
 
 task 8
+tap -o "defective robot" -t 5:13.709
 
 task 9
+drag -o "defective robot to upper right corner" -t 5:33.923
 
 task 10
+drag -o "robot around screen border" -t 5:58.522
 
 task 11
-
-task 12
-
-task 13
-
-task 14
-
-task 15
-
-task 16
-
-task 17
-
-task 18
+drag -o "robot to area A and around it" -t 6:09.763
