@@ -1,0 +1,111 @@
+particpant 15
+task 1
+drag -o "robots center of group to edge of group" -t 1:24.066
+drag -o "arc along top l quarter of robot group" -t 1:25.000
+drag -o "robots to A" -t 1:26.443
+lasso -o robots -t 1:30.926
+drag -o "robots to A" -t 1:31.636
+
+task 2
+drag -o "around robots then through the wall to A" -t 2:22.624
+
+task 3
+drag -o "wall up and over into the path of the robots" -t 2:38.409
+
+task 4
+drag -d "vertical dividing line" -o "middle of robot group" -t 3:11.409
+drag -d "arrow from robots to A" -o "robots to A" -t 3:14.966
+lasso -o "r half of robots" -t 3:17.123
+drag -d "arrow from robots to b" -o "lassoed robots" -t 3:18.284
+
+task 5
+drag -o "orange to A through wall" -t 3:59.252
+drag -o "around orange robots then to A through wall" -t 4:02.546
+drag -o "around red robots then to B through wall" -t 4:06.123
+
+task 6
+lasso -o "orange robots" -t 4:26.387
+drag -o "orange robots to A" -t 4:27.661
+drag -d "arrowhead on previous drag" -o "drag motion" -t 4:28.371
+lasso -o "red robots" -t 4:30.287
+drag -o "red robots to B" -t 4:31.409
+drag -d "arrowhead on previous drag" -o "drag motion" -t 4:31.925
+
+task 7
+lasso -o "all robots" -t 4:56.080
+drag -o "robots to wall in center" -t 4:58.274
+memo -d "no attempt to sort robots"
+
+task 8
+drag -d "vertical dividing line" -o robots -t 5:15.027
+
+task 9
+pinch -r -f2 -h2 -o "both robot groups" -t 5:30.924
+pinch -r -f2 -h2 -o "both robot groups" -x -t 6:24.962
+
+task 10
+voice -c "robots, form a line" -t 6:41.986
+drag -o "robots to top edge of screen then vertically down" -t 6:43.098
+drag -o "vertical line over previous one" -t 6:43.855
+
+task 11
+voice -c "robots, form the square" -t 6:57.970
+drag -d "l edge of square" -o whitespace -t 6:58.351
+drag -d "other three sides of square" -o whitespace -t 6:59.859
+
+task 12
+drag -o "crate to a" -t 7:14.957
+drag -d arrowhead -o "previous drag" -t 7:15.706
+
+task 13
+drag -o "crate to a" -t 7:30.028
+drag -d arrowhead -o "previous drag" -t 7:31.235
+
+task 14
+lasso -o "defective robot" -t 7:47.856
+lasso -o "defective robot" -x -t 7:56.799
+lasso -o "defective robot" -x -t 7:58.279
+
+task 15
+lasso -o "defective robot" -t 8:16.130
+drag -o "defective robot to bottom l corner" -t 8:20.329
+
+task 16
+drag -o "robots to l edge" -t 9:16.365
+drag -o "robots l side of top edge" -t 9:17.010
+drag -o "robots to r side of top edge" -t 9:17.576
+drag -o "robots to r edge" -t 9:18.319
+drag -o "robots to bottom edge" -t 9:19.029
+drag -o "robots to bottom edge" -t 9:20.203 
+
+task 17
+lasso -o "small group of robots" -t 9:31.904
+drag -o "lassoed group to top edge of A" -t 9:33.581
+drag -d "part of arrowhead" -o "prevous drag" -t 9:33.878
+drag -d "other side of arrowhead" -o "drag" -t 9:34.411
+drag -o "lassoed robots to l side of A" -t 9:35.411
+drag -o "lassoed robots to bottom of A" -t 9:36.298
+drag -d arrowhead -o "drag to bottom of A" -t 9:36.911
+drag -o "lassoed robots to right of A" -t 9:38.525
+
+task 18
+drag -o "robots to tr corner" -t 9:52.574
+drag -o "robots to top" -t 9:53.156
+drag -d arrowhead -o "previous drag" -t 9:53.601
+drag -o "robots to tl corner" -t 9:54.103
+drag -d arrowhead -o "previous drag" -t 9:54.414
+drag -o "robots to l side" -t 9:54.901
+drag -d arrowhead -o "previous drag" -t 9:55.258
+drag -o "robots to bottom l corner" -t 9:55.823
+drag -d arrowhead -o "previous drag" -t 9:56.149
+drag -o "robots to bottom" -t 9:56.644
+drag -d arrowhead -o "previous drag" -t 9:56.938
+drag -o "robots to bottom r" -t 9:57.35
+drag -d arrowhead -o "previous drag" -t 9:58.071
+drag -o "robots to r" -t 9:58.516
+drag -d arrowhead -o "previous drag" -t 9:59.001
+drag -o "robots to top r" -t 9:59.338
+drag -d arrowhead -o "previous drag" -t 9:59.753
+
+
+

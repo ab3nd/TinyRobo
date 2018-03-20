@@ -1,0 +1,47 @@
+particpant 22
+task 1
+drag -o "robot to A" -t 1:40.674
+drag -o "robot to A" -x -t 2:20.453
+
+task 2
+drag -o "robot to A" -t 2:42.951
+
+task 3
+voice -c "robot, stop!" -t 3:02.479
+tap -c 2 -x -o robot -t 3:07.293
+
+task 4
+drag -o "red robot to A" -t 3:40.841
+drag -o "orange to B" -t 3:44.437
+
+task 5
+drag -o "red robot to B" -t 4:26.470
+drag -o "orange to A" -t 4:30.268
+
+task 6
+voice -x -c "numbers 1-20 go right" -t 5:18.052
+voice -x -c "numbers 21-30 go left" -t 5:21.368
+tap -c2 -o "r robot" -t 5:28.296
+tap -c2 -o "r robot" -t 5:31.716
+ui -k other -d "tap a color from a palette on tr of screen (tap)" -t 5:46.408
+tap -o "r robot" -t 5:47.436
+ui -k other -d "tap a color from a palette on tl of screen (tap)" -t 5:48.257
+tap -o "l robot" -t 5:48.798 
+
+task 7
+voice -x -c "robot take crate to area A" -t 6:17.573
+drag -o "robot behind crate and to area A" -t 6:33.471
+
+task 8
+ui -k other -d "tap a color from a palette on tr of screen (tap)" -t 7:25.717
+ui -k other -x -d "tap a color from a palette on tr of screen (tap)" -t 7:26.586
+tap -o "defective robot" -t 7:27.487
+
+task 9
+drag -o "defective robot off screen" -t 7:52.055
+
+task 10
+drag -o "robot around border of screen 4 times" -t 8:20.432
+
+task 11
+memo -d "user talked about controlling multiple robots, didn't touch screen"

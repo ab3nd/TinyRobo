@@ -1,0 +1,41 @@
+participant 27
+
+task 1
+drag -o "robot to A" -t 1:15.319
+tap -o robot -t 1:15.293
+tap -o "area A" -t 1:16.636
+
+task 2
+drag -o "robot to A around wall on l" -t 1:32.652
+
+task 3
+drag -d line in front of robot" -o whitespace -t 1:49.881
+
+task 4
+drag -o "red robot to A" -t 2:13.833
+drag -o "orange robot to B" -t 2:16.314
+
+task 5
+drag -o "orange robot to A" -t 2:32.988
+drag -o "red robot to B" -t 2:34.361
+
+task 6
+drag -d "dividing line between robots" -t 2:51.106
+
+task 7
+drag -o "robot behind crate" -t 3:09.342
+drag -o "crate to A" -t 3:11.211
+
+task 8
+lasso -o "robot, looped three times" -t 3:27.829
+
+task 9
+drag -d "spiral around robot and line off l edge of screen" -o robot -t 3:44.863
+
+task 10
+drag -o "robot to bl corner" -t 4:02.356
+drag -o "perimiter of screen" -t 4:06.737
+
+task 11
+drag -o "robot to bl corner of A" -t 4:24.589
+drag -o "perimiter of area a" -t 4:26.602

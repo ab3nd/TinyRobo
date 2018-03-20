@@ -1,0 +1,71 @@
+particpant 25
+task 1
+drag -o "robots to A" -t 1:53.153
+
+task 2
+drag -o "robots around wall on l to A" -t 2:08.859
+
+task 3
+drag -o "robots back behind wall" -t 2:28.279
+
+task 4
+drag -d "dividing line vertically in middle of robots" -t 2:44.305
+drag -o "robots to A" -t 2:46.366
+drag -o "robots to B" -t 2:48.291
+
+task 5
+drag -o "orange robots to A" -t 3:07.765
+drag -o "red robots to B" -t 3:10.033
+
+task 6
+drag -o "red robots to A" -t 3:39.655
+drag -o "orange robots to B" -t 3:42.668
+
+task 7
+memo -d "describes having the robots split up by color, but no command to do it"
+drag -o "orange robots to A" -t 4:11.324
+drag -o "red robots to B" -t 4:14.056
+voice -x -c "I guess I'd say 'orange unite' or something (prompted)" -t 5:06.389
+voice -x -c "red unite" -t 5:08.802
+
+task 8
+voice -c "split up evenly" -t 5:42.82
+
+task 9
+voice -c "come together" -t 6:01.125
+pinch -f2 -h1 -o "both robot groups" -t 6:04.257
+
+task 10
+voice -c "get in a line" -t 6:23.250
+drag -d "vertical line" -o whitespace -t 6:24.833
+
+task 11
+voice -c "form a square" -t 6:39.946
+drag -d square -o "middle of screen" -t 6:41.950
+
+task 12
+drag -o "robots to crate" -t 7:01.163
+drag -o "just under crate to A" -t 7:04.841
+
+task 13
+voice -c "come together" -t 7:27.072
+drag -o "robots to crate" -t 7:32.276
+drag -o "just under crate to A" -t 7:34.360
+
+task 14
+memo -d "described splitting them into a group except for the defective one, but didn't interact with system"
+drag -d circle -o whitespace -t 8:37.929 
+
+task 15
+memo -d "described splitting them into a group except for the defective one and then removing the defective one, but didn't interact with system"
+
+task 16
+drag -o "screen border" -t 9:31.804
+
+task 17
+drag -o "robots to A and around border of A" -t 9:53.523
+
+task 18
+memo -d "Said they would tell them to disperse into open area, not sure if that should really be counted as a voice command"
+voice -c "disperse into the open area" -t 10:16.714
+drag -d circle -o "open area/around robots" -t 10:27.588

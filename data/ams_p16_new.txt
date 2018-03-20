@@ -1,0 +1,67 @@
+particpant 16
+task 1
+drag -o "robots to A" -t 2:00.994
+
+task 2
+drag -o "robots to A around wall" -t 2:24.766
+
+task 3
+drag -o "robots back away from A" -t 2:41.748
+
+task 4
+drag -o "robots to B" -t 3:19.448
+drag -o "robots from B to A" -t 3:21.456
+
+task 5
+drag -o "orange robots to B" -t 3:42.466
+drag -o "red robots to A" -t 3:43.824
+
+task 6
+drag -o "red robots to B" -t 3:55.418
+drag -o "orange robots to A" -t 3:56.469
+
+task 7
+drag -o "orange robots to A" -t 4:08.087
+drag -o "red robots to B" -t 4:09.514
+
+task 8
+drag -d "vertical line through robots" -o robots -t 4:21.685
+
+task 9
+drag -o "l group to right" -t 4:36.805
+
+task 10
+drag -o "robots to near top center of screen" -t 4:54.462
+drag -o "robots to same location near top center of screen" -t 4:56.183
+drag -o "robots to center of screen" -t 4:57.597
+
+task 11
+drag -o "edge of robots towards middle of screen" -t 5:54.670
+drag -o "edge of robots towards middle of screen" -t 5:56.155
+drag -o "edge of robots towards middle of screen" -t 5:57.936
+drag -o "edge of robots towards middle of screen" -t 5:59.926
+drag -o "edge of robots towards middle of screen" -t 6:00.661
+drag -o "edge of robots towards middle of screen" -t 6:01.473
+
+task 12
+drag -o "crate to area A" -t 6:34.334
+
+task 13
+drag -o "crate to area A" -t 6:46.845
+
+task 14
+drag -o "robots around border of screen" -t 7:54.319
+
+task 15
+drag -o "robots to area A and around it " -t 8:42.126
+
+task 16
+drag -o "robots to bl corner" -t 8:54.993
+drag -o "robots to bottom" -t 8:55.487
+drag -o "robots to bottom" -t 8:55.892
+drag -o "robots to br corner" -t 8:56.401
+drag -o "robots to r side" -t 8:56.863
+drag -o "robots to tr" -t 8:57.253
+drag -o "robots to top" -t 8:57.724
+drag -o "robots to top l" -t 8:58.314
+drag -o "robots to top" -t 8:58.919

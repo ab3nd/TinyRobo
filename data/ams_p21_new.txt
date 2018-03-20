@@ -1,0 +1,55 @@
+particpant 21
+task 1
+tap -o "area A (probably accidental)" -t 1:37.953
+drag -d "inverted V on robots" -o robots -t 1:44.622 
+tap -o "area A" -t 1:45.994
+
+task 2
+drag -o "robots around wall to a" -t 2:02.570
+
+task 3
+tap -h -o robots -t 2:13.237
+tap -c2 -h -o robots -x -t 2:30.089 
+
+task 4
+drag -o "robots to A" -t 2:52.449
+drag -o "robots to B" -t 2:52.449
+
+task 5
+drag -o "red robots to A" -t 3:09.466
+drag -o "orange robots to B" -t 3:09.466
+
+task 6
+drag -o "red robots to B" -t 3:21.213
+drag -o "orange robots to A" -t 3:21.213
+
+task 7
+drag -o "red robots to B" -t 3:34.438
+drag -o "orange robots to A" -t 3:34.438
+
+task 8
+other -d "3f per hand 2h drag toward bottom l and r of screen from center" -o robots -t 3:46.232
+
+task 9
+pinch -f2 -h2 -o "both groups of robots" -t 4:28.235
+
+task 10
+drag -d "line across middle of screen" -o whitespace -t 4:51.497
+
+task 11
+drag -d square -o "middle of the screen/robots" -t 5:05.290
+
+task 12
+drag -o "crate into A" -t 5:18.228
+
+task 13
+drag -o "crate into A" -t 5:27.903
+
+task 14
+drag -o "border of screen (clockwise)" -t 6:07.748
+
+task 15
+drag -o "from robots to border of A" -t 6:21.077
+
+task 16
+lasso -o "robots (anticlockwise)" -t 6:34.956

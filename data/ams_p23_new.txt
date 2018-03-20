@@ -1,0 +1,200 @@
+particpant 23
+task 1
+drag -o "robot to A" -t 1:26.159
+drag -o "robot to A" -t 1:27.276
+drag -o "robot to A" -t 1:28.418
+drag -o "robot to A" -t 1:29.759
+drag -o "robot to A" -t 1:31.059
+drag -o "robot to A" -t 1:32.146
+drag -o "robot to A" -t 1:33.248
+drag -o "robot to A" -t 1:34.197
+drag -o "robot to A" -t 1:34.914
+drag -o "robot to A" -t 1:36.103
+
+task 2
+drag -o "robot to A r around wall" -t 2:05.496
+drag -o "robot to A r around wall" -t 2:06.684
+drag -o "robot to A l around wall" -t 2:08.208
+drag -o "robot to A l around wall" -t 2:09.837
+drag -o "robot to A l around wall" -t 2:11.443
+drag -o "robot to A l around wall" -t 2:12.337
+drag -o "robot to A l around wall" -t 2:13.455
+drag -o "robot to A r around wall" -t 2:14.765
+drag -o "robot to A r around wall" -t 2:16.56
+ 
+task 3
+voice -c "stop" -t 2:30.234
+other -d "hand chop over center of screen" -n -t 2:31.817
+other -d "hand chop over end of wall" -n -t 3:03.964
+memo -d "user expressed preference for voice commands"
+other -d "hand chop and slide from end of wall across front of swarm" -t 4:01.203
+other -d "hand chop and slide from other end of wall to edge" -t 4:02.954
+
+task 4
+drag -o "robot to A" -t 4:21.851
+drag -o "robot to A" -t 4:22.537
+drag -o "robot to A" -t 4:24.117
+drag -o "robot to A" -t 4:25.402
+drag -o "robot to B" -t 4:26.319
+drag -o "robot to B" -t 4:27.221
+drag -o "robot to B" -t 4:28.202
+drag -o "robot to B" -t 4:29.072
+drag -o "robot to B" -t 4:30.093
+
+task 5
+drag -o "orange to A" -t 4:55.383
+drag -o "orange to A" -t 4:55.803
+drag -o "orange to A" -t 4:56.609
+drag -o "orange to A" -t 4:57.637
+drag -o "orange to A" -t 4:58.411
+drag -o "orange to A" -t 4:59.105
+drag -o "orange to A" -t 4:59.821
+drag -o "orange to A" -t 5:00.762
+drag -o "orange to A" -t 5:01.695
+drag -o "orange to A" -t 5:02.788
+drag -o "orange to A" -t 5:03.881
+drag -o "red to B" -t 5:04.933
+drag -o "red to B" -t 5:05.652
+drag -o "red to B" -t 5:06.650
+drag -o "red to B" -t 5:07.487
+drag -o "red to B" -t 5:08.237
+drag -o "red to B" -t 5:08.787
+drag -o "red to B" -t 5:10.531
+drag -o "red to B" -t 5:11.321
+drag -o "red to B" -t 5:12.302
+drag -o "red to B" -t 5:13.406
+drag -o "red to B" -t 5:14.306
+
+task 6
+drag -o "orange to A" -t 5:57.886 
+drag -o "orange to A" -t 5:58.379
+drag -o "orange to A" -t 5:59.129
+drag -o "orange to A" -t 6:00.132
+drag -o "orange to A" -t 6:01.925
+drag -o "red to A" -t 6:11.351
+drag -o "orange to B" -t 6:11.981
+drag -o "red to A" -t 6:12.891
+drag -o "orange to B" -t 6:14.160
+drag -o "red to A" -t 6:16.893
+drag -o "orange to B" -t 6:17.619
+drag -o "red to A" -t 6:19.208
+drag -o "orange to B" -t 6:20.404
+drag -o "red to A" -t 6:21.85
+drag -o "orange to B" -t 6:22.975
+drag -o "red to A" -t 6:24.020
+drag -o "orange to B" -t 6:25.722
+drag -o "red to A" -t 6:26.663
+
+task 7
+drag -o "red to B" -t 6:49.953
+drag -o "orange to A" -t 6:51.351
+drag -o "red to B" -t 6:53.122
+drag -o "orange to A" -t 6:555.196
+drag -o "red to A" -t 6:56.767
+drag -o "orange to B" -t 6:58.012
+drag -o "orange to A" -t 6:58.564
+drag -o "red to B" -t 6:59.658
+drag -o "orange to A" -t 7:00.552
+drag -o "red to B" -t 7:02.173
+drag -o "orange to A" -t 7:03.859
+
+task 8
+drag -d "dividing line between robots" -t 7:17.354
+
+task 9
+pinch -o "one robot from each group" -f2 -h2 -t 7:38.6
+pinch -o "one robot from each group" -f2 -h2 -t 7:39.117
+pinch -o "one robot from each group" -f2 -h2 -t 7:39.686
+pinch -o "one robot from each group" -f2 -h2 -t 7:40.339
+pinch -o "one robot from each group" -f2 -h2 -t 7:40.888
+
+task 10
+drag -o "robot, adjust position" -t8:03.878
+drag -o "robot, adjust position" -t8:04.465
+drag -o "robot" -t 8:05.173
+drag -o "robot" -t 8:06.060
+drag -o "robot" -t 8:06.715
+drag -o "robot" -t 8:07.152
+drag -o "robot" -t 8:08.229
+drag -o "robot" -t 8:09.178
+
+task 11
+drag -o "robot" -t 8:36.182
+drag -o "robot" -t 8:39.154
+drag -o "robot" -t 8:40.041
+drag -o "robot" -t 8:40.641
+drag -o "robot" -t 8:41.191
+drag -o "robot" -t 8:41.859
+drag -o "robot" -t 8:42.665
+drag -o "robot" -t 8:44.51
+
+task 12
+drag -o "robot above crate" -t 9:12.467
+drag -o "robot above crate" -t 9:13.080
+drag -o "robot above crate" -t 9:14.11
+drag -o "robot above crate" -t 9:16.603
+drag -o "robot above crate" -t 9:17.274
+
+task 13
+lasso -o "for lower r robots" -t 11:45.207
+tap -o "screen near box, fingers far apart" -f2 -t 11:47.067
+tap -o "screen above and behind box, fingers far apart" -f2 -t 11:52.041
+
+task 14
+drag -d "circle around defective robot spiralling upwards away from screen, almost no contact" -o "defective robot" -t 12:30.574
+
+task 15
+tap -o "just off top center of screen" -t 13:16.606
+drag -o "defective robot off screen" -t 13:32.289
+memo -d "talked about assigning robots to move the defective robot, but didn't make any gestures indicating which ones"
+drag -o "curve at top of screen indiciating dead robot area" -x -t 13:14.161
+
+task 16
+drag -o "screen border counterclockwise" -n -t 14:13.885
+drag -o "robot along bottom of screen" -x -t 14:21.6
+drag -o "second robot to bottom of screen" -x -t 14:23.062
+memo -d "ended up being more a description of algorithm than command"
+tap -o "robot" -x -t 14:58.647
+tap -o "robot" -x -t 14:59.018
+tap -o "robot" -x -t 14:59.726
+tap -o "robot" -x -t 15:00.156
+tap -o "robot" -x -t 15:00.266
+tap -o "robot" -x -t 15:00.636
+tap -o "robot" -x -t 15:01.430
+tap -o "robot" -x -t 15:01.843
+tap -o "robot" -x -t 15:02.138
+tap -o "robot" -x -t 15:03.230
+tap -o "robot" -x -t 15:08.418
+
+task 17
+drag -o "perimeter of area A" -t 15:42.982
+tap -o "robot" -t 15:44.060
+tap -o "robot" -t 15:44.575
+tap -o "robot" -t 15:44.796
+tap -o "robot" -t 15:45.162
+tap -o "robot" -t 15:45.528
+tap -o "robot" -t 15:46.196
+tap -o "robot" -t 15:46.561
+tap -o "robot" -t 15:47.156
+tap -o "robot" -t 15:47.617
+tap -o "robot" -t 15:48.174
+drag -o "perimeter of area A" -t 15:55.494
+
+task 18
+drag -f2 -o "vertically down screen" -t 16:37.4
+drag -f2 -o "vertically down screen" -t 16:38.319
+drag -f2 -o "vertically down screen" -t 16:39.090
+drag -f2 -o "horizontally across screen" -t 16:39.989
+drag -f2 -o "horizontally across screen" -t 16:40.922
+tap -o "robot" -t 16:54.637
+tap -o "robot" -t 16:55.043
+tap -o "robot" -t 16:55.334
+tap -o "robot" -t 16:55.668
+tap -o "robot" -t 16:56.019
+tap -o "robot" -t 16:56.505
+tap -o "robot" -t 16:56.902
+tap -o "robot" -t 16:57.292
+memo -d "none of this is part of issuing the command, just explaning the algorithm"
+
+
+

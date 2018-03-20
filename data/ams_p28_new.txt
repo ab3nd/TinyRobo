@@ -1,0 +1,231 @@
+participant 28
+
+task 1
+drag -o "robot to A" -t 1:06.517
+drag -o "robot to A" -t 1:08.482
+drag -o "robot to A" -t 1:10.311
+drag -o "robot to A" -t 1:14.652
+drag -o "robot v short distance" -t 1:15.598
+tap -o "area A" -t 1:15.598
+memo -d "asked to restart"
+tap -o "area A" -t 1:27.113
+
+task 2
+drag -o "robot to A" -t 2:16.129
+drag -o "robot to A" -t 2:17.974
+drag -o "robot to A" -t 2:19.468
+drag -o "robot to A" -t 2:21.678
+drag -o "robot to A" -t 2:23.339
+drag -o "robot to A" -t 2:24.872
+drag -o "robot to A" -t 2:26.982
+drag -o "robot to A" -t 2:28.449
+
+task 3
+tap -c2 -o whitespace -t 2:47.272
+
+task 4
+drag -o "robot to A" -t 3:19.949
+drag -o "robot to A" -t 3:21.776
+drag -o "robot to A" -t 3:23.596
+drag -o "robot to A" -t 3:24.714
+drag -o "robot to A" -t 3:26.095
+drag -o "robot to A" -t 3:27.365
+drag -o "robot to A" -t 3:28.443
+drag -o "robot to A" -t 3:29.592
+drag -o "robot to A" -t 3:30.581  
+
+task 5
+memo -d "missed the crossover"
+drag -o "orange robot a short distance" -t 4:34.972
+drag -o "orange robot to A" -t 4:47.051
+drag -o "orange robot to A" -t 4:48.097
+drag -o "orange robot to A" -t 4:49.261
+drag -o "orange robot to A" -t 4:50.178
+drag -o "orange robot to A" -t 4:51.198
+drag -o "orange robot to A" -t 4:52.519
+drag -o "orange robot to A" -t 4:53.667
+drag -o "orange robot to A" -t 4:54.967
+drag -o "orange robot to A" -t 4:55.964
+drag -o "orange robot to A" -t 4:57.210
+drag -o "orange robot to A" -t 4:58.022
+drag -o "red robot to B" -t 4:58.979
+drag -o "red robot to B" -t 5:00.017
+drag -o "red robot to B" -t 5:00.990
+drag -o "red robot to B" -t 5:01.819
+drag -o "red robot to B" -t 5:02.777
+drag -o "red robot to B" -t 5:03.719
+drag -o "red robot to B" -t 5:04.853
+drag -o "red robot to B" -t 5:05.730
+drag -o "red robot to B" -t 5:06.896
+
+task 6
+memo -d "user recognized that they missed the cross condtion"
+drag -o "orange robot to A" -t 5:33.478
+drag -o "orange robot to A" -t 5:34.197
+drag -o "orange robot to A" -t 5:35.386
+drag -o "orange robot to A" -t 5:36.458
+drag -o "orange robot to A" -t 5:37.638
+drag -o "red robot to B" -t 5:38.829
+drag -o "red robot to B" -t 5:39.605
+drag -o "red robot to B" -t 5:40.481
+drag -o "red robot to B" -t 5:41.568
+drag -o "red robot to B" -t 5:42.605
+ 
+task 7
+drag -o "orange robot to A" -t 6:14.750
+drag -o "orange robot to A" -t 6:15.724
+drag -o "orange robot to A" -t 6:17.034
+drag -o "orange robot to A" -t 6:18.311
+drag -o "orange robot to A" -t 6:19.667
+drag -o "red robot to B" -t 6:20.656
+drag -o "red robot to B" -t 6:21.606
+drag -o "red robot to B" -t 6:22.523
+drag -o "red robot to B" -t 6:23.921
+drag -o "red robot to B" -t 6:24.941
+
+task 8
+tap -o robot -t 7:06.885
+tap -o "whitespace on r" -t 7:07.434
+tap -o robot -t 7:08.023
+tap -o "whitespace on r" -t 7:08.487
+tap -o robot -t 7:09.252
+tap -o "whitespace on r" -t 7:09.962
+tap -o robot -t 7:10.706
+tap -o "whitespace on r" -t 7:11.279
+tap -o robot -t 7:12.003
+tap -o "whitespace on r" -t 7:12.633
+tap -o robot -t 7:13.294
+tap -o "whitespace on l" -t 7:13.708
+tap -o robot -t 7:14.201
+tap -o "whitespace on l" -t 7:14.654
+tap -o robot -t 7:15.255
+tap -o "whitespace on l" -t 7:15.668
+tap -o robot -t 7:16.201
+tap -o "whitespace on l" -t 7:16.638
+tap -o robot -t 7:17.101
+tap -o "whitespace on l" -t 7:17.505
+
+task 9
+tap -o robot -t 7:29.191
+tap -o "whitespace in center" -t 7:29.683
+tap -o robot -t 7:30.504
+tap -o "whitespace in center" -t 7:30.504
+tap -o robot -t 7:31.587
+tap -o "whitespace in center" -t 7:31.999
+tap -o robot -t 7:32.590
+tap -o "whitespace in center" -t 7:32.948
+tap -o robot -t 7:33.604
+tap -o "whitespace in center" -t 7:34.021
+tap -o robot -t 7:34.491
+tap -o "whitespace in center" -t 7:35.715
+tap -o robot -t 7:36.096
+tap -o "whitespace in center" -t 7:36.413
+tap -o robot -t 7:36.778
+tap -o "whitespace in center" -t 7:37.182
+tap -o robot -t 7:37.572
+tap -o "whitespace in center" -t 7:37.945
+
+task 10
+tap -o robot -t 8:24.174
+tap -o "whitespace near top of screen" -t 8:24.827
+tap -o robot -t 8:25.729
+tap -o "whitespace near top of screen" -t 8:26.182
+tap -o robot -t 8:26.828
+tap -o "whitespace near middle of screen" -t 8:27.321
+tap -o robot -t 8:28.060
+tap -o "whitespace near middle of screen" -t 8:28.449
+tap -o robot -t 8:29.008
+tap -o "whitespace near bottom of screen" -t 8:29.421
+tap -o robot -t 8:29.898
+tap -o "whitespace near top of screen" -t 8:30.066
+
+task 11
+tap -o robot -t 8:42.254
+tap -o "whitespace near bl of screen" -t 8:43.362
+tap -o robot -t 8:44.127
+tap -o "whitespace near l of screen" -t 8:44.662
+tap -o robot -t 8:45.436
+tap -o "whitespace near l of screen" -t 8:46.129
+tap -o robot -t 8:46.935
+tap -o "whitespace near l of screen" -t 8:47.364
+tap -o robot -t 8:48.577
+tap -o "whitespace near middle of screen" -t 8:49.468
+tap -o robot -t 8:49.833
+tap -o "whitespace near middle of screen" -t 8:50.631
+tap -o robot -t 8:51.197
+tap -o "whitespace near r center of screen" -t 8:52.107
+tap -o robot -t 8:52.950
+tap -o "whitespace near r center of screen" -t 8:53.465
+tap -o robot -t 8:54.190
+tap -o "whitespace near r center of screen" -t 8:54.691
+tap -o robot -t 8:55.473
+tap -o "whitespace near center of screen" -t 8:56.166
+tap -o robot -t 8:57.179
+tap -o "whitespace near bl of screen" -t 8:57.696
+
+task 12
+drag -o "robot to above crate" -t 9:29.395
+drag -o "robot to above crate" -t 9:31.431
+drag -o "robot to above crate" -t 9:33.075
+drag -o "robot to above crate" -t 9:34.191
+tap -o "above crate" -t 9:36.608
+tap -o "below crate" -t 9:38.134
+tap -c 2 -o whitespace -t 9:41.786
+drag -o "robot behind crate" -t 9:44.815
+drag -o "robot behind crate" -t 9:45.293
+drag -o "robot behind crate" -t 9:46.372
+drag -o "robot behind crate" -t 9:47.410
+tap -o "area a" -t 9:49.170
+
+task 13
+tap -o robot -t 10:30.557
+tap -o "behind crate" -t 10.31.362
+tap -o "below crate" -t 10:35.602
+tap -o robot -t 10:41.853
+tap -o "behind crate" -t 10:42.603
+tap -o "above crate" -t 10:45.680
+tap -o "above crate" -t 10:46.501
+tap -o "robot behind crate" -t 10:47.330
+tap -o "behind crate" -t 10:47.808
+tap -o "robot" -t 10:48.703
+tap -o "behind crate" -t 10:49.061
+tap -o "robot" -t 10:49.634
+tap -o "behind crate" -t 10:49.967
+tap -o robot -t 10:50.788
+tap -o "behind crate" -t 10:51.294
+tap -o "area A" -t 10:56.813
+
+task 14
+tap -h -o "defective robot" -t 11:21.592
+
+task 15
+tap -h -o "defective robot" -t 12:38.853
+ui -k menu -d "drop down menu option to remove robot" -t 12:42.929
+
+task 16
+drag -o "border of screen" -t 13:40.804
+tap -h -o "center of screen" -t 13:45.905
+ui -k menu -d "drop down menu option for continuious motion" -t 13:49.157
+
+task 17
+drag -o "robot to corner of A" -t 14:16.259
+tap -o "robot" -t 14:16.721
+tap -o "near corner of A" -t 14:17.175
+tap -o "robot" -t 14:18.042
+tap -o "near edge of A" -t 14:18.447
+tap -o "robot" -t 14:19.124
+tap -o "near bottom corner of A" -t 14:19.617
+tap -o "robot" -t 14:20.517
+tap -o "near bottom of A" -t 14:20.654
+tap -o "robot" -t 14:21.474
+tap -o "near bottom of A" -t 14:21.944
+tap -o "robot" -t 14:23.07
+drag -o "around area A" -t 14:28.072
+tap -h -o "center of screen" -t 14:30.516
+ui -k menu -d "drop down menu option for continuious motion" -t 14:31.425
+
+task 18
+tap -h -o "robot facing center of screen" -t 15:01.202
+ui -k menu -d "drop down menu option to turn around (tap)" -t 15:08.441
+other -d "5f scatter" -t 15:16.906
+

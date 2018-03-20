@@ -1,0 +1,80 @@
+participant 10
+task 1
+drag -f2 "up screen over robots" -t 3:22.354
+drag -f2 "up screen over robots" -t 3:28.707
+drag -f2 "robots to a" -n -t 4:15.095
+
+task 2
+other -d "backhand push (fingers parallel to screen) robots to left" -n -t 4:27.495
+other -d "backhand sweep (fingers pointing down) robots up screen" -n -t 4:28.256
+other -d "forehand push robots to right" -n -t 4:29.197
+other -d "backhand sweep robots up screen" -n -t 4:29.813 
+
+task 3
+other -d "raise hand palm forward and pull back" -n -t 4:54.252
+
+task 4
+other -d "backand sweep (two fingers down) robots to A" -n -t 5:15.996
+other -d "backand sweep robots to B" -n -t 5:19.137
+
+task 5
+drag -f2 -o "orange robots almost to b" -t 5:49.668
+drag -o "near end of first drag to B" -t 5:50.825
+drag -f2 -o "red robots to A" -t 5:54.048
+
+task 6
+drag -f2 -o "orange robots to A" -t 6:04.180
+drag -f2 -o "red robots to B" -t 6:05.922
+
+task 7 
+drag -f2 -o "robots to A" -t 6:19.236
+drag -f2 -o "robots to B" -t 6:21.461
+memo -d "No attempt to seperate red and orange robots"
+
+task 8
+other -d "backs of hands together, fingers down, then spread apart like opening a bag over the center of the robots" -n -t 6:29.896
+other -d "hands flat, palm down, spread apart L and R over robots" -n -t 6:30.981
+
+task 9
+other -d "bring palms together in center, thumbs up"
+
+task 10
+voice -c "form a line" -t 7:22.242
+other -d "hands parallel about 1 inch apart, palms facing, chop over screen to indicate location" -n -t 7:22.688
+
+task 11
+drag -d square -o "middle of screen and robots" -t 8:04.801
+
+task 12
+memo -d "asked about size of robots relative to crate"
+drag -o "robots behind crate" -f2 -t 8:40.419
+drag -o "across crate" -f2 -t 8:42.022
+drag -o "robots to behind crate, then across crate" -f2 -t 8:45.418
+drag -o "crate to A" -t 8:47.167
+
+task 13
+other -d "bring cupped hands together below crate" -t 9:00.225
+drag -o "below crate to behind crate" -t 9:01.752
+drag -o "across crate" -t 9:03.093
+drag -o "below crate to behind and then across crate" -t 9:06.522
+drag -o "below crate to A" -t 9:07.951
+
+task 14
+other -d "move fist in circle over defective robot" -n -t 9:37.067
+tap -o "defective robot" -t 9:37.585
+
+task 15
+other -d "two hand pull/sweep of robots towards r side of screen" -n -t 9:54.643
+other -d "move fist in circle over defective robot" -n -t 9:56.009
+other -d "sweep defective robot towards l side of screen " -n -t 9:57.838
+
+task 16 
+other -d "fists together, open hands and move apart " -o robots -t 10:23.883
+other -d "two handed sweep around screen border with open hands, as if buttering a pan" -o "screen border" -t 10:27.159
+
+task 17
+other -d "fists together, open hands and move apart " -o robots -t 10:39.581
+other -d "two handed sweep towards area A and across it" -o "area A" -t 10:42.735
+
+task 18
+other -d "fists together, open hands and move apart " -o robots -t 10:55.401

@@ -1,0 +1,108 @@
+particpant 14
+task 1
+drag -o "robots to the right" -t 3:22.302
+drag -o "robots up the screen" -t 3:26.452
+drag -o "into A" -t 3:27.785
+
+task 2
+drag -o "robots to the right" -t 3:54.054
+drag -o "robots up the screen" -t 3:57.850
+drag -o "left into A" -t 3:59.152
+
+task 3
+drag -d circle -o "area between robots an A" -t 4:46.28
+
+task 4
+drag -o "robots to above area B" -t 6:32.141
+drag -o "from over B to over A" -t 6:35.298
+drag -o "down into A" -t 6:45.413
+drag -o "down into B" -t 6:45.978
+
+task 5
+drag -o "orange robots to B" -t 7:37.374
+drag -o "red robots to A" -t 7:49.456
+
+task 6
+drag -o "orange robots to A" -t 8:10.991
+drag -o "red robots to B" -t 8:22.329
+
+task 7
+drag -o "whitespace right of robots to right" -t 9:23.038
+drag -o "whitespace right of robots to right" -t 9:34.265
+drag -o "whitespace right of robots to right" -t 9:39.103
+drag -o "whitespace left of robots to left" -t 9:46.988
+memo -d "motions intended to seperate robots based on where they were facing"
+drag -o "whitespace right of robots to right" -t 10:11.550
+drag -o "whitespace left of robots to left" -t 10:13.836
+drag -o "whitespace (orange robots) to A" -t 10:36.898
+drag -o "whitespace (red robots) to B" -t 10:45.096
+
+task 8
+other -d "two spirals, one with each hand" -h2 -o "top corners of screen" -t 12:59.733
+memo -d "which way robots are facing affects which circle they end up in "
+
+task 9
+other -d "two arcs, one with each hand, clockwise around the screen and slightly inwards" -h 2 -o "robots and whitespace" -t 14:19.569
+other -d "two arcs, one with each hand, clockwise and inwards to screen center" -h 2 -o "center whitespace" -t 14:21.307
+
+task 10
+drag -o "from robots very short distance" -t 14:44.859
+drag -o "whitespace near robots, very short distance" -t 15:52.803
+memo -d "sort of teasing the robots out like a stretchy substance"
+drag -o "from robots to tr corner" -x -t 16:33.845
+drag -o "from robots, a medium distance" -t 17:00.863
+drag -o "from end of previous line, a medium distance" -t 17:01.99
+
+task 11
+drag -o "to top of screen" -t 18:58.367
+memo -d "asked to start over"
+other -d "5f draw together/pinch to call together" -o "screen center" -t 20:00.047
+other -d "4f scatter, fingers as points of square" -t 21.09.436
+
+task 12
+other -d "5f draw together/pinch to call together" -o robots -t 22:45.227
+drag -o "robots behind crate" -t 22:52.438
+drag -o "through crate to A" -t 22:57.488
+drag -o "inside A" -t 23:00.005
+drag -o "around to top of crate" -t 23:05.904
+drag -o "down into A" -t 23:06.861
+
+task 13
+tap -o "whitespace below A" -t 24:07.687
+other -h2 -d "scooping with fingers of both hands from top left to bottom right" -o "screen area" -t 24:14.826
+drag -o "bottom right to behind/left side of crate" -t 24:25.052
+drag -o "through crate to A" -t 24:28.127
+drag -o "around new crate location to above crate" -t 24.31.579
+drag -o "down into A" -t 24:33.017
+
+task 14
+drag -o "robots to top right to isolate broken one" -t 25:35.064
+other -d "drag two fingers on the same hand, widely seperated to top right" -t 25:37.378
+
+task 15
+tap -o "whitespace to r of robots" -t 27:05.572
+other "5f draw together/pinch while dragging to call robots together" -o "robots and r side of screen" -t 27:12.494
+drag -d "small spiral" -o "whitespace to r of robots" -t 27:18.571
+drag -o "robots towards defective one" -t 27:31.394
+drag -o "robots through defective one off of screen on l" -t 27:57.536
+drag -o "robots off left of screen" -x -t 27:58.933
+ 
+task 16
+drag -o "robots to bottom l corner" -t 28:54.136
+other -d "2f on one hand spaced well apart, drag to bottom l corner" -t 28:55.545
+drag -o "robots along perimiter of screen" -t 29:13.145
+
+task 17
+other "5f draw together/pinch" -o "robots" -t 29:35.743
+drag -o "robots to A" -t 29:49.430
+drag -o "robots to A, with a circle at end of drag" -t 29:55.119
+drag -o "robots around permiter of A" -t 30:09.489
+drag -o "around permiter of A" -x -t 30:29.837
+drag -o "center of A to edge of A" -x -t 30:41.259
+drag -o "along L edge of A" -x -t 30:43.194
+drag -o "along top edge of A" -x -t 30:45.094
+
+task 18
+other -d "two handed spreading apart with fingertips, as if spreading a pile of sand towards the top l and r corners" -t 31:07.777
+other -d "two handed spreading apart with fingertips, as if spreading a pile of sand towards the bottom l and r corners" -t 31:07.511
+other -d "two handed spreading apart with fingertips, as if spreading a pile of sand towards the bottom and top" -t 31:09.5

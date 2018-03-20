@@ -1,0 +1,83 @@
+participant 26
+
+task 1
+drag -o "robots to A" -t 2:04.229
+tap -o "area a" -t 2:04.0811
+tap -o "robots" -t 2:06.290
+tap -o "area A" -t 2:07.389
+drag -f 2 -o "robots" -t 2:08.879
+drag -o "robots to A" -t 2:19.885
+
+task 2
+drag -o "robots around wall on R to A" -t 2:40.846
+
+task 3
+tap -h -o robots -t 2:56.247
+memo -d "user described that lifting their hand would stop robots (robots directly follow finger" 
+drag -o "robots v short distance" -x -t 3:02.838
+
+task 4
+drag -o "robots to A" -t 3:32.579
+drag -o "robots to B" -t 3:32.579
+
+task 5
+drag -o "red robots to B" -t 3:53.892
+drag -o "orange robots to A" -t 3:55.169
+drag -o "red robots to B" -x -t 3:58.911
+drag -o "orange robots to A" -x -t 3:58.911
+memo -d "prompted about cross condition"
+drag -o "orange robots to B" -t 4:14.928
+drag -o "red robots to A" -x -t 4:16.709
+
+task 6
+drag -o "red robots to B" -t 4:33.165
+drag -o "orange robots to A" -t 4:33.165
+
+task 7
+drag -o "red robots to B" -t 4:59.137
+drag -o "orange robots to A" -t 5:02.771
+
+task 8
+pinch -r -f2 -h1 -o robots -t 5:29.960
+pinch -r -x -f2 -h1 -o robots -t 5:31.780
+pinch -r -x -f2 -h1 -o robots -t 5:33.889
+tap -h2 -x -o robots -t 5:35.541
+pinch -r -x -f2 -h2 -o robots -t 5:36.970
+memo -d "division expected to automatically be equal"
+
+task 9
+drag -o "right group to left group" -t 6:02.375
+
+task 10
+tap -c2 -o robots -t 6:25.862
+tap -c2 -o robots -t 6:35.896
+tap -o whitespace -t 6:36.850
+
+task 11
+drag -d square -o "center of screen " -t 7:13.475	
+tap -c2 -o "robots/corner of screen" -t 7:14.817
+drag -d square -o "center of screen " -t 7:16.351	
+
+task 12
+drag -o "robots over crate" -t 7:53.498
+drag -o "robots over crate" -t 8:00.336
+drag -o "over crate to area A" -t 8:10.011
+
+task 13
+tap -o robots -c2 -t 8:36.282
+drag -d "arc around three sides of screen (bottom, l, top)" -t 8:38.390
+drag -d "arc around three sides of screen (bottom, l, top)" -t 8:40.404
+drag -o "crate to A (v little contact)" -t 8:42.495
+memo -d "expects swarm to maintain shape when dragged"
+
+task 14
+tap -c 3 -o robots -t 9:43.864
+drag -o "robots around screen perimeter" -t 9:47.502	  
+
+task 15
+tap -c2 -o robots -t 10:22.050
+drag -o "around A twice" -t 10:25.590
+drag -o "l and bottom sides of A" -t 10:27.651
+
+task 16
+other -d "5f scatter" -o robots -t 10:46.839 
