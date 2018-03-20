@@ -1,38 +1,105 @@
 participant 29
 
 task 1
+box -s tl -o robots -t 1:27.912
+drag -f2 -o "robots to A" -t 1:32.486
 
 task 2
+box -s tl -o robots -t 2:14.601
+drag -f2 -o "robots to r" -t 2:21.351
+drag -f2 -o "robots to area A" -t 2:23.004
 
 task 3
+box -s tl -o robots -t 3:05.799
+tap -n -f2 -o whitespace -t 3:11.999
 
 task 4
+box -s tl -o "l half of robots" -t 3:31.433
+drag -f2 -o "selected robots to A" -t 3:32.894
+box -s tl -o "r half of robots" -t 3:37.290
+drag -f2 -o "selected robots to A" -t 3:38.660
 
 task 5
+box -s tl -o "orange robots" -t 4:10.110
+drag -f2 -o "selected robots to B" -t 4:11.419
+box -s tl -o "red robots" -t 4:13.025
+drag -f2 -o "selected robots to A" -t 4:13.943
 
 task 6
+box -s tl -o "orange robots" -t 4:33.865	
+box -s tl -o "orange robots" -t 4:37.443	
+drag -f2 -o "selected robots to A" -t 4:42.193
+box -s tl -o "red robots" -t 4:43.749
+drag -f2 -o "selected robots to B" -n -t 4:44.540
 
 task 7
+box -s tl -o "robots" -t 5:16.574
+ui -k other -d "pop-up asking which robots you want to select" -t 5:21.798
+drag -o "robots to A" -t 5:22.191
+drag -o "robots to B" -t 5:22.756
 
 task 8
+memo -d "described using box select or single finger to select robots, but didn't touch screen except by accident" 
 
 task 9
+box -s tl -o "all robots/both groups" -t 7:08.026
+drag -2f -o "from bottom to middle of screen" -t 7:11.574
 
 task 10
+box -s tl -o "all robots" -t 8:09.066
+box -s tl -o "all robots" -t 8:13.590
+ui -k button -d "draw formation" -t 8:30.062
+drag -n -d line -o "middle of screen" -t 8:35.221
+drag -d triangle -o whitespace -t 8:38.409
 
 task 11
+box -s -tl -o "all robots/whole screen" -t 8:54.028
+ui -k button -d "formation button (tap)" -t 8:58.818
+memo -d "talks about drawing a square, doesn't do it" 
 
 task 12
+box -s -tl -o "all robots" -t 10:19.421
+drag -f2 -o "robots behind crate" -t 10:22.081
+tap -o crate -t 10:31.059
+memo -d "mentioned having a push/pull object menu, but then stopped interacting"
 
 task 13
+box -s -tl -o "all robots" -t 11:05.917
+drag -f2 -o "robots behind crate" -t 11:07.354
+tap -h -o crate -t 11:15.420
+drag -o "crate to A" -t 11:17.465
+drag -x -f2 -o "robots behind crate" -t 11:26.341
+tap -x -h -o crate -t 11:27.841
+ui -x -k menu -d "push pull item" -t 11:32.093
+drag -x -o "crate to A" -t 11:34.028
 
 task 14
+memo -d "user called this a long press, but it was short enough to code as a tap" 
+tap -o "defective robot" -t 12:17.476
+tap -o "defective robot" -t 12:23.784
 
 task 15
-
+box -s tl -o "all robots" -t 12:55.685
+tap -h -o "defective robot" -t 12:59.392
+box -x -s tl -o "all robots" -t 13:16.952
+tap -x -h -o "defective robot" -t 13:19.684
+drag -o "defective robot to bl corner" -t 13:29.072
+ 
 task 16
+box -s tl -o "all robots" -t 14:02.737
+drag -o "robots along bottom edge" -t 14:05.302
+drag -f2 -o "robots around perimter" -t 14:07.755
 
 task 17
+box -s tl -o "all robots" -t 15:02.544
+drag -f2 -o "from robots around A" -t 15:06.157
+lasso -x -o robots -t 15:12.678
+drag -x -f2 -o "from robots around A" -t 15:16.379
+drag -x -o "circle on A" -t 15:19.225
+lasso -x -o robots -t 15:20.286
+drag -x -f2 -o "from robots around A" -t 15:25.315
 
 task 18
-
+box -s tl -o "all robots" -t 16:09.281
+pinch -r -o robots -f 2 -h 1 -t 16:10.926
+box -x -s tl -o "all robots" -t 16:09.281
