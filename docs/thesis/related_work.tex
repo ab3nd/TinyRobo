@@ -49,14 +49,14 @@ InsBots were never commercially available, and each required approximately 6 hou
 However, the construction process appears to have been relatively straightforward. 
 
 Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
-The Epuck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
-The high price of the Epuck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
-Epucks also require a fairly smooth operating surface.
-The Epuck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
-Due to the relatively sharp corner of the lower edges of the robot, the Epuck can become stuck on 2-3mm high obstacles. 
+The E-puck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
+The high price of the E-puck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
+E-pucks also require a fairly smooth operating surface.
+The E-puck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
+Due to the relatively sharp corner of the lower edges of the robot, the E-puck can become stuck on 2-3mm high obstacles. 
 
-The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \citep{mclurkin2013low}. 
-The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The r-one research robot is cheaper than the E-puck, at approximately \$220 USD per unit \citep{mclurkin2013low}. 
+The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
 The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \citep{rubenstein2014kilobot}. 
@@ -82,7 +82,7 @@ The second COTSBots is larger, and will be discussed in the next section.
 \subsection{Room-sized Swarms}
 
 One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimetres tall. 
+As previously mentioned, the Kilobots require a smooth surface, and the E-puck can be stopped by obstacles no more than a few millimetres tall. 
 This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
 In order to overcome this problem, larger swarm robots can be constructed.
  
@@ -555,7 +555,7 @@ Larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
 Also, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
-If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
+If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
 Finally, larger robots are more cumbersome to deal with. 
 They require larger storage areas, possibly teamwork to lift or repair, and so forth. 
 All of these efforts are also multiplied by the number of robots in the swarm. 
@@ -577,11 +577,11 @@ Other techniques have been developed to use magnetic fields to apply force to sm
 These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
 The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
 
-Alice, by Caprari \emph{et al}. \cite{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$. 
+Alice combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$ \cite{caprari1998autonomous}. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
 Alice robots are no longer available for purchase. 
-The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
-There is no evidence that AmIR was ever widely available.
+%The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
+%There is no evidence that AmIR was ever widely available.
 
 The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
@@ -595,15 +595,22 @@ It used two processors, one to run higher level behaviors and one to interface w
 InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
 However, the construction process appears to have been relatively straightforward. 
 
-Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
-The Epuck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
-The high price of the Epuck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
-Epucks also require a fairly smooth operating surface.
-The Epuck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
-Due to the relatively sharp corner of the lower edges of the robot, the Epuck can become stuck on 2-3mm high obstacles. 
+Colias is a dual-microprocessor system similar to Jasmine in functionality \citep{arvin2014colias}. 
+It is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
+Of particular note, the Colias lower processor is responsible for detecting light on the underside of the robot. 
+Because of this downward facing light sensor, Colias robots can operate on a translucent table illuminated from beneath with a projector, for experiments in pheromone robotics. 
+The light patterns displayed by the projector act as pheromones, which the robot can detect based on its position on the table. 
+Colias robots cost \pounds25, or \$35US. 
 
-The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
-The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
+The E-puck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
+The high price of the E-puck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
+E-pucks also require a fairly smooth operating surface.
+The E-puck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
+Due to the relatively sharp corner of the lower edges of the robot, the E-puck can become stuck on 2-3mm high obstacles. 
+
+The r-one research robot is cheaper than the E-puck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
+The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
 The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
@@ -627,7 +634,7 @@ The second COTSBots is larger, and will be discussed in the next section.
 \subsubsection{Room-sized Swarms}
 
 One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimetres tall. 
+As previously mentioned, the Kilobots require a smooth surface, and the E-puck can be stopped by obstacles no more than a few millimetres tall. 
 This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
 In order to overcome this problem, larger swarm robots can be constructed.
  
@@ -709,10 +716,10 @@ Marco Montes de Oca, Rehan O’Grady, Carlo Pinciroli, Giovanni Pini, Philippe R
 
 The user interface to a swarm has two functions. 
 The first is to allow the user to provide input to the swarm, so that the user can direct the swarm to perform tasks. 
-For the purposes of this research, the user interface is a multitouch surface that displays representations of the area the swarm is in and of the individual swarm robots \cite{micire2009multi}. 
 The second function of a swarm user interface is to display information about the swarm, or to display information gathered by the swarm to the user. 
 By providing an overview of the activities of the swarm, the user interface can give the user feedback on the progress of the task as it proceeds, as well as allowing the user to detect problems. 
 
+For the purposes of this research, the user interface is a multitouch surface that displays representations of the area the swarm is in and of the individual swarm robots \cite{micire2009multi}. 
 Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \cite{hayes2010multi}.
 The interface displayed the locations of the robots on a directly manipulatable map, and used movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
 Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
