@@ -202,7 +202,7 @@ In order to convert from pixels to real-world distances, the apriltags\_ros node
 The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 
 \begin{figure}
-% 	\centering
+ 	\centering
 	\digraph[scale=0.6]{VirtualLaserSystem}{
 	
 	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
@@ -217,9 +217,9 @@ The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 	atag [label="AprilTag Detector"];
 	cam [label="Arena Camera"];
 	sub1 [label="Subscriber"];
-% 	}
+ 	}
 	\caption{Data flow in the virtual laser service}
-% \end{figure}
+\end{figure}
 
 \subsection{Virtual Networking}
 
@@ -230,8 +230,8 @@ By changing how the messages are delivered by the central system, the virtual ne
 The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
 For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver, or signals that pass through a virtual wall may have a reduced virtual signal strength and range.
 
-% \begin{figure}
-% 	\centering
+ \begin{figure}
+ 	\centering
 	\digraph[scale=0.6]{VirtualNetwork}{
 	
 	{rank=same atag dist}
@@ -239,7 +239,7 @@ For example, the likelihood that a message arrives at the robot to which it was 
 
 	vns -> dist [label="Robot IDs"];
 	dist -> vns [label="Distance"];
-% 	cam -> atag	[label=<sensor\string_msgs/Image>];
+ 	cam -> atag	[label=<sensor\string_msgs/Image>];
 	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
 	vns -> rx [label="Network Message"];
 	tx -> vns [label="Network Message"];	 
@@ -247,13 +247,13 @@ For example, the likelihood that a message arrives at the robot to which it was 
 		
 	vns [label="Virtual Network Service"];
 	dist [label="Distance Service"];
-% 	atag [label="AprilTag Detector"];
-% 	cam [label="Arena Camera"];
+ 	atag [label="AprilTag Detector"];
+ 	cam [label="Arena Camera"];
 	tx [label="Transmitter"];
 	rx [label="Receiver"];
-% 	}
+ 	}
 	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
-% \end{figure}
+ \end{figure}
 
 \section {Firmware}
 
@@ -507,10 +507,10 @@ Currently, the AprilTag-based localization is used to implement virtual laser sc
 % 	\centering
 % 	\digraph[scale=0.6]{VirtualLaserSystem}{
 	
-	{rank=same atag vls}
+%	{rank=same atag vls}
 	
-	vls -> vsc [label=<sensor\string_msgs/LaserScan>];
-	vsc -> vls [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
+%	vls -> vsc [label=<sensor\string_msgs/LaserScan>];
+%	vsc -> vls [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
 % 	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
 % 	cam -> vls [label=<sensor\string_msgs/Image>];
 % 	cam -> atag	[label=<sensor\string_msgs/Image>];
