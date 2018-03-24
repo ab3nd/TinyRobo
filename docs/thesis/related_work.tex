@@ -13,7 +13,8 @@ Finally, larger robots are more cumbersome to deal with.
 They require larger storage areas, possibly teamwork to lift or repair, and so forth. 
 All of these efforts are also multiplied by the number of robots in the swarm. 
 
-The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
+The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. 
+In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
 For example, typical indoor doorways are around thirty inches wide, so a robot would have to be less than thirty inches wide to fit through them. 
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
@@ -56,7 +57,8 @@ The E-puck uses differential drive, and allows the front or back edge of the rob
 Due to the relatively sharp corner of the lower edges of the robot, the E-puck can become stuck on 2-3mm high obstacles. 
 
 The r-one research robot is cheaper than the E-puck, at approximately \$220 USD per unit \citep{mclurkin2013low}. 
-The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). 
+The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
 The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \citep{rubenstein2014kilobot}. 
@@ -75,7 +77,8 @@ The first COTSBots used mote hardware for the communications link and sensing, p
 The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
 At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
 COTSBots use TinyOS, a modular and event-driven framework for developing node software \citep{levis2005tinyos}. 
-TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
+TinyOS is written in a dialect of C called nesC. 
+The motor and mote boards communicate using a messaging layer. 
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
 The second COTSBots is larger, and will be discussed in the next section. 
 
@@ -125,12 +128,11 @@ In order to interact with large groups of robots, the user must be able to perfo
 One approach to getting feedback from a swarm was the development of the Swarmish sound and light system \citep{mclurkin2006speaking}. 
 Swarmish provides an ambient means of determining the overall state of the swarm, as well as some information about individual robots. 
 The swarm that used Swarmish had autonomous charging, and so the individual robots had long runtimes, and minimal one-on-one interaction with humans. 
-As a result, most of the interactions were remote.
 The ``ambient'' aspect of the interaction is that the information is continuously available, and the human user ``tunes in'' to it when needed. 
 Swarmish uses a set of colored lights and sounds, produced by each robot, to provide feedback. 
 The lights were in three colors, and had a total of 108 different combinations of colors and blink sequences, as a visual indicator of the state of each robot. 
 In addition to the lights, each robot could produce MIDI notes over its audio system. 
-Each note can vary in instrument, pitch, duration, and volume, in addition to having tempos and rhythms as the code executes. 
+Each note could vary in instrument, pitch, duration, and volume, in addition to having tempos and rhythms as the code executes. 
 The designers of Swarmish indicate that the sum of the audio output of the swarm could provide a overall idea of the status of the swarm, but that as a musical instrument, it is difficult to play well. 
 Further, the use of lights as signaling mechanisms assumes that you can look at the robots. 
 
@@ -545,29 +547,27 @@ The implementation of the virtual stigmergy structure allows the robots to maint
 Buzz also provides a convenient abstraction of the neighbours of the robot executing the program, which usually consists of all robots within communication range. 
 Using the neighbours abstraction, the robot can, for instance, query all its neighbours about the value of a sensor precept at their location, in order to build a local map of the intensity of the sensed quantity. 
 
-\section{Related Work}
-
 \subsection{Overview of Previous Swarm Hardware}
 
-Swarm robots are generally small. 
-The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
-Larger robots consume more materials per unit, and so cost more money.
-As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
-Also, each robot requires some amount of space to move around in. 
-To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
-If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
-Finally, larger robots are more cumbersome to deal with. 
-They require larger storage areas, possibly teamwork to lift or repair, and so forth. 
-All of these efforts are also multiplied by the number of robots in the swarm. 
+% Swarm robots are generally small. 
+% The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
+% Larger robots consume more materials per unit, and so cost more money.
+% As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
+% Also, each robot requires some amount of space to move around in. 
+% To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
+% If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
+% Finally, larger robots are more cumbersome to deal with. 
+% They require larger storage areas, possibly teamwork to lift or repair, and so forth. 
+% All of these efforts are also multiplied by the number of robots in the swarm. 
 
-The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
-For example, typical indoor doorways are around thirty inches wide, so a robot would have to be less than thirty inches wide to fit through them. 
-The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
-As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
-This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
-The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
-Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
-However, most of these platforms are no longer easily commercially available, or never were. 
+% The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
+% For example, typical indoor doorways are around thirty inches wide, so a robot would have to be less than thirty inches wide to fit through them. 
+% The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
+% As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
+% This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
+% The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
+% Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
+% However, most of these platforms are no longer easily commercially available, or never were. 
 
 \subsubsection{Tabletop Swarms}
 
@@ -610,7 +610,8 @@ The E-puck uses differential drive, and allows the front or back edge of the rob
 Due to the relatively sharp corner of the lower edges of the robot, the E-puck can become stuck on 2-3mm high obstacles. 
 
 The r-one research robot is cheaper than the E-puck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
-The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). 
+The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
 The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
@@ -627,7 +628,8 @@ The first COTSBots used mote hardware for the communications link and sensing, p
 The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
 At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
 COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
-TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
+TinyOS is written in a dialect of C called nesC. 
+The motor and mote boards communicate using a messaging layer. 
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
 The second COTSBots is larger, and will be discussed in the next section. 
 
@@ -749,18 +751,19 @@ For situations where the user is not located in the same area as the robots, one
 The human in the call center, however, is faced with having to answer potentially multiple calls with no awareness of the robot's situation. 
 The theoretical basis for call center UI is Supervisory Control. 
 Supervisory control has the human act as the planner and monitor of the systems being supervised, but allowing the systems to operate on their own.
-Automation is frequently broken down into ten levels of automation, with level 10 being a fully automatic system with no humans involved, and level 1 having no automation, such as a bicycle \cite{parasuraman2000model}. 
+Automation is frequently broken down into ten levels of automation, with level ten being a fully automatic system with no humans involved, and level one having no automation, such as a bicycle \cite{parasuraman2000model}. 
 
 It would be expected that reducing the number of times the human is required to interact with the robot will permit the user to operate more robots.
-At level 1, the user has to interact constantly, and so could not be expected to operate more than one robot. 
+With level one automation, the user has to interact constantly, and so could not be expected to operate more than one robot. 
 By increasing the level of autonomy of the robot, the time required for the user to operate the robot decreases.
 Instead of continuous interaction, the user can specify actions for the robot to undertake, and then ignore the robot while it performs the actions.
 It is expected that the robot's effectiveness will decline over time since the last user interaction. 
 This time that the robot operates without interaction before its effectiveness declines to a fixed minimum is called ``neglect time"\cite{olsen2003metrics}.
+
 With increasing autonomy, neglect time increases.
-The fifth level of the autonomy scale is a sort of operation by consent model, where the computer chooses a route and executes it if the human permits it. 
+The fifth level of the autonomy scale is operation by consent, where the computer chooses a route and executes it if the human permits it. 
 The ninth level is the inverse of the fifth.
-Rather than asking the user for consent to act, the robot acts and informs the human only in exceptional cases. 
+Rather than asking the user for consent to act, the robot acts autonomously and informs the human only in exceptional cases. 
 At the higher levels of the autonomy scale, the robot's neglect time far outweighs the time the user is expected to operate it, and so the user could reasonably be expected to operate other robots during the neglect time. 
 
 Increasing neglect time may allow the user to operate more swarm robots, but it comes at a cost. 
@@ -1168,57 +1171,64 @@ Sheila Tejada, Andrew Cristina, Priscilla Goodwyne, Eric Normand, Ryan O’Hara,
 
 \subsubsection{The Interfaceless Interface}	
 
-With apologies to the Rinzai school...
+Some swarm robots are designed to be used with no control interface at all.
+By altering the shape of simple stick-slip locomotion toys with laser-cut foam ``hats'' that change their outer perimeter, and changing the outline of the laser-cut foam forms they interact with, the random motion of the toys can create stable structures \citep{andreen2016emergent}).
+The development of the shapes relies on human interaction, but specifying the shapes of the hats and interactive components seems amenable to solution with genetic algorithms. 
+Because the toys used in this work were about \$4-8 USD, and everything else was composed of laser-cut foam, the platform is extremely inexpensive. 
 
-Emergent Structures Assembled by Large Swarms of Simple Robots 
-David Andréen, Petra Jenning, Nils Napp, Kirstin Petersen
-	Robot behavior based on physical form
-	Bristlebots with laser-cut foam hats
-		Controller synthesis for this would be an interesting feat...
-	Not a lot of data, but description of the overall process
-		Has human-level interactive design
-			Really sounds like a job for genetic design, though
-	200 robots, pretty cheap swarm
-
-
-What about the possibility of no interface at all?
-	Design the robots from the ground up so that their behavior under physics is as desired by the user
-	Sci-fi, but kind of ideal
-	Maybe in a stochastic way, spread like dust, etc. 
-	Assumes the limit case that robots are so cheap and so fast to build that it's easier to make piles of them than it is to reprogram the ones you already have
-	End case of physicomimetics as well: the robots actually are particles and interact through attractive/repelling forces
-
-GUARDIAN interface can go here, user doesn't actually control the robots, robots swarm around the user
+\todo{GUARDIAN interface or lack thereof}
+%The possibility of robots being designed so that their behavior is controlled by their physical form points towards a possible convergence of the physical design of swarm robots and physicomimetic swarm controls with design of macromolecules. 
+%Rather than implementing physicomimetic controls in software, the resulting system would use the existing laws of physics as an element of its control program.
+%These systems would construct structures larger than themselves as a consequence of how they react, chemically and physically, with their environment. 
+%Each assembly step would be done by a vast number of robots so cheap and so fast to build that it is easier to synthesize new ones for each construction step than to build a general-purpose reprogrammable assembler. 
 
 
 \subsection{Video Game UI Design}
 
-Mobile video game design similar to top-down interaction with the 3M Multitouch monitor. 
+\todo{Mobile video game design similar to top-down interaction with the 3M Multitouch monitor.}
 
 \todo{Mark's work on video games, RTS gamers want menus}
 
 Games with a similar top-down interface for control of multiple units generally appear in the genres of Real Time Strategy (RTS) games, Turn-based strategy games, and Multiplayer Online Battle Arena (MOBA). 
 
-Realtime strategy games generally have the player playing against multiple other players, some or all of which may be controlled by the computer. The goal of the game is typically to acquire some form of resources, which are used to develop military units. The military units are then used to attack the other players, with the goal of the game being to be the only remaining player. 
+Realtime strategy games generally have the player playing against multiple other players, some or all of which may be controlled by the computer. 
+The goal of the game is typically to acquire some form of resources, which are used to develop military units or units which accelerate the acquisition of further resources. 
+The military units are then used to attack the other players, with the goal of the game being to be the only remaining player. 
 
 Turn-based strategy games are similar to RTSs, but instead of all players acting simultaneously, each players actions are taken on their turn. 
 
-MOBAs have a smaller focus and more rapid play than RTS or turn-based strategy games. Typically, there are multiple players, but each player is on one of two sides battling over some set of objectives on the world map. Rather than controlling multiple units, each player controls a single, powerful unit, and may be able to influence weaker, semi-autonomous computer-controlled units.  There may be resources as in RTS games, but typically they are far more limited in number.   
+MOBAs have a smaller focus and more rapid play than RTS or turn-based strategy games. 
+Typically, there are multiple players, but each player is on one of two sides battling over some set of objectives on the world map. 
+Rather than controlling multiple units, each player controls a single, powerful unit, and may be able to influence weaker, semi-autonomous computer-controlled units.  There may be resources as in RTS games, but typically they are far more limited in number.   
 
-MOBAs, RTSs, and turn-based strategy games all have a similar user interface. The ``world'' or area of play is depicted as a map, typically viewed either top-down or an axonometric perspective. The map is where the main action of the game takes place, and displays the relative position of the characters and other elements of the game. Around the map are typically displays and interactive elements such as menus or buttons to interact with the game. 
+MOBAs, RTSs, and turn-based strategy games all have a similar user interface. 
+The ``world'' or area of play is depicted as a map, typically viewed either top-down or an axonometric perspective. 
+The map is where the main action of the game takes place, and displays the relative position of the characters and other elements of the game. 
+Around the map are typically displays and interactive elements such as menus or buttons to interact with the game. 
 
 The control of units in the game is typically done using the mouse to select units and send commands via mouse clicks, while one hand operates keys, typically on the left side of the keyboard, for other functions. 
-How the keyboard is mapped depends on the pace of gameplay. For extremely rapid games, such as Defense of the Ancients (DoTA, a MOBA), there are a small number of key commands that can all be operated without removing the fingers of the left hand from the keyboard. DotA in particular uses mouse clicking, combined with the control, shift, and alt keys in various combinations, to perform all of the actions of gameplay \todo{cite https://dota2.gamepedia.com/Controls}. 
+How the keyboard is mapped depends on the pace of gameplay. 
+For extremely rapid games, such as Defense of the Ancients (DoTA, a MOBA), there are a small number of key commands that can all be operated without removing the fingers of the left hand from the keyboard. 
+DotA in particular uses mouse clicking, combined with the control, shift, and alt keys in various combinations, to perform all of the actions of gameplay \todo{cite https://dota2.gamepedia.com/Controls}. 
 
-Age of Empires is a RTS. It is less fast-paced than DotA, but still takes place in realtime. Most of the keys of the keyboard are mapped to various commands, such as locating and selecting different types of units or buildings, or commanding those units and buildings. Commands to buildings typically cause the construction of various units, while consuming resources. For example, pressing `D' would find a Dock, and then pressing `A' would command the Dock to start work on a Fishing boat \todo{cite http://ageofempiresonline.wikia.com/wiki/List\_of\_Hotkeys }. 
+Age of Empires is a RTS. 
+It is less fast-paced than DotA, but still takes place in realtime. 
+Most of the keys of the keyboard are mapped to various commands, such as locating and selecting different types of units or buildings, or commanding those units and buildings. 
+Commands to buildings typically cause the construction of various units, while consuming resources. 
+For example, pressing `D' would find a Dock, and then pressing `A' would command the Dock to start work on a Fishing boat \todo{cite http://ageofempiresonline.wikia.com/wiki/List\_of\_Hotkeys }. 
 
-Europa Universalis 4 uses the entire top row of letters on the keyboard to switch between different map modes, and every other key to activate some feature of the game, as well as mouse controls for interactions with individual units and locations \todo{cite https://eu4.paradoxwikis.com/Controls}. Europa Universalis gameplay does not take place in realtime, and the player may speed or slow the game clock, as well as pausing the game. 
+Europa Universalis 4 uses the entire top row of letters on the keyboard to switch between different map modes, and every other key to activate some feature of the game, as well as mouse controls for interactions with individual units and locations \todo{cite https://eu4.paradoxwikis.com/Controls}. 
+Europa Universalis gameplay does not take place in realtime, and the player may speed or slow the game clock, as well as pausing the game. 
 
-Another common feature of MOBA, RTS, and turn-based strategy games is the ``fog of war". The entire map is normally hidden from the player until they command their units to enter an area, whereupon the area is revealed. In gameplay, the intent of fog of war is to prevent players from knowing about the opposing player's location without sending sorties. This lack of information is almost identical to that experienced by a teleoperator of a robot exploring an area with a SLAM algorithm, as the map is revealed to the operator as the robot moves into the area. 
+Another common feature of MOBA, RTS, and turn-based strategy games is the ``fog of war". 
+The entire map is normally hidden from the player until they command their units to enter an area, whereupon the area is revealed. 
+In gameplay, the intent of fog of war is to prevent players from knowing about the opposing player's location without sending sorties. 
+This lack of information is almost identical to that experienced by a teleoperator of a robot exploring an area with a SLAM algorithm, as the map is revealed to the operator as the robot moves into the area. 
 
 \todo{graphic here to depict typical game UI}
 
-Previous work with top-down multitouch user interfaces has found that users who play video games express a desire for more UI ``widget'' interactions, that is, interacting with buttons, menus, or specialized user interface components \cite{Micire:2009:ANG:1731903.1731912}. Gamers who play RTS games also used fewer pinch gestures in a multitouch context, possibly because RTS games are typically played with a mouse and keyboard, which does not have a pinch-like gesture. 
+Previous work with top-down multitouch user interfaces has found that users who play video games express a desire for more UI ``widget'' interactions, that is, interacting with buttons, menus, or specialized user interface components \cite{Micire:2009:ANG:1731903.1731912}. 
+Gamers who play RTS games also used fewer pinch gestures in a multitouch context, possibly because RTS games are typically played with a mouse and keyboard, which does not have a pinch-like gesture. 
 
 % TODO: Maybe use some of this stuff, but I don't have a good idea where
 %Emergent behaviors arise from the interactions of actors with each other and the world around them. 
@@ -1250,21 +1260,29 @@ Much of swarm robotic development follows the usual model of software developmen
 Starting from a desired functionality, the developer writes a program that they think will provide that functionality.
 The program is then tested, in simulation or on real robots, and its behavior is observed. 
 The programmer then modifies their program to account for any observed difference between the desired function and the system's behavior. 
-This loop of coding, testing, and coding again is repeated until the system behaves as expected, or the programmer graduates. 
+This loop of coding, testing, and coding again is repeated until the system behaves as expected, or the programmer graduates \citep{cham2010graduate}. 
 
 Because the normal software development model is time-consuming, and outside of the abilities of many people who might want to use swarm robots, it is desirable to automate the development of software controllers for robots. 
-One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code that can be codified into a compiler. 
-As a consequence, input in the command language defines a program which is compiled and loaded onto the robots. 
+One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code. 
+The transformation operation can be codified as a sort of ``compiler'', or more accurately, a code generator, which creates programs for the robots. 
+The possibility of coding for the swarm as an entire system, rather than writing each robot's program independently, has given rise to several programming paradigms and domain-specific languages for robotic swarms. 
+
 Another possibility is the composition of preexisting behaviors that each satisfy part of the user's desired behavior. 
-Pheromone robotics provides one possible method of controlling this composition dynamically. 
+Given some library of primitives, the user could select a sequence of behaviors, or conditions for the execution of behaviors, to build a complete program. 
+Pheromone robotics provides one possible method of controlling this composition dynamically.
+ 
 Still another approach is to allow the user to specify a desired behavior and evolving controllers to match it. 
+It would be hoped that evolving the controllers would reduce the complexity of the development task to the definition of a suitable means of determining the fitness of the resulting program. 
+Unfortunately, even this reduction does not permit an escape from iterative development. 
 
 \subsubsection{Amorphous Computing}
 
 Amorphous computing (AC), also called spatial computing, is computation using locally-linked and interacting, asynchronous, unreliable computing elements dispersed on a surface or throughout a volume \cite{abelson2000amorphous}. 
-The motivation for AC is that while it may be possibly to produce arbitrary quantities of ``smart dust'', it is not possible to ensure that it all works well and is precisely located, especially in real-world applications.
+The motivation for AC is that while it may be possible to produce arbitrary quantities of ``smart dust'', it is not possible to ensure that it all works well and is precisely located, especially in real-world applications.
 The goal of AC is to get useful work out of such materials, despite uncertainty as to their reliability and location. 
-Smart dusts are also the limit-case, in terms of scale, for swarm robotics, and if AC promises to get useful work out of smart dust, then it also has some applicability to larger swarm robots.
+Smart dusts are also the limit case, in terms of scale, for swarm robotics. 
+Indeed, most of the volume of existing swarm robots is motors and batteries, with the computational components taking far less space. 
+If AC promises to get useful work out of smart dust, then it also has some applicability to larger swarm robots.
 
 There are several languages intended to program amorphous computers. 
 ``Proto" is a language for a continuous plane spatial computer \cite{correll2009ad}.
@@ -1303,7 +1321,7 @@ By controlling the production or propagation of morphogens within the amorphous 
 \subsubsection{Pheromone Approaches}
 
 The abstractions of GPL bear a very strong relation to pheromone robotics. 
-Pheromone robotics refers to a metaphor for developing control software for swarm robots. 
+Pheromone robotics is a metaphor used for developing control software for swarm robots. 
 Some social animals, especially insects, use chemical signals called pheromones to communicate with each other. 
 For example, wasps inside their nest react to the scent of wasp venom by travelling to the outer surface of the nest and attacking nearby moving targets  \cite{jeanne1981alarm}.
 Ants leave trails of pheromones for other ants to follow to food sources. 
@@ -1332,6 +1350,8 @@ To actually maintain pheromones in the environment without robots being present 
 Use of pheromones to guide swarm robots for simulated search and patrol tasks has been demonstrated, with the assumption that there is a central controller maintaining the concentration of pheromones on the map, and informing the swarm members \cite{coppin2012controlling}. 
 In a real implementation, some robots could remain stationary and only act as transponders, computing and transmitting the local pheromone information for a given area. 
 However, even if the robots are limited to only the pheromones they can directly perceive and emit at the present instant, some emergent behaviors are still possible. 
+Another possible approach to enable pheromones in space is to operate the robots in an area which is illuminated by a projector. 
+The projector can then color the area with light that the robots can sense, and modulate the intensity of the light to indicate the intensity of the pheremone \citep{arvin2015cosvarphi,diaz2017human}. 
 
 It has been demonstrated that a swarm can perform construction tasks using only local sensing and no communication \cite{wawerla2002collective, bowyer2000automated}.
 However, the addition of communication between systems and memory of the state of the world will improve the efficiency of the system.
@@ -1356,6 +1376,8 @@ A 2-D vector field is also not a useful metaphor for controlling UAVs.
 The vector field could be possibly extended into three dimensions, to control UAVs as well as ground vehicles, but there would have to be some form of discontinuity in the field to prevent assignment of UAVs to ground vehicle paths and vice versa. 
 The vector field can be viewed as an abstraction of pheromone control, or even implemented in terms of the presence or absence of virtual pheromones, but it has some limitations that pure pheromone control does not have.
 For instance, pheromones permit the presence of multiple pheromones at one point, with multiple meanings, but the vector field has one value for each point. 
+Attempting to solve this problem by proposing multiple fields raises the question of how to combine them, and if a universal combination function applies at all points in the field, it raises the question of why they were not combined already. 
+
 The vector field is also not very intuitive to users. 
 Kato \emph{et al}. indicates that in order to use the vector field well, the users had to anticipate and project the future motions of the robots. 
 Interface changes, such as showing particles on the vector field, could improve usability, but these approaches would have the same scaling problems that the robot representation does. 
@@ -1382,9 +1404,9 @@ Another proposed catalog of behaviors for swarm control bases the simple behavio
 The proposed behaviors are the use of gradient sensing for position and direction information, local inhibition and competition, lateral inhibition for spatial information, local monitoring, quorum sensing for timing and counting, checkpoint and consensus sensing, and random exploration. 
 The first five are common in amorphous computing as well, but the last three are not. %TODO what are their uses?. 
 While these behaviors are themselves expressed in terms of pheromones, the composition of the primitives into complete programs is not dictated by a pheromone-based system.
-Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \cite{belta2007symbolic}.
+Furthermore, compositional approaches have been proposed in control-theoretic terms as well as pheromone-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheromone robotics \cite{belta2007symbolic}.
 
-The pheremone based approaches to swarm programming are sufficient for relatively complex behaviors. 
+The pheromone based approaches to swarm programming are sufficient for relatively complex behaviors. 
 Quorum sensing is used to detect whether the local agent count is sufficient for a task. 
 By detecting the presence of sufficient robots to perform a task, the robots can allocate themselves to tasks in a just-in-time manner, rather than being pre-allocated when the task is designed. 
 Decentralizing the selection of robots, in turn, may be more robust against failures of individual robots, as it uses the robots that are in the right place at the right time, rather than waiting for specially assigned robots. 
@@ -1423,7 +1445,7 @@ In the GCPR models, the time to execution of an action is stochastic, but in the
 \subsubsection{Evolutionary Composition}
 
 Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
-Unfortunately, much of the process of composing of programs for swarm robots consists of iterating between composing sets of primitives and observing behavior of the system in an ad hoc process, just as with the creation of control programs by coding \cite{palmer2005behavioral}. 
+Unfortunately, much of the process of composing programs for swarm robots consists of iterating between composing sets of primitives and observing behavior of the system in an ad hoc process, just as with the creation of control programs by coding \cite{palmer2005behavioral}. 
 Rather than removing iterative software design from the process, it has simply been moved up one layer of abstraction, from writing code for the robots to composing that code from behavior primitives. 
 
 One possibility is to permit composition to behave like the programming environment Tierra \cite{ray1991approach}.
@@ -1457,7 +1479,7 @@ Worse, without a time bound on solving a problem or a way to calculate progress,
 For example, assume a program's intended purpose is to gather all of the units of a resource at a goal. 
 If the program merely moves the units stochastically, sometimes they will enter the goal, creating an appearance of progress. 
 However, it may be vanishingly unlikely that all the units will randomly happen to be in the goal at once. 
-Counting the units moved to the goal, then, cannot distinguish between a program that cannot find the goal, and so will never put any units in it, and a perfect resource-gathering program that just hasn't moved any units to the goal yet.
+Counting the units moved to the goal, then, cannot distinguish between a program that cannot find the goal, and so will never put any units in it, and a perfect resource-gathering program that just has not moved any units to the goal yet.
  
 Ideally, it would be possible to recognize and evaluate performance on sub-problems. 
 It has been proposed that the interactions and emergent behavior of the system are observable, while the reactions of the agents in the system are programmable, and so by observing the interactions and emergent behavior, the developer can receive feedback on how the system is progressing \cite{palmer2005behavioral}. 
@@ -1484,15 +1506,16 @@ Oddly, while one would expect that the aclonal condition would result in a speci
 It was hypothesized that while the clonal condition had to evolve roles and an allocation mechanism simultaneously, the aclonal condition could specialize the roles during early evolution, and then develop an arbitration mechanism to select roles.
 
 Genetic algorithims have also been used to develop aggregation behavior in swarm robots \cite{bahgecci2005evolving, dorigo2004evolving}.  
-Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object, attacking together, etc.
+Aggregation was chosen because it is a preliminary behavior primitive, which the swarm might engage in prior to doing some other task, such as moving an object or attacking together.
 The resulting controllers only controls aggregation behavior, so each behavioral primitive would require its own evolutionary development. 
+
 Solutions discovered by genetic algorithms are also prone to overfitting. 
 The swarms described in Dorigo \emph{et al}. decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
 
 The common hope of users of genetic algorithms is that they can reduce the complexity of directly specifying the task to the (hopefully lower) complexity of describing the results in the fitness function.
 Rather than describing how to solve a problem, one simply describes what the solution would look like. 
 Unfortunately, the reduction in hands-on time spent programming frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
-One early version of the evolved aggregation controllers allowed the evolved motion strategy to acquire a high fitness by spinning in place, and so the fitness function required modification to prevent robots from simply spinning. 
+One attempt to evolve aggregation controllers had a fitness function which allowed the evolved motion strategy to acquire a high fitness by spinning in place.
 The ad hoc iterative process of creating emergent behaviors is replaced by an ad hoc iterative process of creating fitness functions.
 As a result, developing novel behavior in the field by converting user specifications of the behavior of the swarm into a fitness function for a genetic algorithm is unlikely to yield results in a timely manner. 
 However, individually evolved primitives could be saved in a library of primitives for use by a higher-level compositional approach. 
@@ -1512,7 +1535,7 @@ Additionally, Voltron is based on the assumptions that drones have global locali
 
 Karma provides a programming framework for micro-aerial vehicles with minimal localization and no communication in the field \cite{dantu2011programming}.
 The framework allows the composition of behaviors described at the level of individual robots. 
-Rather than each robot performing series of behaviors in response to input from its sensors, each robot is tasked by a central ``hive'' to perform a single behavior, such as performing a sensor sweep of an area. 
+Rather than each robot performing a set of behaviors in response to input from its sensors, each robot is tasked by a central ``hive'' to perform a single behavior, such as performing a sensor sweep of an area. 
 The hive collects data from robots as they return to the hive, and updates a central data store, which includes both the sensor information from the individual robots and spatial information about the sensor information. 
 The hive then assigns activities to robots based on rules that use the central data store to determine which activities should be performed. 
 As a result, while the individual robots are autonomous and not in communication with the hive while operating, the hive maintains a central data store that is used to guide the future behaviors of the swarm. 
