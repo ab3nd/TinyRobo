@@ -5,24 +5,24 @@ Multitouch gestural interfaces, like those found on tablets and smartphones, off
 Rather than, for example, using an arrow key to scroll in a document, the user can drag the document directly, as though they were sliding a long piece of paper on a table. 
 
 This directness is a hallmark of what has come to be called Natural User Interfaces, or NUI. 
-A natural user interface is one that allows the user to re-use existing skills and natural motions to interact directly with content \cite{blakeNUIWin}. 
+% A natural user interface is one that allows the user to re-use existing skills and natural motions to interact directly with content \cite{blakeNUIWin}. 
 In practice, this means that the elements of the interaction are actions such as pointing and other gestures, drawing with a pen, speech, gaze, and so forth, rather than computer-specific interface devices. 
 By way of contrast, the command line interface is defined in terms of typing with some form of keyboard, and the graphic user interface is (in most cases), defined in terms of mouse actions. 
 
 However, as the number of operations the user wishes to perform increases, the limitations of multitouch screens become more apparent. 
 Screens are flat, and so only afford 2-dimensional gestures, such as dragging, poking, and tapping. 
 Even if the screen depicts a 2-dimensional projection of a 3-dimensional world, operations that would make sense in the 3D world, such as grasping, have to be mapped to the 2-dimensional space of operations to be performed. 
-Typically, the gestures that the user uses to perform the available operations are chosen by the interface developer, and the user is trained to perform them, possibly by a short tutorial program \cite{wobbrock2009user, vanacken2008ghosts, freeman2009shadowguides}. 
+% Typically, the gestures that the user uses to perform the available operations are chosen by the interface developer, and the user is trained to perform them, possibly by a short tutorial program \cite{wobbrock2009user, vanacken2008ghosts, freeman2009shadowguides}. 
 
 Unfortunately, the use of screens with interactions inspired by the affordances of physical objects leads to the user having to decide between ``natural'' skills and motions, which are used on physical objects, and the skills and actions used with screens: single-point dragging and clicking. 
-Most users understand that they are looking at pictures of things on a screen, and so default to single-point interactions \cite{vanacken2008ghosts}.
+% Most users understand that they are looking at pictures of things on a screen, and so default to single-point interactions \cite{vanacken2008ghosts}.
 
 However, the behavior of users interacting with an NUI device is not solely informed by their intuitions about the physical objects represented on the screen. 
 Smartphones, tablets, and other multitouch user interface devices, as well as specific types of computer programs, such as CAD and realtime strategy game programs, also inform the user's expectations about interactions with new interfaces. 
 Rather than claiming that the users are untrained, and the gestures are ``intuitive'', it would be more accurate to claim that the users already have a form of training, from the devices that they use in their daily lives. 
 In this paper, we attempt to discover the gestures that users would choose themselves, based on their own thinking about the interface and their own past experience with computer technology such as tablets, smartphones, and video games. 
 
-This work is an extension of previous work that used a similar process to discover user interface gestures for single or small groups of robots \cite{Micire:2009:ANG:1731903.1731912}. We extend this method to larger groups of robots, in an attempt to discover if the gestures that users select vary with the number of robots available.
+% This work is an extension of previous work that used a similar process to discover user interface gestures for single or small groups of robots \cite{Micire:2009:ANG:1731903.1731912}. We extend this method to larger groups of robots, in an attempt to discover if the gestures that users select vary with the number of robots available.
 
 More specifically, it is hypothesized that there exists a swarm size beyond which users will transition from treating the swarm robots as individuals to interacting with the robots in small groups or as a single large group. 
 This transition point will be apparent because of a change in the gesture set that users choose to interact with the swarm. 
@@ -36,7 +36,7 @@ Further, it is hypothesized that altering how the user interface displays the lo
 Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently small, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
 Scaling the representation of the robots up, relative to the map, could make the robot representations overlap unrealistically and obscure the map. 
 Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered by the swarm, rather than the locations of the individual robots.
-This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism, instead of the location of each individual UAV \cite{ayanian2014controlling}.
+% This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism, instead of the location of each individual UAV \cite{ayanian2014controlling}.
  
 More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use the same gestures that users select for controlling individual robots. 
 
@@ -47,7 +47,7 @@ Previous attempts to build user interface gesture sets can be broadly separated 
 General gesture sets would be for operations such as the cut/copy/paste editing metaphors, which show up in word processing, image editing, and other productivity applications. 
 These operations act in related but differing ways, depending on their context, but are invoked in the same way across applications and even across operating systems. 
 
-Wobbrock, Morris, and Wilson use an interesting technique to elicit general user-interface gestures from non-technical users \cite{wobbrock2009user}.
+% Wobbrock, Morris, and Wilson use an interesting technique to elicit general user-interface gestures from non-technical users \cite{wobbrock2009user}.
 The user is shown the \textit{effect} of a command, and then asked to perform the gesture that \textit{caused} that effect. 
 The users were asked to think aloud, in order to understand their cognition about the system and gestures, in addition to their behaviour. 
 The experiment used 27 commands: move a little, move a lot, select single, rotate, shrink, delete, enlarge, pan, close, zoom in, zoom out, select group, open, duplicate, previous, next, insert, maximize, paste, minimize, cut, accept, reject, access menu, help, task switch, and undo (listed in order of complexity as ranked by Wobbrock \textit{et al}).
@@ -56,12 +56,12 @@ Many of these commands are related to window managers, or occur in some form in 
 Task-specific gestures are for operations such as flying through a 3D rendering of an architectural space, or transposing cells in a spreadsheet. 
 While somewhat intuitive gestures may exist for both operations, the operation is tightly bound to the task at hand, and the gestures would likely be different. 
 
-Yao, Fernando, and Wang develop a set of task-specific gestures for urban planning from the required functionality of the interface and paper prototyping on a table \cite{yao2012multi}. 
+% Yao, Fernando, and Wang develop a set of task-specific gestures for urban planning from the required functionality of the interface and paper prototyping on a table \cite{yao2012multi}. 
 The gestures were collected by placing a map on the table, and asking users to perform the gestures they would use to access the required functions. 
 The resulting interface is modal, depending on the user's desired method of interaction, different gestures are available. 
 The interface also permits the combination of some gestures, such as panning or rotating the map while zooming in or out as well. 
 
-Micire \textit{et al}. develops a taxonomy of user gestures for control of both robots and of the interface to control them \cite{Micire:2009:ANG:1731903.1731912}. 
+% Micire \textit{et al}. develops a taxonomy of user gestures for control of both robots and of the interface to control them \cite{Micire:2009:ANG:1731903.1731912}. 
 The interface control gestures are for actions such as zooming in on the content of the screen or panning around a map. 
 Individual users chose a variety of gestures to perform the tasks, but for almost all types of tasks, having two gestures available to perform it would be sufficient to cover 60\% of the users. 
 It was also noted that the gestures that users use are informed by their previous experience both with WIMP interfaces and with touch-screen technology. 
@@ -77,7 +77,7 @@ As a result, this general gesture set could be used in a gestural window manager
 
 Users were seated in front of the interface and read a script describing the system and the experiment. The user interface displayed alternating slides of instructions to the user, such as ``Move the robots to area A", and interface screens for them to interact with. 
 The interface did not visibly respond to user contact or move the robots depicted on it.
-In this regard, it more closely resembles the paper prototypes of the User-Centered Design process than a fully functional interface \cite{ehn1992cardboard}.
+% In this regard, it more closely resembles the paper prototypes of the User-Centered Design process than a fully functional interface \cite{ehn1992cardboard}.
 
 The multitouch user interface device used in this experiment is a 3M M2265PW touchscreen. 
 This screen can track up to 20 simultaneous points, but reports only points, rather than shapes or areas of contact. 
@@ -87,7 +87,7 @@ The other video camera was placed in front of the screen at a low angle, in orde
 In addition to screen contacts and video, users were asked to think aloud about their actions.
 A microphone placed near the screen was used to record everything the user said. 
 
-The software used to record all of this information is ROS, the Robot Operating System \cite{ROS_announcement_paper}. 
+% The software used to record all of this information is ROS, the Robot Operating System \cite{ROS_announcement_paper}. 
 ROS was developed as a message-passing framework and hardware abstraction layer for robots. 
 Software using ROS is implemented as ``nodes'', which communicate by passing messages, generally in a publisher/subscriber pattern. 
 The format of the messages is formally defined, and the generation of the code for generating messages and handling routing of messages is provided by ROS. 
@@ -179,14 +179,14 @@ A second pass of coding of the first ten user recordings was performed by two co
 Because the coders were responsible for deciding which user actions to code, as well as how to code them, it is possible for one coder to miss a gesture that another coder codes, or to split a single gesture into two coded units instead of one. 
 For example, one coder initially split spoken commands at conjunctions such as "and", resulting in two units both coded as voice commands, while the other coder coded the entire sentence as a single unit. 
 This leads to the possibility that for a single task, the coders will produce different length lists of coded units. 
-Cohen's kappa is a measure of inter-coder reliaibility for categorical items, but it assumes that both coders are coding the same number of codable units \cite{cohen1960coefficient}. 
+% Cohen's kappa is a measure of inter-coder reliaibility for categorical items, but it assumes that both coders are coding the same number of codable units \cite{cohen1960coefficient}. 
 It does not account for the possibility of missing data. 
 Extending Cohen's kappa by adding a null code for absent data leads to artificial inflation of the inter-coder reliability, so this approach was rejected.
 Cohen's kappa is also influenced by the true prevalence of a code in the set of codable units, which is to say that coding data which actually contains a large number of occurrences of one code can artificially inflate Cohen's kappa. 
 The ``drag'' gesture is by far the most common gesture used [put prevelence here] \todo{how much effect would that have on k?}
 
 
-Krippendorf's alpha permits data to be absent \cite{hayes2007answering}. 
+% Krippendorf's alpha permits data to be absent \cite{hayes2007answering}. 
 To calculate Krippendorf's Alpha for the coded events during a task, each event from one coder was matched with the event chronologically closest to it produced by the other coder.
 Any remaining events were assumed to have been spotted by one coder, but missed by the other, resulting in missing data. 
 Krippendorf's alpha was then calculated on the resulting list of pairs of coded events, with each pair being assumed to represent the same coding unit. 
@@ -226,12 +226,12 @@ However, multiple participants stated that the cloud represented an unknown numb
 	\begin{subfigure}{0.3\textwidth}
 		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0001.png}
 	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
+% 	\begin{subfigure}{0.3\textwidth}
 		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0002.png}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
+% 	\end{subfigure}
+% 	\begin{subfigure}{0.3\textwidth}
 		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0003.png}
-	\end{subfigure}
+% 	\end{subfigure}
 	\caption{Instructional slides for the unknown number of robots condition, showing cloud representation of robot swarm.}
 	\label{instructional_slides}
 \end{figure}
@@ -242,23 +242,23 @@ At the end of the experiment, users were shown an image of a robot swarm, with a
 The users were told that the intent of this gesture was to select robots, and asked to indicate which robots in the image were selected, or in the unknown number of robots case, whether the gesture selected all of the robots or left any out. 
 Users in the single robot case were shown the selection image with ten robots in it, because the with one robot, there are not enough robots to have a selection which may exclude some robots and include others. 
 
-\begin{figure}
-	\centering
+% \begin{figure}
+% 	\centering
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{../Selection_Fuzz_X.png}
-	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
+% 	\end{subfigure}
+% 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{../Selection_Fuzz_10.png}
-	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
+% 	\end{subfigure}
+% 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{../Selection_Fuzz_100.png}
-	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
+% 	\end{subfigure}
+% 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{../Selection_Fuzz_1000.png}
-	\end{subfigure}
+% 	\end{subfigure}
 		\caption{Images for selection strategy question.}
 	\label{strategy_question}
-\end{figure}
+% \end{figure}
 
 In the unknown number of robots case, 7 participants indicated that all the robots were selected, 3 of the participants indicated that some robots were left out, and one participant indicated that whether the selection included all of the robots could depend on the task. 
 
@@ -289,7 +289,7 @@ User comments also suggested that ways to amend selections before further comman
    
    100 & 1 & 5 & 3 & 0 \\
    1000 & 2 & 1 & 7 & 0\\
-   \hline
+%    \hline
    Totals & 3 & 8 & 22 & 2 \\
  \end{tabular}
 
@@ -305,7 +305,7 @@ User comments also suggested that ways to amend selections before further comman
 The experiment had 51 participants, 11 in the unknown number of robots condition and 10 in all other conditions. 29 of the participants were male, 22 were female. The average age of participants was 22.1 years, with a standard deviation of 3.16. 
 
 These demographics are representative of the location that the study was performed, the campus of an American college. 
-It has been suggested that research in psychology focuses too much on a population that is WEIRD (Western, Educated, Industrialized, Rich, and Democratic), and that the results of such studies may not generalize beyond that population \cite{arnett2008neglected}.
+% It has been suggested that research in psychology focuses too much on a population that is WEIRD (Western, Educated, Industrialized, Rich, and Democratic), and that the results of such studies may not generalize beyond that population \cite{arnett2008neglected}.
 However, for the purposes of this study, particularly assessing the influence of smartphone use on expectations of user interface gestures, it is useful to have a population with significant experience using smartphones, which are a product of both rich and industrialized societies. 
 It is not proposed that the results of this work generalize to humanity as a whole.  
 
@@ -354,7 +354,7 @@ Roderick M. Kramer, Marilynn B. Brewer
 	Not really related, has to do with perception of group one is in
 
 Perceiving Persons as a Group: Effects on Attributions of Causality and Beliefs
-DAVID A. WILDER
+% DAVID A. WILDER
 	Distinction between groups and aggregates of people
 	Groups have a boundary, in or out, aggregate does not (just a random set of people, anyone could be in it)
 	Not about how people make the distinction between individuals and groups, but how they perceive the people in either aggregates or groups
