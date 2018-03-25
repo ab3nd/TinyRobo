@@ -34,8 +34,7 @@ The moving parts are more accurately viewed as manipulators, with the instrument
 Alice, by Caprari \emph{et al}. \citep{caprari1998autonomous} combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$. 
 The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
 Alice robots are no longer available for purchase. 
-The AmIR robot was similar to Alice in size and capability, but with a more modern processor \citep{arvin2009development}.
-There is no evidence that AmIR was ever widely available.
+
 
 The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \citep{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
@@ -49,12 +48,16 @@ It used two processors, one to run higher level behaviors and one to interface w
 InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
 However, the construction process appears to have been relatively straightforward. 
 
-Colias is a dual-microprocessor system similar to Jasmine in functionality \citep{arvin2014colias}. 
+The AmIR robot measured 6.5cm in diameter and 6cm tall. It has a more modern processor than Alice \citep{arvin2009development}.
+There is no evidence that AmIR was ever widely available, and it cost \pounds65, or \$92 USD per unit \citep{arvin2015colias}.
+The successsors to Amir, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \citep{arvin2014colias, arvin2015colias}. 
 It is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
-Of particular note, the Colias lower processor is responsible for detecting light on the underside of the robot. 
-Because of this downward facing light sensor, Colias robots can operate on a translucent table illuminated from beneath with a projector, for experiments in pheromone robotics. 
+Of particular note, the Colias-$\Phi$ lower processor is responsible for detecting light on the underside of the robot. 
+Because of this downward facing light sensor, Colias-$\Phi$ robots can operate on an LCD screen or translucent table illuminated from beneath with a projector, for experiments in pheromone robotics. 
 The light patterns displayed by the projector act as pheromones, which the robot can detect based on its position on the table. 
-Colias robots cost \pounds25, or \$35US. 
+Colias robots cost \pounds25, or \$35US, in parts, but are not commercially available. 
+The Colias-$\Phi$ model has an even more impressive price, at \pounds16, or \$22 USD.
+Part of this drop in price may be due to the omission of the IR inter-robot communication system which Colias robots have. 
 
 Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
 The E-puck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
@@ -1119,108 +1122,78 @@ Marco Montes de Oca, Rehan O’Grady, Carlo Pinciroli, Giovanni Pini, Philippe R
 		Other robots can also localize off of them
 
 \section{Program Generation}
-Automatic Synthesis of Controllers for Distributed Assembly and Formation Forming
-Eric Klavins
-	Controlled self-assembly of intelligent parts
-	Controllers syntehsized from some sort of description of the higher-level form
-	Forms forms in space, but has no notion of position within that space
-		So can't really go to a goal location
-	Focused on tree-graph structures
-	So, very close to being scooped maybe, but different enough 
-		He does call the controller synthesizer a compiler, though
 
-Translating Temporal Logic to Controller Specifications
-Georgios E. Fainekos, Savvas G. Loizou and George J. Pappas
-	LTL -> Hybrid automaton -> control spec
-	Control specification is probably for movement, continuious moves despite discrete states
-	Event-based semantics for LTL can't distingish events that must hold at an instant from those that must hold over a time period
-	Combines continuious flows (vector field) with discrete control transitions
-	I think this is making some assumptions of a pure holonomic robot on the ideal plane
+Controllers for modular robots that allow them to form shapes under stochastic mixing have been automatically generated from descriptions of the desired shape \citep{klavins2002automatic}. 
+These controllers are focused on structures and formations that can be expressed as a tree. 
+They do not relate the structure to any other point in space, but are purely in terms of connectivity between modules. 
+
+Other work with modular robots has used sensing to characterize the environment and decide on the reconfiguration of the robot that will best allow it to complete the assigned task \cite{daudelin2017integrated, jing2016end}.
+The high-level planner uses linear temporal logic in a tool called LTLMoP (Linear Temporal Logic MissiOn Planning) to synthesize a controller for the robot task, and from the behaviors required from the controller, a sequence of transformations of the robot into forms that provide those behaviors. 
 	
-Robot Creation from Functional Specifications 
-Ankur M. Mehta, Joseph DelPreto, Kai Weng Wong, Scott Hamill, Hadas Kress-Gazit, and Daniela Rus
-	3D prints the entire robot from the specification, as well as synthesizing the controller for it
-	Still has binary sensors in the form of prepositions such as "seeObject\_d" where d is an object
-		This blows up because the number of possible states is 2$^cardnality(objects)$
-	Maps propositions to components, so the actuations the robot can take and the senses it needs get added to the robot
-	This is actually a pretty cool argument for heterogeneity, in that the software can design the robot for you and add it to the swarm
-
-An End-to-End System for Accomplishing Tasks with Modular Robots
-Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit
-	V similar to "An Integrated System for Perception-Driven Autonomy with Modular Robots"
-	LTL controller isn't specified in terms of forms, but in terms of desired behaviors
-	Properties of robot action and of environment dictate selected forms
+Generation of programs from e.g. LTL descriptions of the task and environment are promising because they can generate provably correct controllers.
+Unfortunately, these approaches to program generation are prone to extreme conservationism in the face of an unknown environment. 
+Assume that a robot is placed in a simply-connected maze, with instructions to traverse the maze. 
+Selecting one wall, either the left or the right, and following it, will result in the robot finding the exit, or returning to the entrance if there is none. 
+However, the \emph{a priori} generation of a motion plan to reach the exit from the entrance is impossible, as the actual path taken is unknown. 
+LTL and similar logics can only work on what is known about their environment, and so cannot operate in unknown environments. 
 	
-From High-level Task Specification to Robot Operating System (ROS) Implementation
-Kai Weng Wong and Hadas Kress-Gazit
-	Automatically suggests possible fixes for mapping from controller to ROS
-	"While many of these approaches have been demonstrated on physical robots, the low-level integration of the provably-correct, typically symbolic, controller with the hardware is usually a manual and robot-specific ad-hoc process"
-		MURI integration 
-	Assumes single rosmaster, and no node launches another node as part of execution
-		Pretty reasonable
-	Talks about a boolean person detector
-		This stuff frequently gets really noisy, people can be hard to detect
-		Although hitting a person you fail to detect is provably correct, it's not great
-	Permits easy integration of provably correct controllers to ROS
-		Doesn't deal with the problems with provably correct controllers
-			Perfect information
-			Perfect sensors/actuators
-			
-Decentralized Control of Robotic Swarms from High-Level Temporal Logic Specifications
-Salar Moarref and Hadas Kress-Gazit
-	High level temporal logic to controllers for safe nav of area
-	Imperfect synchronization
-	Again with the known map
-	This paper assumes static and known environment, but the approach used doesn't rule out reaction to dynamic environment
+One workaround for this problem is to extend what is known about the environment as the robot explores, and rebuild the controller as new facts are added, in order to determine when the robot has explored enough to build a controller that achieves the desired result. 
+While effective in theory, this approach can run aground on combinatorial problems, particularly in dynamic environments, as the facts may vary often, and require reworking of the controller. 
 
-Symbolic Planning and Control of Robot Motion
-BY CALIN BELTA, ANTONIO BICCHI, MAGNUS EGERSTEDT, EMILIO FRAZZOLI, ERIC KLAVINS, AND GEORGE J. PAPPAS
-	Shows that Klavins, among others was interested in the general problem
-	And also that it was considered open as of March 2007
-	Gets into LTL descriptions of environment to synthesize controllers
-		Points out that "if a solution is found, it might still exist"
-		Doesn't work well with incomplete knowledge
-		Doesn't work well with dynamic worlds, as they imply incomplete knowledge
-	Symbolic approaches make assumptions about holonomic drive
-		car-style steering complicates things
-	Some approaches work by minimizing/collecting possible control into small segments (motion primitives) and composing those
-		Trades completeness/optimiaility for conciseness
-		Want to capture an idea of how expressive a given motion primive set is
-	Embedded graph grammars as a protocol for controlling robots
-		Robots are nodes and have states, communications are edges and change states
-		Transitions between states change robot behavior
-		Robots update their state based on their surroundings/messages from other robots
+One approach to correct-by-construction controller synthesis for dynamic environments combines an offline LTL-based planner with an online motion planner for collision avoidance \citep{alonso2018reactive}. 
+Rather than replanning as the environment changes, the system generates alternative plans, or explains to the user why no alternative plan satisfies the requirements.  
 
-Reactive mission and motion planning with deadlock resolution avoiding dynamic obstacles
-Javier Alonso-Mora, Jonathan A. DeCastro, Vasumathi Raman, Daniela Rus, Hadas Kress-Gazit
-	Small robot team, mission specification written in LTL
-	Automaton plus motion planner to avoid moving obstacles
-	Scalable with the number of moving obstacles
-	Some assumptions about atomic actions and perfect sensing
-		Which, sadly, don't really hold
-	This system works as long as the obstacles are not intentionally adversarial
-		By which they mean "won't block the robot forever"
-	Doesn't attempt to model agents at build time
-		Modifies plans at runtime instead (to avoid state explosion related to agent count)
-	Still for fixed maps, though
-	Assumes moving obstacles: 
-		Maintain constant velocity during planning (to project motion)
-		or try to avoid collisions using the same algorithm as the robots
-		are not out to get the robots
-	Certifies solution about things like doors
-		"This task will complete if the door is opened eventually"
-	Has an exponential blow-up in number of robots in team
-		Single robot has 16 revisions
-		Two robots have 1306 revisions
-		Optimization can bring this down some, but still exponential
+Unfortunately, this controller synthesizer still relies on a known map of the entire environment (but not of the obstacles in it). 
+For real-world applications in disaster recovery, the map may not be available, or may be undergoing constant revision by the disaster. 
+The synthesizer also creates revisions to the assumptions about the environment, and the number of these revisions grows combinatorially. 
+Each revision is an assumption about the environment which must hold for the controller to be correct, such as "There will never be a deadlock if robot 1 is not in the hallway when robot 2 enters the hallway".
+The revision can be viewed as a constraint on the motion of the robots, preventing robot 1 from entering the hallway, or robot 2 from entering the hallway if robot 1 is in it. 
+With one robot in a fairly simple map, the paper indicates that 16 revisions are needed. 
+Adding a second robot increases this to 1306 revisions.  
 
-An Integrated System for Perception-Driven Autonomy with Modular Robots
-Jonathan Daudelin, Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit, and Mark Campbell
-	Modular robot that reconfigures in response to previously unknown environment
-		But known task types, classifies task as discovered and shapeshifts to match
-	Does permit exploring and figuring things out about the environment
-	Sensitive to failure of modules
-	
+Combinatorial explosions are a frequent problem in synthesis of provably correct controllers. 
+Mehta \emph{et al} presented work that that synthesizes not just the controller, but the entire robot \citep{mehta2018robot}.
+In the controller, the sensors are represented by binary propositions of the controller logic, one for each possible sensed object.
+For small cases, this is sufficient, but the number of such propositions is $2^|objects|$, and so becomes unwieldy for more complex specifications and robots.  
+However, it does pose an interesting argument for heterogeneity of robots. 
+Rather than changing how a swarm of robots with a fixed morphology is used to perform a task, robots can be generated as needed for tasks and added to the swarm. 
+One would expect that once a diverse enough pool of robots exists, the work in this paper could be extended to select combinations of existing robots to perform a task, rather than creating new ones. 
+
+%Translating Temporal Logic to Controller Specifications
+%Georgios E. Fainekos, Savvas G. Loizou and George J. Pappas
+%	LTL -> Hybrid automaton -> control spec
+%	Control specification is probably for movement, continuious moves despite discrete states
+%	Event-based semantics for LTL can't distingish events that must hold at an instant from those that must hold over a time period
+%	Combines continuious flows (vector field) with discrete control transitions
+%	I think this is making some assumptions of a pure holonomic robot on the ideal plane
+%	
+%From High-level Task Specification to Robot Operating System (ROS) Implementation
+%Kai Weng Wong and Hadas Kress-Gazit
+%	Automatically suggests possible fixes for mapping from controller to ROS
+%	"While many of these approaches have been demonstrated on physical robots, the low-level integration of the provably-correct, typically symbolic, controller with the hardware is usually a manual and robot-specific ad-hoc process"
+%		MURI integration 
+%	Assumes single rosmaster, and no node launches another node as part of execution
+%		Pretty reasonable
+%	Talks about a boolean person detector
+%		This stuff frequently gets really noisy, people can be hard to detect
+%		Although hitting a person you fail to detect is provably correct, it's not great
+%	Permits easy integration of provably correct controllers to ROS
+%		Doesn't deal with the problems with provably correct controllers
+%			Perfect information
+%			Perfect sensors/actuators
+%			
+%Decentralized Control of Robotic Swarms from High-Level Temporal Logic Specifications
+%Salar Moarref and Hadas Kress-Gazit
+%	High level temporal logic to controllers for safe nav of area
+%	Imperfect synchronization
+%	Again with the known map
+%	This paper assumes static and known environment, but the approach used doesn't rule out reaction to dynamic environment
+It has been suggested that LTL is not the best formalism for the description of desired behavior for robot controllers \citep{belta2007symbolic}.
+Belta \emph{et al} also raises some other problems with symbolic control and planning as a paradigm for robot control. 
+Among others, they point out that the invariance of the dynamics of the robots to certain transformations, such as rotation around certain axes, permits symbolic control. 
+However, pointed out by Rodney Brooks in ``Artificial life and real robots'', environment conditions such as carpet nap can change dynamics of the robots in ways that break the symmetry of the dynamics about certain axes\cite{brooks1992artificial}.
+In addition, the symbolic methods still have problems with incomplete knowledge, and dynamic worlds (which imply incomplete knowledge, as things may change without being observed). 
+While valuable for the strength of the assertions they can make about the generated controllers, symbolic and formal methods still require some level of reactive or heuristic buffering from the real world, to present them with the atomic actions and perfect sensors that their assertions rely on. 
 
 \section{Human Interaction as a Guide to Swarm Cutoff}
 

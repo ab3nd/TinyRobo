@@ -219,7 +219,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by developing a Commercial Off-The-Shelf (COTS) modular control hardware platform that can be attached to children's toys. 
 Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
 The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
-% The controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+The controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
 However, unlike the Spider-Bots and COTSBots, this work does not specify a particular toy chassis to use for mobility. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
 Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provide steering. 
@@ -241,16 +241,16 @@ The software framework in development to support the robots is based on ROS, and
 	DRV8830 & 2.30 & 2 & 4.60 \\
 	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
 	MCP73831 & 0.58 & 1 & 0.58 \\
-% 	\hline
+ 	\hline
 	Total & & & 27.83-38.83\\
 	\end{tabular}
 	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
 \end{table}
 
-% \begin{table}
+ \begin{table}
 	\begin{tabular}{l l l l l l l l }
 	Name & Value & Cost (1) & Cost (100) & Count & Subtotal & Subtotal (100)\\
-% 	\hline
+ 	\hline
 Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
 C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
 C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
@@ -272,8 +272,8 @@ V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
 Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
 \hline
 Total Cost &  &  &  &  & 23.38 & 11.9\\
-% 	\end{tabular}
-% \end{table}
+ 	\end{tabular}
+ \end{table}
 
 The mobility platforms used for the existing TinyRobo swarm cost 12-20 dollars in single quantities, putting the total cost for a single robot at \$35-45. Where bulk ordering is available, the cost of 100 mobility platforms is \$8 per unit, reducing the per-unit cost of a 100-member TinyRobo swarm to \$20. 
 
@@ -317,20 +317,20 @@ Two common types of motors found in children's toys are the RE and FA series of 
 These motors use simple metal brushes and are constructed to be inexpensive, rather than precise. 
 The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
 
-% \begin{table}
+\begin{table}
 	\begin{tabular}{l l l l l}
 	Model & Voltage & No Load Current & Max Efficiency & Stall Current\\
-% 	\hline
+ 	\hline
 	RE-140RA-2270 & 1.5-3 & 0.21 & 0.66 & 2.1 \\
 	RE-140RA-18100 & 1.5-3 & 0.13 & 0.37 & 1.07 \\
 	RE-140RA-12240 & 3-6 & 0.05 & 0.14 & 0.39 \\
 	FA-130RA-2270 & 1.5-3 & 0.2 & 0.66 & 2.2\\
 	FA-130RA-18100 & 1.5-3 & 0.15 & 0.56 & 2.1\\
 	FA-130RA-14150 & 1.5-4.5 & 0.11 & 0.31 & 0.9\\
-% 	\end{tabular}
+	\end{tabular}
 	\caption{Current draw for Mabuchi-branded motors.}
 	\label{tab:properBrandedMotors}
-% \end{table}
+\end{table}
 
 These are somewhat large brushed motors. 
 For smaller toys, coreless motors are more common. 
@@ -338,7 +338,7 @@ The values in table \ref{tab:coreless} were measured from six of the toys used i
 The measurements from the toy helicopter and toy quadcopter are included for comparison.
 While the board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
 
-% \begin{table}
+\begin{table}
 	\begin{tabular}{l l l}
 	Motor number & No Load Current & Stall Current (measured)\\
 	\hline 
@@ -350,10 +350,10 @@ While the board can supply sufficient current to control all of these toys, it h
 	Miniature toy RC vehicle & 0.06A & 0.74A \\
 	Toy helicopter & 0.07A & 1.12A \\
 	Toy quadcopter & 0.74A & 1.99A \\
-% 	\end{tabular}
+	\end{tabular}
 	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. *The Hexbug mini spider includes a slip clutch, so attempting to stall the motors by holding the toy still does not prevent the motor from turning}
 	\label{tab:coreless}
-% \end{table}
+\end{table}
 
 
 \subsection{Potential for Expansion}
