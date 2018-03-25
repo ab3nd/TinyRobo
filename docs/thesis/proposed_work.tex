@@ -1,4 +1,4 @@
-\chapter{Proposed work}
+\chapter{System Developments}
 
 For the purposes of this work, the tasks that users will be asked to complete consist largely of directing the motion of the swarm. 
 While a task is generally defined as a unit of work to be accomplished, motion within space is not usually considered a task. 
@@ -102,24 +102,25 @@ The system currently treats blue tape on the floor of the arena as obstacles.
 		robotCode2[label=<Robot <br/> Firmware>];
 		robotCode2 -> motor2;
 		label="Robot 2";
-% 		shape=box;
-% 	}
+ 		shape=box;
+	}
 	
 	subgraph clusterRobot3 {
 		motor3[shape=box; label="Motor Driver"];
 		robotCode3[label=<Robot <br/> Firmware>];
 		robotCode3 -> motor3;
 		label="Robot 3";
-% 		shape=box;
-% 	}
+		shape=box;
+
+	}
 	
 	subgraph clusterRobotN {
 		motorN[shape=box; label="Motor Driver"];
 		robotCodeN[label=<Robot <br/> Firmware>];
 		robotCodeN -> motorN;
 		label="Robot N";
-% 		shape=box;
-% 	}
+		shape=box;
+	}
 	
 	subgraph clusterComp {
 		concentrate=true;
@@ -137,7 +138,7 @@ The system currently treats blue tape on the floor of the arena as obstacles.
 		rpN [label=<Robot <br/> Process N>];
 		vrNet -> {rp1, rp2, rp3, rpN} [dir="both"];
 		vrSense -> {rp1, rp2, rp3, rpN};	
-% 	}
+	}
 	
 	camera[label=<Overhead<br/>Camera>;shape=box;]
 	camera->worldModel;
@@ -146,7 +147,7 @@ The system currently treats blue tape on the floor of the arena as obstacles.
 	rp2 -> robotCode2 [label="WiFi", dir="both"];
 	rp3 -> robotCode3 [label="WiFi", dir="both"];
 	rpN -> robotCodeN [label="WiFi", dir="both"];
-% 	}
+	}
 	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
 \end{figure}
 
@@ -297,308 +298,63 @@ The decision to have all of the robots have the same firmware and control the sp
 Toy tanks use differential drive, toy cars have Ackerman steering, and so forth. 
 By moving the control to the main computer, the firmware can be kept simple while still allowing researchers to adapt the system to the available toys.
 
+\section{Swarm Simulation}
 
-		
-\section{Proposed work}
+Because the sensors in the TinyRobo system are simulated, it may appear that the development of the UI and translation components could have been served as well by a simulated swarm as by a real one. 
+This is not the case. 
+In 1992, Rodney Brooks pointed out that ``there is a vast difference (which is not appreciated by people who have not used real robots) between simulated robots and physical robots and their dynamics of interaction with the environment'' \citep{brooks1992artificial}. 
+The gap between real-world sensing and actuation and their simulated counterparts means that developers working solely in simulation are tempted to either invest effort in solving problems that do not occur in the real world, or fail to solve problems that do arise in the real world but are left out of simulation. 
+One of Brooks' examples, the directional nap of carpet having an effect on robot odometry that varied with direction of travel, is still not handled by modern physics simulators. 
+Even if it were handled, the attempt would over-complicate simulation configurations due to the variety of types of carpet available. 
 
-% For the purposes of this work, the tasks that users will be asked to complete consist largely of directing the motion of the swarm. 
-% While a task is generally defined as a unit of work to be accomplished, motion within space is not usually considered a task. 
-% Instead, motion within a space is usually performed as part of a task.
-% For example, searching an area requires moving over the area to be searched.
-% Specialized tasks will likely require specialized interfaces to provide the information that is specific to that task. 
-% To attempt to elicit specifications for such interfaces, users will be requested to think aloud while they are using a proposed interface. 
-% It is hoped that users will describe how they would invoke the more specialized components of the desired interface. 
+Modern simulators have vastly more powerful computers behind them than they did in 1992, and the development of video games with realistic physics models has contributed greatly to the variety of physics models available in modern robot simulators. 
+As of 2015, however, Brooks' point still holds, and the dynamics of robots interaction with the environment are still not perfectly simulated \citep{erez2015simulation}.
+Generally, aspects of physics are elided or approximated from gaming physics engines, in favor of rapid simulation which is visually plausible. 
+In particular, contact dynamics simulations are NP-hard, and so are approximated in the interests of speed. 
+The PhysiX and Havoc physics engines also do not implement Coriolis forces at all.
+These sorts of omissions are mostly harmless, but evolutionary techniques for developing controllers for robots or simulated creatures can exploit them to develop control schemes that cannot work under real physics \citep{Brooks2000}. 
 
-\subsection{Compilation of user commands into robot programs}
+In the real world, sensors are also uncertain. 
+Simulated sensors can provide a level of accuracy and certainty about that accuracy that is not available to real sensors operating with the sensor noise that affects real-world systems. 
+As the TinyRobo system simulates its laser and distance sensors, it may appear that it falls into this trap of simulation, and provides sensors that are ``too good to be true''. 
+However, the TinyRobo sensors are physical sensors, they're just not the same physical sensors that they are presented as, in much the way that a sonar sensor is not a ruler, but rather measures time and sound and presents it as distance. 
+Similarly, the arena camera is not a robot-mounted laser scanner, but it is still a physical optical sensor being used to measure distance
+\todo{test noise of camera based fake laser vs real lasers, characterize difference between multiple sensor readings of same thing}
+Adding noise to simulated sensors can also move them more towards the sensors available on real robots, but as Brook's carpet nap example indicates, the type of noise may be more complex than a simple normal distribution about the ground truth value. 
+With evolutionary approaches, the system can even come to depend on the noise, and fail when it is given real sensors that are less noisy then their simulated counterparts \citep{jakobi1995noise} 
+%Tim Smithers, "On Why Better Robots Make it Harder"
+%	The idea that the variation in real robot behavior will go away if the robots are "better" as a justification for simulation
+%	Better-made components allowing hunting where worse ones provided damping (steam engine governor example)
+%	Don't view robots as measuring with sensors and reasoning about results
+%		Sensors act as filters whose output drives internal robot dynamics
+%
+%An Overview about Simulation and Emulation in Robotics
+%Michael Reckhaus, Nico Hochgeschwender, Jan Paulus, Azamat Shakhimardanov and Gerhard K. Kraetzschmar
+%	Simulation went out of fashion when people started getting real robots
+%	Computers got better and games drive for realism pushed development
+%	Proposes a lot of use cases and reasons to use simulation
+%		Which are interestingly orthogonal to the reasons not to use it
+%			One doesn't counter the other, it's just "here are the good parts, here are the bad parts"
+%
+%Simulation in robotics
+%Leon Zlajpah
+%	Overview of tools
 
-% In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
-% Multitouch gesture sets as a command language for controlling robots have been developed by an empirical process with naive users \cite{Micire:2009:ANG:1731903.1731912}. 
-% These gestures frequently consisted of sequences of gestures that roughly fit the linguistic structure of a sentence, with the first gesture indicating the subject of the sentence, and the next gesture indicating a verb and possibly an object. 
-% As a consequence, the gestures form a sort of language, and commands are sentences in the gesture language.
-% A user might select a group of robots by circling them. 
-% These robots would be the subject of the ``sentence''.
-% Then the user might draw a path or tap a spot on a map, indicating that the robots should ``go here''. 
-% Taken all together, the sentence could be read as ``these robots, follow this line to this location'', with the pronouns disambiguated by the locations of the command gesture on the screen.
-
-% One way to define such an interface would be to select a fixed set of gestures, and then train the users to use those gestures when they interact with the system. 
-% However, if the system is not one that the users use frequently, they will forget the training. 
-% Since the advent of multitouch interfaces for smartphones and the trackpads of some laptops, many users already have some prior experience with multitouch gesture controls in everyday life. 
-% Multitouch gestures can also be imitations of the way the users would expect to interact with material objects. 
-% For example, zooming out of a map view by pinching two fingers together imitates the distant points of the map becoming closer together, indicating outward zoom, and spreading the fingers imitates stretching a smaller region to cover the screen for an inward zoom. 
-% From these ``naturalistic'' expectations and daily use, users already have some idea of how a multitouch user interface can work. 
-% If the interface fulfills these intuitions, the users will find it easier to learn to use. 
-
-% For the purposes of this research, an intuitive gesture language is one that is freely chosen by the majority of users. 
-% In \cite{Micire:2009:ANG:1731903.1731912}, for each available command, one or two gestures were used by 60\% or more of the users. 
-% These gestures are the intuitive gestures for issuing the command. 
-% It is possible that there is no intuitive gesture for a given task.
-% If no two users use the same gesture for the same commands, or, more generally, there is very poor inter-user similarity for the gestures chosen to issue a command, then there is not an intuitive gesture for that command.
-
-% In order to determine if the intuitive gestures change with the size of the swarm, tests will be conducted with varying swarm sizes performing the same tasks. 
-% The swarm used for these tests will be large, with the lower bound on its size being significantly larger than the number of fingers a user could potentially gesture with. 
-% In order to have a less tongue-in-cheek definition of ``large'', the scale required for a swarm to be considered ``large'' will be determined empirically.
-% It is expected that there exists a transition point for the number of members in a swarm where users will stop interacting with the UI representation of the members of the swarm as individuals, and attempt to interact with the representations as groups or collections. 
-
-% A large swarm is, then, a swarm with a number of members above the point at which such a transition occurs. 
-% The user interface may be able to drive the re-imagining of the robots as a unified swarm, and so alter the user's interaction with the swarm, by depicting the group in different ways \cite{manning2015heuristic}.
-% The base case is to simply display all the units as individuals, but this may not be useful for the operator \cite{coppin2012controlling}. 
-% Other approaches include an amorphous shape covering the area occupied by the swarm, an amorphous shape with density shading and motion arrows, the fields of influence for leaders in the swarm, and the web generated by the flow of information within the swarm. 
-% Considered as a whole, the swarm has properties, such as center of gravity or flock thickness, that do not exist in individual robots. 
-% Views of these properties may assist the user, for example in determining what areas have insufficient robot density for a thorough search operation. 
-
-% The information available to the user through the UI also implies the availability of certain information within the system. 
-% The distinction between UI representations of the swarm that display each robot as an individual robot versus those that display a cloud or amorphous shape in the area occupied by robots is the most obvious example. 
-% A system that displays the location of each robot must actually have localization information about each robot.
-% The presence of this information in turn implies that the localization information can be used to plan the actions of each robot, which in turn affects the structure of the programs generated for each robot. 
-
-% For example, if the task assigned to the swarm is to surround a fixed point, and localization information is available, then each robot can be given a program that instructs it to move towards a known location, based on its current known location.
-% Even if the robots cannot determine their location, but the UI and program generator have it, the robots closest to the point can be assigned programs that cause them to act as beacons, while all the other robots are assigned programs to wander until they see a beacon and then move towards it. 
-% If, instead, neither the robots nor the program generator have information on the location of the robots, then all of the robots can be assigned programs that instruct them to wander until they detect the target point, and then act as beacons, at which point the overall behavior of the system returns to the previous example.
-% In the most extreme case, neither the robots nor the user interface have any information about the location of the robots. 
-% This extreme is outside the scope of this work, as it is more suited to an interface that permits the provisioning of the robots with a description of the target point. 
-% A method for providing such a description through multitouch gestures is likely to be more tedious than other approaches, e.g. summarizing desired sensor precepts or including an image of the target area for the robots to recognize. 
-% However, if the user task is expressible in terms of the overhead view of the area, the user interface could simply allow the user to issue commands that are situated in that view, such as rallying at a certain point or moving an object that is visible in overhead view. 
-% Without information about the robot positions, the user would not be able to watch the motion of the robots to see that the commands were being followed. 
-
-% All of the valid expressions possible in the command language should be converted into programs for the robots, or the user must be usefully informed as to why it was not possible. 
-% The synthesized program should result in convergence of the swarm's overall behavior to the desired result. 
-% Clearly, in a developing situation in the real world, success may become impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
-% However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. 
-
-\subsection{Swarm Robot Software Framework}
-
-
-% The individual robots being developed for this research have minimal sensing capacity and relatively weak processors. 
-% The majority of the processing is performed on a host computer running the ROS software framework. 
-% Each robot's processor is mostly concerned with interfacing with the robot's sensors, if any, and controlling the motors of the robot. 
-% The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall design of the system.
-
-% The central computer has a top-down camera over the ``arena'' the robots are active in. 
-% Each robot has an AprilTag \cite{olson2011tags} on top of it, so that the central computer can localize them within the arena. 
-% The central computer uses the location information to create ``virtual sensors'' for each robot. 
-% Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
-% For example, since the central computer knows the location, adding a range and bearing sensor that allows each robot to detect the distance and angle of the nearby robots is simple to implement. 
-% This functionality is available in hardware on Epucks and Marxbots, but since each robot must be equipped with it, the cost scales linearly with the number of robots to equip.  
-% It is possible to calculate the odometry for individual robots by watching the change in position in their tags over time. 
-% The calculated odometry could then be published as a ROS topic, just like odometry collected from e.g. wheel encoders. 
-% Because the system has an omniscient-view camera, other objects in the robot arena can also be tracked. 
-% The system currently treats blue tape on the floor of the arena as obstacles.
-
-% %Graphic of the software environment as a whole
-% \begin{figure}[h]
-% 	\centering
-% 	\digraph[scale=0.6]{Framework}{
-	
-% 	graph[nodesep=0.5];
-	
-% 	subgraph clusterRobot1 {
-% 		motor[shape=box; label="Motor Driver"];
-% 		robotCode[label=<Robot <br/> Firmware>];
-% 		robotCode -> motor;
-% 		label="Robot 1";
-% 		shape=box;
-% 	}
-	
-% 	subgraph clusterRobot2 {
-% 		motor2[shape=box; label="Motor Driver"];
-% 		robotCode2[label=<Robot <br/> Firmware>];
-% 		robotCode2 -> motor2;
-% 		label="Robot 2";
-% 		shape=box;
-% 	}
-	
-% 	subgraph clusterRobot3 {
-% 		motor3[shape=box; label="Motor Driver"];
-% 		robotCode3[label=<Robot <br/> Firmware>];
-% 		robotCode3 -> motor3;
-% 		label="Robot 3";
-% 		shape=box;
-% 	}
-	
-% 	subgraph clusterRobotN {
-% 		motorN[shape=box; label="Motor Driver"];
-% 		robotCodeN[label=<Robot <br/> Firmware>];
-% 		robotCodeN -> motorN;
-% 		label="Robot N";
-% 		shape=box;
-% 	}
-	
-% 	subgraph clusterComp {
-% 		concentrate=true;
-% 		label="Control Computer";
-% 		{rank=source;
-% 			vrSense [label="Virtual Sensors"];
-% 			vrNet [label="Virtual Network"];
-% 			worldModel [label="World Model"];
-% 			worldModel -> vrSense;
-% 			worldModel -> vrNet;			
-% 		}
-% 		rp1 [label=<Robot <br/> Process 1>];
-% 		rp2 [label=<Robot <br/> Process 2>];
-% 		rp3 [label=<Robot <br/> Process 3>];
-% 		rpN [label=<Robot <br/> Process N>];
-% 		vrNet -> {rp1, rp2, rp3, rpN} [dir="both"];
-% 		vrSense -> {rp1, rp2, rp3, rpN};	
-% 	}
-	
-% 	camera[label=<Overhead<br/>Camera>;shape=box;]
-% 	camera->worldModel;
-	
-% 	rp1 -> robotCode [label="WiFi", dir="both"];
-% 	rp2 -> robotCode2 [label="WiFi", dir="both"];
-% 	rp3 -> robotCode3 [label="WiFi", dir="both"];
-% 	rpN -> robotCodeN [label="WiFi", dir="both"];
-% 	}
-% 	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
-% \end{figure}
-
-% Since the robots are reporting to a central server, and the central server also receives the video from the overhead camera, it may appear that this is a highly centralized system. 
-% However, the central computer provides a framework for implementing a decentralized control scheme on the individual robots. 
-% Rather than controlling each robot, the central computer maintains a separate process for each robot in the swarm. 
-% Each of these robot processes only has access to the information that would be available to that robot, and so acts as a local control program for the robot, but with the full processing resources of the host computer. 
-% As a result, the individual robots can be small, lightweight, and consume relatively little electrical power, but the system as a whole gives them with significant computing power. 
-% When more powerful and lower power consumption processors become available, more of the processing can be moved from the virtualized robot processors and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
-
-% Similarly, it should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
-% The code virtually operating on the robot may be neither aware of its own position in the world, or the location of other robots, if the experiment calls for such a lack of information. 
-% However, the central computer can use the location information to create ``virtual sensors'' for each robot. 
-% The sensor precepts from virtual sensors would be simulated, but their magnitude or direction is be based on the location of a real robot relative to a real object in the experiment area. 
-% For example, collision avoidance between two robots can be implemented by a virtual sensor on each robot that indicates the direction and heading of the nearest robot. 
-% Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
-% The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
-% Virtual parameter tweaking allows fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
-
-% \subsection{Virtual Localization}
-
-% The AprilTag tracking of the robots provides localization of the robots within a common coordinate frame. 
-% It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
-% The code virtually operating on the robot may be neither aware of its own position in the world, nor the location of other robots, if the experiment calls for such a lack of information. 
-
-Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokuyo brand laser scanners used on larger robots. 
-% It is also used to limit the range of messages sent between the robots through a virtual network. 
-
-% \subsection{Virtual Laser Scanners}
-
-% The AprilTag localizations and the image of the arena are used to provide virtual laser rangers for each robot. 
-% The virtual laser ranger consists of two ROS nodes, a service and clients for the service. 
-% The service is called ``laser\_oracle\_server''. 
-% It subscribes to the AprilTag detections and the images from the arena overhead camera. 
- 
-% When a client requests a laser scan, the virtual laser service masks the modified arena image with a circle with a radius of the laser range, centered on the robot requesting the scan.
-% This masking removes all of the objects that are out of range of the laser, and so reduces the time spent calculating the laser scan points. 
-
-% Each sample of the laser scan is represented as a line segment, located based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
-% Each line segment is checked for intersection with the lines defining the contours of the blue objects in the image. 
-% As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
-% This dot provides the outer edge of each robot in the virtual laser scan. 
-% The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
-% If multiple intersections are found for a line segment, the intersection closest to the robot is used, as the laser would stop after reflecting off an object.
-% The service then formats the distances to the intersection points as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
-
-% The virtual laser clients take the place of the laser driver ROS nodes that would be used to control a real linear laser scanner. 
-% The laser client is initialized with some parameters, such as the sweep angle and angular resolution of the virtual laser, and polls the laser service regularly. 
-% As it receives laser scans from the service, it publishes them to a ROS topic in the same manner as a ROS node for a hardware laser. 
-
-% The apriltags\_ros node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
-% In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
-% The modified version is available at https://github.com/ab3nd/apriltags\_ros.
-
-% \begin{figure}
-% 	\centering
-% 	\digraph[scale=0.6]{VirtualLaserSystem}{
-	
-%	{rank=same atag vls}
-	
-%	vls -> vsc [label=<sensor\string_msgs/LaserScan>];
-%	vsc -> vls [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
-% 	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
-% 	cam -> vls [label=<sensor\string_msgs/Image>];
-% 	cam -> atag	[label=<sensor\string_msgs/Image>];
-% 	atag -> vls [label=<apriltags\string_ros/TagDetections>];	
-		 
-% 	vls [label="Virtual Laser Service"];
-% 	vsc [label="Virtual Laser Client"];
-% 	atag [label="AprilTag Detector"];
-% 	cam [label="Arena Camera"];
-% 	sub1 [label="Subscriber"];
-% 	}
-% 	\caption{Data flow in the virtual laser service}
-% \end{figure}
-
-% \subsection{Virtual Networking}
-
-% If the robots are required to communicate directly with each other, the communication passes through a virtual network.
-% From the point of view of the robots, messages sent into the virtual network are delivered to other robots as if the messages were sent directly from one robot to another. 
-% However, all the communication is taking place between processes running on the central computer.
-% By changing how the messages are delivered by the central system, the virtual network can provide full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
-% The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
-% For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver, or signals that pass through a virtual wall may have a reduced virtual signal strength and range.
-
-% \begin{figure}
-% 	\centering
-% 	\digraph[scale=0.6]{VirtualNetwork}{
-	
-% 	{rank=same atag dist}
-% 	{rank=same tx rx}
-
-% 	vns -> dist [label="Robot IDs"];
-% 	dist -> vns [label="Distance"];
-% 	cam -> atag	[label=<sensor\string_msgs/Image>];
-% 	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
-% 	vns -> rx [label="Network Message"];
-% 	tx -> vns [label="Network Message"];	 
-	
-		
-% 	vns [label="Virtual Network Service"];
-% 	dist [label="Distance Service"];
-% 	atag [label="AprilTag Detector"];
-% 	cam [label="Arena Camera"];
-% 	tx [label="Transmitter"];
-% 	rx [label="Receiver"];
-% 	}
-% 	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
-% \end{figure}
-
-
-
-\subsection {Firmware}
-
-% The current version of the robots' firmware is developed in the open-source Arduino development environment.
-% Arduino programs are written in a dialect of C++. 
-
-% Every robot runs the same firmware. 
-% The firmware listens for connections on port 4321 for TCP/IP packets containing one of two types of messages. 
-% Messages starting with a 0x51 byte (ASCII 'Q') cause the firmware to respond with a message containing the ASCII string "TinyRobo". 
-% This function is to allow automatic detection of robots on a network by querying all connected systems to determine if they respond in this way. 
-
-% Messages starting with a 0x4D byte (ASCII 'M') followed by four bytes are motor speed commands.
-% The firmware interprets the first two bytes as the speed and direction for the first motor, and the second two bytes as speed and direction for the second motor.
-% The control bytes are converted to a single byte command for the DRV8830 motor driver and transmitted over the I2C bus to set the motor speed.
- 
-% The DRV8830 driver is a voltage-controlled motor driver. 
-% It accepts a single-byte command for each motor. 
-% Bits 7-2 of the byte define the output voltage to be applied to a motor, and the driver attempts to maintain that output voltage.
-% The valid range of motor voltage commands for the DRV8830 driver is 0x06 to 0x3F, which corresponds to a range of 0.48V to 5.06V in 0.08V increments. 
-% Because the robot battery is nominally 3.7V, the motor command 0x30 is the highest output available. 
-% Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor, as per table \ref{tab:DRV8830_truth}.
-
-% \begin{table}
-% 	\begin{tabular}{l l l l l}
-% 	Bit 1 & Bit 0 & Out 1 & Out 2 & Function\\
-% 	\hline
-% 	0 & 0 & Z & Z & Coast\\
-% 	0 & 1 & L & H & Reverse\\
-% 	1 & 0 & H & L & Forward\\
-% 	1 & 1 & H & H & Brake\\				
-% 	\end{tabular}
-	
-% 	\caption{Truth table for DRV8830 drive direction bits. Coast allows the motor to turn freely. Brake connects the motor leads, which results in braking using the motor's back-EMF}
-% 	\label{tab:DRV8830_truth}
-% \end{table}
-
-% Once the motor speed is set, the firmware reads the fault bytes from the DRV8830, and sends the motor command and the fault bytes for each motor back to the client over WiFi. 
-% The client uses the fault bytes to detect overcurrent conditions in the motor drivers and reduce output power. 
-
-% The decision to have all of the robots have the same firmware and control the speed of the motors from ROS was made because different toys have different control schemes. 
-% Toy tanks use differential drive, toy cars have Ackerman steering, and so forth. 
-% By moving the control to the main computer, the firmware can be kept simple while still allowing researchers to adapt the system to the available toys.
+\section{Why Heterogeneity?}
+Defence of heterogeneity
+	Keeps individual robots from becoming complex by attempting to do everything
+		Spreads ability over swarm, if there are multiple gripper robots and multiple scout robots, losing one isn't as problematic
+		Swarmanoid
+	Practical concern with toys
+		May build swarm in stages, change platforms based on ability or cost
+		Tries to move platform-specific calculations closer to the hardware, leaving higher-level concerns able to be interchanged
+	Impact on compilation
+		minimization of mobility heterogeneity means that current translator does not use robot capability in translation
+		Could be extended to ensure that tasks were assigned to robots that can perform them
+			Task assignment is a well-studied problem in the literature
+			Makes the assumption that the robots the user selects have the capability to do what they command
+				Error back to user if robot can't do it? Select closest robot that can?
+	Heterogeniety is a good model of real-world situations
+		Swarm members of different capability, e.g. family groups of pack animals, young-old, ill members
+		Military convoy with different vehicles (HUMV, Tank, Jeep)
+		Human/robot teams 
