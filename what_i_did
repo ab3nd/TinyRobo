@@ -821,6 +821,17 @@ Spent a lot of time around here having a cold and not being able to think well
 3/6 
 - Added game section to paper
 
+3/7-3/25
+- I spent a lot of this sick
+- Video coding on p1-30
+- Converting notes on papers read late last month into text for thesis
+- Lots of paper edits, new sections on proposal feedback
+
+3/26
+- Reading up on anova
+- thinking about the exact questions I want out of my data
+- Writing a script to process json data files for thesis
+
 It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 
 Swarm control software
