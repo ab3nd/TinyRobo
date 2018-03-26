@@ -41,7 +41,7 @@ task 8
 pinch -r -f2 -h1 -o robots -t 5:29.960
 pinch -r -x -f2 -h1 -o robots -t 5:31.780
 pinch -r -x -f2 -h1 -o robots -t 5:33.889
-tap -h2 -x -o robots -t 5:35.541
+tap -h -x -o robots -t 5:35.541
 pinch -r -x -f2 -h2 -o robots -t 5:36.970
 memo -d "division expected to automatically be equal"
 
@@ -65,8 +65,8 @@ drag -o "over crate to area A" -t 8:10.011
 
 task 13
 tap -o robots -c2 -t 8:36.282
-drag -d "arc around three sides of screen (bottom, l, top)" -t 8:38.390
-drag -d "arc around three sides of screen (bottom, l, top)" -t 8:40.404
+drag -d "arc around three sides of screen (bottom, l, top)" -o screen -t 8:38.390
+drag -d "arc around three sides of screen (bottom, l, top)" -o screen -t 8:40.404
 drag -o "crate to A (v little contact)" -t 8:42.495
 memo -d "expects swarm to maintain shape when dragged"
 

@@ -1,4 +1,4 @@
-particpant 19
+participant 19
 task 1
 drag -o "around three sides of the swarm" -t 1:39.378
 tap -o "area A" -t 1:42.408 
@@ -35,7 +35,7 @@ tap -o "area a" -t 5:39.750
 box -s tl -o "red robots" -t 5:41.459
 tap -o "area b" -t 5:42.668
 lasso -o "all robots" -x -t 5:45.712
-ui -k button "button or something to sort by color (tap)" -t 5:48.061
+ui -k button -d "button or something to sort by color (tap)" -t 5:48.061
 tap -o "area a" -t 5:52.183
 tap -o "area b" -t 5:55.004
 
@@ -67,17 +67,17 @@ memo -d "explict reference to RTS controls"
 task 10
 box -s tl -o "all robots" -t 9:01.4
 memo -d "talked about having a draw geometry option, didn't do anything"
-drag -d "line over robots" -t 9:12.298
+drag -d "line over robots" -o robots -t 9:12.298
 tap -o "whatespace near top of screen" -t 9:12.529
-drag -d "vertical line on r side of screen" -t 9:14.447
-drag -d "S shape over vertical line" -t 9:15.528
+drag -d "vertical line on r side of screen" -o whitespace -t 9:14.447
+drag -d "S shape over vertical line" -o "previous line" -t 9:15.528
 
 task 11
 tap -f 3 -o "off screen (intended as select all)" -t 9:36.231
 ui -k other -d "draw geometry, (possibly a menu, no contact)" -n -t 9:40.587
 drag -d square -o screen -t 9:44.496
 ui -k button -x -d "preset geometry, press square" -n -t 9:44.974
-drag -d "diagonal of square" -x -t 9:48.483
+drag -d "diagonal of square" -o "whitespace/robots" -x -t 9:48.483
 
 task 12
 box -s tl -o "all robots" -t 10:21.942

@@ -1,4 +1,4 @@
-particpant 18
+participant 18
 task 1
 lasso -o robots -t 1:19.378
 drag -o "robots to A" -t 1:20.512
@@ -105,15 +105,15 @@ drag -o "defective robot off bottom of screen" -x -t 11:08.653
 task 16
 lasso -o "three robots" -t 11:46.987
 pinch -o "lassoed group" -f4 -h2 -t 11:49.240
-drag -h2 "lassoed group to top of screen" -t 11:55.886
+drag -h2 -o "lassoed group to top of screen" -t 11:55.886
 lasso -o "two robots" -t 11:57.508
-drag -h2 "lassoed group to r of screen" -t 12:01.984
+drag -h2 -o "lassoed group to r of screen" -t 12:01.984
 lasso -o "three robots" -t 12:11.906
 pinch -o "lassoed group" -f4 -h2 -t 12:13.582
 pinch -o "lassoed group" -f4 -h2 -t 12:14.9
-drag -h2 "lassoed group to bottom of screen" -t 12:20.337
+drag -h2 -o "lassoed group to bottom of screen" -t 12:20.337
 lasso -o "two robots" -t 12:22.086
-drag -h2 "lassoed group to l of screen" -t 12:23.259
+drag -h2 -o "lassoed group to l of screen" -t 12:23.259
 
 task 17
 box -s tr -o "robots" -f2 -t 13:06.5
@@ -132,5 +132,5 @@ lasso -x -o "all but one robot" -t 14:05.388
 tap -x -c2 -o "lassoed group" -t 14:06.682
 
 task 18
-other -d "4f scatter (3f and thumb)" -t 14:45.620
-other -d "4f scatter (3f and thumb)" -x -t 14:45.620
+other -d "4f scatter (3f and thumb)" -o robots -t 14:45.620
+other -d "4f scatter (3f and thumb)" -o robots -x -t 14:45.620
