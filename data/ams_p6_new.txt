@@ -1,4 +1,4 @@
-particpant 6
+participant 6
 task 1
 drag -o "robots towards a" -t 1:30.534
 drag -o "robots to a" -t 1:31.796 
@@ -55,9 +55,9 @@ drag -d "line through robots" -o robots -x -t 4:29.179
 pinch -r -f2 -h2 -o robots -x -t 4:32.415
 drag -d "line through robots" -o robots -x -t 4:34.333
 pinch -r -f2 -h2 -o robots -x -t 4:49.148
-drag -d "line cutting off 1/4 of robots" -x -t 4:50.649
-drag -d "line cutting off 1/4 of robots" -x -t 4:51.035
-drag -d "line cutting off 1/4 of robots" -x -t 4:52.204
+drag -d "line cutting off 1/4 of robots" -o robots -x -t 4:50.649
+drag -d "line cutting off 1/4 of robots" -o robots -x -t 4:51.035
+drag -d "line cutting off 1/4 of robots" -o robots -x -t 4:52.204
 
 task 9
 pinch -f2 -h2 -o "both robot groups" -t 5:04.029

@@ -43,7 +43,7 @@ memo -d "described using box select or single finger to select robots, but didn'
 
 task 9
 box -s tl -o "all robots/both groups" -t 7:08.026
-drag -2f -o "from bottom to middle of screen" -t 7:11.574
+drag -f 2 -o "from bottom to middle of screen" -o whitespace -t 7:11.574
 
 task 10
 box -s tl -o "all robots" -t 8:09.066
@@ -53,18 +53,18 @@ drag -n -d line -o "middle of screen" -t 8:35.221
 drag -d triangle -o whitespace -t 8:38.409
 
 task 11
-box -s -tl -o "all robots/whole screen" -t 8:54.028
+box -s tl -o "all robots/whole screen" -t 8:54.028
 ui -k button -d "formation button (tap)" -t 8:58.818
 memo -d "talks about drawing a square, doesn't do it" 
 
 task 12
-box -s -tl -o "all robots" -t 10:19.421
+box -s tl -o "all robots" -t 10:19.421
 drag -f2 -o "robots behind crate" -t 10:22.081
 tap -o crate -t 10:31.059
 memo -d "mentioned having a push/pull object menu, but then stopped interacting"
 
 task 13
-box -s -tl -o "all robots" -t 11:05.917
+box -s tl -o "all robots" -t 11:05.917
 drag -f2 -o "robots behind crate" -t 11:07.354
 tap -h -o crate -t 11:15.420
 drag -o "crate to A" -t 11:17.465

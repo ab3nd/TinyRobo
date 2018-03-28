@@ -56,7 +56,7 @@ drag -o "right group to middle" -t 5:49.398
 
 task 10
 lasso -o "robots" -t 7:15.234
-drag -d "line for robots to form" -t 7:17.775
+drag -d "line for robots to form" -o whitespace -t 7:17.775
 tap -c3 -o whitespace -t 7:18.972
 
 task 11

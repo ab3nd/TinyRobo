@@ -1,4 +1,4 @@
-particpant 24
+participant 24
 task 1
 drag -o "circle around robots and then to a (no lift, so no lasso)" -t 1:30.933
 
@@ -40,7 +40,7 @@ drag -o "individual robot" -x -t 5:15.388
 drag -o "individual robot" -x -t 5:15.914
 drag -o "individual robot" -x -t 5:16.550
 drag -o "all robots to b" -x -t 5:26.228
-drag -o "all robots to A" -x 5:27.186
+drag -o "all robots to A" -x -t 5:27.186
 drag -o "a to b" -x -t 5:28.119
 drag -o "a to b" -x -t 5:28.692
 drag -o "a to b" -x -t 5:29.402
@@ -75,22 +75,22 @@ drag -o "robots to whitespace near vertical line" -x -t 8:25.615
 drag -o "circle in center of robots" -x -t 8:31.611
 
 task 11
-drag -d "horizontal dividing line in middle of screen" -t 8:56.914
-drag -d "horizontal dividing line in middle of screen" -t 9:00.296
-lasso -o "top left quarter robots" -t 9:02.707
-lasso -o "top left quarter robots" -t 9:09.353
-drag -d "top left corner of square" -t 9:10.671
-drag -d "bottom left corner of square" -t 9:11.399
-drag -d "top right corner of square" -t 9:12.242
-drag -d "bottom right corner of square" -t 9:13.215
+drag -d "horizontal dividing line in middle of screen" -o screen -t 8:56.914
+drag -d "vertical dividing line in middle of screen" -o screen -t 9:00.296
+lasso -o "top left quarter robots" -o robots -t 9:02.707
+lasso -o "top left quarter robots" -o robots -t 9:09.353
+drag -d "top left corner of square" -o "robots/screen" -t 9:10.671
+drag -d "bottom left corner of square" -o "robots/screen" -t 9:11.399
+drag -d "top right corner of square" -o "robots/screen" -t 9:12.242
+drag -d "bottom right corner of square" -o "robots/screen" -t 9:13.215
 tap -o "top left corner of screen" -t 9:19.552
 drag -o "center of screen to tl corner" -t 9:22.001
 drag -o "tl corner down to l center of screen" -t 9:24.934
 drag -o "tl corner down to top center of screen" -t 9:25.806
 drag -o "center of screen to top r" -t 9:32.370
-drag -d "top right corner of square" -t 9:34.663
-drag -d "bottom right corner of square" -t 9:36.539
-drag -d "bottom left corner of square" -t 9:37.792
+drag -d "top right corner of square" -o "robots/screen" -t 9:34.663
+drag -d "bottom right corner of square" -o "robots/screen" -t 9:36.539
+drag -d "bottom left corner of square" -o "robots/screen" -t 9:37.792
 
 task 12
 lasso -o "all robots" -t 10:02.157

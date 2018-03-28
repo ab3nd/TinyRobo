@@ -47,9 +47,9 @@ memo -d "suggested a button to select by color"
 drag -o "robots to B, loop in B" -t 5:13.463
 
 task 8
-other -d "flat hands, spread both hands apart as if dividing a pile of beans" -t 5:29.088
-other -d "flat hands, spread both hands apart as if dividing a pile of beans" -t 5:30.232
-other -d "fingertips down, spread both hands apart" -t 5:31.044
+other -d "flat hands, spread both hands apart as if dividing a pile of beans" -o robots -t 5:29.088
+other -d "flat hands, spread both hands apart as if dividing a pile of beans" -o robots -t 5:30.232
+other -d "fingertips down, spread both hands apart" -o robots -t 5:31.044
 
 task 9
 other -d "bring cupped hands together in middle of screen" -o robots -t 5:44.393 
@@ -66,16 +66,16 @@ drag -d line -o whitespace -t 3:27.859
 task 11
 other -d "two hands moving together, flat, palms down, gathering" -o robots -t 6:49.93
 other -d "fingers down bringing hands from tl and tr corners to center" -o robots -t 6:50.982
-drag -d circle -o "center of screen" -t 6:58.321
+drag -d circle -o "center of screen" -o whitespace -t 6:58.321
 ui -k button -d "form square" -t 7:03.058
 
 task 12
-other -d "hand edge push/scoop robots behind crate and to A" -t 7:36.264
+other -d "hand edge push/scoop robots behind crate and to A" -o robots -t 7:36.264
 drag -x -o "crate to A" -t 7:52.984
 
 task 13
 drag -o "crate to A" -t 8:15.904
-other -d "sweep up robots with fingertips of one hand to behind crate, then to A" -t 8:33.693
+other -d "sweep up robots with fingertips of one hand to behind crate, then to A" -o robots -t 8:33.693
 
 task 14
 pinch -r -f2 -h1 -o "zoom in on defective robot" -t 8:48.271
@@ -94,7 +94,7 @@ task 17
 ui -k button -d "to draw patrol shapes" -t 10:14.731
 drag -o "screen border" -t 10:17.264
 lasso -o "some of the robots" -t 10:21.396
-other -d "cupped hand push to A" -x -t 10:44.685
+other -d "cupped hand push to A" -o "lassoed robots" -x -t 10:44.685
 
 task 18
 ui -k button -d "to draw dispersal area" -t 11:14.250

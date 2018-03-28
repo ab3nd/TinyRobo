@@ -1,4 +1,4 @@
-particpant 23
+participant 23
 task 1
 drag -o "robot to A" -t 1:26.159
 drag -o "robot to A" -t 1:27.276
@@ -24,11 +24,11 @@ drag -o "robot to A r around wall" -t 2:16.56
  
 task 3
 voice -c "stop" -t 2:30.234
-other -d "hand chop over center of screen" -n -t 2:31.817
-other -d "hand chop over end of wall" -n -t 3:03.964
+other -d "hand chop over center of screen" -o screen -n -t 2:31.817
+other -d "hand chop over end of wall" -n -o whitespace -t 3:03.964
 memo -d "user expressed preference for voice commands"
-other -d "hand chop and slide from end of wall across front of swarm" -t 4:01.203
-other -d "hand chop and slide from other end of wall to edge" -t 4:02.954
+other -d "hand chop and slide from end of wall across front of swarm" -o whitespace -t 4:01.203
+other -d "hand chop and slide from other end of wall to edge" -o whitespace -t 4:02.954
 
 task 4
 drag -o "robot to A" -t 4:21.851
@@ -99,7 +99,7 @@ drag -o "red to B" -t 7:02.173
 drag -o "orange to A" -t 7:03.859
 
 task 8
-drag -d "dividing line between robots" -t 7:17.354
+drag -d "dividing line between robots" -o robots -t 7:17.354
 
 task 9
 pinch -o "one robot from each group" -f2 -h2 -t 7:38.6

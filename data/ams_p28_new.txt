@@ -179,7 +179,7 @@ tap -o "area a" -t 9:49.170
 
 task 13
 tap -o robot -t 10:30.557
-tap -o "behind crate" -t 10.31.362
+tap -o "behind crate" -t 10:31.362
 tap -o "below crate" -t 10:35.602
 tap -o robot -t 10:41.853
 tap -o "behind crate" -t 10:42.603
@@ -227,5 +227,5 @@ ui -k menu -d "drop down menu option for continuious motion" -t 14:31.425
 task 18
 tap -h -o "robot facing center of screen" -t 15:01.202
 ui -k menu -d "drop down menu option to turn around (tap)" -t 15:08.441
-other -d "5f scatter" -t 15:16.906
+other -d "5f scatter" -o robots -t 15:16.906
 

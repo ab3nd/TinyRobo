@@ -1,4 +1,4 @@
-particpant 20
+participant 20
 task 1
 drag -o "over robots" -t 1:31.55
 drag -o "robots to A" -t 1:33.198
@@ -13,7 +13,7 @@ tap -o "area A" -t 1:53.678
 
 task 3
 drag -o "foremost robots back a little bit" -t 2:05.688
-drag -d "line in front of robots" -t 2:20.96
+drag -d "line in front of robots" -o whitespace -t 2:20.96
 
 task 4
 drag -d "dividing line vertically through middle of robots" -o robots -t 2:52.995
@@ -22,18 +22,18 @@ drag -o "right side of robots to B" -t 2:57.098
 
 task 5
 drag -o "orange robots to B" -t 3:26.927
-drag -o "red robots to A" -3:31.164
+drag -o "red robots to A" -t 3:31.164
 
 task 6
 drag -o "orange robots to A" -t 3:46.894
-drag -o "red robots to B" -3:49.523	
+drag -o "red robots to B" -t 3:49.523	
 
 task 7
 drag -o "starting from an orange robot to A" -t 4:06.804
-drag -o "starting from a red robot to B" -4:16.959	
+drag -o "starting from a red robot to B" -t 4:16.959	
 
 task 8
-drag -d "dividing line down the middle of swarm" -d 4:36.103
+drag -d "dividing line down the middle of swarm" -o robots -d -t 4:36.103
 
 task 9
 pinch -h1 -f2 -o "each robot group" -t 4:51.161

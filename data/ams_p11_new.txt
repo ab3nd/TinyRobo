@@ -31,7 +31,7 @@ drag -o "orange robots to a" -t 5:10.447
 drag -o "red robots to b" -t 5:13.595
 
 task 8
-drag -d "line diagonally through robots" -t 6:01.958
+drag -d "line diagonally through robots" -o robots -t 6:01.958
 
 task 9
 pinch -f2 -h2 -o "robot groups" -t 6:17.822

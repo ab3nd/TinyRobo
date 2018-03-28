@@ -47,7 +47,7 @@ class VideoCodeCmd(cmd.Cmd):
 		self.drag_parser.add_argument('--help', action='help', help='show this help message')
 		
 		#For voice commands
-		self.voice_parser = argparse.ArgumentParser(prog="voice")
+		self.voice_parser = argparse.ArgumentParser(prog="voice", parents=[self.base_parser])
 		self.voice_parser.add_argument('-c', '--command', help="What user said", nargs='*')
 		self.voice_parser.add_argument('-t', '--time', help="timestamp of action", required=True)
 
