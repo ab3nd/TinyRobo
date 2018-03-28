@@ -341,20 +341,24 @@ With evolutionary approaches, the system can even come to depend on the noise, a
 %	Overview of tools
 
 \section{Why Heterogeneity?}
-Defence of heterogeneity
-	Keeps individual robots from becoming complex by attempting to do everything
-		Spreads ability over swarm, if there are multiple gripper robots and multiple scout robots, losing one isn't as problematic
-		Swarmanoid
-	Practical concern with toys
-		May build swarm in stages, change platforms based on ability or cost
-		Tries to move platform-specific calculations closer to the hardware, leaving higher-level concerns able to be interchanged
-	Impact on compilation
-		minimization of mobility heterogeneity means that current translator does not use robot capability in translation
-		Could be extended to ensure that tasks were assigned to robots that can perform them
-			Task assignment is a well-studied problem in the literature
-			Makes the assumption that the robots the user selects have the capability to do what they command
-				Error back to user if robot can't do it? Select closest robot that can?
-	Heterogeniety is a good model of real-world situations
-		Swarm members of different capability, e.g. family groups of pack animals, young-old, ill members
-		Military convoy with different vehicles (HUMV, Tank, Jeep)
-		Human/robot teams 
+
+Heterogeneity is a is a good model of many real-world systems where members of a group have different capabilities. 
+Family groups of pack animals have young and old members, sometimes ill members, and sometimes infant members that cannot participate fully in pack activities. 
+In human groups, work is divided according to ability, so a contractor may hire an electrician, a framing carpenter, and a plumber to build a house, to  much better effect than attempting to do it with a team consisting entirely of plumbers. 
+
+Another use of heterogeneity in swarms is to prevent individual robots from becoming overly complex by sparing them from having to be capable of doing everything. 
+The presence of multiple robots with a given ability in a swarm strikes a compromise between all robots having that ability (and being complex and expensive) and only one robot having that ability (and so providing a single point of failure). 
+Perhaps the most impressive recent demonstration of a highly heterogeneous swarm is the Swamanoid project's video ``Swarmanoid: The Movie", in which three different kinds of medium-sized robots cooperate to retrieve a book from a shelf \citep{oʼgrady2011swarmanoid}.
+The movie explicitly mentions that one sub-team of robots (two mobile robots and one gripper robot) is positioned as back-up, in case the first sub-team fails. 
+
+Beyond the possible utility of robots with multiple abilities, the swarm design presented in this work is heterogenous as a matter of convenience of implementation. 
+As toys go out of production and are replaced by others, it may not be possible to continue to operate the swarm on an entirely homogeneous mobility platform. 
+Because of this possibility, the software infrastructure tries to keep platform-specific calculations in a single module, and allow the rest of the system to operate using standard ROS messages. 
+At present, these calculations only consist of conversion of ROS twist messages, which contain rotational and angular velocities in 3 axes each, into motor speed commands for the robot, which consist of a speed and direction for up to two motors. 
+
+Handling the motion of the robots in this way means that the heterogeneity of the mobility platforms has a minimal impact on the conversion of user gestures into programs. 
+However, as a direction for future work, it will become increasingly important to consider mobility as an aspect of program generation. 
+For example, if the system is extended to include UAVs, and the user directs the robots to the center of a lake as part of a task, only the UAVs can be reasonably expected to reach the location undamaged. 
+The system could be extended with some capacity for reasoning about the task environment, to determine how the capabilities of the robots interact with that environment. 
+Such an augmented system could then refuse to direct ground robots into water, and report if there are not a sufficient number of aerial robots to perform the task over the lake. 
+It could also permute task assignments based on robot capabilities in order to meet other goals, such as minimizing the number of robots used or maximizing available robot battery life. 

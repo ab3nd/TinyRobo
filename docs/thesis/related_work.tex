@@ -1197,125 +1197,50 @@ While valuable for the strength of the assertions they can make about the genera
 
 \section{Human Interaction as a Guide to Swarm Cutoff}
 
-How/when do humans stop treating people as individuals and start dealing with groups?
-	Gestalt perception 
-		Proximity principle, elements near each other are perceived as groups
-		Common fate principle, things that move together are perceived as a unit
-		Similarity principle, elements that are the same are grouped together
-		Various others
-			But the heirarchy among them is amorphous, so doesn't give clear parsings of complex scenes
+One potential guide to when users will stop treating robots as individuals and begin treating them as a group is the numerical point that humans come to regard a collection of other humans as a collective instead of individuals. 
+Unfortunately, that point is quite complex to determine, because humans have vastly more complex social interaction with each other than they do with robots, and elements of that social interaction color how humans think of each other. 
 
-Do Numbers Really Count? Group Threat Theory Revisited
-Dr Mikael Hjerm
-	Size of a minority affects perception of threat to the majority
-	Actual and perceived size of minority doesn't affect threat perception across 20 EU countries
-	Not really about group size for social interaction
+In perceptual psychology, gestalt perception provides a number of heuristics or principles that can influence whether a set of objects is perceived as a group. 
+\begin{description}
+\item[Proximity principle]
+Objects near each other are perceived as a group.
 
-Perception of Groups, Size of Opposition, and Social Influence
-DAVID A. WILDER
-	Organized attempted social influencers as group, multiple small groups, or individuals
-	More groups -> more conformity
-	Varying size of single group -> little effect on conformity
-	Increase in opposition size beyond 3-4 people has little impact
-		First opposer is a leader, the rest are clearly sniviling synchophants
-		So the group more-or-less counts as 1 person
-	"Persons may regard opponents as discrete individuals contributing independent bits of information until opposition size increases beyond some critical point, after which they are perceived as a single group unit. Additional opponents are assimilated to the group unit, so that the number of distinct entities in opposition remains constant. This process is analogous to a Gestalt principle of organization in which elements exhibiting similar characteristics are “grouped” together."
-	4 individuals is 4 data points, but one group of four people is one data point
-	Similar actions in a group is assumed to be a product of group influences
-	Similar actions in individuals are assumed to be product of their internal state/abilities
-	Talks about a cut-off group size, but doesn't say what it is
+\item[Common fate principle] 
+Objects that move together are perceived as a group.
 
-Choice Behavior in Social Dilemmas: Effects of Social Identity, Group Size, and Decision Framing
-Roderick M. Kramer, Marilynn B. Brewer
-	Larger groups get worse at providing a public good
-		Probably diffusion of responsibility, there are enough people doing X that I don't have to
-		Number of other possibilities (social loafing, decrease in payoff, deindividualization)
-	Mixed findings around group size, one reports showed no difference between 7 and 20, but another found 1 was better than 3 was better than 6
-	Not really related, has to do with perception of group one is in
+\item[Similarity principle]
+Objects that are visually similar or the same are grouped together.
+\end{description}	
 
-Perceiving Persons as a Group: Effects on Attributions of Causality and Beliefs
-% DAVID A. WILDER
-	Distinction between groups and aggregates of people
-	Groups have a boundary, in or out, aggregate does not (just a random set of people, anyone could be in it)
-	Not about how people make the distinction between individuals and groups, but how they perceive the people in either aggregates or groups
+There are various other principles, and the order in which they are assessed or their relative strengths are unclear, so it is difficult to determine how a complex scene will be parsed. 
 
-Trust Transfer on the World Wide Web
-Katherine J. Stewart
-	Cites Campbell (1958) for introducing "the term 'entitativity' to describe the degree to which a collection of individuals is perceived as a group"
-		Continuum, not binary group/not group distinction
-		Higher entitativity -> higher expectation of unity and consistency
-	Members of small groups perceived as more similar than members of large groups (salience increases as group size decreases)
+Humans also make some distinction between aggregates and groups \cite{wilder1978perceiving}.
+Groups have a boundary, such as a common belief or goal, and sharing that element makes someone a member of the group or not. 
+Aggregates are random sets of people, who may have nothing in common.
+The people inside a church at a given time are likely a group, the people on the sidewalk outside are more likely an aggregate. 
+This factor, combined with the gestalt common fate principle, may be useful for encouraging users to think of a swarm as a group. 
+Since it can be made explicit to the user that the swarm shares common goals, and the swarm can move together, the user would come to regard it as a group, rather than a simple aggregate. 
 
-Many Hands Make Light the Work: The Causes and Consequences of Social Loafing
-Bibb Latane, Kipling Williams, and Stephen Harkins
-	Interesting, but not related
+Whether a set of people is perceived as a group is referred to as ``entitativity", which is to say, how much like a single entity they are perceived to be. 
+Groups with high entitativity are expected to have a higher degree of unity and consistency within the group. 
+The smaller a group is, the more similar its members are perceived to be, which seems to indicate that smaller groups would have higher entitativity \citep{stewart2003trust}. 
+Entitativity isn't a binary classification, with groups being either entities or not. 
+Rather, it is a spectrum, with groups such as families or organizations at the high entitativity end, and groups such as people in line at the bank on the low entitativity end. 
+By surveys, some clusters of groups have been elucidated, such as intimacy groups (family and friends), task groups (co-workers, juries), social groups (gender, race, class), and loose associations (parade crowds, goth music fans) \citep{lickel2001elements}. 
+In a situation familiar to computer scientists, the analysis of perception of group entitativity is prone to the curse of dimensionality: what counts as a group is highly variable \citep{lickel2000varieties}.  
+Among the factors influencing it are differences in the perceiver (level of need to perceive a group, individualism or collectivism bias), contextual factors (group membership or opposition), and properties of the group itself (visual or behavioral similarity).
+Minorities become higher in entitativity due possibly to the perception of them as figures distinct from a ``ground'', as in the gestalt figure/ground principle, or because stereotyping increases the perception of similarity within the group. 
+	
+Research in the influence of group size on effectiveness of persuasion reveals that the gestalt principle of similarity works on the level of information as well as visual similarity \cite{wilder1977perception}. 
+When a person is confronted by a group attempting to influence them, increase in the size of the opposition beyond about 3-4 people has little effect. 
+Rather than treating each person in the opposing group as contributing a bit of information that might sway the subject, and so a large group would contribute many bits, the entire group is lumped together and contributes one bit of information. 
+The first person from the group who expresses their opposition may be viewed as a leader, but the rest can then be dismissed as followers, expressing an opinion no different from the leader's opinion. 
 
+Unfortunately, the study of the entitativity of groups makes it clear that the factors that humans consider when deciding how strongly an association of other humans count as a group extend well beyond how many of people are in the group.
+Human perception of groups has less to do with exact count of people, and far more to do with common cause, visible similarity, tasks, interpersonal relations, and so forth. 
+One potential upper bound that is simply numeric is Dunbar's Number, a constraint on the understanding of a social network placed by neocortex size \citep{dunbar1992neocortex}. 
+For humans, Dunbar's number is estimated to be around 150 individuals, and beyond that, people would be expected to begin chunking the people in their social network into hierarchies or groups in order to keep track of a reduced number of entities (e.g. one group called "co-workers" instead of every individual on the team). 
 
-Elements of a Lay Theory of Groups: Types of Groups, Relational Styles, and the Perception of Group Entitativity
-Brian Lickel and David L. Hamilton, Steven J. Sherman
-	What is people's intuitive understanding/taxonomy of groups?
-		Clustering of survey categorization of groups
-			Intimacy groups (friends, family, romantic)
-			Task groups (work, jury)
-			Social category (gender, race, class)
-			Loose associations (line at the bank, parade crowd, fans of a musical genre)
-		Clusters have different qualities wrt permiability, size, duration, level of interaction, etc. 
-	How do they arrive at conclusions about groups?
-	Perception of relationsl style in the group and perception of entitativity are related
-		unclear how degree vs quality of interaction affects perception of entitativity
-
-
-Varieties of Groups and the Perception of Group Entitativity
-Brian Lickel and David L. Hamilton, Grazyna Wieczorkowska, Amy Lewis and Steven J. Sherman, A. Neville Uhles
-	Cited from previous paper "Elements of a Lay Theory..."
-	Curse of high dimensionality
-		What a "group" is is highly variable
-	Very little study of dynamic small groups (more study of stereotypes of large groups not personally related to the subject)
-		Relational vs. perception, are subjects within group, or outside observing?
-	Entitativity is about perception of group, not actual objective assessment of the group
-		How much do they appear to be a group, not how well do they actually function as one
-		Affects perception as causal agent, higher entitiativity -> more causally effective
-	Perciever differences
-		Need for closure (?)
-		individualism/collectivism biases in observer
-	Contextual factors
-		Observer in group or not
-		competition present between groups?
-	Properties of the group itself
-		do they all dress the same?
-		Similarity in Campbell paper, possibly links to gestalt perception
-	Minorities higher in entitativity
-		Arguably links to gestalt perception, figures vs. ground
-		members stereotyped -> increased similarity within group -> higher entitativity
-	Entitativity isn't about the group size cutoff so much as it is about the groupiness of a group. 
-
-Static Versus Dynamic Theories and the Perception of Groups: Different Routes to Different Destinations
-Sheri R. Levy, Jason E. Plaks, Ying-yi Hong, Chi-yue Chiu, Carol S. Dweck
-	Static view thinks people are fixed entities
-	Dynamic view thinks people are changeable tendencies
-	Has effects on perception of groups, but not related to my work
-
-Neocortex Size as a Constraint on Group Size in Primates
-R. I. M. Dunbar
-	Group size is a function of neocortical size, but environment is not 
-	Information overload is on whole network structure, not count of dyadic relationships
-	Larger groups are groups of grooming cliques
-		Implies formation of heirarchy at ~150 members (upper bound, for humans)
-	Selective pressures favoring larger groups drive increased brain size
-	Could put an upper bound on human social groups, but that isn't the same thing as perceived group size
-
-A Study of Interaction and Consensus in Different Sized groups
-A. Paul Hare
-	9 groups of 5 boys and 9 groups of 12 boys (all boy scouts)
-	Rated 10 pieces of equipment individually for utility in escaping the wilderness
-		Each group then had to select the most important piece
-	Measured increase in consensus after discussion
-	Smaller groups acheive consensus better
-	Leaders have more influence in small groups
-	Larger groups take longer to come to consensus
-
-
-Overall, it feels like the research in social psychology for how groups are perceived as groups vs. aggregations and how much of an entity the group is are highly dependant on a large number of distinct factors. My robot groups have color, heading, spacing, but beyond that don't display a lot of the variation that people display, even when the group they are in has strong entiativity (also depends on context, the robotics club is an entity, the same people standing in line at a bank would be way less of an entity). Human perception of groups has less to do with exact count of people, and far more to do with common cause, visible similarity, tasks, interpersonal relations, etc. 
 
 \subsection{human/robot teaming}
 

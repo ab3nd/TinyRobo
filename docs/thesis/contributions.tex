@@ -275,20 +275,21 @@ Total Cost &  &  &  &  & 23.38 & 11.9\\
  	\end{tabular}
  \end{table}
 
-The mobility platforms used for the existing TinyRobo swarm cost 12-20 dollars in single quantities, putting the total cost for a single robot at \$35-45. Where bulk ordering is available, the cost of 100 mobility platforms is \$8 per unit, reducing the per-unit cost of a 100-member TinyRobo swarm to \$20. 
+The mobility platforms used for the existing TinyRobo swarm cost 12-20 dollars in single quantities, putting the total cost for a single robot at \$35-45.
+Where bulk ordering is available, the cost of 100 mobility platforms is \$8 per unit, reducing the per-unit cost of a 100-member TinyRobo swarm to \$20. 
+This is roughly in line with the parts cost of the Kilobot, which is \$15 \citep{rubenstein2014kilobot}.
 
-Kilobot: A Low Cost Scalable Robot System for Collective Behaviors
-Michael Rubenstein, Christian Ahler, and Radhika Nagpal
-	Original Kilobot hardware announcement
-	\$14 worth of parts and 5 minutes to assemble (assuming you're not assembling the PCB)
-	Indicates that it's still hard to model robots interactions with each other and the environment, so the stuff from the Brooks paper still holds
-	Gives a price point for Jasmine of \$130
-	Kilobots don't shut off
-		time to program, etc is constant 
-		Because every robot gets the same program
-	Heh. Kilobot parts cost is for 1000 units. 
-		My price is close to theirs at that level
-		And my robots don't need a whiteboard
+However, this should not be taken to mean that the TinyRobo platform is a competitor with the Kilobots. 
+Kilobots were designed to have scalable interactions, which is to say that programming, charging, and even turning on the Kilobots does not take more time as the number of robots increases. 
+To have programming take constant time, the Kilobots are programmed in parallel using an infrared broadcast device that illuminates the entire swarm at once. 
+To charge together, the Kilobots have one charging contact on their legs, and the other on a leaf spring on their tops. 
+By sandwiching the robots between two conductive plates, the entire swarm can be charged at once.
+Finally, to all be turned on quickly, the Kilobots never turn off.  
+Instead, they enter a low power sleep mode, and wake occasionally to check for an infrared signal to become fully active. 
+This last attribute makes it very difficult to have a robot that has both wifi and a very low power sleep mode. 
+The wifi module used in the TinyRobo platform consumes 15mA in its highest-power sleep mode, and 20$\mu$A in its lowest power mode. 
+Unfortunately, only the highest power sleep mode can remain connected to an access point and receive a wake-up command, and so it will deplete the 750mAH battery used in the TinyRobos in just over two days. 
+In contrast, a Kilobot can sleep for 3 months. 
 
 The processor of the controller is an ESP-8266 wifi module.
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
