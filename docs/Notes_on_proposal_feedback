@@ -494,6 +494,9 @@ RimE - exploration? 3d 3rd person view
 	WASD move, space jump, e interact, shift roll/dive, l mouse "shout"
 	Doesn't appear to even have an "attack"?
 
+Paragon - MOBA
+	WASD/Mouse controls like a FPS
+
 Seems like games that require real-time interaction (FPS, RPG) keep the keys close to each other, games that don't have the keys laid out however the designers felt like it (EU4). DOTA interesting because it's almost all mouse and modifiers. 
 
 FPS very standard, wasd move, mouse look and fire control, space jump
@@ -506,6 +509,10 @@ Intel shooting star drones (from Intel-Shooting-Star-Tech-Fact-Sheet-073117-1.pd
 
 	From video screenshots, appears to be a 3D rendering suite similar to Blender
 	GPS + barometer (that's not enough resoultion, they're doing something else)
+		Ascending Technologies (AscTec) Trinity Autopilot, triple-redundant IMU
+		http://www.asctec.de/en/asctec-trinity/ claims reproducable 3d flight "within gps accuracy"
+		ASCTec also had a program called Navigator for GPS flight control
+
 	Can apparently import some form of GIS data to place drones relative to ground level, avoid hills
 	Has tabs for "Curves/Surfaces", "Poly modeling" and "Sculpting" in UI
 	Also "Rigging", "Animation", FX & FX Caching, HEALTH, and some stuff I can't make out
@@ -519,4 +526,430 @@ Intel shooting star drones (from Intel-Shooting-Star-Tech-Fact-Sheet-073117-1.pd
 
 	Automated health monitoring and drone selection for better deployment
 	Red/yellow/green dot interface for at-a-glance health monitor, probably battery status
+
+Design of a Drone Lead-Follow Control System
+Alexander Lanteigne, Elias Kibru, Sabreena Azam, Suliman Al Shammary
+	Lead/follow control law
+	AscTec drone (hummingbird)
+	Also has some stuff on profitability of shows?
+		Weird change in focus for the paper
+	Models risk of drone loss
+
+Gesture Based Human - Multi-Robot Swarm Interaction
+and its Application to an Interactive Display
+J. Alonso-Mora, S. Haegeli Lohaus, P. Leemann, R. Siegwart, and P. Beardsley
+	Gesture control of robots acting as mobile pixels
+	Co-locaed with robots, had to point at the robots
+	Useful description of interface
+	Swarm still centralized, though
+	System operating as an "intractive display", so kind of an electronic toy/amusement device
+
+
+Human Influence of Robotic Swarms with Bandwidth and Localization Issues
+S. Nunnally, P. Walker, A. Kolling, N. Chakraborty, M. Lewis, K. Sycara, and M. Goodrich
+	Cites a vector-field based interface for battlefield conditions
+		M. Fields, E. Haas, S. Hill, C. Stachowiak, and L. Barnes, “Effective robot team control methodologies for battlefield applications,”
+	Other relevant papers
+		A. Naghsh, J. Gancet, A. Tanoto, and C. Roast, “Analysis and design of human-robot swarm interaction in firefighting,”
+		M. Goodrich, B. Pendleton, P. Sujit, and J. Pinto, “Toward human interaction with bio-inspired robot teams,”
+		G. Coppin and F. Legras, “Autonomy spectrum and performance perception issues in swarm supervisory control,”
+		Z. Kira and M. Potter, “Exerting human control over decentralized robot swarms,”
+	Interface has two commands, "stop" and "head towards"
+		Mouse clicks, plus zoomable/pannable viewpoint
+	Operators adapted to swarm conditions and stayed able to perform tasks
+
+Two Invariants of Human-Swarm Interaction
+Daniel S. Brown, Michael A. Goodrich, Shin-Young Jung, and Sean Kerman
+	Claims two invariants:
+		(1) collective state is the fundamental percept associated with a bio-inspired swarm
+		(2) a human’s ability to influence and understand the collective state of a swarm is determined by the balance between the span and persistence.
+	Attractors abstract from individual to group behavior, so humans percieve and try to manage attractors
+	"Span" is how many units the controller interacts with
+	"Persistence" is how long each interaction takes
+		If you have low span, you need long persistence to make a change
+	Citation of mulitple fan-out papers
+		Need to manage group, not individuals
+		"Other work has estimated fan-out using large simulation studies involving several sizes of robot teams (Olsen & Wood, 2004; Olsen, Wood, & Turner, 2004)."
+		"Pourmehr, Monajjemi, Vaughan, and Mori (2013) examine group-level abstracted multi-robot control to form dynamically-sized teams to increase fan-out."
+	Swarm model similar to boids, can transition between torus and flock
+		... doesn't really talk about e.g. moving an object or obstacle avoidance
+	Shape torus using mediators with attraction/repulsion
+
+Toward Human Interaction with Bio-Inspired Robot Teams
+Michael A. Goodrich and Brian Pendleton, P. B. Sujit and Jose Pinto
+	Information foraging problem
+		Abstract resources at unknown locations in a space
+		Agents have to locate the resources and stay at them for a period of time
+		Resources are depleted by agents at them
+		New resources can appear at any time
+		Human input is helpful
+	Other appproaches
+		Playbook, human calls plays for robots
+		Human controls leader, other robots follow leader
+		Potential fields
+	Lead-by-attraction (leader) vs. lead-by-repulsion (predator)
+		lead-by-repulsion makes having persistent interactions hard, and keeps span low over time
+	Simulation, no real robots
+		Leader models are better than predator models
+
+
+Human-Swarm Interactions Based on Managing Attractors
+Daniel S. Brown, Sean C. Kerman, Michael A. Goodrich
+	V. Similar to "Two Invariants", which I think recaps/references it
+	Raidus used for orienting affects probability of flock or torus
+	So it's controllable, can switch under user control
+	Good for e.g. overwatch/loiter & move-to-area
+		Which is to say, flying ISR applications or search & destroy
+	This seems a lot like that military system (Perdix)
+		Perdix UI appears to have point-orbit, and move-to-point functions
+		Overhead view, but each unit seems to be individualy taskable, but tasking all at once is also supported
+			Playbook interface, operator calls plays, drones run them
+			https://www.defense.gov/Portals/1/Documents/pubs/Perdix%20Fact%20Sheet.pdf	
+	Has study of reliability of quorum sensing in situation with multiple robot failures
+
+
+Online Feature Extraction for the Incremental Learning of Gestures in Human-Swarm Interaction
+Jawad Nagi, Alessandro Giusti, Farrukh Nagi, Luca M. Gambardella, Gianni A. Di Caro
+	Learning gestures from a person co-located with the robots
+	Can't provide thousands of examples
+	Cites work on gaze detecton, again assuming the robots are co-located
+	Variant of next paper, not using an SVM anymore, doing online training
+
+Human-Swarm Interaction through Distributed Cooperative Gesture Recognition
+Alessandro Giusti, Jawad Nagi, Luca M. Gambardella, Stéphane Bonardi, Gianni A. Di Caro
+	Uses swarmanoid footbots
+	Bots look at human hand gestures as commands
+	Bots also move around to try to figure out what the gesture is
+		distributed consensus protocol
+	Video session, so paper is one page teaser
+
+Integrating human swarm interaction in a distributed robotic control system
+Cristian Vasile and Ana Pavel and C ̆at ̆alin Buiu
+	Chidori - 1k birds in Japanese
+	Cites Particle swarm optimization methods, physicomimetics, gravity points method
+	User creates attraction points and repulsion points
+	Network heavy, all done in sim
+
+Bearing-Compass Formation Control: A Human-Swarm Interaction Perspective
+Eric Schoof, Airlie Chapman, and Mehran Mesbahi
+	Using only local information aids robustness: agent can act alone
+	Version in this paper uses bearing only
+	Also uses a compass to get rotation of robot in global frame
+	Deals with predictability of the motion from an HRI view
+		Example is preservation of scale and centroid when changing formation shape
+	Control permits combination with human influence to allow scaling and translation of formation
+	Very control-theoretic approach
+
+Human-Swarm Interaction Using Spatial Gestures
+Jawad Nagi, Alessandro Giusti, Luca M. Gambardella, Gianni A. Di Caro
+	Most of the same crew that were throwing gang signs at footbots
+	4 selection gestures involving wearing some garish gloves and an orange shirt
+	Selection, bit not commands beyond that (in future work)
+
+Human-Swarm Interaction: An Experimental Study of Two Types of Interaction with Foraging Swarms
+Andreas Kolling, Katia Sycara, Steven Nunnally, Michael Lewis
+	"Currently, multi-robot approaches generally scale to at most ten’s of robots per operator even when using state of the art mapping, path planning, target detection, and coordination algorithms to alleviate the load on the operator (H. Wang et al., 2011; J. Wang & Lewis, 2007)."
+	2 kinds of interaction
+		Intermittent
+			User tells swarm when to change from one behavior to another
+			Selection - active selection of robots
+				Scales better to larger swarms
+				Outperforms beacon
+					Broader span and persistence
+		Environmental
+			User manipulates environment to cause swarm response
+			Beacon - operates on robots within beacon range
+	Paper also lists
+		Persistent
+			User provides a constant control input
+				Predator/leader systems, single-joystick systems
+		Parameter setting
+			Attractor management
+	UI appears to be very single-click mouse oriented
+
+User Interfaces for Human Robot Interactions with a Swarm of Robots in Support to Firefighters
+Jeremi Gancet, Elvina Motard, Amir Naghsh, Chris Roast, Miguel Munoz Arancon and Lino Marques
+	"Sahin [2] describes the swarm robotics as a (i) a large number, of (ii) homogeneous, (iii) autonomous, (iv) relatively incapable or inefficient robots with (v) local sensing and communication capabilities" - Could be the other Sahin definition I was looking for
+	Remote v. Prximate interaction
+	Early deployment to gather knowledge vs. synchronous deployemnt as helpers
+	Details reasons firefighting is hard and how they constrain the interface design
+	Light array visor
+		LEDs on inside of visor as a HUD
+		...I guess that's a good idea? Looks like it could be blinding.
+	Paper cites EID, but I'm not sure the LAV is properly EID based on my understanding of it
+	Paper mostly about LAV and data on tests with it
+		Remote HSI evaluation was inerview with 4 firefighters
+		Swarm seems to have been very small (4 robots?) and not very swarm-like
+
+Exerting Human Control Over Decentralized Robot Swarms
+Zsolt Kira, Mitchell A. Potter
+	Focus on real-time control
+	Top down control
+		Global swarm characteristics defined, agents optimized to acheive those characteristics
+	Bottom up control
+		Virtual agents exert forces on the real agents as if they were present in the space
+	Physicomimetic control scheme
+	Virtual particle parameters evolved in simulation, and then used by the user to perform split and follow operations on swarm
+
+Assessing the Scalability of a Multiple Robot Interface
+Curtis M. Humphrey, Christopher Henk, George Sewell, Brian W. Williams, Julie A. Adams
+	Halo display that shows were other robts are with respect to selected robot
+	Supervisory control usuaally top-down, assumes known map (which USAR may not have)
+	Halo kind of like HUD/radar displays in video games
+	Tapping halo robot switches to that view
+		So this is a many-individuals kind of interface, not a swarm interface
+	Increase in workload with bounded time diminishes success
+		Adding robots increases workload
+	SA didn't appear to drop with more robots
+		6 robots vs. 9 robots, which is still in the human-handlable fan-out that other papers have seen
+	Experiment proposed halo display, but doesn't appear to have a non-halo test case?
+		So they were testing the display in 6 vs. 9 robot cases, but not halo vs. non-halo case
+		So the experiment doesn't say anything about the halo case
+			Except in comparision to other studies, which they don't compare it to...
+
+
+Symbolic Planning and Control of Robot Motion
+BY CALIN BELTA, ANTONIO BICCHI, MAGNUS EGERSTEDT, EMILIO FRAZZOLI, ERIC KLAVINS, AND GEORGE J. PAPPAS
+	Shows that Klavins, among others was interested in the general problem
+	And also that it was considered open as of March 2007
+	Gets into LTL descriptions of environment to synthesize controllers
+		Points out that "if a solution is found, it might still exist"
+		Doesn't work well with incomplete knowledge
+		Doesn't work well with dynamic worlds, as they imply incomplete knowledge
+	Symbolic approaches make assumptions about holonomic drive
+		car-style steering complicates things
+	Some approaches work by minimizing/collecting possible control into small segments (motion primitives) and composing those
+		Trades completeness/optimiaility for conciseness
+		Want to capture an idea of how expressive a given motion primive set is
+	Embedded graph grammars as a protocol for controlling robots
+		Robots are nodes and have states, communications are edges and change states
+		Transitions between states change robot behavior
+		Robots update their state based on their surroundings/messages from other robots
+
+Reactive mission and motion planning with deadlock resolution avoiding dynamic obstacles
+Javier Alonso-Mora, Jonathan A. DeCastro, Vasumathi Raman, Daniela Rus, Hadas Kress-Gazit
+	Small robot team, mission specification written in LTL
+	Automaton plus motion planner to avoid moving obstacles
+	Scalable with the number of moving obstacles
+	Some assumptions about atomic actions and perfect sensing
+		Which, sadly, don't really hold
+	This system works as long as the obstacles are not intentionally adversarial
+		By which they mean "won't block the robot forever"
+	Doesn't attempt to model agents at build time
+		Modifies plans at runtime instead (to avoid state explosion related to agent count)
+	Still for fixed maps, though
+	Assumes moving obstacles: 
+		Maintain constant velocity during planning (to project motion)
+		or try to avoid collisions using the same algorithm as the robots
+		are not out to get the robots
+	Certifies solution about things like doors
+		"This task will complete if the door is opened eventually"
+	Has an exponential blow-up in number of robots in team
+		Single robot has 16 revisions
+		Two robots have 1306 revisions
+		Optimization can bring this down some, but still exponential
+
+Decentralized Control of Robotic Swarms from High-Level Temporal Logic Specifications
+Salar Moarref and Hadas Kress-Gazit
+	High level temporal logic to controllers for safe nav of area
+	Imperfect synchronization
+	Again with the known map
+	This paper assumes static and known environment, but the approach used doesn't rule out reaction to dynamic environment
+
+An Integrated System for Perception-Driven Autonomy with Modular Robots
+Jonathan Daudelin, Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit, and Mark Campbell
+	Modular robot that reconfigures in response to previously unknown environment
+		But known task types, classifies task as discovered and shapeshifts to match
+	Does permit exploring and figuring things out about the environment
+	Sensitive to failure of modules
+
+From High-level Task Specification to Robot Operating System (ROS) Implementation
+Kai Weng Wong and Hadas Kress-Gazit
+	Automatically suggests possible fixes for mapping from controller to ROS
+	"While many of these approaches have been demonstrated on physical robots, the low-level integration of the provably-correct, typically symbolic, controller with the hardware is usually a manual and robot-specific ad-hoc process"
+		MURI integration 
+	Assumes single rosmaster, and no node launches another node as part of execution
+		Pretty reasonable
+	Talks about a boolean person detector
+		This stuff frequently gets really noisy, people can be hard to detect
+		Although hitting a person you fail to detect is provably correct, it's not great
+	Permits easy integration of provably correct controllers to ROS
+		Doesn't deal with the problems with provably correct controllers
+			Perfect information
+			Perfect sensors/actuators
+
+
+Robot Creation from Functional Specifications 
+Ankur M. Mehta, Joseph DelPreto, Kai Weng Wong, Scott Hamill, Hadas Kress-Gazit, and Daniela Rus
+	3D prints the entire robot from the specification, as well as synthesizing the controller for it
+	Still has binary sensors in the form of prepositions such as "seeObject_d" where d is an object
+		This blows up because the number of possible states is 2^cardnality(objects)
+	Maps propositions to components, so the actuations the robot can take and the senses it needs get added to the robot
+	This is actually a pretty cool argument for heterogeneity, in that the software can design the robot for you and add it to the swarm
+
+An End-to-End System for Accomplishing Tasks with Modular Robots
+Gangyuan Jing, Tarik Tosun, Mark Yim, Hadas Kress-Gazit
+	V similar to "An Integrated System for Perception-Driven Autonomy with Modular Robots"
+	LTL controller isn't specified in terms of forms, but in terms of desired behaviors
+	Properties of robot action and of environment dictate selected forms
+
+Kilobot: A Low Cost Scalable Robot System for Collective Behaviors
+Michael Rubenstein, Christian Ahler, and Radhika Nagpal
+	Original Kilobot hardware announcement
+	$14 worth of parts and 5 minutes to assemble (assuming you're not assembling the PCB)
+	Indicates that it's still hard to model robots interactions with each other and the environment, so the stuff from the Brooks paper still holds
+	Gives a price point for Jasmine of $130
+	Kilobots don't shut off
+		time to program, etc is constant 
+		Because every robot gets the same program
+	Heh. Kilobot parts cost is for 1000 units. 
+		My price is close to theirs at that level
+		And my robots don't need a whiteboard
+	
+Can deep-sleep a esp-8266 for 20uA, but no wifi
+Has no wifi-enabled sleep mode, radios are just power-hungry
+
+Automatic Synthesis of Controllers for Distributed Assembly and Formation Forming
+Eric Klavins
+	Controlled self-assembly of intelligent parts
+	Controllers syntehsized from some sort of description of the higher-level form
+	Forms forms in space, but has no notion of position within that space
+		So can't really go to a goal location
+	Focused on tree-graph structures
+	So, very close to being scooped maybe, but different enough 
+		He does call the controller synthesizer a compiler, though
+
+Translating Temporal Logic to Controller Specifications
+Georgios E. Fainekos, Savvas G. Loizou and George J. Pappas
+	LTL -> Hybrid automaton -> control spec
+	Control specification is probably for movement, continuious moves despite discrete states
+	Event-based semantics for LTL can't distingish events that must hold at an instant from those that must hold over a time period
+	Combines continuious flows (vector field) with discrete control transitions
+	I think this is making some assumptions of a pure holonomic robot on the ideal plane
+
+Neglect Benevolence in Human Control of Swarms in the Presence of Latency
+Phillip Walker, Steven Nunnally, and Mike Lewis, Andreas Kolling, Nilanjan Chakraborty, and Katia Sycara 
+	Claims to introduce neglect benevolence, first paper on HSI under latency
+		Published...?
+	Leader-follower control mentioned
+	Prev user studies had no delay, or had continuious input
+		which is a problem if the user is doing anything else
+	Swarm takes time to stabilize
+		Cites a lot of HSI papers
+		Neglect benevolence is leaving the swarm alone to stabilize
+	3 commands: Stop swarm, send heading to swarm, apply boids-style constraints
+	Latency adversly impacts finding targets
+	Adding a predictive display mitigates it
+	Paper never really shows their UI
+
+Virtual Synergy: A Human-Robot Interface for Urban Search and Rescue
+Sheila Tejada, Andrew Cristina, Priscilla Goodwyne, Eric Normand, Ryan O’Hara, and Shahrukh Tarapore
+	Robots build 3d VR map (Aibos + 2 blimps)
+	Virtual world acts as "memory" of the system, stores the things it has seen
+	System is based on Tekkotsu
+	Humans can interact with robots in VR
+	Student paper, probably undergrads
+	Not a lot of detail on UI evaluation
+
+Emergent Structures Assembled by Large Swarms of Simple Robots 
+David Andréen, Petra Jenning, Nils Napp, Kirstin Petersen
+	Robot behavior based on physical form
+	Bristlebots with laser-cut foam hats
+		Controller synthesis for this would be an interesting feat...
+	Not a lot of data, but description of the overall process
+		Has human-level interactive design
+			Really sounds like a job for genetic design, though
+	200 robots, pretty cheap swarm
+
+
+What about the possibility of no interface at all?
+	Design the robots from the ground up so that their behavior under physics is as desired by the user
+	Sci-fi, but kind of ideal
+	Maybe in a stochastic way, spread like dust, etc. 
+	Assumes the limit case that robots are so cheap and so fast to build that it's easier to make piles of them than it is to reprogram the ones you already have
+	End case of physicomimetics as well: the robots actually _are_ particles and interact through attractive/repelling forces
+
+A Flexible Delegation-Type Interface Enhances System Performance in Human Supervision of Multiple Robots: Empirical Studies With RoboFlag
+Raja Parasuraman, Scott Galster, Peter Squire, Hiroshi Furukawa, and Christopher Miller
+	Addresses whether encreasing autonomy can help
+	Playbook control, waypoint control, or both
+	Delegation decreases mission time and increases successes
+	Only 8 robots
+	Cost of developing automation tradeoff for gains in efficency
+	Simulated red vs. blue teams playing capture the flag
+	Second experiment, users don't use automated plays as often as they could have
+		And some plays were prefered over others
+		And manual control reduced mission time (automation wasn't optimal)
+		Having manual and automation is best control, but higher workload
+	Seems a lot like the precursor to Perdix, and they mention control of military drones at the end of the paper "Other ongoing work [49], [50] on
+the implementation and application of such interfaces provides
+further support for their use in complex human–robot systems.
+This work has been conducted in a high-fidelity simulation em-
+ulating multiple small UAVs (fixed and rotary wing) operating
+in an urban environment to perform useful support services for
+small units of infantry soldiers."
+
+How Search and its Subtasks Scale in N Robots
+Huadong Wang, Michael Lewis, Prasanna Velagapudi, Paul Scerri, Katia Sycara
+	Full task - users directed robots and looked for victims
+	Explore - users just directed robots
+	Perceptual search - Users just looked for victims
+	Workload increases monotonically with robot count
+	Task performance on full task increased up to four robots, then decreased
+	Increasing autonomy decreases overload
+		Depends on task characteristics as well
+		Fan-out is higher with simpler tasks
+	Lower workload for perceptual search implies bandwidth for more robots
+
+Fan-out: Measuring Human Control of Multiple Robots
+Dan R. Olsen Jr., Stephen Bart Wood
+	Improved neglect time means more robots can be controlled
+	Fan out = active time/interaction time
+		Active time != neglect time, 
+			how long the robot can be active without human intervention
+			neglect time is not terribly well explained in this paper, check others
+		interaction time == how long it takes to interact with the robot
+	Fan out seems to plateau
+		for a fixed capability of robot, adding more robots doesn't get more effective
+	Task saturation 
+		User may not need all the robots
+	Also has fog of war in test interfaces for robot control
+	this isn't a swarm, robots are individually tasked
+	Fan-out masks some factors
+		very simple robots occupied user entirely with interaction, no planning for it
+
+
+A robot swarm assisting a human fire-fighter
+PENDERS, Jacques, ALBOUL, Lyuba, WITKOWSKI, Ulf, NAGHSH,
+Amir, SAEZ-PONS, Joan, HERBRECHTSMEIER, Stefan and HABBAL,
+Mohamed El
+	Guardians system
+	Robots are totally autonomous
+	Provide guidance information for fierfighters
+	Robots don't enter parts of building actually on fire
+	In smoke-filled areas of warehouse,though
+	Need relatively unobstructed floor
+	Robots do ad-hoc mesh networking
+		Overcomes metal in warehouse construction
+		Move to try to maintain connectivity
+	Phsyciomimetic/potential field control
+	Robots swarm around person
+	Person does not send explict commands to swarm
+
+If the robots are commanded in VR, would a VR flight between them help improve SA? 
+
+Programmable Parts: A Demonstration of the Grammatical Approach to Self-Organization
+J. Bishop, S. Burden, E. Klavins ∗ , R. Kreisberg, W. Malone, N. Napp and T. Nguyen
+	Self-organizing parts
+	parts float on an air table
+	Connect or disconnect based on local rules
+	Graph grammar running on each robot
+	Similar to chemical reaction rules, which is similar to state behavior of GCPR 
+		Not surprising, N. Napp and E. Klavins authors for this too
+	Some grammars are better than others for forming specific shapes
+
+A Grammatical Approach to Self-Organizing Robotic Systems
+Eric Klavins, Robert Ghrist, and David Lipsky
+	Looks v. similar to above 
+	Much more about the grammar, not so much about the hardware
 	

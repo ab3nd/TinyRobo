@@ -1,0 +1,136 @@
+participant 18
+task 1
+lasso -o robots -t 1:19.378
+drag -o "robots to A" -t 1:20.512
+
+task 2
+drag -o "almost lasso the robots, didn't make full loop" -t 1:34.693
+drag -o "robots to a" -h2 -t 1:36.690
+
+task 3
+drag -d "line in front of robots from edge to wall" -o whitespace -t 1:51.335
+tap -o "previously drawn line" -t 1:52.124
+
+task 4
+lasso -o "l half of the robots" -t 2:11.049
+drag -o "lassoed robots to B" -t 2:11.806
+lasso -o "remaining robots" -t 2:14.578
+drag -o "lassoed robots" -t 2:18.321 
+
+task 5
+lasso -o "red robots" -t 2:32.863
+drag -o "red robots to B" -t 2:33.916
+drag -o "B to A" -t 2:36.816
+lasso -o "orange robots" -t 2:38.559
+drag -o "orange robots to B" -t 2:43.746
+
+task 6
+lasso -o "orange robots" -t 2:58.644
+drag -o "orange robots to A" -t 2:59.354
+lasso -o "red robots" -t 3:00.913
+drag -o "red robots to B" -t 3:02.350
+
+task 7
+lasso -o "top two red robots" -t 3:16.037
+drag -o "lassoed robots to A" -t 3:17.551
+drag -o "red robot to A" -t 3:17.551
+lasso -o "remaining two red robots" -t 3:21.814
+drag -o "lassoed robots to A" -t 3:22.905
+lasso -o "orange robots" -t 3:26.399
+drag -o "orange robots to B" -t 3:26.958
+
+task 8
+drag -d "dividing line, avoiding crossing any robots" -o "middle of robot group" -t 4:08.783
+
+task 9
+lasso -o "right group" -t 4:40.349
+drag -o "right group to left group" -t 4:41.370
+
+task 10
+lasso -o robots -t 5:08.484
+pinch -o "lassoed group" -f4 -h2 -t 5:15.079
+tap -o robots -x -t 5:45.9
+tap -o robots -x -t 5:46.233
+tap -o robots -x -t 5:46.407
+tap -o robots -x -t 5:46.980
+tap -o robots -x -t 5:47.103
+tap -o robots -x -t 5:47.366
+tap -o robots -x -t 5:47.588
+tap -o robots -x -t 5:47.786
+tap -o robots -x -t 5:47.976
+
+task 11
+drag -o "robot to square edge" -t 7:07.064
+drag -o "robot to square edge" -t 7:08.002
+drag -o "robot to square edge" -t 7:08.591
+lasso -o "three robots" -t 7:12.753
+pinch -o "lassoed group" -f4 -h2 -t 7:13.814
+pinch -o "lassoed group" -f2 -h2 -t 7:14.675
+drag -o "lassoed group up screen a small amount" -t 7:15.912
+lasso -o "three leftmost robots" -t 7:16.965
+pinch  -o "lassoed group" -f2 -h2 -t 7:18.945
+pinch  -o "lassoed group" -f2 -h2 -t 7:21.423
+drag -o "lassoed group to the right" -t 7:22.1
+lasso -o "three robots in upper right" -t 7:23.361
+pinch  -o "lassoed group" -f2 -h2 -t 7:23.798
+pinch  -o "lassoed group" -f2 -h2 -t 7:24.252
+drag -o "lassoed group down a small amount" -t 7:24.978
+lasso -o "two robots in bottom r" -t 7:26.314
+pinch  -o "lassoed group" -f2 -h2 -t 7:26.807
+pinch  -o "lassoed group" -f2 -h2 -t 7:27.347
+drag -o "lassoed group" -t 7:29.184
+drag -o whitespace -t 7:29.184
+
+task 12
+lasso -o "top 5 robots" -t 8:54.977
+tap -o "lassoed robots" -t 8:56.187
+tap -o "crate" -t 8:57.510
+tap -o "Area A" -t 8:58.504
+drag -o "crate to a" -x -t 9:20.134
+drag -o "crate to a" -x -t 9:28.386
+lasso -o "two robots" -x -t 9:31.094
+drag -o "lassoed robots to A" -x -t 9:32.388
+
+task 13
+drag -o "crate to A" -t 10:11.212
+
+task 14
+tap -o "defective robot" -t 10:35.920
+ui -k button -d "mark defective buttion (tap off screen edge)" -t 10:37.364
+
+task 15
+drag -o "defective robot off bottom of screen" -t 10:56.513
+drag -o "defective robot off bottom of screen" -x -t 11:08.653
+
+task 16
+lasso -o "three robots" -t 11:46.987
+pinch -o "lassoed group" -f4 -h2 -t 11:49.240
+drag -h2 -o "lassoed group to top of screen" -t 11:55.886
+lasso -o "two robots" -t 11:57.508
+drag -h2 -o "lassoed group to r of screen" -t 12:01.984
+lasso -o "three robots" -t 12:11.906
+pinch -o "lassoed group" -f4 -h2 -t 12:13.582
+pinch -o "lassoed group" -f4 -h2 -t 12:14.9
+drag -h2 -o "lassoed group to bottom of screen" -t 12:20.337
+lasso -o "two robots" -t 12:22.086
+drag -h2 -o "lassoed group to l of screen" -t 12:23.259
+
+task 17
+box -s tr -o "robots" -f2 -t 13:06.5
+pinch -o "robots" -t 13:09.190
+drag -o "robots to A" -t 13:10.320 
+lasso -x -o robots -t 13:40.548
+tap -x -c2 -o robots -t 13:41.506
+tap -x -o robots -t 13:3.785
+lasso -x -o "all but one robot" -t 13:45.253
+tap -x -c2 -o "lassoed group" -t 13:46.162
+drag -x -o "lassoed group to A" -t 13:49.63
+tap -x -c2 -o "lassoed group" -t 13:58.417
+box -x -s tr -o "robots" -f2 -t 13:59.701
+lasso -x -o "all but one robot" -t 14:02.072
+lasso -x -o "all but one robot" -t 14:05.388
+tap -x -c2 -o "lassoed group" -t 14:06.682
+
+task 18
+other -d "4f scatter (3f and thumb)" -o robots -t 14:45.620
+other -d "4f scatter (3f and thumb)" -o robots -x -t 14:45.620

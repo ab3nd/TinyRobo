@@ -112,6 +112,28 @@ class GCPR_driver(object):
 			#might be of help for figuring out what substrings are callable
 			eval(item)
 
+	#Functions for handling heading
+	def set_desired_heading(self, value):
+		self.desired_heading = value
+
+	#Within threshold of heading
+	def on_heading(self)
+		threshold = 1.0
+ 		if (self.desired_heading < self.current_heading + threshold)  or (self.desired_heading > self.current_heading - threshold):
+ 			return True
+ 		return False
+
+ 	#And for updating the heading...
+ 	def update_heading(self, new_value):
+ 		self.current_heading = new_value
+
+	#Functions for handling a program counter for sequential state changes
+	def set_pc(self,value):
+		self.prog_ctr = value
+
+	def pc_is(self, value):
+		return self.prog_ctr == value
+
 	# Basic action of moving along an arc
 	def move_arc(self, rot_speed, trans_speed):
 		rTwist = Twist()

@@ -1,4 +1,4 @@
-\chapter{Proposed work}
+\chapter{System Developments}
 
 For the purposes of this work, the tasks that users will be asked to complete consist largely of directing the motion of the swarm. 
 While a task is generally defined as a unit of work to be accomplished, motion within space is not usually considered a task. 
@@ -102,7 +102,7 @@ The system currently treats blue tape on the floor of the arena as obstacles.
 		robotCode2[label=<Robot <br/> Firmware>];
 		robotCode2 -> motor2;
 		label="Robot 2";
-		shape=box;
+ 		shape=box;
 	}
 	
 	subgraph clusterRobot3 {
@@ -111,6 +111,7 @@ The system currently treats blue tape on the floor of the arena as obstacles.
 		robotCode3 -> motor3;
 		label="Robot 3";
 		shape=box;
+
 	}
 	
 	subgraph clusterRobotN {
@@ -162,7 +163,7 @@ The code virtually operating on the robot may be neither aware of its own positi
 However, the central computer can use the location information to create ``virtual sensors'' for each robot. 
 The sensor precepts from virtual sensors would be simulated, but their magnitude or direction is be based on the location of a real robot relative to a real object in the experiment area. 
 For example, collision avoidance between two robots can be implemented by a virtual sensor on each robot that indicates the direction and heading of the nearest robot. 
-Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
+% Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
 The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
 Virtual parameter tweaking allows fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
 
@@ -202,7 +203,7 @@ In order to convert from pixels to real-world distances, the apriltags\_ros node
 The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 
 \begin{figure}
-	\centering
+ 	\centering
 	\digraph[scale=0.6]{VirtualLaserSystem}{
 	
 	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
@@ -217,7 +218,7 @@ The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 	atag [label="AprilTag Detector"];
 	cam [label="Arena Camera"];
 	sub1 [label="Subscriber"];
-	}
+ 	}
 	\caption{Data flow in the virtual laser service}
 \end{figure}
 
@@ -230,8 +231,8 @@ By changing how the messages are delivered by the central system, the virtual ne
 The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
 For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver, or signals that pass through a virtual wall may have a reduced virtual signal strength and range.
 
-\begin{figure}
-	\centering
+ \begin{figure}
+ 	\centering
 	\digraph[scale=0.6]{VirtualNetwork}{
 	
 	{rank=same atag dist}
@@ -239,7 +240,7 @@ For example, the likelihood that a message arrives at the robot to which it was 
 
 	vns -> dist [label="Robot IDs"];
 	dist -> vns [label="Distance"];
-	cam -> atag	[label=<sensor\string_msgs/Image>];
+ 	cam -> atag	[label=<sensor\string_msgs/Image>];
 	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
 	vns -> rx [label="Network Message"];
 	tx -> vns [label="Network Message"];	 
@@ -247,13 +248,13 @@ For example, the likelihood that a message arrives at the robot to which it was 
 		
 	vns [label="Virtual Network Service"];
 	dist [label="Distance Service"];
-	atag [label="AprilTag Detector"];
-	cam [label="Arena Camera"];
+ 	atag [label="AprilTag Detector"];
+ 	cam [label="Arena Camera"];
 	tx [label="Transmitter"];
 	rx [label="Receiver"];
-	}
+ 	}
 	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
-\end{figure}
+ \end{figure}
 
 \section {Firmware}
 
@@ -296,3 +297,68 @@ The client uses the fault bytes to detect overcurrent conditions in the motor dr
 The decision to have all of the robots have the same firmware and control the speed of the motors from ROS was made because different toys have different control schemes. 
 Toy tanks use differential drive, toy cars have Ackerman steering, and so forth. 
 By moving the control to the main computer, the firmware can be kept simple while still allowing researchers to adapt the system to the available toys.
+
+\section{Swarm Simulation}
+
+Because the sensors in the TinyRobo system are simulated, it may appear that the development of the UI and translation components could have been served as well by a simulated swarm as by a real one. 
+This is not the case. 
+In 1992, Rodney Brooks pointed out that ``there is a vast difference (which is not appreciated by people who have not used real robots) between simulated robots and physical robots and their dynamics of interaction with the environment'' \citep{brooks1992artificial}. 
+The gap between real-world sensing and actuation and their simulated counterparts means that developers working solely in simulation are tempted to either invest effort in solving problems that do not occur in the real world, or fail to solve problems that do arise in the real world but are left out of simulation. 
+One of Brooks' examples, the directional nap of carpet having an effect on robot odometry that varied with direction of travel, is still not handled by modern physics simulators. 
+Even if it were handled, the attempt would over-complicate simulation configurations due to the variety of types of carpet available. 
+
+Modern simulators have vastly more powerful computers behind them than they did in 1992, and the development of video games with realistic physics models has contributed greatly to the variety of physics models available in modern robot simulators. 
+As of 2015, however, Brooks' point still holds, and the dynamics of robots interaction with the environment are still not perfectly simulated \citep{erez2015simulation}.
+Generally, aspects of physics are elided or approximated from gaming physics engines, in favor of rapid simulation which is visually plausible. 
+In particular, contact dynamics simulations are NP-hard, and so are approximated in the interests of speed. 
+The PhysiX and Havoc physics engines also do not implement Coriolis forces at all.
+These sorts of omissions are mostly harmless, but evolutionary techniques for developing controllers for robots or simulated creatures can exploit them to develop control schemes that cannot work under real physics \citep{Brooks2000}. 
+
+In the real world, sensors are also uncertain. 
+Simulated sensors can provide a level of accuracy and certainty about that accuracy that is not available to real sensors operating with the sensor noise that affects real-world systems. 
+As the TinyRobo system simulates its laser and distance sensors, it may appear that it falls into this trap of simulation, and provides sensors that are ``too good to be true''. 
+However, the TinyRobo sensors are physical sensors, they're just not the same physical sensors that they are presented as, in much the way that a sonar sensor is not a ruler, but rather measures time and sound and presents it as distance. 
+Similarly, the arena camera is not a robot-mounted laser scanner, but it is still a physical optical sensor being used to measure distance
+\todo{test noise of camera based fake laser vs real lasers, characterize difference between multiple sensor readings of same thing}
+Adding noise to simulated sensors can also move them more towards the sensors available on real robots, but as Brook's carpet nap example indicates, the type of noise may be more complex than a simple normal distribution about the ground truth value. 
+With evolutionary approaches, the system can even come to depend on the noise, and fail when it is given real sensors that are less noisy then their simulated counterparts \citep{jakobi1995noise} 
+%Tim Smithers, "On Why Better Robots Make it Harder"
+%	The idea that the variation in real robot behavior will go away if the robots are "better" as a justification for simulation
+%	Better-made components allowing hunting where worse ones provided damping (steam engine governor example)
+%	Don't view robots as measuring with sensors and reasoning about results
+%		Sensors act as filters whose output drives internal robot dynamics
+%
+%An Overview about Simulation and Emulation in Robotics
+%Michael Reckhaus, Nico Hochgeschwender, Jan Paulus, Azamat Shakhimardanov and Gerhard K. Kraetzschmar
+%	Simulation went out of fashion when people started getting real robots
+%	Computers got better and games drive for realism pushed development
+%	Proposes a lot of use cases and reasons to use simulation
+%		Which are interestingly orthogonal to the reasons not to use it
+%			One doesn't counter the other, it's just "here are the good parts, here are the bad parts"
+%
+%Simulation in robotics
+%Leon Zlajpah
+%	Overview of tools
+
+\section{Why Heterogeneity?}
+
+Heterogeneity is a is a good model of many real-world systems where members of a group have different capabilities. 
+Family groups of pack animals have young and old members, sometimes ill members, and sometimes infant members that cannot participate fully in pack activities. 
+In human groups, work is divided according to ability, so a contractor may hire an electrician, a framing carpenter, and a plumber to build a house, to  much better effect than attempting to do it with a team consisting entirely of plumbers. 
+
+Another use of heterogeneity in swarms is to prevent individual robots from becoming overly complex by sparing them from having to be capable of doing everything. 
+The presence of multiple robots with a given ability in a swarm strikes a compromise between all robots having that ability (and being complex and expensive) and only one robot having that ability (and so providing a single point of failure). 
+Perhaps the most impressive recent demonstration of a highly heterogeneous swarm is the Swamanoid project's video ``Swarmanoid: The Movie", in which three different kinds of medium-sized robots cooperate to retrieve a book from a shelf \citep{oʼgrady2011swarmanoid}.
+The movie explicitly mentions that one sub-team of robots (two mobile robots and one gripper robot) is positioned as back-up, in case the first sub-team fails. 
+
+Beyond the possible utility of robots with multiple abilities, the swarm design presented in this work is heterogenous as a matter of convenience of implementation. 
+As toys go out of production and are replaced by others, it may not be possible to continue to operate the swarm on an entirely homogeneous mobility platform. 
+Because of this possibility, the software infrastructure tries to keep platform-specific calculations in a single module, and allow the rest of the system to operate using standard ROS messages. 
+At present, these calculations only consist of conversion of ROS twist messages, which contain rotational and angular velocities in 3 axes each, into motor speed commands for the robot, which consist of a speed and direction for up to two motors. 
+
+Handling the motion of the robots in this way means that the heterogeneity of the mobility platforms has a minimal impact on the conversion of user gestures into programs. 
+However, as a direction for future work, it will become increasingly important to consider mobility as an aspect of program generation. 
+For example, if the system is extended to include UAVs, and the user directs the robots to the center of a lake as part of a task, only the UAVs can be reasonably expected to reach the location undamaged. 
+The system could be extended with some capacity for reasoning about the task environment, to determine how the capabilities of the robots interact with that environment. 
+Such an augmented system could then refuse to direct ground robots into water, and report if there are not a sufficient number of aerial robots to perform the task over the lake. 
+It could also permute task assignments based on robot capabilities in order to meet other goals, such as minimizing the number of robots used or maximizing available robot battery life. 

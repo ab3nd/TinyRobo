@@ -479,13 +479,13 @@ Spent a lot of time around here having a cold and not being able to think well
 - 3 participants, psych appointment, meeting with Holly
 
 10/19
-- 5 experiement particpants
+- 5 experiement participants
 - Video dump from bagfile doesn't synch with audio
 - wrote a script to draw contacts on the UI image and publish as a ROS image topic
 - can now code direct from bagfile, which is syncronized
 
 10/20
-- 5 experiement particpants
+- 5 experiement participants
 - 2-opt routing for nat geo budget calculations
 
 10/21
@@ -647,7 +647,7 @@ Spent a lot of time around here having a cold and not being able to think well
 - Coded 5 participants
 
 1/16
-- Coded 5 particpants
+- Coded 5 participants
 - Read some more swarm papers
 
 1/23
@@ -804,8 +804,34 @@ Spent a lot of time around here having a cold and not being able to think well
 - redid my coding with clarifications, k is looking v. good
 
 2/26
+-Read a lot of papers
 
+2/27
+- Game reasearch on UIs
+- Fixed force sensor for Zhao
+- Shooting star drone research
+	- Looks like a 3D rendering program with a path planning backend
 
+2/28
+- More papers on swarm UIs
+
+3/5 
+- More paper reading, mostly on LTL and provably correct robotics
+
+3/6 
+- Added game section to paper
+
+3/7-3/25
+- I spent a lot of this sick
+- Video coding on p1-30
+- Converting notes on papers read late last month into text for thesis
+- Lots of paper edits, new sections on proposal feedback
+
+3/26
+- Reading up on anova
+- thinking about the exact questions I want out of my data
+- Writing a script to process json data files from participants
+- Fixed errors in coding files and a bug in code_video.py, generated json files
 
 It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 

@@ -26,9 +26,21 @@ print distances
 #Build GCPR program for setting the program counter based on distance traveled
 pc = 0
 for heading, distance in zip(headings, distances):
-	print "pc_is({0}), set_desired_heading({1}), 1.0".format(pc, heading)
-	print "distance_x > {0} and distance_y > {1}, set_pc({2}), 1.0".format(distance[0], distance[1], pc+1)
+	print "self.pc_is({0}), self.set_desired_heading({1}), 1.0".format(pc, heading)
+	print "self.distance_x > {0} and self.distance_y > {1}, self.set_pc({2}), 1.0".format(distance[0], distance[1], pc+1)
 	pc += 1
 
 #Add a stop condition
-print "pc_is({0}), stop(), 1.0".format(pc)
+print "self.pc_is({0}), self.stop(), 1.0".format(pc)
+
+#Add motion commands to turn to bearing and move forward
+#Don't move after stopped because PC has hit end of program
+print "self.on_heading() and not(self.pc_is({0})), 1.0, self.move_fwd(0.3)".format(pc)
+print "not(self.on_heading()) and not(self.pc_is({0})), 1.0, self.move_turn(0.3)".format(pc)
+
+#Reactive obstacle avoidance
+#Could still do reactive obstacle avoidance after ending travel, but could lead to jostling out of goal
+print "not(self.is_near_anything()) and not(pc_is({0}))", "1.0", "self.move_fwd(0.3)".format(pc)
+print "self.is_near_left() and not self.is_near_center() and not(pc_is({0}))", "1.0", "self.move_arc(-0.3, 0.25)".format(pc)
+print "self.is_near_right() and not self.is_near_center() and not(pc_is({0}))", "1.0", "self.move_arc(0.3, 0.25)".format(pc)
+print "self.is_near_center() and not(pc_is({0}))", "1.0", "self.move_turn(0.3)".format(pc)

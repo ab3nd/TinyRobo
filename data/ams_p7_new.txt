@@ -1,0 +1,54 @@
+participant 7
+task 1
+drag -o "robot to area a" -t 1:10.809
+
+task 2
+drag -o "robot to area a" -t 1:32.721
+
+task 3
+tap -o whitespace -t 2:04.134
+
+task 4
+drag -o "red to B" -t 3:02.179
+drag -o "orange to A" -t 3:02.179
+drag -o "orange to A and red to B" -x -f2 -t 3:17.6
+
+task 5
+drag -o "orange to A and red to B" -f2 -t 6:16.001
+drag -o "red to A" -x -t 6:24.159
+drag -o "red to B" -x -t 6:54.757
+drag -o "orange to A" -x -t 6:54.757
+
+task 6
+drag -d "line between robots" -o robots -t 7:50.809
+drag -o "right robot to right" -o "right robot" -t 7:51.870
+drag -d "line between robots" -o robots -t 7:53.243
+drag -o "right robot to right" -o "right robot" -t 7:59.030
+tap -h -o "left robot" -t 7:59.508
+tap -h -o "left robot" -t 8:05.137
+tap -o "right robot" -t 8:07.829
+drag -d "line between robots" -o robots -t 8:08.879
+drag -d "line between robots" -o robots -t 8:09.318
+tap -h -o "left robot" -t 8:10.267
+
+task 7 
+drag -o "robot to crate" -t 8:48.276
+drag -o "robot to crate" -x -t 10:07.661
+voice -c "pick up" -t 10:08.109
+tap -o crate -c 2 -t 10:14.732
+drag -o "crate to a" -t 10:22.910
+
+task 8
+ui -k menu -d "(long) press on robot to get option to get rid of it" -t 11:00.218
+
+task 9
+memo -d "No actions, but said they'd go with the same thing as task 8"
+
+task 10
+drag -o "robot around screen border" -t 12:14.811
+
+task 11
+drag -o "robot to area a and up one edge of A" -t 13:08.706
+drag -o "robot to area a and around edge of A" -t 13:13.971
+drag -d "scribble" -o "area a" -x -t 13:17.775
+drag -d "outline of a" -o "area a" -x -t 13:24.891

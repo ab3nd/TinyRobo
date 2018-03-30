@@ -1,0 +1,144 @@
+participant 8
+
+task 1
+drag -o "robot to area A" -t 1:23.728
+drag -o "robot to area A" -t 1:26.660
+tap -o robot -t 1:27.393
+drag -o "robot to area A" -t 1:28.484
+tap -c 3 -o robot -t 1:39.517
+drag -o "robot to a" -t 1:41.042
+drag -o "from area a halfway to robots" -t 1:42.741
+tap -c 2 -o whitespace -t 1:42.908
+tap -c 2 -o whitespace -t 1:43.240
+tap -c 2 -o robot -t 1:44.106
+drag -o "robot to a" -t 1:45.527
+drag -o "robot to a" -t 1:46.581
+tap -c 2 -o robot -t 1:47.914
+tap -c 3 -o robot -t 1:49.093
+tap -h -o robot -t 1:50.003
+tap -h -o robot -t 1:53.119
+drag -f2 -o "vertically upwards in whitespace to r of robots" -t 1:53.997
+drag -f2 -o "vertically upwards between robots an A" -t 1:54.810
+drag -o "robot to a" -t 1:56.194
+tap -c 3 -o robot -t 1:59.121
+drag -o "robot to a" -t 2:08.804
+drag -o "robot to a" -t 2:10.073
+
+task 2
+drag -o "robot to a" -t 2:40.997
+drag -o "robot to a" -t 2:44.082
+
+task 3
+tap -c2 -o "first robot in group" -t 3:37.948
+tap -c2 -o "second robot in group" -t 3:40.849
+tap -c2 -o "third robot in group" -t 3:42.533
+tap -c2 -o "fourth robot in group" -t 3:45.394
+
+task 4
+drag -o "robot to A" -t 4:18.775
+drag -o "robot to A" -t 4:19.809
+drag -o "robot to A" -t 4:21.893
+drag -o "hypothetical robot (mentioned re-directing) to B" -t 4:32.440
+
+task 5
+drag -o "orange robot to B" -t 5:16.845
+drag -o "orange robot to B" -t 5:18.338
+drag -o "orange robot to B" -t 5:19.967
+drag -o "orange robot to B" -t 5:21.364
+drag -o "red bot to A" -t 5:44.467
+drag -o "red bot to B" -t 5:45.897
+drag -o "orange to B through wall" -t 5:47.431
+drag -o "orange to B through wall" -t 5:48.436
+drag -o "orange to B through wall" -t 5:49.243
+
+task 6
+drag -o "red robot to B" -t 6:02.246
+drag -o "red robot to B" -t 6:03.362
+drag -o "orange robot to A" -t 6:04.36
+drag -o "orange robot to A" -t 6:05.381
+
+task 7 
+drag -o "red to A" -t 6:56.266
+drag -o "red to A" -t 6:57.386
+drag -o "orange to B" -t 7:02.853
+drag -o "orange to B" -t 7:04.202
+drag -o "orange to B" -t 7:05.367
+drag -o "red to A" -t 7:12.211
+drag -o "red to A" -t 7:13.296
+drag -o "red to A" -t 7:17.228
+drag -o "orange to B" -t 7:18.625
+
+task 8
+drag -o "robot to left" -t 8:12.692
+drag -o "robot to left" -t 8:13.050
+drag -o "robot to left" -t 8:13.471
+drag -o "robot to left" -t 8:13.885
+drag -o "robot to left" -t 8:14.802
+drag -o "robot to right" -t 8:15.470
+drag -o "robot to right" -t 8:15.875
+drag -o "robot to right" -t 8:16.296
+drag -o "robot to right" -t 8:16.677
+drag -o "robot to right" -t 8:17.045
+
+task 9
+drag -o "L robot to center" -t 8:37.332
+drag -o "L robot to center" -t 8:38.202
+drag -o "L robot to center" -t 8:38.944
+drag -o "L robot to center" -t 8:39.862
+drag -o "L robot to center" -t 8:40.501
+drag -o "R robot to center" -t 8:41.146
+drag -o "R robot to center" -t 8:42.113
+drag -o "R robot to center" -t 8:42.789
+drag -o "R robot to center" -t 8:43.402
+drag -o "R robot to center" -t 8:44.359
+
+task 10
+drag -o "robot into line" -t 9:18.842
+drag -o "robot into line" -t 9:21.174
+drag -o "robot into line" -t 9:23.146
+drag -o "robot into line" -t 9:24.951
+drag -o "robot into line" -t 9:26.108
+drag -o "robot into line" -t 9:27.225
+drag -o "robot into line" -t 9:28.757
+
+task 11
+drag -o "robot to position on square" -t 9:56.7
+drag -o "robot to position on square" -t 10:01.208
+drag -o "robot to position on square" -t 10:02.903
+drag -o "robot to position on square" -t 10:04.103
+drag -o "robot to position on square" -t 10:05.466
+drag -o "robot to position on square" -t 10:06.713
+drag -o "robot to position on square" -t 10:08.342
+
+task 12
+drag -o "robot to behind crate" -t 10:55.573
+drag -o "robot to behind crate" -t 10:56.633
+drag -o "crate to above A" -f 2 -t 11:03.813
+drag -o "robot above crate" -t 11:07.697
+drag -o "robot above crate" -t 11:08.710
+drag -o "into A" -t 11:10.803
+
+task 13
+drag -o "robot to crate" -t 12:02.145
+drag -o "robot to crate" -t 12:03.683
+drag -o "crate to above A" -f2 -t 12:10.860
+drag -o "down to A" -f2 -t 12:14.448
+
+task 14
+drag -o "first line of crossing robot out" -t 12:55.958
+drag -o "second line crossing robot out" -t 12:56.538
+
+task 15 
+drag -o "defective robot off screen" -t 13:40.083
+memo -d "makes analogy to dismissing apps on phone"
+
+task 16 
+drag -o "robot up to tl corner and partway along top" -t 14:12.395
+drag -o "robot up to tl corner and partway along top" -t 14:22.213
+
+task 17
+drag -o "robot to area a and around a loop within A" -t 15:08.069
+memo -d "robots should know location & geometry of A"
+
+task 18
+other -d "5f scatter (analogy to mac show all)" -o robots -t 16:00.049

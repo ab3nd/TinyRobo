@@ -1,0 +1,71 @@
+\documentclass[12pt,english]{report}
+
+% % % These packages imported by Abe
+\usepackage{xargs} 
+%has to load before umlthesistemplate
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+
+%Has to load before umlthesistemplate
+\usepackage{auto-pst-pdf}
+
+%Can probably load anytime, but seems to work in advance...
+\usepackage{graphviz}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{subcaption}
+% % % End Abe's stuff
+
+\usepackage{umlthesistemplate}
+
+\title{Command Language for Single-User, Multi-Robot Swarm Control}
+\author{Abraham M. Shultz}
+\pastdegrees{B.S. Worcester Polytechnic Institute (2004) \and M.S. University of Massachusetts Lowell (2014)}
+\degree{Doctor of Philosophy}
+\department{Computer Science}
+\university{University of Massachusetts Lowell}
+\majorprofessor{Dr. Holly A. Yanco}
+\majorproftitle{Dissertation Chair}
+\members{Dr. Radhika Nagpal \and Dr. Jay McCarthy}
+\date{ 20 August, 2017}
+
+\includeapproval
+%Uncommenting any of these breaks the \begin{document} lines
+\abstract{Command and control systems designed for a single operator to operate a single robot do not scale to control of swarms \citep{WangSearchScale}. User interfaces that require the user to attend to each robot overwhelm the controller when the number of robots increases beyond 12 or 13 for UAVs and 3-9 for UGVs \citep{WangSearchScale}. As robot swarms increase beyond these bounds, the control system must shift to controlling the swarm as a single entity. However, the form this interface should take to permit easy and understandable control of the swarm is largely undefined.
+
+Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to robots \citep{micire2009multi}. By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms. This thesis presents an interface which extends previous work on multitouch interfaces for small groups of robots to larger swarms, and automates the process of converting command gestures into programs for each robot. The use of individual control programs rather than centralized control is important to realize the potential of swarms to continue to operate despite the possible failure of individual swarm robots.
+
+The contributions of this thesis are a new swarm hardware platform, software to support it, and a user interface which converts user commands into programs for each robot in the swarm. The new swarm platform combines a wifi-enabled microcontroller with commodity mobility platforms sourced from children’s toys to allow large swarms to be built at a low cost. Because the design does not bind the implementation to a specific mobility platform, heterogeneous swarms can be constructed, using different toys. The hardware is also adaptable to new toys as older ones become unavailable, and could be used with custom-designed or 3-D printed mobility platforms. In order to maintain the low cost, sensors for the swarm robots are simulated with a top down camera. The use of simulation allows individual swarm members to be constructed cheaply in the present, while leaving the path clear in the future to push computation to the individual members as computer hardware becomes cheaper and smaller.
+}
+
+\acknowledgments{ \input{ack.tex} }
+\includetoc 
+\maketitle
+
+\begin{document}
+
+\clearpage
+
+\include{intro}
+
+\include{related_work}
+
+\include{proposed_work}
+
+\include{gesture_collect}
+
+%Where we're going, we don't need timelines
+%\include{timeline}
+
+\include{contributions}
+
+\bibliography{../proposal/swarm.bib}
+%\bibliographystyle{apalike}
+
+\end{document}

@@ -1,0 +1,407 @@
+{
+   "participant": 22, 
+   "tasks": {
+      "1": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robot", 
+               "to", 
+               "A\""
+            ], 
+            "time": 100.674, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robot", 
+               "to", 
+               "A\""
+            ], 
+            "time": 140.453, 
+            "write": null
+         }
+      ], 
+      "10": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robot", 
+               "around", 
+               "border", 
+               "of", 
+               "screen", 
+               "4", 
+               "times\""
+            ], 
+            "time": 500.432, 
+            "write": null
+         }
+      ], 
+      "11": [
+         {
+            "description": [
+               "\"user", 
+               "talked", 
+               "about", 
+               "controlling", 
+               "multiple", 
+               "robots,", 
+               "didn't", 
+               "touch", 
+               "screen\""
+            ], 
+            "event_type": "memo"
+         }
+      ], 
+      "2": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robot", 
+               "to", 
+               "A\""
+            ], 
+            "time": 162.951, 
+            "write": null
+         }
+      ], 
+      "3": [
+         {
+            "command": [
+               "\"robot,", 
+               "stop!\""
+            ], 
+            "event_type": "voice_command", 
+            "example": false, 
+            "no_contact": false, 
+            "time": 182.479
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": true, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "robot"
+            ], 
+            "time": 187.293
+         }
+      ], 
+      "4": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"red", 
+               "robot", 
+               "to", 
+               "A\""
+            ], 
+            "time": 220.841, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"orange", 
+               "to", 
+               "B\""
+            ], 
+            "time": 224.437, 
+            "write": null
+         }
+      ], 
+      "5": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"red", 
+               "robot", 
+               "to", 
+               "B\""
+            ], 
+            "time": 266.47, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"orange", 
+               "to", 
+               "A\""
+            ], 
+            "time": 270.26800000000003, 
+            "write": null
+         }
+      ], 
+      "6": [
+         {
+            "command": [
+               "\"numbers", 
+               "1-20", 
+               "go", 
+               "right\""
+            ], 
+            "event_type": "voice_command", 
+            "example": true, 
+            "no_contact": false, 
+            "time": 318.052
+         }, 
+         {
+            "command": [
+               "\"numbers", 
+               "21-30", 
+               "go", 
+               "left\""
+            ], 
+            "event_type": "voice_command", 
+            "example": true, 
+            "no_contact": false, 
+            "time": 321.368
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"r", 
+               "robot\""
+            ], 
+            "time": 328.296
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"r", 
+               "robot\""
+            ], 
+            "time": 331.716
+         }, 
+         {
+            "description": [
+               "\"tap", 
+               "a", 
+               "color", 
+               "from", 
+               "a", 
+               "palette", 
+               "on", 
+               "tr", 
+               "of", 
+               "screen", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false, 
+            "time": 346.408
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"r", 
+               "robot\""
+            ], 
+            "time": 347.436
+         }, 
+         {
+            "description": [
+               "\"tap", 
+               "a", 
+               "color", 
+               "from", 
+               "a", 
+               "palette", 
+               "on", 
+               "tl", 
+               "of", 
+               "screen", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false, 
+            "time": 348.257
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"l", 
+               "robot\""
+            ], 
+            "time": 348.798
+         }
+      ], 
+      "7": [
+         {
+            "command": [
+               "\"robot", 
+               "take", 
+               "crate", 
+               "to", 
+               "area", 
+               "A\""
+            ], 
+            "event_type": "voice_command", 
+            "example": true, 
+            "no_contact": false, 
+            "time": 377.573
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"robot", 
+               "behind", 
+               "crate", 
+               "and", 
+               "to", 
+               "area", 
+               "A\""
+            ], 
+            "time": 393.471, 
+            "write": null
+         }
+      ], 
+      "8": [
+         {
+            "description": [
+               "\"tap", 
+               "a", 
+               "color", 
+               "from", 
+               "a", 
+               "palette", 
+               "on", 
+               "tr", 
+               "of", 
+               "screen", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": false, 
+            "kind": "other", 
+            "no_contact": false, 
+            "time": 445.717
+         }, 
+         {
+            "description": [
+               "\"tap", 
+               "a", 
+               "color", 
+               "from", 
+               "a", 
+               "palette", 
+               "on", 
+               "tr", 
+               "of", 
+               "screen", 
+               "(tap)\""
+            ], 
+            "event_type": "ui", 
+            "example": true, 
+            "kind": "other", 
+            "no_contact": false, 
+            "time": 446.586
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "\"defective", 
+               "robot\""
+            ], 
+            "time": 447.487
+         }
+      ], 
+      "9": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "\"defective", 
+               "robot", 
+               "off", 
+               "screen\""
+            ], 
+            "time": 472.055, 
+            "write": null
+         }
+      ]
+   }
+}
