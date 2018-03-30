@@ -20,10 +20,8 @@ from argos_bridge.msg import ProximityList
 class ProgramLoader(object):
 	def __init__(self):
 		# Example program, will get replaced
-		# Hopefully makes the robot drive and not hit things
-		self.program = [("not(self.is_near_anything())", 1.0, "self.move_fwd(0.3)"),
-				   ("self.is_near_left()", 0.80, "self.move_turn(-2)"),
-				   ("self.is_near_right()", 0.60, "self.move_turn(2)")]
+		# Default is to not go anywhere
+		self.program = [("True", "self.stop()", 1.0)]
 
 	#This is how programs get deployed to this runner instance
 	#Currently just a string containing a set of GCPR tuples
@@ -52,6 +50,9 @@ class GCPR_driver(object):
 		self.traveled_x = 0.0
 		self.traveled_y = 0.0
 		self.lastPosition = None
+
+		#For GCPR program counter, default to 0
+		self.prog_ctr = 0
 
 
 	def update_laser(self, laserMsg):
@@ -97,9 +98,9 @@ class GCPR_driver(object):
 		for rule in self.programLoader.getProgram():
 			if eval(rule[0]):
 				#Check the rate
-				if random.random() < rule[1]:
+				if random.random() < rule[2]:
 					#Add to the list of things to do
-					todo_list.append(rule[2])
+					todo_list.append(rule[1])
 		
 		random.shuffle(todo_list)
 
@@ -111,6 +112,24 @@ class GCPR_driver(object):
 			#https://stackoverflow.com/questions/1911281/how-do-i-get-list-of-methods-in-a-python-class
 			#might be of help for figuring out what substrings are callable
 			eval(item)
+
+	#Functions for handling heading
+	def set_desired_heading(self, value):
+		self.desired_heading = value
+
+	#Within threshold of heading
+	def on_heading(self):
+		threshold = 1.0
+ 		if (self.desired_heading < self.heading + threshold)  or (self.heading > self.current_heading - threshold):
+ 			return True
+ 		return False
+
+	#Functions for handling a program counter for sequential state changes
+	def set_pc(self,value):
+		self.prog_ctr = value
+
+	def pc_is(self, value):
+		return self.prog_ctr == value
 
 	# Basic action of moving along an arc
 	def move_arc(self, rot_speed, trans_speed):
