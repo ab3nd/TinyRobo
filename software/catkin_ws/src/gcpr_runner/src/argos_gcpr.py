@@ -53,6 +53,9 @@ class GCPR_driver(object):
 		self.traveled_y = 0.0
 		self.lastPosition = None
 
+		#For GCPR program counter, default to 0
+		self.prog_ctr = 0
+
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -119,13 +122,9 @@ class GCPR_driver(object):
 	#Within threshold of heading
 	def on_heading(self)
 		threshold = 1.0
- 		if (self.desired_heading < self.current_heading + threshold)  or (self.desired_heading > self.current_heading - threshold):
+ 		if (self.desired_heading < self.heading + threshold)  or (self.heading > self.current_heading - threshold):
  			return True
  		return False
-
- 	#And for updating the heading...
- 	def update_heading(self, new_value):
- 		self.current_heading = new_value
 
 	#Functions for handling a program counter for sequential state changes
 	def set_pc(self,value):
