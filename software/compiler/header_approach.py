@@ -3,6 +3,7 @@
 # Given a set of points describing a gesture, convert it into a GCPR program for controlling robots
 
 import math
+import json
 
 # These points are intended to traverse an arena in ARGoS, in simulation, from the bottom left corner
 # to the top right corner, on a slightly curved path (actually just 6 segments)
@@ -23,24 +24,30 @@ for idx in range(len(points)-1):
 print headings
 print distances
 
+program = []
+
 #Build GCPR program for setting the program counter based on distance traveled
 pc = 0
 for heading, distance in zip(headings, distances):
-	print "self.pc_is({0}), self.set_desired_heading({1}), 1.0".format(pc, heading)
-	print "self.distance_x > {0} and self.distance_y > {1}, self.set_pc({2}), 1.0".format(distance[0], distance[1], pc+1)
+	program.append(("self.pc_is({0})", "self.set_desired_heading({1})".format(pc, heading), 1.0))
+	program.append(("self.distance_x > {0} and self.distance_y > {1}".format(distance[0], distance[1]), "self.set_pc({0})".format(pc+1), 1.0))
 	pc += 1
 
 #Add a stop condition
-print "self.pc_is({0}), self.stop(), 1.0".format(pc)
+program.append(("self.pc_is({0})".format(pc), "self.stop()", 1.0))
 
 #Add motion commands to turn to bearing and move forward
-#Don't move after stopped because PC has hit end of program
-print "self.on_heading() and not(self.pc_is({0})), 1.0, self.move_fwd(0.3)".format(pc)
-print "not(self.on_heading()) and not(self.pc_is({0})), 1.0, self.move_turn(0.3)".format(pc)
+#Don't move after stopping because PC has hit end of program
+program.append(("self.on_heading() and not(self.pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.on_heading()) and not(self.pc_is({0}))".format(pc), "self.move_turn(0.3)", 1.0))
 
 #Reactive obstacle avoidance
 #Could still do reactive obstacle avoidance after ending travel, but could lead to jostling out of goal
-print "not(self.is_near_anything()) and not(pc_is({0}))", "1.0", "self.move_fwd(0.3)".format(pc)
-print "self.is_near_left() and not self.is_near_center() and not(pc_is({0}))", "1.0", "self.move_arc(-0.3, 0.25)".format(pc)
-print "self.is_near_right() and not self.is_near_center() and not(pc_is({0}))", "1.0", "self.move_arc(0.3, 0.25)".format(pc)
-print "self.is_near_center() and not(pc_is({0}))", "1.0", "self.move_turn(0.3)".format(pc)
+program.append(("not(self.is_near_anything()) and not(pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
+program.append(("self.is_near_left() and not self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_arc(-0.3, 0.25)", 1.0))
+program.append(("self.is_near_right() and not self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_arc(0.3, 0.25)", 1.0))
+program.append(("self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_turn(0.3)", 1.0))
+
+print json.dumps(program, sort_keys=True, indent=4, separators=(',', ': '))
+
+#TODO publish the robot program to each of the robots
