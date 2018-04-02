@@ -20,6 +20,15 @@
 \usepackage{multicol}
 \usepackage{caption}
 \usepackage{subcaption}
+% From https://tex.stackexchange.com/questions/163330/creating-figures-to-show-binary-values
+%For showing bitfields in the control hardware
+\usepackage{bytefield}
+\newcommand{\colorbitbox}[3]{%
+\rlap{\bitbox{#2}{\color{#1}\rule{\width}{\height}}}%
+\bitbox{#2}{#3}}
+\definecolor{lightcyan}{rgb}{0.84,1,1}
+\definecolor{lightgreen}{rgb}{0.64,1,0.71}
+\definecolor{lightred}{rgb}{1,0.7,0.71}
 % % % End Abe's stuff
 
 \usepackage{umlthesistemplate}

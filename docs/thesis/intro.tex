@@ -2,7 +2,7 @@
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \citep{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
-Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
+% Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
 While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
 Until computational power in the individual swarm units does reach the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
 Centralizing the control of a large group of robots (a swarm) makes the system as a whole sensitive to the failure of the central controller. 
@@ -108,93 +108,3 @@ H4: It is possible to build a swarm consisting of individual units with better a
 
 \todo{develop this section more}
 This hypothesis would be disproven by the cost of mobility platforms and control hardware being more than twice the cost of a kilobot in parts. 
-
-\section{Intro/Research Statement}
-
-\subsection{Problem Statement}
-
-One potential method to control a swarm of robots is having a central computer dictate to individual robots how the robots should move.
-However, centralized control is only as robust as the central controller. 
-Distributed control systems do not have the single point of failure that centralized models have. 
-In order to create reliable and useful swarm robotic systems, users must be able to specify a desired end state of the system that the swarm can converge to without reliable orchestration from a central controller. 
-Moreover, this convergence must occur in the face of unreliability on the part of the individual swarm members. 
-
-The current state of development of emergent control of swarms is guided by ad-hoc, iterative development models that are somewhat suited to software developers, but not suited to use by non-programming end users \cite{palmer2005behavioral}.
-The motivating examples of uses for swarms are task oriented, such as sending swarm robots into disaster zones to search for survivors. 
-While first responders are frequently trained in many specialized skills to perform their jobs, adding programming swarm robots to their training would be impractical. 
-Even if first responders could be expected to develop software in a disaster zone, the situation frequently develops faster than the build/test cycles of software development can react. 
-It is desirable to automate the construction of control software for a swarm so that it can adapt to a situation, without requiring significant development time. 
-In order to support interactive control during a developing situation, the construction of the software should occur over a similar time scale to the user interactions.
-Another possible example of an application for swarm robotics is cleaning, whether in a user's house, or in a more hazardous contaminated area. 
-
-In either case, it is desirable for the user to be able to release the robots into the region with minimal oversight, and rely on the robots to discover what areas need cleaning, and to allocate robots to clean them. 
-Modern household cleaning robots, such as the Roomba, are restricted to floors, and even specific types of flooring, but a heterogeneous cleaning swarm might include robots for cleaning windows and dusting surfaces as well. 
-Currently, this kind of whole-house cleaning does not require programming the cleaning tools in advance, and any product which does require such a task is unlikely to succeed in the market. 
-
-In order to remain useful in real-world applications, this work makes certain assumptions about the robots and the swarm. 
-Networking between the robots is expected to be unreliable. 
-Individual robots have limited transmission power over radio or infrared light links. 
-Network links are also frequently attenuated by distance or intervening objects. 
-As a result, when robots spread out into an area, some robots may not be directly reachable from others. 
-Any software that purports to control a swarm under these conditions cannot rely on perfect connectivity for its operation. 
-
-Robots' perception of their environment is frequently limited. 
-Objects can block the sensing field of sensors.
-Even without obstructions, most sensors have a limited effective range.
-Because the real world is dynamic, robots can make only limited assumptions about what they cannot sense, and can only sense a limited area. 
-Algorithms to control robots must primarily make use of locally sensed information, and secondarily make use of information received in communications from other robots. 
-
-Because of the limited range of their sensing and networking, the localization of the robots may also be unreliable. 
-GPS provides a global coordinate system in which robots can easily localize, but GPS signal is absent indoors, under dense tree cover, and in many other areas where it would be desirable to use swarm robots. 
-The GPS signal is also weak, and so can easily be jammed by ambient RF interference or by malicious actors. 
-
-Robots can also fail. 
-The harsh conditions of the WTC rubble pile destroyed many of the robots sent in \cite{Micire02analysisof}.
-In order to remain robust in the face of failures, algorithms should not be developed to depend on the perfect functioning of any individual robot. 
-Rather, the behavior should emerge from the interaction of multiple, interchangeable robots, and tolerate the loss of individual robots up to some limit. 
-In a situation where many or all of the robots attempting to complete a task are destroyed or disabled, it would be unreasonable to expect the task to be completed, but ideally, the bounds on how many robots are required to complete the task should be knowable. 
-
-%A reliable robotic system is one that performs the required task, within some set of constraints, despite failures of some parts of the system. 
-Cooperating systems can be broken down into two major classes, those that intentionally cooperate, and those that coopererate in the manner of ants or other swarm insects, without explicit agreements and planning \cite{parker1998alliance}.
-The swarm-like approaches generally assume that the robots are homogeneous and all have the same control software. 
-For the work described in this proposal, it may be that neither of these assumptions hold. 
-The proposed hardware enables the creation of highly heterogeneous swarms, including variation in scale of the robots involved. 
-Because the proposed control software generation scheme is intended to potentially result in different software for each robot, even robots with the same hardware may have different control programs. 
-%However, the frameworks for analysis of explicitly cooperating multirobot systems may also not be applicable. 
-%It is the intent of this project to have minimial explicit interrobot communication, which precludes many methods used to mutually plan tasks. 
-
-%TODO: investigate CEBOT work 
-%TODO: Is it possible to have the compiler compile to ALLIANCE specifications of task ability for each robot? Still has problems with sensing that task is done or other robots are doing it.
-%TODO: ALLIANCE doesn't have an idea of minimum robots needed because even one robot can do the job, just more slowly. 
-\subsection{Hypothesis}
-
-There exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
-This transition point will be apparent because of a change in the gesture set that the user uses to interact with the swarm. 
-It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
-The user will instead use commands that control the bulk of the robots as a cloud or flock, but may leave some robots unused. 
-For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to ``carry'' groups around. 
-The user may also change how they indicate which robots are to be interacted with. 
-Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use, or draw a circle around them. 
-The size of the swarm where changes in the user gestures occur will indicate the transition point between the user intent to interact with individual robots as opposed to interacting with the swarm as a whole. 
-%Harriet \emph{et al}. also put the estimated transition point between multi-agent control and swarm around 50 individuals \cite{harriott2014biologically}.  
-%Above that threshold, human interaction may be able to remain focused on macro level behavior, influencing the overall behavior of the swarm rather than control of individuals.
-%TODO is this relevant, if so, how?
-
-Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
-This problem will arise at smaller scales if the swarm robots are themselves quite tiny, and some of the available swarm robots are indeed small \cite{pelrine2012diamagnetically}.
-Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
-Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
-This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \cite{ayanian2014controlling}.
-Altering how the user interface displays the location of the robots in the swarm may affect the transition point. 
-More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use different gestures. 
-
-Further, it is hypothesized that it is feasible to convert user commands into programs for each robot which will converge to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. 
-However, this hypothesis must be modified with a few caveats. 
-First, under the assumption that robots can fail, it is possible that the entire behavior can fail. 
-For example, if enough of the robots are incapacitated, it may be that not enough are left to complete the task. 
-It is also possible that at compile time, the task is still possible, but a later change of the environment renders it impossible. 
-Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future, but in some limited cases, it may be possible to determine that a specified action is impossible. The goal of this work is to provide a best-effort attempt to satisfy the user command, rather than prove anything about the possibility of doing so. 
-
-%(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
-%\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
-%\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}

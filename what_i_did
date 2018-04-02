@@ -833,6 +833,21 @@ Spent a lot of time around here having a cold and not being able to think well
 - Writing a script to process json data files from participants
 - Fixed errors in coding files and a bug in code_video.py, generated json files
 
+3/27
+- Began dealing with car trouble
+- Expanded some paper sections
+
+3/28
+- More paper edits/section expansions
+- tracked down and put in a bunch of cites
+
+3/29
+- Done dealing with car trouble
+- Added obstacle avoid and move to compiler
+- Added functions to argos gcpr runner to use obstacle avoid and move
+- Testing tomorrow
+
+
 It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 
 Swarm control software
