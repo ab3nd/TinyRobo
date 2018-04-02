@@ -100,11 +100,15 @@ First, under the assumption that robots can fail, it is possible that the entire
 For example, if enough of the robots are incapacitated, it may be that not enough are left to complete the task. 
 It's also possible that at compile time, the task is still possible, but a later change of the environment renders it impossible. 
 Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future, but in some limited cases, it may be possible to determine whether a specified action is impossible. The goal of this work is to provide a best-effort attempt to satisfy the user command, rather than prove anything about the possibility of doing so. 
-%(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
-%\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
-%\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
+
 
 H4: It is possible to build a swarm consisting of individual units with better ability to navigate terrain than Kilobots, at a comparable price point. 
 
-\todo{develop this section more}
-This hypothesis would be disproven by the cost of mobility platforms and control hardware being more than twice the cost of a kilobot in parts. 
+As computing hardware decreases in price and size, more and more ability can be built into smaller and smaller hardware. 
+The development and popularity of smartphones has driven the development of smaller sensors and lower power processors, as well as thinner and smaller battery technology. 
+As Internet of Things (IoT) technology becomes increasingly popular, the ability to add smaller and lower-power devices to communications networks is also dropping. 
+The parts that go into these consumer technologies are also made less expensive by economies of scale. 
+Assuming a fixed set-up cost, the more finished devices are produced, the greater the amortization of the setup cost across the devices. 
+Since IoT is expected to deliver connectivity for tens or hundreds of devices per end user, the expected economics will drive down the cost of network connectivity.
+As a consequence, by using components intended for IoT devices, cell phones, and similar consumer electronics, the cost of building small robots will also continue to drop.
+This hypothesis would be disproved by the cost of mobility platforms and control hardware being more than twice the cost of a Kilobot in parts. 

@@ -277,7 +277,7 @@ Because the recognition is performed by multiple robots at once, with different 
 Another approach to gesture control of swarms is to have the human and gesture recognition hardware separate from the swarm \citep{alonso2015gesture}.
 This approach also allows the software to use the user's gestures to select part of the swarm by natural methods, such as pointing at robots. 
 
-Another approach is the management attractive and repulsive forces in the interface, which are conveyed to the robots. 
+Another approach is the management of attractive and repulsive forces in the interface, which are conveyed to the robots. 
 This style of interface maps reasonably directly to at least three of the programming paradigms used in swarm robotics. 
 In physicomimetics, the attractors or repellents are points in the field that act on the robots through the same forces that the robots use in their interaction with each other. 
 To cause robots to gather in an area, the user could place a source of virtual gravity there, which would draw robots towards it. 
@@ -308,15 +308,14 @@ Zoltán Rusák, Ismail Cimen, Imre Horváth and Aadjan van der Helm
 	Extrusion and delete tasks had most of the errors
 		Mostly type 2 \& 3, so the gesture chosen by the designer was bad
 
-\citep{derboven2012semiotic}
-Semiotic analysis of multi-touch interface design: The MuTable case study
-Jan Derboven, Dries De Roeck, Mathijs Verstraete
-	Semiotic analysis (meaning of signs and sign systems)
-	User interface is a message from designers to users
-	early NUI, content serves as the interface
-	Users interact in a direct, unmediated way
-		In theory, no icons, no metaphors
-			But anything on a screen is a metaphor
+
+Multitouch user interfaces don't generally have an agreed-upon standard for the gestures used in interaction with them, largely due to the relative novelty of the technology. 
+The interface itself can be viewed as a message from the developer to the end user, which hopefully conveys enough information about the design of the interface to the end user that they are able to use it \citep{derboven2012semiotic}. 
+The MuTable user interface in Derboven, De Roeck, and Verstraete uses a heirarchy of menus, which the user can explore and interact with. 
+A multitouch user interface could attempt to do away with menus entirely, to encourage a direct interaction with the representations of the system objects on the screen, which would appear to reduce the interface to the point that there is not enough of it to convey a message. 
+However, as long as the system both provides ways for the user to issue commands, and ways to return the results of those commands to the user, failures to figure out ways to issue commands and unwanted results are also a part of the interface that the user can interpret. 
+
+
 	
 \citep{musse1999guiding}		
 Guiding and Interacting with Virtual Crowds in Real-Time
@@ -338,43 +337,51 @@ Ammaar Amin Mufti
 	Transition from skeuomorphism to flat/minimal
 	Zooming-based UI
 
-\citep{van1997post}
-Post-WIMP User Interfaces
-Andries van Dam
-	Eventually wants a butler-style interface
-		Not useful for creative tasks, but I guess that's not what he wants to do
-	Reasonably precient for 1997, though. 
 
-\citep{gross2014skeu}
-Skeu the Evolution: Skeuomorphs, Style, and the Material of Tangible Interactions
-Shad Gross, Jeffrey Bardzell, Shaowen Bardzell
-	Interesting points about skueomorphs kept around as kitsch (deliberately) vs kept around because no one thought to do it a different way
+Early in the development of multitouch user interfaces, it became apparent that the window, icon, menu, and pointer (WIMP) interface would not be the best way to interact with novel interface technologies \citep{van1997post}. 
+WIMP interfaces are tied to a metaphor of a desktop, where a user interacts with 2D spreadsheets and documents. 
+To extend to information with higher dimensionality, the interfaces become more complex and less direct. 
+The somewhat precient model proposed in by van Dam is a multi-modal interface of gestures and natural language, as is found in modern smartphones. 
+This paper also shows an early example of a two-handed manipulation of a virtual object in a 3D environment, which presages the direct interaction style of multitouch user interfaces. 
 
-Intel shooting star drones (from Intel-Shooting-Star-Tech-Fact-Sheet-073117-1.pdf)
-	"proprietary algorithms"
-	Automated creation of image, calculation of drones needed to form it
-	Controlled by a single computer (what happens if it goes down?)
-	Max range is 1.5km (is that drone travel or wireles range?)
+The directness of user interactions as how much the interaction resembles the same interaction with physical objects, such as flipping pages of a calendar. 
+With a physical calendar, one can turn pages by sliding a finger over them. 
+Having a slider or buttons to switch months in a virtual calendar is thus less direct, and with a mulitouch interface, can be replaced by the same finger motion that would flip a page of a physical calendar. 
 
-	From video screenshots, appears to be a 3D rendering suite similar to Blender
-	GPS + barometer (that's not enough resoultion, they're doing something else)
-		Ascending Technologies (AscTec) Trinity Autopilot, triple-redundant IMU
-		http://www.asctec.de/en/asctec-trinity/ claims reproducable 3d flight "within gps accuracy"
-		ASCTec also had a program called Navigator for GPS flight control
+Keeping design elements of an object the same when the object is moved to a new material or created by new techniques is called ``skeueomorphism", and the copied design elements are ``skeueomorphs''. 
+There are several reasons for skeueomorphs in design of user interactions. 
+One reason is effectively kitsch. 
+Design elements can be kept, despite not having a function in the new medium, simply because people find it entertaining to keep the appearance.
+The vestigial jug handles on bottles of maple syrup or the yellow ``paper'' background of Apple Notes prior to its redesign are an example of this type of skueomorphism.
+The jug handles are too small to use as handles, and the ``paper'' of Apple notes has no effect on the functioning of the application. 
 
-	Can apparently import some form of GIS data to place drones relative to ground level, avoid hills
-	Has tabs for "Curves/Surfaces", "Poly modeling" and "Sculpting" in UI
-	Also "Rigging", "Animation", FX \& FX Caching, HEALTH, and some stuff I can't make out
-	Seems like a 3d CGI suite, but rendering to drones rather than rendering to an STL file
+Another reason to keep a design element, especially in multitouch UIs, is that the design element may provide hints to the user as to how the object can be interacted with. 
+For example, in displaying photos, if the photo has a slight border, and the border appears to curve and ``lift'' off the screen background slightly, it will imply that the photo is a mobile object with a small space under it, and so could have other photos under or on top of it. 
+If the photo is displayed totally flat, without a border, it will look more like a sticker or part of the background, and not imply that it can be moved. 
+In neither case is the image actually ``above'' the background, but the visual impression to the user provides a clue for interacting with it. 
 
-	Coachella video has touch interaction with 3d display of drones in a volume of space
+In the study of interactions with tangible interfaces, it has been proposed that the use of skueomorphic interfaces can also bridge between these two reasons for their use \citep{gross2014skeu}.
+Rather than simple functionality, or pure amusement, the use of skueomorphic interface designs can convey messages about abstract qualities of a product to a user. 
+One example given by Gross, Bardzell, and Bardzell is a digital synthesizer with a user interface that copies the knobs and switches of physical analog synthesizers. 
+While this is likely not an optimal interface for controlling the synthesizer, it has connotations of quality, performance, and reference to more traditional electronic instruments, and so appeals to the user's idea of themselves as an artist and a participant in a tradition of artists. 
 
-	UI in 500 drone video seems to be earlier version? Still has GIS import
-	Also shows single point scrolling and rotation of swarm with touch commands
-	Talks about changing thinking "from many individual drones to one single fleet of drones"
+Intel has fielded drone fleets of up to 1,200 Shooting Star UAVs \citep{IntelDronesPage}. 
+While the control system for the drones is proprietary, some information about the user interface can be gleaned from the promotional videos for the controller. 
+The user interface for the creation of the light show appears to be very similar to those used in 3D rendering of computer graphics, including a timeline across the bottom of the screen, a preview in the center, and toolbars along the top and sides for interaction with the show. 
+Visible tabs on the interface include "Curves/Surfaces", "Poly Modeling", "Sculpting", "Rigging", "Animation", "FX", "FX Caching", and "HEALTH". 
+These different tabs are likely different ways to configure the shape of the formation in 3D (Curves, Poly Modeling, and Sculpting), animating the resulting formation (Rigging, Animation, and FX), and determining the state of the swarm as a whole (HEALTH). 
 
-	Automated health monitoring and drone selection for better deployment
-	Red/yellow/green dot interface for at-a-glance health monitor, probably battery status
+A screen that is likely part of the health interface is shown in one video \citep{OlympicTech}.
+The screen has a grid of circles, colored various intensities of green, yellow, and red, as well as one shade of gray. 
+The intensity may convey a different quality about the drone than the color, allowing at least two different dimensions of data per circle. 
+As all the circles are displayed in a grid, an overview of the swarm health can be obtained by glancing at the display and assessing the relative balance of green vs. red. 
+
+The user interface can import some form of data about the landscape where the drones will be launched, so the show can be positioned relative to hills or other obstacles in the area. 
+The interface also supports at least some level of touch interaction, as users are shown pressing UI element buttons and rotating 3D renderings in the promotional videos. 
+
+The interface for the drone light shows allows single users to fly hundreds to over a thousand drones, but it appears to be designed to create the show in advance, and execute it under central control. 
+The drones themselves are well-localized, having GPS, barometers, and likely IMUs. 
+The IMUs are likely based on Ascending Technologies AscTec Trinity autopilots, as Intel acquired AscTec in 2016. 
 
 
 
@@ -970,121 +977,6 @@ The implementation of the virtual stigmergy structure allows the robots to maint
 Buzz also provides a convenient abstraction of the neighbours of the robot executing the program, which usually consists of all robots within communication range. 
 Using the neighbours abstraction, the robot can, for instance, query all its neighbours about the value of a sensor precept at their location, in order to build a local map of the intensity of the sensed quantity. 
 
-%\subsection{Overview of Previous Swarm Hardware}
-
-% Swarm robots are generally small. 
-% The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
-% Larger robots consume more materials per unit, and so cost more money.
-% As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
-% Also, each robot requires some amount of space to move around in. 
-% To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
-% If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
-% Finally, larger robots are more cumbersome to deal with. 
-% They require larger storage areas, possibly teamwork to lift or repair, and so forth. 
-% All of these efforts are also multiplied by the number of robots in the swarm. 
-
-% The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
-% For example, typical indoor doorways are around thirty inches wide, so a robot would have to be less than thirty inches wide to fit through them. 
-% The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
-% As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
-% This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
-% The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
-% Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
-% However, most of these platforms are no longer easily commercially available, or never were. 
-
-%\subsubsection{Tabletop Swarms}
-
-% At the low end, in terms of size, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
-% Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
-% Other techniques have been developed to use magnetic fields to apply force to small magnetic objects, resulting in controlled motion of the objects \cite{floyd2008untethered, pelrine2012diamagnetically}.
-% These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
-% The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
-
-% Alice combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$ \cite{caprari1998autonomous}. 
-% The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
-% Alice robots are no longer available for purchase. 
-% %The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
-%There is no evidence that AmIR was ever widely available.
-
-% The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
-% Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
-% Unfortunately, Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
-% The plans and information required to reproduce Jasmine units are available for free at Swarmrobot.org.
-% Assembling a Jasmine robot is not beyond the reach of competent electronics hobbyists, but it does require some unusual build processes, such as grinding down the cases of certain electronic parts and filling holes in the PCB with solder to prevent light leaks. 
-% The chassis of Jasmine is also a custom mechanical assembly, rather than a commercially available product. 
-
-% InsBot was a small robot, measuring 41mm x 30mm x 19mm, that was designed to interact with cockroaches \cite{colot2004insbot}.
-% It used two processors, one to run higher level behaviors and one to interface with a suite of sensors that included 12 IR sensors and a linear camera. 
-% InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
-% However, the construction process appears to have been relatively straightforward. 
-
-%Colias is a dual-microprocessor system similar to Jasmine in functionality \citep{arvin2014colias}. 
-%It is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
-%Of particular note, the Colias lower processor is responsible for detecting light on the underside of the robot. 
-%Because of this downward facing light sensor, Colias robots can operate on a translucent table illuminated from beneath with a projector, for experiments in pheromone robotics. 
-%The light patterns displayed by the projector act as pheromones, which the robot can detect based on its position on the table. 
-%Colias robots cost \pounds25, or \$35US. 
-
-% Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
-% The E-puck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
-% The high price of the E-puck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
-% E-pucks also require a fairly smooth operating surface.
-% The E-puck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
-% Due to the relatively sharp corner of the lower edges of the robot, the E-puck can become stuck on 2-3mm high obstacles. 
-
-% The r-one research robot is cheaper than the E-puck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
-% The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). 
-% The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
-% The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
-
-% The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
-% Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
-% The Kilobots are intended for research in a highly homogeneous environment, with most or all of the robots executing the same program. 
-% As a result, they are designed to be programmed in parallel using an IR interface. 
-% For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-% The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
-
-% One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
-% Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
-% Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
-% The first COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board \cite{bergbreiter2003cotsbots}. 
-% The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
-% At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
-% COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
-% TinyOS is written in a dialect of C called nesC. 
-% The motor and mote boards communicate using a messaging layer. 
-% The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
-% The second COTSBots is larger, and will be discussed in the next section. 
-
-%\subsubsection{Room-sized Swarms}
-
-% One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-% As previously mentioned, the Kilobots require a smooth surface, and the E-puck can be stopped by obstacles no more than a few millimetres tall. 
-% This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
-% In order to overcome this problem, larger swarm robots can be constructed.
- 
-% The MarXbot swarm platform is capable of operating in unstructured human environments. 
-% MarXBots can also use their grippers to link themselves together and perform operations that an individual robot could not perform, such as bridging a gap larger than a single robot \cite{bonani2010marxbot}. 
-% The size and complexity of the MarXbots, as well as their powerful computer, renders the individual robots quite expensive. 
-
-% Swarmanoid extends the interlinking mechanism of MarXbot to a heterogeneous swarm with three different types of robots \cite{dorigo2013swarmanoid}.
-% The ``foot'' robots are MarXbots, and provide ground motion for ``hand'' robots. 
-% ``Hand'' robots have grippers to manipulate objects, and can also climb.
-% The ``hand'' robots have an attachment point like the MarXbots, and so can be carried by ``foot'' robots. 
-% Flying ``eye'' robots provide overviews of the work area and networking.  
-
-% In order to reduce costs, another platform called COTSBots was developed \cite{soule2011cotsbots}.  
-% Instead of sensor motes on micro-scale RC cars, the newer COTSBots platform is composed of a laptop for processing and a modified RC car, tank, or similar toy as a mobility platform.
-% In order to interface between the laptop and motor drivers, a second micro-controller board, such as an Arduino or Phidget interface, may be used. 
-% Due to the diversity of possible combinations of hardware that can be assembled into this configuration, it is still a very viable platform. 
-% However, the minimum size of this style of COTSBot is the size of a laptop, which is in turn dictated largely by the minimum size of a useful keyboard. 
-% The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
-% Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
-% All of these parts add to the overall cost of the swarm. 
-
-% Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas, as well as larger custom platforms for outdoor multi-robot work \cite{guo2007bio, tammet2008rfid, olson2013cacm}.
-% In theory, swarm research could be performed using robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
-
 A Minimalist Flocking Algorithm for Swarm Robots
 Christoph Moeslinger, Thomas Schmickl, and Karl Crailsheim
 	Simulated flocking 
@@ -1210,8 +1102,11 @@ Among others, they point out that the invariance of the dynamics of the robots t
 However, pointed out by Rodney Brooks in ``Artificial life and real robots'', environment conditions such as carpet nap can change dynamics of the robots in ways that break the symmetry of the dynamics about certain axes\cite{brooks1992artificial}.
 In addition, the symbolic methods still have problems with incomplete knowledge, and dynamic worlds (which imply incomplete knowledge, as things may change without being observed). 
 While valuable for the strength of the assertions they can make about the generated controllers, symbolic and formal methods still require some level of reactive or heuristic buffering from the real world, to present them with the atomic actions and perfect sensors that their assertions rely on. 
+%(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
+%\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
+%\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
-\section{Human Interaction as a Guide to Swarm Cutoff}
+\section{Group Perception of Humans}
 
 One potential guide to when users will stop treating robots as individuals and begin treating them as a group is the numerical point that humans come to regard a collection of other humans as a collective instead of individuals. 
 Unfortunately, that point is quite complex to determine, because humans have vastly more complex social interaction with each other than they do with robots, and elements of that social interaction color how humans think of each other. 
