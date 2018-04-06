@@ -32,6 +32,8 @@ class ProgramLoader(object):
 		self.program = json.loads(msg.data)
 
 	def getProgram(self):
+		rospy.loginfo_throttle(10, "getProgram called")
+		rospy.loginfo_throttle(10, json.dumps(self.program))
 		return self.program
 
 
@@ -88,7 +90,8 @@ class GCPR_driver(object):
 		pass
 
 	def replace_program(self, msg):
-		self.programLoader.replaceProgram(msg)
+		rospy.loginfo(msg)
+		self.programLoader.replaceProgram(msg.data)
 
 	def run_gcpr(self):
 		#Nothing to do yet
@@ -115,6 +118,7 @@ class GCPR_driver(object):
 
 	#Functions for handling heading
 	def set_desired_heading(self, value):
+		rospy.loginfo_throttle(3, "set heading to {}".format(value))
 		self.desired_heading = value
 
 	#Within threshold of heading
@@ -126,6 +130,7 @@ class GCPR_driver(object):
 
 	#Functions for handling a program counter for sequential state changes
 	def set_pc(self,value):
+		rospy.loginfo_throttle(3, "set pc to {}".format(value))
 		self.prog_ctr = value
 
 	def pc_is(self, value):
@@ -146,14 +151,17 @@ class GCPR_driver(object):
 		
 	# Moving straight is moving in an arc with no rotational speed
 	def move_fwd(self, speed):
+		rospy.loginfo_throttle(3, "Moving with speed {}".format(speed))
 		self.move_arc(0, speed)
 
 	# Turning is moving in an arc with no translational speed
 	def move_turn(self, speed):
+		rospy.loginfo_throttle(3, "Turning with speed {}".format(speed))
 		self.move_arc(speed, 0)
 
 	# Stopping is moving with no velocity. Have you ever, like, REALLY, looked at your hands, man?
 	def stop(self):
+		rospy.loginfo_throttle(10, "Stopping")
 		self.move_arc(0,0)
 
 	# This is for doing printouts from inside the GCPR code and having it get out to ROS

@@ -78,7 +78,7 @@ void CTinyRobo::ControlStep() {
   const CCI_PositioningSensor::SReading& posReading = m_pcPosition->GetReading();
   geometry_msgs::Pose Pose;
   Pose.position.x = posReading.Position.GetX();
-  Pose.position.y = posReading.Position.Get();
+  Pose.position.y = posReading.Position.GetY();
   Pose.position.z = posReading.Position.GetZ();
   Pose.orientation.x = posReading.Orientation.GetX();
   Pose.orientation.y = posReading.Orientation.GetY();
