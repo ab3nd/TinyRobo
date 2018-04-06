@@ -18,10 +18,11 @@ distances = []
 for idx in range(len(points)-1):
 	p1 = points[idx]
 	p2 = points[idx+1]
-	headings.append(math.atan2(p2[0]-p1[0], p1[1]-p2[1]))
+	#Atan2 is (y,x), not (x,y)
+	headings.append(math.atan2(p1[1]-p2[1], p2[0]-p1[0]))
 	#Distances are not cartesian, but distance traveled in (signed) x and y directions,
 	#which is to say they include direction
-	distances.append((p1[0]-p2[0], p1[1]-p2[1]))
+	distances.append((abs(p1[0]-p2[0]), abs(p1[1]-p2[1])))
 
 print headings
 print distances
@@ -32,7 +33,7 @@ program = []
 pc = 0
 for heading, distance in zip(headings, distances):
 	program.append(("self.pc_is({0})".format(pc), "self.set_desired_heading({0})".format(heading), 1.0))
-	program.append(("self.traveled_x > {0} and self.traveled_y > {1}".format(distance[0], distance[1]), "self.set_pc({0})".format(pc+1), 1.0))
+	program.append(("self.traveled_x > {0} and self.traveled_y > {1} and self.pc_is({2})".format(distance[0], distance[1], pc), "self.set_pc({0})".format(pc+1), 1.0))
 	#Reset the distances traveled when they are over the limits needed to reset the pc
 	#program.append(("self.traveled_x > {0} and self.traveled_y > {1}".format(distance[0], distance[1]), "self.reset_travel()".format(pc+1), 1.0))
 	pc += 1

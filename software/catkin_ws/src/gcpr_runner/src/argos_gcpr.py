@@ -28,7 +28,7 @@ class ProgramLoader(object):
 	#This isn't anything like secure, since eval is getting used. 
 	#There also may be thread safety concerns
 	def replaceProgram(self, msg):
-		rospy.logwarn("Got {0}".format(msg.data))
+		#rospy.logwarn("Got {0}".format(msg.data))
 		self.program = json.loads(msg.data)
 
 	def getProgram(self):
@@ -69,9 +69,8 @@ class GCPR_driver(object):
 
 	def update_pose(self, poseMsg):
 		if self.lastPosition is not None:
-			#Update travel distances
-			self.traveled_x += self.lastPosition.position.x - poseMsg.position.x
-			self.traveled_y += self.lastPosition.position.y - poseMsg.position.y
+			self.traveled_x += abs(self.lastPosition.position.x - poseMsg.position.x)
+			self.traveled_y += abs(self.lastPosition.position.y - poseMsg.position.y)
 			w = poseMsg.orientation.w
 			x = poseMsg.orientation.x
 			y = poseMsg.orientation.y
@@ -133,7 +132,7 @@ class GCPR_driver(object):
 
 	#Within threshold of heading
 	def on_heading(self):
-		threshold = 0.5
+		threshold = 0.05
 		#rospy.logwarn("{} heading {}".format(self.ns, self.current_heading))
 		#rospy.logwarn("{} desired {}".format(self.ns, self.desired_heading))
 		#rospy.logwarn("{} difference {}".format(self.ns, self.current_heading - self.desired_heading))
@@ -153,6 +152,8 @@ class GCPR_driver(object):
 	def set_pc(self,value):
 		rospy.loginfo_throttle(3, "{} set pc to {}".format(self.ns, value))
 		self.prog_ctr = value
+		#TODO this is a HACK
+		self.reset_travel()
 
 	def pc_is(self, value):
 		return self.prog_ctr == value
