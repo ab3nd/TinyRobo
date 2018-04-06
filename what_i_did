@@ -847,6 +847,13 @@ Spent a lot of time around here having a cold and not being able to think well
 - Added functions to argos gcpr runner to use obstacle avoid and move
 - Testing tomorrow
 
+4/4 & 4/5
+- guests, didn't get anything done
+
+4/5
+- Debugging argos integration
+- Reading papers
+
 
 It looks like the process for verification with Alloy would be to translate the GCPR program into its MDP representation, which consists (naturally) of states and transitions between them. Given that model, it could be translated relatively directly into Alloy (although I'm a little fuzzy on how to do this) and the model could be checked for assertations like "once the goal state is reached, it isn't left", and "the goal state can be reached", to at least assert that the resulting software isn't unworkable, or doesn't fail once it succeeds. 
 

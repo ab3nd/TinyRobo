@@ -56,6 +56,8 @@ class GCPR_driver(object):
 		#For GCPR program counter, default to 0
 		self.prog_ctr = 0
 
+		self.desired_heading = 0
+
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -91,7 +93,7 @@ class GCPR_driver(object):
 
 	def replace_program(self, msg):
 		rospy.loginfo(msg)
-		self.programLoader.replaceProgram(msg.data)
+		self.programLoader.replaceProgram(msg)
 
 	def run_gcpr(self):
 		#Nothing to do yet

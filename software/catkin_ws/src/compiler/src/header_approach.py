@@ -32,7 +32,7 @@ program = []
 pc = 0
 for heading, distance in zip(headings, distances):
 	program.append(("self.pc_is({0})", "self.set_desired_heading({1})".format(pc, heading), 1.0))
-	program.append(("self.distance_x > {0} and self.distance_y > {1}".format(distance[0], distance[1]), "self.set_pc({0})".format(pc+1), 1.0))
+	program.append(("self.traveled_x > {0} and self.traveled_y > {1}".format(distance[0], distance[1]), "self.set_pc({0})".format(pc+1), 1.0))
 	pc += 1
 
 #Add a stop condition
@@ -46,8 +46,8 @@ program.append(("not(self.on_heading()) and not(self.pc_is({0}))".format(pc), "s
 #Reactive obstacle avoidance
 #Could still do reactive obstacle avoidance after ending travel, but could lead to jostling out of goal
 program.append(("not(self.is_near_anything()) and not(pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
-program.append(("self.is_near_left() and not self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_arc(-0.3, 0.25)", 1.0))
-program.append(("self.is_near_right() and not self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_arc(0.3, 0.25)", 1.0))
+program.append(("self.is_near_left() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_arc(-0.3, 0.25)", 1.0))
+program.append(("self.is_near_right() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_arc(0.3, 0.25)", 1.0))
 program.append(("self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_turn(0.3)", 1.0))
 
 print json.dumps(program)#, sort_keys=True, indent=4, separators=(',', ': '))
@@ -57,12 +57,16 @@ rospy.init_node("program_sender", anonymous=True)
 
 #Build a list and keep it around so messages have time to get out
 pubs = []
+
 for robotID in range(6):
 	pubs.append(rospy.Publisher('/bot{}/robot_prog'.format(robotID), String, queue_size=10))
 
-for pub in pubs:
-	message = json.dumps(program)
-	pub.publish(message)
+r = rospy.Rate(10) # 10hz
+while not rospy.is_shutdown():
+	for pub in pubs:
+		message = json.dumps(program)
+		pub.publish(message)
+	r.sleep()
 
 rospy.spin()
 	
