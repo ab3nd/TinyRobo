@@ -31,8 +31,10 @@ program = []
 #Build GCPR program for setting the program counter based on distance traveled
 pc = 0
 for heading, distance in zip(headings, distances):
-	program.append(("self.pc_is({0})", "self.set_desired_heading({1})".format(pc, heading), 1.0))
+	program.append(("self.pc_is({0})".format(pc), "self.set_desired_heading({0})".format(heading), 1.0))
 	program.append(("self.traveled_x > {0} and self.traveled_y > {1}".format(distance[0], distance[1]), "self.set_pc({0})".format(pc+1), 1.0))
+	#Reset the distances traveled when they are over the limits needed to reset the pc
+	#program.append(("self.traveled_x > {0} and self.traveled_y > {1}".format(distance[0], distance[1]), "self.reset_travel()".format(pc+1), 1.0))
 	pc += 1
 
 #Add a stop condition
@@ -40,33 +42,42 @@ program.append(("self.pc_is({0})".format(pc), "self.stop()", 1.0))
 
 #Add motion commands to turn to bearing and move forward
 #Don't move after stopping because PC has hit end of program
-program.append(("self.on_heading() and not(self.pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
-program.append(("not(self.on_heading()) and not(self.pc_is({0}))".format(pc), "self.move_turn(0.3)", 1.0))
+program.append(("self.on_heading() and not(self.pc_is({0})) and not(self.is_near_anything())".format(pc), "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.on_heading()) and not(self.pc_is({0})) and not(self.is_near_anything())".format(pc), "self.move_turn(1)", 1.0))
 
 #Reactive obstacle avoidance
 #Could still do reactive obstacle avoidance after ending travel, but could lead to jostling out of goal
-program.append(("not(self.is_near_anything()) and not(self.pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
-program.append(("self.is_near_left() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_arc(-0.3, 0.25)", 1.0))
-program.append(("self.is_near_right() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_arc(0.3, 0.25)", 1.0))
-program.append(("self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_turn(0.3)", 1.0))
+#program.append(("not(self.is_near_anything()) and not(self.pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
+program.append(("self.is_near_left() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_turn(-1)", 1.0))
+program.append(("self.is_near_right() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_turn(1)", 1.0))
+program.append(("self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_turn(1)", 1.0))
 
-print json.dumps(program)#, sort_keys=True, indent=4, separators=(',', ': '))
+print json.dumps(program, sort_keys=True, indent=4, separators=(',', ': '))
 
 #publish the robot program to each of the robots
 rospy.init_node("program_sender", anonymous=True)
 
+
 #Build a list and keep it around so messages have time to get out
-pubs = []
+# pubs = []
 
-for robotID in range(6):
-	pubs.append(rospy.Publisher('/bot{}/robot_prog'.format(robotID), String, queue_size=10))
+# for robotID in range(6):
+# 	pubs.append(rospy.Publisher('/bot{}/robot_prog'.format(robotID), String, queue_size=10))
 
-r = rospy.Rate(10) # 10hz
+# #r = rospy.Rate(10) # 10hz
+# #while not rospy.is_shutdown():
+# for pub in pubs:
+# 	message = json.dumps(program)
+# 	pub.publish(message)
+# 	rospy.sleep(0.5)
+
+# rospy.spin()
+	
+pub = rospy.Publisher('/bot0/robot_prog', String, queue_size=10)
+message = json.dumps(program)
+
 while not rospy.is_shutdown():
-	for pub in pubs:
-		message = json.dumps(program)
-		pub.publish(message)
-	r.sleep()
+	pub.publish(message)
+	rospy.sleep(1.5)
 
 rospy.spin()
-	

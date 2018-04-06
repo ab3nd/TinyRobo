@@ -32,8 +32,8 @@ class ProgramLoader(object):
 		self.program = json.loads(msg.data)
 
 	def getProgram(self):
-		rospy.loginfo_throttle(10, "getProgram called")
-		rospy.loginfo_throttle(10, json.dumps(self.program))
+		#rospy.loginfo_throttle(10, "getProgram called")
+		#rospy.loginfo_throttle(10, json.dumps(self.program))
 		return self.program
 
 
@@ -57,6 +57,10 @@ class GCPR_driver(object):
 		self.prog_ctr = 0
 
 		self.desired_heading = 0
+		self.current_heading = 0
+
+		#For debugging
+		self.ns = rospy.get_namespace()
 
 
 	def update_laser(self, laserMsg):
@@ -77,10 +81,13 @@ class GCPR_driver(object):
 			#The roll direction is what I'd call yaw.
 			#RPY are ambiguious, nothing to be done for it.
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
-			self.heading = roll
+			self.current_heading = roll
 
 		#For future distance calculation
 		self.lastPosition = poseMsg
+
+		#Debugging
+		#print poseMsg
 
 	def update_prox(self, proxMsg):
 		#Sort prox messages by angle
@@ -92,7 +99,6 @@ class GCPR_driver(object):
 		pass
 
 	def replace_program(self, msg):
-		rospy.loginfo(msg)
 		self.programLoader.replaceProgram(msg)
 
 	def run_gcpr(self):
@@ -118,21 +124,34 @@ class GCPR_driver(object):
 			#might be of help for figuring out what substrings are callable
 			eval(item)
 
+		rospy.loginfo_throttle(3, "{} heading {}, distanceX {}, distanceY {}".format(self.ns, self.current_heading, self.traveled_x, self.traveled_y))
+
 	#Functions for handling heading
 	def set_desired_heading(self, value):
-		rospy.loginfo_throttle(3, "set heading to {}".format(value))
+		rospy.loginfo_throttle(3, "{} set heading to {}".format(self.ns, value))
 		self.desired_heading = value
 
 	#Within threshold of heading
 	def on_heading(self):
-		threshold = 1.0
- 		if (self.desired_heading < self.heading + threshold)  or (self.heading > self.current_heading - threshold):
- 			return True
- 		return False
+		threshold = 0.5
+		#rospy.logwarn("{} heading {}".format(self.ns, self.current_heading))
+		#rospy.logwarn("{} desired {}".format(self.ns, self.desired_heading))
+		#rospy.logwarn("{} difference {}".format(self.ns, self.current_heading - self.desired_heading))
+
+		if(abs(self.current_heading - self.desired_heading) > threshold):
+			return False
+		return True
+
+ 		# if (self.desired_heading < self.current_heading + threshold)  or (self.desired_heading > self.current_heading - threshold):
+ 		# 	return True
+ 		# return False
+
+ 	def reset_travel(self):
+ 		self.traveled_y = self.traveled_x = 0
 
 	#Functions for handling a program counter for sequential state changes
 	def set_pc(self,value):
-		rospy.loginfo_throttle(3, "set pc to {}".format(value))
+		rospy.loginfo_throttle(3, "{} set pc to {}".format(self.ns, value))
 		self.prog_ctr = value
 
 	def pc_is(self, value):
@@ -153,17 +172,17 @@ class GCPR_driver(object):
 		
 	# Moving straight is moving in an arc with no rotational speed
 	def move_fwd(self, speed):
-		rospy.loginfo_throttle(3, "Moving with speed {}".format(speed))
+		rospy.loginfo_throttle(3, "{} Moving with speed {}".format(self.ns, speed))
 		self.move_arc(0, speed)
 
 	# Turning is moving in an arc with no translational speed
 	def move_turn(self, speed):
-		rospy.loginfo_throttle(3, "Turning with speed {}".format(speed))
+		rospy.loginfo_throttle(3, "{} Turning with speed {}".format(self.ns, speed))
 		self.move_arc(speed, 0)
 
 	# Stopping is moving with no velocity. Have you ever, like, REALLY, looked at your hands, man?
 	def stop(self):
-		rospy.loginfo_throttle(10, "Stopping")
+		rospy.loginfo_throttle(10, "{} Stopping".format(self.ns))
 		self.move_arc(0,0)
 
 	# This is for doing printouts from inside the GCPR code and having it get out to ROS
