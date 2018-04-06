@@ -45,7 +45,7 @@ program.append(("not(self.on_heading()) and not(self.pc_is({0}))".format(pc), "s
 
 #Reactive obstacle avoidance
 #Could still do reactive obstacle avoidance after ending travel, but could lead to jostling out of goal
-program.append(("not(self.is_near_anything()) and not(pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.is_near_anything()) and not(self.pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
 program.append(("self.is_near_left() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_arc(-0.3, 0.25)", 1.0))
 program.append(("self.is_near_right() and not self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_arc(0.3, 0.25)", 1.0))
 program.append(("self.is_near_center() and not(pc_is({0}))".format(pc), "self.move_turn(0.3)", 1.0))
