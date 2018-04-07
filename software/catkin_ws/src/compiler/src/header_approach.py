@@ -19,7 +19,7 @@ for idx in range(len(points)-1):
 	p1 = points[idx]
 	p2 = points[idx+1]
 	#Atan2 is (y,x), not (x,y)
-	headings.append(math.atan2(p1[1]-p2[1], p2[0]-p1[0]))
+	headings.append(math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
 	#Distances are not cartesian, but distance traveled in (signed) x and y directions,
 	#which is to say they include direction
 	distances.append((abs(p1[0]-p2[0]), abs(p1[1]-p2[1])))
@@ -60,25 +60,25 @@ rospy.init_node("program_sender", anonymous=True)
 
 
 #Build a list and keep it around so messages have time to get out
-# pubs = []
+pubs = []
 
-# for robotID in range(6):
-# 	pubs.append(rospy.Publisher('/bot{}/robot_prog'.format(robotID), String, queue_size=10))
+for robotID in range(6):
+	pubs.append(rospy.Publisher('/bot{}/robot_prog'.format(robotID), String, queue_size=10))
 
-# #r = rospy.Rate(10) # 10hz
-# #while not rospy.is_shutdown():
-# for pub in pubs:
-# 	message = json.dumps(program)
-# 	pub.publish(message)
-# 	rospy.sleep(0.5)
-
-# rospy.spin()
-	
-pub = rospy.Publisher('/bot0/robot_prog', String, queue_size=10)
-message = json.dumps(program)
-
-while not rospy.is_shutdown():
+#r = rospy.Rate(10) # 10hz
+#while not rospy.is_shutdown():
+for pub in pubs:
+	message = json.dumps(program)
 	pub.publish(message)
-	rospy.sleep(1.5)
+	rospy.sleep(0.5)
+
+rospy.spin()
+	
+# pub = rospy.Publisher('/bot0/robot_prog', String, queue_size=10)
+# message = json.dumps(program)
+
+# while not rospy.is_shutdown():
+# 	pub.publish(message)
+# 	rospy.sleep(1.5)
 
 rospy.spin()
