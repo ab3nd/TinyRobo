@@ -58,6 +58,8 @@ class GCPR_driver(object):
 
 		self.desired_heading = 0
 		self.current_heading = 0
+		#For collision avoidance, calculated from sensors
+		self.avoid_heading = 0
 
 		#For debugging
 		self.ns = rospy.get_namespace()
@@ -92,6 +94,14 @@ class GCPR_driver(object):
 		#Sort prox messages by angle
 		self.proxReadings = proxMsg.proximities
 		self.proxReadings.sort(key=lambda item:item.angle)
+
+		#Calculate collision avoidance vector
+		#Only updates if we were not near something and now we are
+		if self.is_near_anything() and self.avoid_heading == 0:
+			self.avoid_heading = -1 * max(self.proxReadings, key=lambda x: x.value).angle
+		else:
+			self.avoid_heading = 0
+
 		
 	def recv_msg(self, msg):
 		rospy.logwarn("Got a message {0}".format(msg.data))
@@ -131,19 +141,19 @@ class GCPR_driver(object):
 		self.desired_heading = value
 
 	#Within threshold of heading
-	def on_heading(self):
+	def on_heading(self, target_heading):
 		threshold = 0.05
-		#rospy.logwarn("{} heading {}".format(self.ns, self.current_heading))
-		#rospy.logwarn("{} desired {}".format(self.ns, self.desired_heading))
-		#rospy.logwarn("{} difference {}".format(self.ns, self.current_heading - self.desired_heading))
 
-		if(abs(self.current_heading - self.desired_heading) > threshold):
+		if(abs(self.current_heading - target_heading) > threshold):
 			return False
 		return True
 
- 		# if (self.desired_heading < self.current_heading + threshold)  or (self.desired_heading > self.current_heading - threshold):
- 		# 	return True
- 		# return False
+ 	def turn_heading(self, new_heading, speed):
+ 		#Decide turn direction
+ 		if new_heading > 0:
+ 			self.move_turn(speed)
+ 		else:
+ 			self.move_turn(-speed)
 
  	def reset_travel(self):
  		self.traveled_y = self.traveled_x = 0
@@ -195,11 +205,13 @@ class GCPR_driver(object):
 	# questions so that it reads better
 
 	def is_near_anything(self):
-		return self.is_near_left() and self.is_near_right() and self.is_near_center()
+		if sum([x.value for x in self.proxReadings]) > 0:
+			return True
+		return False
 
 	def is_near_right(self):
-		start = -3.14
-		end = 0.0 #Pi/4
+		start = -(math.pi/2)
+		end = -0.5 
 		for reading in self.proxReadings:
 			if reading.angle > start and reading.angle < end:
 				if reading.value > 0:
@@ -208,8 +220,8 @@ class GCPR_driver(object):
 
 
 	def is_near_left(self):
-		start = 0.0
-		end = 3.14
+		start = 0.5
+		end = (math.pi/2)
 		for reading in self.proxReadings:
 			if reading.angle > start and reading.angle < end:
 				if reading.value > 0:
@@ -217,8 +229,8 @@ class GCPR_driver(object):
 		return False
 
 	def is_near_center(self):
-		start = -0.7854
-		end = 0.7854
+		start = -0.5
+		end = 0.5
 		for reading in self.proxReadings:
 			if reading.angle > start and reading.angle < end:
 				if reading.value > 0:
