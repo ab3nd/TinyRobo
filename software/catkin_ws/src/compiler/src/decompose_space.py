@@ -6,6 +6,7 @@
 #For visualization
 import pygame
 import sys
+import numpy as np
 
 #Points on the path in the space
 points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
@@ -22,20 +23,14 @@ def to_pygame(r, width = 640, height = 480):
 	rect_w = (abs(r[0][0]) + abs(r[1][0])) * ppm
 	rect_h = (abs(r[0][1]) + abs(r[1][1])) * ppm
 
-	print rect_w, rect_h
-
 	#Get the top left corner in pixels
 	tl_x = r[0][0] * ppm
 	tl_y = -r[1][1] * ppm # negate because increasing y moves down the screen, not up
-
-	print tl_x, tl_y
 
 	#Convert to offset from center
 	tl_x += width/2
 	tl_y += height/2
 	
-	print tl_x, tl_y
-
 	return pygame.Rect(tl_x, tl_y, rect_w, rect_h)
 
 def pg_dbg(space):
@@ -56,5 +51,23 @@ def pg_dbg(space):
 			if event.type == pygame.QUIT:
 				pygame.quit(); sys.exit();
 
+
+class grid_sq(object):
+	def __init__(self):
+		self.tl = [0,0]
+		self.br = [0,0]
+		self.heading = 0
+
 if __name__=="__main__":
+	
+	resolution = 0.05
+	space_w = (abs(r[0][0]) + abs(r[1][0]))
+	space_h = (abs(r[0][1]) + abs(r[1][1]))
+	x_coords = np.linspace(space[0][0], space[1][0], space_w/resolution)
+	y_coords = np.linspace(space[0][1], space[1][1], space_h/resolution)
+
+	for x in x_coords:
+		for y in y_coords:
+			print "({},{})".format(x,y)
+
 	pg_dbg(space)
