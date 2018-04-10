@@ -46,16 +46,16 @@ def pg_dbg(space, decomp, points):
 	pygame.init()
 	size = width,height = 640,480
 	screen = pygame.display.set_mode(size)
-	screen.fill((255,255,255)) #Black screen
+	screen.fill((255,255,255))
 
 	#Draw the space
 	green = (0,128,0)
 	#Pygame rects are left, top, width, height
 	pygame.draw.rect(screen, green, to_pygame(space) ,0)
 
-	#Draw a vector for each decomp grid square
 	for sq in decomp:
 		
+		#Draw a vector for each decomp grid square
 		#Get the center point
 		center = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
 		pg_center = point_to_pygame(center)
@@ -72,13 +72,24 @@ def pg_dbg(space, decomp, points):
 			color = (100, 100, 0)
 
 		pygame.draw.line(screen, color, (pg_center[0], pg_center[1]), (pg_vector[0], pg_vector[1]), 2)
-		pygame.draw.rect(screen, (100,100,0), pygame.Rect(pg_center[0], pg_center[1], 2, 2))
+		pygame.draw.rect(screen, (0,0,190), pygame.Rect(pg_center[0], pg_center[1], 2, 2))
 	
+		#Draw the right and bottom edges of each square
+		br = point_to_pygame(sq.br)
+		tr = point_to_pygame((sq.br[0], sq.br[1]+sq.height))
+		bl = point_to_pygame((sq.br[0]-sq.width, sq.br[1]))
+		pygame.draw.line(screen, (0,150,0), br, tr)
+		pygame.draw.line(screen, (0,150,0), br, bl)
 
 	#Draw all the points
 	for point in points:
 		ppt = point_to_pygame(point)
-		pygame.draw.circle(screen, (0,0,180), (ppt[0], ppt[1]), 2, 1)
+		pygame.draw.circle(screen, (0,0,180), (ppt[0], ppt[1]), 4, 1)
+
+
+	#Draw lines between the points
+	for pIdx in range(len(points)-1):
+		pygame.draw.line(screen, (0,0,180), point_to_pygame(points[pIdx]), point_to_pygame(points[pIdx+1]))
 
 	#Draw a circle in the middle of the screen
 	#These appear nested if point_to_pygame works right
@@ -96,12 +107,59 @@ def pg_dbg(space, decomp, points):
 
 
 def isIn(point, sq):
-	if (sq.br[0] >= point[0] and sq.tl[0] < point[0] ) and (sq.br[1] <= point[1] and sq.tl[1] > point[1]):
+	if (sq.br[0] >= point[0] and sq.tl[0] <= point[0] ) and (sq.br[1] <= point[1] and sq.tl[1] >= point[1]):
 		return True
 	return False
 
+def intersection(a1, a2, b1, b2):
+	x1 = a1[0]
+	y1 = a1[1]
+	x2 = a2[0]
+	y2 = a2[1]
+	x3 = b2[0]
+	y3 = b1[1]
+	x4 = b2[0]
+	y4 = b2[1]
+	denominator = (x1-x2)*(y3-y4)-(y1-y1)*(x3-x4)
+	if denominator == 0:
+		return None #Parallel
+	#Get the intersection point
+	px = (((x1 * y2) - (y1 * x2)) * (x3 - x4) - (x1 - x2) * ((x3 * y4) - (y3 * x4)))/denominator
+	py = (((x1 * y2) - (y1 * x2)) * (y3 - y4) - (y1 - y2) * ((x3 * y4) - (y3 * x4)))/denominator
+
+	return (px, py)
+
+
 def isBetween(pointA, pointB, sq):
-	return True
+	#A grid square is between two points if a line between the points 
+	#intersects any of the sides of the square
+	tl = sq.tl
+	tr = (sq.br[0], sq.tl[1])
+	br = sq.br
+	bl = (sq.tl[0], sq.br[1])
+	
+	point = intersection(tl, tr, pointA, pointB)
+	if point is not None:
+		if isIn(point, sq):
+			return True
+
+	point = intersection(bl, br, pointA, pointB)
+	if point is not None:
+		if isIn(point, sq):
+			return True
+
+	point = intersection(tl, bl, pointA, pointB)
+	if point is not None:
+		if isIn(point, sq):
+			return True
+
+	point = intersection(tr, br, pointA, pointB)
+	if point is not None:
+		if isIn(point, sq):
+			return True
+
+	#No edge intersected
+	return False
 
 class grid_sq(object):
 	def __init__(self, tl = [0,0], br = [0,0], heading = 0):
@@ -115,6 +173,18 @@ class grid_sq(object):
 	def assign(self, heading):
 		self.heading = heading
 		self.isAssigned = True
+
+
+# p1 = (1,1.5)
+# p2 = (2.5,4)
+
+# sq = grid_sq([2,3], [3,2], 0)
+
+# import pdb; pdb.set_trace()
+
+# isBetween(p1, p2, sq)
+
+
 
 if __name__=="__main__":
 	
@@ -147,8 +217,11 @@ if __name__=="__main__":
 					p2 = points[pointIdx]
 					p1 = points[pointIdx+1]
 					sq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
-					print math.atan2(p2[1]-p1[1], p1[0]-p2[0])
-
+				elif isBetween(points[pointIdx], points[pointIdx+1], sq):
+					#Heading is from square center to next point
+					p1 = points[pointIdx+1]
+					p2 = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
+					sq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
 
 			#Random headings to test rendering
 			decomp.append(sq)
