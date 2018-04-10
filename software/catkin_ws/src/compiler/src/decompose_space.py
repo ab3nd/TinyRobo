@@ -82,10 +82,10 @@ def pg_dbg(space, decomp, points):
 
 	#Draw a circle in the middle of the screen
 	#These appear nested if point_to_pygame works right
-	scr_ctr = (0,0)
-	scr_ctr = point_to_pygame(scr_ctr)
-	pygame.draw.circle(screen, (0,0,180), scr_ctr, 5, 1)
-	pygame.draw.circle(screen, (0,0,180), (width/2, height/2), 3, 1)	
+	# scr_ctr = (0,0)
+	# scr_ctr = point_to_pygame(scr_ctr)
+	# pygame.draw.circle(screen, (0,0,180), scr_ctr, 5, 1)
+	# pygame.draw.circle(screen, (0,0,180), (width/2, height/2), 3, 1)	
 
 	pygame.display.flip()
 
@@ -144,9 +144,10 @@ if __name__=="__main__":
 			for pointIdx in range(len(points)-1):
 				if isIn(points[pointIdx], sq):
 					#Heading of each point is towards next point
-					p1 = points[pointIdx]
 					p2 = points[pointIdx]
-					sq.assign(math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
+					p1 = points[pointIdx+1]
+					sq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
+					print math.atan2(p2[1]-p1[1], p1[0]-p2[0])
 
 
 			#Random headings to test rendering
