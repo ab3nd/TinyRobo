@@ -14,15 +14,13 @@ import math
 space = [(-4,2),(4,-2)]
 
 def to_pygame(r, width = 640, height = 480, ppm = 70):
-	
-
 	#Get the width and height of the rectangle in pixels
 	rect_w = (abs(r[0][0]) + abs(r[1][0])) * ppm
 	rect_h = (abs(r[0][1]) + abs(r[1][1])) * ppm
 
 	#Get the top left corner in pixels
 	tl_x = r[0][0] * ppm
-	tl_y = r[1][1] * ppm # negate because increasing y moves down the screen, not up
+	tl_y = -r[0][1] * ppm # negate because increasing y moves down the screen, not up
 
 	#Convert to offset from center
 	tl_x += width/2
@@ -59,12 +57,12 @@ def pg_dbg(space, decomp, points):
 	for sq in decomp:
 		
 		#Get the center point
-		center = (sq.tl[0] + sq.width/2, sq.tl[1] + sq.height/2)
+		center = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
 		pg_center = point_to_pygame(center)
 
 		#Get a point that's half the width away on the heading
 		hx = (sq.tl[0] + sq.width/2) + (sq.width/2 * math.cos(sq.heading))
-		hy = (sq.tl[1] + sq.height/2) + (sq.width/2 * math.sin(sq.heading))
+		hy = (sq.tl[1] - sq.height/2) + (sq.width/2 * math.sin(sq.heading))
 		pg_vector = point_to_pygame([hx, hy])
 
 
@@ -82,6 +80,13 @@ def pg_dbg(space, decomp, points):
 		ppt = point_to_pygame(point)
 		pygame.draw.circle(screen, (0,0,180), (ppt[0], ppt[1]), 2, 1)
 
+	#Draw a circle in the middle of the screen
+	#These appear nested if point_to_pygame works right
+	scr_ctr = (0,0)
+	scr_ctr = point_to_pygame(scr_ctr)
+	pygame.draw.circle(screen, (0,0,180), scr_ctr, 5, 1)
+	pygame.draw.circle(screen, (0,0,180), (width/2, height/2), 3, 1)	
+
 	pygame.display.flip()
 
 	while True:
@@ -91,12 +96,7 @@ def pg_dbg(space, decomp, points):
 
 
 def isIn(point, sq):
-	print sq.br[0], "<", point[0], sq.br[0] < point[0]
-	print sq.tl[0], ">=", point[0], sq.tl[0] >= point[0]
-	print sq.br[1], "<", point[1], sq.br[1] < point[1]
-	print sq.tl[1], ">=", point[1], sq.tl[1] >= point[1]
-	print "==="
-	if (sq.br[0] <= point[0] and point[0] < sq.tl[0]) and (sq.br[1] <= point[1] and point[1] < sq.tl[1]):
+	if (sq.br[0] >= point[0] and sq.tl[0] < point[0] ) and (sq.br[1] <= point[1] and sq.tl[1] > point[1]):
 		return True
 	return False
 
@@ -128,17 +128,19 @@ if __name__=="__main__":
 	width = space_w/width_c
 	height = space_h/height_c
 
-	x_coords = np.linspace(space[0][0], space[1][0], width_c)
-	y_coords = np.linspace(space[0][1], space[1][1], height_c)
+	x_coords = np.linspace(space[0][0], space[1][0], width_c, endpoint = False)
+	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
 
 	#Points on the path in the space
 	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
 
 	decomp = []
-	for x in x_coords[1:]:
-		for y in y_coords[:-1]:
-			sq = grid_sq([x - width, y - height], [x, y], math.pi * (random.random() - 0.5))
+	for y in y_coords:
+		for x in x_coords:
+			sq = grid_sq([x, y], [x + width, y - height], math.pi * (random.random() - 0.5))
 
+			# if isIn((0,0), sq):
+			# 	sq.assign(0)
 			for pointIdx in range(len(points)-1):
 				if isIn(points[pointIdx], sq):
 					#Heading of each point is towards next point
