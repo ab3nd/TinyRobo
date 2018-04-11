@@ -355,12 +355,14 @@ if __name__=="__main__":
 						count += 1
 						avg_heading += neighbor.heading
 				if count > 0:
+					#TODO these don't drive to path particularly hard
 					#Add vector to next nearest point on the path
-					nearest = getNextNearest(newsq, points)
+					#nearest = getNextNearest(newsq, points)
+					#Alternative, drives to nearest rather than next nearest
+					nearest = getNearest(newsq, points)
 
 					#Get heading from the center of this square to the next point
 					center = (newsq.tl[0] + newsq.width/2, newsq.tl[1] - newsq.height/2)
-					#heading = -math.atan2(nearest[1]-center[1], center[0]-nearest[0])
 					heading = -math.atan2(center[1]-nearest[1], nearest[0]-center[0])
 
 					#Combine with previously collected values
@@ -380,7 +382,7 @@ if __name__=="__main__":
 			#a change was made, so prepare to do a new sweep
 			decomp_old = decomp_new
 			decomp_new = []
-			
+
 	pg_dbg(space, decomp_new, points)
 
 	#Debugging intersection
