@@ -14,7 +14,7 @@ import copy
 #tl and br corners of space
 space = [(-4,2),(4,-2)]
 
-def to_pygame(r, width = 640, height = 480, ppm = 70):
+def to_pygame(r, width = 1024, height = 768, ppm = 120):
 	#Get the width and height of the rectangle in pixels
 	rect_w = (abs(r[0][0]) + abs(r[1][0])) * ppm
 	rect_h = (abs(r[0][1]) + abs(r[1][1])) * ppm
@@ -29,7 +29,7 @@ def to_pygame(r, width = 640, height = 480, ppm = 70):
 	
 	return pygame.Rect(tl_x, tl_y, rect_w, rect_h)
 
-def point_to_pygame(pt, width = 640, height = 480, ppm = 70):
+def point_to_pygame(pt, width = 1024, height = 768, ppm = 120):
 	#Get the top left corner in pixels
 	tl_x = pt[0] * ppm
 	tl_y = -pt[1] * ppm # negate because increasing y moves down the screen, not up
@@ -45,7 +45,9 @@ def point_to_pygame(pt, width = 640, height = 480, ppm = 70):
 
 def pg_dbg(space, decomp, points):
 	pygame.init()
-	size = width,height = 640,480
+	pygame.font.init()
+
+	size = width,height = 1024,768
 	screen = pygame.display.set_mode(size)
 	screen.fill((255,255,255))
 
@@ -74,6 +76,10 @@ def pg_dbg(space, decomp, points):
 
 		pygame.draw.line(screen, color, (pg_center[0], pg_center[1]), (pg_vector[0], pg_vector[1]), 2)
 		pygame.draw.rect(screen, (0,0,190), pygame.Rect(pg_center[0], pg_center[1], 2, 2))
+		#Add the vector as text
+		font = pygame.font.SysFont('freemono', 10)
+		text = font.render("{0:.3f}".format(sq.heading), True, (0,0,0))
+		screen.blit(text, (pg_center[0]-10, pg_center[1] + 5))
 	
 		#Draw the right and bottom edges of each square
 		br = point_to_pygame(sq.br)
@@ -287,7 +293,7 @@ def assign_path(x_coords, y_coords, points):
 	decomp = []
 	for y in y_coords:
 		for x in x_coords:
-			sq = grid_sq([x, y], [x + width, y - height], math.pi * (random.random() - 0.5))
+			sq = grid_sq([x, y], [x + width, y - height], 0)# math.pi * (random.random() - 0.5))
 
 			# if isIn((0,0), sq):
 			# 	sq.assign(0)
@@ -328,6 +334,13 @@ def assign_point_neighbors(x_coords, y_coords, decomp, points):
 		decomp_2.append(newsq)
 	return decomp_2
 
+def average_angle(angles):
+	x = y = 0
+	for angle in angles:
+		x += math.cos(angle)
+		y += math.sin(angle)
+	return math.atan2(y, x)
+
 def assign_remaining(x_coords, y_coords, decomp):
 	#Assign all the spaces which are next to at least one assigned space
 	#This builds a new decomposition to not keep copying updated values
@@ -351,11 +364,11 @@ def assign_remaining(x_coords, y_coords, decomp):
 				count = 0
 
 				#Get the data to set this square's heading to the average
+				angles = []
 				for neighbor in neighbors(decomp_old, len(x_coords), len(y_coords), index):
 					if neighbor.isAssigned:
-						count += 1
-						avg_heading += neighbor.heading
-				if count > 0:
+						angles.append(neighbor.heading)
+				if len(angles) > 0:
 					#TODO these don't drive to path particularly hard
 					#Add vector to next nearest point on the path
 					#nearest = getNextNearest(newsq, points)
@@ -367,11 +380,9 @@ def assign_remaining(x_coords, y_coords, decomp):
 					heading = -math.atan2(center[1]-nearest[1], nearest[0]-center[0])
 
 					#Combine with previously collected values
-					count += 1
-					avg_heading += heading
-
+					angles.append(heading)
 					#Float to avoid integer math data loss
-					avg_heading = avg_heading/float(count)
+					avg_heading = average_angle(angles)
 					newsq.assign(avg_heading)
 
 					#We did make a change, so reset the flag
@@ -399,20 +410,20 @@ def assign_outside_path(x_coords, y_coords, decomp):
 			count = 0
 
 			#Get the data to set this square's heading to the average
+			angles = []
 			for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
 				if neighbor.isAssigned:
-					count += 1
-					avg_heading += neighbor.heading
-			if count > 0:
+					angles.append(neighbor.heading)
+			if len(angles) > 0:
 				#Float to avoid integer math data loss
-				avg_heading = avg_heading/float(count)
+				avg_heading = average_angle(angles)
 				newsq.assign(avg_heading)
 		decomp_2.append(newsq)
 	return decomp_2
 
 if __name__=="__main__":
 	
-	resolution = 0.25
+	resolution = 0.5
 	space_w = (abs(space[0][0]) + abs(space[1][0]))
 	space_h = (abs(space[0][1]) + abs(space[1][1]))
 	#Count of spaces
@@ -426,7 +437,7 @@ if __name__=="__main__":
 	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
 
 	#Points on the path in the space
-	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2)]#,(3.0,0.2),(3.5,1.0)]
+	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
 
 	print points
 
@@ -437,9 +448,9 @@ if __name__=="__main__":
 	decomp = assign_point_neighbors(x_coords, y_coords, decomp, points)
 
 	#Assign headings for points around path
-	repeat = 5
-	for ii in range(repeat):
-		decomp = assign_outside_path(x_coords, y_coords, decomp)
+	#repeat = 5
+	#for ii in range(repeat):
+	decomp = assign_outside_path(x_coords, y_coords, decomp)
 	
 	#Assign all reminaing points based on the average of their assigned neighbors
 	decomp = assign_remaining(x_coords, y_coords, decomp)
