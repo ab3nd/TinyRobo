@@ -120,7 +120,7 @@ def intersection(a1, a2, b1, b2):
 	y3 = b1[1]
 	x4 = b2[0]
 	y4 = b2[1]
-	denominator = (x1-x2)*(y3-y4)-(y1-y1)*(x3-x4)
+	denominator = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)
 	if denominator == 0:
 		return None #Parallel
 	#Get the intersection point
@@ -129,40 +129,66 @@ def intersection(a1, a2, b1, b2):
 
 	return (px, py)
 
+def point_line_distance(end1, end2, point):
+	x0 = point[0]
+	y0 = point[1]
+	x1 = end1[0]
+	y1 = end1[1]
+	x2 = end2[0]
+	y2 = end2[1]
+
+	d = abs((y2-y1) * x0 - (x2-x1) * y0 + (x2*y1) - (y2 * x1))/math.sqrt(math.pow((y2 - y1), 2) + math.pow((x2 - x1), 2))
+
+	return d
 
 def isBetween(pointA, pointB, sq):
 	#A grid square can only be between two points if it is inside the rectangle that bounds the two points
-	bound_tl = (min(pointA[0], pointB[0]), max(pointA[1], pointB[1]))
-	bound_br = (max(pointA[0], pointB[0]), min(pointA[1], pointB[1]))
+	# bound_tl = (min(pointA[0], pointB[0]), max(pointA[1], pointB[1]))
+	# bound_br = (max(pointA[0], pointB[0]), min(pointA[1], pointB[1]))
 
-	bbox = grid_sq(bound_tl, bound_br, 0)
-	if isIn(sq.tl, bbox) or isIn(sq.br, bbox):
-		#A grid square is between two points if a line between the points 
-		#intersects any of the sides of the square
-		tl = sq.tl
-		tr = (sq.br[0], sq.tl[1])
-		br = sq.br
-		bl = (sq.tl[0], sq.br[1])
-		
-		point = intersection(tl, tr, pointA, pointB)
-		if point is not None:
-			if isIn(point, sq):
-				return True
+	# bbox = grid_sq(bound_tl, bound_br, 0)
+	# if isIn(sq.tl, bbox) or isIn(sq.br, bbox):
+	#A noble attempt, but the bounding box gets really small if the line is horizontal or vertical
 
-		point = intersection(bl, br, pointA, pointB)
-		if point is not None:
-			if isIn(point, sq):
-				return True
+	#A grid square can only be between the two points if it is within half its size of the 
+	#distance from the line between the two points
+	cx = sq.tl[0] + sq.width/2.0
+	cy = sq.tl[1] - sq.height/2.0
+	if point_line_distance(pointA, pointB, (cx, cy)) < sq.width/2.0:
 
-		point = intersection(tl, bl, pointA, pointB)
-		if point is not None:
-			if isIn(point, sq):
-				return True
+		#But it can't be outside of the box bounded by an expansion of the line
+		bound_tl = (min(pointA[0], pointB[0]) - sq.width, max(pointA[1], pointB[1]) + sq.height)
+		bound_br = (max(pointA[0], pointB[0]) + sq.width, min(pointA[1], pointB[1]) - sq.height)
 
-		point = intersection(tr, br, pointA, pointB)
-		if point is not None:
-			if isIn(point, sq):
-				return True
+		bbox = grid_sq(bound_tl, bound_br, 0)
+		if isIn((cx,cy), bbox) or isIn((cx,cy), bbox):
+
+			#A grid square is between two points if a line between the points 
+			#intersects any of the sides of the square
+			tl = sq.tl
+			tr = (sq.br[0], sq.tl[1])
+			br = sq.br
+			bl = (sq.tl[0], sq.br[1])
+			
+			point = intersection(tl, tr, pointA, pointB)
+			if point is not None:
+				if isIn(point, sq):
+					return True
+
+			point = intersection(bl, br, pointA, pointB)
+			if point is not None:
+				if isIn(point, sq):
+					return True
+
+			point = intersection(tl, bl, pointA, pointB)
+			if point is not None:
+				if isIn(point, sq):
+					return True
+
+			point = intersection(tr, br, pointA, pointB)
+			if point is not None:
+				if isIn(point, sq):
+					return True
 
 	#No edge intersected
 	return False
@@ -236,10 +262,11 @@ if __name__=="__main__":
 	pg_dbg(space, decomp, points)
 
 	#Debugging intersection
+	
 	# sq1 = grid_sq([2,3], [3,2], 0)
 	# sq2 = grid_sq([2,2], [3,1], 0)
 
 	# import pdb; pdb.set_trace()
 
-	# intersect = isBetween([1,1.5], [2.5,4], sq1) #should be true
-	# intersect = isBetween([1,1.5], [2.5,4], sq2) #should be false
+	# intersect = isBetween([1,2.5], [4,2.5], sq1) #should be true
+	
