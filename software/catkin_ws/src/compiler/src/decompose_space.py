@@ -236,6 +236,36 @@ def neighbors(decomp, len_x, len_y, index):
 	#Get the neighbors by index
 	return [decomp[idx] for idx in neighborIdx]
 
+def getDistance(p1, p2):
+	#Euclidian distance
+	return math.sqrt(math.pow(p1[0]-p2[0],2) + math.pow(p1[1]-p2[1],2))
+
+def getNearest(sq, points):
+	#Get the center
+	cx = sq.tl[0] + sq.width/2.0
+	cy = sq.tl[1] - sq.height/2.0
+
+	#Find the closest point
+	minDist = float('inf')
+	ret = None
+	for point in points:
+		d = getDistance((cx, cy), point) < minDist
+		if d < minDist:
+			minDist = d
+			ret = point
+
+	return point
+
+
+#Add vector to next nearest point on the path
+def getNextNearest(newsq, points):
+	nearest = getNearest(newsq, points)
+	idx = points.index(nearest)
+	#If it the end point, use it
+	if idx == len(points) -1 :
+		return points[idx]
+	#It's not the end point
+	return points[idx + 1]
 
 if __name__=="__main__":
 	
@@ -300,7 +330,58 @@ if __name__=="__main__":
 				newsq.assign(avg_heading)
 		decomp_2.append(newsq)
 
-	pg_dbg(space, decomp_2, points)
+	#Assign all the spaces which are next to at least one assigned space
+	#This builds a new decomposition to not keep copying updated values
+	changed = True
+	decomp_old = decomp_2
+	decomp_new = []
+
+	while changed:
+
+		#Set flag to indicate we're done
+		changed = False
+
+		for index, sq in enumerate(decomp_old):
+			newsq = copy.deepcopy(sq)
+		
+			#Don't reassign
+			if not newsq.isAssigned:
+				avg_heading = 0
+				count = 0
+
+				#Get the data to set this square's heading to the average
+				for neighbor in neighbors(decomp_old, len(x_coords), len(y_coords), index):
+					if neighbor.isAssigned:
+						count += 1
+						avg_heading += neighbor.heading
+				if count > 0:
+					#Add vector to next nearest point on the path
+					nearest = getNextNearest(newsq, points)
+
+					#Get heading from the center of this square to the next point
+					center = (newsq.tl[0] + newsq.width/2, newsq.tl[1] - newsq.height/2)
+					#heading = -math.atan2(nearest[1]-center[1], center[0]-nearest[0])
+					heading = -math.atan2(center[1]-nearest[1], nearest[0]-center[0])
+
+					#Combine with previously collected values
+					count += 1
+					avg_heading += heading
+
+					#Float to avoid integer math data loss
+					avg_heading = avg_heading/float(count)
+					newsq.assign(avg_heading)
+
+					#We did make a change, so reset the flag
+					changed = True
+
+			decomp_new.append(newsq)
+
+		if changed:
+			#a change was made, so prepare to do a new sweep
+			decomp_old = decomp_new
+			decomp_new = []
+			
+	pg_dbg(space, decomp_new, points)
 
 	#Debugging intersection
 	
