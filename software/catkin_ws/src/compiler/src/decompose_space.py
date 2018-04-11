@@ -281,28 +281,8 @@ def getNextNearest(newsq, points):
 	#It's not the end point
 	return points[idx + 1]
 
-if __name__=="__main__":
-	
-	resolution = 0.25
-	space_w = (abs(space[0][0]) + abs(space[1][0]))
-	space_h = (abs(space[0][1]) + abs(space[1][1]))
-	#Count of spaces
-	width_c = space_w/resolution
-	height_c = space_h/resolution
-	#Size of spaces
-	width = space_w/width_c
-	height = space_h/height_c
 
-	x_coords = np.linspace(space[0][0], space[1][0], width_c, endpoint = False)
-	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
-
-	#Points on the path in the space
-	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
-
-	#Doesn't really have a lot of effect
-	#points = interpolate_pts(points, times = 4)
-
-	print points
+def assign_path(x_coords, y_coords, points):
 	#Assign the basic path
 	decomp = []
 	for y in y_coords:
@@ -326,34 +306,37 @@ if __name__=="__main__":
 			#Random headings to test rendering
 			decomp.append(sq)
 
-	#Assign all the spaces which are next to at least one assigned space
-	#This builds a new decomposition to not keep copying updated values
+	return decomp
+
+def assign_point_neighbors(x_coords, y_coords, decomp, points):
+	#For each neighbor of a grid square containing a point, if it is not 
+	#assigned, assign it a heading pointing to the point
+	#This builds a new decomposition to not keep updating based on new values
 	decomp_2 = []
 	for index, sq in enumerate(decomp):
 		newsq = copy.deepcopy(sq)
-	
+
 		#Don't reassign
 		if not newsq.isAssigned:
-			avg_heading = 0
-			count = 0
-
-			#Get the data to set this square's heading to the average
-			for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
-				if neighbor.isAssigned:
-					count += 1
-					avg_heading += neighbor.heading
-			if count > 0:
-				#Float to avoid integer math data loss
-				avg_heading = avg_heading/float(count)
-				newsq.assign(avg_heading)
+			for point in points:
+				for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
+					if isIn(point, neighbor):
+						#This point is not assigned, and there is a point in its neighbor
+						p1 = point
+						p2 = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
+						newsq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
 		decomp_2.append(newsq)
+	return decomp_2
 
+def assign_remaining(x_coords, y_coords, decomp):
 	#Assign all the spaces which are next to at least one assigned space
 	#This builds a new decomposition to not keep copying updated values
 	changed = True
-	decomp_old = decomp_2
+	decomp_old = decomp
 	decomp_new = []
 
+	#Keeps updating points, based on the average of their assigned neigbors, 
+	#until no points are assigned.
 	while changed:
 
 		#Set flag to indicate we're done
@@ -401,4 +384,65 @@ if __name__=="__main__":
 			decomp_old = decomp_new
 			decomp_new = []
 
-	pg_dbg(space, decomp_new, points)
+	return decomp_new
+
+def assign_outside_path(x_coords, y_coords, decomp):
+	#Assign all the spaces which are next to at least one assigned space
+	#This builds a new decomposition to not keep copying updated values
+	decomp_2 = []
+	for index, sq in enumerate(decomp):
+		newsq = copy.deepcopy(sq)
+	
+		#Don't reassign
+		if not newsq.isAssigned:
+			avg_heading = 0
+			count = 0
+
+			#Get the data to set this square's heading to the average
+			for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
+				if neighbor.isAssigned:
+					count += 1
+					avg_heading += neighbor.heading
+			if count > 0:
+				#Float to avoid integer math data loss
+				avg_heading = avg_heading/float(count)
+				newsq.assign(avg_heading)
+		decomp_2.append(newsq)
+	return decomp_2
+
+if __name__=="__main__":
+	
+	resolution = 0.25
+	space_w = (abs(space[0][0]) + abs(space[1][0]))
+	space_h = (abs(space[0][1]) + abs(space[1][1]))
+	#Count of spaces
+	width_c = space_w/resolution
+	height_c = space_h/resolution
+	#Size of spaces
+	width = space_w/width_c
+	height = space_h/height_c
+
+	x_coords = np.linspace(space[0][0], space[1][0], width_c, endpoint = False)
+	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
+
+	#Points on the path in the space
+	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2)]#,(3.0,0.2),(3.5,1.0)]
+
+	print points
+
+	#Assign the basic path
+	decomp = assign_path(x_coords, y_coords, points)
+
+	#Assign heading towards points for unassigned neighbors of points
+	decomp = assign_point_neighbors(x_coords, y_coords, decomp, points)
+
+	#Assign headings for points around path
+	repeat = 5
+	for ii in range(repeat):
+		decomp = assign_outside_path(x_coords, y_coords, decomp)
+	
+	#Assign all reminaing points based on the average of their assigned neighbors
+	decomp = assign_remaining(x_coords, y_coords, decomp)
+
+	pg_dbg(space, decomp, points)
+
