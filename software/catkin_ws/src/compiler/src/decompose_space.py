@@ -257,6 +257,20 @@ def getNearest(sq, points):
 	return point
 
 
+#Add a point between each pair of points
+def interpolate_pts(pts, times = 1):
+	newpoints = []
+	for idx in range(len(pts)-1):
+		newpoint = ((pts[idx][0] + pts[idx+1][0])/2.0, (pts[idx][1] + pts[idx+1][1])/2.0)
+		newpoints.append(pts[idx])
+		newpoints.append(newpoint)
+	newpoints.append(pts[-1])
+
+	if times == 1:
+		return newpoints
+	else:
+		return interpolate_pts(newpoints, times = times-1)
+
 #Add vector to next nearest point on the path
 def getNextNearest(newsq, points):
 	nearest = getNearest(newsq, points)
@@ -285,6 +299,10 @@ if __name__=="__main__":
 	#Points on the path in the space
 	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
 
+	#Doesn't really have a lot of effect
+	#points = interpolate_pts(points, times = 4)
+
+	print points
 	#Assign the basic path
 	decomp = []
 	for y in y_coords:
@@ -384,13 +402,3 @@ if __name__=="__main__":
 			decomp_new = []
 
 	pg_dbg(space, decomp_new, points)
-
-	#Debugging intersection
-	
-	# sq1 = grid_sq([2,3], [3,2], 0)
-	# sq2 = grid_sq([2,2], [3,1], 0)
-
-	# import pdb; pdb.set_trace()
-
-	# intersect = isBetween([1,2.5], [4,2.5], sq1) #should be true
-	
