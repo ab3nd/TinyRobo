@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import random
 import math
+import copy
 
 #tl and br corners of space
 space = [(-4,2),(4,-2)]
@@ -207,15 +208,33 @@ class grid_sq(object):
 		self.isAssigned = True
 
 
-# p1 = (1,1.5)
-# p2 = (2.5,4)
+def neighbors(decomp, len_x, len_y, index):
+	neighborIdx = []
 
-# sq = grid_sq([2,3], [3,2], 0)
+	#Top neighbor, check to prevent wrapping across top of list
+	if index % len_x != 0:
+		idx = index - 1
+		if idx >= 0:
+			neighborIdx.append(idx)
 
-# import pdb; pdb.set_trace()
+	#Bottom neighbor, check to prevent wrapping across bottom of list
+	if (index + 1) % len_x != 0:
+		idx = index + 1
+		if idx < len_y*len_x:
+			neighborIdx.append(idx)
 
-# isBetween(p1, p2, sq)
+	#Left neighbor
+	idx = index - len_x
+	if idx >= 0:
+		neighborIdx.append(idx)
 
+	#Right neighbor
+	idx = index + len_x
+	if idx < len_y * len_x:
+		neighborIdx.append(idx)
+
+	#Get the neighbors by index
+	return [decomp[idx] for idx in neighborIdx]
 
 
 if __name__=="__main__":
@@ -236,6 +255,7 @@ if __name__=="__main__":
 	#Points on the path in the space
 	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
 
+	#Assign the basic path
 	decomp = []
 	for y in y_coords:
 		for x in x_coords:
@@ -258,8 +278,29 @@ if __name__=="__main__":
 			#Random headings to test rendering
 			decomp.append(sq)
 
+	#Assign all the spaces which are next to at least one assigned space
+	#This builds a new decomposition to not keep copying updated values
+	decomp_2 = []
+	for index, sq in enumerate(decomp):
+		newsq = copy.deepcopy(sq)
+	
+		#Don't reassign
+		if not newsq.isAssigned:
+			avg_heading = 0
+			count = 0
 
-	pg_dbg(space, decomp, points)
+			#Get the data to set this square's heading to the average
+			for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
+				if neighbor.isAssigned:
+					count += 1
+					avg_heading += neighbor.heading
+			if count > 0:
+				#Float to avoid integer math data loss
+				avg_heading = avg_heading/float(count)
+				newsq.assign(avg_heading)
+		decomp_2.append(newsq)
+
+	pg_dbg(space, decomp_2, points)
 
 	#Debugging intersection
 	
