@@ -116,7 +116,7 @@ def intersection(a1, a2, b1, b2):
 	y1 = a1[1]
 	x2 = a2[0]
 	y2 = a2[1]
-	x3 = b2[0]
+	x3 = b1[0]
 	y3 = b1[1]
 	x4 = b2[0]
 	y4 = b2[1]
@@ -131,32 +131,38 @@ def intersection(a1, a2, b1, b2):
 
 
 def isBetween(pointA, pointB, sq):
-	#A grid square is between two points if a line between the points 
-	#intersects any of the sides of the square
-	tl = sq.tl
-	tr = (sq.br[0], sq.tl[1])
-	br = sq.br
-	bl = (sq.tl[0], sq.br[1])
-	
-	point = intersection(tl, tr, pointA, pointB)
-	if point is not None:
-		if isIn(point, sq):
-			return True
+	#A grid square can only be between two points if it is inside the rectangle that bounds the two points
+	bound_tl = (min(pointA[0], pointB[0]), max(pointA[1], pointB[1]))
+	bound_br = (max(pointA[0], pointB[0]), min(pointA[1], pointB[1]))
 
-	point = intersection(bl, br, pointA, pointB)
-	if point is not None:
-		if isIn(point, sq):
-			return True
+	bbox = grid_sq(bound_tl, bound_br, 0)
+	if isIn(sq.tl, bbox) or isIn(sq.br, bbox):
+		#A grid square is between two points if a line between the points 
+		#intersects any of the sides of the square
+		tl = sq.tl
+		tr = (sq.br[0], sq.tl[1])
+		br = sq.br
+		bl = (sq.tl[0], sq.br[1])
+		
+		point = intersection(tl, tr, pointA, pointB)
+		if point is not None:
+			if isIn(point, sq):
+				return True
 
-	point = intersection(tl, bl, pointA, pointB)
-	if point is not None:
-		if isIn(point, sq):
-			return True
+		point = intersection(bl, br, pointA, pointB)
+		if point is not None:
+			if isIn(point, sq):
+				return True
 
-	point = intersection(tr, br, pointA, pointB)
-	if point is not None:
-		if isIn(point, sq):
-			return True
+		point = intersection(tl, bl, pointA, pointB)
+		if point is not None:
+			if isIn(point, sq):
+				return True
+
+		point = intersection(tr, br, pointA, pointB)
+		if point is not None:
+			if isIn(point, sq):
+				return True
 
 	#No edge intersected
 	return False
@@ -227,5 +233,13 @@ if __name__=="__main__":
 			decomp.append(sq)
 
 
-
 	pg_dbg(space, decomp, points)
+
+	#Debugging intersection
+	# sq1 = grid_sq([2,3], [3,2], 0)
+	# sq2 = grid_sq([2,2], [3,1], 0)
+
+	# import pdb; pdb.set_trace()
+
+	# intersect = isBetween([1,1.5], [2.5,4], sq1) #should be true
+	# intersect = isBetween([1,1.5], [2.5,4], sq2) #should be false
