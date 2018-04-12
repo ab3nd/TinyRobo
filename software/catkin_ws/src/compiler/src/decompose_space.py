@@ -45,8 +45,7 @@ def point_to_pygame(pt, width = 1024, height = 768, ppm = 120):
 
 def pg_dbg(space, decomp, points):
 	pygame.init()
-	pygame.font.init()
-
+	
 	size = width,height = 1024,768
 	screen = pygame.display.set_mode(size)
 	screen.fill((255,255,255))
@@ -60,12 +59,12 @@ def pg_dbg(space, decomp, points):
 		
 		#Draw a vector for each decomp grid square
 		#Get the center point
-		center = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
+		center = (sq.tl[0] + sq.width/2.0, sq.tl[1] - sq.height/2.0)
 		pg_center = point_to_pygame(center)
 
 		#Get a point that's half the width away on the heading
-		hx = (sq.tl[0] + sq.width/2) + (sq.width/2 * math.cos(sq.heading))
-		hy = (sq.tl[1] - sq.height/2) + (sq.width/2 * math.sin(sq.heading))
+		hx = (sq.tl[0] + sq.width/2.0) + (sq.width/2.0 * math.cos(sq.heading))
+		hy = (sq.tl[1] - sq.height/2.0) + (sq.width/2.0 * math.sin(sq.heading))
 		pg_vector = point_to_pygame([hx, hy])
 
 
@@ -77,9 +76,9 @@ def pg_dbg(space, decomp, points):
 		pygame.draw.line(screen, color, (pg_center[0], pg_center[1]), (pg_vector[0], pg_vector[1]), 2)
 		pygame.draw.rect(screen, (0,0,190), pygame.Rect(pg_center[0], pg_center[1], 2, 2))
 		#Add the vector as text
-		font = pygame.font.SysFont('freemono', 10)
-		text = font.render("{0:.3f}".format(sq.heading), True, (0,0,0))
-		screen.blit(text, (pg_center[0]-10, pg_center[1] + 5))
+		# font = pygame.font.SysFont('freemono', 10)
+		# text = font.render("{0:.3f}".format(sq.heading), True, (0,0,0))
+		# screen.blit(text, (pg_center[0]-10, pg_center[1] + 5))
 	
 		#Draw the right and bottom edges of each square
 		br = point_to_pygame(sq.br)
@@ -168,34 +167,8 @@ def isBetween(pointA, pointB, sq):
 		bound_br = (max(pointA[0], pointB[0]) + sq.width, min(pointA[1], pointB[1]) - sq.height)
 
 		bbox = grid_sq(bound_tl, bound_br, 0)
-		if isIn((cx,cy), bbox) or isIn((cx,cy), bbox):
-
-			#A grid square is between two points if a line between the points 
-			#intersects any of the sides of the square
-			tl = sq.tl
-			tr = (sq.br[0], sq.tl[1])
-			br = sq.br
-			bl = (sq.tl[0], sq.br[1])
-			
-			point = intersection(tl, tr, pointA, pointB)
-			if point is not None:
-				if isIn(point, sq):
-					return True
-
-			point = intersection(bl, br, pointA, pointB)
-			if point is not None:
-				if isIn(point, sq):
-					return True
-
-			point = intersection(tl, bl, pointA, pointB)
-			if point is not None:
-				if isIn(point, sq):
-					return True
-
-			point = intersection(tr, br, pointA, pointB)
-			if point is not None:
-				if isIn(point, sq):
-					return True
+		if isIn((cx,cy), bbox):
+			return True
 
 	#No edge intersected
 	return False
@@ -212,6 +185,9 @@ class grid_sq(object):
 	def assign(self, heading):
 		self.heading = heading
 		self.isAssigned = True
+
+	def get_center(self):
+		return (self.tl[0] + self.width/2.0, self.tl[1] - self.height/2.0)
 
 
 def neighbors(decomp, len_x, len_y, index):
@@ -262,6 +238,15 @@ def getNearest(sq, points):
 
 	return point
 
+#Add vector to next nearest point on the path
+def getNextNearest(newsq, points):
+	nearest = getNearest(newsq, points)
+	idx = points.index(nearest)
+	#If it the end point, use it
+	if idx == len(points) -1 :
+		return points[idx]
+	#It's not the end point
+	return points[idx + 1]
 
 #Add a point between each pair of points
 def interpolate_pts(pts, times = 1):
@@ -277,16 +262,43 @@ def interpolate_pts(pts, times = 1):
 	else:
 		return interpolate_pts(newpoints, times = times-1)
 
-#Add vector to next nearest point on the path
-def getNextNearest(newsq, points):
-	nearest = getNearest(newsq, points)
-	idx = points.index(nearest)
-	#If it the end point, use it
-	if idx == len(points) -1 :
-		return points[idx]
-	#It's not the end point
-	return points[idx + 1]
+#Get the point that is the closest point on a line
+def get_closest(start, end, point):
+	x1 = start[0]
+	y1 = start[1]
+	x2 = end[0]
+	y2 = end[1]
+	x3 = point[0]
+	y3 = point[1]
+	d = math.pow((x1-x2), 2) + math.pow((y1-y2),2)
+	
+	#Make sure the ends of the segment are not the same
+	if d == 0:
+		return None
 
+	u = ((x3 - x1)*(x2 - x1) + (y3 - y1)*(y2 - y1))/d
+
+	#Constrain to segment
+	u = max(0, min(1,u))
+
+	#Get intersection point
+	x = x1 + u*(x2-x1)
+	y = y1 + u*(y2-y1)
+
+	return (x,y)
+
+
+#Get the point on the path made of points that is closest to p0
+def get_closest_path(p0, points):
+	closest = None
+	minDist = float('inf')
+	for pIdx in range(len(points)-1):
+		canidate = get_closest(points[pIdx], points[pIdx + 1], p0)
+		d = getDistance(p0, canidate)
+		if d < minDist:
+			minDist = d
+			closest = canidate
+	return closest
 
 def assign_path(x_coords, y_coords, points):
 	#Assign the basic path
@@ -306,10 +318,9 @@ def assign_path(x_coords, y_coords, points):
 				elif isBetween(points[pointIdx], points[pointIdx+1], sq):
 					#Heading is from square center to next point
 					p1 = points[pointIdx+1]
-					p2 = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
+					p2 = (sq.tl[0] + sq.width/2.0, sq.tl[1] - sq.height/2.0)
 					sq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
 
-			#Random headings to test rendering
 			decomp.append(sq)
 
 	return decomp
@@ -329,7 +340,7 @@ def assign_point_neighbors(x_coords, y_coords, decomp, points):
 					if isIn(point, neighbor):
 						#This point is not assigned, and there is a point in its neighbor
 						p1 = point
-						p2 = (sq.tl[0] + sq.width/2, sq.tl[1] - sq.height/2)
+						p2 = (sq.tl[0] + sq.width/2.0, sq.tl[1] - sq.height/2.0)
 						newsq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
 		decomp_2.append(newsq)
 	return decomp_2
@@ -373,10 +384,13 @@ def assign_remaining(x_coords, y_coords, decomp):
 					#Add vector to next nearest point on the path
 					#nearest = getNextNearest(newsq, points)
 					#Alternative, drives to nearest rather than next nearest
-					nearest = getNearest(newsq, points)
+					#nearest = getNearest(newsq, points)
+
+					nearest = get_closest_path(newsq.get_center(), points)
 
 					#Get heading from the center of this square to the next point
-					center = (newsq.tl[0] + newsq.width/2, newsq.tl[1] - newsq.height/2)
+					center = newsq.get_center()
+
 					heading = -math.atan2(center[1]-nearest[1], nearest[0]-center[0])
 
 					#Combine with previously collected values
@@ -421,9 +435,25 @@ def assign_outside_path(x_coords, y_coords, decomp):
 		decomp_2.append(newsq)
 	return decomp_2
 
+def assign_end(x_coords, y_coords, points):
+	decomp_2 = []
+	for index, sq in enumerate(decomp):
+		newsq = copy.deepcopy(sq)
+	
+		#Don't reassign
+		for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
+			if isIn(points[-1], neighbor):
+				if not newsq.isAssigned:
+					#Point it towards the end point
+					center = newsq.get_center()
+					heading = -math.atan2(center[1]-points[-1][1], points[-1][0]-center[0])
+					newsq.assign(heading)
+		decomp_2.append(newsq)
+	return decomp_2
+
 if __name__=="__main__":
 	
-	resolution = 0.5
+	resolution = 0.15
 	space_w = (abs(space[0][0]) + abs(space[1][0]))
 	space_h = (abs(space[0][1]) + abs(space[1][1]))
 	#Count of spaces
@@ -437,15 +467,18 @@ if __name__=="__main__":
 	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
 
 	#Points on the path in the space
-	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.2),(3.5,1.0)]
-
-	print points
+	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.22),(3.5,1.0)]
 
 	#Assign the basic path
 	decomp = assign_path(x_coords, y_coords, points)
 
+
+	#Assign points around end point
+	decomp = assign_end(x_coords, y_coords, points)
+
 	#Assign heading towards points for unassigned neighbors of points
-	decomp = assign_point_neighbors(x_coords, y_coords, decomp, points)
+	#Helps with avoiding two neighbors of a point cancelling each other out
+	#decomp = assign_point_neighbors(x_coords, y_coords, decomp, points)
 
 	#Assign headings for points around path
 	#repeat = 5
