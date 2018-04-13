@@ -300,7 +300,7 @@ def get_closest_path(p0, points):
 			closest = canidate
 	return closest
 
-def assign_path(x_coords, y_coords, points):
+def assign_path(x_coords, y_coords, width, height, points):
 	#Assign the basic path
 	decomp = []
 	for y in y_coords:
@@ -352,7 +352,7 @@ def average_angle(angles):
 		y += math.sin(angle)
 	return math.atan2(y, x)
 
-def assign_remaining(x_coords, y_coords, decomp):
+def assign_remaining(x_coords, y_coords, points, decomp):
 	#Assign all the spaces which are next to at least one assigned space
 	#This builds a new decomposition to not keep copying updated values
 	changed = True
@@ -435,7 +435,7 @@ def assign_outside_path(x_coords, y_coords, decomp):
 		decomp_2.append(newsq)
 	return decomp_2
 
-def assign_end(x_coords, y_coords, points):
+def assign_end(x_coords, y_coords, points, decomp):
 	decomp_2 = []
 	for index, sq in enumerate(decomp):
 		newsq = copy.deepcopy(sq)
@@ -450,6 +450,39 @@ def assign_end(x_coords, y_coords, points):
 					newsq.assign(heading)
 		decomp_2.append(newsq)
 	return decomp_2
+
+
+#Given the top left and bottom right corners of a space, a list of points in the space, and
+#the resolution of the decomposition, return a decomposition of the space into grid squares,
+#each of which contains the heading that a robot in the square should move towards in 
+#order to travel along the path
+def get_decomposition(space_tl, space_br, points, resolution = 0.15):
+	space_w = (abs(space[0][0]) + abs(space[1][0]))
+	space_h = (abs(space[0][1]) + abs(space[1][1]))
+	#Count of spaces
+	width_c = space_w/resolution
+	height_c = space_h/resolution
+	#Size of spaces
+	width = space_w/width_c
+	height = space_h/height_c
+
+	x_coords = np.linspace(space[0][0], space[1][0], width_c, endpoint = False)
+	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
+
+	#Assign the basic path
+	decomp = assign_path(x_coords, y_coords, width, height, points)
+
+	#Assign points around end point to point in
+	decomp = assign_end(x_coords, y_coords, points, decomp)
+
+	#Assign headings for points around path
+	#This embiggens the path so it's not just one grid square wide
+	decomp = assign_outside_path(x_coords, y_coords, decomp)
+	
+	#Assign all reminaing points based on the average of their assigned neighbors
+	decomp = assign_remaining(x_coords, y_coords, points, decomp)
+
+	return decomp
 
 if __name__=="__main__":
 	
@@ -472,17 +505,11 @@ if __name__=="__main__":
 	#Assign the basic path
 	decomp = assign_path(x_coords, y_coords, points)
 
-
-	#Assign points around end point
+	#Assign points around end point to point in
 	decomp = assign_end(x_coords, y_coords, points)
 
-	#Assign heading towards points for unassigned neighbors of points
-	#Helps with avoiding two neighbors of a point cancelling each other out
-	#decomp = assign_point_neighbors(x_coords, y_coords, decomp, points)
-
 	#Assign headings for points around path
-	#repeat = 5
-	#for ii in range(repeat):
+	#This embiggens the path so it's not just one grid square wide
 	decomp = assign_outside_path(x_coords, y_coords, decomp)
 	
 	#Assign all reminaing points based on the average of their assigned neighbors

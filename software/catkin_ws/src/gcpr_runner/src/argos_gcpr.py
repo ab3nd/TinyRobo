@@ -102,7 +102,13 @@ class GCPR_driver(object):
 		else:
 			self.avoid_heading = 0
 
-		
+	def is_in(self, tl, br):
+		x = self.lastPosition.position.x
+		y = self.lastPosition.position.y
+		if (br[0] >= x and tl[0] <= x ) and (br[1] <= y and tl[1] >= y):
+			return True
+		return False
+			
 	def recv_msg(self, msg):
 		rospy.logwarn("Got a message {0}".format(msg.data))
 		pass
@@ -141,20 +147,22 @@ class GCPR_driver(object):
 		self.desired_heading = value
 
 	#Within threshold of heading
-	def on_heading(self, target_heading):
+	def on_heading(self):
 		threshold = 0.05
 
-		if(abs(self.current_heading - target_heading) > threshold):
+		if(abs(self.current_heading - self.desired_heading) > threshold):
 			return False
 		return True
 
- 	def turn_heading(self, new_heading, speed):
+ 	def turn_heading(self, speed):
  		#Decide turn direction
- 		if new_heading > 0:
- 			self.move_turn(speed)
+ 		smallest_angle = math.atan2(sin(self.current_heading-self.desired_heading), cos(self.current_heading-self.desired_heading))
+ 		#Todo, may have to move minus sign if robots turn the wrong way
+ 		if smallest_angle > 0:
+ 			self.move_turn(abs(speed))
  		else:
- 			self.move_turn(-speed)
-
+ 			self.move_turn(-(abs(speed)))
+	
  	def reset_travel(self):
  		self.traveled_y = self.traveled_x = 0
 
