@@ -11,9 +11,6 @@ import random
 import math
 import copy
 
-#tl and br corners of space
-space = [(-4,2),(4,-2)]
-
 def to_pygame(r, width = 1024, height = 768, ppm = 120):
 	#Get the width and height of the rectangle in pixels
 	rect_w = (abs(r[0][0]) + abs(r[1][0])) * ppm
@@ -59,12 +56,12 @@ def pg_dbg(space, decomp, points):
 		
 		#Draw a vector for each decomp grid square
 		#Get the center point
-		center = (sq.tl[0] + sq.width/2.0, sq.tl[1] - sq.height/2.0)
+		center = sq.get_center()
 		pg_center = point_to_pygame(center)
 
 		#Get a point that's half the width away on the heading
-		hx = (sq.tl[0] + sq.width/2.0) + (sq.width/2.0 * math.cos(sq.heading))
-		hy = (sq.tl[1] - sq.height/2.0) + (sq.width/2.0 * math.sin(sq.heading))
+		hx = center[0] + (sq.width/2.0 * math.cos(sq.heading))
+		hy = center[1] + (sq.width/2.0 * math.sin(sq.heading))
 		pg_vector = point_to_pygame([hx, hy])
 
 
@@ -300,6 +297,17 @@ def get_closest_path(p0, points):
 			closest = canidate
 	return closest
 
+def average_angle(angles):
+	x = y = 0
+	for angle in angles:
+		x += math.cos(angle)
+		y += math.sin(angle)
+	return math.atan2(y, x)
+
+
+def get_heading(fromPt, toPt):
+	return math.atan2(fromPt[1] - toPt[1], fromPt[0] - toPt[0])
+
 def assign_path(x_coords, y_coords, width, height, points):
 	#Assign the basic path
 	decomp = []
@@ -312,45 +320,57 @@ def assign_path(x_coords, y_coords, width, height, points):
 			for pointIdx in range(len(points)-1):
 				if isIn(points[pointIdx], sq):
 					#Heading of each point is towards next point
-					p2 = points[pointIdx]
-					p1 = points[pointIdx+1]
-					sq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
+					thisSq = points[pointIdx]
+					nextSq = points[pointIdx+1]
+					sq.assign(get_heading(nextSq, thisSq))
 				elif isBetween(points[pointIdx], points[pointIdx+1], sq):
 					#Heading is from square center to next point
-					p1 = points[pointIdx+1]
-					p2 = (sq.tl[0] + sq.width/2.0, sq.tl[1] - sq.height/2.0)
-					sq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
+					nextPt = points[pointIdx+1]
+					center = sq.get_center()
+					sq.assign(get_heading(nextPt, center))
 
 			decomp.append(sq)
 
 	return decomp
 
-def assign_point_neighbors(x_coords, y_coords, decomp, points):
-	#For each neighbor of a grid square containing a point, if it is not 
-	#assigned, assign it a heading pointing to the point
-	#This builds a new decomposition to not keep updating based on new values
+def assign_end(x_coords, y_coords, points, decomp):
 	decomp_2 = []
 	for index, sq in enumerate(decomp):
 		newsq = copy.deepcopy(sq)
-
+	
 		#Don't reassign
-		if not newsq.isAssigned:
-			for point in points:
-				for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
-					if isIn(point, neighbor):
-						#This point is not assigned, and there is a point in its neighbor
-						p1 = point
-						p2 = (sq.tl[0] + sq.width/2.0, sq.tl[1] - sq.height/2.0)
-						newsq.assign(-math.atan2(p2[1]-p1[1], p1[0]-p2[0]))
+		for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
+			if isIn(points[-1], neighbor):
+				if not newsq.isAssigned:
+					#Point it towards the end point
+					center = newsq.get_center()
+					newsq.assign(get_heading(points[-1], center))
 		decomp_2.append(newsq)
 	return decomp_2
 
-def average_angle(angles):
-	x = y = 0
-	for angle in angles:
-		x += math.cos(angle)
-		y += math.sin(angle)
-	return math.atan2(y, x)
+def assign_outside_path(x_coords, y_coords, decomp):
+	#Assign all the spaces which are next to at least one assigned space
+	#This builds a new decomposition to not keep copying updated values
+	decomp_2 = []
+	for index, sq in enumerate(decomp):
+		newsq = copy.deepcopy(sq)
+	
+		#Don't reassign
+		if not newsq.isAssigned:
+			avg_heading = 0
+			count = 0
+
+			#Get the data to set this square's heading to the average
+			angles = []
+			for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
+				if neighbor.isAssigned:
+					angles.append(neighbor.heading)
+			if len(angles) > 0:
+				#Float to avoid integer math data loss
+				avg_heading = average_angle(angles)
+				newsq.assign(avg_heading)
+		decomp_2.append(newsq)
+	return decomp_2
 
 def assign_remaining(x_coords, y_coords, points, decomp):
 	#Assign all the spaces which are next to at least one assigned space
@@ -391,7 +411,7 @@ def assign_remaining(x_coords, y_coords, points, decomp):
 					#Get heading from the center of this square to the next point
 					center = newsq.get_center()
 
-					heading = -math.atan2(center[1]-nearest[1], nearest[0]-center[0])
+					heading = get_heading(nearest, center)
 
 					#Combine with previously collected values
 					angles.append(heading)
@@ -411,45 +431,7 @@ def assign_remaining(x_coords, y_coords, points, decomp):
 
 	return decomp_new
 
-def assign_outside_path(x_coords, y_coords, decomp):
-	#Assign all the spaces which are next to at least one assigned space
-	#This builds a new decomposition to not keep copying updated values
-	decomp_2 = []
-	for index, sq in enumerate(decomp):
-		newsq = copy.deepcopy(sq)
-	
-		#Don't reassign
-		if not newsq.isAssigned:
-			avg_heading = 0
-			count = 0
 
-			#Get the data to set this square's heading to the average
-			angles = []
-			for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
-				if neighbor.isAssigned:
-					angles.append(neighbor.heading)
-			if len(angles) > 0:
-				#Float to avoid integer math data loss
-				avg_heading = average_angle(angles)
-				newsq.assign(avg_heading)
-		decomp_2.append(newsq)
-	return decomp_2
-
-def assign_end(x_coords, y_coords, points, decomp):
-	decomp_2 = []
-	for index, sq in enumerate(decomp):
-		newsq = copy.deepcopy(sq)
-	
-		#Don't reassign
-		for neighbor in neighbors(decomp, len(x_coords), len(y_coords), index):
-			if isIn(points[-1], neighbor):
-				if not newsq.isAssigned:
-					#Point it towards the end point
-					center = newsq.get_center()
-					heading = -math.atan2(center[1]-points[-1][1], points[-1][0]-center[0])
-					newsq.assign(heading)
-		decomp_2.append(newsq)
-	return decomp_2
 
 
 #Given the top left and bottom right corners of a space, a list of points in the space, and
@@ -486,34 +468,14 @@ def get_decomposition(space_tl, space_br, points, resolution = 0.15):
 
 if __name__=="__main__":
 	
-	resolution = 0.15
-	space_w = (abs(space[0][0]) + abs(space[1][0]))
-	space_h = (abs(space[0][1]) + abs(space[1][1]))
-	#Count of spaces
-	width_c = space_w/resolution
-	height_c = space_h/resolution
-	#Size of spaces
-	width = space_w/width_c
-	height = space_h/height_c
-
-	x_coords = np.linspace(space[0][0], space[1][0], width_c, endpoint = False)
-	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
-
 	#Points on the path in the space
 	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.22),(3.5,1.0)]
 
+	#tl and br corners of space
+	space = [(-4,2),(4,-2)]
+
 	#Assign the basic path
-	decomp = assign_path(x_coords, y_coords, points)
-
-	#Assign points around end point to point in
-	decomp = assign_end(x_coords, y_coords, points)
-
-	#Assign headings for points around path
-	#This embiggens the path so it's not just one grid square wide
-	decomp = assign_outside_path(x_coords, y_coords, decomp)
-	
-	#Assign all reminaing points based on the average of their assigned neighbors
-	decomp = assign_remaining(x_coords, y_coords, decomp)
+	decomp = get_decomposition(space[0], space[1], points)
 
 	pg_dbg(space, decomp, points)
 

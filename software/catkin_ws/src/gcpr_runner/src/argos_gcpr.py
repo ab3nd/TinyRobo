@@ -103,10 +103,11 @@ class GCPR_driver(object):
 			self.avoid_heading = 0
 
 	def is_in(self, tl, br):
-		x = self.lastPosition.position.x
-		y = self.lastPosition.position.y
-		if (br[0] >= x and tl[0] <= x ) and (br[1] <= y and tl[1] >= y):
-			return True
+		if self.lastPosition is not None:
+			x = self.lastPosition.position.x
+			y = self.lastPosition.position.y
+			if (br[0] >= x and tl[0] <= x ) and (br[1] <= y and tl[1] >= y):
+				return True
 		return False
 			
 	def recv_msg(self, msg):
@@ -139,11 +140,11 @@ class GCPR_driver(object):
 			#might be of help for figuring out what substrings are callable
 			eval(item)
 
-		rospy.loginfo_throttle(3, "{} heading {}, distanceX {}, distanceY {}".format(self.ns, self.current_heading, self.traveled_x, self.traveled_y))
+		#rospy.loginfo_throttle(3, "{} heading {}, distanceX {}, distanceY {}".format(self.ns, self.current_heading, self.traveled_x, self.traveled_y))
 
 	#Functions for handling heading
 	def set_desired_heading(self, value):
-		rospy.loginfo_throttle(3, "{} set heading to {}".format(self.ns, value))
+		rospy.loginfo_throttle(3, "{0} desires {1:.3f} (current {2:.3f}, difference {3:.3f})".format(self.ns, value, self.current_heading, abs(value - self.current_heading)))
 		self.desired_heading = value
 
 	#Within threshold of heading
@@ -152,16 +153,18 @@ class GCPR_driver(object):
 
 		if(abs(self.current_heading - self.desired_heading) > threshold):
 			return False
+
 		return True
 
  	def turn_heading(self, speed):
- 		#Decide turn direction
- 		smallest_angle = math.atan2(sin(self.current_heading-self.desired_heading), cos(self.current_heading-self.desired_heading))
- 		#Todo, may have to move minus sign if robots turn the wrong way
- 		if smallest_angle > 0:
- 			self.move_turn(abs(speed))
- 		else:
- 			self.move_turn(-(abs(speed)))
+ 		if not self.on_heading():
+	 		#Decide turn direction
+	 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
+	 		
+	 		if smallest_angle > 0:
+	 			self.move_turn(abs(speed))
+	 		else:
+	 			self.move_turn(- (abs(speed)))
 	
  	def reset_travel(self):
  		self.traveled_y = self.traveled_x = 0
@@ -191,17 +194,17 @@ class GCPR_driver(object):
 		
 	# Moving straight is moving in an arc with no rotational speed
 	def move_fwd(self, speed):
-		rospy.loginfo_throttle(3, "{} Moving with speed {}".format(self.ns, speed))
+		#rospy.loginfo_throttle(3, "{} Moving with speed {}".format(self.ns, speed))
 		self.move_arc(0, speed)
 
 	# Turning is moving in an arc with no translational speed
 	def move_turn(self, speed):
-		rospy.loginfo_throttle(3, "{} Turning with speed {}".format(self.ns, speed))
+		#rospy.loginfo_throttle(3, "{} Turning with speed {}".format(self.ns, speed))
 		self.move_arc(speed, 0)
 
 	# Stopping is moving with no velocity. Have you ever, like, REALLY, looked at your hands, man?
 	def stop(self):
-		rospy.loginfo_throttle(10, "{} Stopping".format(self.ns))
+		#rospy.loginfo_throttle(10, "{} Stopping".format(self.ns))
 		self.move_arc(0,0)
 
 	# This is for doing printouts from inside the GCPR code and having it get out to ROS
