@@ -307,6 +307,7 @@ def average_angle(angles):
 
 def get_heading(fromPt, toPt):
 	return math.atan2(fromPt[1] - toPt[1], fromPt[0] - toPt[0])
+	#return math.atan2(toPt[1] - fromPt[1], toPt[0] - fromPt[0])
 
 def assign_path(x_coords, y_coords, width, height, points):
 	#Assign the basic path
@@ -439,8 +440,8 @@ def assign_remaining(x_coords, y_coords, points, decomp):
 #each of which contains the heading that a robot in the square should move towards in 
 #order to travel along the path
 def get_decomposition(space_tl, space_br, points, resolution = 0.15):
-	space_w = (abs(space[0][0]) + abs(space[1][0]))
-	space_h = (abs(space[0][1]) + abs(space[1][1]))
+	space_w = (abs(space_tl[0]) + abs(space_br[0]))
+	space_h = (abs(space_tl[1]) + abs(space_br[1]))
 	#Count of spaces
 	width_c = space_w/resolution
 	height_c = space_h/resolution
@@ -448,8 +449,8 @@ def get_decomposition(space_tl, space_br, points, resolution = 0.15):
 	width = space_w/width_c
 	height = space_h/height_c
 
-	x_coords = np.linspace(space[0][0], space[1][0], width_c, endpoint = False)
-	y_coords = np.linspace(space[0][1], space[1][1], height_c, endpoint = False)
+	x_coords = np.linspace(space_tl[0], space_br[0], width_c, endpoint = False)
+	y_coords = np.linspace(space_tl[1], space_br[1], height_c, endpoint = False)
 
 	#Assign the basic path
 	decomp = assign_path(x_coords, y_coords, width, height, points)
