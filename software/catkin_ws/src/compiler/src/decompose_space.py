@@ -476,7 +476,7 @@ if __name__=="__main__":
 	space = [(-4,2),(4,-2)]
 
 	#Assign the basic path
-	decomp = get_decomposition(space[0], space[1], points)
+	decomp = get_decomposition(space[0], space[1], points, 1.0)
 
 	pg_dbg(space, decomp, points)
 

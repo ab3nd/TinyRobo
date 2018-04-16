@@ -31,9 +31,9 @@ program.append(("self.is_near_anything() and not(self.is_near_left()) and not(se
 # until they converged to find the extremes of the connected group. 
 space = [(-4,2),(4,-2)]
 
-dec = decompose_space.get_decomposition(space[0], space[1], points)
+dec = decompose_space.get_decomposition(space[0], space[1], points, 1.0)
 for square in dec:
-	program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(square.heading), 0.9))
+	program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
 
 #Add motion commands to turn to bearing and move forward
 program.append(("self.on_heading() and not(self.is_near_anything())", "self.move_fwd(0.3)", 1.0))
