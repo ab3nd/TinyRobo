@@ -144,28 +144,46 @@ class GCPR_driver(object):
 
 	#Functions for handling heading
 	def set_desired_heading(self, value):
-		rospy.loginfo_throttle(3, "{0} desires {1:.3f} (current {2:.3f}, difference {3:.3f})".format(self.ns, value, self.current_heading, abs(value - self.current_heading)))
 		self.desired_heading = value
 
 	#Within threshold of heading
-	def on_heading(self):
-		threshold = 0.05
+	def check_heading(self, desired, current, threshold = 0.05):
+		#Check if desired is within threshold of discontinuity from the positive side
+		if(desired + threshold > math.pi):
+			#There are values near -pi that are ok values for the current heading
+			if desired > 0 and current < 0:
+				#We're working across the discontinuity
+				#Negate the value that's less than zero and recheck
+				return self.check_heading(desired, -current)
 
-		if(abs(self.current_heading - self.desired_heading) > threshold):
+		if (desired - threshold < -math.pi):
+			#There are values near pi that are ok for the current heading
+			if desired < 0 and current > 0:
+				#We're dealing with the discontinuty
+				#Negate the value that's less than zero and recheck
+				return self.check_heading(-desired, current)
+
+		if(abs(desired - current) > threshold):
 			return False
-
 		return True
 
+	#Within threshold of heading
+	def on_heading(self):
+		return self.check_heading(self.desired_heading, self.current_heading)
+
  	def turn_heading(self, speed):
+ 		rospy.loginfo("current {0:.3f}, desired {1:.3f}, on? {2}".format(self.current_heading, self.desired_heading, self.on_heading()) )
  		if not self.on_heading():
 	 		#Decide turn direction
 	 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
-	 		
+	 		rospy.loginfo_throttle(3, "{0} desires {1:.3f} by turning {2:.3f} (current {3:.3f})".format(self.ns, self.desired_heading, smallest_angle, self.current_heading))
+
 	 		if smallest_angle > 0:
 	 			self.move_turn(abs(speed))
 	 		else:
-	 			self.move_turn(- (abs(speed)))
-	
+	 			self.move_turn(-abs(speed))
+
+		
  	def reset_travel(self):
  		self.traveled_y = self.traveled_x = 0
 
