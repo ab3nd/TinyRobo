@@ -169,15 +169,28 @@ class GCPR_driver(object):
 
 	#Within threshold of heading
 	def on_heading(self):
-		return self.check_heading(self.desired_heading, self.current_heading)
+		#return self.check_heading(self.desired_heading, self.current_heading)
+		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
+	 	if abs(smallest_angle) < 0.05:
+	 		return True	
+	 	return False
 
  	def turn_heading(self, speed):
- 		rospy.loginfo("current {0:.3f}, desired {1:.3f}, on? {2}".format(self.current_heading, self.desired_heading, self.on_heading()) )
+ 		#rospy.loginfo_throttle(3, "{0} desires {1:.3f} current {2:.3f} on? {3}".format(self.ns, self.desired_heading, self.current_heading, self.on_heading()))
  		if not self.on_heading():
 	 		#Decide turn direction
 	 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
-	 		rospy.loginfo_throttle(3, "{0} desires {1:.3f} by turning {2:.3f} (current {3:.3f})".format(self.ns, self.desired_heading, smallest_angle, self.current_heading))
+	 		
+	 		# #rospy.loginfo_throttle(3, "{0} desires {1:.3f} by turning {2:.3f} (current {3:.3f})".format(self.ns, self.desired_heading, smallest_angle, self.current_heading))
 
+	 		# #Check if this rotation crosses -pi from the negative side
+	 		# if self.current_heading < 0 and self.current_heading - smallest_angle < -math.pi:
+	 		# 	self.move_turn(-abs(speed))
+	 		# #Check if this rotation crosses pi from the positive side
+	 		# elif self.current_heading > 0 and self.current_heading + smallest_angle > math.pi:
+	 		# 	self.move_turn(abs(speed))
+	 		# #This rotation doesn't cross +/- pi
+	 		# else:
 	 		if smallest_angle > 0:
 	 			self.move_turn(abs(speed))
 	 		else:
