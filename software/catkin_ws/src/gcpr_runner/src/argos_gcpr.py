@@ -28,7 +28,7 @@ class ProgramLoader(object):
 	#This isn't anything like secure, since eval is getting used. 
 	#There also may be thread safety concerns
 	def replaceProgram(self, msg):
-		#rospy.logwarn("Got {0}".format(msg.data))
+		rospy.logwarn("Got new program")
 		self.program = json.loads(msg.data)
 
 	def getProgram(self):
@@ -147,50 +147,17 @@ class GCPR_driver(object):
 		self.desired_heading = value
 
 	#Within threshold of heading
-	def check_heading(self, desired, current, threshold = 0.05):
-		#Check if desired is within threshold of discontinuity from the positive side
-		if(desired + threshold > math.pi):
-			#There are values near -pi that are ok values for the current heading
-			if desired > 0 and current < 0:
-				#We're working across the discontinuity
-				#Negate the value that's less than zero and recheck
-				return self.check_heading(desired, -current)
-
-		if (desired - threshold < -math.pi):
-			#There are values near pi that are ok for the current heading
-			if desired < 0 and current > 0:
-				#We're dealing with the discontinuty
-				#Negate the value that's less than zero and recheck
-				return self.check_heading(-desired, current)
-
-		if(abs(desired - current) > threshold):
-			return False
-		return True
-
-	#Within threshold of heading
 	def on_heading(self):
-		#return self.check_heading(self.desired_heading, self.current_heading)
 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
 	 	if abs(smallest_angle) < 0.05:
 	 		return True	
 	 	return False
 
  	def turn_heading(self, speed):
- 		#rospy.loginfo_throttle(3, "{0} desires {1:.3f} current {2:.3f} on? {3}".format(self.ns, self.desired_heading, self.current_heading, self.on_heading()))
  		if not self.on_heading():
 	 		#Decide turn direction
 	 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
 	 		
-	 		# #rospy.loginfo_throttle(3, "{0} desires {1:.3f} by turning {2:.3f} (current {3:.3f})".format(self.ns, self.desired_heading, smallest_angle, self.current_heading))
-
-	 		# #Check if this rotation crosses -pi from the negative side
-	 		# if self.current_heading < 0 and self.current_heading - smallest_angle < -math.pi:
-	 		# 	self.move_turn(-abs(speed))
-	 		# #Check if this rotation crosses pi from the positive side
-	 		# elif self.current_heading > 0 and self.current_heading + smallest_angle > math.pi:
-	 		# 	self.move_turn(abs(speed))
-	 		# #This rotation doesn't cross +/- pi
-	 		# else:
 	 		if smallest_angle > 0:
 	 			self.move_turn(abs(speed))
 	 		else:
