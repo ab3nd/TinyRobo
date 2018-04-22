@@ -29,29 +29,21 @@ print distances
 
 program = []
 
-#Build GCPR program for setting the program counter based on distance traveled
-pc = 0
-for heading, distance in zip(headings, distances):
-	program.append(("self.pc_is({0})".format(pc), "self.set_desired_heading({0})".format(heading), 1.0))
-	program.append(("self.traveled_x > {0} and self.traveled_y > {1} and self.pc_is({2})".format(distance[0], distance[1], pc), "self.set_pc({0})".format(pc+1), 1.0))
-	#Reset the distances traveled when they are over the limits needed to reset the pc
-	#program.append(("self.traveled_x > {0} and self.traveled_y > {1}".format(distance[0], distance[1]), "self.reset_travel()".format(pc+1), 1.0))
-	pc += 1
-
-#Add a stop condition
-program.append(("self.pc_is({0})".format(pc), "self.stop()", 1.0))
-
-#Add motion commands to turn to bearing and move forward
-#Don't move after stopping because PC has hit end of program
-program.append(("self.on_heading() and not(self.pc_is({0})) and not(self.is_near_anything())".format(pc), "self.move_fwd(0.3)", 1.0))
-program.append(("not(self.on_heading()) and not(self.pc_is({0})) and not(self.is_near_anything())".format(pc), "self.move_turn(1)", 1.0))
+#GCPR for a vector-based collision avoidance
 
 #Reactive obstacle avoidance
-#Could still do reactive obstacle avoidance after ending travel, but could lead to jostling out of goal
-#program.append(("not(self.is_near_anything()) and not(self.pc_is({0}))".format(pc), "self.move_fwd(0.3)", 1.0))
-program.append(("self.is_near_left() and not(self.pc_is({0}))".format(pc), "self.move_turn(-1)", 1.0))
-program.append(("self.is_near_right() and not(self.pc_is({0}))".format(pc), "self.move_turn(1)", 0.7))
-program.append(("self.is_near_center() and not(self.pc_is({0}))".format(pc), "self.move_fwd(-0.5)", 1.0))
+program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))
+program.append(("self.is_near_right() and not(self.is_near_left()) and not(self.is_near_center())", "self.move_turn(0.9)", 0.9))
+#Back and turn away
+program.append(("self.is_near_left() and self.is_near_right() and not(self.is_near_center())", "self.move_arc(2.0, -0.5)", 0.8))
+program.append(("self.is_near_center() and not(self.is_near_right()) and not(self.is_near_left())", "self.move_arc(2.0, -0.5)", 1.0))
+#Move away from stuff behind
+program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
+
+#Move around
+program.append(("not(self.is_near_anything())", "self.move_fwd(0.3)", 0.8))
+program.append(("not(self.is_near_anything())", "self.move_arc(0.3, 0.5)", 0.2))
+program.append(("not(self.is_near_anything())", "self.move_arc(-0.3, 0.5)", 0.2))
 
 print json.dumps(program, sort_keys=True, indent=4, separators=(',', ': '))
 
