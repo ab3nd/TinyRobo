@@ -52,7 +52,7 @@ class UserData(object):
 		}
 
 		#The value is the participant number mod 5
-		self.condtionMap = {
+		self.conditionMap = {
 			"one":2,
 			"ten":3,
 			"hundred":4,
@@ -69,11 +69,11 @@ class UserData(object):
 		return ret
 
 	#Apply over a condtion, function takes a participant
-	def applyCondition(self, function, condtion):
+	def applyCondition(self, function, condition):
 		ret = {}
-		for pId in self.data.keys():
-			if (self.data[pID]["participant"] % 5) == self.condtionMap[condition]:
-				ret[pId] = function(self.data[pId])
+		for pID in self.data.keys():
+			if (self.data[pID]["participant"] % 5) == self.conditionMap[condition]:
+				ret[pID] = function(self.data[pID])
 		return ret
 
 		
@@ -85,15 +85,15 @@ class UserData(object):
 		for pId in self.data.keys():
 			#Convert the task name to a number 
 			taskNum = None
-			if self.data[pId]['participant'] % 5 == self.condtionMap['one']:
+			if self.data[pId]['participant'] % 5 == self.conditionMap['one']:
 				taskNum = taskNums[1]
-			elif self.data[pId]['participant'] % 5 == self.condtionMap['ten']:
+			elif self.data[pId]['participant'] % 5 == self.conditionMap['ten']:
 				taskNum = taskNums[10]
-			elif self.data[pId]['participant'] % 5 == self.condtionMap['hundred']:
+			elif self.data[pId]['participant'] % 5 == self.conditionMap['hundred']:
 				taskNum = taskNums[100]
-			elif self.data[pId]['participant'] % 5 == self.condtionMap['thousand']:
+			elif self.data[pId]['participant'] % 5 == self.conditionMap['thousand']:
 				taskNum = taskNums[1000]
-			elif self.data[pId]['participant'] % 5 == self.condtionMap['unknown']:
+			elif self.data[pId]['participant'] % 5 == self.conditionMap['unknown']:
 				taskNum = taskNums['X']
 			else:
 				print "Bad participant number {}".format(pId)
@@ -103,4 +103,4 @@ class UserData(object):
 				ret[pId] = function(self.data[pId][taskNum])
 
 
-	
+
