@@ -470,13 +470,14 @@ def get_decomposition(space_tl, space_br, points, resolution = 0.15):
 if __name__=="__main__":
 	
 	#Points on the path in the space
-	points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.22),(3.5,1.0)]
+	#points = [(-3.5,-1.1),(-2.3,0.0),(-1.2,0.2),(0.0,0.2),(3.0,0.22),(3.5,1.0)]
+	points = [(-3.5,-1.1),(3.5,1.0)]
 
 	#tl and br corners of space
 	space = [(-4,2),(4,-2)]
 
 	#Assign the basic path
-	decomp = get_decomposition(space[0], space[1], points, 1.0)
+	decomp = get_decomposition(space[0], space[1], points, 0.3)
 
 	pg_dbg(space, decomp, points)
 

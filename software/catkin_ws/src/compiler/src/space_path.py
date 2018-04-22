@@ -51,10 +51,12 @@ pubs = []
 for robotID in range(6):
 	pubs.append(rospy.Publisher('/bot{}/robot_prog'.format(robotID), String, queue_size=10))
 
+#Wait for my publishers to be ready
+rospy.sleep(0.5)
+
 for pub in pubs:
 	message = json.dumps(program)
 	pub.publish(message)
-	rospy.sleep(0.5)
 
 rospy.spin()
 	

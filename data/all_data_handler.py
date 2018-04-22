@@ -101,3 +101,6 @@ class UserData(object):
 			#This participant had this task, so call the function on it
 			if taskNum is not None:
 				ret[pId] = function(self.data[pId][taskNum])
+
+
+	
