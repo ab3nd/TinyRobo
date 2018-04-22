@@ -383,6 +383,15 @@ The interface for the drone light shows allows single users to fly hundreds to o
 The drones themselves are well-localized, having GPS, barometers, and likely IMUs. 
 The IMUs are likely based on Ascending Technologies AscTec Trinity autopilots, as Intel acquired AscTec in 2016. 
 
+A number of systems propose pheromone-like control by the use of projected light in the area of the robots. 
+
+
+One implementation of a human-swarm allows the human operator to describe the desired density of robots at locations within an operating area \citep{diaz2017human}. 
+The use of density, rather than robot count, scales with the swarm size.
+The desired configuration of the swarm can be drawn by the user on a tablet, and then converted to an update control law for the robots.
+Alternatively, the user can directly place Gaussian functions in the space and vary their parameters. 
+The resulting desired densities are smoothed to avoid discontinuities.
+
 
 
 \citep{nunnally2012human}
