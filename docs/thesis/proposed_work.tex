@@ -332,3 +332,81 @@ For example, if the system is extended to include UAVs, and the user directs the
 The system could be extended with some capacity for reasoning about the task environment, to determine how the capabilities of the robots interact with that environment. 
 Such an augmented system could then refuse to direct ground robots into water, and report if there are not a sufficient number of aerial robots to perform the task over the lake. 
 It could also permute task assignments based on robot capabilities in order to meet other goals, such as minimizing the number of robots used or maximizing available robot battery life. 
+
+\section{Implementation of Swarm Actions}
+
+The initial vision for this work was to have minimal sensing and no localization. 
+Minimal sensing results in a lower cost per robot. 
+Not relying on localization, especially localization via approaches such as GPS, which are easily blocked or interfered with, allows the resulting algorithms to be useful in situations where global localization is not available. 
+
+However, a user interface that can display the swarm from an overhead view assumes that there is some form of localization, at least in terms of relative distances and bearings between the robots.
+Without that information, the display of a group of robots in a way that matches their actual locations in the world is impossible, and displaying them incorrectly is likely to mislead the user. 
+Even the unknown number of robots case assumes that the outer bounds of the swarm are at least approximately known. 
+
+Fortunately for this work, there are a number of approaches to creating a local coordinate frame using robots with relatively simple sensors. 
+A local coordinate system can be created by communicating agents with a limited, known sensing range but no other concept of distance \citep{bachrach2004experimental}.
+One agent acts as a seed, and sends messages to its neighbours.
+The neighbours propagate those messages, incrementing a hop counter in the message, and ignore messages with a higher hop count to stop the message from propagating backwards. 
+As a result, each agent knows that its distance from the seed is at most the communication radius times the minimum hop count it has received. 
+By using multiple seeds, each non-seed can calculate it's position based on trilateration to the seeds. 
+Extending this method to use received signal strength as a proxy for distance, rather than the constant known sensing range, improves the accuracy of the approach.  
+The Kilobot swarm uses a range-only sensor along with communication to create a local coordinate system \citep{Rubenstein795}.
+A set of four stationary seed robots act as the origin of the coordinate system. As robots surround the four known robots, the new robot localizes from them and then begins broadcasting it's own position. 
+Each new robot that joins the group uses trilateration to localize itself based on the robots that it can communicate with.
+
+In addition to range-only approaches, bearing-only approaches to robot localization have been created, including an approach that uses the bearings to landmarks to create a vector field to drive the robot to a goal \citep{loizou2007biologically}. 
+This approach is even able to guide an individual robot in the presence of moving landmarks. 
+It does not, however, produce a coordinate frame that is shared among the robots, unless they somehow agree on the landmarks to use. 
+A scale-free coordinate system can also be created using only bearing sensors and inter-robot communication, to arrive at a coordinate system that is shared among the robots \citep{cornejo2013scale}.
+The addition of scale to such a system requires something beyond only bearing measurements. 
+One way to do this is to use structure from motion (SfM) to estimate inter-agent distances, and use the measured distances to determine the scale for the network of robots \citep{spica2016active}. 
+Alternatively, a pair of beacons of known location could provide the scale information required to convert scale-free coordinates into a metric coordinate system. 
+
+Finally, systems that combine range and bearing information are common in swarm robotics \citep{arvin2009development, farrow2014miniature, caprari1998autonomous, mondada2009puck}. 
+Systems with range and bearing can use trigonometry to calculate relative positions of other robots, and so can bootstrap a coordinate frame by using a method such as spreading inhibition to elect an origin robot, which then informs its neighbours of their positions in it's coordinate frame. The neighbours can then correct their position estimates based on communication with each other, as in range-based localization schemes, and inform their neighbours of their positions, propagating the coordinate system outward from the origin. 
+
+As there already exist a large number of ways for robots to arrive at a local coordinate system without GPS or sophisticated sensors, the creation of a coordinate frame was determined to be outside of the scope of this work. 
+Once the robots have developed a coordinate frame, the space the robots are in can be decomposed into a set of cells, and the program for the robots can be expressed in GCPR as checks on which cell the robot is located in and what the desired behaviour for the robot in that cell is. 
+The desired behaviour for each cell is based on the user input on the interface device. Since the locations of the robots in the local coordinate system are known, and the location of the visualization of the robots on the user interface device is based on their positions in the local coordinate system, the user's input can be mapped into the local coordinate system to guide the robots. 
+The combination of the spatial decomposition and the user input results in, essentially, a discrete vector field. 
+By having the vectors in the field point towards a user supplied path, or along the path, the robots can follow the path using only their location in the local coordinate frame to guide them. 
+
+Following the user-supplied path is important because it provides feedback to the user that the system is attempting to do what the user intended. 
+In the simplest case, moving a robot to a target location, it could be argued that the thing that matters is that the robot arrive at the target location, rather than that it follow a specific path to get there. 
+If a robot is in a bounded enclosure, and has a sensor that can detect when its goal is reached, the robot can reach the goal, or arbitrary close to it, by a random walk. 
+If the robot can sense distance to the goal, it can find the direction of the goal by making a series of purposeful moves and samplings of the distance, and then go to the goal.
+It could even approach the goal by performing a biased random walk. 
+None of these approaches, however, would look to the user like the robot was following the path that the user provided, and so they are likely to confuse the user, leading to further control inputs as the user attempts to correct the robot. 
+Additionally, the user's choice of path may be informed by knowledge that the user has, and that the robot may not be able to detect in the environment, such as areas that are inaccessible or dangerous to the robot. 
+As such, the user's path selection can be viewed as an attempt to convey information about the desirability or utility of a given path to the robot, and so following the path given by the user is preferable to not following it. 
+
+The space is decomposed into squares of uniform size. The size can be varied, but smaller squares result in a longer program for the robots and longer runtime for the decomposition algorithm. 
+To determine the desired vector for a the cells of the spatial spatial decomposition, a multipass algorithm is used. 
+The first pass assigns the vectors for those squares containing a point of the user specified path, or on the line between two points of the user path. 
+Squares containing a point are assigned a vector pointing to the next point on the path. 
+Squares between two points are assigned a vector pointing from the square center to the point closer to the end of the path. 
+After this step, all points on the path have a vector pointing along the path. 
+The second pass assigns to all squares neighbouring the end point of the path a vector pointed towards the end point of the path. 
+As a result, the end point of the path becomes an attractor that robots attempt to reach. 
+The third pass assigns to all squares that are adjacent to assigned squares a vector which is the average of all of the values of the assigned neighbors. 
+This pass broadens the path so that it is greater than a single square wide, and ensures that the vector field around the path is smooth. 
+The final pass is repeated until no square is assigned during a repetition. 
+On each repetition, any square that is not assigned, but has assigned neighbors, is assigned the average of its neighbors and a vector from the center of the square to the closest point that is on the path. 
+As a result, squares off the path drive the robot towards the path via the shortest route. 
+When this pass is complete, every square of the decomposition of the space has been assigned a vector pointing in the direction that a robot in that square should move. 
+
+The resulting decomposition can then be converted into a GCPR program by having each guard be a check on the position of the robot, and assignment of the robot's desired heading based on the grid square it is in.
+A GCPR clause tells robots that are off their desired heading to rotate to that heading, and robots which are on their desired heading to move forward. 
+
+Reactive obstacle avoidance is added to the vector field program by only following the desired heading if the robot detects that it is not near any obstacles, and reacting to avoid the obstacles rather than follow the vector field if an obstacle is detected. 
+This approach does have the weakness that the user can, for example, draw a path which passes through an obstacle. 
+In a known environment, obstacles could be surrounded by repelling vectors, but in an unknown environment, this sort of command will cause the robots to approach the obstacle under vector field control, turn away from it until it is no longer visible, return to vector field control, and return to the obstacle. 
+If this situation is not desired by the user, they should avoid providing paths that pass through obstacles.
+
+Dispersion can be implemented in terms of vector fields as well. 
+In the case of path following, every robot that was intended to follow the path would be issued the same decomposition of the space, but would follow different routes, as they start from different locations. 
+To disperse the robots, each robot receives a different path, starting from their current location and moving to their new dispersed location. 
+As described above, the robots can avoid each other while attempting to reach their new positions, and return to following their assigned paths once they are clear of each other. 
+In implementation, the new locations were chosen by uniform random selection of points over the area the robots were in, but other approaches, such as positioning the robots so that each robot could communicate with at most two other robots, or on a regular grid in the local coordinate frame, would be amenable to the same implementation. 
+
+These algorithms for path following and dispersion were implemented in ROS and tested in the ARGoS multi-robot simulator \citep{pinciroli2012argos}.
