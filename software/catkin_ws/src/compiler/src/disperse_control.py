@@ -80,7 +80,19 @@ if __name__ == "__main__":
 	new_pos = {botID:(pl.getPosition(botID), new) for (new, botID) in zip(new_positions, pl.getRobotList())}
 
 	#Build a list and keep it around so messages have time to get out
-	pubs = []
+	#For some reason, building this here and then using it in the next loop works,
+	#but if I build this dict in the same loop that I create the programs in,
+	#the publishers connect to the subscribers but don't appear to ever send anything. 
+	#I blame the devil, or possibly the publishers take some time to get started. 
+	pubs = {}
+	for robot in pl.getRobotList():
+		#Create a publisher to send the program to the robot
+		pub = rospy.Publisher('/bot{}/robot_prog'.format(robot), String, queue_size=10)
+		pubs[robot] = (pub)
+
+	#May not really be needed, but give the publishers time to come online
+	#No, this is actually very needed, has been since at least 2011: https://answers.ros.org/question/9665/test-for-when-a-rospy-publisher-become-available/?answer=14125#post-id-14125
+	rospy.sleep(0.5)
 
 	for bot in new_pos.keys():
 		program = []
@@ -98,7 +110,7 @@ if __name__ == "__main__":
 
 		print "Move is from {} to {}".format(points[0], points[1])
 
-		dec = decompose_space.get_decomposition(space[0], space[1], points, 0.5)
+		dec = decompose_space.get_decomposition(space[0], space[1], points, 0.3)
 		for square in dec:
 			program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
 
@@ -107,16 +119,10 @@ if __name__ == "__main__":
 		#TODO make turning to heading less awful
 		program.append(("not(self.on_heading()) and not(self.is_near_anything())", "self.turn_heading(1)", 1.0))
 
-		#Create a publisher to send the program to the robot
+		#Send the program to the robot
 		print "Sending to /bot{}/robot_prog".format(bot)
-		pub = rospy.Publisher('/bot{}/robot_prog'.format(bot), String, queue_size=10)
 		message = json.dumps(program)
-		print json.dumps(program, indent=4)
-		pub.publish(message)
-		pubs.append(pub)
-
-		#May not really be needed... cargo cult
-		rospy.sleep(0.5)
+		pubs[bot].publish(message)
 
 	#Done, spin and wait
 	rospy.spin()

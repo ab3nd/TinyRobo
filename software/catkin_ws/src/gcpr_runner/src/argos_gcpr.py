@@ -30,7 +30,7 @@ class ProgramLoader(object):
 	def replaceProgram(self, msg):
 		rospy.logwarn("Got new program")
 		self.program = json.loads(msg.data)
-
+		
 	def getProgram(self):
 		#rospy.loginfo_throttle(10, "getProgram called")
 		#rospy.loginfo_throttle(10, json.dumps(self.program))
