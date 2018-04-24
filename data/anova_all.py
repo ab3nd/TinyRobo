@@ -5,7 +5,7 @@
 
 
 import all_data_handler
-
+import pandas
 
 def get_gesture_counts(participant):
 	gestures = {"drag":0,
@@ -96,3 +96,6 @@ if __name__ == "__main__":
 		print condition
 		print avg
 		print "---"	
+
+	#Set up a pandas dataframe with the counts and conditions
+
