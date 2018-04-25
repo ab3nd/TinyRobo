@@ -36,6 +36,16 @@ files = ["p_10_ams.json",
 		"p_7_ams.json",
 		"p_8_ams.json",
 		"p_9_ams.json"
+		"p_31_daltonc.json",
+		"p_32_daltonc.json",
+		"p_33_daltonc.json",
+		"p_34_daltonc.json",
+		"p_35_daltonc.json",
+		"p_36_daltonc.json",
+		"p_37_daltonc.json",
+		"p_38_daltonc.json",
+		"p_39_daltonc.json",
+		"p_40_daltonc.json",
 		]
 
 outfileName = "all_participants.json"
