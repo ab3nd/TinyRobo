@@ -1,0 +1,118 @@
+participant 49
+
+task 1
+memo -d "user said how the robots move would affect how they would steer the robots"
+memo -d "user mentioned playing starcraft, has RTS experience"
+box -s tl -o "all robots" -t 3:58.142
+tap -o "area A" -t 4:02.926 
+
+task 2
+box -s tl -f 2 -o robots -t 6:02.724
+drag -o "robots to area A around wall" -t 6:16.972
+memo -d "user explicitly compared gestures to RTS"
+
+task 3
+memo -d "user described box select in other direction by analogy to solidworks"
+box -s -f2 tr -o "robots" -t 8:16.886
+memo -d "other possible option was cut line through drawn path that the robots are following, did no-contact example, so not coded"
+
+task 4
+box -s tl -f 2 -o "l half of robots (l hand)" -t 9:52.058
+box -s tl -f 2 -o "r half of robots (r hand)" -t 9:52.058
+drag -o "l robots to A (l hand)" -t 9:54.042
+drag -o "r robots to B (r hand)" -t 9:54.042
+
+task 5
+memo -d "user said that the depiction of the robots moving around the wall indicated to them that the swarm shape is variable as they move"
+box -s tl -f 2 -o "red robots" -t 13:25.328
+tap -o "just below area B" -t 13:36.143
+memo -d "intent was to shift the group up"
+box -s tl -f 2 -o "orange robots" -t 13:45.686
+drag -o "orange robots to B" -t 14:24.623
+box -s tl -f 2 -o "red robots" -t 14:27.238
+drag -o "red to A" -t 14:28.822
+
+task 6
+box -s tl -f 2 -o "orange robots (l hand)" -t 15:16.302
+box -s tl -f 2 -o "red robots (r hand)" -t 15:16.302
+drag -o "orange robots to A (l hand)" -t 15:18.390
+drag -o "red robots to B (r hand)" -t 15:18.390
+
+task 7
+tap -c 2 -o "one of the red robots" -t 16:15.964
+memo -d "intent is to select all red robots by tapping one"
+drag -o "red robots to A (asked to undo)" -t 17:05.236
+memo -d "asked to undo previous move"
+tap -c 2 -o "orange robot" -t 18:21.564
+tap -c 2 -o "red robot (other hand)" -t 18:21.564
+drag -o "orange robot to A" -t 18:33.956
+drag -o "red robot to B" -t 18:33.956
+
+
+task 8
+memo -d "assuming that division is like the previous selection tasks"
+box -s tl -f 2 -o "l half of robots (l hand)" -t 19:44.669
+box -s tl -f 2 -o "r half of robots (r hand)" -t 19:44.669
+drag -o "l robots to l side" -t 19:46.206
+drag -o "r robots to r side" -t 19:46.206
+memo -d "assuming that division is indicating that the robots are two units now"
+memo -d "user said they'd want a gui of some kind"
+box -s bl -f2 -o "r half of robots" -t 20:32.239
+memo -d "described having a UI bar of some sort, no gesture, to set colors"
+box -s tr -f2 -o "r half of robots" -t 22:02.814
+tap -o "robot on left side of group" -t 22:06.192
+memo -d "intent of last two gestures is to have the robots rejoin the other group"
+
+task 9
+box -s tl -f2  -o "all robots" -t 22:57.53
+tap -o "center of screen" -t 22:58.514
+
+task 10
+box -s tl -f2  -o "all robots" -t 24:11.116
+pinch -r -o "One finger stays still on robots, other moves away to indicate line" -t 24:35.7
+
+task 11
+tap -c2 -o "single robot" -t 25:57:735
+tap -o "whitespace in lower left corner of screen" -t 26:08.406
+other -d "hold one finger down and draw the box with the other finger, stationary finger is on the robot group created by previous tap" -o robots -t 26:24.998
+
+
+task 12
+box -s tl -f2 -o "all robots" -t 27:49.952
+tap -o "just under box" -t 27:59.913
+other -d "hold one finger on group and draw crescent behind box" -t 28:02.945
+other -d "hold two fingers on group and draw crescent behind box with two fingers" -t 28:52.641
+memo -d "intent is to tell the swarm to hold a shape (an adverb!)"
+tap -o "area A" -t 29:04.290
+memo -d "since robots hold shape, crescent pushes box to A"
+
+task 13
+tap -o "robot" -t 29:59.179
+tap -o "just under box" -t 30:03.834
+other -d "hold two fingers on group and draw crescent behind box with two fingers" -t 30:07.914
+tap -o "area A" -t 30:10.153
+
+task 14
+tap -h -o "defective robot" -t 31:48.626
+
+task 15
+tap -h -o "defective robot" -t 33:05.221
+tap -o "non-defective robot" -t 33:19.332
+tap -o "whitespace in tr corner of screen" -t 33:22.9
+
+task 16
+box -s tl -f2 -o "robots" -t 34:04.560
+drag -o "loop that meets up with itself around border of screen" -t 34:29.584
+
+task 17
+box -s tl -f2 -o "robots" -t 35:18.721
+drag -o "from robots to loop that meets up with itself around border of A" -t 35:38.377
+
+task 18
+box -s tl -f2 -o "robots" -t 36:29.089
+other -d "4f scatter" -o robots -t 36:38.377
+box -s tl -f2 -o "robots and a bunch of area around them" -x -t 38:26.965
+memo -d "idea here was to have the box bound the area the robots expand over"
+other -d "4f scatter" -o robots -t 38:31.725
+
+
