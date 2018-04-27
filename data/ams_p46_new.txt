@@ -1,20 +1,60 @@
-participant 45
+participant 46
 
 task 1
+drag -o "robots to A" -t 1:26.878
+
 task 2
+drag -o "robots to A" -t 1:41.753
+
 task 3
+tap -o "robots" -t 1:56.010
+
 task 4
+drag -o "robots to A" -t 2:09.643
+drag -o "robots to B (other hand)" -t 2:09.643
+
 task 5
+drag -o "orange to B" -t 2:23.947
+drag -o "red to A" -t 2:25.067
+
 task 6
+drag -o "orange to A" -t 2:39.098
+drag -o "red to B" -t 2:39.961
+
 task 7
+drag -o "orange to A" -t 2:54.811
+drag -o "red to B" -t 2:56.010
+memo -d "pointed out that overlap could cause confusion (I should have made that area bigger)"
+
 task 8
+other -d "tapped cloud with two fingers spread far apart" -o robots -t 3:23.586
+
 task 9
+pinch -h2 -o "both groups to middle" -t 3:38.937
+
 task 10
+drag -o "vertical line in robot cloud" -t 4:13.578
+
 task 11
+drag -o robots -d "square in cloud area" -t 4:31.362
+
 task 12
+drag -o "crate to area A (no contact with robots)" -t 4:48.305
+
 task 13
+drag -o "crate to area A" -t 5:01.297
+
 task 14
+drag -o "robots off l edge of whitespace" -t 5:37.153
+memo -d "user comments make me think he was assuming the system was aware of the perimeter and would follow that"
+
 task 15
+other -d "drag robots to A, then bring another finger down and reverse pinch to the height of A, in one motion" -t 6:01.809
+
 task 16
+other -d "5f scatter/spread on robots" -o robots -t 6:15.45
+
 task 17
+
+
 task 18
