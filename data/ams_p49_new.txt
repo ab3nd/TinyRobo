@@ -13,7 +13,7 @@ memo -d "user explicitly compared gestures to RTS"
 
 task 3
 memo -d "user described box select in other direction by analogy to solidworks"
-box -s -f2 tr -o "robots" -t 8:16.886
+box -s tr -f2 -o "robots" -t 8:16.886
 memo -d "other possible option was cut line through drawn path that the robots are following, did no-contact example, so not coded"
 
 task 4
@@ -72,7 +72,7 @@ box -s tl -f2  -o "all robots" -t 24:11.116
 pinch -r -o "One finger stays still on robots, other moves away to indicate line" -t 24:35.7
 
 task 11
-tap -c2 -o "single robot" -t 25:57:735
+tap -c2 -o "single robot" -t 25:57.735
 tap -o "whitespace in lower left corner of screen" -t 26:08.406
 other -d "hold one finger down and draw the box with the other finger, stationary finger is on the robot group created by previous tap" -o robots -t 26:24.998
 
@@ -80,8 +80,8 @@ other -d "hold one finger down and draw the box with the other finger, stationar
 task 12
 box -s tl -f2 -o "all robots" -t 27:49.952
 tap -o "just under box" -t 27:59.913
-other -d "hold one finger on group and draw crescent behind box" -t 28:02.945
-other -d "hold two fingers on group and draw crescent behind box with two fingers" -t 28:52.641
+other -d "hold one finger on group and draw crescent behind box" -o "robot group/whitespace" -t 28:02.945
+other -d "hold two fingers on group and draw crescent behind box with two fingers" -o "robot group/whitespace" -t 28:52.641
 memo -d "intent is to tell the swarm to hold a shape (an adverb!)"
 tap -o "area A" -t 29:04.290
 memo -d "since robots hold shape, crescent pushes box to A"
@@ -89,7 +89,7 @@ memo -d "since robots hold shape, crescent pushes box to A"
 task 13
 tap -o "robot" -t 29:59.179
 tap -o "just under box" -t 30:03.834
-other -d "hold two fingers on group and draw crescent behind box with two fingers" -t 30:07.914
+other -d "hold two fingers on group and draw crescent behind box with two fingers" -o "robots/area behind crate" -t 30:07.914
 tap -o "area A" -t 30:10.153
 
 task 14

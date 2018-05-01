@@ -1,4 +1,4 @@
-participant 47
+participant 48
 
 task 1
 drag -o "small circle over a single robot" -t 1:17.113
@@ -48,14 +48,14 @@ memo -d "asked about how they would use side controls if present"
 tap -x -o "select orange team action (tap)" -t 5:39.841
 
 task 7
-tap -o "orange robot" -5 6:09.418
-tap -o "orange robot" -5 6:09.769
-tap -o "orange robot" -5 6:10.096
-tap -o "orange robot" -5 6:10.382
-tap -o "orange robot" -5 6:10.757
-tap -o "orange robot" -5 6:11.199
+tap -o "orange robot" -t 6:09.418
+tap -o "orange robot" -t 6:09.769
+tap -o "orange robot" -t 6:10.096
+tap -o "orange robot" -t 6:10.382
+tap -o "orange robot" -t 6:10.757
+tap -o "orange robot" -t 6:11.199
 memo -d "mentioned having menu and indicated right side, but no contact"
-ui -k button -d "select team action (tap)" -o "menu to right" -t 6:24.405
+ui -k button -d "select team action (tap) on menu to right" -t 6:24.405
 drag -o "from robots along the route to A to near end of wall" -t 6:28.373
 drag -o "from robots along the route to B to near end of wall" -t 6:29.302
 memo -d "mentioned having forgotten which area robots were supposed to go to"
@@ -98,12 +98,12 @@ tap -x -c2 -o "end of path" -t  9:23.441
 
 task 11
 memo -d "mentioned using duckling approach again"
-drag -d "square near middle of screen" -t 10:09.537
+drag -d "square near middle of screen" -o "whitespace" -t 10:09.537
 memo -d "defning square by points rather than line"
-tap -o whitespace -t 10:28.668
-tap -o whitespace -t 10:29.180
-tap -o whitespace -t 10:29.523
-tap -o whitespace -t 10:30.227
+tap -x -o whitespace -t 10:28.668
+tap -x -o whitespace -t 10:29.180
+tap -x -o whitespace -t 10:29.523
+tap -x -o whitespace -t 10:30.227
 memo -d "mentioned having a panel on the side for formation control"
 
 task 12
@@ -155,12 +155,12 @@ drag -o "one robot to a and around border of area a" -t 17:12.532
 
 task 18
 memo -d "disperse away from a point"
-tap -x "center of screen" -t 17:52.978
-tap "center of screen" -t 17:54.617
-tap "center of screen" -t 17:55.953
+tap -x -o "center of screen" -t 17:52.978
+tap -x -o "center of screen" -t 17:54.617
+tap -x -o "center of screen" -t 17:55.953
 memo -d "disperse randomly, mentions having a random wander function, no contact"
 memo -d "using formations and space, define an area"
-drag -o "perimiter of whitespace" -t 18:32.308
+drag -o "perimeter of whitespace" -t 18:32.308
 memo -d "says 'hit fill volume or something', no contact"
 tap -x -o whitespace -t 18:44.311
 tap -x -o whitespace -t 18:44.621

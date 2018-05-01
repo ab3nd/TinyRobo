@@ -1,4 +1,4 @@
-participant 46
+participant 47
 
 task 1
 drag -o "robot to area A" -t 1:21.445
@@ -44,7 +44,7 @@ task 10
 drag -o "robot around border of screen" -t 8:04.605
 tap -o robot -t 8:13.733
 memo -d "mentioned having a menu to select patrol, no contact"
-tap -h "lower right corner of whitespace" -t 8:46.228
+tap -h -o "lower right corner of whitespace" -t 8:46.228
 memo -d "this was intended as part of defining a space to patrol"
 pinch -r -h2 -o "one finger staying at br of screen, other to top l" -t 8:51.105
 

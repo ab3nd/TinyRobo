@@ -67,8 +67,8 @@ other -d "5f pinch over defective robot as if picking it up, set it back down ou
 memo -d "mentioned having a delete icon so it could be deleted after selecting, but no contact made"
 
 task 16
-other -d "flat hand chop bottom of white area under robots" -n -t 8:220.150
-other -d "flat hand chop edge of white area l of robots" -n -t 8:23.340
+other -d "flat hand chop bottom of white area under robots" -o "whitespace/screen edge" -n -t 8:220.150
+other -d "flat hand chop edge of white area l of robots" -o "whitespace/screen border" -n -t 8:23.340
 drag -o "from robots around screen border" -n -t 8:36.221
 
 task 17
@@ -79,4 +79,4 @@ other -d "5f pinch over swarm, releas inside of A" -o "all robots" -n -t 9:04.20
 memo -d "drawing sets up border, then robots can be moved relative to that border"
 
 task 18
-other -d "5f scatter over robots" -n -t 9:24.533
+other -d "5f scatter over robots" -o robots -n -t 9:24.533

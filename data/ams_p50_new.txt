@@ -9,7 +9,7 @@ drag -o "over robots" -t 1:51.374
 drag -o "robots to A" -t 1:58.446
 
 task 2
-tap -o robots -t 2:20:361
+tap -o robots -t 2:20.361
 lasso -o robots -t 2:29.384
 tap -o robots -t 2:31.879
 drag -o "robots to A" -t 2:34.727
@@ -23,10 +23,10 @@ drag -o "first stroke of X over robots" -x -t 3:33.398
 drag -o "second stroke of X" -x -t 3:34.005
 
 task 4
-box -start tl -o "r half of robots" -t  3:52.241
-box -start tl -o "r half of robots" -t  3:57.334
+box -s tl -o "r half of robots" -t  3:52.241
+box -s tl -o "r half of robots" -t  3:57.334
 drag -o "right half of robots to B" -t 3:58.903
-box tl -o "l half of robots" -t 4:01.109
+box -s tl -o "l half of robots" -t 4:01.109
 drag -o "l half of robots to A" -t 4:02.070
 
 task 5

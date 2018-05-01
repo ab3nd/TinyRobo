@@ -49,7 +49,7 @@ drag -o "robots off l edge of whitespace" -t 5:37.153
 memo -d "user comments make me think he was assuming the system was aware of the perimeter and would follow that"
 
 task 15
-other -d "drag robots to A, then bring another finger down and reverse pinch to the height of A, in one motion" -t 6:01.809
+other -d "drag robots to A, then bring another finger down and reverse pinch to the height of A, in one motion" -o "robots/area A" -t 6:01.809
 
 task 16
 other -d "5f scatter/spread on robots" -o robots -t 6:15.45
