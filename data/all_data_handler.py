@@ -76,31 +76,176 @@ class UserData(object):
 				ret[pID] = function(self.data[pID])
 		return ret
 
-		
+	def taskNumberToName(self, number, pId):
+		cond = self.IdToCondition(pId)[1]
+		for name in self.taskMap.keys():
+			if self.taskMap[name][cond] == number:
+				return name
+		#No match, return None
+		return None
+
+	def taskNameToNumber(self, task, pId):
+		#Convert the task name to a number 
+		taskNum = None
+		taskNums = self.taskMap[task]
+		if self.data[pId]['participant'] % 5 == self.conditionMap['one']:
+			taskNum = taskNums[1]
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['ten']:
+			taskNum = taskNums[10]
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['hundred']:
+			taskNum = taskNums[100]
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['thousand']:
+			taskNum = taskNums[1000]
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['unknown']:
+			taskNum = taskNums['X']
+		else:
+			print "Bad participant number {}".format(pId)
+		return taskNum
+
+	#Given a PID, return the condition that they were in
+	def IdToCondition(self, pId):
+		if self.data[pId]['participant'] % 5 == self.conditionMap['one']:
+			return ('one', 1)
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['ten']:
+			return ('ten', 10)
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['hundred']:
+			return ('hundred', 100)
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['thousand']:
+			return ('thousand', 1000)
+		elif self.data[pId]['participant'] % 5 == self.conditionMap['unknown']:
+			return ('unknown', "X")
+		else:
+			print "Bad participant number {}".format(pId)
+
 	#Apply over a _task_, not over a participant
 	#So the function takes a task
 	def applyTask(self, function, task):
 		ret = {}
-		taskNums = self.taskMap[task]
 		for pId in self.data.keys():
-			#Convert the task name to a number 
-			taskNum = None
-			if self.data[pId]['participant'] % 5 == self.conditionMap['one']:
-				taskNum = taskNums[1]
-			elif self.data[pId]['participant'] % 5 == self.conditionMap['ten']:
-				taskNum = taskNums[10]
-			elif self.data[pId]['participant'] % 5 == self.conditionMap['hundred']:
-				taskNum = taskNums[100]
-			elif self.data[pId]['participant'] % 5 == self.conditionMap['thousand']:
-				taskNum = taskNums[1000]
-			elif self.data[pId]['participant'] % 5 == self.conditionMap['unknown']:
-				taskNum = taskNums['X']
-			else:
-				print "Bad participant number {}".format(pId)
-
+			taskNum = taskNameToNumber(task, pId)
 			#This participant had this task, so call the function on it
 			if taskNum is not None:
 				ret[pId] = function(self.data[pId][taskNum])
 
+	#Get a dictionary, by event type, of counts of that event within that task
+	#for the given participant
+	def getCounts(self, pId, task):
+		gestures = {"drag":0,
+				"draw":0,
+				"ui":0,
+				"tap":0,
+				"doubletap":0,
+				"tripletap":0,
+				"hold":0,
+				"pinch":0,
+				"rev_pinch":0,
+				"lasso":0,
+				"box":0,
+				"voice":0,
+				"other":0}
+		taskEvents = self.data[pId]["tasks"][task]
+		for event in taskEvents:
+		 	if event["event_type"] == "tap":
+		 		#Taps need special handling, as they might be double, triple, or hold
+		 		if event["hold"]:
+		 			gestures["hold"] += 1
+		 		elif event["count"] == 2:
+		 			gestures["doubletap"] += 1
+		 		elif event["count"] == 3:
+		 			gestures["tripletap"] += 1
+		 		else:
+		 			gestures["tap"] += 1
+			elif event["event_type"] == "drag":
+				#Drags might be drag or might be draw
+				if event["draw"] is None:
+					gestures["drag"] += 1
+				else:
+					gestures["draw"] += 1
+			elif event["event_type"] == "pinch":
+				#pinch can be pinch or reverse
+				if event["reverse"]:
+					gestures["rev_pinch"] += 1
+				else:
+					gestures["pinch"] += 1
+			elif event["event_type"] == "voice_command":
+				gestures["voice"] += 1
+			elif event["event_type"] == "ui":
+				gestures["ui"] += 1
+			elif event["event_type"] == "memo":
+				#Don't do anything with memos
+				pass
+			elif event["event_type"] == "lasso":
+				gestures["lasso"] += 1
+			elif event["event_type"] == "box_select":
+				gestures["box"] += 1
+			elif event["event_type"] == "other":
+				gestures["other"] += 1		
+			else:
+				#This is an error, some event type wasn't handled
+				print event["event_type"]	
+		return gestures
 
+	#returns a dict of column names to lists of values representing the whole data set
+	def toPandas(self):
+		ret={}
+		users = []
+		task = []
+		condition = []
+		taps = []
+		holds = []
+		doubletaps = []
+		tripletaps = []
+		drags = []
+		draws = []
+		pinches = []
+		reverse_pinches = []
+		voices = []
+		uis = []
+		lassos = []
+		boxes = []
+		others = []
+		for pId in self.data.keys():
+			for taskID in self.data[pId]["tasks"].keys():
+				#Get a task number from the task name
+				taskName = self.taskNumberToName(int(taskID), pId)
+				if taskID is not None:
+					#Get the count of each gesture for this task
+					counts = self.getCounts(pId, str(taskID))
 
+					#Fill in all the fields
+					users.append(pId)
+					condition.append(self.IdToCondition(pId)[0])
+					task.append(taskName)
+					taps.append(counts["tap"])
+					holds.append(counts["hold"])
+					doubletaps.append(counts["doubletap"])
+					tripletaps.append(counts["tripletap"])
+					drags.append(counts["drag"])
+					draws.append(counts["draw"])
+					pinches.append(counts["pinch"])
+					reverse_pinches.append(counts["rev_pinch"])
+					voices.append(counts["voice"])
+					uis.append(counts["ui"])
+					lassos.append(counts["lasso"])
+					boxes.append(counts["box"])
+					others.append(counts["other"])
+		
+		#We've loaded all the data, now build the dict
+		ret["user"] = users
+		ret["task"] = task
+		ret["condition"] = condition
+		ret["box"] = boxes
+		ret["doubletap"] = doubletaps
+		ret["drag"] = drags
+		ret["draw"] = draws
+		ret["hold"] = holds
+		ret["lasso"] = lassos
+		ret["other"] = others
+		ret["pinch"] = pinches
+		ret["rev_pinch"] = reverse_pinches
+		ret["tap"] = taps
+		ret["tripletap"] = tripletaps
+		ret["ui"] = uis
+		ret["voice"] = voices
+
+		return ret
