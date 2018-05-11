@@ -18,18 +18,18 @@ class UserData(object):
 		# Divide around obstacle				4	4	4		4
 		# Orange to B, red to A				4	5	5	5		5
 		# Orange to A, red to B				5	6	6	6		6
-		# Orange to A, red to B (mixed)		6	7	7	7		7
-		# Divide group						7	8	8	8		8
+		# Orange to A, red to B (mixed)			7	7	7		7
+		# Divide group						6	8	8	8		8
 		# Merge group							9	9	9		9
 		# Form a line							10	10	10		10
 		# Form a square							11	11	11		11
-		# Move crate to A					8	12	12	12		12
-		# Move crate to A (dispersed)		9	13	13	13		13
-		# Mark defective					10	14	13	14		
-		# Remove defective					11	15	14	15		
-		# Patrol screen						12	16	16	16		14
-		# Patrol A							13	17	17	17		15
-		# Disperse							14	18	18	18		16
+		# Move crate to A					7	12	12	12		12
+		# Move crate to A (dispersed)			13	13	13		13
+		# Mark defective					8	14	13	14		
+		# Remove defective					9	15	14	15		
+		# Patrol screen						10	16	16	16		14
+		# Patrol A							11	17	17	17		15
+		# Disperse								18	18	18		16
 		self.taskMap = {
 			"move_a":{1:1, 10:1, 100: 1, 1000:1, 'X':1},
 			"move_wall":{1:2, 10:2, 100:2, 1000:2, 'X':2},
@@ -37,18 +37,18 @@ class UserData(object):
 			"divide":{1:None, 10:4, 100:4, 1000:4, 'X':4},
 			"divide_color_1":{1:4, 10:5, 100:5, 1000:5, 'X':5},
 			"divide_color_2":{1:5, 10:6, 100:6, 1000:6, 'X':6},
-			"divide_color_mix":{1:6, 10:7, 100:7, 1000:7, 'X':7},
-			"split":{1:7, 10:8, 100:8, 1000:8, 'X':8},
+			"divide_color_mix":{1:None, 10:7, 100:7, 1000:7, 'X':7},
+			"split":{1:6, 10:8, 100:8, 1000:8, 'X':8},
 			"merge":{1:None, 10:9, 100:9, 1000:9, 'X':9},
 			"line":{1:None, 10:10, 100:10, 1000:10, 'X':10},
 			"square":{1:None, 10:11, 100:11, 1000:11, 'X':11},
-			"crate":{1:8, 10:12, 100:12, 1000:12, 'X':12},
-			"crate_dispersed":{1:9, 10:13, 100:13, 1000:13, 'X':13},
-			"mark":{1:10, 10:14, 100:14, 1000:14, 'X':None},
-			"remove":{1:11, 10:15, 100:15, 1000:15, 'X':None},
-			"patrol_screen":{1:12, 10:16, 100:16, 1000:16, 'X':14},
-			"patrol_a":{1:13, 10:17, 100:17, 1000:17, 'X':15},
-			"disperse":{1:14, 10:18, 100:18, 1000:18, 'X':16}
+			"crate":{1:7, 10:12, 100:12, 1000:12, 'X':12},
+			"crate_dispersed":{1:None, 10:13, 100:13, 1000:13, 'X':13},
+			"mark":{1:8, 10:14, 100:14, 1000:14, 'X':None},
+			"remove":{1:9, 10:15, 100:15, 1000:15, 'X':None},
+			"patrol_screen":{1:10, 10:16, 100:16, 1000:16, 'X':14},
+			"patrol_a":{1:11, 10:17, 100:17, 1000:17, 'X':15},
+			"disperse":{1:None, 10:18, 100:18, 1000:18, 'X':16}
 		}
 
 		#The value is the participant number mod 5
@@ -116,6 +116,12 @@ class UserData(object):
 			return ('unknown', "X")
 		else:
 			print "Bad participant number {}".format(pId)
+
+	def inCondition(self, participantID, condition):
+		cond = self.IdToCondition(participantID)
+		if cond[1] == condition:
+			return True
+		return False
 
 	#Apply over a _task_, not over a participant
 	#So the function takes a task
