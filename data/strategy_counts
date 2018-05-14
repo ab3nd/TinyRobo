@@ -1,0 +1,341 @@
+crate_dispersed
+===============
+position/move        21
+drag crate           12
+ui/object/target      2
+select/drag crate     2
+draw "C -> A"         1
+tap/tap               1
+position/no move      1
+Name: crate_dispersed, dtype: int64
+40
+
+patrol_a
+========
+to & around            18
+border                  7
+select & around         5
+to & across             3
+select, to & around     2
+set waypoints           2
+select & tap A          1
+draw "P->A"             1
+select & to A           1
+ui, select              1
+select & path           1
+to & ui                 1
+ui, border              1
+select, ui, area        1
+to, select A            1
+no action               1
+to area, not around     1
+select, ui, path        1
+to & squiggle over      1
+Name: patrol_a, dtype: int64
+50
+
+square
+======
+draw square                        14
+single moves                        8
+select, draw square                 5
+select, formation ui                3
+voice, draw square                  2
+draw "SQ"                           1
+draw square as multiple lines       1
+voice, no interaction               1
+use screen edges                    1
+multiple select and draw parts      1
+voice, draw square in two parts     1
+draw part of square                 1
+4f spread                           1
+Name: square, dtype: int64
+40
+
+divide
+======
+2x select/move         13
+drag                    9
+single moves            3
+cut & drag              3
+multiple drag           2
+split & drag            1
+lots of drags           1
+select, tap targets     1
+tap & draw "0.5"        1
+multiple push           1
+cut & move              1
+cut & push              1
+r pinch/drag            1
+multi sweep             1
+chop & move             1
+Name: divide, dtype: int64
+40
+
+divide_color_1
+==============
+drag                  27
+2x select/move        13
+single moves           4
+2h drag                2
+draw "10" in box A     1
+no interaction         1
+push                   1
+multiple sweeps        1
+Name: divide_color_1, dtype: int64
+50
+
+divide_mix
+==========
+drag                       9
+single moves               6
+color select and move      6
+no sort, move              4
+multi select and move      3
+multi drag, no sort        2
+threading select & move    2
+color select, drag         1
+ui color select & move     1
+tap,ui,drag                1
+multiple drags             1
+ui color select & drag     1
+no sort or move            1
+ui color select, tap       1
+draw team names            1
+Name: divide_mix, dtype: int64
+40
+
+crate
+=====
+position/move           27
+drag crate              14
+ui/waypoint              2
+position, no move        2
+tap crate tap a          1
+draw "C->A"              1
+ui/select/move crate     1
+select/drag crate        1
+tap crate, robot, A      1
+Name: crate, dtype: int64
+50
+
+stop
+====
+tap robot                      10
+draw wall                       6
+drag back                       6
+voice                           3
+doubletap robot                 3
+select/redirect                 2
+doubletap whitespace            2
+drag robots back                2
+flat hand robots                1
+drag offscreen                  1
+tap whitespace                  1
+doubletap each robot            1
+tap, ui stop                    1
+rasied hand pull back           1
+select/doubletap whitespace     1
+chop                            1
+select robots                   1
+multi drag back                 1
+draw line behind robots         1
+draw "X"                        1
+move wall                       1
+tap robots                      1
+ui stop                         1
+ui select                       1
+Name: stop, dtype: int64
+50
+
+remove
+======
+corner                             10
+drag offscreen                      9
+ui delete                           3
+edge                                3
+ui remove                           3
+hold, ui remove                     1
+fist circle, move edge              1
+no interaction                      1
+voice, move edge                    1
+spiral on robot then off screen     1
+tap, move corner                    1
+tap robot                           1
+other robots push offscreen         1
+offscreen garbage bin               1
+select, draw "X"                    1
+bottom of screen                    1
+leave behind                        1
+Name: remove, dtype: int64
+40
+
+mark
+====
+tap                                10
+ui mark                             4
+lasso                               3
+draw squiggle                       3
+draw "X"                            3
+select/ui                           3
+doubletap                           2
+move away                           2
+select/draw "X"                     1
+select/move offscreen               1
+move corner                         1
+leave behind                        1
+move fist in circle over, tap       1
+draw spiral up away from screen     1
+draw circle whitespace              1
+select/tap                          1
+3 loop lasso                        1
+ui recolor                          1
+Name: mark, dtype: int64
+40
+
+patrol_screen
+=============
+select/drag around                  13
+around screen                       13
+border                               9
+patrol ui                            4
+partial drag around                  3
+multi drag partway around            2
+drag off edge                        1
+multi select/drag partway around     1
+voice                                1
+organize positions                   1
+sweep around screen                  1
+draw "P" in a circle                 1
+Name: patrol_screen, dtype: int64
+50
+
+move_a
+======
+drag robot          33
+select/drag          9
+single moves         4
+select/tap           2
+multi drag robot     1
+sweep                1
+Name: move_a, dtype: int64
+50
+
+divide_color_2
+==============
+drag              28
+2x select/drag    10
+single moves       4
+sweep              3
+2x select/tap      2
+2 tap              1
+select/drag        1
+2x select/move     1
+Name: divide_color_2, dtype: int64
+50
+
+split
+=====
+cut                  12
+rev pinch             5
+drag                  4
+2x select/drag        4
+select/drag           4
+spread/sweep          3
+select/ui             2
+voice                 2
+single moves          2
+chop                  2
+select/r pinch        2
+cut/r pinch           1
+cut/drag              1
+draw two spirals      1
+no interaction        1
+sweep                 1
+multi drag            1
+voice                 1
+spread 2f tap         1
+Name: split, dtype: int64
+50
+
+merge
+=====
+pinch             9
+drag              8
+sweep             5
+select/tap        3
+2x select/drag    3
+select/drag       3
+single moves      2
+select/move       2
+voice             1
+2x select/tap     1
+multi drag        1
+multi pinch       1
+select/ui         1
+Name: merge, dtype: int64
+40
+
+line
+====
+select/draw           6
+drag from robots      6
+draw line             5
+single moves          4
+voice                 2
+select/ui/draw        2
+voice/draw            2
+select/use edge       1
+draw, draw "L"        1
+select/pinch          1
+select/rev pinch      1
+tap                   1
+select/waypoint       1
+ui/draw               1
+voice/chop            1
+sweep                 1
+drag                  1
+draw, drag to line    1
+multi drag            1
+select/ui             1
+Name: line, dtype: int64
+40
+
+move_wall
+=========
+drag              32
+select/drag       10
+single moves       2
+sweep              2
+2x select/drag     2
+voice              1
+multi drag         1
+Name: move_wall, dtype: int64
+50
+
+disperse
+========
+group moves               7
+5f scatter                7
+squiggle                  4
+voice                     2
+rev pinch                 2
+select/rev pinch          2
+select/4f scatter         2
+select/5f scatter         2
+tap/ui                    1
+ccw lasso                 1
+select/multi rev pinch    1
+4f scatter                1
+no command                1
+sweep                     1
+doubletap                 1
+opening fists             1
+draw "R"                  1
+ui                        1
+tap                       1
+select/ui                 1
+Name: disperse, dtype: int64
+40
+
+
