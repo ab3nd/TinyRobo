@@ -193,35 +193,92 @@ def tag_object(original):
 	#Matches robots, robot, bot, bots, etc. 
 	robots = re.compile("bot|group|swarm|orange|red", re.I)
 	crate = re.compile("crate", re.I)
-	targetA = re.compile("area a|box a| a$", re.I)
-	targetB = re.compile("area b|box b| b$", re.I)
-	whitespace = re.compile("whitespace|ground|screen", re.I)
+	targetA = re.compile("area a|box a| a$|to a,|^a$", re.I)
+	targetB = re.compile("area b|box b| b$|to b,|^b$", re.I)
+	whitespace = re.compile("whitespace|ground|screen|white area", re.I)
 	
-	toCheck = [(robots, "ROBOTS"), (crate, "CRATE"), (targetA, "A"), (targetB, "B"), (whitespace, "WHITESPACE")]
+	toCheck = [(robots, "r"), (crate, "c"), (targetA, "a"), (targetB, "b"), (whitespace, "w")]
 	for compiled, tag in toCheck:
 		if re.search(compiled, original):
 			tags.append(tag)
 	return tags
 
-counts = {}
 for participant in users.data.keys():
 		for task in users.data[participant]["tasks"].keys():
+			#We're building a string representation of the user's action on the task
+			# Types           Targets
+			#-------------    -------------
+			# drag 		 D    whitespace  w
+			# draw       W    robots      r
+			# ui         U    crate       c
+			# tap        T    area a      a
+			# doubletap  2    area b      b
+			# tripletap  3    unclear     _
+			# hold       H
+			# pinch      P
+			# rev pinch  R
+			# lasso      L
+			# box select B
+			# voice      V
+			# other      O
+
+			task_str = ""
+
 			for event in users.data[participant]["tasks"][task]:
-				#Skip memos
-				if event["event_type"] == "memo":
+				#Skip memos and examples
+				if event["event_type"] == "memo" or event["example"]:
 					continue
 
 				#Get objects for most events
 				if "objects" in event.keys():
+					#Convert the event type to a code
+					eType = event["event_type"]
+					if eType == "ui":
+						task_str += "U"
+					elif eType == "other":
+						task_str += "O"
+					elif eType == "drag" and event["draw"] is not None:
+						task_str += "W"
+					elif eType == "drag" and event["draw"] is None:
+						task_str += "D"
+					elif eType == "pinch" and event["reverse"]:
+						task_str += "R"
+					elif eType == "pinch" and not event["reverse"]:
+						task_str += "P"
+					elif eType == "tap" and event["count"] > 1:
+						task_str += str(event["count"])
+					elif eType == "tap" and event["count"] == 1:
+						task_str += "T"
+					elif eType == "tap" and event["hold"]:
+						task_str += "H"
+					elif eType == "lasso":
+						task_str += "L"
+					elif eType == "box_select":
+						task_str += "B"
+					
+					#Now add the tag objects
 					obj = " ".join(event["objects"])
 					obj = obj.replace("\"", "")
 					obj = obj.lower()
-
-					if obj in counts.keys():
-						counts[obj] += 1
+					tags = tag_object(obj)
+					if len(tags) > 0:
+						task_str += "".join(tags)
 					else:
-						counts[obj] = 1
+						task_str += "_"
 
-for key, value in sorted(counts.iteritems(), key=lambda (k,v): (v,k)):
-	tags = tag_object(key)
-	print "{}\t{}\t{}".format(value, tags, key)
+				elif event["event_type"] == "voice_command":
+					task_str += "V"
+
+					obj = " ".join(event["command"])
+					obj = obj.replace("\"", "")
+					obj = obj.lower()
+					tags = tag_object(obj)
+					if len(tags) > 0:
+						task_str += "".join(tags)
+					else:
+						task_str += "_"
+					
+					
+					
+			print "{}:{}:{}".format(participant, task, task_str)
+					
