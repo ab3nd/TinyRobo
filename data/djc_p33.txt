@@ -1,0 +1,146 @@
+participant 33
+task 1
+lasso -f 1 -t 88.63 -o "5 Red Robots"
+drag -f 1 -t 89.56 -o "5 Red Robots, Box A" -d "A line from the middle of Red Robots to Box A"
+
+task 2
+lasso -f 1 -t 111.79 -o "5 Red Robots"
+drag -f 1 -t 114.35 -o "5 Red Robots, Box A" -d "A line from the middle of Red Robots around the wall toward Box A"
+
+task 3
+drag -f 1 -t 132.91 -o "Ground" -d  "Seems to draw a barrier somewhat infront of Red Robots"
+drag -x -f 1 -t 163.36 -o "Ground" -d "Draws a 'wall' from roughly the left edge of the ground to the wall in the middle of the screen."
+tap -x -f 1 -t 167.47 -o "Ground" -c 1
+memo -d "Indicated that the single tap was for telling the selected robots to follow this path."
+tap -f 1 -t 170.56 -o "Ground" -c 2
+memo -d "Indicated that a double tap will tell the selected robots that this boundary will not be passed."
+task 4
+lasso -f 1 -t 204.29 -o "5 Red Robots"
+drag -f 1 -t 207.21 -o "5 Red Robots, Box A" -d "Drags a line from the group of Red Robots around the wall to Box A"
+lasso -f 1 -t 212.02 -o "5 Red Robots"
+drag -f 1 -t 217.37 -o "5 Red Robots, Box B" -d "Drags a line from the group of Red Robots to Box B"
+
+task 5
+lasso -f 1 -t 236.81 -o "11 Orange Robots"
+drag -f 1 -t 241.09 -o "11 Orange Robots, Box B" -d "Drags a line from the middle of Orange Robots to Box B"
+lasso -f 1 -t 242.10 -o "10 Red Robots"
+drag -f 1 -t 244.47 -o "10 Red Robots, Box A" -d "Drags a line from the middle of Red Robots to Box A"
+
+task 6
+lasso -f 1 -t 257.97 -o "11 Orange Robots"
+drag -f 1 -t 259.20 -o "11 Orange Robots, Box A" -d "Drags a line from the middle of Orange Robots to Box A"
+lasso -f 1 -t 259.93 -o "10 Red Robots"
+drag -f 1 -t 261.45 -o "10 Red Robots, Box B" -d "Drags a line from the middle of Red Robots to Box B"
+
+task 7
+drag -f 1 -t 286.85 -o "3 Orange Robots" -d "Drags a line tracing over roughly 3 Orange Robots." 
+drag -f 1 -t 287.88 -o "4 Orange Robots" -d "Drags a line tracing over roughly 4 Orange Robots. Assuming they're adding the last 3 robots to the previous 3. One robot was selected twice."
+drag -f 1 -t 289.25 -o "6 Orange Robots, Box B" -d "Drags from middle of selected robots to Box B."
+lasso -f 1 -t 315.66 -o "5 Red Robots"
+drag -f 1 -t 316.56 -o "5 Red Robots, Box A" -d "Drags from middle of selected robots to Box A."
+tap -f 1 -t 337.53 -o "Orange Robot" -c 2
+memo -d "double tapping an orange robot, setting an orange selection state."
+lasso -x -f 1 -t 341.59 -o "6 Orange Robots"
+memo -d "With orange selection state, lasso will select only orange robots."
+lasso -x -f 1 -t 364.29 -o "5 Red Robots"
+drag -x -f 1 -t 364.94 -o "5 Red Robots, Box A" -d "Drags a line from middle of group to Box A."
+
+task 8
+lasso -f 1 -t 386.29 -o "Roughly 10 Red Robots"
+memo -d "Lasso doesn't clearly wrap around all robots but I think the participant intended to select all."
+drag -f 1 -t 387.36 -o "10 Red Robots" -d "Participant runs a line through half of the selected robots."
+pinch -f 2 -t 388.10 -h 2 -r -o "10 Red Robots"
+pinch -x -f 2 -t 401.95 -h 2 -r -o "10 Red Robots"
+
+task 9
+lasso -f 1 -t 418.10 -o "5 Red Robots (left)"
+drag -f 1 -t 419.13 -o "5 Red Robots (left), Ground" -d "Drags a line from roughly the center of the Red Robot group over to the middle of the screen."
+lasso -f 1 -t 419.89 -o "5 Red Robots (right)"
+drag -f 1 -t 420.91 -o "5 Red Robots (right), Ground" -d "Drags a line from roughly the center of the Red Robot group over to the middle of the screen."
+lasso -f 1 -t 441.54 -o "5 Red Robots (right)"
+drag -f1 -t 442.27 -o "5 Red Robots (right), 5 Red Robots (left)" -d "A line from roughly the middle of the left set of robots to the right."
+
+task 10
+lasso -f 1 -t 466.87 -o "10 Red Robots"
+tap -f 1 -t 474.93 -o "Ground" -c 1 -h
+tap -f 1 -t 475.61 -o "Ground" -c 1
+tap -f 1 -t 475.82 -o "Ground" -c 1
+tap -f 1 -t 475.98 -o "Ground" -c 1
+tap -f 1 -t 476.08 -o "Ground" -c 1
+tap -f 1 -t 476.31 -o "Ground" -c 1
+tap -f 1 -t 476.52 -o "Ground" -c 1
+memo -d "Participant set their left finger down while their right hand tapped each position setting out the line from the holding position toward the right."
+tap -x -f 1 -t 483.26 -o "Ground" -c 1 -h
+drag -f 1 -t 484.91 -o "Ground" -d "Drew a straight line from their left finger in the opposite direction."
+tap -f 1 -t 503.85 -o "Ground" -c 1 -h
+drag -f 1 -t 504.21 -o "Ground" -d "Drew a straight line from their left finger in the opposite direction."
+tap -f 1 -t 505.11 -o "Ground" -c 1 -h
+tap -f 1 -t 505.34 -o "Ground" -c 1
+tap -f 1 -t 505.51 -o "Ground" -c 1
+tap -f 1 -t 505.61 -o "Ground" -c 1
+tap -f 1 -t 505.75 -o "Ground" -c 1
+tap -f 1 -t 505.95 -o "Ground" -c 1
+
+task 11
+memo -d "Participant taps the center of the screen before the text changes to the actual task. That gesture was not recorded."
+lasso -f 1 -t 520.98 -o "10 Red Robots"
+tap -f 1 -t 534.32 -o "Ground" -c 1 -h
+drag -f 1 -t 537.07 -o "Ground" -d "Dragged a short line from the slightly top left of screen by other index fingers hold down."
+memo -d "It's quite dificult to really code whether his hand is making contact behind his other hand."
+tap -f 1 -t 540.75 -o "Ground" -c 1
+drag -f 1 -t 549.37 -o "Ground" -d "Drags from slightly top left about where their other index finger is placed down and to the right then up and back creating a square that ends is roughly the same place."
+
+task 12
+drag -f 1 -t 579.24 -o "Wooden Crate, Box A" -d "Draws a line from the middle of Wooden Crate to Box A."
+drag -x -f 1 -t 582.49 -o "Wooden Crate, Box A" -d "Draws a line form the middle of Wooden Crate to Box A."
+memo -d "Participant explains, sending the crate to Box A without involving the robots."
+tap -f 1 -t 635.99 -o "Red Robot" -c 2
+tap -x -f 1 -t 638.20 -o "Red Robot" -c 2
+drag -x -f 1 -t 639.69 -o "Wooden Crate, Box A" -d "Dragged a line from Wooden Crate to Box A."
+
+task 13
+drag -f 1 -t 657.30 -o "Wooden Crate, Box A" -d "Drags a line from the wooden crate to Box A"
+
+task 14
+lasso -f 1 -t 684.03 -o "Defective Robot"
+drag -f 1 -t 684.57 -o "Defective Robot" -d "Draws a line through the defective robot, appears to be half of an X mark"
+drag -f 1 -t 685.11 -o "Defective Robot" -d "Draws a line through the defective robot, appears to be the other half of an X mark"
+memo -d "Participant demonstrates selecting the defective robot and marking it with an X"
+lasso -x -f 1 -t 670.47 -o "Red Robots"
+drag -x -f 1 -t 711.34 -o "Red Robots" -d "Draws a line through the group of Red Robots, half of an X mark"
+drag -x -f 1 -t 712.45 -o "Red Robots" -d "Draws a line through the group of Red Robots, other half of X mark"
+pinch -x -f 4 -t 715 -h 2 -r -o "10 Red Robots"
+memo -d "Paticipant is demonstrating dividing a group into four and how that is similar to his previous action for disabling a robot."
+
+task 15
+drag -f 1 -t 749.06 -o "Defective Robot" -d "Drags a line from the defective robot up out of the group and to the left to the border of the screen."
+drag -x -f 1 -t 769.10 -o "Defective Robot" -d "Drags a line from the defective robot up out of the group and to the left to the border of the screen."
+
+task 16
+lasso -f 1 -t 785.48 -o "10 Red Robots"
+tap -f 1 -t 791.16 -o "Ground" -c 1 -h
+drag -f 1 -t 791.16 -o "Ground" -d "Draws a square along the perimeter of the screen."
+tap -x -f 1 -t 807.40 -o "Ground" -c 1 -h
+drag -x -f 1 -t 807.40 -o "Ground" -d "Draws a square along the perimeter of the screen."
+drag -f 1 -t 819.67 -o "Ground" -d "Is stationary while participant draws the path with their other hand. Then drags slightly toward the right a little over halfway across the screen. Indicating the robots should move clockwise around the border."
+drag -x -f 1 -t 819.67 -o "Ground" -d "Draws a square about the perimeter of the screen."
+
+task 17
+lasso -f 1 -t 845.04 -o "10 Red Robots"
+drag -f 1 -t 847.99 -o "Box A" -d "Is stationary while the other finger drags a perimeter then moves right somewhat across the top of Box A setting the robots to move in that direction."
+drag -f 1 -t 848.99 -o "Box A" -d "Draws a square around the perimeter of Box A."
+
+task 18
+lasso -f 1 -t 869.51 -o "10 Red Robots"
+pinch -f 5 -t 872.46 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 875.55 -h 1 -r -o "10 Red Robots"
+memo -d "This pinch is close to being a 5 finger poke though I believe I see rever pinch movement though brief."
+pinch -x -f 5 -t 876.92 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 879.17 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 880.63 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 880.72 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 880.83 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 882.87 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 883.73 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 884.37 -h 1 -r -o "10 Red Robots"
+pinch -x -f 5 -t 891.89 -h 1 -r -o "10 Red Robots"
