@@ -69,7 +69,7 @@ class ROSTouchRecorder(object):
     def log_touch_event(self, event):
         #Create a point and publish it. This loses a lot of the event data, 
         ps = PointStamped()
-        ps.header.frame_id = str(event.uid)
+        ps.header.frame_id = "ui_app" #str(event.uid)
         ps.point.x = event.x
         ps.point.y = event.y
         self.touch_pub.publish(ps)
