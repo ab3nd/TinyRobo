@@ -7,7 +7,7 @@ from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image as UIXImage
 from kivy.core.image import Image as CoreImage
-from kivy.graphics import Rectangle
+from kivy.graphics import Rectangle, Ellipse
 from kivy.clock import Clock
 from kivy.base import EventLoop
 from kivy.uix.floatlayout import FloatLayout
@@ -15,12 +15,14 @@ from kivy.core.window import Window
 
 #For image conversion to Kivy textures
 from PIL import Image as PILImage
+from PIL import ImageDraw
 from io import BytesIO  
 
 #For ROS interfacing
 import rospy
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import PointStamped
+from apriltags_ros.msg import *
 
 class ImageConverter(object):
     """
@@ -111,7 +113,13 @@ class StupidApp(App):
         rospy.init_node('kivy_img_mauler')
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
-        
+
+        #Debug printing of tag locations
+        self.dbg = True
+        if self.dbg:
+            self.tag_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, self.update_tags)
+            self.tags = None
+
         self.rosImage = None
         self.width = 1024
         self.height = 768
@@ -128,10 +136,16 @@ class StupidApp(App):
         self.layout.add_widget(self.uiImage)
         return self.layout
 
+    def update_tags(self, tag_msg):
+        self.tags = tag_msg
+        return True
+
     def display_image(self, dt):
         try:
             if self.rosImage is None:
                 return
+     
+            #Convert pil image to a kivy textureable image
             imageData = BytesIO()
             self.rosImage.save(imageData, "PNG")
             imageData.seek(0)
@@ -143,6 +157,7 @@ class StupidApp(App):
                 #this will cause a problem, probably a segmentation fault
                 Rectangle(texture = im.texture, size=(im.texture.width, im.texture.height))
 
+
             #Set our window size to the size of the texture
             Window.size = (im.texture.width, im.texture.height)
 
@@ -153,6 +168,21 @@ class StupidApp(App):
 
     def update_image(self, imgMsg):
         self.rosImage = ImageConverter.from_ros(imgMsg)
+
+        #Draw the tags on the ROS/PIL image
+        if self.dbg:
+            #if self.tags is not None:
+            pilDraw = ImageDraw.Draw(self.rosImage)
+
+
+            for tag in self.tags.detections:
+                tag_x = int(tag.tagCenterPx.x) 
+                tag_y = int(tag.tagCenterPx.y)
+
+                #Draw a dot at the center of the tag
+                pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
+            del pilDraw
+
         return True
 
     def on_pause(self):
