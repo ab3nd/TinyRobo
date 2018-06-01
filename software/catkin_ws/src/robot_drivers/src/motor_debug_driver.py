@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-
 import rospy
 from geometry_msgs.msg import Twist, PointStamped
 from apriltags_ros.msg import *
@@ -20,12 +19,12 @@ def dot(a, b):
 		d += i*j
 	return d
 
-class Point_Driver():
+class Point_Converter():
 	def __init__(self):
 		self.pub = rospy.Publisher('point_twists', Twist, queue_size=0)
 		self.targetX = 0.0
 		self.targetY = 0.0
-
+		self.targetZ = 0.0
 
 		self.robot_id = 8
 
@@ -42,9 +41,6 @@ class Point_Driver():
 				self.tagsize = tag['size']
 
 		self.conversion = 0.0
-
-		self.tf = TransformListener()
-
 		self.camera_model = None
 
 	def update_tags(self, tags_msg):
@@ -89,111 +85,94 @@ class Point_Driver():
 		px_y = max(image_height-point_msg.point.y, 0)
 
 
+		#If we don't have a camera model yet, we can't figure out where the click is
+		if self.camera_model is None:
+			rospy.logwarn("No camera model yet, returning without updating target")
+			return
+
 		#Figure out where the point is in camera space
-		if self.camera_model is not None:
-			#Unit vector pointing to the clicked point, in the camera frame (origin at center of camera)
-			ray_to_click = self.camera_model.projectPixelTo3dRay((px_x, px_y))
-			#Second point, needed to create a triangle to figure out the distance along the ray
-			ray_to_tag = self.camera_model.projectPixelTo3dRay((self.currentX_px, self.currentY_px))
-			
-			#use trianglesolver to get the sides and angles I don't have
+		#Unit vector pointing to the clicked point, in the camera frame (origin at center of camera)
+		ray_to_click = self.camera_model.projectPixelTo3dRay((px_x, px_y))
+		#Second point, needed to create a triangle to figure out the distance along the ray
+		ray_to_tag = self.camera_model.projectPixelTo3dRay((self.currentX_px, self.currentY_px))
+		
+		#Get distance from camera to tag in meters (Euclidian distance from origin)
+		cam_to_tag = math.sqrt(math.pow(self.currentX, 2) + math.pow(self.currentY, 2) + math.pow(self.currentZ, 2))
+		#Get distance from tag center to clicked point in px, then convert to meters
+		tag_to_click = math.sqrt(math.pow(self.currentX_px - px_x, 2) + math.pow(self.currentY_px - px_y, 2))
+		tag_to_click = tag_to_click/self.conversion
+		#Get angle between rays to clicked point and tag in radians
+		#This is dot product in 3d, then take the arc cosine to get radians
+		cam_angle = (float(ray_to_click[0])*float(ray_to_tag[0])) + (float(ray_to_click[1])*float(ray_to_tag[1])) + (float(ray_to_click[2])*float(ray_to_tag[2]))
+		cam_angle = math.acos(cam_angle)
 
-			#Get distance from camera to tag in meters (Euclidian distance from origin)
-			cam_to_tag = math.sqrt(math.pow(self.currentX, 2) + math.pow(self.currentY, 2) + math.pow(self.currentZ, 2))
-			#Get distance from tag center to clicked point in px, then convert to meters
-			tag_to_click = math.sqrt(math.pow(self.currentX_px - px_x, 2) + math.pow(self.currentY_px - px_y, 2))
-			tag_to_click = tag_to_click/self.conversion
-			#Get angle between rays to clicked point and tag in radians
-			#This is dot product in 3d, then take the arc cosine to get radians
-			cam_angle = (float(ray_to_click[0])*float(ray_to_tag[0])) + (float(ray_to_click[1])*float(ray_to_tag[1])) + (float(ray_to_click[2])*float(ray_to_tag[2]))
-			cam_angle = math.acos(cam_angle)
+		# Triangle is set up like this:
+		#
+		# 	   		   cam_angle
+		# 			     /  \
+		# 			    /    \
+		#   cam_to_tag /      \ cam_to_click (?)
+		#             /        \
+		#            /          \
+		#    tag_angle (?)----click_angle (?)
+		#                   |
+		#              tag_to_click
+        #
+		# The values with a question mark are initially unknown
 
-			# Triangle is set up like this:
-			#
-			# 	   		   cam_angle
-			# 			     /  \
-			# 			    /    \
-			#   cam_to_tag /      \ cam_to_click (?)
-			#             /        \
-			#            /          \
-			#    tag_angle (?)----click_angle (?)
-			#                   |
-			#              tag_to_click
-            #
-   			# The values with a question mark are initially unknown
+		#The triangle solver needs more information to disambiguate triangles, so find tag angle
+		#The ray to the camera points to the origin, so it's just the tag location, normalized to a unit vector
+		mag = math.sqrt(math.pow(self.currentX_px, 2) + math.pow(self.currentY_px, 2) + math.pow(self.currentZ/self.conversion,2))
+		ray_to_cam = (self.currentX_px/mag, self.currentY_px/mag, (self.currentZ/self.conversion)/mag)
+		# #The ray to the click is the click location minus the tag location, the Z values are the same,
+		# #so the result of subtracting them is 0
+		mag = math.sqrt(math.pow(self.currentX_px - px_x, 2) + math.pow(self.currentY_px - px_y, 2))
+		ray_to_click_from_tag = ((self.currentX_px - px_x)/mag, (self.currentY_px - px_y)/mag, 0)
 
-   			#The triangle solver needs more information to disambiguate triangles, so find tag angle
-   			#The ray to the camera points to the origin, so it's just the tag location, normalized to a unit vector
-   			mag = math.sqrt(math.pow(self.currentX_px, 2) + math.pow(self.currentY_px, 2) + math.pow(self.currentZ/self.conversion,2))
-   			ray_to_cam = (self.currentX_px/mag, self.currentY_px/mag, (self.currentZ/self.conversion)/mag)
-   			# #The ray to the click is the click location minus the tag location, the Z values are the same,
-   			# #so the result of subtracting them is 0
-   			mag = math.sqrt(math.pow(self.currentX_px - px_x, 2) + math.pow(self.currentY_px - px_y, 2))
-   			ray_to_click_from_tag = ((self.currentX_px - px_x)/mag, (self.currentY_px - px_y)/mag, 0)
+		#Get the angle between the ray from the tag to the camera, and the ray from the tag to the click
+		tag_angle = math.acos(dot(ray_to_cam, ray_to_click_from_tag))
+		
+		#Solve for the unknowns with trianglesolver (https://pypi.org/project/trianglesolver/)
+		cam_to_click, cam_to_tag, tag_to_click, tag_angle, click_angle, cam_angle = solve(b=cam_to_tag, c=tag_to_click, A=tag_angle)#, C=cam_angle)
 
-   			tag_angle = math.acos(dot(ray_to_cam, ray_to_click_from_tag))
-   			print dot(ray_to_cam, ray_to_click_from_tag), tag_angle
+		#Set up the target point, this is all in meters in the camera frame
+		self.targetX = px_x/self.conversion
+		self.targetY = px_y/self.conversion
+		self.targetZ = cam_to_click
 
+		# Get the error in x and y directions between current position and target position
+		x = self.targetX - tag.pose.pose.position.x 
+		y = self.targetY - tag.pose.pose.position.y
+		z = self.targetZ - self.currentZ
 
-			#Solve for the unknowns with trianglesolver (https://pypi.org/project/trianglesolver/)
-			cam_to_click, cam_to_tag, tag_to_click, tag_angle, click_angle, cam_angle = solve(b=cam_to_tag, c=tag_to_click, A=tag_angle)#, C=cam_angle)
+		#Get the robot's orientation vector by multiplying its orientation quaternion with an unrotated vector
+		#Of length one pointing forwards (x is forwards in ROS)
+		p = [1,0,0,0]
+		q = tag.pose.pose.orientation
+		q = [q.x, q.y, q.z, q.z]
 
-			print cam_to_click, cam_to_tag, tag_to_click, tag_angle, click_angle, cam_angle
+		q_prime = trans.quaternion_conjugate(q)
+		p_prime = trans.quaternion_multiply(trans.quaternion_multiply(q,p), q_prime)
 
-		print "Click ({}, {}), Current px ({}, {})".format(point_msg.point.x, point_msg.point.y, self.currentX_px, self.currentY_px)		
-		# #Convert point in pixels to meters in app frame
-		# targetPoint = PointStamped()
-		# targetPoint.header.frame_id = "ui_app"
-		# targetPoint.header.stamp = rospy.Time(0)
-		# #Convert to meters and move origin
-		# targetPoint.point.x = (point_msg.point.x / self.conversion) - (img_w_m/2)
-		# targetPoint.point.y = (point_msg.point.y / self.conversion) - (img_h_m/2)
-		# targetPoint.point.z = 0.0 #Don't care about 3d location?
+		#Get the vector out
+		x1 = p_prime[0]
+		y1 = p_prime[1]
+		z1 = p_prime[2]
 
-		# #Get a transform from the app to the camera frame
-		# if self.tf.frameExists("ui_app") and self.tf.frameExists("camera_frame"):
-		# 	targetPoint = self.tf.transformPoint("camera_frame", targetPoint)
+		#Angle between two vectors 
+		v1 = [x,y,z]
+		v2 = [x1,y1,z1]
+		mag1 = math.sqrt(sum([pow(v, 2) for v in v1]))
+		mag2 = math.sqrt(sum([pow(v, 2) for v in v2]))
+		dot = sum([v[0] * v[1] for v in zip(v1,v2)])
 
+		#Angle to the clicked point
+		print "Angle {}".format(math.acos(dot/(mag1*mag2)))
 
-		# self.targetX = targetPoint.point.x
-		# self.targetY = targetPoint.point.y
-
-		# print self.conversion
-		# print ("Current ({}, {}), Target ({}, {})").format(self.currentX, self.currentY, self.targetX, self.targetY)
-
-		# #Calculate the error between the rotation of the robot and orientation towards the point
-		# x = self.targetX - tag.pose.pose.position.x 
-		# y = self.targetY - tag.pose.pose.position.y
-		# z = tag.pose.pose.position.z #I don't care about the height of the tag
-
-		# #Get the robot's orientation vector by multiplying its orientation quaternion with an unrotated vector
-		# #Of length one pointing forwards (x is forwards in ROS)
-		# p = [1,0,0,0]
-		# q = tag.pose.pose.orientation
-		# q = [q.x, q.y, q.z, q.z]
-
-		# q_prime = trans.quaternion_conjugate(q)
-		# p_prime = trans.quaternion_multiply(trans.quaternion_multiply(q,p), q_prime)
-
-		# #Get the vector out
-		# x1 = p_prime[0]
-		# y1 = p_prime[1]
-		# z1 = p_prime[2]
-
-		# #Angle between two vectors 
-		# v1 = [x,y,z]
-		# v2 = [x1,y1,z1]
-		# mag1 = math.sqrt(sum([pow(v, 2) for v in v1]))
-		# mag2 = math.sqrt(sum([pow(v, 2) for v in v2]))
-		# dot = sum([v[0] * v[1] for v in zip(v1,v2)])
-
-		# #Angle
-		# print math.acos(dot/(mag1*mag2))
-
-
-		# #Caclulate the error between the location of the robot and the location of the point
-		# errDist = math.sqrt(pow(tag.pose.pose.position.x - self.targetX,2) + pow(tag.pose.pose.position.y - self.targetY,2))
-		# print "distance", errDist
+		#Calculate the error between the location of the robot and the location of the point
+		errDist = math.sqrt(pow(self.currentX - self.targetX,2) + pow(self.currentY- self.targetY,2))
+		print "Distance {}".format(errDist)
+		
 		#Generate a twist message and send it to the robot
 
 
@@ -219,13 +198,13 @@ class Point_Driver():
 if __name__ == '__main__':
 	rospy.init_node('point_driver', anonymous=True)
 
-	pd = Point_Driver()
+	pc = Point_Converter()
 
-	loc_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, pd.update_tags)
+	loc_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, pc.update_tags)
 
-	go_sub = rospy.Subscriber('/touches', PointStamped, pd.update_target)
+	go_sub = rospy.Subscriber('/touches', PointStamped, pc.update_target)
 
-	cam_sub = rospy.Subscriber('/overhead_cam/camera_info', CameraInfo, pd.update_cam)
+	cam_sub = rospy.Subscriber('/overhead_cam/camera_info', CameraInfo, pc.update_cam)
 
 	rospy.spin()
 
