@@ -124,21 +124,21 @@ class Point_Driver():
 
    			#The triangle solver needs more information to disambiguate triangles, so find tag angle
    			#The ray to the camera points to the origin, so it's just the tag location, normalized to a unit vector
-   			# mag = math.sqrt(math.pow(self.currentX_px, 2) + math.pow(self.currentY_px, 2) + math.pow(self.currentZ/self.conversion,2))
-   			# ray_to_cam = (self.currentX_px/mag, self.currentY_px/mag, (self.currentZ/self.conversion)/mag)
+   			mag = math.sqrt(math.pow(self.currentX_px, 2) + math.pow(self.currentY_px, 2) + math.pow(self.currentZ/self.conversion,2))
+   			ray_to_cam = (self.currentX_px/mag, self.currentY_px/mag, (self.currentZ/self.conversion)/mag)
    			# #The ray to the click is the click location minus the tag location, the Z values are the same,
    			# #so the result of subtracting them is 0
-   			# mag = math.sqrt(math.pow(self.currentX_px - px_x, 2) + math.pow(self.currentY_px - px_y, 2))
-   			# ray_to_click_from_tag = (self.currentX_px - px_x, self.currentY_px - px_y, 0)
+   			mag = math.sqrt(math.pow(self.currentX_px - px_x, 2) + math.pow(self.currentY_px - px_y, 2))
+   			ray_to_click_from_tag = ((self.currentX_px - px_x)/mag, (self.currentY_px - px_y)/mag, 0)
 
-   			# tag_angle = math.acos(dot(ray_to_cam, ray_to_click_from_tag))
-   			# print dot(ray_to_cam, ray_to_click_from_tag), tag_angle
+   			tag_angle = math.acos(dot(ray_to_cam, ray_to_click_from_tag))
+   			print dot(ray_to_cam, ray_to_click_from_tag), tag_angle
 
 
 			#Solve for the unknowns with trianglesolver (https://pypi.org/project/trianglesolver/)
-			cam_to_click, cam_to_click, tag_to_click, tag_angle, click_angle, cam_angle = solve(b=cam_to_tag, c=tag_to_click, C=cam_angle)
+			cam_to_click, cam_to_tag, tag_to_click, tag_angle, click_angle, cam_angle = solve(b=cam_to_tag, c=tag_to_click, A=tag_angle)#, C=cam_angle)
 
-			print cam_to_click, cam_to_click, tag_to_click, tag_angle, click_angle, cam_angle
+			print cam_to_click, cam_to_tag, tag_to_click, tag_angle, click_angle, cam_angle
 
 		print "Click ({}, {}), Current px ({}, {})".format(point_msg.point.x, point_msg.point.y, self.currentX_px, self.currentY_px)		
 		# #Convert point in pixels to meters in app frame
