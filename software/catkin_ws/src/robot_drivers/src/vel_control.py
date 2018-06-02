@@ -8,6 +8,16 @@ from image_geometry import PinholeCameraModel
 from sensor_msgs.msg import CameraInfo
 from trianglesolver import solve
 
+#Euclidean distance
+def dist(a, b):
+	assert len(a) == len(b)
+	return math.sqrt(sum([math.pow(i-j, 2) for i, j in zip(a,b)]))
+
+
+#Dot product
+def dot(a, b):
+	assert len(a) == len(b)
+	return sum([i * j for i, j in zip(a, b)])
 
 class PointDriver(object):
 
@@ -18,9 +28,30 @@ class PointDriver(object):
 
 		self.robot_id = 8
 
+	#Doesn't do much, tag update is the real workhorse
 	def updatePoint(self, point_msg):
+		self.targetX = point_msg.point.x
+		self.targetY = point_msg.point.y
+		self.targetZ = point_msg.point.z
 
-		# Get the error in x and y directions between current position and target position
+		
+	def updateTags():
+		#Get the location of this robot from the tag
+		tag = None
+		try:
+			tag = [x for x in tags_msg.detections if x.id == self.robot_id][0]
+		except IndexError as ie:
+			#This is caused by there not being a detection of the tag in this set of 
+			#tag detections
+			rospy.logwarn("Didn't see tag {0} in this frame".format(self.robot_id))
+			return 
+
+		#Get the current location
+		self.currentX = tag.pose.pose.position.x 
+		self.currentY = tag.pose.pose.position.y 
+		self.currentZ = tag.pose.pose.position.z 
+
+		# Get the ray to the target point
 		x = self.targetX - self.currentX
 		y = self.targetY - self.currentY
 		z = self.targetZ - self.currentZ
@@ -44,35 +75,14 @@ class PointDriver(object):
 		v2 = [x1,y1,z1]
 		mag1 = math.sqrt(sum([pow(v, 2) for v in v1]))
 		mag2 = math.sqrt(sum([pow(v, 2) for v in v2]))
-		dot = sum([v[0] * v[1] for v in zip(v1,v2)])
+		dot = dot(v1, v2)
 
 		#Angle to the clicked point
 		print "Angle {}".format(math.acos(dot/(mag1*mag2)))
 
 		#Calculate the error between the location of the robot and the location of the point
-		errDist = math.sqrt(pow(self.currentX - self.targetX,2) + pow(self.currentY- self.targetY,2))
+		errDist = dist((self.currentX, self.currentY), (self.targetX, self.targetY))
 		print "Distance {}".format(errDist)
-		
-	def updateTags():
-		#Get the location of this robot from the tag
-		tag = None
-		try:
-			tag = [x for x in tags_msg.detections if x.id == self.robot_id][0]
-		except IndexError as ie:
-			#This is caused by there not being a detection of the tag in this set of 
-			#tag detections
-			rospy.logwarn("Didn't see tag {0} in this frame".format(self.robot_id))
-			return 
-
-		#Calculate the pixel to mm conversion for this tag
-		#Get the distance between two adjacent corners in pixels
-		dist = math.sqrt(math.pow((tag.tagCornersPx[0].x - tag.tagCornersPx[1].x), 2) + math.pow((tag.tagCornersPx[0].y - tag.tagCornersPx[1].y), 2))
-		#Convert to pixels/m
-		self.conversion = dist/self.tagsize
-
-		self.currentX = tag.pose.pose.position.x 
-		self.currentY = tag.pose.pose.position.y 
-		self.currentZ = tag.pose.pose.position.z 
 
 		#Generate a twist message and send it to the robot
 
@@ -103,6 +113,7 @@ if __name__ == '__main__':
 
 	pd = PointDriver()
 
-	loc_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, pd.update_tags)
+	loc_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, pd.updateTags)
 
+	point_sub = rospy.Subscriber('/converted_point', PointStamped, pd.updatePoint)
 	rospy.spin()
