@@ -51,6 +51,8 @@ class Point_Converter():
 		#We can use pretty much any tag, we just need to get the tag size
 		tag = None
 		for tag in tags_msg.detections:
+			if tag is None:
+				return
 			if tag.id in self.tagsizes.keys():
 				break
 
@@ -146,7 +148,7 @@ class Point_Converter():
 		self.pub.publish(point)
 		
 if __name__ == '__main__':
-	rospy.init_node('point_driver', anonymous=True)
+	rospy.init_node('point_converter', anonymous=True)
 
 	pc = Point_Converter()
 

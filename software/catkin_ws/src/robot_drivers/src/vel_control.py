@@ -93,6 +93,8 @@ class PointDriver(object):
 
 		#Angle to the clicked point relative to robot heading
 		desired_heading = math.acos(d/(mag1*mag2))
+ 		print "Desired: {} Current: {}".format(desired_heading, current_heading)
+
  		smallest_angle = math.atan2(math.sin(current_heading-desired_heading), math.cos(current_heading-desired_heading))
  		print "Turn angle: {}".format(smallest_angle)
  		
@@ -100,10 +102,9 @@ class PointDriver(object):
 		errDist = dist((self.currentX, self.currentY), (self.targetX, self.targetY))
 		print "Distance {}".format(errDist)
 
-
 		#Generate a twist message and send it to the robot
 		linear = 0
-		rotational = smallest_angle
+		rotational = smallest_angle * 5
 
 		rTwist = Twist()
 		#only two params are used for robots on a table
@@ -119,7 +120,7 @@ class PointDriver(object):
 
 
 if __name__ == '__main__':
-	rospy.init_node('point_driver', anonymous=True)
+	rospy.init_node('vel_driver', anonymous=True)
 
 	pd = PointDriver()
 

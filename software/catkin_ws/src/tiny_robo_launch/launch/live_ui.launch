@@ -33,4 +33,26 @@
 
 	<node name="destutter" pkg="user_interface" type="destutter.py" output="screen"/>
 	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py"/>
+
+	<node name="point_translator" pkg="robot_drivers" type="point_mapper.py" output="screen"/>
+
+	<node name="vel_ctl" pkg="robot_drivers" type="vel_control.py" output="screen"/>
+
+	<!-- Motor translation for tank-style driving -->
+	<node pkg="motor_translation" type="differential_node" name="diff_drive_node" output="screen">
+		<param name="/driver_name" value="/cmd_vel" type="str" />
+	</node>
+
+	<!-- Motor power limiting -->
+	<!--'192.168.1.119' hexbugbase
+		'192.168.1.176' medium-size tank
+		'192.168.1.218' small white tank
+		'192.168.1.101' bigger wheel
+		'192.168.1.243' Blue tank
+	-->
+	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
+		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
+		<param name="robot_addr" value="192.168.1.243" type="str" />
+	</node>
+
 </launch>
