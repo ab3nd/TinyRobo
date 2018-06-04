@@ -40,7 +40,7 @@ class Point_Converter():
 		all_tags = rospy.get_param('/apriltag_detector/tag_descriptions')
 		self.tagsizes = {0:0.051} #default, but we try to update it
 		for tag in all_tags:
-			self.tagsizes['id'] = tag['size']
+			self.tagsizes[tag['id']] = tag['size']
 
 		#For converting pixels to meters, and camera geometry math
 		self.conversion = 0.0
@@ -51,15 +51,15 @@ class Point_Converter():
 		#We can use pretty much any tag, we just need to get the tag size
 		tag = None
 		for tag in tags_msg.detections:
-			if tag['id'] in self.tagsizes.keys():
+			if tag.id in self.tagsizes.keys():
 				break
 
-		tagsize = self.tagsizes[tag['id']]
+		tagsize = self.tagsizes[tag.id]
 		#Calculate the pixel to mm conversion for this tag
 		#Get the distance between two adjacent corners in pixels
-		dist = dist((tag.tagCornersPx[0].x, tagCornersPx[0].y), (tag.tagCornersPx[1].x, tag.tagCornersPx[1].y))
+		d = dist((tag.tagCornersPx[0].x, tag.tagCornersPx[0].y), (tag.tagCornersPx[1].x, tag.tagCornersPx[1].y))
 		#Convert to pixels/m
-		self.conversion = dist/tagsize
+		self.conversion = d/tagsize
 
 		self.currentX = tag.pose.pose.position.x 
 		self.currentY = tag.pose.pose.position.y 

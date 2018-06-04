@@ -31,9 +31,6 @@
 	<!-- Camera position in the world -->
 	<node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
-	<!-- App relative to camera -->
-	<node pkg="tf" type="static_transform_publisher" name="app_broadcaster" args="0 0 0 0 0 0 1 camera_frame ui_app 50" />
-
 	<node name="destutter" pkg="user_interface" type="destutter.py" output="screen"/>
 	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py"/>
 </launch>

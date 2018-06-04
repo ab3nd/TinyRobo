@@ -7,6 +7,7 @@ import math
 from image_geometry import PinholeCameraModel
 from sensor_msgs.msg import CameraInfo
 from trianglesolver import solve
+from tf import transformations as transf
 
 #Euclidean distance
 def dist(a, b):
@@ -28,6 +29,8 @@ class PointDriver(object):
 
 		self.robot_id = 8
 
+		self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=0)
+
 	#Doesn't do much, tag update is the real workhorse
 	def updatePoint(self, point_msg):
 		self.targetX = point_msg.point.x
@@ -35,7 +38,7 @@ class PointDriver(object):
 		self.targetZ = point_msg.point.z
 
 		
-	def updateTags():
+	def updateTags(self, tags_msg):
 		#Get the location of this robot from the tag
 		tag = None
 		try:
@@ -51,6 +54,17 @@ class PointDriver(object):
 		self.currentY = tag.pose.pose.position.y 
 		self.currentZ = tag.pose.pose.position.z 
 
+		w = tag.pose.pose.orientation.w
+		x = tag.pose.pose.orientation.x
+		y = tag.pose.pose.orientation.y
+		z = tag.pose.pose.orientation.z
+
+		#Update the robot's heading.
+		#The roll direction is what I'd call yaw.
+		#RPY are ambiguious, nothing to be done for it.
+		(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
+		current_heading = roll
+
 		# Get the ray to the target point
 		x = self.targetX - self.currentX
 		y = self.targetY - self.currentY
@@ -62,8 +76,8 @@ class PointDriver(object):
 		q = tag.pose.pose.orientation
 		q = [q.x, q.y, q.z, q.z]
 
-		q_prime = trans.quaternion_conjugate(q)
-		p_prime = trans.quaternion_multiply(trans.quaternion_multiply(q,p), q_prime)
+		q_prime = transf.quaternion_conjugate(q)
+		p_prime = transf.quaternion_multiply(transf.quaternion_multiply(q,p), q_prime)
 
 		#Get the vector out
 		x1 = p_prime[0]
@@ -75,36 +89,32 @@ class PointDriver(object):
 		v2 = [x1,y1,z1]
 		mag1 = math.sqrt(sum([pow(v, 2) for v in v1]))
 		mag2 = math.sqrt(sum([pow(v, 2) for v in v2]))
-		dot = dot(v1, v2)
+		d = dot(v1, v2)
 
-		#Angle to the clicked point
-		print "Angle {}".format(math.acos(dot/(mag1*mag2)))
-
+		#Angle to the clicked point relative to robot heading
+		desired_heading = math.acos(d/(mag1*mag2))
+ 		smallest_angle = math.atan2(math.sin(current_heading-desired_heading), math.cos(current_heading-desired_heading))
+ 		print "Turn angle: {}".format(smallest_angle)
+ 		
 		#Calculate the error between the location of the robot and the location of the point
 		errDist = dist((self.currentX, self.currentY), (self.targetX, self.targetY))
 		print "Distance {}".format(errDist)
 
+
 		#Generate a twist message and send it to the robot
+		linear = 0
+		rotational = smallest_angle
 
+		rTwist = Twist()
+		#only two params are used for robots on a table
+		rTwist.linear.x = linear
+		rTwist.angular.z = rotational
+		#The rest are not used
+		rTwist.linear.y = rTwist.linear.z = 0
+		rTwist.angular.x = rTwist.angular.y = 0
 
-		# rate = rospy.Rate(0.3) #Every three seconds
-		# while not rospy.is_shutdown():
-		# 	#Random linear and rotational velocites
-		# 	#Twists are usually in m/sec, but 1m/sec is plenty fast for any of my robots
-		# 	#These are in the range +/-1, more or less 
-		# 	linear = (random.random()*2)-1
-		# 	rotational = (random.random()*2)-1
-
-		# rTwist = Twist()
-		# #only two params are used for robots on a table
-		# rTwist.linear.x = linear
-		# rTwist.angular.z = rotational
-		# #The rest are not used
-		# rTwist.linear.y = rTwist.linear.z = 0
-		# rTwist.angular.x = rTwist.angular.y = 0
-
-		# #publish it and wait
-		# self.pub.publish(rTwist)
+		#publish it and wait
+		self.pub.publish(rTwist)
 
 
 
