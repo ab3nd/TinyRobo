@@ -27,7 +27,7 @@ class PointDriver(object):
 		self.targetY = self.currentY = 0
 		self.targetZ = self.currentZ = 0
 
-		self.robot_id = 8
+		self.robot_id = 0
 
 		self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=0)
 
@@ -64,47 +64,28 @@ class PointDriver(object):
 		#RPY are ambiguious, nothing to be done for it.
 		(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
 		current_heading = roll
-
+		#print "Robot heading {}".format(current_heading)
+		
 		# Get the ray to the target point
 		x = self.targetX - self.currentX
 		y = self.targetY - self.currentY
 		z = self.targetZ - self.currentZ
 
-		#Get the robot's orientation vector by multiplying its orientation quaternion with an unrotated vector
-		#Of length one pointing forwards (x is forwards in ROS)
-		p = [1,0,0,0]
-		q = tag.pose.pose.orientation
-		q = [q.x, q.y, q.z, q.z]
+		#I'm not concerned about z at the moment
+		target_angle = math.atan2(y,x)
+		#print "Click angle {}".format(target_angle)
 
-		q_prime = transf.quaternion_conjugate(q)
-		p_prime = transf.quaternion_multiply(transf.quaternion_multiply(q,p), q_prime)
-
-		#Get the vector out
-		x1 = p_prime[0]
-		y1 = p_prime[1]
-		z1 = p_prime[2]
-
-		#Angle between two vectors 
-		v1 = [x,y,z]
-		v2 = [x1,y1,z1]
-		mag1 = math.sqrt(sum([pow(v, 2) for v in v1]))
-		mag2 = math.sqrt(sum([pow(v, 2) for v in v2]))
-		d = dot(v1, v2)
-
-		#Angle to the clicked point relative to robot heading
-		desired_heading = math.acos(d/(mag1*mag2))
- 		print "Desired: {} Current: {}".format(desired_heading, current_heading)
-
- 		smallest_angle = math.atan2(math.sin(current_heading-desired_heading), math.cos(current_heading-desired_heading))
- 		print "Turn angle: {}".format(smallest_angle)
+		#This will be between +/- Pi
+		smallest_angle = math.atan2(math.sin(current_heading-target_angle), math.cos(current_heading-target_angle))
+ 	 	print "Turn angle: {}".format(smallest_angle)
  		
-		#Calculate the error between the location of the robot and the location of the point
-		errDist = dist((self.currentX, self.currentY), (self.targetX, self.targetY))
-		print "Distance {}".format(errDist)
+		# #Calculate the error between the location of the robot and the location of the point
+		# errDist = dist((self.currentX, self.currentY), (self.targetX, self.targetY))
+		# print "Distance {}".format(errDist)
 
-		#Generate a twist message and send it to the robot
+		# #Generate a twist message and send it to the robot
 		linear = 0
-		rotational = smallest_angle * 5
+		rotational = smallest_angle/math.pi
 
 		rTwist = Twist()
 		#only two params are used for robots on a table
@@ -114,10 +95,8 @@ class PointDriver(object):
 		rTwist.linear.y = rTwist.linear.z = 0
 		rTwist.angular.x = rTwist.angular.y = 0
 
-		#publish it and wait
+		#Ship it!
 		self.pub.publish(rTwist)
-
-
 
 if __name__ == '__main__':
 	rospy.init_node('vel_driver', anonymous=True)

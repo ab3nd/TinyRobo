@@ -32,7 +32,7 @@
 	<node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
 	<node name="destutter" pkg="user_interface" type="destutter.py" output="screen"/>
-	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py"/>
+	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen"/>
 
 	<node name="point_translator" pkg="robot_drivers" type="point_mapper.py" output="screen"/>
 
@@ -52,7 +52,7 @@
 	-->
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
-		<param name="robot_addr" value="192.168.1.243" type="str" />
+		<param name="robot_addr" value="192.168.1.176" type="str" />
 	</node>
 
 </launch>
