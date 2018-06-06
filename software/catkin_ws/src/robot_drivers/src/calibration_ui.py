@@ -10,6 +10,7 @@ from geometry_msgs.msg import PointStamped, Twist
 from apriltags_ros.msg import *
 import pygame
 from pygame.locals import *
+import time
 
 def main():
 	# Initialise screen
@@ -37,7 +38,7 @@ def main():
 	send_twist = False
 	linear = 0.0
 	rotational = 0.0
-	increment = 0.02
+	increment = 0.1
 
 	#Intialize ros stuff
 	rospy.init_node('cal_ui', anonymous=True)
@@ -52,6 +53,9 @@ def main():
 	t.linear.y = t.linear.z = 0
 	t.angular.x = t.angular.y = 0
 	pub.publish(t)
+
+	#Start timing for heartbeat
+	last_pub = time.time()
 
 	# Event loop
 	while 1:
@@ -72,6 +76,14 @@ def main():
 					#Any other key is stop
 					linear = rotational = 0.0
 
+			#Bounds check
+			linear = min(1.0, max(-1.0, linear))
+			rotational = min(1.0, max(-1.0, rotational))
+			
+		#Check heartbeat time, send twists every 1/8th second
+		if time.time() - last_pub > 0.125:
+			send_twist = True
+
 		if send_twist:
 			t = Twist()
 			#only two params are used for robots on a table
@@ -82,7 +94,8 @@ def main():
 			t.angular.x = t.angular.y = 0
 			pub.publish(t)
 
-			#Don't resend until another key is pressed
+			#Don't resend until another key is pressed or heartbeat times out
+			last_pub = time.time()
 			send_twist = False
 
 			background = pygame.Surface(screen.get_size())
