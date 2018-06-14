@@ -1780,3 +1780,132 @@ Kenneth O. Stanley, Risto Miikkulainen
 	Similar topologies are assigned to niches, compete with each other
 		Allows topological changes that may initially reduce fitness to become useful
 	
+An indirect adaptive robot controller
+	Weiping Li, Jean-Jacques E. Slotine
+	Manipulator control, in the late 80's
+	Concerned with tracking and adaption, possibly to change in the manipulator due to other forces?
+	I suspect a lot of this is rolled into modern controllers at a level below what most people care about. 
+	Similar to motion in space (the controller drives the manipulator to a path)
+
+Exponential Convergence of a Learning Controller for Robot Manipulators 
+Roberto Horowitz, William Messner, and John B. Moore 
+	Early 90s, learning controller
+	Didn't really get the math in this one
+
+A Robust Adaptive Robot Controller 
+Harry Berghuis, Romeo Ortega, and Henk Nijmeijer 
+	Also early 90's
+	Also gnarly control theory math, I'm just writing down the terms I don't understand for looking up later
+
+A Brachiating Robot Controller
+Jun Nakanishi, Toshio Fukuda, Daniel E. Koditschek
+	y2k, so more modern than the others by about 10 years. 
+	Seems to have different methods of proving the controller works for different motion tasks
+	Again, the math is out of my league
+
+Optimal Design of CMAC Neural-Network Controller for Robot Manipulators
+Young H. Kim and Frank L. Lewis
+	1997
+	Neural network dealing with nonlinear effects on top of a linear controller
+	
+Decentralized controllers for shape generation with robotic swarms
+M. Ani Hsieh, Vijay Kumar, and Luiz Chaimowicz		
+	2008
+	Typical swarm robot description, no communication of internal state
+	Uses an artificial potential function for inter-robot interaction and location
+		It operates in a coordinate frame, in other words
+	But the math is simple enough that I get it!
+		The system is in equilibrium when no robots are moving
+		q-dot = v = 0 (change in position and velocity are zero)
+		Change in velocity is given by the potential field and driving towards the desired curve
+		So when the potential field and driving force drop to zero, the system is in equilibrium
+	Almost...
+		They then break out a big function that looks suspiciously like the forms of some of the Lypunov function canidates from the previous papers. 
+	Once they have the proofs of driving to a simple closed curve, they then generalize to RBFs
+		Shapes can then be generated to create a vector feild with an ... arbitrary zero isocontour?
+		Probably closed forms only, an isocontour can't have a gap in it
+			(in practice, you could just add a "And don't be in this area" term)
+	Paper also points out that doing pattern generation in a coordinate frame without localization is "difficult"
+
+
+Controlling Swarms of Robots Using Interpolated Implicit Functions
+Luiz Chaimowicz, Nathan D. Michael, Vijay Kumar
+2005
+	Radial basis functions for 2d curves, as in previous paper. 
+	They also use holonomic robots, which is nice
+
+Cooperative transport by ants and robots
+C. Ronald Kube, Eric Bonabeau
+2000
+	Uses finite state machines for control
+	Doesn't really talk about proof, but has some demonstrations
+
+
+SYNTHESIS OF WHOLE-BODY BEHAVIORS THROUGH HIERARCHICAL CONTROL OF BEHAVIORAL PRIMITIVES
+Luis Sentis and Oussama Khatib
+2005
+	Swaps behaviors during movement
+	Control heirarchy to avoid problems with safety/running into stuff
+	"Null space" at one point is a space of motion with no effects on preceeding levels of heirarchy	
+
+Using Controller-Synthesis Techniques to Build
+Property-Enforcing Layers
+Karine Altisen, Aurelie Clodic, Florence Maraninchi, and Eric Rutten
+	Intermediate layer that enforces constraints of an entire system 
+	May delay or prevent requests to the system that violate constraints
+	Controller synthesis with Mealy machines
+	Theoretical results on automata, so I may be able to generalize from expressing my robot control programs as automata and then getting the formal results there.
+
+On Formal Specification of Emergent Behaviours in Swarm Robotic Systems
+Alan FT Winfield, Jin Sa, Mari-Carmen Fernandez-Gago, Clare Dixon, Michael Fisher
+	Mentions a previous paper with a description of a 'dependable swarm' (Winfield et all 2005)
+	Also cites some other papers on modeling of swarms
+
+	Suggested method is:
+	"1. Formally specify the individual robots , including their safety and liveness properties.
+	2. Formally specify the swarm by combining the specifications of individual robots.
+	3. Formally specify any anticipated or desired emergent behaviours.
+	4. Carry out proofs to determine if the swarm specification satisfies any of the emergent behaviours"
+		The problem with doing this on my swarm is that the desired emergent behavior is specified by the user.
+
+	Safeness vs. Liveness makes sense for me to examine
+		Safeness is the set of actions that don't break the system
+			Only safeness -> nothing is certain to happen
+		Liveness specifies what wil occur
+			Only liveness -> nothing is guaranteed to not break
+
+	Specification is in the form of logic, which I understand a LOT better than control theory.
+	Enforces asyncrony, only one robot may be taking an action at a time
+		this is a hell of a constraint for a swarm...
+	Bah. Paper then goes on to say what they're looking into for automated proofs, but not that they actually have proved anything yet. 
+		Mapping spec into monodic first order temporal logic
+			Solver called TeMP to carry out the proofs
+			They note that it takes a long time. I wonder if anyone has done GPU-based logic provers?
+				(Yes)
+
+The Freeze-Tag Problem: How to Wake Up a Swarm of Robots
+Esther M. Arkin, Michael A. Bender, Sandor P. Fekete, Joseph S. B. Mitchell, Martin Skutella
+	Interesting proof technique (exchange argument)
+
+Algorithms for Rapidly Dispersing Robot Swarms in Unknown Environments
+Tien-Ruey Hsiang, Esther M. Arkin, Michael A. Bender, Sandor P. Fekete, and Joseph S. B. Mitchell
+	Artifical physics has no guarantees on dispersion time
+	Greedy algorithms can enter loops and never complete dispersion
+	Uses proofs on states of robots and "pixels" of the environment that the robot can occupy
+	Discretizes movement and position
+
+Stochastic  Strategies  for  a  Swarm  Robotic  Assembly  System
+Loıc Matthey, Spring Berman and Vijay Kumar
+	Modeled using chemical reaction network (CRN)
+	Robots assembling parts scattered randomly around a space
+	Stochastic control policies
+	Conversion of chemical reaction network into an ODE abstraction
+		Couldn't use eignevalues due to difficulty finding an anlytic expression
+		Estimated time to completion by linearizing around equilibrium
+			Optimized estimated time to completion
+
+Pattern Generation with Multiple Robots
+Mong-ying A. Hsieh and Vijay Kumar
+	Similar to the other papers from Kumar's group's work
+	Adds constraint to maintain communication network
+	

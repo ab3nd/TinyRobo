@@ -1,0 +1,357 @@
+
+Possible support or lack therof for hypotheses
+
+H1 - Gestures used change as robot count changes
+
+	The gestures used by each user on each task were normalized by dividing by the number of total gestures that that user used to perform the task. As a result, each gesture value becomes a proportion of the total gestures, rather than a raw count of actions. 
+
+	For each task, the gestures for each pair of conditions (unknown, 1, 10, 100, 1000) were used as the data for an ANOVA. A low p-value indicates that there was a statisically significant difference between the uses of that gesture for that task, between those conditions. Only the cases with p < 0.05 are reproduced below. 
+
+		task: split, gesture: tap, F=6.28040, p=0.02203
+		For one and unknown, out of 126, 1 were statistically signficant (a = 0.05)
+
+		task: divide_color_1, gesture: lasso, F=5.65959, p=0.02863
+		task: divide_color_2, gesture: lasso, F=5.91803, p=0.02564
+		task: move_a, gesture: lasso, F=5.30939, p=0.03334
+		For one and ten, out of 154, 3 were statistically signficant (a = 0.05)
+
+		task: divide_color_2, gesture: drag, F=8.77070, p=0.00836
+		task: patrol_screen, gesture: tap, F=6.47060, p=0.02036
+		For one and hundred, out of 154, 2 were statistically signficant (a = 0.05)
+
+		task: crate, gesture: tap, F=5.27966, p=0.03378
+		task: move_wall, gesture: drag, F=4.63636, p=0.04511
+		task: patrol_screen, gesture: tap, F=7.75467, p=0.01223
+		task: split, gesture: tap, F=6.28040, p=0.02203
+		For one and thousand, out of 154, 4 were statistically signficant (a = 0.05)
+
+		task: divide, gesture: lasso, F=6.00000, p=0.02477
+		task: divide_color_1, gesture: lasso, F=5.65959, p=0.02863
+		task: merge, gesture: lasso, F=5.84357, p=0.02647
+		task: merge, gesture: pinch, F=5.33684, p=0.03294
+		task: move_a, gesture: lasso, F=5.30939, p=0.03334
+		task: square, gesture: draw, F=11.10593, p=0.00371
+		For unknown and ten, out of 224, 6 were statistically signficant (a = 0.05)
+
+		task: disperse, gesture: box, F=5.16938, p=0.03547
+		task: line, gesture: box, F=5.18919, p=0.03516
+		task: merge, gesture: box, F=5.97561, p=0.02503
+		task: merge, gesture: pinch, F=11.29412, p=0.00348
+		For unknown and hundred, out of 224, 4 were statistically signficant (a = 0.05)
+
+		task: divide, gesture: drag, F=6.98686, p=0.01652
+		task: split, gesture: rev_pinch, F=5.11833, p=0.03628
+		For unknown and thousand, out of 224, 2 were statistically signficant (a = 0.05)
+
+		task: merge, gesture: box, F=5.56329, p=0.02985
+		For ten and hundred, out of 252, 1 were statistically signficant (a = 0.05)
+
+		task: crate, gesture: tap, F=4.65366, p=0.04475
+		task: crate_dispersed, gesture: tap, F=5.67143, p=0.02849
+		task: divide_color_1, gesture: lasso, F=5.65959, p=0.02863
+		task: merge, gesture: lasso, F=5.84357, p=0.02647
+		task: square, gesture: draw, F=11.38394, p=0.00338
+		task: stop, gesture: drag, F=5.73522, p=0.02772
+		For ten and thousand, out of 252, 6 were statistically signficant (a = 0.05)
+
+		task: disperse, gesture: box, F=5.16938, p=0.03547
+		For hundred and thousand, out of 252, 1 were statistically signficant (a = 0.05)
+
+	Each user's actions per task were normalized by dividing by the total number of gestures that that user used to perform the task, so each gesture was represented as a proportion of the total gestures used on that task. Across all 9 common tasks (those tasks that all conditions saw), the proportions of each gesture were collected per gesture, so each data set consists of 5 lists, one for each condition. Each list consists of 90 entries, 10 users times 9 common tasks. Each list entry consists of the proportion of that gesture the user used to complete the tasks. ANOVAs were performed for each pair of conditions. 
+
+		box
+		->	unknown thousand F=4.57743 P=0.03376
+		->	unknown hundred F=26.95175 P=0.00000
+		->	unknown ten F=7.17386 P=0.00809
+			unknown one F=nan P=nan
+		->	thousand hundred F=13.81053 P=0.00027
+			thousand ten F=0.56196 P=0.45446
+		->	thousand one F=4.57743 P=0.03376
+		->	hundred ten F=9.17884 P=0.00281
+		->	hundred one F=26.95175 P=0.00000
+		->	ten one F=7.17386 P=0.00809
+
+		draw
+			unknown thousand F=0.11808 P=0.73153
+			unknown hundred F=0.60501 P=0.43770
+			unknown ten F=0.21166 P=0.64603
+			unknown one F=1.35772 P=0.24549
+			thousand hundred F=1.23102 P=0.26871
+			thousand ten F=0.65370 P=0.41987
+			thousand one F=2.24534 P=0.13579
+			hundred ten F=0.12279 P=0.72644
+			hundred one F=0.13066 P=0.71817
+			ten one F=0.55465 P=0.45741
+
+		rev_pinch
+			unknown thousand F=2.61698 P=0.10750
+			unknown hundred F=2.42679 P=0.12105
+			unknown ten F=2.42679 P=0.12105
+			unknown one F=1.40624 P=0.23726
+			thousand hundred F=0.01176 P=0.91375
+			thousand ten F=0.01176 P=0.91375
+			thousand one F=0.97116 P=0.32573
+			hundred ten F=-0.00000 P=nan
+			hundred one F=0.68771 P=0.40806
+			ten one F=0.68771 P=0.40806
+
+		tap
+		->	unknown thousand F=5.31693 P=0.02227
+			unknown hundred F=0.17481 P=0.67637
+			unknown ten F=0.00516 P=0.94284
+		->	unknown one F=5.07967 P=0.02543
+		->	thousand hundred F=4.08954 P=0.04465
+			thousand ten F=5.36248 P=0.02171
+		->	thousand one F=21.15146 P=0.00001
+			hundred ten F=0.12531 P=0.72377
+		->	hundred one F=7.47952 P=0.00687
+		->	ten one F=5.58672 P=0.01918
+
+		doubletap
+			unknown thousand F=2.73379 P=0.10001
+			unknown hundred F=2.73379 P=0.10001
+			unknown ten F=0.10379 P=0.74770
+			unknown one F=0.07014 P=0.79143
+			thousand hundred F=0.00000 P=1.00000
+			thousand ten F=3.23803 P=0.07364
+			thousand one F=2.74667 P=0.09922
+			hundred ten F=3.23803 P=0.07364
+			hundred one F=2.74667 P=0.09922
+			ten one F=0.34499 P=0.55771
+
+		pinch
+			unknown thousand F=nan P=nan
+			unknown hundred F=nan P=nan
+			unknown ten F=1.49844 P=0.22253
+			unknown one F=nan P=nan
+			thousand hundred F=nan P=nan
+			thousand ten F=1.49844 P=0.22253
+			thousand one F=nan P=nan
+			hundred ten F=1.49844 P=0.22253
+			hundred one F=nan P=nan
+			ten one F=1.49844 P=0.22253
+
+		voice
+			unknown thousand F=1.00000 P=0.31867
+		->	unknown hundred F=9.21215 P=0.00276
+			unknown ten F=1.00000 P=0.31867
+		->	unknown one F=5.43446 P=0.02086
+		->	thousand hundred F=6.26614 P=0.01321
+			thousand ten F=0.61538 P=0.43381
+			thousand one F=0.71464 P=0.39904
+		->	hundred ten F=8.72368 P=0.00357
+		->	hundred one F=4.51636 P=0.03495
+		->	ten one F=4.26964 P=0.04025
+
+		drag
+			unknown thousand F=0.41748 P=0.51903
+		->	unknown hundred F=12.11559 P=0.00063
+			unknown ten F=3.12575 P=0.07878
+			unknown one F=0.25313 P=0.61550
+		->	thousand hundred F=7.89760 P=0.00550
+			thousand ten F=1.22802 P=0.26929
+			thousand one F=1.32489 P=0.25126
+			hundred ten F=2.99765 P=0.08512
+		->	hundred one F=16.11069 P=0.00009
+		->	ten one F=5.22884 P=0.02339
+
+		other
+		->	unknown thousand F=9.34027 P=0.00259
+			unknown hundred F=1.01761 P=0.31446
+			unknown ten F=0.03283 P=0.85642
+		->	unknown one F=5.86612 P=0.01644
+		->	thousand hundred F=4.68701 P=0.03172
+		->	thousand ten F=10.73529 P=0.00126
+		->	thousand one F=25.37081 P=0.00000
+			hundred ten F=1.49996 P=0.22230
+		->	hundred one F=11.79255 P=0.00074
+		->	ten one F=6.03887 P=0.01495
+
+		ui
+			unknown thousand F=1.81633 P=0.17946
+			unknown hundred F=3.86890 P=0.05074
+		->	unknown ten F=5.70205 P=0.01799
+		->	unknown one F=4.65287 P=0.03234
+			thousand hundred F=0.64436 P=0.42321
+			thousand ten F=3.38073 P=0.06763
+			thousand one F=0.39551 P=0.53022
+			hundred ten F=1.81102 P=0.18010
+			hundred one F=0.06990 P=0.79178
+			ten one F=2.38129 P=0.12457
+
+		hold
+		->	unknown thousand F=4.91393 P=0.02791
+			unknown hundred F=3.45359 P=0.06477
+			unknown ten F=2.34824 P=0.12720
+			unknown one F=0.14056 P=0.70817
+			thousand hundred F=2.02273 P=0.15671
+		->	thousand ten F=4.41134 P=0.03711
+		->	thousand one F=5.53310 P=0.01975
+			hundred ten F=0.68835 P=0.40784
+			hundred one F=3.42553 P=0.06585
+			ten one F=1.99617 P=0.15944
+
+		tripletap
+			unknown thousand F=1.00000 P=0.31867
+			unknown hundred F=1.00000 P=0.31867
+			unknown ten F=0.15083 P=0.69820
+			unknown one F=0.00633 P=0.93669
+			thousand hundred F=nan P=nan
+			thousand ten F=2.01525 P=0.15747
+			thousand one F=1.88894 P=0.17105
+			hundred ten F=2.01525 P=0.15747
+			hundred one F=1.88894 P=0.17105
+			ten one F=0.17518 P=0.67606
+
+		lasso
+		->	unknown thousand F=5.86234 P=0.01647
+		->	unknown hundred F=19.44664 P=0.00002
+		->	unknown ten F=33.27742 P=0.00000
+			unknown one F=nan P=nan
+		->	thousand hundred F=11.76321 P=0.00075
+		->	thousand ten F=23.51414 P=0.00000
+		->	thousand one F=5.86234 P=0.01647
+			hundred ten F=1.85880 P=0.17448
+		->	hundred one F=19.44664 P=0.00002
+		->	ten one F=33.27742 P=0.00000
+
+	The only gestures that don't show any statistically significant variation across conditions are double/tripletap, pinch/rev_pinch, and draw. 
+
+	Pinch/reverse pinch were somewhat task-specific gestures, used across condition to divide/merge groups of robots in that task. 
+
+	Draw is also somewhat task specific, mostly used in formations to draw the target shape. However, the formation tasks are not in the common task set, because making one robot get into a formation doesn't make sense. 
+
+	Were double and triple taps also specific to some task? This would be interesting to check, because it seems to indicate a division of gestures into gestures that were related to a task, and gestures that were related to a condition. 
+
+	Graphing average per-user proportion of gestures per task indicates that pinch or reverse pinch were highest in divide_color_1, patrol_a, patrol_screen, and split. Split had by far the most reverse-pinch gestures. 
+
+	Draw peaked for split and stop. For split, this was caused by users drawing a dividing line between the split groups. For stop, it was caused by users drawing a line in front of the robots to indicate a virtual barrier. If the formation tasks were in the common task set, they would also likely have large numbers of draw gestures. 
+
+	Doubletap peaked in the stop case as well, but triple taps occured at a very low level in crate, divide_color_1, and move_a, and at a slightly higher level in patrol_screen and split. In general, tripletap may not have enough samples to make a comparison meaningful. It was only used 19 times total, and is the least common gesture. 
+
+	To look at prevalence of gestures per condition, users were grouped by condition, and the sum of the count of each gesture, as well as the total count of gestures for that condition were calculated. The sums of each gesture were divided by the total gestures for the condition to normalize to a proportion of that gesture out of all gestures used in that condition. 
+
+	All of the cases where tap differed were either between the 1 robot condition and any other condition, or between the unknown condition and the thousand condition. This seems to support the idea that tap is the selection method of choice in the single-robot condition. However, this specific analysis does not differntiate tap-as-select from all other kinds of tap. 
+
+	 		box 		doubletap 	drag 		draw 		hold 		lasso 		other 		pinch 		rev_pinch 	tap 		tripletap 	ui 			voice 	
+condition 														
+hundred 	0.107256 	0.014196 	0.309148 	0.152997 	0.018927 	0.086751 	0.104101 	0.000000 	0.006309 	0.134069 	0.000000 	0.029968 	0.036278
+one 		0.000000 	0.102273 	0.298295 	0.136364 	0.048295 	0.008523 	0.002841 	0.000000 	0.014205 	0.301136 	0.011364 	0.056818 	0.019886
+ten 		0.024209 	0.024209 	0.385475 	0.090317 	0.021415 	0.099628 	0.031657 	0.016760 	0.014898 	0.220670 	0.011173 	0.058659 	0.000931
+thousand 	0.023750 	0.003750 	0.248750 	0.525000 	0.003750 	0.022500 	0.091250 	0.002500 	0.013750 	0.038750 	0.000000 	0.012500 	0.013750
+unknown 	0.000000 	0.053030 	0.429293 	0.250000 	0.027778 	0.002525 	0.037879 	0.015152 	0.032828 	0.138889 	0.007576 	0.000000 	0.005051 	
+
+	The one and unknown cases have the lowest counts of lasso (0.008 and 0.002), other conditions have ten times as many lassos.
+	The one and unknown cases have the lowest counts of box (0.0 and 0.0).
+	Lasso use peaks in the 10 robot case (100 is close second).
+	Box use peaks in the 100 robot case (10 and 1000 are second, but not very close)
+	Tap and doubletap both peak in the one robot case. 
+	These peaks seem to suggest that tap is used as selection in the case of one robot or small numbers, while box and lasso are used in the midrange, but drop off in the high end (the thousand robot case). 
+
+	Across all tasks that are common to all conditions, the count of group selects (box or lasso with robots as the object) and single selects (taps with robots as the object), were collected, per each user. These lists were averaged, to get the average use of group select or single select, for each task, averaged across the condition. 
+
+
+	For single selects
+
+		unknown thousand
+		F_onewayResult(statistic=3.274787535410765, pvalue=0.08917624034628448)
+
+	->  unknown hundred
+		F_onewayResult(statistic=5.617834394904458, pvalue=0.030683306214274644)
+
+		unknown ten
+		F_onewayResult(statistic=2.510936855138258, pvalue=0.1326223081929104)
+
+		unknown one
+		F_onewayResult(statistic=2.9546325878594257, pvalue=0.10491580334734563)
+
+		thousand hundred
+		F_onewayResult(statistic=0.5663716814159294, pvalue=0.46263379435126784)
+
+	->  thousand ten
+		F_onewayResult(statistic=5.6453645364536476, pvalue=0.03033223817150981)
+
+	->  thousand one
+		F_onewayResult(statistic=7.627565982404693, pvalue=0.013892656334032617)
+
+	->  hundred ten
+		F_onewayResult(statistic=6.596426935409988, pvalue=0.02062303992159494)
+
+	->  hundred one
+		F_onewayResult(statistic=9.132075471698116, pvalue=0.008100106893352626)
+
+		ten one
+		F_onewayResult(statistic=0.029120559114735052, pvalue=0.8666402609875802)
+
+	For group selects
+
+		unknown thousand
+		F_onewayResult(statistic=3.274787535410765, pvalue=0.08917624034628448)
+
+	->  unknown hundred
+		F_onewayResult(statistic=5.617834394904458, pvalue=0.030683306214274644)
+
+		unknown ten
+		F_onewayResult(statistic=2.510936855138258, pvalue=0.1326223081929104)
+
+		unknown one
+		F_onewayResult(statistic=2.9546325878594257, pvalue=0.10491580334734563)
+
+		thousand hundred
+		F_onewayResult(statistic=0.5663716814159294, pvalue=0.46263379435126784)
+
+	->  thousand ten
+		F_onewayResult(statistic=5.6453645364536476, pvalue=0.03033223817150981)
+
+	->  thousand one
+		F_onewayResult(statistic=7.627565982404693, pvalue=0.013892656334032617)
+
+	->  hundred ten
+		F_onewayResult(statistic=6.596426935409988, pvalue=0.02062303992159494)
+
+	->  hundred one
+		F_onewayResult(statistic=9.132075471698116, pvalue=0.008100106893352626)
+
+		ten one
+		F_onewayResult(statistic=0.029120559114735052, pvalue=0.8666402609875802)
+
+
+	The significant cases are that unknown differs from hundred, thousand differs from ten and one, and hundred differs from ten and one. This is the same for both tap-as-select, and for group selection gestures.  
+
+	Interestingly, this seems to imply that one, unknown, and thousand are all treated similarly. Ten and one being treated similarly was expected, as in both cases, there's one visible unit, even if the unknown case represents multiple robots. The thousand robot case could be because once there are 1000 robots, the user doesn't think of them as 1000 individuals, but as a single group, like the unknown case. 
+
+	However, thousand does differ from one, but not from unknown, for single selections and group selections, in the averaged data.  
+
+
+H2 - Gestures used in the single/unknown robot case are similar to each other and different from the gestures used in the 10/100/1000 robot cases
+
+	In the per-user normalized data, the one and unknown cases only differ by a statistically significant amount for the tap, voice, ui, and "other" gestures. The use of tap in this analysis covers all uses of tap, not just tap-as-select, which requires that the tap gesture be targeting a robot.
+
+	When the per-user normalized data is further broken down by task, the only case in which the one and unknown cases differ by a statistically significant amount is the use of the tap gesture in the "split group" task. All other tasks and gestures do not have a statistically significant difference between the unknown and one robot cases.
+
+	If tap is restricted to tap-as-select, the average use does not vary to a statistically significant degree between the 1 and unknown cases (F=2.9546, p = 1.049).
+ 
+H3 - Gestures can be compiled into programs for robots. Possibly some formal bounds on "can be compiled"
+
+	Two different issues here:
+		The compilation converts all acceptable sequences of gestures into programs.
+		The programs converge to the desired result in bounded time. 
+
+	Optimality is a different problem from sufficiency.
+
+	This is going to run into problems with either having a number of different resulting controllers, and so possibly needing different proofs of convergence for each one. 
+		Sidestepping this at the metalevel means proving that the controller generation does not generate controllers that can't converge. 
+		Could bootstrap inductively, in the sense that if a 1-robot controller converges, then an N-robot controller is N 1-robot controllers, all of which are known to converge. 
+			Doesn't work for tasks that 1 robot cannot do, but N > 1 can do. 
+
+	Control theoretic approaches seem to try to get a control law, which is essentially a function over sensor inputs to motor outputs, that drives the robot to a path. 
+		My spatial decomposition control system creates the control law as a mapping of space to headings, so it has a defined value for the entire space. 
+			But are there inputs that can result in a space with undesirable characteristics
+				No path to goal
+				Infinite loops or similar traps in the space
+		I don't have a good mathematical representation of this to put into a paper. 
+	
+	H4 - Robots can be made as cheaply as the Kilobots with better terrain handling ability. 
+	
+	Probably drop this hypothesis. My robots are cheaper, but have control problems that are not going to lead to terribly interesting results to fix. The GRITSbots are a very similar platform in terms of processor and control design, but don't have the control problems due to a combination of using stepper motors and having a per-robot calibration phase that evens out any differences in assembly. GRITSBots are also cheap. 
+
