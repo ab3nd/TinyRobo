@@ -38,10 +38,14 @@ if __name__ == '__main__':
 	selections = ['tap', 'lasso', 'box_select']
 	objects = ['robot', 'crate']
 	places = ['whitespace', 'area a', 'area b']
+	other_cmds = ['voice_command', 'other']
 	for user in user_tasks.keys():
 		for task in user_tasks[user]:
 			#Prettyprint each event
 			for event in ud.data[user]["tasks"][task]:
+				#Skip all example events
+				if "example" in event.keys() and event["example"]:
+					continue
 				#Handle as many of the events as possible without human intervention
 				if event["event_type"] in selections:
 					#import pdb; pdb.set_trace()
@@ -56,6 +60,46 @@ if __name__ == '__main__':
 						#print "{} position to {}".format(event["event_type"], tags)
 						pass
 					else:
-						#import pdb; pdb.set_trace()
-						print " ".join(event["objects"])
-						print "----{}, {} {}".format(event["event_type"], tags, " ".join(event["objects"]))
+						#Can't tell, user will have to classify this one
+						#print "----{}, {} {}".format(event["event_type"], tags, " ".join(event["objects"]))
+						pass
+				elif event["event_type"] == "drag":
+					tags = tag_object(" ".join(event["objects"]).strip("\""))
+					if event["draw"] is None:
+						#This is a simple drag
+						if any(t for t in tags if t in objects):
+							#This is moving a thing, so position
+							pass
+						elif any(t for t in tags if t in places):
+							#This is creating a path, so position
+							pass
+						else:
+							#Can't tell, user will have to classify this one
+							#print "{} {}: {}".format(event["event_type"], " ".join(event["objects"]).strip("\""), tags)
+							pass
+					else:
+						#The user drew something
+						#Dalton used draw when the user wasn't drawing anything, so I have to classify all of these
+						#print "DRAW {} {}: {}".format(" ".join(event["draw"]).strip("\""), " ".join(event["objects"]).strip("\""), tags)
+						pass
+				elif event["event_type"] == "pinch":
+					# import pdb; pdb.set_trace()
+					# print "{} {}".format(event["event_type"], " ".join(event["objects"]).strip("\""))
+					pass
+				elif event["event_type"] == "ui":
+					#There are few enough UI events that I can just classify them by hand
+					#print "{} {}".format(event["event_type"], " ".join(event["description"]).strip("\""))
+					pass
+				elif event["event_type"] == "voice_command":
+					#There are few enough voice commands that I can just classify them by hand
+					#print "{} {}".format(event["event_type"], " ".join(event["command"]).strip("\""))
+					pass
+				elif event["event_type"] == "other":
+					#There are few enough voice commands that I can just classify them by hand
+					#print "{} {}".format(event["event_type"], " ".join(event["description"]).strip("\""))
+					pass
+				elif event["event_type"] == "memo":
+					#Skip it
+					pass
+				else:
+					print event
