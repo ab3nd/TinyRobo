@@ -228,6 +228,79 @@ pinch & 26 & 0.7985 \\
 triple tap & 19 & 0.5835\\
 \end{tabular}
 
+\section{Selection Gestures}
+One area in which the gestures were expected to change between conditions is the use of selection gestures. 
+The intuition behind this expectation is that for small numbers of robots, there is no need for a gesture that selects groups, as the user can interact directly with each robot. 
+Similarly, in the case where no individual robots are displayed, the use of group selection gestures would be minimal, as the group is presented as a single cloud. 
+
+Users performed selection of robots in groups by box select, lasso, and UI interactions.
+These selections were counted by condition by counting lasso or box events that had a robot or robots as their targets. \todo{The std dev for a lot of these is bigger than the data, very high variability. Discard outliers? There are only ten users per condition to begin with}
+ 
+\begin{table}
+	\centering
+	\begin{tabular}{l r r r r}
+		Condition & Box Select & Lasso & Tap & Total (condition)\\
+		\hline
+		unknown & 0 & 1 & 43 & 44 \\
+		one & 0 & 3 & 78 & 81\\
+		ten & 26 & 105 & 140 & 271\\
+		hundred & 68 & 53 & 35 & 156\\
+		thousand & 18 & 16 & 22 & 56\\
+		\hline
+		TOTAL & 112 & 178 & 318 & 608\\
+	\end{tabular}
+	\caption{Per-condition total use of selections}
+\end{table}
+
+Single selections of robots were performed by tapping on the robot. 
+Similarly to the count of group selections, tap events were counted where the object of the tap event was a robot or robots. 
+
+The ten robot case has the most selection gestures for either group or single selection. 
+As was expected, the unknown number and single robot cases have very low counts of group selections. 
+Interestingly, the thousand robot case also has relatively low group and single 
+selection use, especially compared to the ten robot case. 
+
+To determine if these differences were statistically significant, the count of each user's gestures per task were normalized by dividing by the total number of gestures that that user used to perform the task. 
+Normalizing in this manner converts raw gesture counts to a proportion of the total gestures used on that task, which prevents more verbose users from dominating the analysis.
+
+The tasks checked for statistically significant differences between conditions were those that all conditions had in common. 
+These nine common tasks are 'move crate', 'divide by color (cross)', 'divide by color', 'move to a', 'move to a (wall)', 'patrol a', 'patrol screen', 'split', and 'stop'. 
+Across all the common tasks the proportions of each gesture were collected per gesture, resulting in, for each gesture, 5 lists, one for each condition. Each list consists of 90 entries, 10 users times 9 common tasks. Each list entry consists of the proportion of that gesture the user used to complete the task. ANOVAs were performed for each pair of conditions. 
+
+For the box selection gesture, the unknown condition differs significantly ($\alpha$ = 0.05) from the ten (F=7.17386 p=0.00809), hundred (F=26.95175 P=0.00000), and thousand (F=4.57743 p=0.03376) robot conditions, but not from the single robot condition (F and p values could not be calculated due to disuse of box selection in these cases). 
+The use of box select in the one robot condition differs significantly from the ten (F=7.17386 p=0.00809), hundred (F=26.95175 p=0.00000), and thousand (F=4.57743 p=0.03376) robot conditions.
+The hundred robot condition differed from the ten (F=9.17884 P=0.00281) and thousand (F=13.81053 P=0.00027) robot cases. \todo{Needs some analysis on what caused these differences}
+
+For the lasso gesture, the unknown condition differs significantly from the ten (F=33.27742 P=0.00000), hundred (F=19.44664 P=0.00002), and thousand (F=5.86234 P=0.01647) robot cases. 
+The one robot condition differs significantly from the ten (F=33.27742 P=0.00000), hundred (F=19.44664 P=0.00002), and thousand (F=5.86234 P=0.01647) robot cases as well. \todo{Why are these differing by the same amount between unknown and one? The same proportions?}
+The thousand robot condition also differed from the ten (F=23.51414 P=0.00000) and hundred (F=11.76321 P=0.00075) robot conditions. 
+
+For the tap gesture, the unknown condition differs significantly from the one (F=5.07967 P=0.02543) and thousand (F=5.31693 P=0.02227) robot conditions. 
+The one robot condition differs from the ten (F=5.58672 P=0.01918), hundred (F=7.47952 P=0.00687), and thousand (F=21.15146 P=0.00001) robot conditions. 
+The thousand robot also differs from the hundred robot condition (F=4.08954 P=0.04465), although not as strongly as many of the others. 
+However, this analysis looks at all uses of tap, not just tap intended as select, as detected by the object of the tap being a robot.
+
+To determine if tap-as-select, rather than just any use of tap, maintained this relationship, the count of group selects (box or lasso with robots as the object) and single selects (taps with robots as the object), were collected, per user across all tasks that are common to all conditions. 
+These lists were averaged, to get the average use of group select or single select, for each task, averaged across the condition.\todo{This is raw counts, should maybe do this and then normalize to get proportions, rather than average.}
+ 
+For tap-as-select, the hundred robot case differed from the unknown (F=5.61783, p=0.03068), one (F=9.13207, p=0.00810) , and ten (F=6.59643, p=0.02062) robot cases. The thousand robot case differed from the ten (F=5.64536, p=0.03033) and one (F=7.62757, p=0.013893) robot cases.
+
+For group select, the hundred robot case differed from the unknown (F=5.61783, p=0.03068), one (F=9.13207, p=0.0081) , and ten (F=6.59643, p=0.02062) robot cases. The thousand robot case differed from the ten (F=5.64536, p=0.03033) and one (F=7.62757, p=0.01389) robot cases.
+
+
+
+%The gestures draw, pinch/reverse pinch, and double-/triple-tap did not display any statistically significant difference across conditions in the common tasks. 
+%Pinch/reverse pinch were somewhat task-specific gestures, used across condition to divide/merge groups of robots in that task. 
+%
+%Draw is also somewhat task specific, mostly used in formations to draw the target shape. However, the formation tasks are not in the common task set, because a single robot cannot form a formation. 
+%
+%Were double and triple taps also specific to some task? This would be interesting to check, because it seems to indicate a division of gestures into gestures that were related to a task, and gestures that were related to a condition. 
+%
+%Graphing \todo{put the graphs in here} average per-user proportion of gestures per task indicates that pinch or reverse pinch were highest in divide color 1, patrol a, patrol screen, and split. Split had by far the most reverse-pinch gestures. 
+%
+%Draw peaked for split and stop. For split, this was caused by users drawing a dividing line between the split groups. For stop, it was caused by users drawing a line in front of the robots to indicate a virtual barrier. If the formation tasks were in the common task set, they would also likely have large numbers of draw gestures. 
+%
+%Doubletap peaked in the stop case as well, but triple taps occured at a very low level in crate, divide color 1, and move a, and at a slightly higher level in patrol screen and split. In general, tripletap may not have enough samples to make a comparison meaningful. It was only used 19 times total, and is the least common gesture. 
 
 [DATA INTENSIFIES]
 
@@ -272,7 +345,7 @@ Rejecting ``hundreds'' and ``millions'' as outliers gives a mean of 11.86, with 
 Participant comments may shed some light on the source of this intuition. 
 One participant indicated during the study that they interpreted the corners of the polygonal cloud as possible robot locations, and so drew an idea of the scale of the swarm from the number of corners. 
 The cloud has 11 corners, 7 convex and 4 concave, which is consistent with the estimated robot count. 
-Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in fig. \ref{instructional_slides}. 
+Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in fig. \ref{instructional slides}. 
 These slides depicted 10 robots, and so may have biased participants to expect that the cloud had 10 robots in it. 
 However, multiple participants stated that the cloud represented an unknown number, or estimated more or less than 10 robots.
 
