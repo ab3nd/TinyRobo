@@ -1,7 +1,5 @@
 \chapter{Related Work}
 
-\subsection{Related Work}
-
 Previous work in user interface gesture sets can be broadly separated into two classes: those that attempt to build a general gesture set, and those that attempt to build a gesture set to be used for a specific task. 
 
 General gesture sets would be for operations such as the cut/copy/paste editing metaphors, which show up in word processing, image editing, and other productivity applications. 
@@ -1108,7 +1106,7 @@ One would expect that once a diverse enough pool of robots exists, the work in t
 It has been suggested that LTL is not the best formalism for the description of desired behavior for robot controllers \citep{belta2007symbolic}.
 Belta \emph{et al} also raises some other problems with symbolic control and planning as a paradigm for robot control. 
 Among others, they point out that the invariance of the dynamics of the robots to certain transformations, such as rotation around certain axes, permits symbolic control. 
-However, pointed out by Rodney Brooks in ``Artificial life and real robots'', environment conditions such as carpet nap can change dynamics of the robots in ways that break the symmetry of the dynamics about certain axes\cite{brooks1992artificial}.
+However, pointed out by Rodney Brooks in ``Artificial life and real robots'', environment conditions such as carpet nap can change dynamics of the robots in ways that break the symmetry of the dynamics about certain axes \citep{brooks1992artificial}.
 In addition, the symbolic methods still have problems with incomplete knowledge, and dynamic worlds (which imply incomplete knowledge, as things may change without being observed). 
 While valuable for the strength of the assertions they can make about the generated controllers, symbolic and formal methods still require some level of reactive or heuristic buffering from the real world, to present them with the atomic actions and perfect sensors that their assertions rely on. 
 %(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
@@ -1129,10 +1127,11 @@ Objects near each other are perceived as a group.
 Objects that move together are perceived as a group.
 
 \item[Similarity principle]
-Objects that are visually similar or the same are grouped together.
+Objects that are visually similar are grouped together.
 \end{description}	
 
 There are various other principles, and the order in which they are assessed or their relative strengths are unclear, so it is difficult to determine how a complex scene will be parsed. 
+However, these general guidelines do appear to influence how people perceive groups of other people. For example, all of the people in a line or a parade move together, and so are perceived as a group, separate from people around them moving in other directions. 
 
 Humans also make some distinction between aggregates and groups \cite{wilder1978perceiving}.
 Groups have a boundary, such as a common belief or goal, and sharing that element makes someone a member of the group or not. 
@@ -1144,12 +1143,14 @@ Since it can be made explicit to the user that the swarm shares common goals, an
 Whether a set of people is perceived as a group is referred to as ``entitativity", which is to say, how much like a single entity they are perceived to be. 
 Groups with high entitativity are expected to have a higher degree of unity and consistency within the group. 
 The smaller a group is, the more similar its members are perceived to be, which seems to indicate that smaller groups would have higher entitativity \citep{stewart2003trust}. 
+
 Entitativity isn't a binary classification, with groups being either entities or not. 
 Rather, it is a spectrum, with groups such as families or organizations at the high entitativity end, and groups such as people in line at the bank on the low entitativity end. 
-By surveys, some clusters of groups have been elucidated, such as intimacy groups (family and friends), task groups (co-workers, juries), social groups (gender, race, class), and loose associations (parade crowds, goth music fans) \citep{lickel2001elements}. 
-In a situation familiar to computer scientists, the analysis of perception of group entitativity is prone to the curse of dimensionality: what counts as a group is highly variable \citep{lickel2000varieties}.  
+By surveys, some clusters of groups have been elucidated, such as intimacy groups (family and friends), task groups (co-workers, juries), social groups (gender, race, class), and loose associations (parade crowds, fans of a music genre) \citep{lickel2001elements}. 
+In a situation familiar to computer scientists, the analysis of perception of group entitativity is prone to the curse of dimensionality: what counts as a group is highly variable along multiple axes \citep{lickel2000varieties}.  
 Among the factors influencing it are differences in the perceiver (level of need to perceive a group, individualism or collectivism bias), contextual factors (group membership or opposition), and properties of the group itself (visual or behavioral similarity).
 Minorities become higher in entitativity due possibly to the perception of them as figures distinct from a ``ground'', as in the gestalt figure/ground principle, or because stereotyping increases the perception of similarity within the group. 
+The perception of similarity within the group may be in turn be related to the gestalt perception of similarity, and so visually-similar minorities would be expected to have a higher entitativity than visually dis-similar groups of people. 
 	
 Research in the influence of group size on effectiveness of persuasion reveals that the gestalt principle of similarity works on the level of information as well as visual similarity \cite{wilder1977perception}. 
 When a person is confronted by a group attempting to influence them, increase in the size of the opposition beyond about 3-4 people has little effect. 

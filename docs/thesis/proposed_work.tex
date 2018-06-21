@@ -410,3 +410,101 @@ As described above, the robots can avoid each other while attempting to reach th
 In implementation, the new locations were chosen by uniform random selection of points over the area the robots were in, but other approaches, such as positioning the robots so that each robot could communicate with at most two other robots, or on a regular grid in the local coordinate frame, would be amenable to the same implementation. 
 
 These algorithms for path following and dispersion were implemented in ROS and tested in the ARGoS multi-robot simulator \citep{pinciroli2012argos}.
+
+\section{The Desert of the Real} \todo{Come up with a real title, this is overly grim}
+
+\subsection{Anti-scaling of Hardware Failures}
+
+Due to mechanical flaws in the toys used as motion platforms in TinyRobo, the robots would sometimes not move as commanded (see figure \ref{motor-speed-fig}). 
+In a single-robot system, transient failures can sometimes be accommodated by repeated effort or replanning. 
+However, in a multi-robot system the scale of the system works to offset the reliability of each individual robot. 
+If robots have an individual mean time between failures (MTBF), the expected mean time to any failure is the MBTF divided by the number of robots. 
+For example, if an individual robot can work for 100 hours between failures, it would be reasonable to expect it to work for at least a day. 
+However, if the swarm consists of 1000 such robots, a failure of at least one robot can be expected within 6 minutes. 
+
+This problem was highlighted by the use of inexpensive toys. 
+It is desirable to have a swarm platform be able to run for extended periods, in order to acquire data for experiments. 
+Toys, especially cheap ones, are designed for low cost and an MBTF more compatible with the attention span of children than that of researchers. 
+The amount of effort devoted to locating and eliminating mechanical problems relative to the runtime of the system was not acceptable.
+
+\subsection{Calibration}
+
+Children's toys are prone to failure and inaccuracy.
+In toys, particularly remote controlled toys, the user acts as a the feedback element of a control system, observing the behavior of the toy and changing their actions as a result. 
+If an individual toy, for example, has a bias to turn to the left, the user will learn this and apply a correcting bias.
+To extend this to a computerized system requires some form of calibration. 
+These calibration steps, combined with appropriate control, such as PID loops, can account for systemic inaccuracies. 
+However, the use of toys also introduces some failures which are not consistent or linear. 
+For example, the tanks used in some instances of the TinyRobo platform use motors with high speed, but relatively low torque. 
+As a result, dirt in the drivetrain near the motor can cause the motor to become difficult to start, but can be removed by the user, or by operation once the motor does start. 
+Calibration when the dirt is present means the robot will start very abruptly when the dirt is removed, while calibration when the dirt is absent means the robot may not start if dirt gets into it later. 
+It is worth noting, in light of this example, that GritsBots, Kilobots, and mROBerTO all use nearly-sealed drivetrains, either direct motor drive of the wheels or sealed vibration motors \citep{rubenstein2014kilobot, Kim2016mROBerTOAM, pickem2015gritsbot}. 
+
+An early intent of the author was to have the system learn the control law for each robot through observation of the relationship between the commanded motion of the robot and the resulting motion. 
+Due to the overarching concern with human control of a swarm, such online calibration was decided to be out of scope for this work. 
+However, a computer-vision-guided calibration technique was used in the mROBerTO swarm robots to compensate for manufacturing differences between robots \citep{Kim2016mROBerTOAM}. 
+
+\begin{figure}[t]
+\includegraphics{motion_vs_cmd}
+\centering
+\caption{Commanded velocity (lin\_vel) as opposed to recorded motion (vel). Vel is always positive because it is measured in terms of euclidian distance moved by the center of the AprilTag between successive updates of the tag tracking. 
+Note that while the magnitude of the motion is proportional to the commanded motion, sometimes the robot did not move at all, and when it did move, the recorded velocity is quite noisy. Noise may be removed in software, mechanical failure cannot.} 
+\label{motor-speed-fig}
+\end{figure}
+
+
+This approach results in learning bad controls if the system observes the robot during a temporary failure. 
+In a system with minimal failures, this problem can be minimized, but as discussed earlier, inexpensive children's toys are not such a system. 
+
+GRITSBots has a calibration step, but the calibration is automated, and is only performed once for each robot, after which it is assumed that the calibration variables are constant.
+Calibration can be automated in a homogenous platform with reasonably reliable hardware. 
+Non-homogenous platforms require different calibration for different platforms, which reduces the benefit of automation. 
+Further, it works against transitioning to a new platform by adding an additional hurdle in the form of developing a new calibration method for the new platform. 
+
+The lack of an automated calibration and control method drove the TinyRobo swarm to use more differential drive vehicles, as they struck a balance between the fully holonomic drive used in the SpiderBots, which is expensive but easy to control, and the Ackerman drive used in inexpensive RC cars, which is less expensive, but has more complex control math \citep{lairdspider}.
+It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity as discussed in section \todo{automate labeling sections}
+
+\subsection{April Tag Latency}
+
+April tags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
+More tags leads to longer computation time, increasing the latency of the robot control loop. 
+Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
+
+One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
+This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
+Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
+The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
+To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \citep{PickemGrits2014}. 
+
+\section{Conclusion}
+
+The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
+While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
+
+The drivetrain of the system is of paramount importance. 
+Sensors and networking can be virtualized, as in TinyRobo and GRITSBots, but no amount of clever programming will compensate for balky motion. 
+The use direct drive, as in GRITSBots or mROBerTO, is encouraged because the resulting drive train will be sealed against foreign matter. 
+Further, the use of stepper motors in GRITSBots provides some degree of precision in motion control by directing the motor in steps of known resolution, rather than commanding a particular speed. 
+If the system requires additional torque, use sealed micro gearmotors rather than adopting a drivetrain from a toy. 
+Toy drivetrains are designed for minimal cost over reliability and precision. 
+
+The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
+Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
+The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
+Where possible, design to use the PCB instead. 
+Using children's toys in TinyRobo was intended to avoid the use of such custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain. 
+
+Minimize parts count. 
+TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
+Multi-use devices like the ESP-8266 are becoming cheaper and more competent quickly.
+The processor in mROBerTO is both a 32-bit ARM processor, a low-power Bluetooth transceiver, and an ANT Wireless tranceiver. 
+The VL6180X IC combines an ambient light sensor and a laser-based time-of-flight range sensor in a package measuring approximately 5x8x1mm. 
+Reducing parts count reduces cost and speeds assembly. 
+
+Use autonomous charging, and have each robot be able to monitor its own battery level. 
+Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
+In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
+For the GRITSBbots, pins on the front of each robot allows the robot to connect to a charging station by itself, rather than requiring a human to connect it. 
+The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
+The alternative to this, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
+At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
