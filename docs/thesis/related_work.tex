@@ -389,83 +389,62 @@ The use of density, rather than robot count, scales with the swarm size.
 The desired configuration of the swarm can be drawn by the user on a tablet, and then converted to an update control law for the robots.
 Alternatively, the user can directly place Gaussian functions in the space and vary their parameters. 
 The resulting desired densities are smoothed to avoid discontinuities.
+The use of density over location is similar to a number of interface methods that function by allowing the user to specify attractors and repulsion points in the swarm space \citep{goodrich2011toward, brown2014human, vasile2011integrating, kira2009exerting}. 
 
+Goodrich et al use an attractor model under two different design metaphors, physicomimetics and a biomemetic model based on the dynamics of schooling fish, to solve an abstract information foraging problem \citep{goodrich2011toward}. 
+The human influence is applied to a swarm system that is capable of some aspects of the problem without supervision, but is improved by the addition of human control. 
+In keeping with the bio-inspired metaphor, the human can either control a leader, which the other members of the swarm are attracted to and follow, or a predator, which repels and can chase other members of the swarm. 
+Leader-based models tend to lead to more stable, long-running interactions, as the members of the swarm move to remain near the leader, increasing the duration of the human operator's influence on the leader. 
+In contrast, predator models result in high turnover of the swarm members that the human can influence, as the ``prey'' elements of the swarm act to get away from the predator's influence. 
+This turnover is part of the two invariants proposed for swarm interaction by Brown et al, which are that the collective state is the fundemental perception of the swarm, rather than the individual robot, and that the ability of a person to influence and understand the collective state is determined by the balance between span and persistence \citep{brown2015two}. 
+Persistence is the duration of each interaction with the swarm, and span is how many units the user interacts with. 
+In a leader-based control UI, the span and persistence are both kept high, because the swarm elements are attracted towards the leader and remain under its influence for longer. 
+In the predatory/repellent model, the span and persistence are low, because the other swarm elements flee from the user-controlled predatory unit. 
 
+Brown, Kerman, and Goodrich demonstrate that a swarm can be controlled to form two different higher-level structures, a flock and a torus, by managing abstract attractors rather than individual behaviors. 
+Further, the transition between modes was amenable to human control, so the overall behavior of the swarm could be configured with a relatively small set of tunable parameters. 
+While the paper only indicates two possible modes, the torus and flock, these two behaviors are a relatively good match for the publicized behavior of the Perdix military drone swarm. 
+Flock is a useful behavior for organized motion to a location, while the torus mode is good for loitering and overwatch of an area, matching the point-orbit, and move-to-point functions that are visible in videos of the Perdix UI. 
+However, public materials on the Perdix system indicate that it uses a playbook interface, where the user selects from a set of available ``plays'', which the swarm then executes, rather than an explicit management of attractor parameters \citep{PerdixFactsheet}. 
 
-\citep{nunnally2012human}
-Human Influence of Robotic Swarms with Bandwidth and Localization Issues
-S. Nunnally, P. Walker, A. Kolling, N. Chakraborty, M. Lewis, K. Sycara, and M. Goodrich
-	Cites a vector-field based interface for battlefield conditions
-		M. Fields, E. Haas, S. Hill, C. Stachowiak, and L. Barnes, “Effective robot team control methodologies for battlefield applications,”
-	Other relevant papers
-		A. Naghsh, J. Gancet, A. Tanoto, and C. Roast, “Analysis and design of human-robot swarm interaction in firefighting,”
-		M. Goodrich, B. Pendleton, P. Sujit, and J. Pinto, “Toward human interaction with bio-inspired robot teams,”
-		G. Coppin and F. Legras, “Autonomy spectrum and performance perception issues in swarm supervisory control,”
-		Z. Kira and M. Potter, “Exerting human control over decentralized robot swarms,”
-	Interface has two commands, "stop" and "head towards"
-		Mouse clicks, plus zoomable/pannable viewpoint
-	Operators adapted to swarm conditions and stayed able to perform tasks
+Parasuraman, Galster, and Miller examined the use of playbook, waypoint, and combined playbook and waypoint control on robot teams in a capture-the-flag task \citep{parasuraman2005flexible}.
+Playbook control provides a delegation layer to the interface, where the user does not have to specify the minutia of how a task is completed. 
+The use of delegation decreases mission time and increases success, in this case, winning the game of capture-the-flag.
+%If you have low span, you need long persistence to make a change
+%Citation of mulitple fan-out papers
+%Need to manage group, not individuals
+%"Other work has estimated fan-out using large simulation studies involving several sizes of robot teams (Olsen \& Wood, 2004; Olsen, Wood, \& Turner, 2004)."
+%"Pourmehr, Monajjemi, Vaughan, and Mori (2013) examine group-level abstracted multi-robot control to form dynamically-sized teams to increase fan-out."
+%Interestingly, this tendency of an attractive/leading force to produce stronger and more persistent influences than a repulsive/pushing force is mirrored in natural integrative systems. If you attempt to blow or push a fluid, it succumbs to turbulence almost immediately, but drawing it with a continuous attractor results in coherent structures. The wind, for example, is generally a motion towards a low pressure zone, and streams are a motion downhill, but attempting to use pressure to push doesn't result in a coherent structure. Fuller's tensegrity stuff actually is based on this. 
 
-\citep{brown2015two}
-Two Invariants of Human-Swarm Interaction
-Daniel S. Brown, Michael A. Goodrich, Shin-Young Jung, and Sean Kerman
-	Claims two invariants:
-		(1) collective state is the fundamental percept associated with a bio-inspired swarm
-		(2) a human’s ability to influence and understand the collective state of a swarm is determined by the balance between the span and persistence.
-	Attractors abstract from individual to group behavior, so humans percieve and try to manage attractors
-	"Span" is how many units the controller interacts with
-	"Persistence" is how long each interaction takes
-		If you have low span, you need long persistence to make a change
-	Citation of mulitple fan-out papers
-		Need to manage group, not individuals
-		"Other work has estimated fan-out using large simulation studies involving several sizes of robot teams (Olsen \& Wood, 2004; Olsen, Wood, \& Turner, 2004)."
-		"Pourmehr, Monajjemi, Vaughan, and Mori (2013) examine group-level abstracted multi-robot control to form dynamically-sized teams to increase fan-out."
-	Swarm model similar to boids, can transition between torus and flock
-		... doesn't really talk about e.g. moving an object or obstacle avoidance
-	Shape torus using mediators with attraction/repulsion
+There have been previous studies of the behavior of users in control of swarms with poor localization and bandwidth constraints \citep{nunnally2012human}. 
+These constraints are realistic, as the motivating examples for swarm robotics, such as urban search and rescue or planetary exploration on e.g. Mars take place in locations where high-speed and high bandwidth networking infrastructure may be absent. 
+The study describes a task similar to foraging, but under human control, where a 30-robot swarm is used to find a sequence of targets. 
+The interface is mouse-based, and allows the user to issue two commands, "head towards the selected point" and "stop". 
+The robots had gaussian error added their estimated location and orientation, meaning that the robots could start on a heading that was not exactly towards the selected point, when the user gave them a point to move towards. 
+However, the robots had a consensus algorithm that would allow them to match heading with neighbors, which acts to counter the error in their initial headings. 
+There were three conditions: low swarm-to-swarm bandwidth with low swarm-to-user bandwidth, high swarm-to-swarm with low swarm to user bandwidth, and high swarm-to-swarm bandwidth with high swarm-to user bandwidth.
+The results showed that the medium bandwidth condition, with high swarm-to-swarm bandwidth but low swarm-to-user bandwidth was sufficient to complete the task. 
+The users did adapt their behavior to match the information they had available, issuing more commands closer together in the medium bandwidth condition to drive the swarm into a smaller region and increase intra-swarm connectivity. 
+In the low bandwidth condition, the user did not receive updates about the swarm condition often enough to enable them to maintain a dense swarm, and as a result, had trouble finding targets. 
+The fact that the user interface and the user's intuition about the swarm could drive adoption of different behaviors supports the use of different rendering schemes for the swarm to encourage different user control strategies or conceptualizations about the swarm. 
 
-\citep{goodrich2011toward}
-Toward Human Interaction with Bio-Inspired Robot Teams
-Michael A. Goodrich and Brian Pendleton, P. B. Sujit and Jose Pinto
-	Information foraging problem
-		Abstract resources at unknown locations in a space
-		Agents have to locate the resources and stay at them for a period of time
-		Resources are depleted by agents at them
-		New resources can appear at any time
-		Human input is helpful
-	Other appproaches
-		Playbook, human calls plays for robots
-		Human controls leader, other robots follow leader
-		Potential fields
-	Lead-by-attraction (leader) vs. lead-by-repulsion (predator)
-		lead-by-repulsion makes having persistent interactions hard, and keeps span low over time
-	Simulation, no real robots
-		Leader models are better than predator models
+Nunnally \emph{et al} explored the condition where a limited amount of information was available, but the time it takes for that information to become available (latency) is another factor in human-swarm interaction \citep{walker2012neglect}.
+In the study , the latency was either absent, present both between members of the swarm and between the swarm and the user, and present, but the interface to the user predicted future swarm motion and displayed it. 
+The task was similar to Nunnally \emph{et al}, in that the swarm was used to search a region for targets in a foraging task. 
+The swarm could be commanded to move to a heading, stop, or flock under a model similar to boids \cite{reynolds1987flocks}.
+The latency condition was significantly worse, in terms of targets found, than the no-latency condition, but the predictive display countered the latency sufficiently that the predictive and no-latency conditions were not significantly different. 
+Interestingly, latency also drove the appearance of what the authors refer to as ``neglect benevolence", where the user not interacting with the system was not only tolerated, but actually helped improve the behavior of the system. 
+Under latency, the user would issue a command, and then wait out the latency period to see how the system responded.
+The resulting delay allowed operations such as flocking to converge and stabilize, thus increasing the swarm connectivity beyond what was attained in the no-latency condition. 
 
-\citep{brown2014human}
-Human-Swarm Interactions Based on Managing Attractors
-Daniel S. Brown, Sean C. Kerman, Michael A. Goodrich
-	V. Similar to "Two Invariants", which I think recaps/references it
-	Raidus used for orienting affects probability of flock or torus
-	So it's controllable, can switch under user control
-	Good for e.g. overwatch/loiter \& move-to-area
-		Which is to say, flying ISR applications or search \& destroy
-	This seems a lot like that military system (Perdix)
-		Perdix UI appears to have point-orbit, and move-to-point functions
-		Overhead view, but each unit seems to be individualy taskable, but tasking all at once is also supported
-			Playbook interface, operator calls plays, drones run them
-			https://www.defense.gov/Portals/1/Documents/pubs/Perdix%20Fact%20Sheet.pdf	
-	Has study of reliability of quorum sensing in situation with multiple robot failures
+The previously discussed work on attractor management and control under latency and bandwidth restriction is concerned with UI design for swarm robots from the point of view of controllability and influence, which is to say whether or not the user can maintain desirable aspects of the swarm under the given conditions. 
+It is not largely concerned with whether the interface itself, as presented in the experiment, is the best way for the user to attempt to control the swarm.
+That is to say, the interface is taken as a fixed point, and the experimental condition is variation in the quality of the link between the user interface and the swarm. 
 
-
-	
-\citep{vasile2011integrating}
-Integrating human swarm interaction in a distributed robotic control system
-Cristian Vasile and Ana Pavel and C ̆at ̆alin Buiu
-	Chidori - 1k birds in Japanese
-	Cites Particle swarm optimization methods, physicomimetics, gravity points method
-	User creates attraction points and repulsion points
-	Network heavy, all done in sim
+Humphrey et al assess the scalability of a multiple-robot control interface that uses a ``halo'' around the view from the currently-controlled robot to provide awareness of the positions of the other robots \citep{humphrey2007assessing}
+The commands available to control each robot were high-level commands such as looking at specfic items or going to a point, which relied on the robot's autonomy, and more teleoperation oriented commands such as turning left or right, stopping, and moving. 
+While this interface did appear to have a positive influence on the number of robots the user could control, it is not a swarm interface, but an interface for individual control of multiple robots. 
 
 \citep{schoof2014bearing}
 Bearing-Compass Formation Control: A Human-Swarm Interaction Perspective
@@ -502,70 +481,6 @@ Andreas Kolling, Katia Sycara, Steven Nunnally, Michael Lewis
 
 
 
-\citep{kira2009exerting}
-Exerting Human Control Over Decentralized Robot Swarms
-Zsolt Kira, Mitchell A. Potter
-	Focus on real-time control
-	Top down control
-		Global swarm characteristics defined, agents optimized to acheive those characteristics
-	Bottom up control
-		Virtual agents exert forces on the real agents as if they were present in the space
-	Physicomimetic control scheme
-	Virtual particle parameters evolved in simulation, and then used by the user to perform split and follow operations on swarm
-
-\citep{humphrey2007assessing}
-Assessing the Scalability of a Multiple Robot Interface
-Curtis M. Humphrey, Christopher Henk, George Sewell, Brian W. Williams, Julie A. Adams
-	Halo display that shows were other robts are with respect to selected robot
-	Supervisory control usuaally top-down, assumes known map (which USAR may not have)
-	Halo kind of like HUD/radar displays in video games
-	Tapping halo robot switches to that view
-		So this is a many-individuals kind of interface, not a swarm interface
-	Increase in workload with bounded time diminishes success
-		Adding robots increases workload
-	SA didn't appear to drop with more robots
-		6 robots vs. 9 robots, which is still in the human-handlable fan-out that other papers have seen
-	Experiment proposed halo display, but doesn't appear to have a non-halo test case?
-		So they were testing the display in 6 vs. 9 robot cases, but not halo vs. non-halo case
-		So the experiment doesn't say anything about the halo case
-			Except in comparision to other studies, which they don't compare it to...
-
-\citep{parasuraman2005flexible}
-A Flexible Delegation-Type Interface Enhances System Performance in Human Supervision of Multiple Robots: Empirical Studies With RoboFlag
-Raja Parasuraman, Scott Galster, Peter Squire, Hiroshi Furukawa, and Christopher Miller
-	Addresses whether encreasing autonomy can help
-	Playbook control, waypoint control, or both
-	Delegation decreases mission time and increases successes
-	Only 8 robots
-	Cost of developing automation tradeoff for gains in efficency
-	Simulated red vs. blue teams playing capture the flag
-	Second experiment, users don't use automated plays as often as they could have
-		And some plays were prefered over others
-		And manual control reduced mission time (automation wasn't optimal)
-		Having manual and automation is best control, but higher workload
-	Seems a lot like the precursor to Perdix, and they mention control of military drones at the end of the paper "Other ongoing work [49], [50] on
-the implementation and application of such interfaces provides
-further support for their use in complex human–robot systems.
-This work has been conducted in a high-fidelity simulation em-
-ulating multiple small UAVs (fixed and rotary wing) operating
-in an urban environment to perform useful support services for
-small units of infantry soldiers."
-
-\citep{walker2012neglect}
-Neglect Benevolence in Human Control of Swarms in the Presence of Latency
-Phillip Walker, Steven Nunnally, and Mike Lewis, Andreas Kolling, Nilanjan Chakraborty, and Katia Sycara 
-	Claims to introduce neglect benevolence, first paper on HSI under latency
-		Published...?
-	Leader-follower control mentioned
-	Prev user studies had no delay, or had continuious input
-		which is a problem if the user is doing anything else
-	Swarm takes time to stabilize
-		Cites a lot of HSI papers
-		Neglect benevolence is leaving the swarm alone to stabilize
-	3 commands: Stop swarm, send heading to swarm, apply boids-style constraints
-	Latency adversly impacts finding targets
-	Adding a predictive display mitigates it
-	Paper never really shows their UI
 
 %\citep{tejada2003virtual}
 %Virtual Synergy: A Human-Robot Interface for Urban Search and Rescue
