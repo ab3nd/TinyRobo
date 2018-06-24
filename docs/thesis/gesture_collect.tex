@@ -72,9 +72,6 @@ More specifically, a display which obscures individual robots and displays a clo
 
 \subsection{Experiment Setup}
 
-\todo{put a picture of the experiment setup here}
-
-
 Users were seated in front of the interface and read a script describing the system and the experiment. The user interface displayed alternating slides of instructions to the user, such as ``Move the robots to area A", and interface screens for them to interact with. 
 The interface did not visibly respond to user contact or move the robots depicted on it.
 In this regard, it more closely resembles the paper prototypes of the User-Centered Design process than a fully functional interface \citep{ehn1992cardboard}.
@@ -86,6 +83,13 @@ One video camera was placed high, looking down at the screen, to track where the
 The other video camera was placed in front of the screen at a low angle, in order to observe whether the user's hands were touching the screen, or moving above it. 
 In addition to screen contacts and video, users were asked to think aloud about their actions.
 A microphone placed near the screen was used to record everything the user said. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{/home/ams/TinyRobo/docs/setup.png}
+	\caption{Experiment setup, showing, L to R, the survey computer, microphone, cameras and multitouch interface device, and an example robot.}
+	\label{fig:experiment_setup}
+\end{figure}
 
 The software used to record all of this information is ROS, the Robot Operating System \citep{ROS_announcement_paper}. 
 ROS was developed as a message-passing framework and hardware abstraction layer for robots. 
@@ -108,6 +112,30 @@ The conditions consisted of 1-2 robots, 10 robots, 100 robots, 1000 robots, or a
 In the unknown number condition, the area the robots were present in was represented by a cloud. 
 For each condition, the user was requested to perform a sequence of tasks. 
 The exact number of tasks varied between conditions due to some tasks not making sense with the number of robots involved. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_10_Robot_0004.png}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Single_Robot_0005.png}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_10_Robot_0005.png}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_100_Robot_0005.png}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_1000_Robot_0005.png}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0007.png}
+	\end{subfigure}
+	\caption{Instructional slide and situations for moving around the wall to area A, in each condition.}
+	\label{fig:move_around_wall}
+\end{figure}
 
 \begin{tabular}{l|l|l|l|l|l}
 & 1 & 10 & 100 & 1000 & Unknown \\
@@ -164,12 +192,8 @@ Pinch and reverse pinch are essentially two-hand drag or two-fingered drag but w
 This gesture is common for zooming in multitouch user interfaces on smartphones. 
 
 Voice command was used to code when a user spoke a command out loud, rather than using gestures. The high incidence of voice commands (7.07\% of all codes) in the first ten users can be attributed to a single user who issued commands almost exclusively through voice. 
-
-
-
-
  
-\subsubsection{Second coding pass}
+\subsubsection{Second Coding Pass}
 
 To facilitate coding in the second pass, an application was developed to record codes. 
 The application has coding functions for the six most common gestures: drag, tap, voice command, box select, lasso select, and pinch. 

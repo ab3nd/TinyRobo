@@ -20,6 +20,7 @@
 \usepackage{multicol}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage[toc,page]{appendix}
 % From https://tex.stackexchange.com/questions/163330/creating-figures-to-show-binary-values
 %For showing bitfields in the control hardware
 \usepackage{bytefield}
@@ -76,5 +77,9 @@ The contributions of this thesis are a new swarm hardware platform, software to 
 
 \bibliography{../proposal/swarm.bib}
 %\bibliographystyle{apalike}
+
+\begin{appendices}
+\include{coding_doc}
+\end{appendices}
 
 \end{document}
