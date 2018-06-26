@@ -3,6 +3,22 @@ Possible support or lack therof for hypotheses
 
 H1 - Gestures used change as robot count changes
 
+	The coded gestures are:
+		drag
+			draw
+		voice command
+		tap
+			double
+			triple
+			hold
+		lasso
+		pinch
+			reverse
+		box select
+		ui
+		other
+		 
+
 	The gestures used by each user on each task were normalized by dividing by the number of total gestures that that user used to perform the task. As a result, each gesture value becomes a proportion of the total gestures, rather than a raw count of actions. 
 
 	For each task, the gestures for each pair of conditions (unknown, 1, 10, 100, 1000) were used as the data for an ANOVA. A low p-value indicates that there was a statisically significant difference between the uses of that gesture for that task, between those conditions. Only the cases with p < 0.05 are reproduced below. 
@@ -318,11 +334,7 @@ unknown 	0.000000 	0.053030 	0.429293 	0.250000 	0.027778 	0.002525 	0.037879 	0
 
 	The significant cases for tap-as-select are that hundred differs from one, ten, and unknown, and thousand differs from one and ten. 
 
-	For group select, all of the conditions are different, except unknown and one, and hundred and ten. 
-
-	Interestingly, this seems to imply that one, unknown, and thousand are all treated similarly. Ten and one being treated similarly was expected, as in both cases, there's one visible unit, even if the unknown case represents multiple robots. The thousand robot case could be because once there are 1000 robots, the user doesn't think of them as 1000 individuals, but as a single group, like the unknown case. 
-
-	However, thousand does differ from one, but not from unknown, for single selections and group selections, in the averaged data.  
+	For group select, all of the conditions are different, except unknown and one, and hundred and ten.  
 
 
 H2 - Gestures used in the single/unknown robot case are similar to each other and different from the gestures used in the 10/100/1000 robot cases

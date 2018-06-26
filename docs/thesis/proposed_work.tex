@@ -398,11 +398,6 @@ When this pass is complete, every square of the decomposition of the space has b
 The resulting decomposition can then be converted into a GCPR program by having each guard be a check on the position of the robot, and assignment of the robot's desired heading based on the grid square it is in.
 A GCPR clause tells robots that are off their desired heading to rotate to that heading, and robots which are on their desired heading to move forward. 
 
-Reactive obstacle avoidance is added to the vector field program by only following the desired heading if the robot detects that it is not near any obstacles, and reacting to avoid the obstacles rather than follow the vector field if an obstacle is detected. 
-This approach does have the weakness that the user can, for example, draw a path which passes through an obstacle. 
-In a known environment, obstacles could be surrounded by repelling vectors, but in an unknown environment, this sort of command will cause the robots to approach the obstacle under vector field control, turn away from it until it is no longer visible, return to vector field control, and return to the obstacle. 
-If this situation is not desired by the user, they should avoid providing paths that pass through obstacles.
-
 Dispersion can be implemented in terms of vector fields as well. 
 In the case of path following, every robot that was intended to follow the path would be issued the same decomposition of the space, but would follow different routes, as they start from different locations. 
 To disperse the robots, each robot receives a different path, starting from their current location and moving to their new dispersed location. 
@@ -410,6 +405,17 @@ As described above, the robots can avoid each other while attempting to reach th
 In implementation, the new locations were chosen by uniform random selection of points over the area the robots were in, but other approaches, such as positioning the robots so that each robot could communicate with at most two other robots, or on a regular grid in the local coordinate frame, would be amenable to the same implementation. 
 
 These algorithms for path following and dispersion were implemented in ROS and tested in the ARGoS multi-robot simulator \citep{pinciroli2012argos}.
+
+\section{Composition with Obstacle Avoidance}
+
+Reactive obstacle avoidance was initially added to the vector field program by only following the desired heading if the robot detects that it is not near any obstacles, and reacting to avoid the obstacles rather than follow the vector field if an obstacle is detected. 
+This approach does have the weakness that the user can, for example, draw a path which passes through an obstacle. 
+In a known environment, obstacles could be surrounded by repelling vectors, but in an unknown environment, this sort of command will cause the robots to approach the obstacle under vector field control, turn away from the obstacle until it is no longer visible, return to vector field control, and return to the obstacle. 
+
+There exist a family of algorithims, called ``bug algorithms'', which provide complete path planning in a priori unknown environments with minimal sensing, under reasonable bounds, such as that the number of obstacles is finite and the goal is reachable. 
+\citep{taylor2009bug}
+
+
 
 \section{The Desert of the Real} \todo{Come up with a real title, this is overly grim}
 
