@@ -412,10 +412,55 @@ Reactive obstacle avoidance was initially added to the vector field program by o
 This approach does have the weakness that the user can, for example, draw a path which passes through an obstacle. 
 In a known environment, obstacles could be surrounded by repelling vectors, but in an unknown environment, this sort of command will cause the robots to approach the obstacle under vector field control, turn away from the obstacle until it is no longer visible, return to vector field control, and return to the obstacle. 
 
-There exist a family of algorithims, called ``bug algorithms'', which provide complete path planning in a priori unknown environments with minimal sensing, under reasonable bounds, such as that the number of obstacles is finite and the goal is reachable. 
-\citep{taylor2009bug}
+There exist a family of algorithims, called ``bug algorithms'', which provide complete path planning in a priori unknown environments with minimal sensing, under reasonable bounds, such as that the number of obstacles is finite and the goal is reachable. The bug family is large, and some of its members require sensing which may not hold in all conditions, such as location information or infinite-range distance sensing, but many do not. I-Bug, in particular, requires only the ability to detect a gradient which towards the goal and the ability to circumnavigate obstacles by e.g. wall following \citep{taylor2009bug}.
 
+Generally, bug algorithms have two cases, the rules for motion in unobstructed space, and the rules for moving around obstacles. 
+Rules for motion around obstacles frequently combine wall following around the perimeter of the obstacle with a leave condition that causes the robot to stop wall following and return to moving in open space. 
+In the initial bug algorithm paper, the leave condition for Bug1 is to depart the obstacle from the point closest to the target, which requires circumnavigating the obstacle once to find that point \citep{lumelsky1987path}.
 
+However, simply applying a bug algorithm to the movement of each robot in the swarm may result in undesirable behavior in a number of ways. 
+First, many bug algorithms rely on wall following to pass around obstacles. 
+If the other obstacle is another robot, operating under the same algorithm, the robots may begin to circumnavigate each other. 
+If the leave condition for the circumnavigation is never met, this behavior would persist indefinitely. 
+Under the leave rule discussed for Bug1, if one of the robots is moving slightly faster than the other, the resulting path of the two robots would be a spiral moving in some direction in space. 
+Since Bug1 uses return to the same location to detect circumnavigation, and the spiral would never return to the same location, the leave condition would never be satisfied.
+
+Further, it is important to include the path specified by the user in the path planning for members of the swarm. 
+By following the path laid out for it, the behavior of the swarm is made legible by the human user. 
+Compliance with the requested path indicates to the user that the swarm is under their control, and allows them to assess the progress of the system towards the goal. 
+If, instead, the system uses some other form of path planning, it will initially appear to not be doing what the user requested, even if the end state does eventually become what the user intended. 
+What factors contribute to this legibility and how best to balance them with other operational constraints of the system is beyond the scope of this paper, but has been examined in the context of manipulation, navigation around people, and combined in mobile manipulation around people \citep{dragan2015effects, kruse2013human, beetz2010generality}.
+The work on legible manipulation also distinguishes between predictable motion, which makes sense to observers based on a known goal, and legible motion, which allows observers to infer an unknown goal. 
+Extension of legibility and the emotive content of motion to swarm robots has also been recently investigated, but not in relation to human control of the swarm \citep{Dietz:2017:HPS:3027063.3053220}.
+
+The user input may also contain information that is not available to the swarm, but is available to the user. 
+This information may be necessary for the successful completion of the task, and so is not to be discarded lightly. 
+For example, the optimal path in terms of minimal travel distance may be blocked by some transient condition, especially in the case of disaster response, such as fire or flood, and so the user may direct the robots to take a longer route to the goal. 
+Discarding this information in favor of the shorter path could result in unit loss and mission failure. 
+
+Unfortunately, composition with a vector field indicating the user-specified path to the goal with a bug algorithm for obstacle avoidance can break the guarantees of completeness that make bug algorithms appealing. 
+For example, assume that the goal is a point with a vector field pointing towards that point from all locations in the operational area. 
+A tempting bug algorithm for passing around obstacles is to circumnavigate the obstacle until the vector field points away from it, then leave and return to vector field control. 
+For a simple polygonal obstacle between the robot and the goal, this results in reaching the obstacle, navigating some distance around it, and then departing it again on the side closer to the goal. 
+However, if the the goal is surrounded by a right-handed spiral-shaped obstacle such that any straight line from the goal intersects the obstacle, the goal becomes unreachable. 
+When a robot hits the spiral, it will wall follow in some direction.
+If it uses a right-handed wall follow, it will reach the outer lip of the spiral and depart the obstacle following the vector field. It will then hit the obstacle again, since the vector field across the mouth of the spiral points towards the goal in its center, and begin wall following again. 
+A left handed wall follow would reach the goal, but could be defeated by a left-handed spiral. 
+Changing to randomly-selected lh- or rh-wall following changes the shape of the obstacles that can trap the robot, but does not remove the possibility, so long as the leave condition is simply that the vector field point away from the obstacle. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{/home/ams/TinyRobo/docs/spiral_trap.png}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{/home/ams/TinyRobo/docs/wall_follow_trap.png}
+	\end{subfigure}
+	\caption{Simple obstacles that result in looping behavior for a bug algorithm that combines wall following with leaving the obstacle when the vector field points away from the obstacle.}
+	\label{traps_for_wall_follow}
+\end{figure}
+
+In none of these cases is the goal unreachable, in that it is a member of the same set of points as the open space of the environment, but attempts at obstacle avoidance preclude the robot reaching it. 
 
 \section{The Desert of the Real} \todo{Come up with a real title, this is overly grim}
 

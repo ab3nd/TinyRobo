@@ -15,10 +15,9 @@ def rotate(image, angle, color):
 #Draw a single arrow
 arrow = Image.new("RGB", (50,50), "white")
 draw = ImageDraw.Draw(arrow)
-draw.line([(25,0),(25,50)], fill="black")
-draw.line([(25,50)], fill="black")
-draw.line([(25,50), (20,38)], fill="black")
-draw.line([(25,50), (30,38)], fill="black")
+draw.line([(25,12),(25,38)], fill="black")
+draw.line([(25,38), (20,32)], fill="black")
+draw.line([(25,38), (30,32)], fill="black")
 
 #Compose a bunch of them into a single image
 #Assumes a square image, w by w 
@@ -37,4 +36,4 @@ for i in range(w):
 		# i, j is the place to put the new arrow
 		field.paste(rot_arrow, box=(i * arrow.size[0],j * arrow.size[1]))
 
-field.show()
+field.save("vector_field.png")
