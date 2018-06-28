@@ -31,7 +31,7 @@ The more general gestures sets, such as those from Wobbrock, Morris, and Wilson,
 They are not tied to a specific application or working with a specific type or presentation of data.
 The gesture sets developed by Micire \textit{et al}; Yao, Fernando, and Wang; or in this work, are all intended to provide a more precise set of meanings for a single application and task. 
 
-\section{Overview of Previous Swarm Hardware}
+\section{Overview of Previous Swarm Hardware} \label{section:Overview_of_Previous_Swarm_Hardware}
 
 Swarm robots are generally small. 
 The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
@@ -53,7 +53,7 @@ The challenge of construction of swarm robot hardware, then, is to put all of th
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
 However, most of these platforms are no longer easily commercially available, or never were. 
 
-\subsection{Tabletop Swarms}
+\subsection{Tabletop Swarms} \label{section:Tabletop_Swarms}
 
 At the low end, in terms of size, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \citep{seyfried2005swarm}. 
 Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
@@ -122,7 +122,7 @@ The motor and mote boards communicate using a messaging layer.
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
 The second COTSBots is larger, and will be discussed in the next section. 
 
-\subsection{Room-sized Swarms}
+\subsection{Room-sized Swarms} \label{section:Room_sized_Swarms}
 
 One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
 As previously mentioned, the Kilobots require a smooth surface, and the E-puck can be stopped by obstacles no more than a few millimetres tall. 
@@ -151,7 +151,7 @@ All of these parts add to the overall cost of the swarm.
 Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas, as well as larger custom platforms for outdoor multi-robot work \citep{guo2007bio, tammet2008rfid, olson2013cacm}.
 In theory, swarm research could be performed using robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
 
-\section{Swarm User Interface Designs}
+\section{Swarm User Interface Designs} \label{section:Swarm_User_Interface_Designs}
 
 The user interface to a swarm has two functions. 
 The first is to allow the user to provide input to the swarm, so that the user can direct the swarm to perform tasks. 
@@ -268,7 +268,7 @@ Such a projection allows the user to easily relate visual and range information,
 Previous work in multi-touch interfaces directly satisfies these requirements of EID by providing both an omniscient camera view for direct manipulation of the high-level, functional actions of the entire swarm, and the ability to move down the hierarchy to control individual swarm members \citep{Micire:2009:ANG:1731903.1731912}.
 The ability to display information about individual robots along side or on top of the interface representation of the robot is an important method of providing feedback to the user \citep{Kato:2009:MIC:1520340.1520500}. 
 
-\subsection{Multitouch UI Design Concerns}
+\subsection{Multitouch UI Design Concerns} \label{section:Multitouch_UI_Design_Concerns}
 Multitouch user interfaces do not have an agreed-upon standard for the gestures used in interaction with them, largely due to the relative novelty of the technology. 
 Early in the development of multitouch user interfaces, it became apparent that the window, icon, menu, and pointer (WIMP) interface would not be the best way to interact with novel interface technologies \citep{van1997post}. 
 WIMP interfaces are tied to a metaphor of a desktop, where a user interacts with 2D spreadsheets and documents. 
@@ -298,7 +298,7 @@ Rather than simple functionality, or pure amusement, the use of skueomorphic int
 One example given by Gross, Bardzell, and Bardzell is a digital synthesizer with a user interface that copies the knobs and switches of physical analog synthesizers. 
 While this is likely not an optimal interface for controlling the synthesizer, it has connotations of quality, performance, and reference to more traditional electronic instruments, and so appeals to the user's idea of themselves as an artist and a participant in a tradition of artists. 
 
-\subsection{Existing Research on Swarm Controlability}
+\subsection{Existing Research on Swarm Controlability} \label{section:Existing_Research_on_Swarm_Controlability}
 
 Previous work in human-swarm interaction (HSI) shows an interesting diversity of methods to convey a command to a swarm. 
 One approach, for co-located swarms, has the user making hand signals to the robots. 
@@ -385,7 +385,7 @@ However, humans were solidly outperformed by fully autonomous benchmarks develop
 Otherwise, human control may present a bottleneck, rather than an advantage. 
 
 
-\subsection{The Interfaceless Interface}	
+\subsection{The Interfaceless Interface} \label{section:The_Interfaceless_Interface}
 
 Some swarm robots are designed to be used with no control interface at all.
 By altering the shape of simple stick-slip locomotion toys with laser-cut foam ``hats'' that change their outer perimeter, and changing the outline of the laser-cut foam forms they interact with, the random motion of the toys can create stable structures \citep{andreen2016emergent}).
@@ -398,7 +398,7 @@ The robots provide a stream of information via a heads-up display (HUD) construc
 Instead of having to control the swarm, the user acts as they feel is best, using both their own information and that from the swarm of robots that surrounds them and extends the firefighter's senses \citep{penders2011robot}. 
 
 
-\subsection{Video Game UI Design}
+\subsection{Video Game UI Design} \label{section:Video_Game_UI_Design}
 
 There is a general resemblence between many of the overhead-view interfaces for swarm robot control and the interfaces used in video games for control of multiple units, especially in the genres of Real Time Strategy (RTS) games, Turn-based strategy games, and Multiplayer Online Battle Arena (MOBA). 
 Interestingly, most multi-unit video games UIs operate using a selection, rather than beacon, interfaces, according to the classification of interaction methods by Kolling et al. 
@@ -443,7 +443,7 @@ The entire map is normally hidden from the player until they command their units
 In gameplay, the intent of fog of war is to prevent players from knowing about the opposing player's location without sending sorties. 
 This lack of information is almost identical to that experienced by a teleoperator of a robot exploring an area with a SLAM algorithm, as the map is revealed to the operator as the robot moves into the area. 
 
-\subsection{Intel Drone Swarm Interface}
+\subsection{Intel Drone Swarm Interface} \label{section:Intel_Drone_Swarm_Interface}
 
 Intel has fielded drone fleets of up to 1,200 Shooting Star UAVs \citep{IntelDronesPage}. 
 While the control system for the drones is proprietary, some information about the user interface can be gleaned from the promotional videos for the controller. 
@@ -466,7 +466,7 @@ The readability of the health monitoring at a glance, by assessing the amount of
 %The IMUs are likely based on Ascending Technologies AscTec Trinity autopilots, as Intel acquired AscTec in 2016. 
 
 
-\section{Swarm Software Development Methods}
+\section{Swarm Software Development Methods} \label{section:Swarm_Software_Development_Methods}
 
 Because the conversion of the specification of desired behavior for the swarm into individual programs for the swarm member robots is still an open question, it is necessary to understand the current methods used in the development of programs for swarm robots. 
 Much of swarm robotic development follows the usual model of software development. 
@@ -488,7 +488,7 @@ Still another approach is to allow the user to specify a desired behavior and ev
 It would be hoped that evolving the controllers would reduce the complexity of the development task to the definition of a suitable means of determining the fitness of the resulting program. 
 Unfortunately, even this reduction does not permit an escape from iterative development. 
 
-\subsection{Amorphous Computing}
+\subsection{Amorphous Computing} \label{section:Amorphous_Computing}
 
 Amorphous computing (AC), also called spatial computing, is computation using locally-linked and interacting, asynchronous, unreliable computing elements dispersed on a surface or throughout a volume \citep{abelson2000amorphous}. 
 The motivation for AC is that while it may be possible to produce arbitrary quantities of ``smart dust'', it is not possible to ensure that it all works well and is precisely located, especially in real-world applications.
@@ -531,7 +531,7 @@ Range limitation on morphogens propagating between robots is set using a TTL (Ti
 When the TTL hits zero, the morphogen message is no longer propagated. 
 By controlling the production or propagation of morphogens within the amorphous medium, complex patterns can be developed. 
 
-\subsection{Pheromone Approaches}
+\subsection{Pheromone Approaches} \label{section:Pheromone_Approaches}
 
 The abstractions of GPL bear a very strong relation to pheromone robotics. 
 Pheromone robotics is a metaphor used in developing control software for swarm robots. 
@@ -574,7 +574,7 @@ The agents can release and react to pheromones in the environment, and so there 
 The set of rules that govern the mapping of sensor precepts to actions must be such that no point in the construction of the building can be mistaken for another, as that could result in loops or skipping parts of the building sequence. 
 The TERMES project created a compiler that translates desired final structures into rules to guide the construction of those structures by cooperating agents \citep{werfel2014designing}.
 
-\subsection{Vector Fields}
+\subsection{Vector Fields} \label{section:Vector_Fields}
 Both global vector fields and the global and local blending of vector fields in co-fields can be viewed as subsets of pheromone robotics that use a global spatial representation. 
 The vector field represents the space the robots are operating in as a continuous vector field with the magnitude and direction of the vector at each point in the field controlled by some system of equations.
 By altering the specification of the field, the user can change the actions of the robots within that field. 
@@ -609,7 +609,7 @@ Agents react to gradients in field, and spread their own fields over local commu
 The overall vector space created by the user (the UI vector space) could be propagated to the robots periodically, and combined with their own internal vector fields to generate movement based on both the user's desires and the local rules operating on each robot. 
 As with general vector fields, knowing which areas of the UI vector space are relevant to each robot may require global localization, and so only be available for swarms operating in conditions that permit global localization. 
 
-\subsection{Compositional Approaches}
+\subsection{Compositional Approaches} \label{section:Compositional_Approaches}
 
 Rather than developing a novel control program for each robot automatically, it may be possible to compose programs from behavioral primitives, such that some combination of the primitives results in the emergence of the desired behavior. 
 A compositional approach to program generation requires the definition of primitives out of which programs can be composed, and some degree of assurance that these primitives can cover the space of possible tasks required from the robot. 
@@ -656,7 +656,7 @@ Correct programs are those that reach the target state with probability one, eve
 Once the target state is reached, the program is assumed to halt, so while the final state may be reached very slowly, once it is reached, it is not left. 
 In the GCPR models, the time to execution of an action is stochastic, but in the real-world case of noisy or imperfect sensors, the variable time to execution of a guarded behavior would be caused by the imperfection of the robot's ability to detect that the guard was satisfied. 
 
-\subsection{Evolutionary Composition}
+\subsection{Evolutionary Composition} \label{section:Evolutionary_Composition}
 
 Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
 Unfortunately, much of the process of composing of programs for swarm robots consists of iterating between composing sets of primitives and observing behavior of the system in an ad hoc process, just as with the creation of control programs by coding \citep{palmer2005behavioral}. 
@@ -735,7 +735,7 @@ However, individually evolved primitives could be saved in a library of primitiv
 Such a library could take advantage of the possible overfitting of GA evolution by storing primitives intentionally overfitted to specific situations and robots, and using the best matches. 
 For example, a controller that aggregates small-scale UAVs outdoors is likely quite different from one that aggregates medium-scale wheeled robots indoors, even though they are both aggregation controllers. 
 
-\subsection{Domain-Specific Languages for Swarms}
+\subsection{Domain-Specific Languages for Swarms} \label{section:Domain_Specific_Languages_for_Swarms}
 
 Proto and other programming languages for amorphous computers provide abstractions for computation performed on homogeneous spatially-distributed computing nodes, but do not generally support motion of nodes within the space. 
 Other versions of tuple-space based amorphous computation include motion of the agents, but do not explicitly support heterogeneity \citep{viroli2012linda}.
@@ -827,7 +827,7 @@ Using the neighbours abstraction, the robot can, for instance, query all its nei
 %	Eyebots collaborate to localize off each other
 %		Other robots can also localize off of them
 
-\section{Program Generation}
+\section{Program Generation} \label{section:Program_Generation}
 
 Controllers for modular robots that allow them to form shapes under stochastic mixing have been automatically generated from descriptions of the desired shape \citep{klavins2002automatic}. 
 These controllers are focused on structures and formations that can be expressed as a tree. 
@@ -904,7 +904,7 @@ While valuable for the strength of the assertions they can make about the genera
 %\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
 %\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
-\section{Group Perception of Humans}
+\section{Group Perception of Humans} \label{section:Group_Perception_of_Humans}
 
 Because it is desirable to have the users operate in a manner that scales with the size of the swarm, and that because scaling implies that they treat the swarm as a whole, rather than as individuals, discovery of the factors that result in perception of groups as a single entity rather than a collection of individuals is important.
 One potential guide to when users will stop treating robots as individuals and begin treating them as a group is the numerical point that humans come to regard a collection of other humans as a collective, instead of individuals. 
@@ -955,7 +955,7 @@ One potential upper bound that is simply numeric is Dunbar's Number, a constrain
 For humans, Dunbar's number is estimated to be around 150 individuals, and beyond that, people would be expected to begin chunking the people in their social network into hierarchies or groups in order to keep track of a reduced number of entities (e.g. one group called "co-workers" instead of every individual on the team). 
 
 
-\subsection{human/robot teaming}
+\subsection{human/robot teaming} \label{section:human_robot_teaming}
 
 Does driving real robots affect user behavior?
 	Does realism of NUI affect user behavior?

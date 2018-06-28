@@ -42,18 +42,18 @@ Tap - User places finger on screen and lifts it immediately, without moving it a
 Double-tap - User taps twice with both taps falling within an inch of each other and within one second, and without describing tapping on something else, such as tapping to bring up a menu and then tapping something on that menu. 
 \begin{itemize}
 	\item Taps for actions such as drawing a dotted line should be coded as individual taps. 
-Double-taps are coded as taps with the -c (for “count”) flag set to 2. 
+Double-taps are coded as taps with the -c (for ``count'') flag set to 2. 
 \end{itemize}
 
 Triple-tap - As with double-tap, but with three taps. 
 \begin{itemize}
 	\item Anything beyond three taps should be coded as individual taps, but obviously with close-together time codes. Quadruple-taps and beyond are also comparatively rare. 
-	\item Triple-taps are coded as taps with the -c (for “count”) flag set to 3. 
+	\item Triple-taps are coded as taps with the -c (for ``count'') flag set to 3. 
 \end{itemize}
 
 Hold - User places one finger on the screen and leaves it there without moving for more than one second. Code the time at the end of the hold, when they lift their finger. 
 \begin{itemize}
-	\item Holds are coded as taps with the -h (for “hold”) flag. 
+	\item Holds are coded as taps with the -h (for ``hold'') flag. 
 \end{itemize}
 
 Pinch - User places two fingers on the screen, resulting in two points of contact, and moves them towards each other in a line. 
@@ -78,12 +78,12 @@ Box select - User touches on or near the robots and drags their finger diagonall
 	\item If it is unclear whether the user intended to perform this action as a selection, code it as a drag.  
 \end{itemize}
 
-Voice command - Statements addressed to the robots, such as “Robots, go to area A”, or statements such as “I would tell the robots to form a square”. Code the time of voice commands at the end of the user’s full sentence. 
+Voice command - Statements addressed to the robots, such as ``Robots, go to area A'', or statements such as ``I would tell the robots to form a square''. Code the time of voice commands at the end of the user's full sentence. 
 \begin{itemize}
-	\item If the user says something like “Robots, do X and then do Y”, that’s one voice command, don’t break it into two commands at the “and then”. 
+	\item If the user says something like ``Robots, do X and then do Y'', that's one voice command, don't break it into two commands at the ``and then''. 
 \end{itemize}
 
 Other - Anything not listed above, but intended by the user as a command for the robot. This code has a description field in the coding program, please use it to describe the action. 
 \begin{itemize}
-	\item Gestures over the screen, without contact, and that don’t match the any of the other commands should generally be coded as “Other”, but only if they are clearly intended as a command to the robot, not e.g. pointing at something on the screen or indicating the screen itself. 
+	\item Gestures over the screen, without contact, and that don't match the any of the other commands should generally be coded as ``Other'', but only if they are clearly intended as a command to the robot, not e.g. pointing at something on the screen or indicating the screen itself. 
 \end{itemize}
