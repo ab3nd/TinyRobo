@@ -1,6 +1,6 @@
-\section{Contributions}
+\section{Contributions} \label{section:Contributions}
 
-\subsection{Multitouch Gesture set for Swarm Control}
+\subsection{Multitouch Gesture set for Swarm Control} \label{section:Multitouch_Gesture_set_for_Swarm_Control}
 This work will attempt to determine if there is an multitouch gesture set for a single user to command a large swarm of robots.
 For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, and cloud (unknown robot count). 
 In all the cases except the cloud case, the robots are represented as individual robots on the screen of the interaction device. 
@@ -17,7 +17,7 @@ The analysis will also attempt to determine if the gesture set shows a transitio
 The influence of the presentation of the interface on the gesture set will be examined. 
 The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
 
-\subsection{Compilation of User Gestures into Robot Programs}
+\subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
 The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
 One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \citep{ayanian2014controlling}. 
 As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
@@ -30,7 +30,7 @@ Previous work in gesture control for small groups of robots was able to recogniz
 The intent of this work is to implement basic robot behaviors as statements in an implementation of guarded control programming with rates (GCPR), which can then be composed into more complex behaviors based on the recognized user gestures \citep{napp2011compositional}.  
 
 
-\subsection{Inexpensive Swarm Hardware}
+\subsection{Inexpensive Swarm Hardware} \label{section:Inexpensive_Swarm_Hardware}
 
 The previously described swarm robot platforms tend to fall into one of two groups, from a hardware perspective. 
 The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap.
@@ -103,7 +103,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 %Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 %Moving this functionality to the adapter board reduces the size and cost of the control module. 
 % %
-%\subsection{Toy Compatibility}
+%\subsection{Toy Compatibility} \label{section:Toy_Compatibility}
 % %
 %Children's toys normally use inexpensive brushed DC motors in their construction. 
 %These motors have not been the subject of extensive study, as they are commodity parts. 
@@ -152,7 +152,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 % %\end{table}
 % %
 % %
-%\subsection{Potential for Expansion}
+%\subsection{Potential for Expansion} \label{section:Potential_for_Expansion}
 % %
 %The current design for the robots does not include sensors as a cost-saving decision. 
 %However, the communication between the ESP-8266 and the motor drivers uses the industry standard I2C bus serial interface. 
@@ -163,9 +163,9 @@ The hardware resulting from this work is designed so that it can be duplicated b
 %These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with this platform. 
 %Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the platform. 
 
-% \section{Expected Contributions}
+% \section{Expected Contributions} \label{section:Expected_Contributions}
 
-% \subsection{Multitouch Gesture set for Swarm Control}
+% \subsection{Multitouch Gesture set for Swarm Control} \label{section:Multitouch_Gesture_set_for_Swarm_Control}
 % This work will attempt to determine if there is an intuitive multitouch gesture set for a single user to command a large swarm of robots.
 % For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, and cloud (unknown robot count). 
 % In all the cases except the cloud case, the robots are represented as individual robots on the screen of the interaction device. 
@@ -182,7 +182,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 % The influence of the presentation of the interface on the gesture set will be examined. 
 % The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
 
-% \subsection{Compilation of User Gestures into Robot Programs}
+% \subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
 % The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
 % One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \cite{ayanian2014controlling}. 
 % As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
@@ -191,7 +191,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 % This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
 % The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
 
-% \subsection{Inexpensive Swarm Hardware}
+% \subsection{Inexpensive Swarm Hardware} \label{section:Inexpensive_Swarm_Hardware}
 
 % The previously described swarm robot platforms tend to fall into one of two groups, from a hardware perspective. 
 % The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap.
@@ -308,7 +308,7 @@ The charge controller allows the robot to be charged from the same USB connectio
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 Moving this functionality to the adapter board reduces the size and cost of the control module. 
 
-\subsection{Toy Compatibility}
+\subsection{Toy Compatibility} \label{section:Toy_Compatibility}
 
 Children's toys normally use inexpensive brushed DC motors in their construction. 
 These motors have not been the subject of extensive study, as they are commodity parts. 
@@ -357,7 +357,7 @@ While the board can supply sufficient current to control all of these toys, it h
 \end{table}
 
 
-\subsection{Potential for Expansion}
+\subsection{Potential for Expansion} \label{section:Potential_for_Expansion}
 
 The current design for the robots does not include sensors as a cost-saving decision. 
 However, the communication between the ESP-8266 and the motor drivers uses the industry standard I2C bus serial interface. 
@@ -393,42 +393,4 @@ The IR LED was also selected to match the E-Puck Range and Bearing board.
 Colias appears to implement transmission power control for the infrared LEDs, and perform ranging by transmitting multiple times at varying power levels. 
 If an object is detected by a low-power transmission, it is nearby, but if it is only detected by higher power transmissions, it is further away. 
 Modulating the transmit power can also be used to limit range for inter-robot communication.
-This modulation can be achieved using an AND gate which is powered from a digital output line of the main microcontroller, and applying a PWM signal to that output line.
-Adding a 6-direction range and bearing board to the TinyRobo system could be expected to cost in the neighborhood of \$12-22 USD, depending on the quantity of boards produced. 
- 
-%Cooperative interaction of walking human and distributed robot maintaining stability of swarm 
-
-%Development of IR-based short-range communication techniques for swarm robot applications 
-
-%The Wanda Robot and Its Development System for Swarm Algorithms
-
-%Stability of swarm robot based on local forces of local swarms
-
-%Swarm robot pattern formation using a morphogenetic multi-cellular based self-organizing algorithm 
-
-%A particle-swarm-optimized fuzzy-neural network for voice-controlled robot systems 
-
-%The I-SWARM project 
-% %
-%\subsection{Current Consumption of Children's Toys}
-%Motor driver test required, a well as quantification of motor current draw for children's toys. 
-%Quantification of required power may indicate that larger motor driver power is needed.
-% %
-%Toys are effectively black boxes to the end user.
-%Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
-%In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
-%The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
-% %
-%All of the motors were driven at 3.7VDC. 
-%This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
-%Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
-%Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
-% %
-%Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
-%Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
-%Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
-%Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
-%Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
-%Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
-%Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
-%Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A
+This modulation can be achieved using an AND gate which is powered from 
