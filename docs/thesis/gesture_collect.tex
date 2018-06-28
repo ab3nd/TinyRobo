@@ -1,5 +1,5 @@
 
-%\section{UI Gesture Collection} \label{section:UI_Gesture_Collection}
+%\section{UI Gesture Collection}
 %
 %In order to create a mapping from commands, as issued by the users, to a set of individual robot programs for multi-robot command and control, the gesture set for the commands must first be specified. 
 %Multitouch gesture sets as a command language for controlling robots have been developed by an empirical process with naive users \citep{Micire:2009:ANG:1731903.1731912}. 
@@ -29,7 +29,7 @@
 %
 %A large swarm is, then, a swarm with a number of members above the point at which such a transition occurs
 
-\subsection{Introduction} \label{section:Introduction}
+\subsection{Introduction}
 
 Multitouch gestural interfaces, like those found on tablets and smartphones, offer the possibility of a very direct user experience, especially compared to the Windows, Icons, Mouse, Pointer (WIMP) interface design. 
 Rather than, for example, using an arrow key to scroll in a document, the user can drag the document directly, as though they were sliding a long piece of paper on a table. 
@@ -70,7 +70,7 @@ This approach has been used successfully for navigation in three dimensions, by 
  
 More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use the same gestures that users select for controlling individual robots. 
 
-\subsection{Experiment Setup} \label{section:Experiment_Setup}
+\subsection{Experiment Setup}
 
 Users were seated in front of the interface and read a script describing the system and the experiment. The user interface displayed alternating slides of instructions to the user, such as ``Move the robots to area A", and interface screens for them to interact with. 
 The interface did not visibly respond to user contact or move the robots depicted on it.
@@ -105,7 +105,7 @@ Because all of the data is treated as standard ROS message types, it is relative
 For example, a node was written that accepts the replayed UI screen changes and touch events, and renders them as a stream of ROS image messages showing the contact points overlaid on the UI screen. 
 Ultimately, the entire data stream was rendered to video, as the rosbag playback does not support rewinding the playback, and being able to re-view a section conveniently was useful for coding. 
 
-\subsubsection{Experiment Conditions} \label{section:Experiment_Conditions}
+\subsubsection{Experiment Conditions}
 
 Each user was assigned to one of five conditions, varying by how many robots were in each condition. 
 The conditions consisted of 1-2 robots, 10 robots, 100 robots, 1000 robots, or an unknown number of robots.
@@ -165,7 +165,7 @@ The ``Merge groups" task was left out of the single robot case because of the po
 The unknown number of robots condition has the same tasks as the 10, 100, and 1000 robot cases, except for the ``Mark defective robot" and ``Remove defective robot" task. 
 Without UI elements that represent individual robots, the user cannot take any actions that refer to a specific robot. 
 
-\subsection{Analysis} \label{section:Analysis}
+\subsection{Analysis}
 
 User gestures were coded using a methodology adopted from the social sciences, Grounded Theory \citep{glaser2017discovery}.
 Grounded Theory is an iterative process, where the data are first coded at a very fine-grained level, and then the resulting coded elements are compared to each other to try to determine their qualities, similarities, and differences. 
@@ -173,7 +173,7 @@ Codes can be consolidated or divided until repeated passes of coding and compari
 During each iteration of coding and comparison, the coder makes memos as well, describing the links they see between related coded elements and higher-level abstractions that relate the elements. 
 These memos are eventually written up as the social scientific theory, which is believed to be grounded in the data because it arises from the coding process. 
 
-\subsubsection{Initial coding pass} \label{section:Initial_coding_pass}
+\subsubsection{Initial coding pass}
 
 The inital pass used open coding, where the ``codes'' were essentially free-form text entry. 
 Rough counts of the open codes for the first 10 participants indicated that ten of the codes covered 81\% of the 580 total coded events. 
@@ -193,7 +193,7 @@ This gesture is common for zooming in multitouch user interfaces on smartphones.
 
 Voice command was used to code when a user spoke a command out loud, rather than using gestures. The high incidence of voice commands (7.07\% of all codes) in the first ten users can be attributed to a single user who issued commands almost exclusively through voice. 
  
-\subsubsection{Second Coding Pass} \label{section:Second_Coding_Pass}
+\subsubsection{Second Coding Pass}
 
 To facilitate coding in the second pass, an application was developed to record codes. 
 The application has coding functions for the six most common gestures: drag, tap, voice command, box select, lasso select, and pinch. 
@@ -252,7 +252,7 @@ pinch & 26 & 0.7985 \\
 triple tap & 19 & 0.5835\\
 \end{tabular}
 
-\section{Selection Gestures} \label{section:Selection_Gestures}
+\section{Selection Gestures}
 One area in which the gestures were expected to change between conditions is the use of selection gestures. 
 The intuition behind this expectation is that for small numbers of robots, there is no need for a gesture that selects groups, as the user can interact directly with each robot. 
 Similarly, in the case where no individual robots are displayed, the use of group selection gestures would be minimal, as the group is presented as a single cloud. 
@@ -358,7 +358,7 @@ For the task of removing the defective robot, the location selected for it to be
 Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
 Because the users could not be expected to choose a consistent gesture set for an \emph{a priori} unknown set of tasks, this sort of inconsistency is not unexpected. 
 
-\subsubsection{Robot Count in Unknown Number Case} \label{section:Robot_Count_in_Unknown_Number_Case}
+\subsubsection{Robot Count in Unknown Number Case}
 
 In the condition where the exact number of robots was unknown, and the swarm was depicted as a cloud, participants were asked to say how many robots they felt the cloud represented. 
 Generally, the participant expectation was that the cloud represented tens of robots, but simply averaging the responses would not be useful, as one participant said that it ``could be millions''. 
@@ -388,7 +388,7 @@ However, multiple participants stated that the cloud represented an unknown numb
 	\label{instructional_slides}
 \end{figure}
 
-\subsubsection{Selection Strategy} \label{section:Selection_Strategy}
+\subsubsection{Selection Strategy}
 
 At the end of the experiment, users were shown an image of a robot swarm, with a dotted line around it depicting a finger drag path around some of the robots. 
 The users were told that the intent of this gesture was to select robots, and asked to indicate which robots in the image were selected, or in the unknown number of robots case, whether the gesture selected all of the robots or left any out. 
@@ -450,7 +450,7 @@ User comments also suggested that ways to amend selections before further comman
 
 
 
-\subsubsection{Participant Demographics} \label{section:Participant_Demographics}
+\subsubsection{Participant Demographics}
 
 The experiment had 50 participants, 10 in each condition. 28 of the participants were male, 22 were female. The average age of participants was 22.1 years, with a standard deviation of 3.16. 
 
@@ -459,7 +459,7 @@ It has been suggested that research in psychology focuses too much on a populati
 However, for the purposes of this study, particularly assessing the influence of smartphone use on expectations of user interface gestures, it is useful to have a population with significant experience using smartphones, which are a product of both rich and industrialized societies. 
 It is not proposed that the results of this work generalize to humanity as a whole.  
 
-\subsection{Conclusions} \label{section:Conclusions}
+\subsection{Conclusions}
 
 In future, it would be interesting to repeat this work with a condition that does not display the robots in the user interface at all. 
 We expect that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
