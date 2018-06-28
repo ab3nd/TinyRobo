@@ -1,0 +1,89 @@
+\chapter{Coding Definitions for User Gestures}
+
+\section{General Points} \label{section:General_Points}
+
+Code the time that the user ends the gesture (takes their finger off the screen), to at least 0.1 second, 0.01 second is better. 
+ 
+Code all interactions with the screen. Some users draw on the screen with their finger while explaining their commands, or describing the reaction they would expect from the system. These should be coded because 
+\begin{itemize}
+	\item The system, being a dumb computer, can't determine the user's intentions
+	\item Everyone coding the same things helps with inter-coder reliability 
+\end{itemize}
+
+Use the ``example'' flag when coding these actions. The example flag is also used for if the user repeats their command while describing it, but not for the first time they do it. 
+\begin{itemize}
+	\item Do not code non-contact examples, which is to say when the user is discussing their thinking and not touching the screen, even if they are repeating an action that they did while touching the screen. Only count examples that touch the screen. 
+\end{itemize}
+ 
+Lasso and Box Select are essentially specific forms of Drag, but the users frequently clarify these actions by saying things like ``I'd take these robots'' or ``Select some robots...'', or by mentioning their inspiration for the action, such as Real Time Strategy (RTS) games or selecting multiple files on the desktop. Users are generally consistent, so if a user has used Box Select or Lasso previously with a clear statement of their intent, future Box Selections or Lassos can be coded as such without requiring the user to say what they're doing. 
+ 
+Generally, if the user does the same action with both hands, and the actions have the same object, such as dragging the robots to one point with both hands, it's a single action, but coded as 2-handed. If the actions have different objects, such as dragging one group of robots with one hand and a different group with the other hand, it's two drag actions, although they may have very similar or the same ending time. 
+
+\section{Gestures} \label{section:Gestures}
+
+Drag - User places their finger or fingers down and moves them to a different location while touching the screen. The drag ends when the user lifts their finger, so drawing a circle around robots and then to another location is a single drag action, not a lasso followed by a drag. 
+\begin{itemize}
+	\item If two or more drags are performed at the same time on the same object, code it as one instance of two-handed drag, not two instances of drag. 
+	\item If two or more drags are performed at the same time, but have different objects, code it as two drags with different objects.
+	\item If the user is drawing a specific form, use the ``draw'' flag of the drag code, and describe what they drew. 
+	\item If a user lifts their finger while drawing something in multiple parts, such as writing out words, or drawing arrowheads on lines, code each time they lift their finger as a separate drag. 
+	\item A person dragging the side of their finger is an ``other'', not a ``drag''
+\end{itemize}
+
+UI - User interacts with the screen while describing a UI element such as a menu, drop-down box, on-screen joystick, or similar. Also used for description of a sequence of events, such as the user saying ``I would pull up a menu'' or ``I would type in a command''. 
+\begin{itemize}
+	\item Do not code the user describing something that they would like to have in the UI unless they are describing how they would use it to issue commands for the current task. 
+	\item If the user taps for a menu, or drags a menu down, code it as UI, not as a tap or drag. \item Code UI actions at the end of the action, not at the end of the user description. 
+	\item If the user taps the same button many times, code each time (don't combine them)
+\end{itemize}
+ 
+Tap - User places finger on screen and lifts it immediately, without moving it a significant distance. Taps longer than one second are ``Holds'', as defined below. 
+ 
+Double-tap - User taps twice with both taps falling within an inch of each other and within one second, and without describing tapping on something else, such as tapping to bring up a menu and then tapping something on that menu. 
+\begin{itemize}
+	\item Taps for actions such as drawing a dotted line should be coded as individual taps. 
+Double-taps are coded as taps with the -c (for “count”) flag set to 2. 
+\end{itemize}
+
+Triple-tap - As with double-tap, but with three taps. 
+\begin{itemize}
+	\item Anything beyond three taps should be coded as individual taps, but obviously with close-together time codes. Quadruple-taps and beyond are also comparatively rare. 
+	\item Triple-taps are coded as taps with the -c (for “count”) flag set to 3. 
+\end{itemize}
+
+Hold - User places one finger on the screen and leaves it there without moving for more than one second. Code the time at the end of the hold, when they lift their finger. 
+\begin{itemize}
+	\item Holds are coded as taps with the -h (for “hold”) flag. 
+\end{itemize}
+
+Pinch - User places two fingers on the screen, resulting in two points of contact, and moves them towards each other in a line. 
+\begin{itemize}
+	\item The Pinch code has flags for specifying the number of fingers and hands used, please code them appropriately.
+	\item Multiple pinches at the same time on the same object should be coded as a single pinch instance. For a case where a user makes a pinch gesture with both hands at once, code it as a single pinch, with two hands and four fingers. 
+	\item Multiple pinches at the same time on different objects should be coded as separate pinches, with the -o/object flag describing which things were pinched. 
+\end{itemize}
+
+Reverse pinch - User places two fingers on the screen, resulting in two points of contact, and moves them away from each other in a line. 
+\begin{itemize}
+	\item The Pinch code has flags for specifying the number of fingers and hands used, please code them appropriately.
+\end{itemize}
+
+Lasso - User touches on or near the robots and moves their finger in a closed shape (usually a circle or oval) around or over some set of the robots. Immediately precedes issuing some other command to the selected group. 
+\begin{itemize}
+	\item If it is unclear whether the user intended to perform this action as a selection, code it as a drag. 
+\end{itemize}
+
+Box select - User touches on or near the robots and drags their finger diagonally across the robots in a straight line, then lifts their finger. Immediately precedes issuing some other command to the selected group. 
+\begin{itemize}
+	\item If it is unclear whether the user intended to perform this action as a selection, code it as a drag.  
+\end{itemize}
+
+Voice command - Statements addressed to the robots, such as “Robots, go to area A”, or statements such as “I would tell the robots to form a square”. Code the time of voice commands at the end of the user’s full sentence. 
+\begin{itemize}
+	\item If the user says something like “Robots, do X and then do Y”, that’s one voice command, don’t break it into two commands at the “and then”. 
+\end{itemize}
+
+Other - Anything not listed above, but intended by the user as a command for the robot. This code has a description field in the coding program, please use it to describe the action. 
+\begin{itemize}
+	\item Gestures over the screen, without contact, and that don’t match the any of the other commands should generally be coded as “Other”, but only if they are clearly intended as a command to the robot, not e.g. pointing at something on the screen or indicating the screen itself. 
+\end{itemize}
