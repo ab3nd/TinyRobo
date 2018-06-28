@@ -51,4 +51,35 @@
 
 Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to robots \citep{micire2009multi}. By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms. This thesis presents an interface which extends previous work on multitouch interfaces for small groups of robots to larger swarms, and automates the process of converting command gestures into programs for each robot. The use of individual control programs rather than centralized control is important to realize the potential of swarms to continue to operate despite the possible failure of individual swarm robots.
 
-The contributions of this thesis are a new swarm hardware platform, software to support it, and a user interface which converts user commands into programs for each robot in the swarm. The new swarm platform combines a wifi-enabled microcontroller with commodity mobility platforms sourced from children’s toys to allow large swarms to be built at a low cost. Because the design does not bind the implementation to a specific mobility platform, heterogeneous swarms can be constructed, using different toys. The hardware is also adaptable to new toys as older ones become unavailable, and could be used with custom-designed or 3-D printed mobility platforms. In order to maintain the low cost, sensors for the swarm robots are simulated with a top down camera. The 
+The contributions of this thesis are a new swarm hardware platform, software to support it, and a user interface which converts user commands into programs for each robot in the swarm. The new swarm platform combines a wifi-enabled microcontroller with commodity mobility platforms sourced from children’s toys to allow large swarms to be built at a low cost. Because the design does not bind the implementation to a specific mobility platform, heterogeneous swarms can be constructed, using different toys. The hardware is also adaptable to new toys as older ones become unavailable, and could be used with custom-designed or 3-D printed mobility platforms. In order to maintain the low cost, sensors for the swarm robots are simulated with a top down camera. The use of simulation allows individual swarm members to be constructed cheaply in the present, while leaving the path clear in the future to push computation to the individual members as computer hardware becomes cheaper and smaller.
+}
+
+\acknowledgments{ \input{ack.tex} }
+\includetoc 
+\maketitle
+
+\begin{document}
+
+\clearpage
+
+\include{intro}
+
+\include{related_work}
+
+\include{proposed_work}
+
+\include{gesture_collect}
+
+%Where we're going, we don't need timelines
+%\include{timeline}
+
+\include{contributions}
+
+\bibliography{../proposal/swarm.bib}
+%\bibliographystyle{apalike}
+
+\begin{appendices}
+\include{coding_doc}
+\end{appendices}
+
+\end{document}

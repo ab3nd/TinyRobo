@@ -2,7 +2,7 @@
 
 For the purposes of this work, the tasks that users are asked to complete are moving the swarm in space, patrolling areas, moving objects, and directing the swarm to form various formations. 
 
-\section{Compilation of robot programs} \label{section:Compilation_of_robot_programs}
+\section{Compilation of robot programs}
 
 The user interface may be able to drive the re-imagining of the robots as a unified swarm, and so alter the user's interaction with the swarm, by depicting the group in different ways \citep{manning2015heuristic}.
 The base case is to simply display all the units as individuals, but this may not be useful for the operator \citep{coppin2012controlling}. 
@@ -31,7 +31,7 @@ The synthesized program should result in convergence of the swarm's overall beha
 Clearly, in a developing situation in the real world, success may become impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. 
 
-\section{Swarm Robot Software Framework} \label{section:Swarm_Robot_Software_Framework}
+\section{Swarm Robot Software Framework}
 
 The individual robots being developed for this research have minimal sensing capacity and relatively weak processors. 
 The majority of the processing is performed on a host computer running the ROS software framework. 
@@ -125,7 +125,7 @@ Each of these robot processes only has access to the information that would be a
 As a result, the individual robots can be small, lightweight, and consume relatively little electrical power, but the system as a whole gives them significant computing power. 
 When more powerful and lower power consumption processors become available, more of the processing can be moved from the virtualized robot processors and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
 
-\subsection{Virtual Localization} \label{section:Virtual_Localization}
+\subsection{Virtual Localization}
 
 The AprilTag tracking of the robots provides localization of the robots within a common coordinate frame. 
 It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
@@ -134,7 +134,7 @@ The code virtually operating on the robot may be neither aware of its own positi
 Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokyuo brand laser scanners used on larger robots. 
 It is also used to limit the range of messages sent between the robots through a virtual network. 
 
-\subsection{Virtual Laser Scanners} \label{section:Virtual_Laser_Scanners}
+\subsection{Virtual Laser Scanners}
 
 The AprilTag localizations and the image of the arena are used to provide virtual laser rangers for each robot. 
 The virtual laser ranger consists of two ROS nodes, a service and clients for the service. 
@@ -180,7 +180,7 @@ The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 	\caption{Data flow in the virtual laser service}
 \end{figure}
 
-\subsection{Virtual Networking} \label{section:Virtual_Networking}
+\subsection{Virtual Networking}
 
 If the robots are required to communicate directly with each other, the communication passes through a virtual network.
 From the point of view of the robots, messages sent into the virtual network are delivered to other robots as if the messages were sent directly from one robot to another. 
@@ -268,7 +268,7 @@ The decision to have all of the robots have the same firmware and control the sp
 Toy tanks use differential drive, toy cars have Ackerman steering, and so forth. 
 By moving the control to the main computer, the firmware can be kept simple while still allowing researchers to adapt the system to the available toys by modifying the software. 
 
-\section{Swarm Simulation} \label{section:Swarm_Simulation}
+\section{Swarm Simulation}
 
 Because the sensors in the TinyRobo system are simulated, it may appear that the development of the UI and translation components could have been served as well by a simulated swarm as by a real one. 
 This is not the case. 
@@ -310,7 +310,7 @@ With evolutionary approaches, the system can even come to depend on the noise, a
 %Leon Zlajpah
 %	Overview of tools
 
-\section{Why Heterogeneity?} \label{section:Why_Heterogeneity_}
+\section{Why Heterogeneity?}
 
 Heterogeneity is a is a good model of many real-world systems where members of a group have different capabilities. 
 Family groups of pack animals have young and old members, sometimes ill members, and sometimes infant members that cannot participate fully in pack activities. 
@@ -333,7 +333,7 @@ The system could be extended with some capacity for reasoning about the task env
 Such an augmented system could then refuse to direct ground robots into water, and report if there are not a sufficient number of aerial robots to perform the task over the lake. 
 It could also permute task assignments based on robot capabilities in order to meet other goals, such as minimizing the number of robots used or maximizing available robot battery life. 
 
-\section{Implementation of Swarm Actions} \label{section:Implementation_of_Swarm_Actions}
+\section{Implementation of Swarm Actions}
 
 The initial vision for this work was to have minimal sensing and no localization. 
 Minimal sensing results in a lower cost per robot. 
@@ -406,7 +406,7 @@ In implementation, the new locations were chosen by uniform random selection of 
 
 These algorithms for path following and dispersion were implemented in ROS and tested in the ARGoS multi-robot simulator \citep{pinciroli2012argos}.
 
-\section{Composition with Obstacle Avoidance} \label{section:Composition_with_Obstacle_Avoidance}
+\section{Composition with Obstacle Avoidance}
 
 Reactive obstacle avoidance was initially added to the vector field program by only following the desired heading if the robot detects that it is not near any obstacles, and reacting to avoid the obstacles rather than follow the vector field if an obstacle is detected. 
 This approach does have the weakness that the user can, for example, draw a path which passes through an obstacle. 
@@ -461,14 +461,10 @@ Changing to randomly-selected lh- or rh-wall following changes the shape of the 
 \end{figure}
 
 In none of these cases is the goal unreachable, in that it is a member of the same set of points as the open space of the environment, but attempts at obstacle avoidance preclude the robot reaching it. 
-The case of a C or U-shaped obstacle is also a known problem in artificial potential fields, as the potential field may point into the opening of the obstacle and trap the robot against the bottom of the opposite side. 
-More generally, reactive obstacle avoidance paradigms do not need the full world knowledge required for deliberative paradigms, but are prone to traps that deliberative paradigms avoid with ease. 
-Unfortunately, in the case of processor and sensor-constrained robots as might be reasonably expected to comprise swarms for the near future, deliberative paradigms consume amounts of processing time and memory that may not be available. 
-A more complete overview of the tradeoffs of each approach and their various combinations is available, but for cheap swarms, reactive paradigms are desirable \citep{tobaruela2017reactive}.
 
-\section{The Desert of the Real} \todo{Come up with a real title, this is overly grim} \label{section:The_Desert_of_the_Real}
+\section{The Desert of the Real} \todo{Come up with a real title, this is overly grim}
 
-\subsection{Anti-scaling of Hardware Failures} \label{section:Anti_scaling_of_Hardware_Failures}
+\subsection{Anti-scaling of Hardware Failures}
 
 Due to mechanical flaws in the toys used as motion platforms in TinyRobo, the robots would sometimes not move as commanded (see figure \ref{motor-speed-fig}). 
 In a single-robot system, transient failures can sometimes be accommodated by repeated effort or replanning. 
@@ -482,7 +478,7 @@ It is desirable to have a swarm platform be able to run for extended periods, in
 Toys, especially cheap ones, are designed for low cost and an MBTF more compatible with the attention span of children than that of researchers. 
 The amount of effort devoted to locating and eliminating mechanical problems relative to the runtime of the system was not acceptable.
 
-\subsection{Calibration} \label{section:Calibration}
+\subsection{Calibration}
 
 Children's toys are prone to failure and inaccuracy.
 In toys, particularly remote controlled toys, the user acts as a the feedback element of a control system, observing the behavior of the toy and changing their actions as a result. 
@@ -511,7 +507,7 @@ Note that while the magnitude of the motion is proportional to the commanded mot
 This approach results in learning bad controls if the system observes the robot during a temporary failure. 
 In a system with minimal failures, this problem can be minimized, but as discussed earlier, inexpensive children's toys are not such a system. 
 
-GRITSBots have a calibration step, but the calibration is automated, and is only performed once for each robot, after which it is assumed that the calibration variables are constant.
+GRITSBots has a calibration step, but the calibration is automated, and is only performed once for each robot, after which it is assumed that the calibration variables are constant.
 Calibration can be automated in a homogenous platform with reasonably reliable hardware. 
 Non-homogenous platforms require different calibration for different platforms, which reduces the benefit of automation. 
 Further, it works against transitioning to a new platform by adding an additional hurdle in the form of developing a new calibration method for the new platform. 
@@ -519,7 +515,7 @@ Further, it works against transitioning to a new platform by adding an additiona
 The lack of an automated calibration and control method drove the TinyRobo swarm to use more differential drive vehicles, as they struck a balance between the fully holonomic drive used in the SpiderBots, which is expensive but easy to control, and the Ackerman drive used in inexpensive RC cars, which is less expensive, but has more complex control math \citep{lairdspider}.
 It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity as discussed in section \todo{automate labeling sections}
 
-\subsection{April Tag Latency} \label{section:April_Tag_Latency}
+\subsection{April Tag Latency}
 
 April tags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
 More tags leads to longer computation time, increasing the latency of the robot control loop. 
@@ -531,7 +527,7 @@ Decreasing the size of the image in which the tags are detected speeds it up, at
 The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
 To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \citep{PickemGrits2014}. 
 
-\section{Conclusion} \label{section:Conclusion}
+\section{Conclusion}
 
 The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
 While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
@@ -551,4 +547,15 @@ Using children's toys in TinyRobo was intended to avoid the use of such custom p
 
 Minimize parts count. 
 TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
-Multi
+Multi-use devices like the ESP-8266 are becoming cheaper and more competent quickly.
+The processor in mROBerTO is both a 32-bit ARM processor, a low-power Bluetooth transceiver, and an ANT Wireless tranceiver. 
+The VL6180X IC combines an ambient light sensor and a laser-based time-of-flight range sensor in a package measuring approximately 5x8x1mm. 
+Reducing parts count reduces cost and speeds assembly. 
+
+Use autonomous charging, and have each robot be able to monitor its own battery level. 
+Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
+In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
+For the GRITSBbots, pins on the front of each robot allows the robot to connect to a charging station by itself, rather than requiring a human to connect it. 
+The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
+The alternative to this, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
+At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
