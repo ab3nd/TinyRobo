@@ -288,28 +288,137 @@ To determine if these differences were statistically significant, the count of e
 Normalizing in this manner converts raw gesture counts to a proportion of the total gestures used on that task, which prevents more verbose users from dominating the analysis.
 
 The tasks checked for statistically significant differences between conditions were those that all conditions had in common. 
-These nine common tasks are 'move crate', 'divide by color (cross)', 'divide by color', 'move to a', 'move to a (wall)', 'patrol a', 'patrol screen', 'split', and 'stop'. 
+These nine common tasks are `move crate', `divide by color (cross)', `divide by color', `move to a', `move to a (wall)', `patrol a', `patrol screen', `split', and `stop'. 
 Across all the common tasks the proportions of each gesture were collected per gesture, resulting in, for each gesture, 5 lists, one for each condition. Each list consists of 90 entries, 10 users times 9 common tasks. Each list entry consists of the proportion of that gesture the user used to complete the task. ANOVAs were performed for each pair of conditions. 
 
-For the box selection gesture, the unknown condition differs significantly ($\alpha$ = 0.05) from the ten (F=7.17386 p=0.00809), hundred (F=26.95175 P=0.00000), and thousand (F=4.57743 p=0.03376) robot conditions, but not from the single robot condition (F and p values could not be calculated due to disuse of box selection in these cases). 
-The use of box select in the one robot condition differs significantly from the ten (F=7.17386 p=0.00809), hundred (F=26.95175 p=0.00000), and thousand (F=4.57743 p=0.03376) robot conditions.
-The hundred robot condition differed from the ten (F=9.17884 P=0.00281) and thousand (F=13.81053 P=0.00027) robot cases. \todo{Needs some analysis on what caused these differences}
+% This is PER-USER normalization, but PER TASK normalization is what I want
+%For uses of tap as selection across the common tasks, the unknown number condition differs from the hundred (F=8.8744, p=0.0033) and thousand (F=4.8577, p=0.0288) robot conditions. 
+%The one robot condition differs from the ten (F=4.5036 , p=0.0352), hundred (F=13.7996 , p=0.0003) ), and thousand (F=10.4596, p=0.0014) robot conditions.
+%The ten robot condition differs from the hundred robot condition (F=4.2012, p=0.0419).
+%These differences are summarized in table \ref{tab:tap_select_per_user_norm}.
+%
+%\begin{table}
+%	\begin{tabular}{l|l l l l l}
+%		& unknown & one    & ten        & hundred     & thousand   \\ 
+%		\hline
+%		unknown & & 0.1066 & 0.4915 & \textbf{0.0033} & \textbf{0.0288} \\   
+%		one & & & \textbf{0.0352} & \textbf{0.0003} & \textbf{0.0014} \\
+%		ten & & & & \textbf{0.0419} & 0.1828   \\
+%		hundred & & & & & 0.3132   \\
+%		thousand & & & & &\\
+%	\end{tabular}
+%	\caption{p-values for the use of tap as select between conditions}
+%	\label{tab:tap_select_per_user_norm}
+%\end{table}
 
-For the lasso gesture, the unknown condition differs significantly from the ten (F=33.27742 P=0.00000), hundred (F=19.44664 P=0.00002), and thousand (F=5.86234 P=0.01647) robot cases. 
-The one robot condition differs significantly from the ten (F=33.27742 P=0.00000), hundred (F=19.44664 P=0.00002), and thousand (F=5.86234 P=0.01647) robot cases as well. \todo{Why are these differing by the same amount between unknown and one? The same proportions?}
-The thousand robot condition also differed from the ten (F=23.51414 P=0.00000) and hundred (F=11.76321 P=0.00075) robot conditions. 
+For uses of tap as selection across the common tasks, the unknown number condition differs from the hundred (F=7.6964, p=0.0061) and thousand (F=5.5772, p=0.0193) robot conditions. 
+The one robot condition differs from the ten (F=4.3299, p=0.0389), hundred (F=13.5889, p=0.0003), and thousand (F=10.4274, p=0.0015) robot conditions.
+These differences are summarized in table \ref{tab:tap_select_per_user_norm}.
 
-For the tap gesture, the unknown condition differs significantly from the one (F=5.07967 P=0.02543) and thousand (F=5.31693 P=0.02227) robot conditions. 
-The one robot condition differs from the ten (F=5.58672 P=0.01918), hundred (F=7.47952 P=0.00687), and thousand (F=21.15146 P=0.00001) robot conditions. 
-The thousand robot also differs from the hundred robot condition (F=4.08954 P=0.04465), although not as strongly as many of the others. 
-However, this analysis looks at all uses of tap, not just tap intended as select, as detected by the object of the tap being a robot.
+\begin{table}
+	\begin{tabular}{l|l l l l l}
+		& unknown & one    & ten        & hundred     & thousand   \\ 
+		\hline
+		unknown & & 0.5622 & 0.1772 & \textbf{0.0006} & \textbf{0.0193} \\   
+		one & & & \textbf{0.0389} & \textbf{0.0030} & \textbf{0.0015} \\
+		ten & & & & 0.1089 & 0.2719   \\
+		hundred & & & & & 0.5457   \\
+		thousand & & & & &\\
+	\end{tabular}
+	\caption{P-values for the use of tap as select between conditions}
+	\label{tab:tap_select_per_task_norm}
+\end{table}
 
-To determine if tap-as-select, rather than just any use of tap, maintained this relationship, the count of group selects (box or lasso with robots as the object) and single selects (taps with robots as the object), were collected, per user across all tasks that are common to all conditions. 
-These lists were averaged, to get the average use of group select or single select, for each task, averaged across the condition.\todo{This is raw counts, should maybe do this and then normalize to get proportions, rather than average.}
- 
-For tap-as-select, the hundred robot case differed from the unknown (F=5.61783, p=0.03068), one (F=9.13207, p=0.00810) , and ten (F=6.59643, p=0.02062) robot cases. The thousand robot case differed from the ten (F=5.64536, p=0.03033) and one (F=7.62757, p=0.013893) robot cases.
+For uses of group selection across the common tasks, the unknown number condition differs from the ten (F=47.635915, p<0.0001), hundred (F=60.435124, p<0.0001) and thousand (F=10.2346959, p=0.0016) robot conditions. 
+The one robot condition differs from the ten (F=47.6359, p<0.0001), hundred (F=60.4351, p<0.0001), and thousand (F=10.2347, p=0.0016) robot conditions.
+The ten robot condition differs from the thousand robot condition (F=19.0110, p<0.0001).
+The hundred robot condition differs from the thousand robot condition (F=30.2373, p<0.0001).
+The identical F and p values for the one and unknown robot conditions and the various conditions that they differ from are because for the one and unknown robot conditions, no group selection gestures were used in the common tasks. 
+These differences are summarized in table \ref{tab:group_select_per_task_norm}.
 
-For group select, the hundred robot case differed from the unknown (F=5.61783, p=0.03068), one (F=9.13207, p=0.0081) , and ten (F=6.59643, p=0.02062) robot cases. The thousand robot case differed from the ten (F=5.64536, p=0.03033) and one (F=7.62757, p=0.01389) robot cases.
+\begin{table}
+	\begin{tabular}{l|l l l l l}
+		& unknown & one    & ten        & hundred     & thousand   \\ 
+		\hline
+		unknown & & * & \textbf{0.0000} & \textbf{0.0000} & \textbf{0.0016} \\   
+		one & & & \textbf{0.0000} & \textbf{0.0000} & \textbf{0.0016} \\
+		ten & & & & 0.1808 & \textbf{0.0000}   \\
+		hundred & & & & & \textbf{0.0000}   \\
+		thousand & & & & &\\
+	\end{tabular}
+	\caption{P-values for the use of group selections between conditions. The ANOVA between the unknown case and the single robot case was not computable, as no group selections were used for the unknown case or the single robot case for the common tasks.}
+	\label{tab:group_select_per_task_norm}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{l | l l}
+		& common tasks & all tasks\\
+		\hline
+		unknown & 0 & 1\\
+		one & 0 & 3\\
+		ten & 55 & 107 \\
+		hundred & 60 & 109\\
+		thousand & 15 & 28\\
+	\end{tabular}
+	\caption{Counts of group selection gestures in the common tasks and all tasks.}
+	\label{tab:group_raw_counts}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{l | l l}
+		& common tasks & all tasks\\
+		\hline
+		unknown & 15 & 29\\
+		one & 38 & 53 \\
+		ten & 45 & 108\\
+		hundred & 4 & 29 \\
+		thousand & 7 & 18\\
+	\end{tabular}
+	\caption{Counts of tap selection gestures in the common tasks and all tasks.}
+	\label{tab:tap_raw_counts}
+\end{table}
+
+Examining the non-normalized counts of taps as selections and group selections across both the common tasks and all tasks indicates that heaviest use of tap selection is in the ten robot case. Heaviest use of group selection is in the hundred robot case, but the ten robot case only lags it by two uses. The second heaviest for group selection is the hundred robot case, while the second heaviest for tap selection is the single robot case. This seems to indicate that with single robots, users prefer tap selection, with one hundred robots they prefer group selection, but with ten robots, either selection method could be viewed as appropriate. 
+
+It was surmised that users may have been performing multiple tap selections in a row to select robots in the ten robot case, but that a 10-robot tap selection would be condensed by the normalization into the same proportion of the overall gestures as a single-robot tap selection. 
+To check if users were performing multiple taps in a row as selections, the lengths of sequences of tap actions were checked across all cases. As seen in table \ref{tab:tap_seq_len}, while the ten robot case does have a much higher count of sequences of taps, the mean is higher than the other cases, and the standard deviation much higher. On examining the data, there was exactly one case of a 10-tap sequence in the ten robot case, as well as a 7-tap sequence, a 6-tap sequence, and a 4-tap sequence. It is possible that a user in the ten-robot case might perform a selection by tapping each of the ten robots, but it is not a common occurrence. 
+
+\begin{table}
+	\begin{tabular}{l | l l l}
+		& Sequence Count & Mean Length & Standard Deviation \\ 
+		\hline
+		unknown & 18 & 1.0556 & 0.2291 \\
+		one & 25 & 1.1600 & 0.4630\\
+		ten & 58 & 1.4310 & 1.5769\\
+		hundred & 16 & 1.2500 & 0.4330\\
+		thousand & 9 & 1.0000 & 0.0000\\
+	\end{tabular}
+	\caption{Lengths of sequences of taps within conditions.}
+	\label{tab:tap_seq_len}
+\end{table}
+
+% TRIPLE CHECK THIS BEFORE USING ANY OF IT
+%For the box selection gesture, the unknown condition differs significantly ($\alpha$ = 0.05) from the ten (F=7.17386 p=0.00809), hundred (F=26.95175 P=0.00000), and thousand (F=4.57743 p=0.03376) robot conditions, but not from the single robot condition (F and p values could not be calculated due to disuse of box selection in these cases). 
+%The use of box select in the one robot condition differs significantly from the ten (F=7.17386 p=0.00809), hundred (F=26.95175 p=0.00000), and thousand (F=4.57743 p=0.03376) robot conditions.
+%The hundred robot condition differed from the ten (F=9.17884 P=0.00281) and thousand (F=13.81053 P=0.00027) robot cases. 
+%
+%
+%
+%For the lasso gesture, the unknown condition differs significantly from the ten (F=33.27742 P=0.00000), hundred (F=19.44664 P=0.00002), and thousand (F=5.86234 P=0.01647) robot cases. 
+%The one robot condition differs significantly from the ten (F=33.27742 P=0.00000), hundred (F=19.44664 P=0.00002), and thousand (F=5.86234 P=0.01647) robot cases as well. \todo{Why are these differing by the same amount between unknown and one? The same proportions?}
+%The thousand robot condition also differed from the ten (F=23.51414 P=0.00000) and hundred (F=11.76321 P=0.00075) robot conditions. 
+%
+%For the tap gesture, the unknown condition differs significantly from the one (F=5.07967 P=0.02543) and thousand (F=5.31693 P=0.02227) robot conditions. 
+%The one robot condition differs from the ten (F=5.58672 P=0.01918), hundred (F=7.47952 P=0.00687), and thousand (F=21.15146 P=0.00001) robot conditions. 
+%The thousand robot also differs from the hundred robot condition (F=4.08954 P=0.04465), although not as strongly as many of the others. 
+%However, this analysis looks at all uses of tap, not just tap intended as select, as detected by the object of the tap being a robot.
+%
+%To determine if tap-as-select, rather than just any use of tap, maintained this relationship, the count of group selects (box or lasso with robots as the object) and single selects (taps with robots as the object), were collected, per user across all tasks that are common to all conditions. 
+%These lists were averaged, to get the average use of group select or single select, for each task, averaged across the condition.\todo{This is raw counts, should maybe do this and then normalize to get proportions, rather than average.}
+% 
+%For tap-as-select, the hundred robot case differed from the unknown (F=5.61783, p=0.03068), one (F=9.13207, p=0.00810) , and ten (F=6.59643, p=0.02062) robot cases. The thousand robot case differed from the ten (F=5.64536, p=0.03033) and one (F=7.62757, p=0.013893) robot cases.
+%
+%For group select, the hundred robot case differed from the unknown (F=5.61783, p=0.03068), one (F=9.13207, p=0.0081) , and ten (F=6.59643, p=0.02062) robot cases. The thousand robot case differed from the ten (F=5.64536, p=0.03033) and one (F=7.62757, p=0.01389) robot cases.
 
 
 
