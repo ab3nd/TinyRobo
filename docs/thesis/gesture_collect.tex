@@ -381,17 +381,20 @@ These differences are summarized in table \ref{tab:group_select_per_task_norm}.
 Examining the non-normalized counts of taps as selections and group selections across both the common tasks and all tasks indicates that heaviest use of tap selection is in the ten robot case. Heaviest use of group selection is in the hundred robot case, but the ten robot case only lags it by two uses. The second heaviest for group selection is the hundred robot case, while the second heaviest for tap selection is the single robot case. This seems to indicate that with single robots, users prefer tap selection, with one hundred robots they prefer group selection, but with ten robots, either selection method could be viewed as appropriate. 
 
 It was surmised that users may have been performing multiple tap selections in a row to select robots in the ten robot case, but that a 10-robot tap selection would be condensed by the normalization into the same proportion of the overall gestures as a single-robot tap selection. 
-To check if users were performing multiple taps in a row as selections, the lengths of sequences of tap actions were checked across all cases. As seen in table \ref{tab:tap_seq_len}, while the ten robot case does have a much higher count of sequences of taps, the mean is higher than the other cases, and the standard deviation much higher. On examining the data, there was exactly one case of a 10-tap sequence in the ten robot case, as well as a 7-tap sequence, a 6-tap sequence, and a 4-tap sequence. It is possible that a user in the ten-robot case might perform a selection by tapping each of the ten robots, but it is not a common occurrence. 
+To check if users were performing multiple taps in a row as selections, the lengths of sequences of tap actions were checked across all cases. 
+As seen in table \ref{tab:tap_seq_len}, while the ten robot case does have a much higher count of sequences of taps, the mean is higher than the other cases, and the standard deviation much higher. 
+On examining the data, there was exactly one case of a 10-tap sequence in the ten robot case.
+While it is possible that a user in the ten-robot case might perform a selection by tapping each of the ten robots, but it is not a common occurrence. 
 
 \begin{table}
 	\begin{tabular}{l | l l l}
 		& Sequence Count & Mean Length & Standard Deviation \\ 
 		\hline
-		unknown & 18 & 1.0556 & 0.2291 \\
-		one & 25 & 1.1600 & 0.4630\\
-		ten & 58 & 1.4310 & 1.5769\\
-		hundred & 16 & 1.2500 & 0.4330\\
-		thousand & 9 & 1.0000 & 0.0000\\
+		unknown & 28 & 1.0357 & 0.1856 \\
+		one & 42 & 1.2619 & 0.5798\\
+		ten & 72 & 1.5000 & 1.6499\\
+		hundred & 23 & 1.2609 & 0.4391\\
+		thousand & 17 & 1.0588 & 0.2353\\
 	\end{tabular}
 	\caption{Lengths of sequences of taps within conditions.}
 	\label{tab:tap_seq_len}
@@ -437,9 +440,84 @@ To check if users were performing multiple taps in a row as selections, the leng
 
 [DATA INTENSIFIES]
 
-\todo{Try normalization by total gestures used per task per user}
+\section{Multi-hand Gestures}
 
-\todo{Percentage use of multi-hand vs. single-hand gestures}
+Multi-hand gestures fall into two different groups. \
+The first group is gestures where each hand is performing part of a single gesture.
+Generally, these were pinches and reverse pinches with one finger on each hand. 
+%[PUT COUNT HERE] users also performed two-handed drags with one finger of each hand. 
+The other group of multi-hand gestures consists of a simultaneous pair of different gestures, one performed with each hand. 
+For purposes of coding, dragging one object to one place with two fingers was coded as a single drag with two fingers, while dragging two objects to two different places was coded as two single-fingered drags at the same time. 
+
+Fifty percent of the users performed at least one two-handed gesture. 
+This is fewer than in some previous research, but more than might be expected if users were generalizing from single-point mouse interaction \cite{micire2010multi, epps2006study}
+Epps et al required users to use a single hand for over half of the gestures in their study, and they point out that their use of a Windows desktop as the working environment of the study may have influenced people towards a single-point interaction style. 
+
+There were 82 instances of two-handed gesturing. 
+If this total is treated as 164 gestures, one for each hand, two-handed interactions account for 5.037\% of the gestures used.
+
+%u'box_select box_select': 3,
+%u'box_select tap': 1,
+%u'box_select ui': 1,
+%u'drag drag': 26,
+%u'drag tap': 4,
+%'drag_s drag_s': 5,
+%u'other other': 5,
+%'pinch pinch': 22,
+%'reverse_pinch reverse_pinch': 7,
+%u'tap drag': 2,
+%u'tap tap': 6
+\begin{table}
+	\centering
+	\begin{tabular}{l l}
+		Gesture Pair & Count\\
+		\hline
+		drag and drag (different objects) & 26 \\
+		pinch & 22\\
+		reverse pinch & 7\\
+		tap and tap & 6\\
+		drag and tap & 6\\
+		drag (same objects) & 5\\
+		other and other & 5\\		
+		box select and box select & 3\\
+		box select and tap & 1\\
+		box select and UI & 1\\
+		\hline
+		TOTAL & 82\\
+	\end{tabular}
+	\caption{Two handed gesture pairs. Note that the total is lower than the actual count of total gestures, since it counts e.g. two simultaneous drag actions as a single two-handed drag action.}
+\end{table}
+
+Most of the two-handed gestures were simultaneous drags of two different objects. 
+Simultaneous drags and two handed pinches or reverse pinches account for 58.537\% of the two-handed gestures.  
+
+Due to the prevalence of smartphone adoption, it is no longer simple to determine if smartphone use contributes to the use of pinch and reverse pinch gestures, because there are almost no smartphone non-users in the population of this study. 
+Out of 50 subjects, 46 (92\%) reported using an Android or Iphone smartphone daily. 
+Only one user did not report having used an Android or Iphone at least moderately, and stated that they did not own any touchscreen devices. 
+Despite not having any touchscreens, even this user made two-handed gestures. 
+
+\begin{table}
+	\centering
+	\begin{tabular}{l l}
+		Task & 2-Handed Gesture Count\\
+		\hline
+		merge&14\\
+		divide&12\\
+		square&12\\
+		divide color 2&9\\
+		patrol screen&9\\
+		split&6\\
+		divide color 1&5\\
+		divide color mix&4\\
+		move wall&4\\
+		line&2\\
+		move a&2\\
+		crate&1\\
+		disperse&1\\
+		stop&1
+	\end{tabular}
+	\caption{Use of two-handed gestures by task.}
+\end{table}
 
 \todo{is number of hands used influenced by number of robots?}
 
@@ -447,25 +525,43 @@ To check if users were performing multiple taps in a row as selections, the leng
 
 \todo{Use of onscreen keyboards}
 
+\subsection{Influence of Video Games}
+
 \todo{percentage of menu use}
 
 \todo{menu use vs. RTS games}
 
-\todo{iphone/android use vs. pinch gestures}
-
 \todo{RTS/video game vs. pinch use, box select use}
 
- 
-Some people \todo{how many people?} take the directions on the slides very literally. 
-For example, users who had been solely using the touch interface read the slides that instructed ``Tell the robots to form a line" to indicate that they should speak the words ``Form a line", addressed to the robots.
+\todo{Did OS choice influence 5f spread for disperse}
 
-People \todo{how many people?} who didn't otherwise want voice commands would use them for the task of stopping the robots. 
-Since this task assumes the robots are already moving towards a goal, attempts to interact with all of them while they are moving could be difficult. 
 
-For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al} \citep{wobbrock2009user}.
+\subsection{Use of Voice Commands}
 
-Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
-Because the users could not be expected to choose a consistent gesture set for an \emph{a priori} unknown set of tasks, this sort of inconsistency is not unexpected. 
+Twenty percent of the users (10 users) used voice commands. 
+Only one user used voice commands for all of their interactions. 
+Over all of the tasks, voice commands were used for the formation tasks, `line' (5 commands) and `square' (4 commands), more than any other task. 
+This is likely due to a bias inadvertently created by colloquial use of the verb ``tell'' in the instructional slides for the formation tasks.  
+The instructional slides read ``Tell the robots to form a line/square", and some users read this to mean that they should speak the words ``Form a line" or ``Form a square", addressed to the robots.
+
+The `stop' task also was performed with a voice command by three users. 
+Users indicated that even if they hadn't otherwise been using voice commands, the users would use them for the task of stopping the robots. 
+Since this task assumes the robots are already moving towards a goal, users stated that attempts to interact with all of them by using gestures while they are moving could be difficult. 
+
+The `divide color mix' task was also performed by voice command by three users. 
+This task requires some form of selection by color to separate robots that are in a mixed group, so users would assume that robots knew their color, and address them with commands such as ``red robots, unite".
+
+Overall, the 20\% use of voice commands is much higher than the 1.3\% observed in a previous study \citep{micire2010multi}. 
+While that study took place as smartphones were becoming popular (and observed effects related to smartphone experience), this study was performed after the introduction of Google Now/Assistant (2012/2016), Microsoft Cortana (2014), Amazon Alexa (2014), and Apple Siri (2011). 
+Aside from Alexa, these voice assistants are all accessed through smartphones.  
+All of the users of voice commands reported high familiarity with Android or IPhone smartphones, but the survey did not ask if they used the voice assistant feature of their phones. 
+As a result, no conclusion can be drawn about the influence of voice assistant technology on user interface expectations from this study. 
+
+
+%For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al} \citep{wobbrock2009user}.
+%
+%Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
+%Because the users could not be expected to choose a consistent gesture set for an \emph{a priori} unknown set of tasks, this sort of inconsistency is not unexpected. 
 
 \subsubsection{Robot Count in Unknown Number Case} \label{section:Robot_Count_in_Unknown_Number_Case}
 
