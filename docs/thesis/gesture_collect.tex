@@ -251,6 +251,7 @@ voice & 44 & 1.3513\\
 pinch & 26 & 0.7985 \\
 triple tap & 19 & 0.5835\\
 \end{tabular}
+\todo{Add caption, label. Also, this includes examples, maybe break out non-examples so the totals match total counts in later sections.}
 
 \section{Selection Gestures} \label{section:Selection_Gestures}
 One area in which the gestures were expected to change between conditions is the use of selection gestures. 
@@ -456,17 +457,6 @@ Epps et al required users to use a single hand for over half of the gestures in 
 There were 82 instances of two-handed gesturing. 
 If this total is treated as 164 gestures, one for each hand, two-handed interactions account for 5.037\% of the gestures used.
 
-%u'box_select box_select': 3,
-%u'box_select tap': 1,
-%u'box_select ui': 1,
-%u'drag drag': 26,
-%u'drag tap': 4,
-%'drag_s drag_s': 5,
-%u'other other': 5,
-%'pinch pinch': 22,
-%'reverse_pinch reverse_pinch': 7,
-%u'tap drag': 2,
-%u'tap tap': 6
 \begin{table}
 	\centering
 	\begin{tabular}{l l}
@@ -519,12 +509,6 @@ Despite not having any touchscreens, even this user made two-handed gestures.
 	\caption{Use of two-handed gestures by task.}
 \end{table}
 
-\todo{is number of hands used influenced by number of robots?}
-
-\todo{use of handwriting as percentage of gestures}
-
-\todo{Use of onscreen keyboards}
-
 \subsection{Influence of Video Games}
 
 Previous research had indicated that users of Real Time Strategy (RTS) games would be predisposed to the use of box selection gestures, because many RTS games use box selection to select areas of the screen or units to control \cite{micire2010multi}. 
@@ -533,12 +517,44 @@ The count of per-task box selection gestures was collected, and divided between 
 RTS users made 51 box select gestures, while non-RTS users made 49.
 While these two totals are quite close, bear in mind that RTS players are less than one fifth of the total population, but used over one half of the box selection gestures. 
 The mean per-task use of box selection among RTS users is 0.3828 (std. dev. 0.7408), and the mean use of box selection among non-RTS users is 0.0748 (std. dev. 0.3392). 
-ANOVA results indicate that the difference is statistically significant (F=53.8527, p < 0.0001).
+ANOVA results indicate that the difference is statistically significant (F=53.8527, p \textless 0.0001).
+These results persist even if all games are considered, rather than only RTS games.
+Thirty-six (72\%) of the users reported playing video games.
+Non-gamers made 10 box selection gestures, while gamers made 90. 
+The mean per-task use of box selection is 0.0418 for non-gamers, and 0.1576 for gamers (F=11.3061, p=0.0008).
  
 The use of user interface elements, such as menus or buttons on the screen, was also much higher in RTS gamers than non-RTS users. 
 RTS-playing users made 74 UI gestures, while non-RTS users made 20. 
 The average per-task use of UI gestures was 0.5781 among RTS users (std. dev. 1.8608) and 0.02932 (std. dev. 0.1853) among non-RTS users. 
-ANOVA results indicate that the difference is significant (F=56.2048, p < 0.0001).
+ANOVA results indicate that the difference is significant (F=56.2048, p \textless 0.0001).
+Use of UI elements extends more broadly to gamers versus non-gamers as well. 
+If all users who reported playing games are compared to users who reported not playing games, 90 of the user interface gestures were performed by gamers, and 4 were performed by non-gamers. 
+The per-task average use of UI elements by gamers was 0.1576, and the per-task average use of UI elements by non-gamers was 0.0167 (F=5.4502, p=0.0167).
+
+Lasso select does not display a relationship between use of the lasso select gesture and playing video games. 
+The per-task mean use of lasso selection for gamers and non-gamers are 0.1821 and 0.1841, respectively, and the difference is not statistically significant (F = 0.3885, p = 0.5332).
+Non-gamers made 44 lasso selections, while gamers made 104.
+Non-gamers composed 28\% of the population, and made 29.73\% of the lasso selection gestures, further indicating that the use of lasso selection was equally likely between gamers and non-gamers. 
+
+While previous work was able to determine that pinch gestures were used by smartphone users more than smartphone non-users, this study is unable to make such a distinction due to the absence of smartphone non-users in the population.  
+The same work also determined that RTS gamers did not use pinch gestures.
+It was surmised that since almost the entire population of this study used smartphones, the use of pinch gestures may have become widespread, and would extend to RTS players. 
+However, this is not the case. 
+Out of 51 non-example pinch or reverse pinch gestures, all of them were made by users who do not play RTS games.
+RTS players made no pinch gestures.
+This difference is statistically significant (F = 14.5905 p = 0.0001).
+
+Because of the differences in use of box selection, pinch gestures, and UI widget interactions, it appears that previous user interface experience not only biases users to expect specific types of interaction, but also to expect the absence of other types. 
+In the case of RTS gamers, they use an RTS-like interaction style, with box selection and UI widgets, but they also exclude interactions absent from RTS games, such as pinch. 
+If an interface were designed to query new users as to their previous UI experiences and customize the available interaction methods to anticipate the user's biases, it may be useful to disable some functionality, in addition to adding likely expected functions. 
+That way, the user will not accidentally trigger interaction methods that they don't expect to exist, and so will be surprised or confused by. 
+
+It is also likely that the top-down view and multi-unit control in this experiment is similar enough to the interfaces presented by RTS games that RTS users recognized the similarity and so treated it as an RTS game.
+This idea was confirmed by a few users, who referred to the interface as being "like Starcraft". 
+Exploiting these similarities for robot user interfaces may make interface design easier, because intentionally emulating a specific style of game will cue the user to use certain interaction styles. 
+For example, a single robot user interface that displays a full-screen first-person view from the robot would cue the user that the use of WASD keys to move the robot and mouse motion to pan/tilt the view is the control scheme for the system, because that is a common control scheme for First Person Shooter (FPS) video games. 
+Extending this metaphor, the use of mouse clicks would tell the robot to interact with things in the environment, since that is the usual ``shoot/interact" command in FPS games. 
+Unfortunately, this sort of emulation and leveraging of previous game experience does not provide any design heuristics for interfaces that would give similar cues to non-gamers. 
 
 \subsection{Influence of Operating Systems}
 
@@ -569,6 +585,100 @@ Aside from Alexa, these voice assistants are all accessed through smartphones.
 All of the users of voice commands reported high familiarity with Android or IPhone smartphones, but the survey did not ask if they used the voice assistant feature of their phones. 
 As a result, no conclusion can be drawn about the influence of voice assistant technology on user interface expectations from this study. 
 
+\section{User Strategies for Formations}
+
+The term "gestures" in this work generally refers to a single interaction with the multitouch interface device, from when the user's hands contact the screen to when they leave the screen. 
+Some tasks could be performed with a single gesture. 
+For example, many users in the single robot case would perform the ``move to A'' task by placing a finger down on the robot, dragging the finger to area A, and then lifting their finger. 
+However, many tasks were not performed with a single gesture. 
+For example, to move one group of robots to area A and one group to area B, users would frequently select the first group with a gesture, move it with a second gesture, select the other group with another gesture, and move it with a fourth gesture. 
+This sequence of selection, move, selection, move is a strategy for performing the task. 
+
+It was observed during the ``form a line'' and ``form a square'' tasks that there were some gestures used that were ambiguous with gestures that had been previously used. 
+In the line formation task, many users selected robots and drew a line, or drew a line starting from the robots. 
+This is the same sequence of gestures used for simple movement of the robots.
+Similarly, in the square formation task, many users simply drew a square. 
+If the square overlapped the robots, this gesture could also be interpreted as a square-shaped lasso selection of the robots within the square. 
+As presented in the experiment, this overlap was extremely likely, as the robots in the square formation task were evenly distributed over the screen, and so there was very little space to draw a square in that would not include at least one robot. 
+In order to examine what strategies were used, and how they could be disambiguated from other gestures, the sequences of gestures used by each user were examined and grouped by the overall strategy employed. 
+
+For the square formation task, table \ref{tab:square_strategies} shows the counts of each strategy. 
+``Draw square'' refers to the user simply drawing a square shape on the screen. 
+``Single moves'' means that the user moved individual robots, usually with drag or select and drag gestures, until each robot was positioned on the border of a square region. 
+This strategy was used by 5 users in the 10-robot case and one user in the unknown case, who treated the corners of the cloud depiction of the swarm as individual points to be moved. 
+In cases with more robots, single moves become extremely tedious to perform. 
+``Select and draw'' means the user selected the robots and then drew the square shape. 
+``Draw parts'' was the strategy of drawing individual parts of the square, such as lines or corners, rather than the whole square in one gesture. 
+``Voice'' and ``Voice \& draw" mean that the user commanded the robots to form a square, and in the latter case, drew a square to indicate where the square should be formed.
+``UI'' refers to the use of UI widgets, such as a ``form square" or ``draw formation" button, possibly prior to indicating a location for the action to occur in. 
+``Stretch'' strategies are where the user treated the group of robots as an elastic structure, and pushed or pulled it into a square shape.
+The ``Screen edge" strategy was used by having the robots press up against the edges of the visible area of the screen, resulting in lines at each edge of the space, and then moving the resulting lines towards the center of the screen to form the square. 
+This strategy would not work in an area without boundaries, or with non-rectilinear edges. 
+``Writing'' refers to a user who selected the robots and then wrote the characters "SQ" with their finger on the screen to command them. 
+
+The most common gesture used was to simply draw the square in the desired location. 
+However, as mentioned previously, this strategy was ambiguous when the square overlapped the displayed location of the robots.
+
+\begin{table}
+	\begin{tabular}{l l}
+		Strategy & Count\\
+		\hline
+		Draw square & 10\\
+		Single moves & 6\\
+		Select \& draw & 5\\
+		Draw parts & 5 \\
+		Voice \& draw & 3\\
+		UI & 3\\
+		Hold \& draw & 2\\
+		Stretch & 2\\
+		Screen Edge & 1\\
+		Voice & 1\\
+		Writing & 1\\
+	\end{tabular}
+	\caption{Strategies used to form robots into a square formation.}
+	\label{tab:square_strategies}
+\end{table}
+
+Table \ref{tab:line_strategies} shows the strategies used in forming the line formation. 
+As with the square formation task, the users who used single moves were all in the 10-robot condition. 
+The four users who used single moves all also used single moves when presented with the square formation task. 
+The strategies that differ from the square formation case are ``Squeeze'', ``Voice \& other'', ``Tap'', ``Sweep/push'', and ``Select \& tap''. 
+``Squeeze'' means the user used a pinching gesture to squeeze the robots out into a thinner group, as if they were shaping a soft material. 
+``Voice \& other'' is similar to ``Voice \& draw'', but rather than drawing the line, the user made a chopping gesture with their hands parallel and slightly separated over the screen to indicate the location. 
+The ``Tap'' strategy user suggested double-tapping the robots as a preset command to form the line, but did not make contact with the screen to indicate where the line would be formed. 
+The ``Sweep/push'' strategy treated the robots as if they were a collection of small objects that could be pushed around the surface, and pushed from the edges of the group to move them into a line. 
+To ``Select \& tap'', the user selected all of the robots and then tapped a series of locations in a line to indicate the desired position.
+While they did this, the user held one finger down at the beginning of the line, and indicated that they could just hold the finger down and draw the line, as with the ``Hold \&draw'' strategy for teh square formation task. 
+
+\begin{table}
+	\begin{tabular}{l l}
+		Strategy & Count\\
+		\hline
+		Draw line & 14\\
+		Select \& draw & 7\\
+		Single moves & 5\\
+		Voice \& draw & 2\\
+		Hold \& draw & 2\\
+		Voice & 2\\
+		Stretch & 2\\
+		Squeeze & 2\\
+		Select \& tap & 1 \\
+		Sweep/push & 1\\
+		Screen Edge & 1\\
+		Voice \& other & 1\\
+		Tap & 1 \\
+		UI \& draw & 1\\
+	\end{tabular}
+	\caption{Strategies used to form robots into a line.}
+	\label{tab:line_strategies}
+\end{table}
+
+Unfortunately, as with the square formation case, the two most popular strategies are also the ones that are ambiguous, in this case with the strategy commonly used to move the robots along a path to a location. 
+In some cases, the location of the line could be used to disambiguate the user intent. 
+If a line starts from the robot group and ends elsewhere, it would be a command to follow the line to its end, whereas a line that starts and ends away from the robot group would be a command to form a line formation. 
+%However, this means that if the user wants the robots to form a line from their current location to another location, they first have to move the robots away from the desired start point of the line. 
+
+% Patrol without some "and keeep doing it" signifier is ambiguious with "go around the area once"
 
 %For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al} \citep{wobbrock2009user}.
 %
@@ -703,4 +813,16 @@ For future work, it may be desirable to structure attempts to elicit user gestur
 The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
 Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
 Showing the response before asking for the gesture removes the expectation that the system will react. 
+
+\chapter{Selection of Gestures for Control of Swarms}
+
+[USE DATA TO BACK UP]
+
+\section{Ambiguities in Gesture Commands}
+
+Select and draw line for formation vs. Select and draw line for move to end of line
+
+Drawing box for formation of box vs. Square or other shaped box select.
+
+
 
