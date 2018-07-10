@@ -676,14 +676,89 @@ While they did this, the user held one finger down at the beginning of the line,
 Unfortunately, as with the square formation case, the two most popular strategies are also the ones that are ambiguous, in this case with the strategy commonly used to move the robots along a path to a location. 
 In some cases, the location of the line could be used to disambiguate the user intent. 
 If a line starts from the robot group and ends elsewhere, it would be a command to follow the line to its end, whereas a line that starts and ends away from the robot group would be a command to form a line formation. 
-%However, this means that if the user wants the robots to form a line from their current location to another location, they first have to move the robots away from the desired start point of the line. 
+However, this means that if the user wants the robots to form a line from their current location to another location, they first have to move the robots away from the desired start point of the line. 
 
-% Patrol without some "and keeep doing it" signifier is ambiguious with "go around the area once"
+\section{User Strategies for Manipulation}
+
+In this experiment, manipulation refers to two tasks where the user was instructed to move a crate to a designated area of the screen. 
+In one version of the task, the robots were located in the lower left of the screen, and in the other they were dispersed over the screen. 
+Users in the 10, 100, 1000 and unknown number of robots conditions saw both versions of the task. 
+Because a single robot cannot be dispersed over the screen, users in the 1 robot case only saw the version where the robot started in the lower left area of the screen. 
+
+\begin{table}
+	\begin{tabular}{l l}
+		Strategy & Count\\
+		\hline
+		Surround \& move & 18\\
+		Move crate & 14\\
+		Drag through & 7\\
+		UI \& move & 3\\
+		Surround, no move & 3\\
+		Voice & 1\\
+		Voice \& drag & 1\\
+		Select \& move & 1 \\
+		Tap targets & 1\\
+		Write & 1\\
+	\end{tabular}
+	\caption{Strategies used to move the crate in the non-dispersed condition.}
+	\label{tab:crate_strategies}
+\end{table}
+
+``Surround and move'' refers to strategies where the user moved the robots to surround the crate and then move it to the target area. 
+``Move crate" means that the user did not command the robots at all, but performed gestures on the crate, such as dragging from its location to the target area, or tapping the crate and then the target area. 
+These gestures were the same as the gestures that the users would use when commanding robots, so these gestures could be read as more general motion commands, rather than being specific to robot control. 
+``Drag through'' strategies were gestures where the user selected robots and then dragged a path for them that passed through the crate towards the target area, so that the robots would encounter the crate on the way and push it along. 
+Interestingly, ``drag through'' strategies were more common in the task where the robots were not dispersed, but instead were in the lower left corner of the screen. 
+This seems to imply that when the robots are closely grouped, they are viewed as a single unit that can be dragged through the crate to push it. 
+However, of the seven ``drag through'' users, three were in the one robot condition, three were in the unknown condition, and one was in the thousand robot condition. 
+Because six of the seven users were in conditions where the robot or group are presented as a single visual object, either a single robot or a single cloud, the idea that the swarm is treated as a single unit because of being presented individually but in a small region does not seem very well supported. 
+``UI \& move'' strategies combine some elements of user interface widgets, such as ``pick up" or ``move object" buttons, combined with movement gestures such as drags to indicate what was to be picked up or where it was to be moved. 
+``Surround and no move'' describes strategies where the users used robot positioning commands to surround the crate, but did not issue commands to move from the crate to area A.
+It is possible that the users felt that surrounding the crate adequately conveyed to the system the desired action. 
+``Voice'' strategies used verbal commands, while ``Voice \& drag'' supplemented verbal commands with drags to indicate the desired path of the crate. 
+``Select and move'' means that the user selected the robots, then dragged the crate.
+``Tap targets'' tapped on the crate, then the robots, then the target area. 
+If user commands are understood to be a grammatical construction, with subjects being commanded to perform an action, e.g. "These robots, go to this location", then this example is syntactically unusual for English, as it would be more like "This object, be moved by these robots, to this location" instead of "These robots, move this object to this location". 
+While examples like this would be possible to automatically ``rephrase'' under the assumption that the robots are the only element of the system that can act, and all other objects are acted upon, it would be difficult to extend such automated rephrasing to more complex environments. 
+Such rephrasing would also not be justified in the presence of only one counterexample, but may be relevant for cultures with different common orderings of subjects, verbs, and objects. 
+The user who used ``Write'' drew abbreviations naming the objects. The full command was "C $\rightarrow$ A", indicating that the crate (C) should be moved to the target area (called ``Area A'' and labeled with an A).
+
+The strategies used in manipulation did not generally result in the users creating novel gestures specifically for manipulation tasks. 
+Instead, they used the same sort of gestures that they had been using for the other tasks, in sequences to cause the system to perform the intended task. 
+Most sequences of user gestures followed a subject-verb or subject-verb-object style of command, such as selecting a group, then specifying an action for that group, and possibly an object for that verb to be done to.
+One user, however, did extend the grammatical structure of the commands in an interesting way. 
+The user stated that if a path were drawn with one finger, it meant the robots should follow that path, but if it was drawn with two fingers, it meant that the robots should follow that path while maintaining their current formation. 
+This use of an ``adverb'' in the grammatical structure meant that the user could form the robots into a scoop around the crate, and then have them move to area A while staying in the scoop formation, which would drag the crate with them. 
+
+\begin{table}
+	\begin{tabular}{l l}
+		Strategy & Count\\
+		\hline
+		Surround \& move & 15\\
+		Move crate & 13\\
+		Clear \& drag & 3\\
+		Drag through & 2\\
+		Surround, no move & 2\\
+		UI \& move & 1\\
+		Voice \& drag & 1\\
+		Voice & 1\\
+		Select \& move & 1 \\
+		Write & 1\\
+	\end{tabular}
+	\caption{Strategies used to move the crate in the dispersed condition.}
+	\label{tab:dispersed_crate_strategies}
+\end{table}
+
+The strategies used in the dispersed case were the same as those used in the non-dispersed case, except for ``Clear \& drag''.
+``Clear \& drag'' strategies only occurred in the dispersed condition. 
+For these strategies, the users made gestures to clear the robots out of the path between the crate and the target area, and then issued movement gestures to the crate. 
+The robots between the crate and target area were perceived as being in the way. 
+ 
+In both the dispersed and non-dispersed case, ``move crate'' and ``surround and move'' were the dominant strategies, 
 
 %For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al} \citep{wobbrock2009user}.
 %
-%Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
-%Because the users could not be expected to choose a consistent gesture set for an \emph{a priori} unknown set of tasks, this sort of inconsistency is not unexpected. 
+
 
 \subsubsection{Robot Count in Unknown Number Case} \label{section:Robot_Count_in_Unknown_Number_Case}
 
@@ -772,10 +847,8 @@ User comments also suggested that ways to amend selections before further comman
    Totals & 3 & 8 & 22 & 2 \\
  \end{tabular}
 
-%It is interesting to note that two participants, one from the unknown number of robots case, and one from the 10 robot case, said that in cases of ambiguous selection, the system should add or remove robots from the selection based on the task. 
-%As the system cannot predict the task it is about to be commanded to perform, it is likely best to err on the side of selecting too many robots, rather than too few. 
-
-
+It is interesting to note that two participants, one from the unknown number of robots case, and one from the 10 robot case, said that in cases of ambiguous selection, the system should add or remove robots from the selection based on the task. 
+As the system cannot predict the task it is about to be commanded to perform, it is likely best to err on the side of selecting too many robots, rather than too few. 
 
 \subsubsection{Participant Demographics} \label{section:Participant_Demographics}
 
@@ -816,13 +889,16 @@ Showing the response before asking for the gesture removes the expectation that 
 
 \chapter{Selection of Gestures for Control of Swarms}
 
-[USE DATA TO BACK UP]
+\todo{USE DATA TO BACK UP}
 
 \section{Ambiguities in Gesture Commands}
 
+\todo{notes, expand this}
 Select and draw line for formation vs. Select and draw line for move to end of line
 
 Drawing box for formation of box vs. Square or other shaped box select.
 
-
+ Patrol without some "and keep doing it" signifier is ambiguious with "go around the area once"
+Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
+Because the users could not be expected to choose a consistent gesture set for an \emph{a priori} unknown set of tasks, this sort of inconsistency is not unexpected. 
 
