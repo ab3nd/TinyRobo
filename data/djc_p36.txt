@@ -1,0 +1,59 @@
+participant 36
+task 1
+drag -f 1 -t 71.56 -o "Red Robots, Box A" -d "Drags from Red Robots to Box A."
+drag -x -f 1 -t 74.94 -o "Red Robots, Box A" -d "Drags from Red Robots to Box A."
+
+task 2
+drag -f 1 -t 124.96 -o "Red Robots, Box A" -d "Drags from Red Robots around the wall to Box A."
+
+task 3
+drag -f 2 -t 136.17 -o "Red Robots" -d "Drags downward slowly."
+memo -d "Participant asks about the task while performing the last gesture. It appears this was meant to be one fluid motion of dragging"
+drag -x -f 2 -t 143.13 -o "Red Robots" -d "Drags downward and to the right."
+
+task 4
+other -t 162.06 -o "Red Robots, Box A, Box B" -d "Participant performs a 2 finger reverse pinch/drag. They start with middle and index finger on the robot cloud and spread the distance from their finger tips as they approach Box A and B going through the wall."
+other -x -t 174.50 -o "Red Robots, Box A, Box B" -d "Participant performs a 2 finger reverse pinch/drag. They start with middle and index finger on the robot cloud and spread the distance from their finger tips as they approach Box A and B going through the wall."
+
+task 5
+drag -f 1 -t 192.87 -o "Orange Robots, Box B" -d "Drags from Orange Robots to Box B going through the wall."
+drag -f 1 -t 198.45 -o "Red Robots, Box A" -d "Drags from Red Robots to Box A going through the wall."
+
+task 6
+drag -f 2 -t 209.40 -o "Orange Robots, Box A, Red Robots, Box B" -d "Participant start with middle finger on Red Robots and index finger on Orange Robots and drags straight through the wall to Box A and B. Index going to A and middle going to B."
+
+task 7
+drag -f 2 -t 221.95 -o "Orange Robots, Box A, Red Robots, Box B" -d "Participant start with middle finger on Red Robots and index finger on Orange Robots and drags straight through the wall to Box A and B. Index going to A and middle going to B."
+memo -d "For the last two tasks (6 and 7) the spreading of index and middle fingers during the action seemed minimal enough to not mark them as other like in task 4"
+
+task 8
+drag -f 1 -t 236.77 -o "Red Robots, Ground" -d "Drags a line from just above Red Robots down the middle."
+drag -x -f 1 -t 246.34 -o "Red Robots, Ground" -d "Drags a line from just above Red Robots down the middle."
+
+task 9
+pinch -f 2 -t 263.91 -o "Red Robots" -r 
+
+task 10
+other -t 287.83 -o "Ground, Red Robots" -d "Participant does a 2 finger pinch on Red Robots then transitions to a 2 finger drag forming a line to the right of Red Robots."
+
+task 11
+drag -f 1 -t 311.07 -o "Red Robots" -d "Participant draws a box in the middle of Red Robots."
+
+task 12
+tap -x -f 1 -t 328.52 -o "Wooden Crate" -c 1 -h
+memo -d "I don't think participant intended this tap to be appart of the gesture to perform the task."
+drag -f 1 -t 331.48 -o "Wooden Crate, Box A" -d "Drags from Wooden Crate to Box A"
+drag -f 1 -t 345.59 -o "Wooden Crate, Red Robots, Box A" -d "Drags from Red Robots up to Wooden Crate and then over to Box A."
+
+task 13
+drag -f 1 -t 367.67 -o "Red Robots, Wooden Crate, Box A" -d "drag from the lower left side of Red Robots up to Wooden Crate and over to Box A."
+
+task 14
+other -t 385.60 -o "Red Robots, Ground" -d "Starts as a single finger drag, turns into a pinch and then dragged along the perimeter of the screen." 
+
+task 15
+other -t 406.02 -o "Red Robots, Ground" -d "Starts as a 2 finger reverse pinch, pinc is then dragged out along the perimeter of the screen."
+
+task 16
+tap -f 1 -t 418.29 -o "Red Robots" -c 3
+memo -d "Participant talks about doulbe clicking. I think the extra click may have been a mistake."

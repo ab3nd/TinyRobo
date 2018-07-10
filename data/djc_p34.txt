@@ -1,0 +1,72 @@
+participant 34
+task 1
+drag -f 1 -t 81.57 -o "Red Robots, Box A" -d "Dragged a line from Red Robots to Box A"
+
+task 2
+drag -f 1 -t 109.60 -o "Red Robots, Box A" -d "Dragged a line from Red Robots toward the right, around the wall to Box A"
+
+task 3
+tap -f 1 -t 126.69 -o "Red Robots" -c 1
+
+task 4
+drag -f 1 -t 148.91 -o "Red Robots, Box A" -d "Drags to the left around the wall to Box A"
+drag -f 1 -t 148.91 -o "Red Robots, Box B" -d "Drags to the right around the wall to Box B"
+
+task 5
+drag -f 1 -t 204.28 -o "Orange Robots, Box B" -d "Drags up and to the right around the wall to Box B"
+drag -f 1 -t 210.20 -o "Red Robots, Box A" -d "Drags up and to the left around the wall to Box A"
+
+task 6
+drag -f 1 -t 225.34 -o "Orange Robots, Box A" -d "Drags up and to the left around the wall to Box A"
+drag -f 1 -t 225.34 -o "Red Robots, Box B" -d "Drags up and to the left around the wall to Box B"
+
+task 7
+tap -f 1 -t 245.22 -o "Orange Robot" -c 1 
+box -f 1 -t 249.03 -o "Orange Robots" -s tl
+drag -f 1 -t 263.58 -o "Orange Robots, Box A" -d "Dragging out the left up around the wall to Box A"
+tap -f 1 -t 268.63 -o "Red Robot" -c 1
+box -f 1 -t 274.8 -o "Red Robots" -s tr
+drag -f 1 -t 277.49 -o "Red Robots" -d "Drags out the right up around the wall to Box B"
+
+task 8
+box -f 1 -t 296.42 -o "Half of Red Robots" -s tr
+drag -f 1 -t 302.11 -o "Half of Red Robots" -d "Drags a line from the right half of the Red Robots toward the right."
+drag -f 1 -t 305.21 -o "Half of Red Robots" -d "Drags a line from the left half of the Red Robots toward the left."
+
+task 9
+box -f 1 -t 315.57 -o "Red Robots (Right)" -s tl
+drag -f 1 -t 318.00 -o "Red Robots (Right)" -d "Drags a line to from the right group of Red Robots to the left group."
+
+task 10
+box -f 1 -t 359.85 -o "Red Robots" -s tl
+drag -f 1 -t 364.61 -o "Ground" -d "Draws a line on the ground where the robots will form."
+
+task 11
+box -f 1 -t 390.90 -o "Red Robots" -s tl
+drag -f 1 -t 399.54 -o "Ground" -d "Draws a box roughly in the middle of the screen."
+
+task 12
+drag -f 1 -t 448.25 -o "Wooden Crate, Box A" -d "Draws a line from the crate to the right ending in Box A"
+
+task 13
+drag -f 1 -t 465.15 -o "Wooden Crate, Box A" -d "Draws a line from the crate to Box A seemingly avoiding robots by creating a path around then."
+
+task 14
+tap -f 2 -t 491.72 -o "Defective Robot" -c 1
+tap -x -f 2 -t 512 -o "Defective Robot" -c 1 
+drag -f 1 -t 515.08 -o "Defective Robot, Ground" -d "Participant drags the robots offscreen to a garbage bin."
+
+task 15
+drag -f 1 -t 544.42 -o "Defective Robot, Ground" -d "Participant drags the robots offscreen to a garbage bin."
+
+task 16
+box -f 1 -t 576.53 -o "Red Robots" -s tl
+drag -f 1 -t 579.71 -o "Ground" -d "Draws along the perimeter of the screen forming a box."
+
+task 17
+box -f 1 -t 616.52 -o "Red Robots" -s tr
+drag -f 1 -t 620.24 -o "Box A" -d "Draws long the perimeter of Box A"
+
+task 18
+box -f 1 -t 637.99 -o "Red Robots" -s tl
+pinch -f 2 -t 643.79 -o "Red Robots" -h 2 -r
