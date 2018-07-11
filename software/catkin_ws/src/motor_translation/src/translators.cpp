@@ -68,8 +68,8 @@ void DifferentialTranslator::cmdCallback(const geometry_msgs::Twist::ConstPtr& m
 	//mvc.motor1 = (int)(((msg->linear.x - msg->angular.z * wheelSep / 2.0) / wheelRad) * 128);
 	//mvc.motor2 = (int)(((msg->linear.x + msg->angular.z * wheelSep / 2.0) / wheelRad) * 128);
 	//Probably don't need wheel radius and seperation because the output is PWM frequencies, not wheel-edge-velocities
-	mvc.motor1 = (int)(((msg->linear.x - msg->angular.z)/2) * 127);
-	mvc.motor2 = (int)(((msg->linear.x + msg->angular.z)/2) * 127);
+	mvc.motor1 = (int)(((msg->linear.x + msg->angular.z)/2) * 127);
+	mvc.motor2 = (int)(((msg->linear.x - msg->angular.z)/2) * 127);
 
 	motorPub.publish(mvc);
 }

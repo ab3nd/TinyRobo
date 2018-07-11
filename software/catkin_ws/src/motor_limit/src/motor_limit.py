@@ -112,7 +112,8 @@ class motorLimiter:
 		cmd = abs(cmd)
 		speed = int((cmd * maxV) / 127.0)
 
-		return speed, direction
+		#Multiply by two for joysticks
+		return speed * 2 , direction
 		
 
 	def setSpeeds(self, m1_cmd, m2_cmd):
@@ -125,7 +126,7 @@ class motorLimiter:
 		m1_speed, m1_dir = self.mapSpeed(m1_cmd, 0)
 		m2_speed, m2_dir = self.mapSpeed(m2_cmd, 1)
 
-		rospy.logwarn("({0:02X},{1}), ({2:02X},{3})".format(m1_speed, m1_dir, m2_speed, m2_dir))
+		#rospy.logwarn("({0:02X},{1}), ({2:02X},{3})".format(m1_speed, m1_dir, m2_speed, m2_dir))
 		#Send the speed/direction values
 		#Result is [motor1 speed, motor1 dir, motor1 status, motor2 speed, motor2 dir, motor2 status]
 		result = self.robot.sendMotor([m1_speed, m1_dir, m2_speed, m2_dir])
@@ -157,12 +158,6 @@ if __name__ == "__main__":
 
 	#Get the IP address of the robot to connect to
 	ipAddr = rospy.get_param("~robot_addr")
-
-	#TODO I may want to set up static leases in the wifi router to attempt 
-	#ipAddr = '192.168.1.119' #hexbugbase
-	#ipAddr = '192.168.1.176' #medium-size tank
-	#ipAddr = '192.168.1.119' #TODO this should be a conf parameter with ROSPARAM
-	#ipAddr = '192.268.1.101' #2-wheeler
 
 	#Get a motor speed limiter object and connect it to the robot at the given IP address
 	ml = motorLimiter()

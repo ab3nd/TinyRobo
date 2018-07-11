@@ -1,5 +1,11 @@
 <launch>
 
+	<!--'192.168.1.176' medium-size green tank (#0)
+		'192.168.1.243' Blue Tank (#8)
+		'192.168.1.209' Blue Tank (#10)
+		'192.168.1.218' Blue Tank (#3)
+	-->
+
 	<node pkg="joy" type="joy_node" name="joystick_node" output="screen">
 		<param name="/coalesce_interval" value="0.1" type="double"/>
 		<remap from="joy" to="joy_1"/>
@@ -14,7 +20,7 @@
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
-		<param name="robot_addr" value="192.168.1.101" type="str" />
+		<param name="robot_addr" value="192.168.1.218" type="str" />
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
 	</node>
 
@@ -37,7 +43,7 @@
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node_2" output="screen">
-		<param name="robot_addr" value="192.168.1.180" type="str" />
+		<param name="robot_addr" value="192.168.1.209" type="str" />
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node_2/drive_cmd"/>
 	</node>
 
