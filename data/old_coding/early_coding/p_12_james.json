@@ -1,0 +1,450 @@
+{
+   "participant": 12, 
+   "tasks": {
+      "1": [
+         {
+            "draw": [
+               "straight", 
+               "vertical", 
+               "line", 
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "robot"
+            ], 
+            "time": 71.88, 
+            "write": null
+         }
+      ], 
+      "10": [
+         {
+            "draw": [
+               "counterclockwise", 
+               "around", 
+               "the", 
+               "border", 
+               "of", 
+               "the", 
+               "screen,", 
+               "forming", 
+               "a", 
+               "rectangle"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "robot"
+            ], 
+            "time": 275.16, 
+            "write": null
+         }
+      ], 
+      "11": [
+         {
+            "draw": [
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "to", 
+               "the", 
+               "bottom", 
+               "left", 
+               "corner", 
+               "of", 
+               "area", 
+               "A", 
+               "(the", 
+               "part", 
+               "of", 
+               "area", 
+               "A", 
+               "closest", 
+               "to", 
+               "the", 
+               "robot\u2019s", 
+               "initial", 
+               "position)", 
+               "and", 
+               "then", 
+               "in", 
+               "a", 
+               "counterclockwise", 
+               "rectangle", 
+               "around", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "robot"
+            ], 
+            "time": 294.74, 
+            "write": null
+         }
+      ], 
+      "2": [
+         {
+            "draw": [
+               "a", 
+               "curved", 
+               "path", 
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "on", 
+               "the", 
+               "right", 
+               "side", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "robot"
+            ], 
+            "time": 105.71, 
+            "write": null
+         }
+      ], 
+      "3": [
+         {
+            "draw": [
+               "a", 
+               "diagonal", 
+               "line", 
+               "(horizontal", 
+               "to", 
+               "the", 
+               "front", 
+               "of", 
+               "the", 
+               "robot,", 
+               "as", 
+               "if", 
+               "to", 
+               "block", 
+               "its", 
+               "path)", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "screen"
+            ], 
+            "time": 116.32, 
+            "write": null
+         }
+      ], 
+      "4": [
+         {
+            "draw": [
+               "an", 
+               "arc", 
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "on", 
+               "the", 
+               "left", 
+               "side", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "red", 
+               "(right)", 
+               "robot"
+            ], 
+            "time": 149.29, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "an", 
+               "arc", 
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "on", 
+               "the", 
+               "right", 
+               "side", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "robot"
+            ], 
+            "time": 155.71, 
+            "write": null
+         }
+      ], 
+      "5": [
+         {
+            "draw": [
+               "an", 
+               "arc", 
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "on", 
+               "the", 
+               "right", 
+               "side", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "red", 
+               "(right)", 
+               "robot"
+            ], 
+            "time": 171.84, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "an", 
+               "arc", 
+               "from", 
+               "in", 
+               "front", 
+               "of", 
+               "the", 
+               "robot", 
+               "around", 
+               "the", 
+               "wall", 
+               "on", 
+               "the", 
+               "left", 
+               "side", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "robot"
+            ], 
+            "time": 176.37, 
+            "write": null
+         }
+      ], 
+      "6": [
+         {
+            "draw": [
+               "a", 
+               "vertical", 
+               "line", 
+               "in", 
+               "between", 
+               "the", 
+               "two", 
+               "robots"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "whitespace"
+            ], 
+            "time": 186.62, 
+            "write": null
+         }
+      ], 
+      "7": [
+         {
+            "draw": [
+               "from", 
+               "the", 
+               "robot", 
+               "to", 
+               "the", 
+               "left", 
+               "side", 
+               "of", 
+               "the", 
+               "crate,", 
+               "then", 
+               "to", 
+               "area", 
+               "A", 
+               "\u201cas", 
+               "though", 
+               "[the", 
+               "robot", 
+               "is]", 
+               "pushing", 
+               "the", 
+               "crate\u201d"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "robot"
+            ], 
+            "time": 221.63, 
+            "write": null
+         }
+      ], 
+      "8": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "defective", 
+               "robot"
+            ], 
+            "time": 230.34
+         }
+      ], 
+      "9": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "defective", 
+               "robot"
+            ], 
+            "time": 250.41
+         }, 
+         {
+            "draw": [
+               "a", 
+               "horizontal", 
+               "line", 
+               "from", 
+               "to", 
+               "the", 
+               "right", 
+               "until", 
+               "it", 
+               "is", 
+               "off", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "defective", 
+               "robot"
+            ], 
+            "time": 252.49, 
+            "write": null
+         }
+      ]
+   }
+}

@@ -1,0 +1,77 @@
+participant 42
+
+task 1
+drag -o "robot to area A" -t 2:00.28
+tap -o "area A at end of drag" -t 2:00.303
+tap -o "area A" -x -t 2:03.151
+tap -x -o "area A" -t 2:07.094
+tap -x -o "area A" -t 2:07.877
+drag -x -o "robot to A" -t 2:12.46
+
+task 2
+drag -o "robot around wall to A" -t 2:40.582
+
+task 3
+tap -h -o robot -t 3:19.638
+drag -x -o "back and forth over a line in front of the robot to make a barrier" -t 3:25.126
+tap -x -o robot -t 3:28.758
+drag -x -d "letter S on robot" -o robot -t 3:34.965
+drag -x -d "letter S on robot" -o robot -t 3:35.772
+drag -x -d "letter S on robot" -o robot -t 3:37.739
+tap -h -x -o robot -t 3:51.955
+tap -c 2 -x -o robot -t 3:54.762
+memo -d "doubleclick restarts stopped robot after hold"
+
+task 4
+drag -o "red robot to A directly (over wall)" -t 4:17.029
+drag -o "orange robot to B directly (over wall)" -t 4:18.988
+drag -x -d "letter B" -o "orange robot" -t 4:27.205
+drag -x -o "red robot to A" -t 4:38.7
+drag -x -o "red robot to A" -t 4:52.236
+tap -x -c3 -o "area A" -t 4:59.595
+
+task 5
+drag -o "orange robot to A" -t 5:16.740
+drag -o "red robot to B" -t 5:18.591
+memo -d "user described robots removing obstacles"
+drag -x -o "squiggle back and forth on wall under A" -t 5:22.758
+drag -x -o "orange robot to A" -t 5:23.884
+
+task 6
+pinch -r -f2 -h2 -o "one finger on each robot, moving apart" -t 5:45.533
+tap -x -c3 -o "left of robots, left hand" -t 5:52.083
+tap -x -c3 -o "right of robots, right hand" -t 5:52.083
+pinch -x -r -f2 -h2 -o "one finger on each robot, moving apart" -t 5:54.306
+tap -x -o "right of group" -t 5:57.679
+tap -x -o "left of group" -t 5:58.262
+tap -x -o "right of group" -t 5:59.917
+
+task 7
+tap -o crate -t 6:13.550
+tap -o "area A" -t 6:14.045
+tap -x -o crate -t 6:15.735
+tap -x -o "area A" -t 6:16.077
+drag -x -o "robot to crate" -t 6:19.574
+drag -x -o "robot to crate" -t 6:22.405
+tap -c2 -x -o "crate" -t 6:30.821
+memo -d "mentioned having voice control to tell the robot to pick up the box"
+
+task 8
+drag -d "x over robot (two strokes)" -o "defective robot" -t 7:26.740
+
+task 9
+drag -d "x over robot (two strokes)" -o "defective robot" -t 7:40.101
+drag -o "defective robot off right edge of whitespace" -t 7:41.26
+
+task 10
+drag -o "around border of white area" -t 7:57.42
+memo -d "alternate method was marking points for patrol"
+tap -x -o "lower right corner of screen" -t 7:57.827
+tap -x -o "upper right corner of screen" -t 7:58.258
+tap -x -o "lower left corner of screen" -t 7:58.925
+voice -x -c "take a walk around the border" -t 8:03.059
+
+task 11
+drag -o "robot to A and around border of A" -t 8:23.549
+voice -c "comand it to go around area A" -t 8:39.109
+

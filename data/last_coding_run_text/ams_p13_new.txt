@@ -1,0 +1,127 @@
+participant 13
+task 1
+lasso -o robots -t 1:48.074
+drag -o "robots to a" -t 1:50.358
+
+task 2
+lasso -o robots -t 2:11.055
+drag -o "robots to a around wall" -t 2:13.076
+
+task 3
+lasso -o robots -t 2:39.944
+tap -c2 -o whitespace -t 2:40.542
+
+task 4
+lasso -o "4 robots" -t 3:01.518
+drag -o "lassoed robots to A" -t 3:02.435
+lasso -o "6 robots" -t 3:04.040
+drag -o "lassoed robots to B" -t 3:04.749
+
+task 5
+lasso -o "orange robots" -t 3:37.496
+drag -o "lassoed robots part way to B and back, then circle around 6 orange robots" -t 3:41.766
+drag -o "circled robots to B" -t 3:44.832
+lasso -o "7 orange robots" -t 3:47.444
+drag -o "lassoed robots to B" -t 3:48.041
+lasso -o "red robots" -t 3:51.181
+tap -o "area a" -t 3:51.907
+drag -o "red robots to A" -t 3:53.177
+
+task 6
+lasso -o "orange robots" -t 4:12.807
+drag -o "orange robots to A" -t 4:14.521
+lasso -o "red robots" -t 4:16.023
+drag -o "red robots to B" -t 4:16.78
+
+task 7
+drag -o "single red robot over to other side of group" -t 4:41.765
+lasso -o "4 orange robots" -t 4:44.481
+lasso -o "4 orange robots" -x -t 4:58.914
+drag -o "selected robots to B" -t 5:00.129
+lasso -o "red robots" -t 5:07.947
+drag -n -o "red robots to A" -t 5:09.104
+drag -o "orange robot to B" -t 5:12.696
+
+task 8
+lasso -o "left 5 robots" -t 5:27.755
+drag -o "left 5 robots to left" -t 5:29.327
+lasso -o "right 5 robots" -t 5:30.728
+drag -o "right 5 robots to right" -t 5:31.507
+
+task 9
+lasso -o "left group" -t 5:45.497
+drag -o "left group to middle" -t 5:47.750
+lasso -o "right group" -t 5:48.691
+drag -o "right group to middle" -t 5:49.398
+
+task 10
+lasso -o "robots" -t 7:15.234
+drag -d "line for robots to form" -o whitespace -t 7:17.775
+tap -c3 -o whitespace -t 7:18.972
+
+task 11
+lasso -o "robots" -t 7:44.034
+lasso -o "robots" -x -t 7:46.415
+drag -d square -o "middle of screen" -t 7:50.194
+tap -c3 -o "inside square" -t 7:51.153
+
+task 12
+lasso -o "7 robots" -t 8:25.994
+drag -o "lassoed robots behind crate" -t 8:29.766
+lasso -o "6 robots" -t 8:31.105
+lasso -o "same 7 robots as before" -t 8:33.070
+drag -d "line behind crate" -o "crate" -t 8:34.196
+tap -c3 -o "whitespace behind crate" -t 8:34.666
+lasso -o "5 robots" -t 8:38.798
+drag -o "lassoed robots in front of crate" -t 8:39.728
+tap -c3 -o "whitespace in front of crate" -t 8:40.380
+drag -d "line in front of crate" -o crate -t 8:41.210
+tap -h -o crate -t 8:56.747
+lasso -o "everything around the crate" -t 9:01.712
+drag -o "crate to A" -t 9:04.252
+ 
+task 13
+lasso -o "5 robots" -t 9:29.245
+drag -d "line behind crate" -o "crate" -t 9:31.758
+tap -c3 -o "whitespace behind crate" -t 9:32.236
+lasso -o "other 5 robots" -t 9:36.809
+drag -d "line in front of crate" -o crate -t 9:38.002
+tap -c3 -o "whitespace in front of crate" -t 9:39.359
+tap -h -o crate -t 9:43.807
+lasso -o "everything around the crate" -t 9:46.363
+drag -o "crate to A" -t 9:47.713
+
+task 14
+lasso -o "defective robot" -t 10:03.090
+tap -h -o "defective robot" -t 10:08.398
+
+task 15
+lasso -o "healthy robot" -t 11:40.676
+drag -o "robot to side of defective robot" -t 11:41.983
+lasso -o "healthy robot" -t 11:44.231
+drag -o "robot to side of defective robot" -t 11:44.821
+tap -h -o "defective robot" -t 11:48.842
+lasso -o "healthy robots and defective robot" -t 11:52.983
+drag -o "selected robots to top left corner" -t 11:53.852 
+lasso -o "defective robot" -x -t 12:07.460
+drag -o "defective robot to corner" -x -t 12:13.354
+
+task 16
+lasso -o "all robots" -t 13:50.129
+drag -d "along border" -o "screen edge" -t 13:54.714
+drag -f3 -o "vertically down middle of screen" -t 13:59.006
+
+task 17
+lasso -o "all robots" -t 14:24.308
+drag -d "border of A" -o "area a" -t 14:26.857
+drag -f3 -o "vertically down over area A" -t 14:29.236
+drag -d "box under A" -o "area a" -x -t 14:33.557
+drag -f3 -o "vertically down over box" -x -t 14:34.050
+drag -d "border of A" -o "area a" -x -t 14:36.760
+drag -f3 -o "vertically down over open area" -x -t 14:37.686
+
+task 18
+lasso -o robots -t 15:04.016
+tap -f 5 -o robots -t 15:07.535
+other -d "5f scatter " -o robots -t 15:09.060
+other -d "5f scatter " -o robots -x -t 15:11.345

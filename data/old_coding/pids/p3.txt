@@ -1,0 +1,184 @@
+participant 3
+task 1
+box -f 1 -t 92.6 -o "10 Red Robots" -s tl
+drag -f 1 -h 1 -t 98.2 -o "10 Red Robots, Box A" -d "Draw line from center of Red Robots to center of Box A"
+memo -d "Participant explains that when box selecting all robots should orient in the same direction. Describes this as feedback that the group was selected and that the group should orient to the origin of the box select."
+
+task 2
+box -f 1 -t 164.1 -o "10 Red Robots" -s tl
+drag -f 1 -h 1 -t 175.8 -o "10 Red Robots, Ground" -d "Draw line from center of Red Robots to a position beside the wall"
+drag -f 1 -h 1 -t 183.7 -o "10 Red Robots, Box A" -d "Draw line from center of Red Robots to Box A"
+
+task 3
+ui -x -t 223.3 -k button -d "Presses a stop button that has become available while units are selected."
+memo -d "Participant assumes Red Robots are already selected"
+ui -x -t 227 -k button -d "Describes a 'select individuals' button, maybe to stop individuals"
+tap -x -n -f 1 -t 237.9 -c 1 -o "Red Robot"
+tap -x -n -f 1 -t 238.0 -c 1 -o "Red Robot"
+tap -x -n -f 1 -t 238.6 -c 1 -o "Red Robot"
+ui -x -n -t 246.2 -k button -d "Gestures to pressing a stop button following selecting individual robots"
+
+task 4
+box -f 1 -t 264.2 -o "10 Red Robots" -s tl
+memo -d "Restarts shortly after this action"
+box -f 1 -t 283.2 -o "4 Red Robots" -s tl
+drag -f 1 -h 1 -t 287.1 -o "4 Red Robots, Box A" -d "Draws line from Red Robots off to the side and then toward Box A"
+box -f 1 -t 290 -o "6 Red Robots" -s tl
+drag -f 1 -h 1 -t 292.5 -o "Ground, Box B" -d "Draws line from Ground off to the side to Box B"
+memo -d "Participant doesn't drag from Red Robots but starts at their first desired waypoint and drags to the last desired waypoint."
+ui -x -t 301.5 -k button -d "Press a button to increment selected robot count"
+ui -x -n -t 309.6 -k button -d "Confirms number of slected robots."
+
+task 5
+box -f 1 -t 342.7 -o "11 Orange Robots" -s tl
+tap -f 1 -t 346.9 -c 1 -o "Ground"
+drag -f 1 -h 1 -t 348.1 -o "Ground, Box B"
+box -f 1 -t 351.1 -o "10 Red Robots" -s tl
+tap -f 1 -t 352.4 -c 1 -o "Ground"
+tap -f 1 -t 353.0 -c 1 -o "Ground"
+memo -d "Last tap just on the border of Box A"
+box -x -f 1 -t 393.4 -o "11 Yellow Robots, 2 Red Robots" -s tl
+memo -d "Participant demonstrating desired features"
+memo -d "In general i'm unsure how to handle the last bit of commentary since it's not directly related to performing the task but offering alternatives to selecting units. Particularly points where he's pointing at the screen."
+
+task 6
+box -f 1 -t 466.7 -o "11 Orange Robots" -s tl
+tap -f 1 -t 468.7 -c 1 -o "Ground"
+tap -f 1 -t 469.5 -c 1 -o "Box A"
+box -f 1 -t 474.3 -o "10 Red Robots" -s tl
+tap -f 1 -t 474.9 -c 1 -o "Ground"
+tap -f 1 -t 475.3 -c 1 -o "Box B"
+
+task 7
+ui -t 584.2 -k button -d "Participant describes a select all Orange Robots button"
+ui -t 585.8 -k button -d "Participant describes a select all Red Robots button"
+tap -f 1 -t 601.6 -c 1 -o "Ground"
+tap -f 1 -t 602.5 -c 1 -o "Box B"
+tap -f 1 -t 603.2 -c 1 -o "Ground"
+tap -f 1 -t 603.8 -c 1 -o "Box A"
+
+task 8
+box -f 1 -t 630.3 -o "5 Red Robots" -s tl
+box -f 1 -t 680.6 -o "5 Red Robots" -s tl
+box -x -f 1 -t 681.5 -o "5 Red Robots" -s tl
+memo -d "Last box was identical to the first so I marked it as an example."
+box -x -f 1 -t 700.5 -o "5 Red Robots" -s tl
+box -x -f 1 -t 703.9 -o "5 Red Robots" -s tl
+
+task 9
+box -f 1 -t 736.8 -o "10 Red Robots" -s tl
+tap -f 1 -t 758.9 -c 1 -o "5 Red Robots" -h
+tap -f 1 -t 758.9 -c 1 -o "5 Red Robots" -h
+memo -d "Taps are happening simultaneously to merge two groups of robots. This may make more sense as a single two handed tap though multiple hands aren't allowed on tap"
+ui -t 761.8 -k button -d "Participant describes pressing a confirmation button after tap and hold selection"
+ui -t 771.0 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 771.2 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 771.4 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 771.5 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 771.6 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 771.5 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 772.0 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 772.2 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 772.4 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 772.7 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 774.1 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -n -t 774.9 -k button -d "Participant describes pressing a confirmation button to select a set of robots"
+
+task 10
+box -f 1 -t 809.5 -o "10 Red Robots" -s tl
+ui -n -t 819.9 -k button -d "Participant describes a settings button that brings up formation options for the robots"
+ui -n -t 825.5 -k menu -d "Participant desribes a menu of robot formations and selects line"
+
+task 11
+ui -t 902.5 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 902.6 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 902.8 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 903.1 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 903.2 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 904.8 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1 though holds the button slightly longer than usual. Maybe indicating that it's continuing to incremement while being pressed."
+ui -t 906.4 -k button -d "Participant describes pressing a button to select all Red Robots"
+ui -t 913.6 -k button -d "Participant describes button 'input command' probably meaning a confirm selection"
+memo -d "After last button press participant describes a default formation of forming a square"
+ui -t 922.2 -k button -d "Participant describes pressing a settings button to bring up formation options"
+ui -t 923.3 -k menu -d "participant describes selecting the square formation from the settings menu"
+ui -t 930.8 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 931.0 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 931.3 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 931.5 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 931.6 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+ui -t 931.7 -k button -d "Participant describes pressing an increment button to increased the selected number of Red Robots by 1"
+memo -d "At roughly 15:35 or 935 seconds, the participant sort of points at the screen and says "ask to make a square" but it wasn't clear to me if he was intending to push the previous formation button or not since he didn't go through the steps of opening the formation settings and seemed to just be casualy talking about what he would do"
+memo -d "Toward the end participant begins talking about other buttons and options for selecting types of robots but it seems more like comentary than intent to perform the required task"
+
+task 12
+box -f 1 -t 988.6 -o "10 Red Robots" -s tl
+ui -t 1006.3 -k button -d "Participant describes opening a 'settings bar'"
+ui -n -t 1020.9 -k menu -d "Participant describes hitting a menu option 'move object'"
+ui -x -n -t 1023.0 -k menu -d "Participant describes hitting a menu option 'move object'"
+memo -d "It seemed like the first instance was actually the example and the second was the action for the task though I marked the second as example to keep with the definition"
+tap -f 1 -t 1031.7 -c 1 -o "Wooden Box"
+ui -t 1045.6 -k button -d "Participant describes pressing a button to confirm the action of moving the object"
+tap -x -f 1 -t 1050.4 -c 1 -o "Wooden Box"
+ui -t 1063.7 -k button -d "Participant describes pressing a button to move ojbect"
+tap -f 1 -t 1065.6 -c 2 -o "Box A"
+memo -d "Last tap may supposed to have been a single tap though it appeared to be a double"
+tap -x -f 1 -t 1069.2 -c 1 -o "Wooden Box"
+tap -x -f 1 -t 1069.2 -c 1 -o "Box A"
+tap -x -f 1 -t 1070.5 -c 1 -o "Wooden Box"
+tap -x -f 1 -t 1071.2 -c 1 -o "Box A"
+memo -d "Last 4 didn't appear to be actions for the task but pointing out where the waypoints would be from his previous actions."
+ui -x -t 1146.9 -k button -d "Participant describes pressing an increment button to increase the selected number of Red Robots by 1"
+ui -x -t 1147.2 -k button -d "Participant describes pressing an increment button to increase the selected number of Red Robots by 1"
+ui -x -t 1148.5 -k button -d "Participant describes pressing an increment button to increase the selected number of Red Robots by 1 but holds down the button"
+tap -x -f 1 -t 1150.0 -c 1 -o "Wooden Box"
+ui -x -t 1151.3 -k button -d "Participant describes hitting 'move' an option that would appear beside the chosed object"
+tap -x -f 1 -t 1151.9 -c 1 -o "Box A"
+memo -d "Last set of actions appeared to just be a reiteration of prior actions done in this task so I makred them as examples"
+
+task 13
+ui -n -t 1191.7 -k button -d "Participant describes opening a settings menu"
+ui -n -t 1192.6 -k menu -d "Participant describes press a 'move'/'move object' option from the menu"
+tap -f 1 -t 1195.2 -c 1 -o "Wooden Box"
+tap -f 1 -t 1196.0 -c 1 -o "Box A"
+ui -x -n -t 1248.6 -k button -d "Participant describes hitting a select all Red Robots button"
+
+task 14
+ui -n -t 1298.4 -k button -d "Participant describes hitting a 'select' button'
+memo -d "Prior to this ui action there was some talk of picking a leader and having it move the robots in a direction. It was unclear if this was to perform the task or just describing how the special options menu would work to assign states to individual robots"
+tap -n -f1 -t 1299.4 -c 1 -o "Defective Red Robot"
+tap -x -n -f1 -t 1302.2 -c 1 -o "Defective Red Robot"
+box -f 1 -t 1319.5 -o "9 Red Robots, 1 Defective Red Robot" -s tl
+tap -n -f1 -t 1341.0 -c 1 -o "Defective Red Robot"
+
+task 15
+ui -t 1360.7 -k button -d "Participant describes pressing a mark defective button so that they can now report robot as defective"
+tap -f 1 -t 1361.6 -c 1 -o "Deffective Red Robot"
+box -f 1 -t 1373.9 -o "9 Red Robots, 1 Defective Red Robot" -s tl
+tap -f 1 -t 1387.9 -c 1 -o "Ground"
+tap -f 1 -t 1388.5 -c 1 -o "Ground"
+memo -d "Second tap seems more like an example even though it is in a different location"
+
+task 16
+box -f 1 -t 1468.5 -o "10 Red Robots" -s tl
+ui -t 1473.7 -k button -d "Participant describes pressing a special actions button to bring up a menu"
+ui -t 1485.8 -k menu -d "Participant describes pressing a patrol option in the special actions menu"
+ui -t 1488.4 -k button -d "Participant describes pressing a 'known visible area edge' patrol option"
+memo -d "Toward the end I wasn't sure if the last few parts of pointing at the screen should be coded"
+
+task 17
+box -f1 -t 1594.8 -o "10 Red Robots" -s tl
+ui -n -t 1595.9 -k button -d "Participant describes hitting a select all Red Robots button"
+memo -d "The last ui selection was done very briskly so i'm not sure if it counts or if it would be an example. I've been consistently marking alternative methods not as examples unless they are done twice."
+ui -t 1601.9 -k button -d "Participant appears to be opening a menu"
+ui -t 1603.4 -k menu -d "Participant appears to be selection "patrol" option in a menu"
+memo -d "Participant doesn't explicitly mention a menu though their behaviour is consisten with previous tasks that involved opening a menu"
+drag -f 1 -h 1 -t 1609.3 -o "Box A" -d "Straight line aproximately slighlty below the center of the box and diagnoly toward the bottom left slightly outside the box"
+memo -d "Participant appears to be making a radius from which to perform a patrol"
+drag -n -f 1 -h 1 -t 1610.3 -o "Ground" -d "Appears to draws a perimeter around Box A"
+memo -d "Unclear if the previous drag was an action or describing the box that would appear from the drag that was drawing a line for the size of perimeter"
+
+task 18
+box -f 1 -t 1699.0 -o "10 Red Robots" -s tl
+ui -t 1709.5 -k button -d "Participant describes 'special action' implied as opening a menu"
+ui -t 1710.3 -k menu -d "Participant implies they are hitting a menu option for disperse"
+ui -x -t 1759.5 -k menu -d "Participant implies they are hitting a menu option for disperse"

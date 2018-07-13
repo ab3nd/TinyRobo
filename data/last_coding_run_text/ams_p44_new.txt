@@ -1,0 +1,88 @@
+participant 44
+
+task 1
+drag -o "robots to area A" -t 2:21.981 
+drag -o "robots to area A" -x -t 2:36.584
+drag -o "robots to area A" -x -t 2:37.432
+other -x -d "flat hand push robots to A" -o robots -t 2:49.065
+
+task 2
+drag -o "robots around wall to l" -t 3:06.081
+drag -o "robots around wall to r (other hand)" -t 3:06.081
+
+task 3
+memo -d "asked about moving the wall"
+other -d "flat hand push robots back behind wall" -o "robots" -n -t 3:32.696
+memo -d "assuming you could move the wall"
+other -d "pinch ends of wall and move in front of swarm" -o wall -n -t 3:49.393
+
+task 4
+drag -o "robots around wall to A" -n -t 4:25.523
+drag -o "robots around wall to B (other hand)" -n -t 4:25.523
+
+task 5
+memo -d "described splitting orange up to go to B without mixing with red, but no contact or gestures specific to doing the motion"
+
+task 6
+other -d "flat hand push orange to side, then up and into A" -o "orange robots" -n -t 6:01.395
+other -d "flat hand push red to side, then up and into B" -o "red robots" -n -t 6:01.395
+
+task 7
+other -d "threading select over orange robots, then drag to A" -o "orange robots (only touched a few)" -t 6:34.890
+other -d "threading select over red robots, then drag to A" -o "red robots (only touched a few)" -t 6:37.441
+memo -d "suggested control where moving one red or orange robot causes the rest to follow it"
+
+task 8
+other -d "flat hand chop and drag" -n -o robots -t 7:19.769
+drag -x -o "line through middle of robots" -t 7:24.051
+
+task 9
+other -d "flat hands at sides of whitespace, brought together in the middle"  -o "entire screen area/both robot groups" -n -t 7:34.914
+
+task 10
+memo -d "asked about having a line formation feature, but no UI description" 
+drag -o "line in whitespace across screen" -t 8:09.275
+drag -o "line in whitespace from top to bottom of screen" -t 8:10.091
+drag -x -o "line in whitespace across screen" -t 8:16.775
+drag -x -o "line in whitespace from top to bottom of screen" -t 8:17.93
+
+task 11
+memo -d "mentioned using the same formation option, but didn't interact with device/describe ui. Prompted for UI description"
+drag -o "square over whitespace/robots" -t 9:06.276
+memo -d "never indicated how formation option would be activated"
+
+task 12
+tap -o "below crate" -t 9:39.85
+tap -o "behind crate" -t 9:40.142
+tap -o "above crate" -t 9:41.134
+drag -o "crate to a" -n -t 9:49.420
+drag -o " vertically down trhough crate" -t 9:51.172
+drag -o "small circle above crate then down through it, then off screen to L" -t 9:54.755
+drag -o "from off screen to A" -t 9:55.744
+memo -d "this is possibly the only user to have the top group push the crate down, and then move it forward into A, rather than the other way around"
+
+task 13
+other -d "5f pinch/grab group and slide it around to move a group of robots under the crate" -o "subset of robots" -t 10:22.680
+other -d "5f pinch/grab group and slide it around to move a group of robots above the crate" -o "subset of robots" -t 10:24.095
+other -d "5f pinch/grab group and move a group of robots behind the crate" -o "subset of robots" -t 10:25.126
+drag -o "crate to A" -t 10:26.086
+
+task 14
+drag -o "small squiggle over defective robot" -t 10:40.826
+tap -x -o "defective robot" -t 10:44.450
+
+task 15
+other -d "move robots near defective robot up with swipe using side of finger" -o "robots near defective" -t 10:57.601
+other -d "move robots near defective robot up with swipe using side of finger" -o "robots near defective" -t 10:58.265
+drag -o "defective robot out of group via gap created by wipes to lhs of screen" -t 10:59.672
+memo -d "mentioned having an option to directly take it out, no UI described"
+
+task 16
+memo -d "mentioned using the same option as line/square formation"
+drag -d "outline of whitespace area" -o "screen area" -t 11:29.991
+
+task 17
+memo -d "said they would use the same option as above, no interaction with device"
+
+task 18
+drag -o "squiggle/zigzag over swarm" -t 12:06.673

@@ -1,0 +1,747 @@
+{
+   "participant": 1, 
+   "tasks": {
+      "1": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 87.5, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 99.72, 
+            "write": null
+         }
+      ], 
+      "10": [
+         {
+            "draw": [
+               "line"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "open", 
+               "space"
+            ], 
+            "time": 315.55, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "line"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "open", 
+               "space"
+            ], 
+            "time": 316.67, 
+            "write": null
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 317.57
+         }
+      ], 
+      "11": [
+         {
+            "draw": [
+               "square"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots", 
+               "(dispersered)"
+            ], 
+            "time": 339.81, 
+            "write": null
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 340.87
+         }, 
+         {
+            "draw": [
+               "part", 
+               "of", 
+               "square"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 344.72, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "other", 
+               "part", 
+               "of", 
+               "square"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 345.76, 
+            "write": null
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 347.15
+         }
+      ], 
+      "12": [
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 377.74
+         }, 
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 379.98
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots", 
+               "crate"
+            ], 
+            "time": 382.01, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "crate", 
+               "to", 
+               "A"
+            ], 
+            "time": 383.55, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "could", 
+               "also", 
+               "be", 
+               "coded", 
+               "as", 
+               "one", 
+               "drag,", 
+               "since", 
+               "there", 
+               "was", 
+               "no", 
+               "lift", 
+               "at", 
+               "the", 
+               "crate,", 
+               "just", 
+               "a", 
+               "drop", 
+               "in", 
+               "velocity"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots", 
+               "crate", 
+               "A"
+            ], 
+            "time": 385.51, 
+            "write": null
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 388.04
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots", 
+               "crate", 
+               "A"
+            ], 
+            "time": 391.28, 
+            "write": null
+         }
+      ], 
+      "13": [
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "crate"
+            ], 
+            "time": 408.38
+         }, 
+         {
+            "draw": [
+               "circle"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "swarm", 
+               "to", 
+               "crate", 
+               "to", 
+               "A"
+            ], 
+            "time": 413.37, 
+            "write": null
+         }
+      ], 
+      "14": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots", 
+               "around", 
+               "screen", 
+               "border"
+            ], 
+            "time": 437.55, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": true, 
+            "objects": [
+               "robots", 
+               "around", 
+               "screen", 
+               "border"
+            ], 
+            "time": 440.38, 
+            "write": null
+         }
+      ], 
+      "15": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 3, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 484.21, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "initial", 
+               "drag", 
+               "was", 
+               "probably", 
+               "an", 
+               "accident"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "A"
+            ], 
+            "time": 485.33
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 3, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots", 
+               "to", 
+               "A"
+            ], 
+            "time": 486.8, 
+            "write": null
+         }
+      ], 
+      "16": [
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "open", 
+               "area"
+            ], 
+            "time": 507.38
+         }, 
+         {
+            "description": [
+               "time", 
+               "for", 
+               "the", 
+               "tap", 
+               "is", 
+               "wrong,", 
+               "should", 
+               "be", 
+               "502.38"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 3, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 505.99, 
+            "write": null
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "open", 
+               "area"
+            ], 
+            "time": 513.27
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 3, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 517.06, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 3, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 518.36, 
+            "write": null
+         }
+      ], 
+      "2": [
+         {
+            "count": 1, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": true, 
+            "no_contact": false, 
+            "objects": [
+               "wall"
+            ], 
+            "time": 118.45
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 120.07, 
+            "write": null
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 139.5
+         }, 
+         {
+            "description": [
+               "the", 
+               "tap", 
+               "should", 
+               "have", 
+               "been", 
+               "in", 
+               "task", 
+               "2"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "description": [
+               "the", 
+               "tap", 
+               "should", 
+               "have", 
+               "been", 
+               "in", 
+               "task", 
+               "3,", 
+               "rather"
+            ], 
+            "event_type": "memo"
+         }
+      ], 
+      "3": [
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 139.5
+         }, 
+         {
+            "count": 2, 
+            "event_type": "tap", 
+            "example": false, 
+            "fingers": 1, 
+            "hold": false, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 144.7
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 144.7, 
+            "write": null
+         }
+      ], 
+      "4": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 2, 
+            "hands": 2, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 169.99, 
+            "write": null
+         }
+      ], 
+      "5": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 2, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 193.83, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "the", 
+               "drag", 
+               "for", 
+               "task", 
+               "4", 
+               "should", 
+               "be", 
+               "1f,", 
+               "not", 
+               "2f"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "red", 
+               "robots"
+            ], 
+            "time": 199.27, 
+            "write": null
+         }
+      ], 
+      "6": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "orange", 
+               "robots"
+            ], 
+            "time": 216.31, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "red", 
+               "robots"
+            ], 
+            "time": 218.16, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 2, 
+            "no_contact": false, 
+            "objects": [
+               "robots"
+            ], 
+            "time": 220.35, 
+            "write": null
+         }
+      ], 
+      "7": [
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "orange", 
+               "robots"
+            ], 
+            "time": 247.27, 
+            "write": null
+         }, 
+         {
+            "draw": null, 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "red", 
+               "robots"
+            ], 
+            "time": 248.96, 
+            "write": null
+         }
+      ], 
+      "8": [
+         {
+            "event_type": "pinch", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "reverse": true, 
+            "time": 266.55
+         }, 
+         {
+            "event_type": "pinch", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "reverse": true, 
+            "time": 268.06
+         }
+      ], 
+      "9": [
+         {
+            "event_type": "pinch", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 2, 
+            "no_contact": false, 
+            "reverse": false, 
+            "time": 284.47
+         }
+      ]
+   }
+}

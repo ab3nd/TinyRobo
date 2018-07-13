@@ -1,0 +1,115 @@
+participant 31
+task 1
+drag -f 1 -t 133.89 -o "Red Robots, Box A" -d "A straight line from roughly the center of the Robots to Box A"
+drag -x -f 1 -t 138.50 -o "Red Robots, Box A" -d "A straight line from roughly the center of the Robot to Box A"
+drag -x -f 1 -t 170.26 -o "Red Robots, Box A" -d "A straight line from roughly the center of the Robot to Box A"
+
+task 2
+drag -x -f 1 -t 194.33 -o "Box A" -d "Participant grazes the screen about Box A"
+drag -f 1 -t 195.21 -o "Red Robots" -d "Participant draws a line from Red Robots toward the right up around the wall to Box A"
+
+task 3
+drag -x -f 1 -t 254.92 -o "Red Robots" -d "Participant draws a line form the bottom of Red Robots toward the right drawing a flat line paralell with the lower border."
+tap -f 1 -t 260.24 -o "Ground" -c 1
+memo -d "Participant taps on the ground slightly above the Red Robot cluster. Responds to experimenter 'robots stop where they are.'"
+
+task 4
+tap -f 2 -t 480.16 -o "Box A" -c 2
+memo -d "Participant answers experimenter that this gesture indicates the area for robots to move. Has not indicated how many robots from the cluster should go to this position."
+tap -f 1 -t 522.48 -o "Box A" -c 3
+memo -d "Three single finger taps to indicate how many robots to go to this position."
+memo -d "Participant is asked (paraphrasing) what if you do not know how many robots are in the cloud. How would you Send rougly the same about of robots to each place i.e. box A and B
+drag -f 1 -t 643.41 -o "Ground" -d "Participant drew a zero"
+tap -f 1 -t 643.89 -o "Ground" 
+memo -d "Participant drew a decimal point. Not sure if this should technically be a drag." 
+drag -f 1 -t 644.18 -o "Ground" -d "Participant drew a rough s shape supposed to be a 5"
+drag -f 1 -t 644.41 -o "Ground" -d "Particpant drew a quick dash above the last s shape supposed to be the top of the 5"
+memo -d "Participant is indicating to the system to split the group in half by decimal ratio" 
+
+task 5
+drag -f 1 -t 772.28 -o "Box A" -d "Participnat drew a rough one along the left corner of Box A"
+drag -f 1 -t 772.69 -o "Box A" -d "Participant drew a rough zero in Box A"
+memo -d "Participant suggests tying a gesture or value to a set of robots so in this case drawing 10 would be associated with orange robots and drawing 10 in Box A would indicate that Orange robots should go there. Participant does not do the same for Red Robots."
+
+task 6
+memo -d "I couldn't quite make out what the participant said. I think the participant was explaining that they would do the same as they did in the previous task (task 5)."
+
+task 7
+memo -d "Participant indicates they would do the same as they did in task 5."
+
+task 8
+other -x -t 1025.29 -o "N/A" -d "Participant rests their hand slightly on the border of the screen (black part around white). This is not a direct interaction with the UI and is only being recorded for the sake of capturing all screen interactions."
+drag -f 1 -t 1034.22 -o "Ground" -d "Participant draws a line mostly straight through Red Robots"
+drag -f 1 -t 1041.61 -o "Ground" -d "Participant indicates that they are drawing a fraction but does not say what fraction nor is it clear from what they drew."
+memo -d "Participant indicates spreading the group followed by drawing the fraction"
+
+task 9
+pinch -f 1 -t 1127.19 -h 1 -o "Both Red Robot Clusters"
+
+task 10
+drag -f 1 -t 1357.24 -o "Ground" -d "Draws a somewhat diagonal line across the lower left corner just above and to the right of the Red Cluster."
+drag -f 1 -t 1360.47 -o "Ground" -d "Draws what appears to be two sides of a square, one line roughly paralell with the last going down to the bottom of the screen then 90 degrees back up and ot the right."
+
+task 11
+drag -f 1 -t 1448.38 -o "Red Robots" -d "Draws an S shape"
+drag -f 1 -t 1448.91 -o "Red Robots" -d "draws a Q shape"
+drag -x -f 1 -t 1449.71 -o "Red Robots" -d "Draws an S shape"
+drag -x -f 1 -t 1450.03 -o "Red Robots" -d "Draws a Q shape"
+tap -f 1 -t 1450.63 -o "Red Robots" -c 1
+memo -d "Participant is apparently drawing SQ to indicate square shape. It appeared they then finished with a tap though they do not indicate what the tap means."
+
+task 12
+drag -f 1 -t 1632.05 -o "Ground, Box A" -d "Participant draws a line from just right of the Red Robot cluster diagonally up to the lower border of Box A but does not seem to move into Box A."
+drag -f 1 -t 1697.65 -o "Ground" -d "Participant draws an L"
+drag -f 1 -t 1698.57 -o "Ground" -d "Participant draws a dash or horizontal line"
+drag -f 1 -t 1699.01 -o "Ground" -d "Participant draws an angle bracket infront of the dash making an arrow"
+drag -f 1 -t 1699.46 -o "Ground" -d "Participant draws part of an A, left and right line in one sweep."
+drag -f 1 -t 1700.24 -o "Ground" -d "Middle dash of A"
+tap -f 1 -t 1700.62 -o "Ground" -c 1
+drag -x -f 1 -t 1701.73 -o "Ground" -d "another dash or line for an arrow sign"
+drag -x -f 1 -t 1702.27 -o "Ground" -d "Draws arrow head for second dash/line" 
+drag -x -f 1 -t 1702.85 -o "Ground" -d "Draws A again"
+tap -x -f 1 -t 1703.33 -o "Ground"
+memo -d "last two taps seemed like indicators for finishing a gesture. Participant doesn't mention anything about them."
+tap -f 1 -t 1703.67 -o "Box A" -c 1
+tap -f 1 -t 1703.80 -o "Box A" -c 1
+memo -d "Only the last tap was indicated on the touch screen. The one before (time 1703.67) looked quite close though may not have actually touched the screen. I'm not sure."
+drag -x -f 1 -t 1709.75 -o "Ground" -d "Drawing part of an L (straight line) indicating to the experimenter where the symbol is located."
+drag -f 1 -t 1720.73 -o "Wooden Crate" -d "Draws an indistinguishable mark on the crate saying 'this is named something'."
+tap -x -t 1722.51 -o "Wooden Crate" -c 1
+memo -d "Prior to this gesture (1722.51) and after (1720.73) there was a gesture that looks like it could have been a tap though it didn't appear to register. tap (1722.51) doesn't seem to indicate any action so I marked it as example."
+drag -f 1 -t 1725.25 -o "Wooden Crate" -d "Draws a C on the crate indicating what the symbol for the crate would be"
+tap -f 1 -t 1726.22 -o "Wooden Crate" -c 1
+drag -f 1 -t 1726.65 -o "Ground" -d "Draws C on the LHS of the arrow roughly where the L was."
+drag -x -f 1 -t 1726.9 -o "Ground" -d "Draws dash/line of arrow with small arrowhead in seemingly one swipe"
+drag -x -f 1 -t 1727.43 -o "Ground" -d "Draws sides of A in one swipe"
+drag -x -f 1 -t 1727.88 -o "Ground" -d "Draws middle line/dash of A"
+drag -f 1 -t 1728.17 -o "Ground" -d "Draws a line under the c->A that they just drew"
+tap -f 1 -t 1728.46 -o "Ground" -c 1
+memo -d "Partipcant taps a dot on the screen to the right of the command they drew."
+
+task 13
+memo -d "Participant says (paraphrasing) 'it would be the same'"
+
+task 14
+tap -x -f 1 -t 1871.73 -o "Ground" -c 1
+memo -d "I think participant accidently touched the screen while thinking."
+drag -f 1 -t 1975.29 -o "Ground" -d "Draws circle on the ground on the right oposite of Red Robots."
+tap -f 1 -t 1982.39 -o "Ground" -c 1
+memo -d "Sounds like participant is saying 'tap the code for patrolling or color of robot' so this tap may be intentional to selecing a ui element that pops up after circling though the tap appears more like gesturing toward the place they just drew so i'm not sure."
+tap -x -f 1 -t 1986.76 -o "Ground" -c 1
+memo -d "Last tap seemed more like pointing to what they did then a gesture for the interface"
+drag -f 1 -t 1984.64 -o "Ground" -d "Draws P on the ground roughly in the cetner of the circle"
+
+task 15
+drag -f 1 -t 2044.85 -o "Ground" -d "Draws part of P slightly to the right of Red Robots"
+drag -f 1 -t 2044.23 -o "Ground" -d "Finishes drawing P"
+drag -f 1 -t 2045.68 -o "Ground" -d "Draws dash/line part of arrow"
+drag -f 1 -t 2046.10 -o "Ground" -d "Finishes drawing arrow, draws arrow head"
+drag -x -f 1 -t 2047.81 -o "Ground" -d "Draws another dash/line for arrow"
+drag -x -f 1 -t 2048.19 -o "Ground" -d "Finishes drawing seccond arrow, draws arrow head"
+drag -f 1 -t 2048.53 -o "Ground" -d "Draws part of A, lines"
+drag -f 1 -t 2049.20 -o "Ground" -d "Finishes drawing A, draws dash part of A"
+
+task 16
+drag -f 1 -t 2049.30 -o "Ground" -d "Draws R on ground in one sweep"

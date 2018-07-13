@@ -1,0 +1,82 @@
+participant 45
+
+task 1
+other -d "backhand sweep over screen, from robots to a" -o robots -n -t 2:10.168
+other -d "backhand sweep over screen, from robots to a" -o robots -n -t 2:11.832
+
+task 2
+other -d "5f pinch over robots, move hand around wall to A, release pinch" -n -o robots -t 2:32.512
+
+task 3
+other -d "flat hand palm down over robots" -n -o robots -t 2:46.336
+tap -o robots -t 2:54.023
+
+task 4
+other -d "vertical flat hand chop over center of robots" -n -o robots -t 3:09.797
+other -d "5f pinch over r half of robots, move hand around wall to B, release pinch" -n -o robots -t 3:12.34
+other -d "5f pinch over l robots, move hand around wall to A, release pinch" -n -o robots -t 3:14.878
+
+task 5
+other -d "5f pinch over orange robots, move hand around wall to B, release pinch" -n -o "orange robots" -t 3:37.253
+other -d "5f pinch over red robots, move hand around wall to A, release pinch" -n -o "red robots" -t 3:39.933
+
+task 6
+other -d "5f pinch over orange robots, move hand around wall to A, release pinch" -n -o "orange robots" -t 3:56.141
+other -d "5f pinch over red robots, move hand around wall to B, release pinch" -n -o "red robots" -t 3:57.830
+
+task 7
+other -d "flat hand palm down over robots, move to A" -o robots -n -t 4:17.520
+other -d "5f pinch over robots, move hand around wall to B, release pinch" -n -o robots -t 4:19.736
+other -d "flat hand palm down over robots, move to A" -o robots -x -n -t 4:23.822
+other -d "5f pinch over robots, move hand around wall to B, release pinch" -n -o robots -x -t 4:26.294
+
+task 8
+other -d "vertical flat hand chop over center of robots" -n -o robots -t 4:51.143
+other -d "hands palm to palm, chop down over robots then spread" -n -o robots -t 4:58.608
+memo -d "second move was an alternative, I probably should have had an alternative move flag, but most people only did one move"
+
+task 9
+other -d "cup hands on l and r sides of screen and bring together in middle" -o "over screen" -t 5:13.615
+
+task 10
+drag -d "line" -o "from robots horizontally across bottom of screen" -t 5:30.807
+drag -d "line" -o "from robots vertically up screen" -x -t 5:34.239
+drag -d "line" -o "from robots diagonally up screen" -x -t 5:35.775
+
+task 11
+drag -d "square over robots" -o "robots/screen (dispersed condition)" -t 5:53.487 
+memo -d "mentioned having a 'basic shapes' menu on the side, no contact"
+
+task 12
+other -d "5f pinch over crate as if picking it up, set it back down on A" -o crate -n -t 6:24.559
+
+task 13
+other -d "sweep hand motion with edge of hand down" -o "over area A" -n -t 6:51.094
+other -d "sweep hand motion with edge of hand down" -o "over area A" -n -t 6:52.558
+other -d "5f pinch over crate as if picking it up, set it back down on A" -o crate -n -t 6:54.822
+
+task 14
+tap -o "defective robot " -t 7:13.377
+lasso -o "defective robot" -x -t 7:18.284
+memo -d "lasso was alt move"
+
+task 15
+lasso -o "defective robot" -x -t 7:32.284
+tap -o "defective robot " -t 7:33.164
+other -d "5f pinch over defective robot as if picking it up, set it back down outside of white area to the r side" -o "defective robot" -n -t 7:34.780
+memo -d "mentioned having a delete icon so it could be deleted after selecting, but no contact made"
+
+task 16
+other -d "flat hand chop bottom of white area under robots" -o "whitespace/screen edge" -n -t 8:220.150
+other -d "flat hand chop edge of white area l of robots" -o "whitespace/screen border" -n -t 8:23.340
+drag -o "from robots around screen border" -n -t 8:36.221
+
+task 17
+drag -o "around area A" -t 8:55.838
+memo -d "may have been unclear on meaning of patrol, mentioned staying out of A rather than going around or staying in area A"
+drag -o "around area A" -t 9:02.446
+other -d "5f pinch over swarm, releas inside of A" -o "all robots" -n -t 9:04.205
+memo -d "drawing sets up border, then robots can be moved relative to that border"
+
+task 18
+other -d "5f scatter over robots" -o robots -n -t 9:24.533

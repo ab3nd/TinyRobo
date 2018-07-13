@@ -1,0 +1,155 @@
+participant 24
+task 1
+drag -o "circle around robots and then to a (no lift, so no lasso)" -t 1:30.933
+
+task 2
+lasso -o "half of robots" -t 1:51.690
+drag -o "lassoed robots to A" -t 1:53.876
+lasso -o "other half of robots" -t 1:56.465
+drag -o "lassoed robots to A" -t 1:58.052
+
+task 3
+lasso -o "all robots" -t 2:21.571
+drag -o "robots back behind wall" -t 2:24.919
+
+task 4
+lasso -o "half of robots" -t 2:43.432
+drag -o "lassoed robots to A" -t 2:45.178
+lasso -o "other half of robots" -t 2:48.124
+drag -o "lassoed robots to B" -t 2:49.778
+
+task 5
+lasso -o "orange robots" -t 3:07.174
+drag -o "lassoed robots to A" -t 3:08.840
+lasso -o "red robots" -t 3:11.538
+drag -o "lassoed robots to B" -t 3:13.006
+
+task 6
+lasso -o "orange robots" -t 4:07.757
+drag -o "lassoed robots to B" -t 4:09.275
+lasso -o "red robots" -t 4:11.880
+drag -o "lassoed robots to B" -t 4:13.475
+
+task 7
+lasso -o "all robots" -t 4:32.505
+drag -o "all robots to A" -t 4:35.877
+lasso -o "red robots in A" -t 4:40.049
+drag -o "red robots to B" -t 4:44.220
+drag -o "individual robot" -x -t 5:13.914
+drag -o "individual robot" -x -t 5:15.388
+drag -o "individual robot" -x -t 5:15.914
+drag -o "individual robot" -x -t 5:16.550
+drag -o "all robots to b" -x -t 5:26.228
+drag -o "all robots to A" -x -t 5:27.186
+drag -o "a to b" -x -t 5:28.119
+drag -o "a to b" -x -t 5:28.692
+drag -o "a to b" -x -t 5:29.402
+
+task 8
+lasso -o "l half of robots" -t 5:46.498
+lasso -o "r half of robots" -t 5:47.519
+drag -o "r robots right" -t 5:48.055
+drag -o "l robots l" -t 5:48.820
+
+task 9
+lasso -o "l group" -t 6:02.532
+drag -o "l group r" -t 6:03.928
+
+task 10
+lasso -o "all robots" -t 6:22.688
+drag -d "vertical line" -o whitespace -t 6:25.484
+drag -o "robots to previous line" -t 6:26.351
+drag -d arrowhead -o "previous drag" -t 6:27.484
+drag -d "vertical line" -o whitespace -t 6:30.844
+drag -d "circle over robots" -o robots -t 7:04.824
+tap -x -o "center robot" -t 8:07.554
+drag -o "circle in center of robots" -x -t 8:09.137
+drag -o "circle in center of robots" -x -t 8:11.502
+drag -o "larger circle in center of robots" -x -t 8:13.029
+drag -o "larger circle in center of robots" -x -t 8:15.178
+drag -o "larger circle in center of robots" -x -t 8:19.531
+drag -o "robots to whitespace in center top of screen" -x -t 8:22.440
+drag -d "vertical line" -x -o whitespace -t 8:23.349
+drag -o "circle in center of robots" -x -t 8:24.586
+drag -o "robots to whitespace near vertical line" -x -t 8:25.615
+drag -o "circle in center of robots" -x -t 8:31.611
+
+task 11
+drag -d "horizontal dividing line in middle of screen" -o screen -t 8:56.914
+drag -d "vertical dividing line in middle of screen" -o screen -t 9:00.296
+lasso -o "top left quarter robots" -o robots -t 9:02.707
+lasso -o "top left quarter robots" -o robots -t 9:09.353
+drag -d "top left corner of square" -o "robots/screen" -t 9:10.671
+drag -d "bottom left corner of square" -o "robots/screen" -t 9:11.399
+drag -d "top right corner of square" -o "robots/screen" -t 9:12.242
+drag -d "bottom right corner of square" -o "robots/screen" -t 9:13.215
+tap -o "top left corner of screen" -t 9:19.552
+drag -o "center of screen to tl corner" -t 9:22.001
+drag -o "tl corner down to l center of screen" -t 9:24.934
+drag -o "tl corner down to top center of screen" -t 9:25.806
+drag -o "center of screen to top r" -t 9:32.370
+drag -d "top right corner of square" -o "robots/screen" -t 9:34.663
+drag -d "bottom right corner of square" -o "robots/screen" -t 9:36.539
+drag -d "bottom left corner of square" -o "robots/screen" -t 9:37.792
+
+task 12
+lasso -o "all robots" -t 10:02.157
+drag -o "robots behind crate" -t 10:04.213
+drag -o "crate to area A" -t 10:07.374 
+
+task 13
+lasso -o "all robots" -t 10:29.735
+drag -o "robots behind crate" -t 10:32.506
+drag -o "robots behind crate and then to area A" -t 10:38.005
+
+task 14
+drag -d "first stroke of x" -o "defective robot" -t 10:53.713
+drag -d "second stroke of x" -o "defective robot" -t 10:55.622
+
+task 15
+lasso -o "defective robot" -t 11:06.707
+drag -o "defective robot to l edge of screen" -t 11:09.576
+
+task 16
+lasso -o "half of robots" -t 11:34.931
+drag -o "lassoed robots up and across top of screen" -t 11:39.519
+drag -d arrowhead -o "previous drag" -t 11:40.612
+lasso -o "half of robots" -t 11:42.091
+drag -o "lassoed robots across bottom of screen and up r side" -t 11:43.831
+drag -d arrowhead -o "previous drag" -t 11:44.438
+drag -o "circle around arrrowheads" -t 11:46.827
+drag -o "circle over robots" -t 11:47.929
+drag -o "circle around screen, stop, double back" -t 11:53.450
+drag -o "line through middle of robots" -x -t 12:13.891
+drag -o "line through middle of robots" -x -t 12:18.495
+lasso -o "l half of robots" -x -t 12:19.858
+
+task 17
+lasso -o "robots" -t 12:49.999
+lasso -o "region in center of robots" -t 12:50.813
+drag -o "arc in center of robots" -t 12:51.634
+drag -o "from robots out to whitespace above robots" -t 12:53.560
+drag -o "from robots to tl corner of A" -t 12:54.382
+drag -o "from robots around A 1.5 times" -t 12:59.573
+
+task 18
+lasso -o "bl quarter of robots" -t 13:21.681
+lasso -o "tl quarter of robots" -t 13:22.694
+lasso -o "tr quarter of robots" -t 13:23.859
+lasso -o "br quarter of robots" -t 13:25.0
+drag -o "bl group to bl corner" -t 13:28.545
+drag -o "center to tl edge of swarm" -t 13:30.006
+drag -o "tr group to outside of group towards tr" -t 13:31.292
+drag -o "bl group to bl corner" -t 13:34.426
+drag -d circle -x -o "bl quarter" -t 13:39.007
+drag -d circle -x -o "tl whitespace and some robots" -t 13:42.701
+drag -d circle -x -o "tr whitespace and some robots" -t 13:43.843
+drag -d circle -x -o "br whitespace and some robots" -t 13:44.752
+drag -d circle -x -o "bl quarter" -t 13:46.277
+drag -d circle -x -o "bl quarter of screen" -t 13:48.904
+drag -d circle -x -o "br quarter of swarm" -t 13:49.573
+drag -d circle -x -o "br quarter of screen" -t 13:50.586
+drag -d circle -x -o "tr quarter of swarm" -t 13:51.536
+drag -d circle -x -o "tr quarter of screen" -t 13:52.230
+drag -d circle -x -o "tl quarter of swarm" -t 13:52.992
+drag -d circle -x -o "tl quarter of screen" -t 13:53.621

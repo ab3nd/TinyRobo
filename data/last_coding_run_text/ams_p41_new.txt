@@ -1,0 +1,69 @@
+participant 41
+
+task 1
+drag -o "robot group to area A" -t 1:42.919
+
+task 2
+drag -o "robot group around wall to area A" -t 2:07.055
+
+task 3
+tap -c2 -o "robots" -t 2:39.584 
+
+task 4
+pinch -r -h 1 -f2 -o "robot group" -t 3:28.321
+drag -o "right group to B" -n -t 3:38.321
+memo -d "mentioned doing the same thing with the other group, no gesture"
+
+task 5
+memo -d "missed crossover"
+drag -o "orange robots to A" -t 4:05.841
+drag -o "red robots to B" -t 4:11.010
+memo -d "pointed out crossover"
+drag -o "red robots to A" -t 4:22.881
+drag -o "orange robots to B" -t 4:26.097
+
+task 6
+drag -o "orange robots to A" -t 4:39.843
+drag -o "red robots to B" -t 4:43.019
+
+task 7
+pinch -r -h 1 -f2 -o "seperate robot groups" -t 5:03.466
+drag -o "orange robots to A" -t 5:10.978
+drag -o "red robots to B" -t 5:14.628
+
+task 8
+pinch -r -h 1 -f2 -o "seperate robot groups" -t 5:36.138
+
+task 9
+drag -o "right robot group onto left group" -t 7:23.772
+
+task 10
+tap -c2 -o "robot group" -t 8:23.926
+drag -d "line vertically in middle of screen" -o whitespace -t 8:29.822
+
+task 11
+tap -c2 -o "robot group" -t 8:54.855
+drag -d "square in middle of screen" -o whitespace -t 9:06.623
+
+task 12
+tap -c2 -o "robot group" -t 9:33.661
+drag -o "box to A, holding at start of drag" -t 9:53.43
+
+task 13
+tap -c2 -o "robot group" -t 11:01.255
+tap -o "whitespace far from box" -t 11:13.943
+drag -x -o "line on whitespace at bottom of screen" -t 11:24.27
+drag -o "box to A, holding at start of drag" -t 11:35.582
+
+task 14
+tap -c2 -o "robot group" -t 12:27.904
+drag -o "around perimiter of screen, holding at corners, until path overlaps" -t 13:18.128
+
+task 15
+tap -c2 -o "robot group" -t 13:39.344
+drag -o "around perimiter of area A, holding at corners, until path overlaps" -t 13:58.368
+
+task 16
+tap -c2 -o "robots" -t 14:31.184
+other -d "4 finger scatter (for four corners of screen)" -o "robots" -t 14:48.670
+

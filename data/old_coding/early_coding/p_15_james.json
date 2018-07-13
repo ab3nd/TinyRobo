@@ -1,0 +1,1735 @@
+{
+   "participant": 15, 
+   "tasks": {
+      "1": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "left", 
+               "part", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 86.6
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "up", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 86.96, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "user", 
+               "redoes", 
+               "below..."
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 91.88
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 92.01, 
+            "write": null
+         }
+      ], 
+      "10": [
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "top", 
+               "center", 
+               "of", 
+               "screen,", 
+               "then", 
+               "vertically", 
+               "down", 
+               "to", 
+               "the", 
+               "bottom", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 402.78, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "down", 
+               "to", 
+               "the", 
+               "bottom", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 403.67, 
+            "write": null
+         }
+      ], 
+      "11": [
+         {
+            "command": [
+               "\u201crobots,", 
+               "form", 
+               "a", 
+               "square\u201d"
+            ], 
+            "event_type": "voice_command", 
+            "time": 418.78
+         }, 
+         {
+            "draw": [
+               "a", 
+               "square", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "whitespace"
+            ], 
+            "time": 419.3, 
+            "write": null
+         }
+      ], 
+      "12": [
+         {
+            "draw": [
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "crate"
+            ], 
+            "time": 434.65, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
+               "A"
+            ], 
+            "time": 435.47, 
+            "write": null
+         }
+      ], 
+      "13": [
+         {
+            "draw": [
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "crate"
+            ], 
+            "time": 450.38, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
+               "A"
+            ], 
+            "time": 451.12, 
+            "write": null
+         }
+      ], 
+      "14": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "defective", 
+               "robot"
+            ], 
+            "time": 465.69
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "defective", 
+               "robot"
+            ], 
+            "time": 476.62
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "defective", 
+               "robot"
+            ], 
+            "time": 477.83
+         }
+      ], 
+      "15": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "defective", 
+               "robot"
+            ], 
+            "time": 495.02
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "bottom", 
+               "left", 
+               "corner"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "defective", 
+               "robot"
+            ], 
+            "time": 498.53, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "bottom", 
+               "left", 
+               "corner", 
+               "A"
+            ], 
+            "time": 499.73, 
+            "write": null
+         }
+      ], 
+      "16": [
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "top", 
+               "left", 
+               "edge"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 558.11, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "top", 
+               "center(ish)", 
+               "edge"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 558.36, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "top", 
+               "right", 
+               "edge"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 558.87, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "right", 
+               "center(ish)", 
+               "edge"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 559.21, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "bottom", 
+               "right", 
+               "edge"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 559.44, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "bottom", 
+               "center", 
+               "edge"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 559.84, 
+            "write": null
+         }
+      ], 
+      "17": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "top", 
+               "right", 
+               "section", 
+               "of", 
+               "swarm"
+            ], 
+            "time": 571.51
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "top", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "previously", 
+               "selected", 
+               "robots"
+            ], 
+            "time": 572.98, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "top", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "time": 574.01, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "bottom", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "previously", 
+               "selected", 
+               "robots"
+            ], 
+            "time": 575.13, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "bottom", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "previously", 
+               "selected", 
+               "robots"
+            ], 
+            "time": 575.83, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "bottom", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "time": 576.32, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "to", 
+               "the", 
+               "right", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "previously", 
+               "selected", 
+               "robots"
+            ], 
+            "time": 577.1, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "right", 
+               "of", 
+               "area", 
+               "A"
+            ], 
+            "time": 577.33, 
+            "write": null
+         }
+      ], 
+      "18": [
+         {
+            "draw": [
+               "top", 
+               "right", 
+               "corner"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.11, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "top", 
+               "of", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.29, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "top", 
+               "of", 
+               "screen"
+            ], 
+            "time": 593.31, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "left", 
+               "corner"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.34, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "left", 
+               "corner"
+            ], 
+            "time": 593.39, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "left", 
+               "edge", 
+               "of", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.45, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "left", 
+               "edge", 
+               "of", 
+               "screen"
+            ], 
+            "time": 593.48, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "bottom", 
+               "left", 
+               "corner"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.57, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "bottom", 
+               "left", 
+               "corner"
+            ], 
+            "time": 593.59, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "bottom", 
+               "of", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.66, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "bottom", 
+               "of", 
+               "screen"
+            ], 
+            "time": 593.68, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "bottom", 
+               "right", 
+               "corner"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.76, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "bottom", 
+               "right", 
+               "corner"
+            ], 
+            "time": 593.79, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "right", 
+               "of", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 593.81, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "right", 
+               "of", 
+               "screen"
+            ], 
+            "time": 593.83, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "right", 
+               "of", 
+               "screen"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 599.89, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "right", 
+               "of", 
+               "screen"
+            ], 
+            "time": 593.93, 
+            "write": null
+         }
+      ], 
+      "2": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 141.12
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 142.71, 
+            "write": null
+         }
+      ], 
+      "3": [
+         {
+            "draw": [
+               "up", 
+               "and", 
+               "then", 
+               "to", 
+               "the", 
+               "left,", 
+               "blocking", 
+               "the", 
+               "swarms", 
+               "current", 
+               "path"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "wall"
+            ], 
+            "time": 158.74, 
+            "write": null
+         }
+      ], 
+      "4": [
+         {
+            "draw": [
+               "draw", 
+               "a", 
+               "vertically", 
+               "line", 
+               "through", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 191.46, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "arc", 
+               "around", 
+               "the", 
+               "left", 
+               "side", 
+               "of", 
+               "the", 
+               "wall", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "left", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 194.99, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
+               "A"
+            ], 
+            "time": 195.1, 
+            "write": null
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "right", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 197.03
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "up", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "right", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 197.52, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
+               "B"
+            ], 
+            "time": 199.92, 
+            "write": null
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "right", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 211.23
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "up", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "right", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 212.42, 
+            "write": null
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "right", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 215.81
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "up", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "right", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 216.65, 
+            "write": null
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": true, 
+            "fingers": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "left", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 223.87
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "up", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "left", 
+               "half", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "time": 224.14, 
+            "write": null
+         }
+      ], 
+      "5": [
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "swarm"
+            ], 
+            "time": 239.26, 
+            "write": null
+         }, 
+         {
+            "description": [
+               "redo"
+            ], 
+            "event_type": "memo"
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "swarm"
+            ], 
+            "time": 241.33
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "swarm"
+            ], 
+            "time": 242.12, 
+            "write": null
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "red", 
+               "(right)", 
+               "swarm"
+            ], 
+            "time": 244.66
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "red", 
+               "(right)", 
+               "swarm"
+            ], 
+            "time": 246.52, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": true, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": true, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "swarm"
+            ], 
+            "time": 249.52, 
+            "write": null
+         }
+      ], 
+      "6": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "swarm"
+            ], 
+            "time": 266.19
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "A"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "orange", 
+               "(left)", 
+               "swarm"
+            ], 
+            "time": 267.56, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
+               "A"
+            ], 
+            "time": 268.49, 
+            "write": null
+         }, 
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "red", 
+               "(right)", 
+               "swarm"
+            ], 
+            "time": 270.11
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "area", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "red", 
+               "(right)", 
+               "swarm"
+            ], 
+            "time": 271.45, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "inscribe", 
+               "an", 
+               "arrow", 
+               "at", 
+               "the", 
+               "end", 
+               "location", 
+               "of", 
+               "previous", 
+               "move"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "area", 
+               "B"
+            ], 
+            "time": 272.05, 
+            "write": null
+         }
+      ], 
+      "7": [
+         {
+            "event_type": "lasso", 
+            "example": false, 
+            "fingers": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 296.1
+         }, 
+         {
+            "draw": [
+               "vertically", 
+               "to", 
+               "in", 
+               "between", 
+               "areas", 
+               "A", 
+               "and", 
+               "B"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 298.16, 
+            "write": null
+         }
+      ], 
+      "8": [
+         {
+            "draw": [
+               "vertical", 
+               "line", 
+               "through", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "swarm"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 1, 
+            "hands": 1, 
+            "no_contact": false, 
+            "objects": [
+               "the", 
+               "swarm"
+            ], 
+            "time": 314.82, 
+            "write": null
+         }
+      ], 
+      "9": [
+         {
+            "draw": [
+               "drag", 
+               "the", 
+               "swarms", 
+               "together", 
+               "to", 
+               "meet", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen", 
+               "(left", 
+               "hand", 
+               "=>", 
+               "left", 
+               "swarm;", 
+               "right", 
+               "hand", 
+               "=>", 
+               "right", 
+               "swarm)"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 2, 
+            "hands": 2, 
+            "no_contact": false, 
+            "objects": [
+               "left", 
+               "and", 
+               "right", 
+               "swarms"
+            ], 
+            "time": 330.04, 
+            "write": null
+         }, 
+         {
+            "draw": [
+               "drag", 
+               "the", 
+               "swarms", 
+               "together", 
+               "to", 
+               "meet", 
+               "in", 
+               "the", 
+               "center", 
+               "of", 
+               "the", 
+               "screen", 
+               "(left", 
+               "hand", 
+               "=>", 
+               "left", 
+               "swarm;", 
+               "right", 
+               "hand", 
+               "=>", 
+               "right", 
+               "swarm)"
+            ], 
+            "event_type": "drag", 
+            "example": false, 
+            "fingers": 2, 
+            "hands": 2, 
+            "no_contact": false, 
+            "objects": [
+               "left", 
+               "and", 
+               "right", 
+               "swarms"
+            ], 
+            "time": 384.5, 
+            "write": null
+         }
+      ]
+   }
+}

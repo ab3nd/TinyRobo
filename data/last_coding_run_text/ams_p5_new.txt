@@ -1,0 +1,64 @@
+participant 5
+
+task 1
+drag -o "robots to A" -t 1:42.214
+drag -o "robots to A" -t 1:49.310
+
+task 2
+drag -o "robots to A" -t 2:11.702
+
+task 3
+drag -o "robots back behind wall" -t 2:38.350
+
+task 4
+drag -o "robots to A" -t 3:03.51
+drag -o "robots to B" -t 3:11.182
+
+task 5
+drag -o "orange to B" -t 3:56.143
+drag -o "red to A" -t 4:01.383
+
+task 6
+drag -o "orange to A" -t 4:19.120
+drag -o "red to B" -t 4:23.920
+
+task 7
+drag -o "robots to A" -t 5:27.282
+drag -o "robots to B" -t 5:32.154
+
+task 8
+drag -o "robots to the left" -t 6:35.011
+drag -o "robots to the right" -t 6:39.355
+
+task 9
+drag -o "l group to middle" -t 6:56.716
+drag -o "r group to middle" -t 6:59.355
+
+task 10
+drag -o "up from robots then draw line" -t 7:24.124
+
+task 11
+drag -d square -o "middle of screen" -t 7:51.699
+
+task 12
+drag -o "robots behind crate" -t 9:14.854
+drag -o "crate to A" -t 9:15.854
+
+task 13
+drag -o "lower r of screen to behind crate" -t 9:43.599
+drag -o "behind crate to A" -t 9:48.184
+
+task 14
+lasso -o "defective robot" -t 10:08.928
+
+task 15
+drag -o "defective robot to lower r corner" -t 10:27.385
+
+task 16
+drag -o "robots around screen border" -t 11:04.57
+
+task 17
+drag -o "robots to and around A" -t 11:21.33
+
+task 18
+drag -o "from robots to squiggle over screen" -t 11:42.627

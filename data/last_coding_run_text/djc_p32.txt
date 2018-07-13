@@ -1,0 +1,153 @@
+participant 32
+task 1
+drag -f 1 -t 97.91 -o "Red Robot, Box A" -d "Participant draws a line from Red Robot to Box A"
+drag -x -f 1 -t 105.63 -o "Red Robot, Box A" -d "Participant draws a line from Red Robot to Box A again"
+drag -x -f 1 -t 129.12 -o "Red Robot, Box A" -d "Participant draws a line from Red Robot to Box A again"
+tap -f 1 -t 135.89 -o "Box A" -c 1
+memo -d "Based on the participants dialog I might consider the last tap to be an example"
+
+task 2
+drag -f 1 -t 169.87 -o "Red Robot, Box A" -d "Participant draws an arc from Red Robot around the wall to Box A"
+memo -d "Participant mentions (paraphrasing) 'using eye tracking to draw a path for the robot'"
+memo -d "Participant makes some verbal commands 'tell it to go around... left straight left right left right' after though i'm unsure if those are intentional commands or not. The participant mentions voice command a few times up to this point."
+
+task 3
+tap -f 1 -t 227.03 -o "Red Robot" -c 1
+drag -x -f 1 -t 254.73 -o "Ground" -d "Participant is drawing mostly outside the screen on the black boarder describing a ui interface that could tell the robot to stop."
+tap -f 1 -t 258.34 -o "Ground" -c 1
+memo -d "Participant taps on the black border again, mentioning a ui interface to control the robot or isue certain commands."
+tap -x -f 1 -t 274.62 -o "Red Robot" -c 1
+tap -f 1 -t 276.16 -o "Ground" -c 1
+
+task 4
+tap -f 1 -t 312.20 -o "Orange Robot" -c 1
+tap -x -f 1 -t 315.30 -o "Orange Robot" -c 1
+drag -x -f 1 -t 321.29 -o "Ground" -d "Draging somewhat a of a zig-zag on the border gesturing toward some knd of UI"
+tap -x -f 1 -t 323.01 -o "Ground" -c 1
+memo -d "Last gesture looked like it also could have been a short drag"
+drag -x -f 1 -t 336.18 -o "Ground" -d "Draws a semi-circular shape on the border indicating a part of the UI interface."
+memo -d "This last gesture has a false time. Need to verfiy actual time."
+drag -f 1 -t 349.35 -o "Orange Robot, Box A" -d "Draws arc from Orange Robot to Box A, moving around the wall on the left side."
+tap -x -f 1 -t 361.42 -o "Orange Robot" -c 1
+drag -x -f 1 -t 369.35 -o "Orange Robot, Box B" -d "Draws an arc from Orange Robot to Box B, going around the wall on the right."
+drag -x -f 1 -t 371.88 -o "Orange Robot, Box B" -d "Draws an arc from Orange Robot to Box B, going around the wall on the right."
+drag -x -f 1 -t 373.55 -o "Orange Robot, Box B" -d "Draws an arc from Orange Robot to Box B, going around the wall on the right."
+
+task 5
+tap -x -f 1 -t 393.38 -o "Orange Robot" -c 1 -h
+memo -d "Participant seemed to be idly holding on the robot while discussing what they would like to do. The hold tap didn't seem to have a connection with the rest of the gestures."
+tap -x -f 1 -t 434.94 -o "Box B" -c 1
+tap -f 1 -t 436.98 -o "Box A" -c 1
+memo -d "Participant says tap Area A but proceeds to tap Box B. Then Taps Box A so I think the second tap was meant to be the actual tap for the gesture."
+memo -d "Audio may have been slightly ahead of the recording. It seems like user spoke about the next task before the experimenter switched to the next slide. Makes sense with the user saying one thing and doing another, if I keep seeing evidence of this i'll keep it in mind as i'm coding."
+
+task 6
+tap -f 1 -t 478.89 -o "Red Robot (right)" -c 1
+tap -f 1 -t 479.21 -o "Ground" -c 1
+memo -d "Participant gets close to taping Red Robot (Right)  a couple times but I don't think they actually make contact. Just gesturing towards it while talking"
+tap -f 1 -t 483.26 -o "Red Robot (Right)" -c 2
+tap -f 1 -t 484.95 -o "Ground" -c 1
+tap -x -f 1 -t 486.16 -o "Ground" -c 1
+tap -f 1 -t 505.45 -o "Red Robot" -c 2
+tap -f 1 -t 507.82 -o "Ground" -c 1 -h
+
+task 7
+tap -f 1 -t 550.82 -o "Wooden Crate" -c 1
+tap -f 1 -t 553.62 -o "Red Robot" -c 2
+tap -f 1 -t 593.51 -o "Box A" -c 1
+memo -d "Gestures either were or seemed disjointed with audio/video not synced. The participant also went through some other ways of indicating to the robot through menus that would show given certain states of the interface."
+
+task 8
+tap -f 1 -t 672.07 -o "Red Robot" -c 1
+tap -f 1 -t 676.28 -o "Red Robot" -c 2
+tap -f 1 -t 684.96 -o "Ground" -c 2
+tap -f 1 -t 686.45 -o "Ground" -c 1
+tap -f 1 -t 689.41 -o "Red Robot" -c 2
+tap -x -f 1 -t 702.35 -o "Red Robot" -c 2
+other -x -t 705.45 -o "Ground" -d "Participant makes kind of a pinching gesture over the left hand border. Not sure what he is indicating here but I believe the contact was not intentional or not intending to be a gesture toward the UI.
+memo -d "Participant's last two taps on black border for explained UI interface."
+drag -f 1 -t 716.29 -o "Ground" -d "Drags a small line down a possibly a UI element."
+drag -x -f 1 -t 732.48 -o "Ground" -d "Drags a small line down a possibly a UI."
+memo -d "I'm having trouble following his narative, I would like to code these side gestures as UI though i'm not sure what they actually mean"
+
+task 9
+tap -f 1 -t 755.59 -o "Red Robot" -c 2
+memo -d "Talks about using a delete function off on the border of the screen after selecting the robot."
+tap -x -f 1 -t 770.89 -o "Red Robot" -c 2
+tap -f 1 -t 772.49 -o "Ground" -c 2
+memo -d "I can't tell if the participant is clicking on the black border for a ui element or just placing the robot over there."
+tap -x -f 1 -t 810.94 -o "Red Robot" -c 1
+ui -t 812.15 -k button -d "Participant presses a menu button on the top left corner for deleting robots.
+tap -x -f 1 -t 813.47 -o "Red Robot" -c 2
+drag -f 1 -t 816.20 -o "Red Robot, Ground" -d "Participant drags the robot off into the black border."
+tap -f 1 -t 817.53 -o "Ground"
+memo -d "Participant taps off on the black border but doesn't indicate if this is a special ui element or just confirming their drag action or something else."
+
+task 10
+memo -d "Participant appears to double click over Red Robot but mouse cursor does not move and it appeared to be just shy of touching."
+ui -t 880.69 -k other -d "Participant appears to be interacting with a UI on the black border. They speek of drawing a path on a mini-map."
+memo -d "Not sure if the last action should be coded as a drag or ui. They're dragging but they are intending to drag on a ui element not immediately present."
+drag -f 1 -t 913.59 -o "Ground" -d "Participant drags a line along the border of the white Ground"
+tap -x -f 1 -t 915.02 -o "Ground" -c 1
+memo -d "I'm really not sure if both of these actions should be examples or not, they're only partial actions sort of considering what to do."
+tap -x -f 1 -t 960.00 -o "Red Robot" -c 2
+tap -f 1 -t 965.73 -o "Ground" -c 2
+tap -f 1 -t 973.78 -o "Ground" -c 2
+tap -f 1 -t 974.70 -o "Ground" -c 2
+tap -f 1 -t 975.14 -o "Ground" -c 1
+tap -x -f 1 -t 1015.41 -o "Ground" -c 1
+tap -x -f 1 -t 1015.99 -o "Ground" -c 1
+tap -x -f 1 -t 1016.43 -o "Ground" -c 1
+tap -x -f 1 -t 1016.86 -o "Ground" -c 1
+tap -x -f 1 -t 1017.74 -o "Ground" -c 2
+tap -x -f 1 -t 1018.44 -o "Ground" -c 2
+tap -x -f 1 -t 1018.94 -o "Ground" -c 2
+tap -x -f 1 -t 1019.49 -o "Ground" -c 2
+tap -f 1 -t 1022.70 -o "Ground" -c 1
+tap -x -f 1 -t 1023.24 -o "Ground" -c 1
+tap -x -f 1 -t 1023.96 -o "Ground" -c 2
+memo -d "I believe one of the last three taps or all of them were supposed to indicate 'go'. I left the first of the three not marked as an example."
+
+task 11
+tap -f 1 -t 1043.72 -o "Red Robot" -c 1
+tap -f 1 -t 1050.59 -o "Box A" -c 2
+tap -x -f 1 -t 1052.04 -o "Red Robot" -c 2
+tap -x -f 1 -t 1053.51 -o "Box A" -c 1
+tap -x -f 1 -t 1060.98 -o "Red Robot" -c 2
+tap -f 1 -t 1066.42 -o "Box A" -c 1 -h 
+memo -d "I can't tell what the last gesture was about, it seems like the audio is offset by about 5 seconds but there didn't seem to be talk about holding on Box A's border so I think this was just an idle action."
+drag -x -f 1 -t 1078.19 -o "Red Robot" -d "short drag off to the right, trails off rather than ending distinctly. Seems like an idle gesture."
+tap -x -f 1 -t 1084.65 -o "Box A" -c 1 
+tap -x -f 1 -t 1085.40 -o "Red Robot" -c 2
+tap -x -f 1 -t 1088.18 -o "Box A" -c 2
+ui -t 1110.72 -k menu -d "Seems to indicate opening a menu"
+ui -t 1111.12 -k button -d "Seems to indicate a patrol option from the menu"
+tap -x -f 1 -t 1119.18 -o "Red Robot" -c 1
+tap -f 1 -t 1114.89 -o "Box A" -c 1
+tap -x -f 1 -t 1116.49 -o "Box A" -c 1
+tap -f 1 -t 1117.70 -o "Box A" -c 1
+tap -f 1 -t 1118.15 -o "Box A" -c 1
+tap -f 1 -t 1118.67 -o "Box A" -c 1
+tap -f 1 -t 1120.58 -o "Box A" -c 1
+tap -x -f 1 -t 1122.30 -o "Box A" -c 2
+tap -x -f 1 -t 1131.68 -o "Box A" -c 1
+tap -x -f 1 -t 1133.27 -o "Box A" -c 1
+tap -x -f 1 -t 1135.51 -o "Red Robot" -c 1
+tap -x -f 1 -t 1136.63 -o "Box A" -c 2
+tap -x -f 1 -t 1138.63 -o "Box A" -c 3 -h
+memo -d "Hold was measured from the first click to when the last click was released."
+drag -x -f 1 -t 1149.14 -o "Box A" -d "Roughly tracing the right and some of the upper sides of Box A"
+memo -d "Not sure what the participant was trying to acomplish the drag seemed to trail off."
+tap -x -f 1 -t 1153.52 -o "Box A" -c 1
+tap -x -f 1 -t 1153.89 -o "Box A" -c 1
+tap -x -f 1 -t 1154.41 -o "Box A" -c 1
+memo -d "Slowly descending into madness"
+tap -x -f 1 -t 1154.88 -o "Box A" -c 1
+tap -x -f 1 -t 1155.16 -o "Box A" -c 1
+tap -x -f 1 -t 1155.72 -o "Box A" -c 1
+tap -x -f 1 -t 1156.13 -o "Box A" -c 1
+tap -x -f 1 -t 1156.67 -o "Box A" -c 1
+tap -x -f 1 -t 1156.99 -o "Box A" -c 1
+tap -x -f 1 -t 1157.52 -o "Box A" -c 1
+tap -x -f 1 -t 1157.89 -o "Box A" -c 1
+memo -d "So there was definitely delay of around 3-5 seconds between video and audio (not synced) in this recording. I tried to account for it though i'll mention it to you in an email incase you are unaware."

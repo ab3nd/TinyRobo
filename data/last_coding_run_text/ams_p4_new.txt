@@ -1,0 +1,93 @@
+participant 4
+
+task 1
+lasso -o robots -n -t 1:54.809
+lasso -o "half of robots" -x -n -t 1:56.805
+lasso -o robots -n -x -t 1:57.317
+tap -h -o "area A" -t 2:02
+
+task 2
+lasso -o robots -n -t 2:40.934
+lasso -o robots -n -x -t 2:43.222
+drag -o "robots halfway to A" -n -t 2:50.719
+drag -o "robots halfway to A" -n -t 2:51.357
+drag -o "robots to A" -n -t 2:53.357
+lasso -o robots -t 3:17.350
+drag -o "robots halfway to A" -t 3:24.657
+drag -o "robots to A" -t 3:25.329
+
+task 3
+drag -o robots -t 4:02.019
+
+task 4
+lasso -o "r half of robots" -t 4:44.188
+drag -o "r robots to B" -t 4:48.3216
+lasso -o "l half of robots" -t 4:51.076
+drag -o "l robots to A" -t 4:55.66
+
+task 5
+lasso -o "orange robots" -t 5:16.525
+drag -o "orange to A" -t 5:18.464
+lasso -o "red robots" -t 5:21.564
+drag -o "red to B" -t 5:23.028
+
+task 6
+lasso -o "orange robots" -t 5:46.774
+drag -o "orange to A" -t 5:48.166
+lasso -o "red robots" -t 5:50.094
+drag -o "red to B" -t 5:51.878
+
+task 7
+lasso -o robots -t 6:47.688
+lasso -f 2 -o robots -t 6:51.965
+
+task 8
+lasso -o "l half of robots" -t 7:40.323
+pinch -o robots -r -f 2 -h 1 -t 7:46.571
+
+task 9
+lasso -o robots -t 8:49.603
+tap -h -o "center of screen" -t 8:57.139
+
+task 10
+drag -d "from robots to vertical line" -o "robots" -t 9:34.923
+drag -d "from robots to vertical line" -o "robots" -x -t 9:37.348
+drag -d "from robots to vertical line" -o "robots" -x -t 9:42.475
+drag -d "from robots to vertical line" -o "robots" -f2 -x -t 9:55.755
+drag -d "from robots" -o robots -t 10:21.293
+memo -d "there were also some no-contact lines here"
+
+task 11
+drag -d circle -o screen -n -x -t 11:11.58
+drag -d square -o screen -t 11:16.916
+
+task 12
+drag -d "line behind crate" -o "behind crate" -t 11:55.410
+tap -h -o "area A" -t 11:59.282
+drag -d "line behind crate" -o "behind crate" -x -t 12:05.635
+drag -o "crate to A" -t 12:10.875
+
+task 13
+drag -d "line behind crate" -o "behind crate" -t 12:37.060
+drag -o "crate to A" -t 12:41.572
+
+task 14
+tap -c 2 -o "defective robot" -t 12:56.202
+
+task 15
+tap -c 2 -o "defective robot" -t 13:35.107
+tap -c 2 -o "defective robot" -x -t 14:01.716
+ui -k menu -d "options/recycle bin (tap) -t 14:06.540
+
+task 16
+lasso -o robots -t 15:14.660
+drag -o "robots around border" -t 15:18.028
+
+task 17
+drag -o "border of A" -t 16:11.606
+drag -o "small box below A" -x -t 16:14.046
+drag -o "border of A" -t 16:21.126
+
+task 18
+other -d "5f scatter over robots" -o robots -t 16:39.678
+other -d "5f scatter over robots" -o robots -x -t 16:41.789
