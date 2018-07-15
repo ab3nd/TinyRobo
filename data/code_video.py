@@ -33,8 +33,10 @@ class VideoCodeCmd(cmd.Cmd):
 		self.base_parser = argparse.ArgumentParser(add_help=False)
 		self.base_parser.add_argument('-x','--example', help="motion was done as an example or repetition of previous command", default=False, action="store_true")
 		self.base_parser.add_argument('-n','--no-contact', help="motion was done without touching the screen", default=False, action="store_true")
-
-
+		self.base_parser.add_argument('--selection', help="this was a selection gesture", default=False, action="store_true")
+		self.base_parser.add_argument('--position', help="this was an object positioning gesture", default=False, action="store_true")
+		self.base_parser.add_argument('--interface', help="this gesture was an interaction with the interface, like a ui widget or handwriting", default=False, action="store_true")
+		
 		#Argument parser for drag commands
 		self.drag_parser = argparse.ArgumentParser(add_help=False, prog="drag", parents=[self.base_parser])
 		self.drag_parser.add_argument('-f', '--fingers', help="Number of fingers user used for command", type=int, default=1)

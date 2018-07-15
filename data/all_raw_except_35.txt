@@ -1216,7 +1216,7 @@ task 3
 voice -c "stop" -t 2:30.234 --interface
 other -d "hand chop over center of screen" -o screen -n -t 2:31.817
 other -d "hand chop over end of wall" -n -o whitespace -t 3:03.964
-memo -d "user expressed preference for voice commands" --interface
+memo -d "user expressed preference for voice commands"
 other -d "hand chop and slide from end of wall across front of swarm" -o whitespace -t 4:01.203
 other -d "hand chop and slide from other end of wall to edge" -o whitespace -t 4:02.954
 
@@ -1612,7 +1612,7 @@ task 17
 drag -o "robots to A and around border of A" -t 9:53.523 --position
 
 task 18
-memo -d "Said they would tell them to disperse into open area, not sure if that should really be counted as a voice command" --interface
+memo -d "Said they would tell them to disperse into open area, not sure if that should really be counted as a voice command"
 voice -c "disperse into the open area" -t 10:16.714 --interface
 drag -d circle -o "open area/around robots" -t 10:27.588 --position
 
@@ -2203,7 +2203,7 @@ task 9
 other -d "bring cupped hands together in middle of screen" -o robots -t 5:44.393  --position
 
 task 10
-memo -d "asked if it was a voice command" --interface
+memo -d "asked if it was a voice command" 
 drag -f2 -o "fingers above and below robots" -t 6:13.622 --selection
 ui -k button -d "button for formations" -t 6:15.110 --interface
 tap -o whitespace -t 6:22.755
@@ -2525,7 +2525,7 @@ tap -x -o "area A" -t 6:16.077 --position
 drag -x -o "robot to crate" -t 6:19.574 --position
 drag -x -o "robot to crate" -t 6:22.405 --position
 tap -c2 -x -o "crate" -t 6:30.821 --selection
-memo -d "mentioned having voice control to tell the robot to pick up the box" --interface
+memo -d "mentioned having voice control to tell the robot to pick up the box" 
 
 task 8
 drag -d "x over robot (two strokes)" -o "defective robot" -t 7:26.740 --interface
@@ -2692,7 +2692,7 @@ drag -x -o "line in whitespace across screen" -t 8:16.775 --position
 drag -x -o "line in whitespace from top to bottom of screen" -t 8:17.93 --position
 
 task 11
-memo -d "mentioned using the same formation option, but didn't interact with device/describe ui. Prompted for UI description" --interface
+memo -d "mentioned using the same formation option, but didn't interact with device/describe ui. Prompted for UI description"
 drag -o "square over whitespace/robots" -t 9:06.276 --position
 memo -d "never indicated how formation option would be activated"
 
@@ -2792,7 +2792,7 @@ other -d "5f pinch over crate as if picking it up, set it back down on A" -o cra
 task 14
 tap -o "defective robot " -t 7:13.377 --selection
 lasso -o "defective robot" -x -t 7:18.284 --selection
-memo -d "lasso was alt move" --selection
+memo -d "lasso was alt move"
 
 task 15
 lasso -o "defective robot" -x -t 7:32.284 --selection
@@ -3159,9 +3159,9 @@ box -s tl -f 2 -o "r half of robots (r hand)" -t 19:44.669 --selection
 drag -o "l robots to l side" -t 19:46.206 --position
 drag -o "r robots to r side" -t 19:46.206 --position
 memo -d "assuming that division is indicating that the robots are two units now"
-memo -d "user said they'd want a gui of some kind" --interface
+memo -d "user said they'd want a gui of some kind"
 box -s bl -f2 -o "r half of robots" -t 20:32.239 --selection
-memo -d "described having a UI bar of some sort, no gesture, to set colors" --interface
+memo -d "described having a UI bar of some sort, no gesture, to set colors"
 box -s tr -f2 -o "r half of robots" -t 22:02.814 --selection
 tap -o "robot on left side of group" -t 22:06.192 
 memo -d "intent of last two gestures is to have the robots rejoin the other group"
@@ -4031,7 +4031,7 @@ memo -d "Based on the participants dialog I might consider the last tap to be an
 task 2
 drag -f 1 -t 169.87 -o "Red Robot, Box A" -d "Participant draws an arc from Red Robot around the wall to Box A" --position
 memo -d "Participant mentions (paraphrasing) 'using eye tracking to draw a path for the robot'"
-memo -d "Participant makes some verbal commands 'tell it to go around... left straight left right left right' after though i'm unsure if those are intentional commands or not. The participant mentions voice command a few times up to this point." --interface
+memo -d "Participant makes some verbal commands 'tell it to go around... left straight left right left right' after though i'm unsure if those are intentional commands or not. The participant mentions voice command a few times up to this point."
 
 task 3
 tap -f 1 -t 227.03 -o "Red Robot" -c 1 
@@ -4087,23 +4087,22 @@ tap -f 1 -t 686.45 -o "Ground" -c 1 --position
 tap -f 1 -t 689.41 -o "Red Robot" -c 2 --selection
 tap -x -f 1 -t 702.35 -o "Red Robot" -c 2 --position
 other -x -t 705.45 -o "Ground" -d "Participant makes kind of a pinching gesture over the left hand border. Not sure what he is indicating here but I believe the contact was not intentional or not intending to be a gesture toward the UI."
-memo -d "Participant's last two taps on black border for explained UI interface." --interface
+memo -d "Participant's last two taps on black border for explained UI interface."
 drag -f 1 -t 716.29 -o "Ground" -d "Drags a small line down a possibly a UI element." --interface
 drag -x -f 1 -t 732.48 -o "Ground" -d "Drags a small line down a possibly a UI."
-memo -d "I'm having trouble following his narative, I would like to code these side gestures as UI though i'm not sure what they actually mean" --interface
+memo -d "I'm having trouble following his narative, I would like to code these side gestures as UI though i'm not sure what they actually mean"
 
 task 9
 tap -f 1 -t 755.59 -o "Red Robot" -c 2 --selection
 memo -d "Talks about using a delete function off on the border of the screen after selecting the robot."
 tap -x -f 1 -t 770.89 -o "Red Robot" -c 2 --selection
 tap -f 1 -t 772.49 -o "Ground" -c 2 --position
-memo -d "I can't tell if the participant is clicking on the black border for a ui element or just placing the robot over there." --interface
-tap -x -f 1 -t 810.94 -o "Red Robot" -c 1 --selection
+memo -d "I can't tell if the participant is clicking on the black border for a ui element or just placing the robot over there."
 ui -t 812.15 -k button -d "Participant presses a menu button on the top left corner for deleting robots. --interface
 tap -x -f 1 -t 813.47 -o "Red Robot" -c 2 --selection
 drag -f 1 -t 816.20 -o "Red Robot, Ground" -d "Participant drags the robot off into the black border." --position
 tap -f 1 -t 817.53 -o "Ground" --position
-memo -d "Participant taps off on the black border but doesn't indicate if this is a special ui element or just confirming their drag action or something else." --interface
+memo -d "Participant taps off on the black border but doesn't indicate if this is a special ui element or just confirming their drag action or something else."
 
 task 10
 memo -d "Participant appears to double click over Red Robot but mouse cursor does not move and it appeared to be just shy of touching."
@@ -4219,13 +4218,13 @@ drag -f 1 -t 316.56 -o "5 Red Robots, Box A" -d "Drags from middle of selected r
 tap -f 1 -t 337.53 -o "Orange Robot" -c 2 --selection
 memo -d "double tapping an orange robot, setting an orange selection state."
 lasso -x -f 1 -t 341.59 -o "6 Orange Robots" --selection
-memo -d "With orange selection state, lasso will select only orange robots." --selection
+memo -d "With orange selection state, lasso will select only orange robots."
 lasso -x -f 1 -t 364.29 -o "5 Red Robots" --selection
 drag -x -f 1 -t 364.94 -o "5 Red Robots, Box A" -d "Drags a line from middle of group to Box A." --position
 
 task 8
 lasso -f 1 -t 386.29 -o "Roughly 10 Red Robots" --selection
-memo -d "Lasso doesn't clearly wrap around all robots but I think the participant intended to select all." --selection
+memo -d "Lasso doesn't clearly wrap around all robots but I think the participant intended to select all."
 drag -f 1 -t 387.36 -o "10 Red Robots" -d "Participant runs a line through half of the selected robots."
 pinch -f 2 -t 388.10 -h 2 -r -o "10 Red Robots" --position
 pinch -x -f 2 -t 401.95 -h 2 -r -o "10 Red Robots" --position
@@ -4730,7 +4729,7 @@ drag -f 1 -t 207.65 -o "Orange Robots, Box A" -d "Participant drags a line from 
 
 task 7
 tap -f 1 -t 232.00 -o "Red Robots" --selection
-memo -d "I believe the participant is saying tap on the red, select all the red. Or something like that. I can't tell if they are talking about a ui option over the robots or if it's an automatic selection" --interface
+memo -d "I believe the participant is saying tap on the red, select all the red. Or something like that. I can't tell if they are talking about a ui option over the robots or if it's an automatic selection"
 drag -f 1 -t 235.19 -o "Red Robots, Box B" -d "Participant draws a line from the selected red robots upward and to the right, around the wall to Box B"  --position
 drag -f 1 -t 239.62 -o "Orange Robots, Box A" -d "Participant draws a line from the selected orange robots upward and to the left, around the wall to Box A" --position
 
@@ -4748,7 +4747,7 @@ drag -f 1 -t 341.86 -o "Red Robots, Ground" -d "Participant drags a line from th
 
 task 11
 drag -f 1 -t 366.59 -o "Ground, Red Robots" -d "Participant draws a line straight down" --position
-memo -d "It's hard to tell but seems that the participant lifted their finger at around 367.17. Or the screen stopped registering touch after they dragged the line down. The participant continues to gesture back up and then toward the right drawing almost two sides of a rectangle" --position
+memo -d "It's hard to tell but seems that the participant lifted their finger at around 367.17. Or the screen stopped registering touch after they dragged the line down. The participant continues to gesture back up and then toward the right drawing almost two sides of a rectangle" 
 drag -f 1 -t 368.46 -o "Ground, Red Robots" -d "Participant draws a semi-circle" --position
 tap -f 1 -t 370.27 -o "Ground, Red Robots" -c 1
 memo -d "Last tap seemed like it dragged by accident. Participant points briefly around 386.36 but it didn't register on the monitor so i'm not sure if it should be coded."

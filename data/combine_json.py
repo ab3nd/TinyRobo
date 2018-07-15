@@ -36,16 +36,16 @@ files = ["p_10_ams.json",
 		"p_7_ams.json",
 		"p_8_ams.json",
 		"p_9_ams.json",
-		"p_31_daltonc.json",
-		"p_32_daltonc.json",
-		"p_33_daltonc.json",
-		"p_34_daltonc.json",
-		"p_35_daltonc.json",
-		"p_36_daltonc.json",
-		"p_37_daltonc.json",
-		"p_38_daltonc.json",
-		"p_39_daltonc.json",
-		"p_40_daltonc.json",
+		"p_31_ams.json",
+		"p_32_ams.json",
+		"p_33_ams.json",
+		"p_34_ams.json",
+		"p_35_ams.json",
+		"p_36_ams.json",
+		"p_37_ams.json",
+		"p_38_ams.json",
+		"p_39_ams.json",
+		"p_40_ams.json",
 		"p_41_ams.json",
 		"p_42_ams.json",
 		"p_43_ams.json",
@@ -58,7 +58,7 @@ files = ["p_10_ams.json",
 		"p_50_ams.json"
 		]
 
-outfileName = "all_participants.json"
+outfileName = "all_participants_part_tagged.json"
 
 data = {}
 #Load each file
