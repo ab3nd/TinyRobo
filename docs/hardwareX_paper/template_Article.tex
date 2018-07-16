@@ -15,7 +15,7 @@
 \usepackage{microtype}
 
 %opening
-\title{TinyRobo: An Affordable Tabletop Swarm Platform}
+\title{TinyRobo: An Inexpensive Software and Hardware System for Swarm Robotics}
 \author{Abraham Shultz}
 
 \begin{document}
@@ -27,6 +27,7 @@ Because simulations are necessarily incomplete, it is desirable to test algorith
 However, the cost of robot hardware is high, and the larger a swarm, the more it will cost. 
 This paper presents an inexpensive, open source hardware platform for converting toys into swarm robots, and a software infrastructure for controlling the swarm nodes. 
 The resulting system was designed as a tabletop swarm, but has the ability to be expanded both in the area used by the swarm, and the capabilities of the individual swarm members. 
+Conversion of toys into swarm robots is not recommended, as their reliability is insufficient for a research platform.
 
 \end{abstract}
 
@@ -50,12 +51,12 @@ These sorts of departures from reality are tempting, because they save processor
 With real hardware, these effects are included at no cost, and instead, substantial effort is put into minimizing them.
 
 Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be a cause of substantial expense. 
-This paper presents a hardware platform and the associated software framework to make a tabletop research robot swarm for about \$30 per robot. 
-The hardware is designed to be adaptable to a wide variety of mobility platforms, and to accommodate the resulting changes with minimal alteration of the software controlling it. 
+This paper describes the design of a hardware platform and the associated software framework to make a tabletop research robot swarm for about \$30 per robot. 
+While the hardware platform ultimately was insufficiently reliable to be a good platform for swarm robot experimentation, the lessons learned in developing it may be of use to future developers of swarm platforms. 
+The software is designed to be adaptable to a wide variety of mobility platforms, and to accommodate new hardware with minimal alteration of the software controlling it. 
+As a result, while the specific hardware platform described in this paper is unsatisfactory, the control software design is not tied to the hardware, and remains useful. 
 
 \section{Related Work}
-
-\subsection{Overview of Previous Swarm Hardware}
 
 Swarm robots are generally small. 
 The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
@@ -71,12 +72,13 @@ The robots used in most swarm work are of a sufficiently small size that many of
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range can be divided into robots that can operate in swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
+This paper is concerned with tabletop swarm robot platforms.
+For discussion of larger swarms, see \cite{bonani2010marxbot, dorigo2013swarmanoid, guo2007bio, tammet2008rfid, olson2013cacm}. 
 The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
-However, most of these platforms are no longer easily commercially available, or never were. 
 
 
-\subsubsection{Tabletop Swarms}
+\subsection{Tabletop Swarms}
 
 At the low end, in terms of size, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
 Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
@@ -89,6 +91,14 @@ The processor used in Alice is relatively underpowered compared to modern proces
 Alice robots are no longer available for purchase. 
 The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
 There is no evidence that AmIR was ever widely available.
+The successsors to Amir, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \cite{arvin2014colias, arvin2015colias}. 
+Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
+Of particular note, the Colias-$\Phi$ lower processor is responsible for detecting light on the underside of the robot. 
+Because of this downward facing light sensor, Colias-$\Phi$ robots can operate on an LCD screen or translucent table illuminated from beneath by a projector, for experiments in pheromone robotics. 
+The light patterns displayed by the projector act as pheromones, which the robot can detect based on its position on the table. 
+Colias robots cost \pounds25, or \$35US, in parts, but are not commercially available. 
+The Colias-$\Phi$ model has an even more impressive price, at \pounds16, or \$22 USD.
+Part of this drop in price may be due to the omission of the IR inter-robot communication system which Colias robots have. 
 
 The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
@@ -120,6 +130,17 @@ They are designed to be programmed in parallel using an IR interface.
 For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
 The Kilobots move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
 
+MROBerTO is a swarm robot with a 16mm$^2$ footprint. It has modular expandability via a header for daughterboards, and includes a single-point laser rangefinder, gyro, accelerometer, compass, and a VGA resolution camera \cite{Kim2016mROBerTOAM}. 
+The mROBerTO processor is a 32-bit ARM processor with Bluetooth and ANT+ wireless. 
+All of this hardware is only \$60 per unit in quantities of 25 or more units. 
+In order to permit an overhead camera to localize the mROBerTO robots, a single RGB LED on top of the camera can be lit in a unique color to localize the robot, and a green LED on the front of the robot indicates its heading. 
+The use of color information is likely much faster to process than fiducual tags, but does have the disadvantage that it is only useful in 2D unless a stereo camera is used. 
+
+The GRITSBots platform is a differential-drive platform using stepper motors \cite{pickem2015gritsbot}.
+GRITSBots use the same processor as Colias, in a similar configuration, with one processor operating sensors and the other controlling the robot's motors. 
+The sensor board incorporate a 3D accelerometer and gyro as well as a 6-direction IR distance sensing ring. 
+GRITSBots measure 31mm x 33mm, and cost approximately \$50 for parts per unit. 
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -129,55 +150,28 @@ At the time of this writing, the car used in COTSBots is moderately expensive fo
 COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
 TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
 The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
-The second COTSBots platform is larger, and will be discussed in the next section. 
 
-\subsubsection{Room-sized Swarms}
-
-One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-As previously mentioned, the Kilobots require a smooth surface, and the Epuck can be stopped by obstacles no more than a few millimetres tall. 
-This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
-In order to overcome this problem, larger swarm robots can be constructed.
- 
-The MarXbot swarm platform is capable of operating in unstructured human environments. 
-MarXBots can also use their grippers to link themselves together and perform operations that an individual robot could not perform, such as bridging a gap larger than a single robot \cite{bonani2010marxbot}. 
-The size and complexity of the MarXbots, as well as their powerful computer, renders the individual robots quite expensive. 
-
-Swarmanoid extends the interlinking mechanism of MarXbot to a heterogeneous swarm with three different types of robots \cite{dorigo2013swarmanoid}.
-The ``foot'' robots are MarXbots, and provide ground motion for ``hand'' robots. 
-``Hand'' robots have grippers to manipulate objects, and can also climb.
-The ``hand'' robots have an attachment point like the MarXbots, and so can be carried by ``foot'' robots. 
-Flying ``eye'' robots provide overviews of the work area and networking.  
-
-In order to reduce costs, another platform called COTSBots was developed \cite{soule2011cotsbots}.  
-Instead of sensor motes on micro-scale RC cars, the newer COTSBots platform is composed of a laptop for processing and a modified RC car, tank, or similar toy as a mobility platform.
-In order to interface between the laptop and motor drivers, a second micro-controller board, such as an Arduino or Phidget interface, may be used. 
+The other COTSBots platform is composed of a laptop for processing interfaced via an Arduino or similar microcontroller board to a modified RC car, tank, or similar toy as a mobility platform \cite{soule2011cotsbots}.
+These COTSBots are no longer a tabletop platform, but they have a more flexible design than the previous COTSBots, as they do not call for a specific toy to be used.
 Due to the diversity of possible combinations of hardware that can be assembled into this configuration, it is still a very viable platform. 
 However, the minimum size of this style of COTSBot is the size of a laptop, which is in turn dictated largely by the minimum size of a useful keyboard. 
 The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
 
-Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas, as well as larger custom platforms for outdoor multi-robot work \cite{guo2007bio, tammet2008rfid, olson2013cacm}.
-In theory, swarm research could be performed using robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
+It is worth noting that out of all of the platforms found during the literature search for this paper, only three were based on modifying COTS drivetrains, and of those three, one used a rather expensive and precise brand of toy car. 
+The relative absence of swarm robots using COTS drivetrains could be explained by a number of mechanisms. 
+It may be that robotics researchers enjoy building new systems, and find the use of pre-existing COTS parts less rewarding.
+It may also be that using COTS parts is a bad idea, and prone to pitfalls that result in failed or suboptimal systems.
+As a result, systems that were developed using COTS drivetrains may fall prey to the ``file drawer problem'', a bias against publication of negative results \cite{file_drawer_prob_10.2307/2684823}.
 
 \section{Hardware}
 
-The previously described swarm robot platforms tend to fall into one of two groups, from a hardware perspective. 
-The first group uses microcontrollers and very limited onboard computation, but is small and relatively cheap.
-This group includes Alice, Jasmine, AmIR, and the other tabletop systems. 
-Due to their limited computation, these systems do not generally support complex algorithms such as vision processing. 
-The second group use more powerful computers, but at a significant cost in weight, power consumption, and financial outlay.
-
-The robot described in this work is intended to occupy a theoretical ``sweet spot'' at the high end of the tabletop swarms or the low end of the room-scale swarms, depending on how large of a mobility platform is used. 
-As a result, if it is configured for tabletop operation, the system can be used with a minimum of available space. 
-If, on the other hand, it is configured for room-scale operations, the system can be tested in natural or naturalistic human environments. 
-
-The robot swarm developed for this work consists of a hardware module for controlling two motors of a toy, such as a small RC car, for mobility. 
+The robot swarm developed for this work consists of a WiFi-enabled microcontroller module controlling two motors of a toy, such as a small RC car, for mobility. 
+The hardware module is called TinyRobo, both because of its small size, and because it is a minimalistic hardware platform for a robot. 
 The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
 Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware is the primary difficulty. 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
-If researchers are not to be expected to become entrepreneurs, they should also not be expected to become expert machine tool operators.
-The hardware resulting from this work is designed so that it can be duplicated by a researcher using common tools, and possessed of no more than hobby-level familiarity with electronic hardware.
 
 \begin{figure}
 \centering
@@ -185,9 +179,7 @@ The hardware resulting from this work is designed so that it can be duplicated b
 \caption{A tank-drive toy with a 3.7V lithium polymer battery and a TinyRobo control board mounted to it.}
 \end{figure}
 
-In order to be both heterogeneous and inexpensive, the robots used for this work are constructed by connecting a control hardware platform to children's toys. 
-Modified toys are an adequate substitute for custom mechanical assemblies, and permit easy experimentation with heterogeneous swarms. 
-The use of children's toys as mobility platforms may also avoid the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
+The use of children's toys as mobility platforms avoids the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
 The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
 However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
 Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
@@ -196,27 +188,55 @@ All of these toys can be controlled by the hardware described in this work.
 
 TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
 While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
-The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
+The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot, expressed as ROS Twist messages, into drive signals for the motors. 
 
-%Toys cost $24, $16, $15, $21/2, 
-\begin{table}
-	\begin{tabular}{l l l l}
-	Part & Price & Quantity & Subtotal\\
-	\hline
-	Mobile Toy & 14-20 & 1 & 20 \\
-	Battery & 2.54 & 1 & 2.54 \\
-	Main PCB & 2.75 &  1 & 2.75 \\
-	ESP8266 Module & 2-7 & 1 & 7.0 \\
-	DRV8830 & 2.30 & 2 & 4.60 \\
-	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
-	MCP73831 & 0.58 & 1 & 0.58 \\
-	\hline
-	Total & & & 27.83-38.83\\
-	\end{tabular}
-	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
-\end{table}
+%%Toys cost $24, $16, $15, $21/2, 
+%\begin{table}
+%	\begin{tabular}{l l l l}
+%	Part & Price & Quantity & Subtotal\\
+%	\hline
+%	Mobile Toy & 14-20 & 1 & 20 \\
+%	Battery & 2.54 & 1 & 2.54 \\
+%	Main PCB & 2.75 &  1 & 2.75 \\
+%	ESP8266 Module & 2-7 & 1 & 7.0 \\
+%	DRV8830 & 2.30 & 2 & 4.60 \\
+%	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
+%	MCP73831 & 0.58 & 1 & 0.58 \\
+%	\hline
+%	Total & & & 27.83-38.83\\
+%	\end{tabular}
+%	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
+%\end{table}
 
-The processor of the TinyRobo controller is an ESP-8266 wifi module.
+ \begin{table}
+	\begin{tabular}{l l l l l l l l }
+	Name & Value & Cost (1) & Cost (100) & Count & Subtotal & Subtotal (100)\\
+ 	\hline
+Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
+C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
+C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+C4 & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
+Charge IC & MCP73831 & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
+Charge LED & Green & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
+Diode & GF1A & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
+Motor driver & DRV8830 & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
+Header & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
+PCB &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
+R1 & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+R2 & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+R3, R4 & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
+R5, R8-12 & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
+R6, R7 & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
+Switch & 410-2016 & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
+Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
+V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
+Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
+\hline
+Total Cost &  &  &  &  & 23.38 & 11.9\\
+ 	\end{tabular}
+ \end{table}
+ 
+The processor of the TinyRobo controller is an ESP-8266 WiFi module.
 The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
 The ESP-8266 is available in several form factors, each designated by a different suffix. 
 The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
@@ -228,11 +248,26 @@ Experimental tests with 8 different toys indicate that small toys draw well unde
 The tested toys include 3 insect-styled walkers, 3 wheeled vehicles (2 differential drive, 1 Ackerman steering), 1 toy helicopter, and 1 toy quadcopter.
 The DRV8830 provides overcurrent limiting, so a stall condition or short circuit of the motor leads will disable the motor drive, but not damage the DRV8830. 
 
-
 The TinyRobo control module also provides connections for a 3.7V lithium-ion battery pack, as well as charge control circuitry for the battery. 
 The charge controller allows the TinyRobo to be charged from the same USB connection that is used to change the programming of the ESP-8266. 
 Reset and entry into programming mode is controlled by a separate USB-to-serial adapter board, the Sparkfun BOB-11736.
 Moving this functionality to the adapter board reduces the size and cost of the TinyRobo control module. 
+
+The mobility platforms used for the existing TinyRobo swarm cost 12-20 dollars in single quantities, putting the total cost for a single robot at \$35-45.
+Where bulk ordering is available, the cost of 100 mobility platforms is \$8 per unit, reducing the per-unit cost of a 100-member TinyRobo swarm to \$20. 
+This is roughly in line with the parts cost of the Kilobot, which is \$15 \cite{rubenstein2014kilobot}.
+
+However, this should not be taken to mean that the TinyRobo platform is a competitor with the Kilobots. 
+Kilobots were designed to have scalable interactions, which is to say that programming, charging, and even turning on the Kilobots does not take more time as the number of robots increases. 
+To have programming take constant time, the Kilobots are programmed in parallel using an infrared broadcast device that illuminates the entire swarm at once. 
+To charge together, the Kilobots have one charging contact on their legs, and the other on a leaf spring on their tops. 
+By sandwiching the robots between two conductive plates, the entire swarm can be charged at once.
+Finally, in order to all be turned on quickly, the Kilobots never turn off.  
+Instead, they enter a low power sleep mode, and wake occasionally to check for an infrared signal to become fully active. 
+This last attribute makes it very difficult to have a robot that has both WiFi and a very low power sleep mode. 
+The WiFi module used in the TinyRobo platform consumes 15mA in its highest-power sleep mode, and 20$\mu$A in its lowest power mode. 
+Unfortunately, only the highest power sleep mode can remain connected to an access point and receive a wake-up command, and so it will deplete the 750mAH battery used in the TinyRobos in just over two days. 
+In contrast, a Kilobot can sleep for 3 months. 
 
 \subsection{Toy Compatibility}
 
@@ -242,7 +277,8 @@ However, it is useful to quantify their behavior to some extent, to determine wh
 
 Two common types of motors found in children's toys are the RE and FA series of motors produced by Mabuchi Motor, or imitations of these motors produced by other companies. 
 These motors use simple metal brushes and are constructed to be inexpensive, rather than precise. 
-The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
+The intended voltage range of the motors varies with different winding types. 
+Table \ref{tab:properBrandedMotors} shows the voltage ranges and current draws for some Mabuchi motors, according to datasheets available from Mabuchi Motor.
 
 \begin{table}
 	\begin{tabular}{l l l l l}
@@ -259,7 +295,7 @@ The intended voltage range of the motors varies with different winding types, bu
 	\label{tab:properBrandedMotors}
 \end{table}
 
-These are somewhat large brushed motors. 
+The Mabuchi motors in table \ref{tab:properBrandedMotors} are somewhat large brushed motors, generally measuring around 2-3 cm$^3$. 
 For smaller toys, coreless motors are more common. 
 The values in table \ref{tab:coreless} were measured from six of the toys used in constructing the TinyRobo swarm.
 The measurements from the toy helicopter and toy quadcopter are included for comparison.
@@ -269,7 +305,7 @@ While the TinyRobo board can supply sufficient current to control all of these t
 	\begin{tabular}{l l l}
 	Motor number & No Load Current & Stall Current (measured)\\
 	\hline 
-	Hexbug brand mini spider & 0.03A & 0.13A* \\
+	Hexbug brand mini spider & 0.03A & 0.13A \\
 	Hexbug brand 6-legged insect & 0.06A & 0.25A \\
 	Miniature toy RC car & 0.21A & 0.8A \\
 	Miniature toy RC insect & 0.19A & 1.13A \\
@@ -278,7 +314,7 @@ While the TinyRobo board can supply sufficient current to control all of these t
 	Toy helicopter & 0.07A & 1.12A \\
 	Toy quadcopter & 0.74A & 1.99A \\
 	\end{tabular}
-	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. * The Hexbug mini spider includes a slip clutch, so attempting to stall the motors by holding the toy still does not prevent the motor from turning}
+	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. The Hexbug mini spider includes a slip clutch, so attempting to stall the motors by holding the toy still does not prevent the motor from turning}
 	\label{tab:coreless}
 \end{table}
 
@@ -294,6 +330,33 @@ As of this writing, the VCNL3020 is \$3.44 and the VL53L0X costs \$6.28 in singl
 These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with the TinyRobo platform. 
 Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the TinyRobo platform. 
 
+As a thought experiment, the cost of adding a 6-direction IR transmission and reception board  to the TinyRobo platform was explored. 
+This is not a finished design, but as much of the cost in a device of this type is in the semiconductors and PCB, it gives an estimate of the cost. 
+The IR receiver selected would have been the TSOP5700TR, as used in the E-Puck Range and Bearing sensor board, but it is listed as obsolete by the manufacturer (Vishay Semiconductors). 
+The modern replacement appears to be the TSMP6000.
+The IR LED was also selected to match the E-Puck Range and Bearing board.
+
+\begin{table}
+	\begin{tabular}{l l l l l l}
+	Part number & Cost (1) & Cost(100) & Count & Subtotal(1) & Subtotal (100)\\
+	\hline 
+	ATMega168 & 1.40 & 1.12 & 1 & 1.40 & 1.12  \\
+	TSMP6000 & 1.81 & 1.03 & 6 & 10.86 & 6.18  \\
+	SFH4255  & 1.06 & 0.59 & 6 & 6.36 & 3.54 \\
+	SN74ACT08DR & 0.51 & 0.32 & 2 & 1.02 & 0.64 \\
+	PCB & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
+	\hline 
+	Totals & & & & 22.94 & 12.27\\
+	\end{tabular}
+	\caption{Semiconductors for a simple IR communication ring, and their prices. The PCB is the same size and type as the TinyRobo controller, and so has the same cost.}
+	\label{tab:ir_ranger_board}
+\end{table}
+
+Colias appears to implement transmission power control for the infrared LEDs, and perform ranging by transmitting multiple times at varying power levels. 
+If an object is detected by a low-power transmission, it is nearby, but if it is only detected by higher power transmissions, it is further away. 
+Modulating the transmit power can also be used to limit range for inter-robot communication.
+This modulation can be achieved using an AND gate which is powered from a digital output line of the main microcontroller, and applying a PWM signal to that output line.
+Adding a 6-direction range and bearing board to the TinyRobo system could be expected to cost in the neighborhood of \$12-22 USD, depending on the quantity of boards produced. 
 \section {Firmware}
 
 The current version of the TinyRobo firmware is developed in the open-source Arduino development environment.
@@ -301,10 +364,10 @@ Arduino programs are written in a dialect of C++.
 
 Every robot runs the same firmware. 
 The firmware listens for connections on port 4321 for TCP/IP packets containing one of two types of messages. 
-Messages starting with a 0x51 byte (ASCII 'Q') cause the firmware to respond with a message containing the ASCII string "TinyRobo". 
+Messages starting with a 0x51 byte (ASCII `Q') cause the firmware to respond with a message containing the ASCII string ``TinyRobo". 
 This function is to allow automatic detection of TinyRobos on a network by querying all connected systems to determine if they respond in this way. 
 
-Messages starting with a 0x4D byte (ASCII 'M') followed by four bytes are motor speed commands.
+Messages starting with a 0x4D byte (ASCII `M') followed by four bytes are motor speed commands.
 The firmware interprets the first two bytes as the speed and direction for the first motor, and the second two bytes as speed and direction for the second motor.
 The control bytes are converted to a single byte command for the DRV8830 driver and transmitted over the I2C bus to set the motor speed.
  
@@ -477,15 +540,16 @@ The AprilTag localizations and the image of the arena are used to provide virtua
 The virtual laser ranger consists of two ROS nodes, a service and clients for the service. 
 The service is called ``laser\_oracle\_server''. 
 It subscribes to the AprilTag detections and the images from the arena overhead camera. 
+
+As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
+This dot provides the outer edge of each robot in the virtual laser scan. 
+The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
  
 When a client requests a laser scan, the virtual laser service masks the modified arena image with a circle with a radius of the laser range, centered on the robot requesting the scan.
 This masking removes all of the objects that are out of range of the laser, and so reduces the time spent calculating the laser scan points. 
 
 Each sample of the laser scan is represented as a line segment, located based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
 Each line segment is checked for intersection with the lines defining the contours of the blue objects in the image. 
-As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
-This dot provides the outer edge of each robot in the virtual laser scan. 
-The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
 If multiple intersections are found for a line segment, the intersection closest to the robot is used, as the laser would stop after reflecting off an object.
 The service then formats the distances to the intersection points as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
 
@@ -561,8 +625,102 @@ The TinyRobo design works with ROS to provide an emulation of a decentralized sy
 While this paper presents it in the context of a complete system, the software framework is not tightly bound to the TinyRobo hardware, and so may be useful to other users of tabletop swarms. 
 
 The combination of hardware and software presented in this work makes it possible to construct swarm robots at a cost of around \$30 per robot. 
-The resulting robots are useful for swarm robotics research, and the price point is accessible to many institutions, as well as private individuals. 
-All of the software used is open source, and available for no cost. 
+Unfortunately, while the platform can be used to produce swarm robots at low cost, the hardware used in children's toys is not sufficiently reliable to be used as a research platform. 
+
+\subsection{Anti-scaling of Hardware Failures} \label{section:Anti_scaling_of_Hardware_Failures}
+
+Due to mechanical flaws in the toys used as motion platforms in TinyRobo, the robots would sometimes not move as commanded (see figure \ref{motor-speed-fig}). 
+In a single-robot system, transient failures can sometimes be accommodated by repeated effort or replanning. 
+However, in a multi-robot system the scale of the system works to offset the reliability of each individual robot. 
+If robots have an individual mean time between failures (MTBF), the expected mean time to any failure is the MBTF divided by the number of robots. 
+For example, if an individual robot can work for 100 hours between failures, it would be reasonable to expect it to work for at least a day. 
+However, if the swarm consists of 1000 such robots, a failure of at least one robot can be expected within 6 minutes. 
+
+This problem was highlighted by the use of inexpensive toys. 
+It is desirable to have a swarm platform be able to run for extended periods, in order to acquire data for experiments. 
+Toys, especially cheap ones, are designed for low cost and an MBTF more compatible with the attention span of children than that of researchers. 
+The amount of effort devoted to locating and eliminating mechanical problems relative to the runtime of the system was not acceptable.
+
+\subsection{Calibration} \label{section:Calibration}
+
+Children's toys are prone to failure and inaccuracy.
+In toys, particularly remote controlled toys, the user acts as a the feedback element of a control system, observing the behavior of the toy and changing their actions as a result. 
+If an individual toy, for example, has a bias to turn to the left, the user will learn this and apply a correcting bias.https://ieeexplore.ieee.org/document/5442595/
+To extend this to a computerized system requires some form of calibration. 
+These calibration steps, combined with appropriate control, such as PID loops, can account for systemic inaccuracies. 
+However, the use of toys also introduces some failures which are not consistent or linear. 
+For example, the tanks used in some instances of the TinyRobo platform use motors with high speed, but relatively low torque. 
+As a result, dirt in the drivetrain near the motor can cause the motor to become difficult to start, but can be removed by the user, or by operation once the motor does start. 
+Calibration when the dirt is present means the robot will start very abruptly when the dirt is removed, while calibration when the dirt is absent means the robot may not start if dirt gets into it later. 
+It is worth noting, in light of this example, that GritsBots, Kilobots, and mROBerTO all use nearly-sealed drivetrains, either direct motor drive of the wheels or sealed vibration motors \cite{rubenstein2014kilobot, Kim2016mROBerTOAM, pickem2015gritsbot}. 
+
+An early intent of the author was to have the system learn the control law for each robot through observation of the relationship between the commanded motion of the robot and the resulting motion. 
+Due to the overarching concern with human control of a swarm, such online calibration was decided to be out of scope for this work. 
+However, a computer-vision-guided calibration technique was used in the mROBerTO swarm robots to compensate for manufacturing differences between robots \cite{Kim2016mROBerTOAM}. 
+This approach results in learning bad controls if the system observes the robot during a temporary failure. 
+In a system with minimal failures, this problem can be minimized, but as discussed earlier, inexpensive children's toys are not such a system. 
+
+\begin{figure}[t]
+\includegraphics{../thesis/motion_vs_cmd}
+\centering
+\caption{Commanded velocity (lin\_vel) as opposed to recorded motion (vel). Vel is always positive because it is measured in terms of euclidian distance moved by the center of the AprilTag between successive updates of the tag tracking. 
+Note that while the magnitude of the motion is proportional to the commanded motion, sometimes the robot did not move at all, and when it did move, the recorded velocity is quite noisy. Noise may be removed in software, mechanical failure cannot.} 
+\label{motor-speed-fig}
+\end{figure}
+
+GRITSBots have a calibration step, but the calibration is automated, and is only performed once for each robot, after which it is assumed that the calibration variables are constant.
+Calibration can be automated in a homogenous platform with reasonably reliable hardware. 
+Non-homogenous platforms require different calibration for different platforms, which reduces the benefit of automation. 
+Further, it works against transitioning to a new platform by adding an additional hurdle in the form of developing a new calibration method for the new platform. 
+
+The lack of an automated calibration and control method drove the TinyRobo swarm to use more differential drive vehicles, as they struck a balance between the fully holonomic drive used in the SpiderBots, which is expensive but easy to control, and the Ackerman drive used in inexpensive RC cars, which is less expensive, but has more complex control math \cite{lairdspider}.
+It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity in swarm robotics. 
+
+\subsection{April Tag Latency} \label{section:April_Tag_Latency}
+
+April tags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
+More tags leads to longer computation time, increasing the latency of the robot control loop. 
+Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
+
+One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
+This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
+Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
+The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
+To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \cite{PickemGrits2014}. 
+MROBerTO also used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
+
+\subsection{Lessons for Future Swarm Hardware Developers}
+
+The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
+While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
+
+The drivetrain of the system is of paramount importance. 
+Sensors and networking can be virtualized, as in TinyRobo and GRITSBots, but no amount of clever programming will compensate for balky motion. 
+The use of direct drive, as in GRITSBots or mROBerTO, is encouraged because the resulting drive train will be sealed against foreign matter. 
+Further, the use of stepper motors in GRITSBots provides some degree of precision in motion control by directing the motor in steps of known resolution, rather than commanding a particular speed. 
+If the system requires additional torque, use sealed micro gearmotors rather than adopting a drivetrain from a toy. 
+Toy drivetrains are designed for minimal cost over reliability and precision. 
+
+The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
+Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
+The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
+Where possible, design to use the PCB instead. 
+Using childrens' toys in TinyRobo was intended to avoid the use of such custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain and mechanical design. 
+
+Minimize parts count. 
+TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
+Multi-use devices like the ESP-8266 are becoming cheaper and more competent quickly.
+The processor in mROBerTO is both a 32-bit ARM processor, a low-power Bluetooth transceiver, and an ANT Wireless tranceiver. 
+The VL6180X IC combines an ambient light sensor and a laser-based time-of-flight range sensor in a package measuring approximately 5x8x1mm. 
+Reducing parts count reduces cost and speeds assembly. 
+
+Use autonomous charging, and have each robot be able to monitor its own battery level. 
+Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
+In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
+For the GRITSBbots, pins on the front of each robot allows the robot to connect to a charging station by itself, rather than requiring a human to connect it. 
+The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
+The alternative, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
+At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
