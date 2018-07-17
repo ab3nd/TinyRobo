@@ -899,27 +899,113 @@ Even simple cases like moving to a target area, if they show the robots moving a
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.28\textwidth}
-		\includegraphics[width=\linewidth]{../move_grey_no_grid_text.png}
-	\end{subfigure}
-	\begin{subfigure}{0.28\textwidth}
-		\includegraphics[width=\linewidth]{../select_grey_no_grid_text.png}
-	\end{subfigure}
-	\begin{subfigure}{0.28\textwidth}
-		\includegraphics[width=\linewidth]{../ui_grey_no_grid_text.png}
-	\end{subfigure}
+	\includegraphics[width=\linewidth]{../thin_grey_text.png}
+%	\begin{subfigure}{0.28\textwidth}
+%		\includegraphics[width=\linewidth]{../move_grey_no_grid_text.png}
+%	\end{subfigure}
+%	\begin{subfigure}{0.28\textwidth}
+%		\includegraphics[width=\linewidth]{../select_grey_no_grid_text.png}
+%	\end{subfigure}
+%	\begin{subfigure}{0.28\textwidth}
+%		\includegraphics[width=\linewidth]{../ui_grey_no_grid_text.png}
+%	\end{subfigure}
 	\caption{Motion, selection, and UI gestures.}
 	\label{fig:select_ui_move_breakdown}
 \end{figure}
 
+
+
+ 
+
+ 
+
+ 
+
+For position commands, drag, tap, and ``other'' would cover 94.8\% of the gestures. 
+Unfortunately, the ``other'' commands are not a single gesture, but include a diverse collection of gestures, such as pushing with the side of the finger or making a picking-up, carrying, and setting-down motion over the screen.
+As a consequence, attempting to implement all the gestures in the ``other'' category would add significant complexity to the gesture recognition in order to support gestures which were rarely used. 
+Many of the ``other'' gestures were also not recognizable by a multitouch surface, such as the user dividing the robots by parting their hands as if opening a bag in the air above the surface. 
+Since it does not contact the multitouch surface, such a gesture cannot be recognized without additional hardware. 
+If all forms of tap are considered the same when used as position commands, taps make up 14.2\% of the position commands, and together with drag, cover 89.2\% of the position commands. 
+
+Lasso was used as a position command by one user, who used it to command the robots to disperse in the ``disperse'' task. 
+The user noted that the direction of the lasso disambiguated it from lasso as selection, so lassoing clockwise would select robots and lassoing counterclockwise would disperse them. 
+
+Achieving 90\% recognition of the most common UI widgets would include buttons for special functions, handwriting recognition, voice commands, and other menus on the screen (totaling 90.8\%). 
+However, a successful menu-based UI would not be composed simply by taking the sum of all of the user interface designs suggested by users, as there would be significant redundancy in the UI commands, and in ways of bringing up the UI for interaction. 
+Instead, the tasks in which the users invoked the UI most often were examined, and the requested UI functions were considered for inclusion. \todo{Do this, figure out what they are}
+
+Both voice commands and handwritten commands together account for 47.1\% of the user interface elements used.
+While the broad categories make up nearly half of the UI elements, the individual uses of the gestures did not display a significant unity within the broad categories.
+One user used symbols drawn over the swarm as commands, so a circle drawn within the swarm area meant "patrol", and would be followed by an indication of the area to be patrolled. 
+Another user wrote commands, such as writing out ``0.5" to indicate that robots should divide in half, ``SQ'' to indicate that they should form a square, or ``C $\rightarrow$ A" to indicate that the crate (C) should be moved to area A. 
+The majority of the drawn commands were attributable to a single user, but two users drew an `X' over the defective robot in the ``mark defective robot'' and ``remove defective robot'' tasks and two users used an `X' and an `S' in the ``stop the robots'' task.
+
+The selection of a set of handwritten commands that would be usable for a majority of users would be a task at least as difficult as finding a user-defined set of gestures.
+In addition to the set of English letters, the interface would have to consider symbols such as arrows, and apparently decimal numbers as well. 
+The experiment described in this thesis did not collect sufficient examples of handwritten commands to extrapolate a useful control scheme from them.
+Because of this lack of information, and the fact that most handwritten commands were proposed by a single user, the resulting interface does not contain support for handwriting recognition and symbol interpretation.  
+
+Interestingly, voice commands were similar to both handwriting, in terms of user choice, and gestures, in terms of syntax. 
+One user used voice commands for all tasks, but a few users also used voice commands for a few tasks, but not all of them. 
+The accidental biasing of users towards use of voice for formation tasks was discussed earlier. 
+In addition, two users stated that they would like to have a vocal stop command for the ``stop the robots'' task, because it could be issued quickly and without having to accurately touch the moving robots. 
+These users did not issue other voice commands, as the other tasks were not perceived to be as urgent as the ``stop the robots'' task. 
+The syntactic similarity between the voice commands and the gesture commands is because the gesture commands frequently take the subject-verb-object ordering of spoken sentences. 
+For example, selecting the robot group indicates a subject, and drawing the path indicates the verb (``go this way"). 
+Objects are optional or implied, as going to a location doesn't have a clear object that the robots are instructed to act upon. 
+In some cases, the subject is implied as well.
+For example, some users would make gestures intended to move the robot group as a whole by simply dragging the path, without selecting the subject first. 
+In such a case, the implied subject was all of the robots. 
+This sort of implication is more complex than simply assuming that if no robot is selected, all of the robots are the subject. 
+Some users divided the robots into two groups by drawing a dividing line, and then dragging two paths, one to one side of the screen and the other to the other side of the screen. 
+In this case, the implied subject was the half of the robots on the same side of the dividing line as the drag, but no selection gesture preceded the positioning drag to indicate this. 
+
+%The idea of having a hidden menu that was dragged in from an edge of the screen or came up after some form of invocation, such as tap-and-hold, was rejected because such menus do not admit exploration. \todo{cite something on explorability/discovery of menus}
+
+Reverse pinch was used as an interface command to zoom in or out of the view of the robots. This was done in the ``mark defective robot'' and ``remove defective robot'' tasks. 
+The user who made this gesture was in the 1000 robot case, and stated that they wanted to zoom in because the defective robot was a small target and close to other robots. 
+There was no explicit zoom or change of viewpoint task, but users expected the functionality when they had to interact with a small target.
+
+To accommodate 90\% of the user gestures for selection, recognition of tap, lasso, box select, doubletap, drag, hold, and ``other'', totaling 91.9\% of the selection gestures.
+As discussed above, the ``other'' category is not practical to implement. 
+If, instead, all forms of tap are considered the same for purposes of selection, they comprise 42.5\% of the selection gestures, and together with lasso and box select, cover 91.3\% of the selections. 
+
+Drag as a selection gesture refers to the user placing their finger on one robot, and then dragging it from robot to robot, adding each touched robot to the selection. 
+It is ambiguous with the position drag, where the user places their finger on a robot and then drags a path for the robot to follow, although the distinction could be made by having a path that intersects multiple robots become a selection, rather than a position command. 
+Unfortunately, this attempt at disambiguation would itself become a source of problems if the user attempts to move the entire swarm by placing a finger in the middle of it and dragging to a new location, as it is likely they would intersect more than one robot as their finger leaves the swarm.
+
 \section{Ambiguities in Gesture Commands}
 
-\todo{notes, expand this}
-Select and draw line for formation vs. Select and draw line for move to end of line
+As discussed briefly in the previous section, some combinations of gestures selected by the users were ambiguous. 
+This is to be expected, as the users did not know all the tasks in advance, and so might use a gesture in one task that they then felt was better suited to a later task.
+The users might also not regard all the tasks as having to use a consistent and unambiguous representation for each gesture, or not remember all the gestures they had previously used. 
+However, for automated conversion into programs, it is important that a sequence of gestures have some way to be unambiguously recognized. 
 
-Drawing box for formation of box vs. Square or other shaped box select.
+In the line formation tasks, some users selected the robots and then drew a line to indicate the location of the line formation.
+If the line formation started at the same location as the robots, this gesture sequence is the same as the selection and drawing a path sequence that was frequently used to indicate that the robots should move as a group along the path. 
+If the line formation started elsewhere, it could be disambiguated, because motion along a path almost always started on or near the selected robots.  
 
- Patrol without some "and keep doing it" signifier is ambiguious with "go around the area once"
+Similarly, some users divided the robots into two groups by drawing a line separating the groups.
+Typically, this line started outside the group and passed through it, so it could be disambiguated from instructing the robots to move along the line.
+Unfortunately, it would be difficult to separate it from drawing a line for the robots to move to in order to create a formation.
+ 
+To command the robots into a square formation, especially in the dispersed cases, many users simply drew the square formation over the robots.
+If a lasso select is also available, some distinction must be made between the lasso select and the square formation when they are both drawn over the robots, as they are both closed forms drawn over the robots.
+One possible method is to look for peaks in the distance from each point on the perimeter of the gesture to the centroid of the gesture. 
+A square would have four peaks, while a circle would have no obvious peaks. 
+However, this sort of recognition means that a square lasso select, or an arbitrarily-shaped lasso select that happens to have four peaks, would get misinterpreted as a formation gesture, while a command to get into a circular formation would be interpreted as a lasso selection. 
+It would be preferable to be able to make arbitrary formations, and arbitrarily-shaped lasso selections, and have them be disambiguated by some other method. 
+One method that users proposed was to have a ``draw formation" button, which would then cause the next form that the user drew to be treated as the perimeter of the formation. 
+Some users also held one finger down at the start of the formation, while tracing the perimeter with the other finger. 
+This approach as the advantage of not adding UI elements, but is not easily discoverable by a user examining the UI. 
+
+In order to patrol area A or the screen border, users frequently dragged the robots as if issuing a basic motion command. 
+Some users indicated that there would have to be an additional signal to the robots to keep moving on the patrol route, once it was assigned, but there was not an agreement as to what that command should be. 
+Of the users who indicated a need to convey that the swarm keep patrolling, some repeated the patrol route drag multiple times, others ended the gesture with a tap or triple tap, still others used the direction of the patrol route drag (clockwise or counterclockwise) to separate following the path once from continuously following it. 
+
 Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
-Because the users could not be expected to choose a consistent gesture set for an \emph{a priori} unknown set of tasks, this sort of inconsistency is not unexpected. 
+Because 30.2\% of the selection gestures were taps, it was decided that selection, which occurs often, would be done by tapping, while removal of a robot, which is rare, would be performed by a different action. 
 
+
+%Drawing a line to divide the robots into groups vs. drawing a path to follow vs. drawing a line for the robots to get in formation on.
