@@ -159,12 +159,6 @@ The large size of these COTSBots demands a very large space if the density of ro
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
 
-It is worth noting that out of all of the platforms found during the literature search for this paper, only three were based on modifying COTS drivetrains, and of those three, one used a rather expensive and precise brand of toy car. 
-The relative absence of swarm robots using COTS drivetrains could be explained by a number of mechanisms. 
-It may be that robotics researchers enjoy building new systems, and find the use of pre-existing COTS parts less rewarding.
-It may also be that using COTS parts is a bad idea, and prone to pitfalls that result in failed or suboptimal systems.
-As a result, systems that were developed using COTS drivetrains may fall prey to the ``file drawer problem'', a bias against publication of negative results \cite{file_drawer_prob_10.2307/2684823}.
-
 \section{Hardware}
 
 The robot swarm developed for this work consists of a WiFi-enabled microcontroller module controlling two motors of a toy, such as a small RC car, for mobility. 
@@ -692,6 +686,10 @@ MROBerTO also used color tracking, with a single RGB LED on top of each robot to
 \subsection{Lessons for Future Swarm Hardware Developers}
 
 The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
+In retrospect, it seems indicative that out of all of the platforms found during the literature search for this paper, only three were based on modifying COTS drivetrains, and of those three, one used a rather expensive and precisely-made brand of toy car. 
+The relative absence of swarm robots using COTS drivetrains could be explained by a number of mechanisms.
+The use of cheap toys, in particular, is a bad idea, and prone to pitfalls that result in failed or suboptimal systems.
+As a result, systems that were developed using COTS drivetrains may fall prey to the ``file drawer problem'', a bias against publication of negative results \cite{file_drawer_prob_10.2307/2684823}.
 While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
 
 The drivetrain of the system is of paramount importance. 
@@ -704,8 +702,8 @@ Toy drivetrains are designed for minimal cost over reliability and precision.
 The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
 Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
 The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
-Where possible, design to use the PCB instead. 
 Using childrens' toys in TinyRobo was intended to avoid the use of such custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain and mechanical design. 
+Where possible, design to use the PCB instead. 
 
 Minimize parts count. 
 TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
@@ -721,6 +719,18 @@ For the GRITSBbots, pins on the front of each robot allows the robot to connect 
 The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
 The alternative, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
 At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
+
+The TinyRobo hardware could be made more reliable by replacing the toy motion platform with a PCB carrying two motors directly driving a pair of wheels. 
+If stepper motors were used, this change would bring the TinyRobo platform very close to the GRITSBots platform in terms of hardware design. 
+If DC motors were used instead, the resulting platform would be closer to Colias. 
+In biology, the appearance of similar solutions to a design problem across different species, such as the similar fin placement on dolphins and sharks, is called convergent evolution. 
+It appears that over the development of tabletop swarm robots, stacked PCBs, IR sensor rings, and direct drivetrains are all convergent features, representing the best solutions at the lowest cost. 
+The use of toys as drivetrains is closer to the foot bones present in the skeletons of whales: of potential historical interest, but not terribly relevant as a modern method of locomotion. 
+
+However, while the toy-based design of TinyRobo may be an evolutionary dead end, the software is not.
+Because the software framework deliberately keeps the hardware specific implementation details at a low level of the software, the virtual sensors, virtual networking, and per-robot control process implementation all remain useful. 
+In the hopes that they will be of use to future swarm roboticists, the TinyRobo control software is available online at https://github.com/ab3nd/TinyRobo.
+
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
