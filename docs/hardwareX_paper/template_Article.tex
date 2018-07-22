@@ -39,20 +39,16 @@ Larger simulations may of course require more computer time, but by running at l
 
 However, simulation brings with it a number of problems. 
 Because simulations often can have bugs in them that are exploitable by agents operating in the simulation, it is sometimes possible to develop solutions that cannot be reproduced in reality. 
-The use of genetic algorithms is particularly prone to these problems, as the genetic approach frequently develops ``solutions'' which solve the stated problem, but are not realistically useful. 
-In one system, the fitness function for evolved simulated creature designs awarded high fitness to creatures that moved a long distance, quickly. 
-This resulted in creatures that were very tall, and fell over as soon as the simulation started, resulting in a rapid horizontal movement as measured from the track of the creature's center of gravity over the ground \cite{brooks2000artificial, sims1994evolving}. 
-A bug in the conservation of momentum in the same simulation resulted in creatures that moved by hitting themselves on the back. 
-
 Additionally, simulations are often more perfect than the real world. 
 In simulation, factors such as wheel slip, which adds error to robot odometry, and other forms of noise and sensor error can be left out of the simulation. 
 Range limitations for sensors and communications can also be ignored, as distances in simulation are abstractions. 
-These sorts of departures from reality are tempting, because they save processor time and development effort. 
-With real hardware, these effects are included at no cost, and instead, substantial effort is put into minimizing them.
+These sorts of departures from reality are tempting, because they save processor time and development effort.
+However, they complicate bringing the resulting software designs into the real world.  
+With real hardware, these effects are included at no cost. 
 
-Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be a cause of substantial expense. 
-This paper describes the design of a hardware platform and the associated software framework to make a tabletop research robot swarm for about \$30 per robot. 
-While the hardware platform ultimately was insufficiently reliable to be a good platform for swarm robot experimentation, the lessons learned in developing it may be of use to future developers of swarm platforms. 
+Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be quite expensive. 
+This paper describes the design of a hardware platform and the associated software framework that were intended to produce a tabletop research robot swarm for about \$30 per robot. 
+While the hardware platform was ultimately insufficiently reliable to be a good platform for swarm robot experimentation, the lessons learned in developing it may be of use to future developers of swarm platforms. 
 The software is designed to be adaptable to a wide variety of mobility platforms, and to accommodate new hardware with minimal alteration of the software controlling it. 
 As a result, while the specific hardware platform described in this paper is unsatisfactory, the control software design is not tied to the hardware, and remains useful. 
 
@@ -64,19 +60,17 @@ Larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
 Also, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
-If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
+If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, a small swarm, or become overly crowded.
 Finally, larger robots are just more cumbersome to deal with. 
 They require larger storage areas, possibly teamwork to lift or repair, and so forth, all multiplied by the number of robots in the swarm. 
 
-The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
+The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound on the scale of the individual swarm members. 
+Normal interior doors are around 80 cm wide, and so a robot larger than 80cm across will not be able to move between rooms in a normal building.
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range can be divided into robots that can operate in swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 This paper is concerned with tabletop swarm robot platforms.
-For discussion of larger swarms, see \cite{bonani2010marxbot, dorigo2013swarmanoid, guo2007bio, tammet2008rfid, olson2013cacm}. 
-The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots: a mobility platform, a power supply, a processor, some sensors, and a communication system, into a small package.
-Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
-
+For discussion of larger swarms, see \cite{olson2013cacm, dorigo2013swarmanoid, bonani2010marxbot, tammet2008rfid, guo2007bio}. 
 
 \subsection{Tabletop Swarms}
 
@@ -91,7 +85,8 @@ The processor used in Alice is relatively underpowered compared to modern proces
 Alice robots are no longer available for purchase. 
 The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
 There is no evidence that AmIR was ever widely available.
-The successsors to Amir, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \cite{arvin2014colias, arvin2015colias}. 
+
+The successsors to AmIR, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \cite{arvin2014colias, arvin2015colias}. 
 Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
 Of particular note, the Colias-$\Phi$ lower processor is responsible for detecting light on the underside of the robot. 
 Because of this downward facing light sensor, Colias-$\Phi$ robots can operate on an LCD screen or translucent table illuminated from beneath by a projector, for experiments in pheromone robotics. 
@@ -130,16 +125,16 @@ They are designed to be programmed in parallel using an IR interface.
 For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
 The Kilobots move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
 
+The GRITSBots platform is a differential-drive platform using stepper motors \cite{pickem2015gritsbot}.
+GRITSBots use the same processor as Colias, in a similar configuration, with one processor operating sensors and the other controlling the robot's motors. 
+The sensor board incorporate a 3D accelerometer and gyro as well as a 6-direction IR distance sensing ring. 
+GRITSBots measure 31mm x 33mm, and cost approximately \$50 for parts per unit. 
+
 MROBerTO is a swarm robot with a 16mm$^2$ footprint. It has modular expandability via a header for daughterboards, and includes a single-point laser rangefinder, gyro, accelerometer, compass, and a VGA resolution camera \cite{Kim2016mROBerTOAM}. 
 The mROBerTO processor is a 32-bit ARM processor with Bluetooth and ANT+ wireless. 
 All of this hardware is only \$60 per unit in quantities of 25 or more units. 
 In order to permit an overhead camera to localize the mROBerTO robots, a single RGB LED on top of the camera can be lit in a unique color to localize the robot, and a green LED on the front of the robot indicates its heading. 
 The use of color information is likely much faster to process than fiducual tags, but does have the disadvantage that it is only useful in 2D unless a stereo camera is used. 
-
-The GRITSBots platform is a differential-drive platform using stepper motors \cite{pickem2015gritsbot}.
-GRITSBots use the same processor as Colias, in a similar configuration, with one processor operating sensors and the other controlling the robot's motors. 
-The sensor board incorporate a 3D accelerometer and gyro as well as a 6-direction IR distance sensing ring. 
-GRITSBots measure 31mm x 33mm, and cost approximately \$50 for parts per unit. 
 
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
@@ -158,12 +153,6 @@ However, the minimum size of this style of COTSBot is the size of a laptop, whic
 The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
-
-It is worth noting that out of all of the platforms found during the literature search for this paper, only three were based on modifying COTS drivetrains, and of those three, one used a rather expensive and precise brand of toy car. 
-The relative absence of swarm robots using COTS drivetrains could be explained by a number of mechanisms. 
-It may be that robotics researchers enjoy building new systems, and find the use of pre-existing COTS parts less rewarding.
-It may also be that using COTS parts is a bad idea, and prone to pitfalls that result in failed or suboptimal systems.
-As a result, systems that were developed using COTS drivetrains may fall prey to the ``file drawer problem'', a bias against publication of negative results \cite{file_drawer_prob_10.2307/2684823}.
 
 \section{Hardware}
 
@@ -209,30 +198,31 @@ The software framework in development to support TinyRobos is based on ROS, and 
 %\end{table}
 
  \begin{table}
-	\begin{tabular}{l l l l l l l l }
-	Name & Value & Cost (1) & Cost (100) & Count & Subtotal & Subtotal (100)\\
- 	\hline
-Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
-C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
-C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-C4 & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
-Charge IC & MCP73831 & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
-Charge LED & Green & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
-Diode & GF1A & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
-Motor driver & DRV8830 & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
-Header & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
-PCB &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
-R1 & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-R2 & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-R3, R4 & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
-R5, R8-12 & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
-R6, R7 & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
-Switch & 410-2016 & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
-Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
-V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
-Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
-\hline
-Total Cost &  &  &  &  & 23.38 & 11.9\\
+	\begin{tabular}{l l l l l l l }
+	Name & Value & Cost & Cost & Count & Subtotal & Subtotal\\
+	& & (1) & (100) & & & (100) \\
+	\hline
+	Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
+	C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
+	C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+	C4 & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
+	Charge IC & MCP73831 & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
+	Charge LED & Green & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
+	Diode & GF1A & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
+	Motor driver & DRV8830 & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
+	Header & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
+	PCB &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
+	R1 & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+	R2 & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+	R3, R4 & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
+	R5, R8-12 & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
+	R6, R7 & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
+	Switch & 410-2016 & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
+	Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
+	V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
+	Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
+	\hline
+	Total Cost &  &  &  &  & 23.38 & 11.9\\
  	\end{tabular}
  \end{table}
  
@@ -692,6 +682,10 @@ MROBerTO also used color tracking, with a single RGB LED on top of each robot to
 \subsection{Lessons for Future Swarm Hardware Developers}
 
 The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
+In retrospect, it seems indicative that out of all of the platforms found during the literature search for this paper, only three were based on modifying COTS drivetrains, and of those three, one used a rather expensive and precisely-made brand of toy car. 
+The relative absence of swarm robots using COTS drivetrains could be explained by a number of mechanisms.
+The use of cheap toys, in particular, is a bad idea, and prone to pitfalls that result in failed or suboptimal systems.
+As a result, systems that were developed using COTS drivetrains may fall prey to the ``file drawer problem'', a bias against publication of negative results \cite{file_drawer_prob_10.2307/2684823}.
 While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
 
 The drivetrain of the system is of paramount importance. 
@@ -704,8 +698,8 @@ Toy drivetrains are designed for minimal cost over reliability and precision.
 The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
 Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
 The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
-Where possible, design to use the PCB instead. 
 Using childrens' toys in TinyRobo was intended to avoid the use of such custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain and mechanical design. 
+Where possible, design to use the PCB instead. 
 
 Minimize parts count. 
 TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
@@ -721,6 +715,18 @@ For the GRITSBbots, pins on the front of each robot allows the robot to connect 
 The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
 The alternative, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
 At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
+
+The TinyRobo hardware could be made more reliable by replacing the toy motion platform with a PCB carrying two motors directly driving a pair of wheels. 
+If stepper motors were used, this change would bring the TinyRobo platform very close to the GRITSBots platform in terms of hardware design. 
+If DC motors were used instead, the resulting platform would be closer to Colias. 
+In biology, the appearance of similar solutions to a design problem across different species, such as the similar fin placement on dolphins and sharks, is called convergent evolution. 
+It appears that over the development of tabletop swarm robots, stacked PCBs, IR sensor rings, and direct drivetrains are all convergent features, representing the best solutions at the lowest cost. 
+The use of toys as drivetrains is closer to the foot bones present in the skeletons of whales: of potential historical interest, but not terribly relevant as a modern method of locomotion. 
+
+However, while the toy-based design of TinyRobo may be an evolutionary dead end, the software is not.
+Because the software framework deliberately keeps the hardware specific implementation details at a low level of the software, the virtual sensors, virtual networking, and per-robot control process implementation all remain useful. 
+In the hopes that they will be of use to future swarm roboticists, the TinyRobo control software is available online at https://github.com/ab3nd/TinyRobo.
+
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
