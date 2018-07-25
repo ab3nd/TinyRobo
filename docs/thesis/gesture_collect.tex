@@ -46,11 +46,18 @@ Typically, the gestures that the user uses to perform the available operations a
 
 Unfortunately, the use of screens with interactions inspired by the affordances of physical objects leads to the user having to decide between ``natural'' skills and motions, which are used on physical objects, and the skills and actions used with screens: single-point dragging and clicking. 
 Most users understand that they are looking at pictures of things on a screen, and so default to single-point interactions \citep{vanacken2008ghosts}.
+Further, tangible UIs, a subset of UIs that include real, physical objects for the user to interact with, raise a set of possible interactions that the designer may not forsee, or that the system may not be able to support \citep{hornecker2012beyond}.
+Attempting to leverage the affordances of a physical object by depicting it on a screen adds another gap, where, in addition to failing to account for all of the affordances of the physical object (e.g. hitting it with another object), the system also fails to account for the affordances of a picture of an object (e.g. shrinking or enlarging it, which a real object cannot easily do). 
+Additionally, even if these affordances are handled, they may not have clear meaning. 
+What does it mean to use a photograph to hit a text file?
 
-However, the behavior of users interacting with an NUI device is not solely informed by their intuitions about the physical objects represented on the screen. 
+The behavior of users interacting with an NUI device is not solely informed by their intuitions about the physical objects represented on the screen. 
 Smartphones, tablets, and other multitouch user interface devices, as well as specific types of computer programs, such as CAD and realtime strategy game programs, also inform the user's expectations about interactions with new interfaces. 
 Rather than claiming that the users are untrained, and the gestures are ``intuitive'', it would be more accurate to claim that the users already have a form of training, from the devices that they use in their daily lives. 
 We attempt to discover the gestures that users would choose themselves, based on their own thinking about the interface and their own past experience with computer technology such as tablets, smartphones, and video games. 
+
+User-defined gestures have advantages in memorability and user preference over gestures designed by the researcher or interface programmer \citep{nacenta2013memorability}. 
+However, the study that indicated this preference was for gestures that each user defined for themselves, rather than a gesture set that was constructed by eliciting gestures from the users and compiling a gesture set as in \citep{Micire:2009:ANG:1731903.1731912}. 
 
 This work is an extension of previous work that used a similar process to discover user interface gestures for single or small groups of robots \citep{Micire:2009:ANG:1731903.1731912}. We extend this method from groups to larger swarms of robots, in an attempt to discover if the gestures that users select vary with the number of robots available.
 
@@ -585,6 +592,45 @@ Aside from Alexa, these voice assistants are all accessed through smartphones.
 All of the users of voice commands reported high familiarity with Android or IPhone smartphones, but the survey did not ask if they used the voice assistant feature of their phones. 
 As a result, no conclusion can be drawn about the influence of voice assistant technology on user interface expectations from this study. 
 
+\section{Use of User Interface Widgets}
+
+``UI Widgets", in this case, are interactions with the experiment system where the user referred to or expressed a desire for user interface elements such as buttons, menus, or similar controls.
+Not all users expressed a desire for UI widgets. 
+Of 50 users, 13 used UI widgets. 
+As discussed previously, the desire for UI widgets was higher among gamers, who likely had previous experience with them in games with a similar interface to the experiment tasks. 
+
+\begin{table}
+	\begin{tabular}{l l l}
+		Task & Interactions & UI users \\
+		\hline
+		Mark & 9 & 7\\
+		Patrol A & 10 & 6\\
+		Patrol Screen & 12 & 6\\
+		Remove & 8 & 6 \\
+		Divide Color Mix & 7 & 4\\
+		Split & 4 & 4 \\
+		Square & 23 & 4 \\
+		Crate & 8 & 3 \\
+		Crate Dispersed & 3 & 3\\
+		Disperse & 5 & 3\\
+		Line & 3 & 3\\
+		Stop & 3 & 2 \\
+		Merge & 13 & 1\\
+		Divide & 2 & 1\\
+		Divide Color & 1 & 1\\
+		Divide Color 2 & 1 & 1\\
+		
+	\end{tabular}
+	\caption{Counts of UI widget interactions and of users requesting them, per task.}
+	\label{tab:widget_counts_task}
+\end{table}
+
+
+UI widgets were not used in all tasks. 
+However, the only tasks that did not have at least one user suggest a UI element are the ``move'' and ``move with a wall in the way'' tasks. 
+Table \ref{tab:widget_counts_task} is sorted by how many users expressed a desire to use UI widgets, as this may indicate which of the gestures seemed most difficult to do with a gesture and instead should be done via a conventional UI. 
+
+
 \section{User Strategies for Formations}
 
 The term "gestures" in this work generally refers to a single interaction with the multitouch interface device, from when the user's hands contact the screen to when they leave the screen. 
@@ -644,6 +690,7 @@ As with the square formation task, the users who used single moves were all in t
 The four users who used single moves all also used single moves when presented with the square formation task. 
 The strategies that differ from the square formation case are ``Squeeze'', ``Voice \& other'', ``Tap'', ``Sweep/push'', and ``Select \& tap''. 
 ``Squeeze'' means the user used a pinching gesture to squeeze the robots out into a thinner group, as if they were shaping a soft material. 
+Interestingly, this style of haptic interaction with the shape of a robot swarm has been explored as a potential user interface method in other work, for a limited set of tasks \citep{mcdonald2017haptic}.
 ``Voice \& other'' is similar to ``Voice \& draw'', but rather than drawing the line, the user made a chopping gesture with their hands parallel and slightly separated over the screen to indicate the location. 
 The ``Tap'' strategy user suggested double-tapping the robots as a preset command to form the line, but did not make contact with the screen to indicate where the line would be formed. 
 The ``Sweep/push'' strategy treated the robots as if they were a collection of small objects that could be pushed around the surface, and pushed from the edges of the group to move them into a line. 
@@ -948,6 +995,7 @@ Because of this lack of information, and the fact that most handwritten commands
 
 Interestingly, voice commands were similar to both handwriting, in terms of user choice, and gestures, in terms of syntax. 
 One user used voice commands for all tasks, but a few users also used voice commands for a few tasks, but not all of them. 
+This distribution is like the handwritten commands, in that one user used handwritten commands frequently, but a few other users used a few of them for some tasks.
 The accidental biasing of users towards use of voice for formation tasks was discussed earlier. 
 In addition, two users stated that they would like to have a vocal stop command for the ``stop the robots'' task, because it could be issued quickly and without having to accurately touch the moving robots. 
 These users did not issue other voice commands, as the other tasks were not perceived to be as urgent as the ``stop the robots'' task. 
