@@ -129,15 +129,13 @@ class StupidApp(App):
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
 
         #Debug printing of tag locations
-        self.dbg = True
+        self.dbg = False
         if self.dbg:
             self.tag_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, self.update_tags)
             self.tags = None
 
         self.rosImage = None
-        self.width = 1024
-        self.height = 768
-        
+
         EventLoop.ensure_window()
         Clock.schedule_interval(self.display_image, 1.0 / 30.0)
         
@@ -170,10 +168,8 @@ class StupidApp(App):
 
     def update_image(self, imgMsg):
         #Kick off the image updating in a background thread
-        rospy.logwarn("Starting")
         threading.Thread(target=self.update_image_thread, args=(imgMsg,)).start()
-        rospy.logwarn("...done")
-
+        
     def update_image_thread(self, imgMsg):
         tempImg = ImageConverter.from_ros(imgMsg)
 
@@ -200,7 +196,6 @@ class StupidApp(App):
         tempImg.save(imageData, "PNG")
         imageData.seek(0)
         self.rosImage = CoreImage(imageData, ext='png')
-        rospy.logwarn("Thread done")
         return True
 
     def on_pause(self):

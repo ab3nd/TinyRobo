@@ -4,7 +4,6 @@
 #by stuttering contact with the touchscreen into single sets of events
 
 import rospy
-from geometry_msgs.msg import PointStamped
 from user_interface.msg import Kivy_Event
 
 import touch_cleaner
