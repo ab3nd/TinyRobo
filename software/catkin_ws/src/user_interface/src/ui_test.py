@@ -242,7 +242,7 @@ class ROSMultiImage(MultiImage):
         rosimage.encoding = ENCODINGMAP_PY_TO_ROS[img.mode]
         (rosimage.width, rosimage.height) = img.size
         rosimage.step = (PIL_MODE_CHANNELS[img.mode] * rosimage.width)
-        rosimage.data = img.tostring()
+        rosimage.data = img.tobytes()
         #Ship it!
         self.imgPub.publish(rosimage)
 

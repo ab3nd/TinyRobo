@@ -12,6 +12,7 @@ from kivy.clock import Clock
 from kivy.base import EventLoop
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
+#Window.fullscreen = True
 
 #For image conversion to Kivy textures
 from PIL import Image as PILImage
@@ -155,26 +156,27 @@ class StupidApp(App):
             with self.uiImage.canvas:
                 #NOTE: On implementions that don't support NPOT (non-power-of-two) textures
                 #this will cause a problem, probably a segmentation fault
+                #Set the size to the size of the touchscreen
                 Rectangle(texture = im.texture, size=(im.texture.width, im.texture.height))
-
+                
 
             #Set our window size to the size of the texture
             Window.size = (im.texture.width, im.texture.height)
-
+            
         except Exception as e:
             print e
 
         return True
 
     def update_image(self, imgMsg):
-        self.rosImage = ImageConverter.from_ros(imgMsg)
+        tempImg = ImageConverter.from_ros(imgMsg)
 
         #Draw the tags on the ROS/PIL image
         if self.dbg:
             #if self.tags is not None:
-            pilDraw = ImageDraw.Draw(self.rosImage)
+            pilDraw = ImageDraw.Draw(tempImg)
 
-
+            #Draw dots on the tag detections, to check that I see them in the right places
             for tag in self.tags.detections:
                 tag_x = int(tag.tagCenterPx.x) 
                 tag_y = int(tag.tagCenterPx.y)
@@ -183,6 +185,9 @@ class StupidApp(App):
                 pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
             del pilDraw
 
+        #Resize to fit screen
+        tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
+        self.rosImage = tempImg
         return True
 
     def on_pause(self):
