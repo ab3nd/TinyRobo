@@ -30,10 +30,10 @@ def isMeta(event):
 	return False
 
 def distanceEvents(eventA, eventB):
-	x1 = eventA["event_x"]
-	y1 = eventA["event_y"]
-	x2 = eventB["event_x"]
-	y2 = eventB["event_y"]
+	x1 = eventA.point.x
+	y1 = eventA.point.y
+	x2 = eventB.point.x
+	y2 = eventB.point.y
 
 	return math.sqrt(pow(x1 - x2, 2) + pow(y1 -y2, 2))
 
@@ -94,9 +94,9 @@ def dumpStroke(stroke, fname=None, image=None):
 
 	for event in stroke.events:
 		#Convert to image coordinates
-		x = int(event['event_x'])
+		x = int(event.point.x)
 		#This flips the image, kivy coordinates are upside-down relative to PIL coordinates
-		y = 750 - int(event['event_y'])
+		y = 750 - int(event.point.y)
 		#Then move them from full screen space to the smaller image, including padding
 		#x = x - stroke.minX + (pxlPad/2)
 		#y = y - stroke.minY + (pxlPad/2)
@@ -125,12 +125,12 @@ def dumpStroke(stroke, fname=None, image=None):
 	if len(stroke.events) > 2:
 		#Get the angle between the end points around the centroid
 		#Start by getting the distances between the start and end events and the centroid
-		x1 = stroke.events[0]["event_x"]
-		y1 = stroke.events[0]["event_y"]
+		x1 = stroke.events[0].point.x
+		y1 = stroke.events[0].point.y
 		x2, y2 = stroke.centroid
 		d1 = distance(x1, y1, x2, y2)
-		x1 = stroke.events[-1]["event_x"]
-		y1 = stroke.events[-1]["event_y"]
+		x1 = stroke.events[-1].point.x
+		y1 = stroke.events[-1].point.y
 		d2 = distance(x1, y1, x2, y2)
 		#Distance between the start and end events
 		d3 = distanceEvents(stroke.events[0], stroke.events[-1])
@@ -158,10 +158,10 @@ def dumpStroke(stroke, fname=None, image=None):
 
 class GestureStroke():
 	def __init__(self, event):
-		self.id = event['uid']
-		self.startTime = event['start_time']
+		self.id = event.uid
+		self.startTime = event.start
 		self.endTime = None
-		self.centroid = [event['event_x'], event['event_y']]
+		self.centroid = [event.point.x, event.point.y]
 		self.avg_center_dist = None #Don't calculate until needed
 		self.isEnded = False
 		self.events = [event]
@@ -180,22 +180,22 @@ class GestureStroke():
 
 		#Update the running centroid total
 		#The centroid isn't correct until the event is ended
-		self.centroid[0] += event['event_x']
-		self.centroid[1] += event['event_y']
+		self.centroid[0] += event.point.x
+		self.centroid[1] += event.point.y
 
 		#Update the bounding box
-		if event['event_x'] > self.maxX:
-			self.maxX = event['event_x']
-		if event['event_y'] > self.maxY:
-			self.maxY = event['event_y']
-		if event['event_x'] < self.minX:
-			self.minX = event['event_x']
-		if event['event_y'] < self.minY:
-			self.minY = event['event_y']
+		if event.point.x > self.maxX:
+			self.maxX = event.point.x
+		if event.point.y > self.maxY:
+			self.maxY = event.point.y
+		if event.point.x < self.minX:
+			self.minX = event.point.x
+		if event.point.y < self.minY:
+			self.minY = event.point.y
 
 		#This was the last event of this stroke, so end it and calculate the centroid
-		if event["end_time"] != -1:
-			self.endTime = event['end_time']
+		if event.ended:
+			self.endTime = event.end
 			self.isEnded = True
 			self.centroid[0] = self.centroid[0]/len(self.events)
 			self.centroid[1] = self.centroid[1]/len(self.events)
@@ -206,7 +206,7 @@ class GestureStroke():
 		self.events.extend(otherEvent.events)
 
 		#Sort the events by time, increasing?
-		self.events.sort(key=lambda evt: evt['time'])
+		self.events.sort(key=lambda evt: evt.update)
 
 		#Fix the IDs and event end time, recalculate centroid
 		centroidX = centroidY = 0
@@ -218,8 +218,8 @@ class GestureStroke():
 				event['end_time'] = -1 #No event except the end knows the end time
 
 			#Acuumulate the centroid position
-			centroidX += event['event_x']
-			centroidY += event['event_y']
+			centroidX += event.point.x
+			centroidY += event.point.y
 
 		#AvgCenterDist and centroid have changed
 		self.avg_center_dist = None #Triggers recalculation
@@ -246,8 +246,8 @@ class GestureStroke():
 		if self.avg_center_dist == None:
 			self.avg_center_dist = 0
 			for event in self.events:
-				x1 = event["event_x"]
-				y1 = event["event_y"]
+				x1 = event.point.x
+				y1 = event.point.y
 				x2, y2 = self.centroid
 				self.avg_center_dist += distance(x1, y1, x2, y2)
 			self.avg_center_dist = self.avg_center_dist/len(self.events)
@@ -328,71 +328,5 @@ class GestureCommand():
 		pass
 
 
-# commands = []
 
-# #Load the recorded strokes from the user interface
-# with open(infile, 'r') as inputData:
-
-# 	#Cut the extension off the input file name
-# 	outfile_suffix = infile[:-7]
-	
-# 	try:
-# 		event = pickle.load(inputData)
-		
-# 		#Build a dictionary of strokes 
-# 		strokes = {}
-# 		commands = []
-# 		gc = GestureCommand()
-
-# 		while event is not None:
-# 			if isMeta(event):
-# 				#print event
-# 				if event['desc'].startswith("Advanced") or event['desc'].startswith("Quit"):
-# 					#This is the delimiter between events in the log file
-# 					#TODO for parsing in realtime, it would have to be some recognition of an end of the command
-# 					if strokes:
-# 						#Don't add anything if there aren't any
-# 						gc.addStrokes(strokes)
-# 						commands.append(gc) #May be setting myself up for copy problems here
-# 						gc = GestureCommand()
-# 						strokes = {}
-#  			else:
-# 				if event['uid'] not in strokes.keys():
-# 					#If this event is just starting, create a new entry for it in strokes
-# 					strokes[event['uid']] = GestureStroke(event)
-# 				else:
-# 					#Event already started, extend its entry
-# 					strokes[event['uid']].addEvent(event)
-
-# 			event = pickle.load(inputData)
-# 	except EOFError:
-# 		print "Done loading events"
-	
-
-# #Now strokes contains every touch event series
-# for command in commands:
-# 	dumpCommand(command)
-
-#Do an all pairs comparison to figure out whether any of the strokes in each of the commands should be merged,
-# This is to determine what the time threshold is between commands that are deliberately 
-# seperate from each other, and commands that are the same, but seperated by finger stutter on the screen
-# for cmd in commands:
-# 	#Each command has strokes, each stroke is a canidate for merging with each other stroke
-# 	for strokeA in cmd.strokes.values():
-# 		for strokeB in cmd.strokes.values():
-# 			if strokeA.overlaps(strokeB):
-# 				#The events overlap. Either A starts first or B does
-# 				overlapTime = min(strokeA.endTime, strokeB.endTime) - max(strokeA.startTime, strokeB.startTime)
-
-# 				if strokeA.startTime < strokeB.startTime:
-# 					print "{0} overlaps {1} by {2}".format(strokeA.id, strokeB.id, overlapTime)
-# 				else:
-# 					print "{0} overlaps {1} by {2}".format(strokeA.id, strokeB.id, overlapTime)
-# 			else:
-# 				#The events don't overlap
-# 				#TODO this doesn't need to be all pairs, I only care about sequences
-# 				if strokeA.endTime < strokeB.startTime:
-# 					if (strokeB.id - strokeA.id) == 1:
-# 						print "{0} ends {1} before {2} begins".format(strokeA.id, strokeB.startTime - strokeA.endTime, strokeB.id)
-# 	print "---"		
 

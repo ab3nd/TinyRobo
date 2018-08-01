@@ -22,8 +22,9 @@ from io import BytesIO
 #For ROS interfacing
 import rospy
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import PointStamped
 from apriltags_ros.msg import *
+
+from user_interface.msg import Kivy_Event
 
 class ImageConverter(object):
     """
@@ -66,16 +67,28 @@ class ImageConverter(object):
 
 class ROSTouchRecorder(object):
     def __init__(self, prefix=None):
-        self.touch_pub = rospy.Publisher('touches', PointStamped, queue_size=10)
+        self.touch_pub = rospy.Publisher('touches', Kivy_Event, queue_size=10)
 
     #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
-        #Create a point and publish it. This loses a lot of the event data, 
-        ps = PointStamped()
-        ps.header.frame_id = "ui_app" #str(event.uid)
-        ps.point.x = event.x
-        ps.point.y = event.y
-        self.touch_pub.publish(ps)
+        #Create an event message and publish that
+        em = Kivy_Event()
+        em.uid = event.uid
+        em.point.x = event.x
+        em.point.y = event.y
+        em.point.z = event.z
+        em.isTripletap = event.is_triple_tap
+        em.isDoubletap = event.is_double_tap
+        em.start = rospy.Time.from_sec(event.time_start)
+        if event.time_end < 0:
+            #Kivy uses -1 to mean not ended yet, so set it to the most recent time
+            em.end = rospy.Time.from_sec(event.time_update)
+            em.ended = False
+        else:
+            em.end = rospy.Time.from_sec(event.time_end)
+            em.ended = True
+        em.update = rospy.Time.from_sec(event.time_update)
+        self.touch_pub.publish(em)
 
 
 class ROSTouchImage(UIXImage):
@@ -177,13 +190,14 @@ class StupidApp(App):
             pilDraw = ImageDraw.Draw(tempImg)
 
             #Draw dots on the tag detections, to check that I see them in the right places
-            for tag in self.tags.detections:
-                tag_x = int(tag.tagCenterPx.x) 
-                tag_y = int(tag.tagCenterPx.y)
+            if self.tags is not None:
+                for tag in self.tags.detections:
+                    tag_x = int(tag.tagCenterPx.x) 
+                    tag_y = int(tag.tagCenterPx.y)
 
-                #Draw a dot at the center of the tag
-                pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
-            del pilDraw
+                    #Draw a dot at the center of the tag
+                    pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
+                del pilDraw
 
         #Resize to fit screen
         tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
