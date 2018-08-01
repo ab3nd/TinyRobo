@@ -12,19 +12,19 @@ from kivy.clock import Clock
 from kivy.base import EventLoop
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
-#Window.fullscreen = True
 
 #For image conversion to Kivy textures
 from PIL import Image as PILImage
 from PIL import ImageDraw
 from io import BytesIO  
+import threading
 
 #For ROS interfacing
 import rospy
 from sensor_msgs.msg import Image
 from apriltags_ros.msg import *
-
 from user_interface.msg import Kivy_Event
+
 
 class ImageConverter(object):
     """
@@ -155,33 +155,26 @@ class StupidApp(App):
         return True
 
     def display_image(self, dt):
-        try:
-            if self.rosImage is None:
-                return
-     
-            #Convert pil image to a kivy textureable image
-            imageData = BytesIO()
-            self.rosImage.save(imageData, "PNG")
-            imageData.seek(0)
-            im = CoreImage(imageData, ext='png')
-
+        if self.rosImage is not None:
             self.uiImage.canvas.clear()
             with self.uiImage.canvas:
                 #NOTE: On implementions that don't support NPOT (non-power-of-two) textures
                 #this will cause a problem, probably a segmentation fault
                 #Set the size to the size of the touchscreen
-                Rectangle(texture = im.texture, size=(im.texture.width, im.texture.height))
+                Rectangle(texture = self.rosImage.texture, size=(self.rosImage.texture.width, self.rosImage.texture.height))
                 
-
             #Set our window size to the size of the texture
-            Window.size = (im.texture.width, im.texture.height)
-            
-        except Exception as e:
-            print e
-
+            Window.size = (self.rosImage.texture.width, self.rosImage.texture.height)
+        
         return True
 
     def update_image(self, imgMsg):
+        #Kick off the image updating in a background thread
+        rospy.logwarn("Starting")
+        threading.Thread(target=self.update_image_thread, args=(imgMsg,)).start()
+        rospy.logwarn("...done")
+
+    def update_image_thread(self, imgMsg):
         tempImg = ImageConverter.from_ros(imgMsg)
 
         #Draw the tags on the ROS/PIL image
@@ -201,7 +194,13 @@ class StupidApp(App):
 
         #Resize to fit screen
         tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
-        self.rosImage = tempImg
+        
+        #Convert pil image to a kivy textureable image
+        imageData = BytesIO()
+        tempImg.save(imageData, "PNG")
+        imageData.seek(0)
+        self.rosImage = CoreImage(imageData, ext='png')
+        rospy.logwarn("Thread done")
         return True
 
     def on_pause(self):
