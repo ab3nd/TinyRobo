@@ -49,8 +49,8 @@ def dumpCommand(cmd):
 	fname = "{0}.png".format("_".join([str(x) for x in cmd.strokes.keys()]))
 
 	#This is hardcoded because this is how big my images are. Stylistically not great. 
-	width = 1000 #int(maxX - minX)
-	height = 750 #int(maxY - minY)
+	width = 1680 #int(maxX - minX)
+	height = 1050 #int(maxY - minY)
 
 	#Create a new image with the required shape
 	image = Image.new("RGB", (width, height))
@@ -69,8 +69,8 @@ def dumpStroke(stroke, fname=None, image=None):
 	# If image is None, we're not dumping to an image that got created already
 	if image is None:
 		#Set up widths and heights for image
-		width = 1000 #int(stroke.width()) + pxlPad
-		height = 750 #int(stroke.height()) + pxlPad
+		width = 1680 #int(stroke.width()) + pxlPad
+		height = 1050 #int(stroke.height()) + pxlPad
 	
 		#Create a new image with the required shape
 		image = Image.new("RGB", (width, height))
