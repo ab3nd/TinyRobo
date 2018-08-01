@@ -27,6 +27,7 @@ class TouchCollector(object):
 		for stroke_id in self.strokes.keys():
 			if self.strokes[stroke_id].isEnded:
 				print "Stroke {0} ended".format(stroke_id)
+				touch_cleaner.dumpStroke(self.strokes[stroke_id])
 				del self.strokes[stroke_id]
 
 # #Now strokes contains every touch event series
