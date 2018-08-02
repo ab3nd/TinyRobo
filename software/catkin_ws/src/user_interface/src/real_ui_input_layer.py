@@ -17,7 +17,7 @@ from kivy.core.window import Window
 from PIL import Image as PILImage
 from PIL import ImageDraw
 from io import BytesIO  
-from multiprocessing import Process, Queue
+import threading
 
 #For ROS interfacing
 import rospy
@@ -122,18 +122,11 @@ class StupidApp(App):
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
 
-        #Debug printing of tag locations
-        self.dbg = False
-        if self.dbg:
-            self.tag_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, self.update_tags)
-            self.tags = None
-
         self.rosImage = None
         self.kivyImage = None
-        self.imageQueue = Queue()
 
         EventLoop.ensure_window()
-        Clock.schedule_interval(self.display_image, 1.0 / 20.0)
+        Clock.schedule_interval(self.display_image, 1.0 / 3.0)
         Clock.schedule_interval(self.convert_image, 1.0 / 3.0)
         
     def build(self):
@@ -150,8 +143,7 @@ class StupidApp(App):
         return True
 
     def display_image(self, dt):
-        try:
-            self.kivyImage = self.imageQueue.get()
+        if self.kivyImage is not None:
             self.uiImage.canvas.clear()
             with self.uiImage.canvas:
                 #NOTE: On implementions that don't support NPOT (non-power-of-two) textures
@@ -160,34 +152,26 @@ class StupidApp(App):
                 
             #Set our window size to the size of the texture
             Window.size = (self.kivyImage.texture.width, self.kivyImage.texture.height)
-        except Queue.Empty:
-            pass #Not really sure what to do about it
-
         return True
 
     def update_image(self, imgMsg):
         self.rosImage = imgMsg
-        return True
 
     def convert_image(self, dt):
+        threading.Thread(target=self.convert_image_thread).start()
+
+    def convert_image_thread(self):
         if self.rosImage is not None:
-            p = Process(target=self.convert_image_worker, args=(self.rosImage, self.imageQueue))
-            p.start()
-        return True
+            tempImg = ImageConverter.from_ros(self.rosImage)
 
-    def convert_image_worker(self, imgMsg, q):
-        tempImg = ImageConverter.from_ros(imgMsg)
-
-         #Resize to fit screen
-        tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
-        
-        #Convert pil image to a kivy textureable image
-        imageData = BytesIO()
-        tempImg.save(imageData, "PNG")
-        imageData.seek(0)
-        q.put(CoreImage(imageData, ext='png'))
-        return True
-
+             #Resize to fit screen
+            tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
+            
+            #Convert pil image to a kivy textureable image
+            imageData = BytesIO()
+            tempImg.save(imageData, "PNG")
+            imageData.seek(0)
+            self.kivyImage = CoreImage(imageData, ext='png')
 
     def on_pause(self):
         #Not sure this should do anything
