@@ -17,7 +17,7 @@ from kivy.core.window import Window
 from PIL import Image as PILImage
 from PIL import ImageDraw
 from io import BytesIO  
-import threading
+from multiprocessing import Process, Queue
 
 #For ROS interfacing
 import rospy
@@ -69,7 +69,6 @@ class ROSTouchRecorder(object):
     def __init__(self, prefix=None):
         self.touch_pub = rospy.Publisher('touches', Kivy_Event, queue_size=10)
 
-    #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
         #Create an event message and publish that
         em = Kivy_Event()
@@ -98,11 +97,6 @@ class ROSTouchImage(UIXImage):
         #Record touch events
         self.rtr = ROSTouchRecorder()
         
-        #Resize to match the initial image. They're all the same size, so this is legit
-        # img = Image.open(self.source)
-        # width, height = img.size
-        # Window.size = (width, height)
-
         self.canvas.ask_update()
 
     def on_touch_down(self, touch):
@@ -135,9 +129,12 @@ class StupidApp(App):
             self.tags = None
 
         self.rosImage = None
+        self.kivyImage = None
+        self.imageQueue = Queue()
 
         EventLoop.ensure_window()
-        Clock.schedule_interval(self.display_image, 1.0 / 30.0)
+        Clock.schedule_interval(self.display_image, 1.0 / 20.0)
+        Clock.schedule_interval(self.convert_image, 1.0 / 3.0)
         
     def build(self):
         self.layout = FloatLayout()
@@ -153,50 +150,44 @@ class StupidApp(App):
         return True
 
     def display_image(self, dt):
-        if self.rosImage is not None:
+        try:
+            self.kivyImage = self.imageQueue.get()
             self.uiImage.canvas.clear()
             with self.uiImage.canvas:
                 #NOTE: On implementions that don't support NPOT (non-power-of-two) textures
                 #this will cause a problem, probably a segmentation fault
-                #Set the size to the size of the touchscreen
-                Rectangle(texture = self.rosImage.texture, size=(self.rosImage.texture.width, self.rosImage.texture.height))
+                Rectangle(texture = self.kivyImage.texture, size=(self.kivyImage.texture.width, self.kivyImage.texture.height))
                 
             #Set our window size to the size of the texture
-            Window.size = (self.rosImage.texture.width, self.rosImage.texture.height)
-        
+            Window.size = (self.kivyImage.texture.width, self.kivyImage.texture.height)
+        except Queue.Empty:
+            pass #Not really sure what to do about it
+
         return True
 
     def update_image(self, imgMsg):
-        #Kick off the image updating in a background thread
-        threading.Thread(target=self.update_image_thread, args=(imgMsg,)).start()
-        
-    def update_image_thread(self, imgMsg):
+        self.rosImage = imgMsg
+        return True
+
+    def convert_image(self, dt):
+        if self.rosImage is not None:
+            p = Process(target=self.convert_image_worker, args=(self.rosImage, self.imageQueue))
+            p.start()
+        return True
+
+    def convert_image_worker(self, imgMsg, q):
         tempImg = ImageConverter.from_ros(imgMsg)
 
-        #Draw the tags on the ROS/PIL image
-        if self.dbg:
-            #if self.tags is not None:
-            pilDraw = ImageDraw.Draw(tempImg)
-
-            #Draw dots on the tag detections, to check that I see them in the right places
-            if self.tags is not None:
-                for tag in self.tags.detections:
-                    tag_x = int(tag.tagCenterPx.x) 
-                    tag_y = int(tag.tagCenterPx.y)
-
-                    #Draw a dot at the center of the tag
-                    pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
-                del pilDraw
-
-        #Resize to fit screen
+         #Resize to fit screen
         tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
         
         #Convert pil image to a kivy textureable image
         imageData = BytesIO()
         tempImg.save(imageData, "PNG")
         imageData.seek(0)
-        self.rosImage = CoreImage(imageData, ext='png')
+        q.put(CoreImage(imageData, ext='png'))
         return True
+
 
     def on_pause(self):
         #Not sure this should do anything
@@ -209,7 +200,3 @@ class StupidApp(App):
 if __name__ == '__main__':
     StupidApp().run()
 
-#Might come in handy later
-# from threading import Thread
-# spin_thread = Thread(target=lambda: rospy.spin())
-# spin_thread.start()
