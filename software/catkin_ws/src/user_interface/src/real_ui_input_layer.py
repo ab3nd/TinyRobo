@@ -97,15 +97,31 @@ class ROSTouchImage(UIXImage):
         #Record touch events
         self.rtr = ROSTouchRecorder()
         
+        #Keep track of whether this is being touched
+        self.contacts = {}
+        self.isTouched = False
+
         self.canvas.ask_update()
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.rtr.log_touch_event(touch)
 
+            #Keep track of this touch
+            self.contacts[touch.uid] = touch
+            self.isTouched = True
+            rospy.logwarn("App is being touched")
+
+
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
             self.rtr.log_touch_event(touch)
+
+            #Delete the touch
+            del self.contacts[touch.uid]
+            if len(self.contacts.keys()) == 0:
+                self.isTouched = False
+                rospy.logwarn("Not touched anymore")
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
@@ -124,6 +140,7 @@ class StupidApp(App):
 
         self.rosImage = None
         self.kivyImage = None
+
 
         EventLoop.ensure_window()
         Clock.schedule_interval(self.display_image, 1.0 / 3.0)
@@ -158,10 +175,7 @@ class StupidApp(App):
         self.rosImage = imgMsg
 
     def convert_image(self, dt):
-        threading.Thread(target=self.convert_image_thread).start()
-
-    def convert_image_thread(self):
-        if self.rosImage is not None:
+        if self.rosImage is not None and not self.uiImage.isTouched:
             tempImg = ImageConverter.from_ros(self.rosImage)
 
              #Resize to fit screen

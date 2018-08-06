@@ -61,17 +61,16 @@ def dumpCommand(cmd):
 #Debug function, dumps strokes to image files for viewing
 def dumpStroke(stroke, fname=None, image=None):
 	pxlPad = 16
-	
+	#Set up widths and heights for image
+	width = 1680 #int(stroke.width()) + pxlPad
+	height = 1050 #int(stroke.height()) + pxlPad
+
 	#Load parameters for the image, pad the width and height
 	if fname == None:
 		fname = "stroke_{0}.png".format(stroke.id)
 
 	# If image is None, we're not dumping to an image that got created already
 	if image is None:
-		#Set up widths and heights for image
-		width = 1680 #int(stroke.width()) + pxlPad
-		height = 1050 #int(stroke.height()) + pxlPad
-	
 		#Create a new image with the required shape
 		image = Image.new("RGB", (width, height))
 	
@@ -96,7 +95,7 @@ def dumpStroke(stroke, fname=None, image=None):
 		#Convert to image coordinates
 		x = int(event.point.x)
 		#This flips the image, kivy coordinates are upside-down relative to PIL coordinates
-		y = 750 - int(event.point.y)
+		y = height - int(event.point.y)
 		#Then move them from full screen space to the smaller image, including padding
 		#x = x - stroke.minX + (pxlPad/2)
 		#y = y - stroke.minY + (pxlPad/2)
@@ -108,7 +107,7 @@ def dumpStroke(stroke, fname=None, image=None):
 	#Convert to image coordinates
 	x = int(stroke.centroid[0])
 	#This flips the image, kivy coordinates are upside-down relative to PIL coordinates
-	y = 750 - int(stroke.centroid[1])
+	y = height - int(stroke.centroid[1])
 	#Then move them from full screen space to the smaller image, including padding
 	#x = x - stroke.minX + pxlPad/2
 	#y = y - stroke.minY + pxlPad/2
@@ -138,7 +137,7 @@ def dumpStroke(stroke, fname=None, image=None):
 		#This should be in radians, math.acos is in radians, according to the docs
 		#value is capped at 1 because numerical imprecision was causing math domain errors by feeding
 		#acos values like -1.00000000002, which is, technically, out of ranges
-		textLocation = (stroke.centroid[0] + 5, 750 - (stroke.centroid[1] - 5))
+		textLocation = (stroke.centroid[0] + 5, height - (stroke.centroid[1] - 5))
 		if (d1 * d2) == 0:
 			draw.text(textLocation,"d1 or d2 was zero",(255,255,255),font=font)
 			return
@@ -151,7 +150,7 @@ def dumpStroke(stroke, fname=None, image=None):
 		else:
 			draw.text(textLocation, "Line ID:{0} ({1})".format(stroke.id, len(stroke.events)) ,(255,255,255),font=font)		
 	else:
-		textLocation = (stroke.centroid[0] + 5, 750-(stroke.centroid[1] - 5))
+		textLocation = (stroke.centroid[0] + 5, height-(stroke.centroid[1] - 5))
 		draw.text(textLocation, "Point ID:{0} ({1})".format(stroke.id, len(stroke.events)) ,(255,255,255),font=font)
 	#Write the file
 	image.save(fname)
