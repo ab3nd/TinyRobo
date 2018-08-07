@@ -25,21 +25,66 @@ class TouchCollector(object):
 			#Event already started, extend its entry
 			self.strokes[event.uid].addEvent(event)
 
-		#Decide what to do with this stroke
+		#If the stroke just ended, try merging it with the other ended strokes, if any
 		if self.strokes[event.uid].isEnded:
+
+			just_ended = self.strokes[event.uid]
+
 			#The arriving event just ended a stroke
 			#All other strokes are either ended, or have not ended yet
 			#If the stroke that just ended can be merged with an ended event, merge it
 			for ended_stroke in [x for x in self.strokes.values() if x.isEnded]:
-				if self.strokes[event.uid] == ended_stroke:
+				if just_ended == ended_stroke:
 					continue
 				#Check time and space distances
+				if just_ended.overlaps(ended_stroke):
+					overlapTime = min(just_ended.endTime, ended_stroke.endTime) - max(just_ended.startTime, ended_stroke.startTime)
+					if overlapTime < merge_overlap_threshold:
+						#Overlap is small enough, check distance
+						d = 0
+						if just_ended.endTime < ended_stroke.startTime:
+							#Distance from just_ended end to ended_stroke start
+							d = self.distance(just_ended.events[-1], ended_stroke.events[0])
+						else
+							#Distance from ended stroke end to just_ended start
+							d = self.distance(ended_stroke.events[-1], just_ended.events[0])
+						if d < merge_distance_threshold:
+							#Overlap is small enough and distance is small enough
+							ended_stroke.merge(just_ended)
+							#Have to delete this way instead of through the reference
+							del self.strokes[event.uid]
+				else:
+					#They don't overlap, so check that the ends are close enough in time and space
+					gap = 0
+					d = 0
+					if just_ended.endTime < ended_stroke.startTime:
+						#Gap between just_ended end and e2 start
+						gap = ended_stroke.startTime - just_ended.endTime
+						#Distance from just_ended end to e2 start
+						d = self.distance(just_ended.events[-1], ended_stroke.events[0])
+					else
+						#Gap between e2 end and just_ended start
+						gap = just_ended.startTime - ended_stroke.endTime
+						#Distance from e2 end to just_ended start
+						d = self.distance(ended_stroke.events[-1], just_ended.events[0])
+					if gap < merge_gap_threshold and d < merge_distance_threshold:
+						#Gap in time and distance is small enough
+						ended_stroke.merge(just_ended)
+						#Have to delete this way instead of through the reference
+						del self.strokes[event.uid]
 
-			#If the stroke that just ended might be able to merge with an ongoing or future event, wait
+		#For all the currently ended strokes, if they might be able to merge with an ongoing or future event, 
+		#hang on to them and wait, otherwise publish them 
+		for ended_stroke in [x for x in self.strokes.values() if x.isEnded]:
+			could_merge = False
 			for active_stroke in [x for x in self.strokes.values() if not x.isEnded]:
-				
-			#If neither of those cases is true, publish the event
+				#Check if they could be merged with the active event
+				pass
+			if not could_merge:
+				#If can't be merged and are older than the merge gap threshold, no new event could end up
+				#merging with them, so they're good to be published
 
+			
 		#Check the ended strokes to see if any of them can be published
 		#Publishable strokes are not canidates for merging with any active strokes, or are old enough 
 		#that a stroke starting now couldn't merge with them. 
