@@ -4,7 +4,8 @@
 #by stuttering contact with the touchscreen into single sets of events
 
 import rospy
-from user_interface.msg import Kivy_Event
+from user_interface.msg import Kivy_Event, Stroke
+from geometry_msgs.msg import Point
 import math
 import touch_cleaner
 
@@ -13,6 +14,7 @@ class TouchCollector(object):
 	def __init__(self):
 		self.strokes = {}
 		self.endedStrokes = []
+		self.strokePub = rospy.Publisher('strokes', Stroke, queue_size=10)
 
 	def distance(e1, e2):
 		return math.sqrt(math.pow(e1.point.x - e2.point.x,2) + math.pow(e1.point.y - e2.point.y,2) + math.pow(e1.point.z - e2.point.z,2))
@@ -78,17 +80,41 @@ class TouchCollector(object):
 		for ended_stroke in [x for x in self.strokes.values() if x.isEnded]:
 			could_merge = False
 			for active_stroke in [x for x in self.strokes.values() if not x.isEnded]:
-				#Check if they could be merged with the active event
-				pass
+				#If the end of the ended stroke and the beginning of the active stroke are close enough
+				d = self.distance(ended_stroke.events[-1], active_stroke.events[0])
+				
+				if d < merge_distance_threshold and gap < 
+					#Close enough, check time difference
+					if ended_stroke.overlaps(active_stroke):
+						overlapTime = min(just_ended.endTime, ended_stroke.endTime) - max(just_ended.startTime, ended_stroke.startTime)
+						if overlapTime < merge_overlap_threshold:
+							#They overlap by a small enough amount to merge
+							could_merge = True
+							break
+					else:
+						gap = active_stroke.startTime - ended_stroke.endTime
+						if gap < merge_gap_threshold:
+							could_merge = True
+							break
+
 			if not could_merge:
-				#If can't be merged and are older than the merge gap threshold, no new event could end up
-				#merging with them, so they're good to be published
-
-			
-		#Check the ended strokes to see if any of them can be published
-		#Publishable strokes are not canidates for merging with any active strokes, or are old enough 
-		#that a stroke starting now couldn't merge with them. 
-
+				#This stroke can't be merged with an existing active stroke
+				if rospy.Time.now() - ended_stroke.endTime > merge_gap_threshold:
+					#No future stroke can get start soon enough in time to merge with this event
+					#so publish it
+					strokeMsg = Stroke()
+					strokeMsg.events = ended_stroke.events
+					strokeMsg.isDoubletap = ended_stroke.events[-1].isDoubletap
+					strokeMsg.isTripletap = ended_stroke.events[-1].isTripletap
+					strokeMsg.start = ended_stroke.startTime
+					strokeMsg.end = ended_stroke.endTime
+					strokeMsg.uid = ended_stroke.id
+					strokeMsg.centroid = Point()
+					strokeMsg.centroid.x = ended_stroke.centroid[0] 
+					strokeMsg.centroid.y = ended_stroke.centroid[1]
+					strokeMsg.width = ended_stroke.height()
+					strokeMsg.height = ended_stroke.width()
+					self.strokePub.publish(strokeMsg)
 
 		
 topic = "/touches"
