@@ -1,0 +1,87 @@
+Feedback on thesis proposal defence
+
+- Jay - 
+
+Firmer definition of hyptotheses
+	How each component of what I've done indicates that the theses are true or false
+	How each contribution falsifies (or doesn't) the hypothesis
+
+Why build real robots, and what about having real robots supports or falsifies an explict hypothesis?
+Existance of hardware platform doesn't answer any questions
+	What is hypothesis for platform?
+		I can make really cheap swarm robots
+			cheaper than e.g. E-pucks (easy) 
+			cheaper than Kilobots (hard)
+		Should be able to quote total cost of robots, and cost of adding all sensors to get the same functionality as simulated robots
+			Small laser sensors
+
+Heterogeneity is cool, but what does it actually get you?
+	Practical - can swap bases depending on toy availability
+	Theoretical - how does it affect compilation/translation of programs?
+
+Why GCPR?
+	More specifically, how does localness vs. globalness affect computation
+	With global positioning, movement to point becomes far easier
+		Global positioning is frequently denied, robustness in face of that situation
+
+Hypotheis that user gestures are:
+	More coherent within a condition
+	less coherent across conditions
+	Such that condition can be detected from user gestures
+	Fails if aspects of user gesture set do not correlate highly with swarm size
+
+For each slide, indicate why you are telling people about it
+	Or delete the slide, because it's not helping defend your work
+
+Does commanding real robots drive better behavior from users?
+	Better, in this case being somehow more representative of what hte users would actually do
+		So a better question is whether using simulated robots results in different user behavior from the same task using real robots
+	In the slides, two users talked about moving the wall
+		An obviously real wall wouldn't afford that kind of solution
+
+
+- Jay/Holly - 
+
+Talk some about formal verification and why it doesn't show up in robotics much
+	The real world is very dynamic and not provably correct due to high dimensionality
+
+- Holly - 
+
+New hypothesis: There exists a small set of gestures that people will choose for swarm control without prior instruction
+	Corollary/tie in with previous hypothesis: there is some variation in that set that correlates with swarm size. 
+
+Program composition, also look at provable correctness work (Hadas)
+	Discuss in related work as a possible option
+	Or why it's not a possible option
+		Provable correctness is way harder than e.g. model checking to ensure looser constraints
+			Hitting time of goal state, for example (goal is reached with probability greater than some reasonable bound in some reasonably bounded time)
+
+No one said gestures are "intuitive" or "natural", and did say why
+	Change how this is presented, we've certainly used the phrase in conversation, but probably not without caveats or scare quotes
+
+Could do a quick mturk study to get more data on perception of number of robots in cloud
+	Could even check for bias from training slides
+	Could also check if relative size of something else in the scene biases it
+		E.g. the crate or the wall
+
+Compare results in single robot case to Mark's results in single robot case
+	I intend to, if nothing else just to see if it's the same gestures
+
+Marks finding on RTS was desire for menus not box select
+	Can check that, gets coded as "UI, menu" for my coding scheme
+
+Need to have TinyRobo total cost nailed down, in slides, etc. 
+
+- Radhika - 
+
+Survey how multi-unit select works in games
+Intel swarmcopters with lights, how does that UI work
+	Could they get away with call center, given better autonomy
+		I think there's a scale issue here. 
+		More autonomy changes the bounds, but doesn't fix the underlying problem (overwhelming the user).
+Literature about when people start treating groups of people as groups rather than individuals
+	Military and rescue services
+	NASA mission planning
+Carlos study with people vs. robots for control
+	Didn't find difference, but maybe task wasn't as complex		 
+
