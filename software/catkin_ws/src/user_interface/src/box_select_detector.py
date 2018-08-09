@@ -127,7 +127,7 @@ class BoxSelectDetector(object):
 
 	def check_stroke(self, msg):
 		#For debugging
-		dumpStroke(msg)
+		#dumpStroke(msg)
 		
 		selected_tags = []
 		if len(self.currentTags) > 0:
@@ -140,9 +140,9 @@ class BoxSelectDetector(object):
 			maxY = max(ys)
 			#Get all the tags that have at least one corner in the box
 			for tag in self.currentTags.values():
-				print "minX: {0} tagCenterX: {1} maxX: {2}".format(minX, tag.tagCenterPx.x, maxX)
-				print "minY: {0} tagCenterY: {1} maxY: {2}".format(minY, tag.tagCenterPx.y, maxY)
-				print "---"
+				# print "minX: {0} tagCenterX: {1} maxX: {2}".format(minX, tag.tagCenterPx.x, maxX)
+				# print "minY: {0} tagCenterY: {1} maxY: {2}".format(minY, tag.tagCenterPx.y, maxY)
+				# print "---"
 				if (minX < tag.tagCenterPx.x < maxX) and (minY < tag.tagCenterPx.y < maxY):
 					selected_tags.append(tag.id)
 
