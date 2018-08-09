@@ -55,6 +55,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Kivy_Event.msg
+  Stroke.msg
 #   Message2.msg
 )
 

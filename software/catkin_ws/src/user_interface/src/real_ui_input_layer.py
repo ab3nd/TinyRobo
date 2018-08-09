@@ -110,18 +110,17 @@ class ROSTouchImage(UIXImage):
             #Keep track of this touch
             self.contacts[touch.uid] = touch
             self.isTouched = True
-            rospy.logwarn("App is being touched")
-
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
             self.rtr.log_touch_event(touch)
 
-            #Delete the touch
-            del self.contacts[touch.uid]
+            #Delete the touch if it's still around
+            if touch.uid in self.contacts.keys():
+                del self.contacts[touch.uid]
+            #If no touches remain, nothing is touching anymore
             if len(self.contacts.keys()) == 0:
                 self.isTouched = False
-                rospy.logwarn("Not touched anymore")
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):

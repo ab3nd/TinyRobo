@@ -211,10 +211,10 @@ class GestureStroke():
 		centroidX = centroidY = 0
 		for index, event in enumerate(self.events):
 			
-			event['uid'] = self.id #Normalize ID
+			event.uid = self.id #Normalize ID
 			
 			if index != len(self.events)-1:
-				event['end_time'] = -1 #No event except the end knows the end time
+				event.end = event.update #No event except the end knows the end time
 
 			#Acuumulate the centroid position
 			centroidX += event.point.x
@@ -227,12 +227,24 @@ class GestureStroke():
 
 
 	def overlaps(self, otherEvent):
-		if otherEvent.startTime < self.startTime < otherEvent.endTime:
-			#This event started while the other event was going on
+		if self.isEnded and otherEvent.isEnded:
+			if otherEvent.startTime < self.startTime < otherEvent.endTime:
+				#This event started while the other event was going on
+				return True
+			if self.startTime < otherEvent.startTime < self.endTime:
+				#The other event started while this event was going on
+				return True
+		elif self.isEnded and not otherEvent.isEnded:
+			#This event ended after the ongoing event started
+			return self.endTime > otherEvent.startTime
+		elif not self.isEnded and otherEvent.isEnded:
+			#The other event ended after this event started
+			return otherEvent.endTime > self.startTime
+		else:
+			#Neither event has ended, so they're both still happening
 			return True
-		if self.startTime < otherEvent.startTime < self.endTime:
-			#The other event started while this event was going on
-			return True
+
+		#Paranoia, the possible cases should be covered above
 		return False
 
 	def width(self):

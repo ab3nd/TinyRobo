@@ -15,8 +15,15 @@ class TouchCollector(object):
 		self.strokes = {}
 		self.endedStrokes = []
 		self.strokePub = rospy.Publisher('strokes', Stroke, queue_size=10)
+		#In the original destutter code, empirically, events that overlapped by less than 0.01s
+		#or didn't overlap but were more than 0.099s apart could be merged. 
+		self.merge_overlap_threshold = rospy.Duration.from_sec(0.01)
+		self.merge_gap_threshold = rospy.Duration.from_sec(0.099)
+		#On the 3M screen, a fingertip is about 70px wide, because a finger is about 2cm, 
+		#and the screen is 47.5cm wide or 1680px wide, so 2*1680/47.5 = ~70.
+		self.merge_distance_threshold = 80
 
-	def distance(e1, e2):
+	def distance(self, e1, e2):
 		return math.sqrt(math.pow(e1.point.x - e2.point.x,2) + math.pow(e1.point.y - e2.point.y,2) + math.pow(e1.point.z - e2.point.z,2))
 
 	def touch_event_callback(self, event):
@@ -26,6 +33,7 @@ class TouchCollector(object):
 		else:
 			#Event already started, extend its entry
 			self.strokes[event.uid].addEvent(event)
+
 
 		#If the stroke just ended, try merging it with the other ended strokes, if any
 		if self.strokes[event.uid].isEnded:
@@ -41,16 +49,16 @@ class TouchCollector(object):
 				#Check time and space distances
 				if just_ended.overlaps(ended_stroke):
 					overlapTime = min(just_ended.endTime, ended_stroke.endTime) - max(just_ended.startTime, ended_stroke.startTime)
-					if overlapTime < merge_overlap_threshold:
+					if overlapTime < self.merge_overlap_threshold:
 						#Overlap is small enough, check distance
 						d = 0
 						if just_ended.endTime < ended_stroke.startTime:
 							#Distance from just_ended end to ended_stroke start
 							d = self.distance(just_ended.events[-1], ended_stroke.events[0])
-						else
+						else:
 							#Distance from ended stroke end to just_ended start
 							d = self.distance(ended_stroke.events[-1], just_ended.events[0])
-						if d < merge_distance_threshold:
+						if d < self.merge_distance_threshold:
 							#Overlap is small enough and distance is small enough
 							ended_stroke.merge(just_ended)
 							#Have to delete this way instead of through the reference
@@ -64,12 +72,12 @@ class TouchCollector(object):
 						gap = ended_stroke.startTime - just_ended.endTime
 						#Distance from just_ended end to e2 start
 						d = self.distance(just_ended.events[-1], ended_stroke.events[0])
-					else
+					else:
 						#Gap between e2 end and just_ended start
 						gap = just_ended.startTime - ended_stroke.endTime
 						#Distance from e2 end to just_ended start
 						d = self.distance(ended_stroke.events[-1], just_ended.events[0])
-					if gap < merge_gap_threshold and d < merge_distance_threshold:
+					if gap < self.merge_gap_threshold and d < self.merge_distance_threshold:
 						#Gap in time and distance is small enough
 						ended_stroke.merge(just_ended)
 						#Have to delete this way instead of through the reference
@@ -83,23 +91,23 @@ class TouchCollector(object):
 				#If the end of the ended stroke and the beginning of the active stroke are close enough
 				d = self.distance(ended_stroke.events[-1], active_stroke.events[0])
 				
-				if d < merge_distance_threshold and gap < 
+				if d < self.merge_distance_threshold:
 					#Close enough, check time difference
 					if ended_stroke.overlaps(active_stroke):
-						overlapTime = min(just_ended.endTime, ended_stroke.endTime) - max(just_ended.startTime, ended_stroke.startTime)
-						if overlapTime < merge_overlap_threshold:
+						overlapTime = ended_stroke.endTime - active_stroke.startTime
+						if overlapTime < self.merge_overlap_threshold:
 							#They overlap by a small enough amount to merge
 							could_merge = True
 							break
 					else:
 						gap = active_stroke.startTime - ended_stroke.endTime
-						if gap < merge_gap_threshold:
+						if gap < self.merge_gap_threshold:
 							could_merge = True
 							break
 
 			if not could_merge:
 				#This stroke can't be merged with an existing active stroke
-				if rospy.Time.now() - ended_stroke.endTime > merge_gap_threshold:
+				if rospy.Time.now() - ended_stroke.endTime > self.merge_gap_threshold:
 					#No future stroke can get start soon enough in time to merge with this event
 					#so publish it
 					strokeMsg = Stroke()
