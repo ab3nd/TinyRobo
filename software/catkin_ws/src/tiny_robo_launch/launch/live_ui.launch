@@ -31,9 +31,15 @@
 	<!-- Camera position in the world -->
 	<node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
+	<!-- Attempt to clean up skips in contact -->
 	<node name="destutter" pkg="user_interface" type="destutter.py" output="screen" required="true"/>
+
+	<!-- Launch the user interface -->
 	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen"/>
-	<!-- node name="ui" pkg="user_interface" type="dummy_ui_input_layer.py" required="true" output="screen"/ -->
+	
+	<!-- Checker for box selection gestures -->
+	<node name="box_detector" pkg="user_interface" type="box_select_detector.py" required="true" output="screen" />
+
 	<!-- node name="point_translator" pkg="robot_drivers" type="point_mapper.py" output="screen"/ -->
 
 </launch>

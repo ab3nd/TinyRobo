@@ -21,27 +21,32 @@ class BoxSelectDetector(object):
 		self.currentTags = {}
 		for ii in range(len(msg.detections)):
 			self.currentTags[int(msg.detections[ii].id)] = msg.detections[ii]
-			
-	def check_stroke(msg):
+
+	def check_stroke(self, msg):
+		selected_tags = []
 		if len(self.currentTags) > 0:
 			#Get the bounding box of the stroke
-			#TODO might want to check that it's not too thin?
-			#For each tag
-				#For each corner of the tag
-				#If the corner is inside the box, this robot is selected
-				#Calculate pixels per meter from tag size
-				tag = self.currentTags.values()[0]
-				d = 0
-				for ii in range(1, len(tag.tagCornersPx)):
-					d += self.distancePixels(tag.tagCornersPx[ii], tag.tagCornersPx[ii-1])
-				d = d/len(tag.tagCornersPx)
-				self.avgPxPerM = d/tag.size
-			#If any tags are selected, this stroke could be a box selection
+			xs = [event.point.x for event in msg.events]
+			minX = min(xs)
+			maxX = max(xs)
+			ys = [event.point.y for event in msg.events]
+			minY = min(ys)
+			maxY = max(ys)
+			#Get all the tags that have at least one corner in the box
+			for tag in self.currentTags.values():
+				print "minX: {0} tagCenterX: {1} maxX: {2}".format(minX, tag.tagCenterPx.x, maxX)
+				print "minY: {0} tagCenterY: {1} maxY: {2}".format(minY, tag.tagCenterPx.y, maxY)
+				print "---"
+				if (minX < tag.tagCenterPx.x < maxX) and (minY < tag.tagCenterPx.y < maxY):
+					selected_tags.append(tag.id)
+
+			if len(selected_tags) > 0:
+				#This is possibly a box select, pack it up and publish it
+				rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
 		
-		
-rospy.init_node('touch_destutter')
+rospy.init_node('box_select_detect')
 bsd = BoxSelectDetector()
 strokeSub = rospy.Subscriber("/strokes", Stroke, bsd.check_stroke)
-strokeSub = rospy.Subscriber("/tag_detections", , bsd.check_stroke)
+tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, bsd.update_robot_points)
 
 rospy.spin()

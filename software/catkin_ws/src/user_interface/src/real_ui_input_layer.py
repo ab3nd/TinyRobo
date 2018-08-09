@@ -74,7 +74,7 @@ class ROSTouchRecorder(object):
         em = Kivy_Event()
         em.uid = event.uid
         em.point.x = event.x
-        em.point.y = event.y
+        em.point.y = 1050 - event.y #Flip kivy coords into pixel coords
         em.point.z = event.z
         em.isTripletap = event.is_triple_tap
         em.isDoubletap = event.is_double_tap
