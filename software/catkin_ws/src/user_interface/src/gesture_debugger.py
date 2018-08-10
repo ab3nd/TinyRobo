@@ -13,43 +13,43 @@ import numpy as np
 
 
 class ImageConverter(object):
-    """
-    Based on https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
-    Convert images/compressedimages to and from ROS
-    """
+	"""
+	Based on https://github.com/CURG-archive/ros_rsvp/blob/master/image_converter.py
+	Convert images/compressedimages to and from ROS
+	"""
 
-    _ENCODINGMAP_PY_TO_ROS = {'L': 'mono8', 'RGB': 'rgb8',
-                              'RGBA': 'rgba8', 'YCbCr': 'yuv422'}
-    _ENCODINGMAP_ROS_TO_PY = {'mono8': 'L', 'rgb8': 'RGB',
-                              'rgba8': 'RGBA', 'yuv422': 'YCbCr'}
-    _PIL_MODE_CHANNELS = {'L': 1, 'RGB': 3, 'RGBA': 4, 'YCbCr': 3}
+	_ENCODINGMAP_PY_TO_ROS = {'L': 'mono8', 'RGB': 'rgb8',
+							  'RGBA': 'rgba8', 'YCbCr': 'yuv422'}
+	_ENCODINGMAP_ROS_TO_PY = {'mono8': 'L', 'rgb8': 'RGB',
+							  'rgba8': 'RGBA', 'yuv422': 'YCbCr'}
+	_PIL_MODE_CHANNELS = {'L': 1, 'RGB': 3, 'RGBA': 4, 'YCbCr': 3}
 
-    @staticmethod
-    def to_ros(img):
-        """
-        Convert a PIL/pygame image to a ROS compatible message (sensor_msgs.Image).
-        """
+	@staticmethod
+	def to_ros(img):
+		"""
+		Convert a PIL/pygame image to a ROS compatible message (sensor_msgs.Image).
+		"""
 
-        # Everything ok, convert PIL.Image to ROS and return it
-        if img.mode == 'P':
-            img = img.convert('RGB')
+		# Everything ok, convert PIL.Image to ROS and return it
+		if img.mode == 'P':
+			img = img.convert('RGB')
 
-        rosimage = sensor_msgs.msg.Image()
-        rosimage.encoding = ImageConverter._ENCODINGMAP_PY_TO_ROS[img.mode]
-        (rosimage.width, rosimage.height) = img.size
-        rosimage.step = (ImageConverter._PIL_MODE_CHANNELS[img.mode]
-                         * rosimage.width)
-        rosimage.data = img.tostring()
-        return rosimage
+		rosimage = sensor_msgs.msg.Image()
+		rosimage.encoding = ImageConverter._ENCODINGMAP_PY_TO_ROS[img.mode]
+		(rosimage.width, rosimage.height) = img.size
+		rosimage.step = (ImageConverter._PIL_MODE_CHANNELS[img.mode]
+						 * rosimage.width)
+		rosimage.data = img.tostring()
+		return rosimage
 
-    @staticmethod
-    def from_ros(rosMsg):
-        """
-        Converts a ROS sensor_msgs.Image to a PIL image
-        :param rosMsg: The message to convert
-        :return: an alpha-converted pygame Surface
-        """
-        return PILImage.frombytes(ImageConverter._ENCODINGMAP_ROS_TO_PY[rosMsg.encoding], (rosMsg.width, rosMsg.height), rosMsg.data)
+	@staticmethod
+	def from_ros(rosMsg):
+		"""
+		Converts a ROS sensor_msgs.Image to a PIL image
+		:param rosMsg: The message to convert
+		:return: an alpha-converted pygame Surface
+		"""
+		return Image.frombytes(ImageConverter._ENCODINGMAP_ROS_TO_PY[rosMsg.encoding], (rosMsg.width, rosMsg.height), rosMsg.data)
 
 def distanceEvents(eventA, eventB):
 	x1 = eventA.point.x
@@ -63,7 +63,7 @@ def distance(x1, y1, x2, y2):
 	return math.sqrt(pow(x1 - x2, 2) + pow(y1 -y2, 2))
 
 def clamp(n, minn, maxn):
-    return max(min(maxn, n), minn)
+	return max(min(maxn, n), minn)
 
 #Debug function, dumps strokes to image files for viewing
 def dumpStroke(stroke, fname=None, image=None):
@@ -155,6 +155,11 @@ class GestureVisualizer(object):
 		self.currentTags = {}
 		self.image = None
 
+		#The incoming image is 1024x768
+		#It gets cropped by 120 px off the top, and then scaled to 1680x1050
+		#Scale factor is 
+		self.scale = 1.640625
+
 	def update_robot_points(self, msg):
 		#Just saves the detections
 		self.currentTags = {}
@@ -164,19 +169,19 @@ class GestureVisualizer(object):
 	def update_image(self, msg):
 		tempImg = ImageConverter.from_ros(msg)
 
-        #Resize to fit screen
-        self.image = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
+		#Resize to fit screen
+		self.image = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
 
 	def render_stroke(self, msg):
 		#Render the april tag detections onto the image
-		tempImg = self.Image
+		tempImg = self.image
 		pilDraw = ImageDraw.Draw(tempImg)
 		for tag in self.currentTags.values():
-			tag_x = tag.tagCenterPx.x
-			tag_y = tag.tagCenterPx.y
+			tag_x = tag.tagCenterPx.x * self.scale
+			tag_y = (tag.tagCenterPx.y - 120) * self.scale
 
-            pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
-        del pilDraw
+			pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
+		del pilDraw
 		#Render the stroke onto the image
 		dumpStroke(msg, image=tempImg)
 
@@ -202,7 +207,7 @@ class GestureVisualizer(object):
 		# 		rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
 		
 rospy.init_node('box_select_detect')
-bsd = BoxSelectDetector()
+gv = GestureVisualizer()
 strokeSub = rospy.Subscriber("/strokes", Stroke, gv.render_stroke)
 tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, gv.update_robot_points)
 imgSub = rospy.Subscriber("/overhead_cam/image_rect_color", ROSImage, gv.update_image)

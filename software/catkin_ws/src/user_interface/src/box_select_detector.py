@@ -41,9 +41,10 @@ class BoxSelectDetector(object):
 			maxY = max(ys)
 			#Get all the tags that have at least one corner in the box
 			for tag in self.currentTags.values():
-				# print "minX: {0} tagCenterX: {1} maxX: {2}".format(minX, tag.tagCenterPx.x, maxX)
-				# print "minY: {0} tagCenterY: {1} maxY: {2}".format(minY, tag.tagCenterPx.y, maxY)
-				# print "---"
+				# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
+				tag_x = tag.tagCenterPx.x * 1.640625
+				tag_y = (tag.tagCenterPx.y - 120) * 1.640625
+
 				if (minX < tag.tagCenterPx.x < maxX) and (minY < tag.tagCenterPx.y < maxY):
 					selected_tags.append(tag.id)
 
