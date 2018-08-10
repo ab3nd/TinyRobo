@@ -164,9 +164,6 @@ class GestureStroke():
 		self.avg_center_dist = None #Don't calculate until needed
 		self.isEnded = False
 		self.events = [event]
-		#Lucky me, Kivy doesn't use negative coordinates or put the origin in the middle of the screen
-		self.maxX = self.minX = self.maxY = self.minY = 0
-
 
 	def addEvent(self, event):
 		#Events have ends, and stuff can't occur after the end of the event
@@ -181,16 +178,6 @@ class GestureStroke():
 		#The centroid isn't correct until the event is ended
 		self.centroid[0] += event.point.x
 		self.centroid[1] += event.point.y
-
-		#Update the bounding box
-		if event.point.x > self.maxX:
-			self.maxX = event.point.x
-		if event.point.y > self.maxY:
-			self.maxY = event.point.y
-		if event.point.x < self.minX:
-			self.minX = event.point.x
-		if event.point.y < self.minY:
-			self.minY = event.point.y
 
 		#This was the last event of this stroke, so end it and calculate the centroid
 		if event.ended:
@@ -247,11 +234,18 @@ class GestureStroke():
 		#Paranoia, the possible cases should be covered above
 		return False
 
+	#The width and height are pixels, so convert before returning
 	def width(self):
-		return self.maxX - self.minX
+		xs = [e.point.x for e in self.events]
+		maxX = max(xs)
+		minX = min(xs)
+		return int(maxX - minX)
 
 	def height(self):
-		return self.maxY - self.minY
+		ys = [e.point.y for e in self.events]
+		maxY = max(ys)
+		minY = min(ys)
+		return int(maxY - minY)
 
 	def avgCenterDist(self):
 		if self.avg_center_dist == None:
