@@ -43,7 +43,7 @@
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node_2" output="screen">
-		<param name="robot_addr" value="192.168.1.209" type="str" />
+		<param name="robot_addr" value="192.168.1.243" type="str" />
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node_2/drive_cmd"/>
 	</node>
 
@@ -65,7 +65,7 @@
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node_3" output="screen">
-		<param name="robot_addr" value="192.168.1.176" type="str" />
+		<param name="robot_addr" value="192.168.1.180" type="str" />
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node_3/drive_cmd"/>
 	</node>	
 

@@ -12,19 +12,19 @@ from kivy.clock import Clock
 from kivy.base import EventLoop
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
+#Window.fullscreen = True
 
 #For image conversion to Kivy textures
 from PIL import Image as PILImage
 from PIL import ImageDraw
 from io import BytesIO  
-import threading
 
 #For ROS interfacing
 import rospy
 from sensor_msgs.msg import Image
 from apriltags_ros.msg import *
-from user_interface.msg import Kivy_Event
 
+from user_interface.msg import Kivy_Event
 
 class ImageConverter(object):
     """
@@ -69,12 +69,13 @@ class ROSTouchRecorder(object):
     def __init__(self, prefix=None):
         self.touch_pub = rospy.Publisher('touches', Kivy_Event, queue_size=10)
 
+    #Timestamps are in unix time, seconds since the epoch, down to 10ths of a second. 
     def log_touch_event(self, event):
         #Create an event message and publish that
         em = Kivy_Event()
         em.uid = event.uid
         em.point.x = event.x
-        em.point.y = 1050 - event.y #Flip kivy coords into pixel coords
+        em.point.y = event.y
         em.point.z = event.z
         em.isTripletap = event.is_triple_tap
         em.isDoubletap = event.is_double_tap
@@ -96,10 +97,6 @@ class ROSTouchImage(UIXImage):
         
         #Record touch events
         self.rtr = ROSTouchRecorder()
-        
-        #Keep track of whether this is being touched
-        self.contacts = {}
-        self.isTouched = False
 
         self.canvas.ask_update()
 
@@ -107,20 +104,9 @@ class ROSTouchImage(UIXImage):
         if self.collide_point(*touch.pos):
             self.rtr.log_touch_event(touch)
 
-            #Keep track of this touch
-            self.contacts[touch.uid] = touch
-            self.isTouched = True
-
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
             self.rtr.log_touch_event(touch)
-
-            #Delete the touch if it's still around
-            if touch.uid in self.contacts.keys():
-                del self.contacts[touch.uid]
-            #If no touches remain, nothing is touching anymore
-            if len(self.contacts.keys()) == 0:
-                self.isTouched = False
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos):
@@ -132,19 +118,18 @@ class StupidApp(App):
         super(StupidApp, self).__init__(**kwargs)
 
         #intialize ROS and subscribe to an image topic
-        topic = "/overhead_cam/image_rect_color"
         rospy.init_node('kivy_img_mauler')
-        #We can get away with not calling rospy.Spin() because Kivy keeps it running
-        self.sub = rospy.Subscriber(topic, Image, self.update_image)
 
-        self.rosImage = None
-        self.kivyImage = None
-
+        self.width = 1680
+        self.height = 1050
+        
+        #Just generate an empty image
+        self.rosImage = PILImage.new('RGB',(self.width, self.height),(34,150,72))
 
         EventLoop.ensure_window()
-        Clock.schedule_interval(self.display_image, 1.0 / 3.0)
-        Clock.schedule_interval(self.convert_image, 1.0 / 3.0)
+        #Clock.schedule_interval(self.display_image, 1.0 / 30.0)
         
+
     def build(self):
         self.layout = FloatLayout()
         try:
@@ -152,39 +137,40 @@ class StupidApp(App):
         except Exception as e:
             print e
         self.layout.add_widget(self.uiImage)
+
+        self.display_image()
         return self.layout
 
     def update_tags(self, tag_msg):
         self.tags = tag_msg
         return True
 
-    def display_image(self, dt):
-        if self.kivyImage is not None:
+    def display_image(self):
+        try:
+            if self.rosImage is None:
+                return
+     
+            #Convert pil image to a kivy textureable image
+            imageData = BytesIO()
+            self.rosImage.save(imageData, "PNG")
+            imageData.seek(0)
+            im = CoreImage(imageData, ext='png')
+
             self.uiImage.canvas.clear()
             with self.uiImage.canvas:
                 #NOTE: On implementions that don't support NPOT (non-power-of-two) textures
                 #this will cause a problem, probably a segmentation fault
-                Rectangle(texture = self.kivyImage.texture, size=(self.kivyImage.texture.width, self.kivyImage.texture.height))
+                #Set the size to the size of the touchscreen
+                Rectangle(texture = im.texture, size=(im.texture.width, im.texture.height))
                 
+
             #Set our window size to the size of the texture
-            Window.size = (self.kivyImage.texture.width, self.kivyImage.texture.height)
-        return True
-
-    def update_image(self, imgMsg):
-        self.rosImage = imgMsg
-
-    def convert_image(self, dt):
-        if self.rosImage is not None and not self.uiImage.isTouched:
-            tempImg = ImageConverter.from_ros(self.rosImage)
-
-             #Resize to fit screen
-            tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
+            Window.size = (im.texture.width, im.texture.height)
             
-            #Convert pil image to a kivy textureable image
-            imageData = BytesIO()
-            tempImg.save(imageData, "PNG")
-            imageData.seek(0)
-            self.kivyImage = CoreImage(imageData, ext='png')
+        except Exception as e:
+            print e
+
+        return True
 
     def on_pause(self):
         #Not sure this should do anything
@@ -197,3 +183,7 @@ class StupidApp(App):
 if __name__ == '__main__':
     StupidApp().run()
 
+#Might come in handy later
+# from threading import Thread
+# spin_thread = Thread(target=lambda: rospy.spin())
+# spin_thread.start()
