@@ -179,48 +179,30 @@ TinyRobos are intended to be heterogeneous, partly because of the advantages of 
 While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
 The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot, expressed as ROS Twist messages, into drive signals for the motors. 
 
-%%Toys cost $24, $16, $15, $21/2, 
-%\begin{table}
-%	\begin{tabular}{l l l l}
-%	Part & Price & Quantity & Subtotal\\
-%	\hline
-%	Mobile Toy & 14-20 & 1 & 20 \\
-%	Battery & 2.54 & 1 & 2.54 \\
-%	Main PCB & 2.75 &  1 & 2.75 \\
-%	ESP8266 Module & 2-7 & 1 & 7.0 \\
-%	DRV8830 & 2.30 & 2 & 4.60 \\
-%	MIC5319-3.3YD5 & 1.36 & 1 & 1.36 \\
-%	MCP73831 & 0.58 & 1 & 0.58 \\
-%	\hline
-%	Total & & & 27.83-38.83\\
-%	\end{tabular}
-%	\caption{All prices are for single quantities of new parts. It may be possible to get bulk discounts, especially on the toys and ESP-8226 modules. The costs of the resistors and capacitors has been left off, as they cost fractions of a penny each.}
-%\end{table}
-
  \begin{table}
 	\begin{tabular}{l l l l l l l }
-	Name & Value & Cost & Cost & Count & Subtotal & Subtotal\\
-	& & (1) & (100) & & & (100) \\
+	Name & Value & Cost & Cost & Count & Sub- & Subtotal\\
+	& & (1) & (100) & & total& (100) \\
 	\hline
-	Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
-	C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
-	C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-	C4 & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
-	Charge IC & MCP73831 & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
-	Charge LED & Green & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
-	Diode & GF1A & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
-	Motor driver & DRV8830 & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
-	Header & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
-	PCB &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
-	R1 & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-	R2 & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-	R3, R4 & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
-	R5, R8-12 & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
-	R6, R7 & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
-	Switch & 410-2016 & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
-	Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
-	V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
-	Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
+	Wifi& ESP-8266-03& 4.32 & 2.25 & 1 & 4.32 & 2.25\\
+	PCB& & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
+	Battery& 3.7V& 3.41 & 1.5 & 1 & 3.41 & 1.5\\
+	Motor driver& DRV8830& 2.27 & 1.64 & 2 & 4.54 & 3.28\\
+	V Regulator& MIC5265& 1.4 & 1.06 & 1 & 1.4 & 1.06\\
+	Switch& 410-2016& 0.91 & 0.72 & 1 & 0.91 & 0.72\\
+	Charge IC& MCP73831& 0.59 & 0.44 & 1 & 0.59 & 0.44\\
+	Charge LED& Green& 0.54 & 0.3 & 1 & 0.54 & 0.3\\
+	Header& 6-pin& 0.52 & 0.37 & 1 & 0.52 & 0.37\\
+	Diode& GF1A & 0.51& 0.23 & 1 & 0.51 & 0.23\\
+	C1, C2& 4.7uF& 0.5 & 0.2 & 2 & 1 & 0.4\\
+	R3, R4& 0.22 ohm& 0.46 & 0.13 & 2 & 0.92 & 0.26\\
+	C4& 10uF& 0.19 & 0.06 & 1 & 0.19 & 0.06\\
+	Thermal Fuse& 0ZB0050FF2G1& 0.13 & 0.1 & 1 & 0.13 & 0.1\\
+	C3& 0.1uF& 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+	R1& 470 ohm& 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+	R2& 2k & 0.1& 0.02 & 1 & 0.1 & 0.02\\
+	R5, R8-12& 10k& 0.1 & 0.01 & 6 & 0.6 & 0.06\\
+	R6, R7& 1k& 0.1 & 0.01 & 2 & 0.2 & 0.02\\
 	\hline
 	Total Cost &  &  &  &  & 23.38 & 11.9\\
  	\end{tabular}
