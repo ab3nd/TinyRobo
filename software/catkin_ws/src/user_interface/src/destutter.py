@@ -83,6 +83,7 @@ class TouchCollector(object):
 						#Have to delete this way instead of through the reference
 						del self.strokes[event.uid]
 
+	def timer_callback(self, timerEvent):
 		#For all the currently ended strokes, if they might be able to merge with an ongoing or future event, 
 		#hang on to them and wait, otherwise publish them 
 		for ended_stroke in [x for x in self.strokes.values() if x.isEnded]:
@@ -130,5 +131,9 @@ class TouchCollector(object):
 topic = "/touches"
 rospy.init_node('touch_destutter')
 tc = TouchCollector()
+#Subscribe to touch events that may have stutter from fingers skipping on the screen
 touchSub = rospy.Subscriber(topic, Kivy_Event, tc.touch_event_callback)
+#Check for finished strokes and send them
+strokeTimer = rospy.Timer(rospy.Duration(0.1), tc.timer_callback);
+
 rospy.spin()

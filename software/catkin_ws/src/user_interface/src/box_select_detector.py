@@ -45,7 +45,7 @@ class BoxSelectDetector(object):
 				tag_x = tag.tagCenterPx.x * 1.640625
 				tag_y = (tag.tagCenterPx.y - 120) * 1.640625
 
-				if (minX < tag.tagCenterPx.x < maxX) and (minY < tag.tagCenterPx.y < maxY):
+				if (minX < tag_x < maxX) and (minY < tag_y < maxY):
 					selected_tags.append(tag.id)
 
 			if len(selected_tags) > 0:
