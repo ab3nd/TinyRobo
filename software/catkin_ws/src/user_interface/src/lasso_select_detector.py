@@ -91,8 +91,7 @@ class LassoSelectDetector(object):
 		# And the center,
 		c = P * u
 
-		print A
-		print c
+		return [A, c]
 
 	def check_stroke(self, msg):
 		#Only closed shapes can be lasso selects
@@ -102,16 +101,19 @@ class LassoSelectDetector(object):
 			if len(self.currentTags) > 0:
 				#Get the minimum bounding oval of the lasso gesture
 				points = [(event.point.x, event.point.y) for event in msg.events]
-				self.min_bounding_oval(points)
+				A, c = self.min_bounding_oval(points)
 
-				#Get all the tags that have at least one corner in the minimum oval
+				#Get all the tags that have their center in the ellipse
 				for tag in self.currentTags.values():
 					# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
 					tag_x = tag.tagCenterPx.x * 1.640625
 					tag_y = (tag.tagCenterPx.y - 120) * 1.640625
 
-					if (minX < tag_x < maxX) and (minY < tag_y < maxY):
-						selected_tags.append(tag.id)
+					#Subtract the center of the ellipse and use A as a whitening matrix
+					p = np.matrix([tag_x, tag_y])
+					p_center = p - c
+					p_white = np.sqrt(A) * p_center
+					print tag.id, p_white, np.linalg.norm(p_white)
 
 				if len(selected_tags) > 0:
 					#This is possibly a box select, pack it up and publish it
