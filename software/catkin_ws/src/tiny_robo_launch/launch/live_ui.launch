@@ -38,10 +38,14 @@
 	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen"/>
 	
 	<!-- Checker for box selection gestures -->
-	<!-- node name="box_detector" pkg="user_interface" type="box_select_detector.py" required="true" output="screen" / -->
+	<node name="box_detector" pkg="user_interface" type="box_select_detector.py" required="true" output="screen" />
 
+	<!-- Lasso selection gestures -->
 	<node name="lasso_detector" pkg="user_interface" type="lasso_select_detector.py" required="true" output="screen" />
 
+	<!-- Tap selection gestures -->
+	<node name="tap_detector" pkg="user_interface" type="tap_select_detector.py" required="true" output="screen" />
+	
 	<!-- Debug node that dumps everything to pictures -->
 	<node name="dbg_vis" pkg="user_interface" type="gesture_debugger.py" required="true" output="screen" />
 	<!-- node name="point_translator" pkg="robot_drivers" type="point_mapper.py" output="screen"/ -->

@@ -101,34 +101,38 @@ class LassoSelectDetector(object):
 			if len(self.currentTags) > 0:
 				#Get the minimum bounding oval of the lasso gesture
 				points = [(event.point.x, event.point.y) for event in msg.events]
-				A, c = self.min_bounding_oval(points)
-				#A lot of this test is based on https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
-				# but since the ellipse isn't axis-aligned, the E matrix isn't [[1 0]
-				#                                                               [0 1]]
-				# and the algorthm for the best fit ellipse above includes the unit vectors for the axes already.
-				# I think at an abstract level, what this ends up doing is calculating a matrix representing a
-				# conversion from the ellipse to a unit circle at (0,0), and then subtracting the ellipse center
-				# moves the canidate point to the (0,0) of the transformed space. I could be wrong about that, though. 
-				
-				#Convert A to a whitening matrix (W = A**-1/2)
-				w, v = np.linalg.eig(A)
-				D = np.diagflat(w)
-				W = v * np.sqrt(D) * v.I
+				try:
+					A, c = self.min_bounding_oval(points)
+					#A lot of this test is based on https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
+					# but since the ellipse isn't axis-aligned, the E matrix isn't [[1 0]
+					#                                                               [0 1]]
+					# and the algorthm for the best fit ellipse above includes the unit vectors for the axes already.
+					# I think at an abstract level, what this ends up doing is calculating a matrix representing a
+					# conversion from the ellipse to a unit circle at (0,0), and then subtracting the ellipse center
+					# moves the canidate point to the (0,0) of the transformed space. I could be wrong about that, though. 
 
-				#Get all the tags that have their center in the ellipse
-				for tag in self.currentTags.values():
-					# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
-					tag_x = tag.tagCenterPx.x * 1.640625
-					tag_y = (tag.tagCenterPx.y - 120) * 1.640625
+					#Convert A to a whitening matrix (W = A**-1/2)
+					w, v = np.linalg.eig(A)
+					D = np.diagflat(w)
+					W = v * np.sqrt(D) * v.I
 
-					#Subtract the center of the ellipse and use the whitening matrix
-					p = np.matrix([[tag_x],[tag_y]])
-					p_center = p - c
-					p_white = W * p_center
+					#Get all the tags that have their center in the ellipse
+					for tag in self.currentTags.values():
+						# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
+						tag_x = tag.tagCenterPx.x * 1.640625
+						tag_y = (tag.tagCenterPx.y - 120) * 1.640625
 
-					#Check if the whitened point is in the ellipse
-					if np.linalg.norm(p_white) <= 1:
-						selected_tags.append(tag.id)
+						#Subtract the center of the ellipse and use the whitening matrix
+						p = np.matrix([[tag_x],[tag_y]])
+						p_center = p - c
+						p_white = W * p_center
+
+						#Check if the whitened point is in the ellipse
+						if np.linalg.norm(p_white) <= 1:
+							selected_tags.append(tag.id)
+				except np.linalg.LinAlgError:
+					#Singular matrix usually causes this, the stroke was probably a tap
+					return 			
 				if len(selected_tags) > 0:
 					#This is possibly a box select, pack it up and publish it
 					rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
