@@ -106,6 +106,10 @@ class LassoSelectDetector(object):
 				# but since the ellipse isn't axis-aligned, the E matrix isn't [[1 0]
 				#                                                               [0 1]]
 				# and the algorthm for the best fit ellipse above includes the unit vectors for the axes already.
+				# I think at an abstract level, what this ends up doing is calculating a matrix representing a
+				# conversion from the ellipse to a unit circle at (0,0), and then subtracting the ellipse center
+				# moves the canidate point to the (0,0) of the transformed space. I could be wrong about that, though. 
+				
 				#Convert A to a whitening matrix (W = A**-1/2)
 				w, v = np.linalg.eig(A)
 				D = np.diagflat(w)
@@ -125,11 +129,6 @@ class LassoSelectDetector(object):
 					#Check if the whitened point is in the ellipse
 					if np.linalg.norm(p_white) <= 1:
 						selected_tags.append(tag.id)
-					#Debug prints
-					# print tag.id, p_white, np.linalg.norm(p_white)
-					# print p
-					# print c
-					# print "---"
 				if len(selected_tags) > 0:
 					#This is possibly a box select, pack it up and publish it
 					rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
