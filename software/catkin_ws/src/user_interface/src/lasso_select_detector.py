@@ -102,6 +102,14 @@ class LassoSelectDetector(object):
 				#Get the minimum bounding oval of the lasso gesture
 				points = [(event.point.x, event.point.y) for event in msg.events]
 				A, c = self.min_bounding_oval(points)
+				#A lot of this test is based on https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
+				# but since the ellipse isn't axis-aligned, the E matrix isn't [[1 0]
+				#                                                               [0 1]]
+				# and the algorthm for the best fit ellipse above includes the unit vectors for the axes already.
+				#Convert A to a whitening matrix (W = A**-1/2)
+				w, v = np.linalg.eig(A)
+				D = np.diagflat(w)
+				W = v * np.sqrt(D) * v.I
 
 				#Get all the tags that have their center in the ellipse
 				for tag in self.currentTags.values():
@@ -109,12 +117,19 @@ class LassoSelectDetector(object):
 					tag_x = tag.tagCenterPx.x * 1.640625
 					tag_y = (tag.tagCenterPx.y - 120) * 1.640625
 
-					#Subtract the center of the ellipse and use A as a whitening matrix
-					p = np.matrix([tag_x, tag_y])
+					#Subtract the center of the ellipse and use the whitening matrix
+					p = np.matrix([[tag_x],[tag_y]])
 					p_center = p - c
-					p_white = np.sqrt(A) * p_center
-					print tag.id, p_white, np.linalg.norm(p_white)
+					p_white = W * p_center
 
+					#Check if the whitened point is in the ellipse
+					if np.linalg.norm(p_white) <= 1:
+						selected_tags.append(tag.id)
+					#Debug prints
+					# print tag.id, p_white, np.linalg.norm(p_white)
+					# print p
+					# print c
+					# print "---"
 				if len(selected_tags) > 0:
 					#This is possibly a box select, pack it up and publish it
 					rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
