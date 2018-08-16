@@ -47,7 +47,7 @@ class TapSelectDetector(object):
 				#Check distance
 				d = self.distance(tag_x, tag_y, tap_x, tap_y)
 				if d < min_dist:
-					rospy.logwarn("distance: {0}".format(d))
+					#rospy.logwarn("distance: {0}".format(d))
 					min_dist = d
 					closest_tag = tag.id
 

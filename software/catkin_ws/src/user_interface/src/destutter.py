@@ -125,8 +125,8 @@ class TouchCollector(object):
 					strokeMsg.height = ended_stroke.width()
 					self.strokePub.publish(strokeMsg)
 					#Delete the stroke so it doesn't get republished
-					if ended_stroke.events[0].uid in self.strokes.keys():
-						del self.strokes[ended_stroke.events[0].uid]
+					if ended_stroke.id in self.strokes.keys():
+						del self.strokes[ended_stroke.id]
 		
 topic = "/touches"
 rospy.init_node('touch_destutter')
