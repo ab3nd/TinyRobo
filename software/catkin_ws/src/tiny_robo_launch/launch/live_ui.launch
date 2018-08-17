@@ -45,6 +45,9 @@
 
 	<!-- Tap selection gestures -->
 	<node name="tap_detector" pkg="user_interface" type="tap_select_detector.py" required="true" output="screen" />
+
+	<!-- Tap waypoint gestures -->
+	<node name="waypoint_detector" pkg="user_interface" type="tap_waypoint_detector.py" required="true" output="screen" />
 	
 	<!-- Debug node that dumps everything to pictures -->
 	<node name="dbg_vis" pkg="user_interface" type="gesture_debugger.py" required="true" output="screen" />
