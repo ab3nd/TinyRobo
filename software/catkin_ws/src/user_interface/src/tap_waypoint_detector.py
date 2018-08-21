@@ -53,7 +53,7 @@ class TapWaypointDetector(object):
 			#This is about the width of a fingertip in pixels on the screen
 			if min_dist > 80:
 				#This is possibly a waypoint, pack it up and publish it
-				rospy.loginfo("{msg.uid} is a waypoint")
+				rospy.loginfo("{} is a waypoint".format(msg.uid))
 				closest_tag = None
 		
 rospy.init_node('tap_waypoint_detect')
