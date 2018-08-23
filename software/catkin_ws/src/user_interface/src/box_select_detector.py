@@ -30,6 +30,8 @@ class BoxSelectDetector(object):
 		if classification_heuristics.is_line(msg):		
 			#Clear out selected tags and see if the new gesture selects any of them
 			selected_tags = []
+			isDrag = False
+
 			if len(self.currentTags) > 0:
 				#Get the bounding box of the stroke
 				xs = [event.point.x for event in msg.events]
@@ -38,6 +40,7 @@ class BoxSelectDetector(object):
 				ys = [event.point.y for event in msg.events]
 				minY = min(ys)
 				maxY = max(ys)
+
 				#Get all the tags that have at least one corner in the box
 				for tag in self.currentTags.values():
 					# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
@@ -47,7 +50,16 @@ class BoxSelectDetector(object):
 					if (minX < tag_x < maxX) and (minY < tag_y < maxY):
 						selected_tags.append(tag.id)
 
-				if len(selected_tags) > 0:
+					#Check that this robot isn't very near the start of the line. If it is,
+					#this should be treated as a drag move of the robot, not a selection of other robots. 
+					d = math.sqrt(math.pow(tag_x - msg.events[0].point.x, 2) + math.pow(tag_y - msg.events[0].point.y, 2))
+					#Approx width of a finger on my screen
+					if d < 70: 
+						isDrag = True
+						break
+
+
+				if len(selected_tags) > 0 and not isDrag:
 					#This is possibly a box select, pack it up and publish it
 					rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
 					evt = Gesture()
@@ -58,7 +70,8 @@ class BoxSelectDetector(object):
 					evt.strokes = [msg]
 					self.gesturePub.publish(evt)
 				else:
-					#It's a line, but selects no robots
+					#It's a line, but selects no robots, either becausue it's a drag 
+					#or because it isn't over any robots
 					evt = Gesture()
 					evt.eventName = "path"
 					evt.stamp = rospy.Time.now()
