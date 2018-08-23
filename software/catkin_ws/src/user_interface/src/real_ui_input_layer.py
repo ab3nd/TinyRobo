@@ -24,7 +24,7 @@ import threading
 import rospy
 from sensor_msgs.msg import Image
 from apriltags_ros.msg import *
-from user_interface.msg import Kivy_Event
+from user_interface.msg import Kivy_Event, Gesture
 
 
 class ImageConverter(object):
@@ -69,7 +69,7 @@ class ImageConverter(object):
 class ROSTouchRecorder(object):
     def __init__(self, prefix=None):
         self.touch_pub = rospy.Publisher('touches', Kivy_Event, queue_size=10)
-
+        
     def log_touch_event(self, event):
         #Create an event message and publish that
         em = Kivy_Event()
@@ -137,10 +137,11 @@ class StupidApp(App):
         rospy.init_node('kivy_img_mauler')
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
+        #Gesture recognizers also publish on /gestures
+        self.button_pub = rospy.Publisher("gestures", Gesture, queue_size=10)
 
         self.rosImage = None
         self.kivyImage = None
-
 
         EventLoop.ensure_window()
         Clock.schedule_interval(self.display_image, 1.0 / 3.0)
@@ -178,7 +179,11 @@ class StupidApp(App):
         return self.layout
 
     def handle_button(self, instance):
-        print "Button click {}".format(instance)
+        evt = Gesture()
+        evt.stamp = rospy.Time.now()
+        evt.eventName = instance.text
+        evt.isButton = True
+        self.button_pub.publish(evt)
         return True
 
     def update_tags(self, tag_msg):

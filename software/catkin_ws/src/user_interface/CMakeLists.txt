@@ -56,6 +56,7 @@ add_message_files(
   FILES
   Kivy_Event.msg
   Stroke.msg
+  Gesture.msg
 #   Message2.msg
 )
 

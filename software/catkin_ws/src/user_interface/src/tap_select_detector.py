@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import rospy
-from user_interface.msg import Kivy_Event, Stroke
+from user_interface.msg import Kivy_Event, Stroke, Gesture
 from geometry_msgs.msg import Point
 import math
 from apriltags_ros.msg import *
@@ -17,7 +17,7 @@ import numpy as np
 
 class TapSelectDetector(object):
 	def __init__(self):
-		pass
+		self.gesturePub = rospy.Publisher("gestures", Gesture, queue_size=10)
 
 	def update_robot_points(self, msg):
 		#Just saves the detections
@@ -54,8 +54,18 @@ class TapSelectDetector(object):
 			#This is about the width of a fingertip in pixels on the screen
 			if min_dist < 80 and closest_tag is not None:
 				#This is possibly a tap select, pack it up and publish it
-				rospy.loginfo("{0} selects {1}".format(msg.uid, closest_tag))
+				#rospy.loginfo("{0} selects {1}".format(msg.uid, closest_tag))
+				evt = Gesture()
+				evt.eventName = "tap_select"
+				evt.stamp = rospy.Time.now()
+				evt.isButton = False 
+				evt.robots = [closest_tag]
+				evt.strokes = [msg]
+				self.gesturePub.publish(evt)
+				
+				#Clear for next pass
 				closest_tag = None
+
 		
 rospy.init_node('lasso_select_detect')
 tsd = TapSelectDetector()

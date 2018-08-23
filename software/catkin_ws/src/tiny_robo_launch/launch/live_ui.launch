@@ -49,6 +49,9 @@
 	<!-- Tap waypoint gestures -->
 	<node name="waypoint_detector" pkg="user_interface" type="tap_waypoint_detector.py" required="true" output="screen" />
 
+	<!-- Paths that are not selections -->
+	<node name="path_detector" pkg="user_interface" type="path_detector.py" required="true" output="screen" />
+
 	<!-- Debug node that dumps everything to pictures -->
 	<node name="dbg_vis" pkg="user_interface" type="gesture_debugger.py" required="true" output="screen" />
 	<!-- node name="point_translator" pkg="robot_drivers" type="point_mapper.py" output="screen"/ -->

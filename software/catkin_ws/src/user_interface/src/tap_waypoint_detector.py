@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import rospy
-from user_interface.msg import Kivy_Event, Stroke
+from user_interface.msg import Kivy_Event, Stroke, Gesture
 from geometry_msgs.msg import Point
 import math
 from apriltags_ros.msg import *
@@ -17,7 +17,7 @@ import numpy as np
 
 class TapWaypointDetector(object):
 	def __init__(self):
-		pass
+		self.gesturePub = rospy.Publisher("gestures", Gesture, queue_size=10)
 
 	def update_robot_points(self, msg):
 		#Just saves the detections
@@ -53,7 +53,14 @@ class TapWaypointDetector(object):
 			#This is about the width of a fingertip in pixels on the screen
 			if min_dist > 80:
 				#This is possibly a waypoint, pack it up and publish it
-				rospy.loginfo("{} is a waypoint".format(msg.uid))
+				#rospy.loginfo("{} is a waypoint".format(msg.uid))
+				evt = Gesture()
+				evt.eventName = "tap_waypoint"
+				evt.stamp = rospy.Time.now()
+				evt.isButton = False 
+				evt.strokes = [msg]
+				self.gesturePub.publish(evt)
+				#Clear for next pass
 				closest_tag = None
 		
 rospy.init_node('tap_waypoint_detect')
