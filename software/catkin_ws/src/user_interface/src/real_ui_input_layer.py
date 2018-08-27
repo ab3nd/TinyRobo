@@ -4,6 +4,7 @@ import kivy
 kivy.require('1.9.1') # replace with your current kivy version !
 from kivy.config import Config
 from kivy.app import App
+from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image as UIXImage
 from kivy.core.image import Image as CoreImage
@@ -23,7 +24,7 @@ import threading
 import rospy
 from sensor_msgs.msg import Image
 from apriltags_ros.msg import *
-from user_interface.msg import Kivy_Event
+from user_interface.msg import Kivy_Event, Gesture
 
 
 class ImageConverter(object):
@@ -68,7 +69,7 @@ class ImageConverter(object):
 class ROSTouchRecorder(object):
     def __init__(self, prefix=None):
         self.touch_pub = rospy.Publisher('touches', Kivy_Event, queue_size=10)
-
+        
     def log_touch_event(self, event):
         #Create an event message and publish that
         em = Kivy_Event()
@@ -136,10 +137,11 @@ class StupidApp(App):
         rospy.init_node('kivy_img_mauler')
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
+        #Gesture recognizers also publish on /gestures
+        self.button_pub = rospy.Publisher("gestures", Gesture, queue_size=10)
 
         self.rosImage = None
         self.kivyImage = None
-
 
         EventLoop.ensure_window()
         Clock.schedule_interval(self.display_image, 1.0 / 3.0)
@@ -152,7 +154,37 @@ class StupidApp(App):
         except Exception as e:
             print e
         self.layout.add_widget(self.uiImage)
+
+        #Add buttons for more complex actions
+        #Patrol
+        self.patrol = Button(text="Patrol", pos_hint={'right': 0.1, "top": 0.98}, size_hint=(0.07, 0.05))
+        self.patrol.bind(on_press=self.handle_button)
+        self.layout.add_widget(self.patrol)
+        #Formation
+        self.formation = Button(text="Formation", pos_hint={'right': 0.2, "top": 0.98}, size_hint=(0.07, 0.05))
+        self.formation.bind(on_press=self.handle_button)
+        self.layout.add_widget(self.formation)
+        #Move object
+        self.move_obj = Button(text="Move Object", pos_hint={'right': 0.3, "top": 0.98}, size_hint=(0.07, 0.05))
+        self.move_obj.bind(on_press=self.handle_button)
+        self.layout.add_widget(self.move_obj)
+        #Remove robot
+        self.remove_bot = Button(text="Remove Robot", pos_hint={'right': 0.4, "top": 0.98}, size_hint=(0.07, 0.05))
+        self.remove_bot.bind(on_press=self.handle_button)
+        self.layout.add_widget(self.remove_bot)
+        #Select by color
+        self.select_color = Button(text="Select Group", pos_hint={'right': 0.5, "top": 0.98}, size_hint=(0.07, 0.05))
+        self.select_color.bind(on_press=self.handle_button)
+        self.layout.add_widget(self.select_color)
         return self.layout
+
+    def handle_button(self, instance):
+        evt = Gesture()
+        evt.stamp = rospy.Time.now()
+        evt.eventName = instance.text
+        evt.isButton = True
+        self.button_pub.publish(evt)
+        return True
 
     def update_tags(self, tag_msg):
         self.tags = tag_msg
@@ -191,7 +223,6 @@ class StupidApp(App):
         return True
 
     def on_stop(self):
-        #Unsubscribe from ROS messages
         return True
 
 if __name__ == '__main__':

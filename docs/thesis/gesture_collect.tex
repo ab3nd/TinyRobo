@@ -961,13 +961,6 @@ Even simple cases like moving to a target area, if they show the robots moving a
 \end{figure}
 
 
-
- 
-
- 
-
- 
-
 For position commands, drag, tap, and ``other'' would cover 94.8\% of the gestures. 
 Unfortunately, the ``other'' commands are not a single gesture, but include a diverse collection of gestures, such as pushing with the side of the finger or making a picking-up, carrying, and setting-down motion over the screen.
 As a consequence, attempting to implement all the gestures in the ``other'' category would add significant complexity to the gesture recognition in order to support gestures which were rarely used. 
@@ -1057,3 +1050,27 @@ Because 30.2\% of the selection gestures were taps, it was decided that selectio
 
 
 %Drawing a line to divide the robots into groups vs. drawing a path to follow vs. drawing a line for the robots to get in formation on.
+
+The gestures used by the users could be divided between selection and position gestures, within which there was a great deal of agreement \todo{quantify agreement, maybe after Wobbrock's agreement}, and more complex actions, such as patrol, formations, picking up or moving objects, removing robots, and selection by color. 
+
+For selection, if the system accepts taps (of any form), lasso, and box select, 91.3\% of the user selection gestures are covered. For position, tapping (again, of any form) to set goals or way points and dragging paths will cover 89.2\% of user position gestures.
+
+Because the more complex tasks had higher variety of gestures that could be used to convey the user intent, as well as some users performing the more complex tasks by repeated selection and position gestures, attempting to handle this variety of gestures leads to two problems with the discoverability of the interface. 
+
+First, since each of the gestures was chosen by a smaller number of the users, some training must be performed to inform users who would not have chosen that gesture. 
+This training could be done with a ``cheat-sheet'' that users could pull up for reference, or an animated introductory tutorial sequence. 
+These options are both less desirable than having the system be, in as much as it can be, self-explaining. 
+They separate the training of the user from the user's interaction with the interface, rather than having the interface make clear what can be done.
+
+Second, if a large percentage of the gestures for the more complex tasks were implemented, in order to provide high coverage of the various options that users chose to perform those tasks, there would be a large set of gestures that have very specific meanings. 
+Increasing the set of gestures that the system recognizes increases the chances for ambiguities, where the same gesture was selected for multiple roles by different users, and for errors, where the system misinterprets one gesture as another. 
+This interferes with discoverability, as the system may react in different ways to what the user felt were the same actions, confounding the user's ability to learn a mapping between their actions and the results that the system produces. 
+
+As a result, the complex tasks were assigned to buttons on the user interface. 
+The use of buttons is more discoverable, as the button simply says on it what it does. 
+Buttons do obscure some of the camera view that forms the main part of the user interface, but this problem is not as severe as it might appear. 
+The area the robots operate in is either bounded or unbounded.
+If it is bounded, it either fits on the screen or does not fit on the screen, and if it is unbounded, it does not fit on the screen.
+If the area the robots are in does not fit on the screen, the user likely views it by panning or zooming in and out, and so can pan or zoom so that the area covered by the buttons is not an area which they have to interact with to perform a task. 
+If the area the robots are displayed on and interacted with in does fit on the screen, it can be shrunk slightly, and the buttons can be placed so they don't cover the interaction area. 
+In either case, the design of the interface can accommodate a few buttons without seriously harming the user interaction, although the unchecked proliferation of buttons could lead to design difficulties. 
