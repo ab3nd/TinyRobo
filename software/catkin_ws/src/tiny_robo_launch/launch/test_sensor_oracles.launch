@@ -43,7 +43,7 @@
       <param name="txRange" value="2" type="double"/>
    </node>
 
-   <!-- client for the laser ranges -->
+   <!-- client for the laser ranges>
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client" output="screen">
    	<param name="robot_id" value="7" type="int"/>
       <param name="angleMin" type="double" value="-3"/>
@@ -51,9 +51,9 @@
       <param name="angleIncrement" type="double" value="0.05"/>
       <param name="rangeMin" type="double" value="0.03"/>
       <param name="rangeMax" type="double" value="0.8"/>
-   </node>
+   </node -->
    
-   <!-- client for the laser ranges -->
+   <!-- client for the laser ranges>
    <node pkg="laser_oracle" type="laser_client.py" name="laser_client_6" output="screen">
    	<param name="robot_id" value="3" type="int"/>
    	<param name="angleMin" type="double" value="-1.745"/>
@@ -61,13 +61,13 @@
    	<param name="angleIncrement" type="double" value="0.01745"/>
    	<param name="rangeMin" type="double" value="0.03"/>
    	<param name="rangeMax" type="double" value="0.8"/>
-   </node>
+   </node -->
 
    <node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
    <!-- client for bearing service -->
-   <node pkg="range_and_bearing" type="range_and_bearing_sensor.py" name="rab_sensor_test" output="screen">
+   <!-- node pkg="range_and_bearing" type="range_and_bearing_sensor.py" name="rab_sensor_test" output="screen">
       <param name="robot_id" value="3" type="int"/>
-   </node>
+   </node -->
 
 </launch>
