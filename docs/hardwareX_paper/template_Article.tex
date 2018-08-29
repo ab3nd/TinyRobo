@@ -24,10 +24,10 @@
 
 \begin{abstract}
 Because simulations are necessarily incomplete, it is desirable to test algorithms for swarm robots on physical robots, rather than in simulation. 
-However, the cost of robot hardware is high, and the larger a swarm, the more it will cost. 
+However, the cost of robot hardware can be high, and the larger a swarm, the more it will cost. 
 This paper presents an inexpensive, open source hardware platform for converting toys into swarm robots, and a software infrastructure for controlling the swarm nodes. 
-The resulting system was designed as a tabletop swarm, but has the ability to be expanded both in the area used by the swarm, and the capabilities of the individual swarm members. 
-Conversion of toys into swarm robots is not recommended, as their reliability is insufficient for a research platform.
+The resulting system was designed as a tabletop swarm but has the ability to be expanded both in the area used by the swarm, and the capabilities of the individual swarm members. 
+However, the use of toys as a platform for swarm robotics poses some implementation challenges in balancing reliability and low cost. 
 
 \end{abstract}
 
@@ -35,12 +35,13 @@ Conversion of toys into swarm robots is not recommended, as their reliability is
 
 Simulation of robots is clearly the lowest cost option for performing tests with large collections of robots. 
 Once the simulation environment is created, adding additional robots does not cost more. 
-Larger simulations may of course require more computer time, but by running at less than realtime, or improving the hardware the simulation runs on, this problem can be ameliorated. 
+Larger simulations may require more computer time, of course, but by running at less than realtime or improving the hardware on which the simulation runs, this problem can be ameliorated. 
 
 However, simulation brings with it a number of problems. 
 Because simulations often can have bugs in them that are exploitable by agents operating in the simulation, it is sometimes possible to develop solutions that cannot be reproduced in reality. 
 Additionally, simulations are often more perfect than the real world. 
 In simulation, factors such as wheel slip, which adds error to robot odometry, and other forms of noise and sensor error can be left out of the simulation. 
+Even if these factors are included, the simulated version may lack complexities that are present in the real world, such as the effects of tires bending under load as the robot turns. 
 Range limitations for sensors and communications can also be ignored, as distances in simulation are abstractions. 
 These sorts of departures from reality are tempting, because they save processor time and development effort.
 However, they complicate bringing the resulting software designs into the real world.  
@@ -48,9 +49,7 @@ With real hardware, these effects are included at no cost.
 
 Unfortunately, crossing the gap from simulation to testing on real hardware requires the purchase of hardware, which can be quite expensive. 
 This paper describes the design of a hardware platform and the associated software framework that were intended to produce a tabletop research robot swarm for about \$30 per robot. 
-While the hardware platform was ultimately insufficiently reliable to be a good platform for swarm robot experimentation, the lessons learned in developing it may be of use to future developers of swarm platforms. 
-The software is designed to be adaptable to a wide variety of mobility platforms, and to accommodate new hardware with minimal alteration of the software controlling it. 
-As a result, while the specific hardware platform described in this paper is unsatisfactory, the control software design is not tied to the hardware, and remains useful. 
+
 
 \section{Related Work}
 
@@ -58,21 +57,19 @@ Swarm robots are generally small.
 The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
 Larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
-Also, each robot requires some amount of space to move around in. 
+Also, each robot requires some amount of space in which to move.
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
 If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, a small swarm, or become overly crowded.
 Finally, larger robots are just more cumbersome to deal with. 
 They require larger storage areas, possibly teamwork to lift or repair, and so forth, all multiplied by the number of robots in the swarm. 
 
-The robots used in most swarm work are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound on the scale of the individual swarm members. 
+The robots used in most swarm research are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound on the scale of the individual swarm members. 
 Normal interior doors are around 80 cm wide, and so a robot larger than 80cm across will not be able to move between rooms in a normal building.
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range can be divided into robots that can operate in swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 This paper is concerned with tabletop swarm robot platforms.
-For discussion of larger swarms, see \cite{olson2013cacm, dorigo2013swarmanoid, bonani2010marxbot, tammet2008rfid, guo2007bio}. 
-
-\subsection{Tabletop Swarms}
+For discussion of swarms of larger robots, see \cite{olson2013cacm, dorigo2013swarmanoid, bonani2010marxbot, tammet2008rfid, guo2007bio}. 
 
 At the low end, in terms of size, the I-SWARM Project was intended to create a 2x2x1mm robot that moved by stick-slip locomotion actuated by piezo levers \cite{seyfried2005swarm}. 
 Over the course of the project from 2004-2008, the hardware was developed and used in research, but was not converted to a commercial product.
@@ -597,7 +594,9 @@ The TinyRobo design works with ROS to provide an emulation of a decentralized sy
 While this paper presents it in the context of a complete system, the software framework is not tightly bound to the TinyRobo hardware, and so may be useful to other users of tabletop swarms. 
 
 The combination of hardware and software presented in this work makes it possible to construct swarm robots at a cost of around \$30 per robot. 
-Unfortunately, while the platform can be used to produce swarm robots at low cost, the hardware used in children's toys is not sufficiently reliable to be used as a research platform. 
+While the hardware platform was ultimately insufficiently reliable to be a good platform for swarm robot experimentation, the lessons learned in developing it may be of use to future developers of swarm platforms. 
+The software is designed to be adaptable to a wide variety of mobility platforms, and to accommodate new hardware with minimal alteration of the software controlling it. 
+As a result, while the specific hardware platform described in this paper is unsatisfactory, the control software design is not tied to the hardware, and remains useful.  
 
 \subsection{Anti-scaling of Hardware Failures} \label{section:Anti_scaling_of_Hardware_Failures}
 
