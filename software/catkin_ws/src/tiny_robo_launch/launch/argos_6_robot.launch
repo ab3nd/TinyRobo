@@ -1,0 +1,21 @@
+<launch>
+	<group ns="bot0">
+	  <node pkg="gcpr_runner" type="argos_gcpr.py" name="gcpr0" output="screen" />
+	</group>
+	<group ns="bot1">
+	  <node pkg="gcpr_runner" type="argos_gcpr.py" name="gcpr1" output="screen" />
+	</group>
+	<group ns="bot2">
+	  <node pkg="gcpr_runner" type="argos_gcpr.py" name="gcpr2" output="screen" />
+	</group>
+	<group ns="bot3">
+	  <node pkg="gcpr_runner" type="argos_gcpr.py" name="gcpr3" output="screen" />
+	</group>
+	<group ns="bot4">
+	  <node pkg="gcpr_runner" type="argos_gcpr.py" name="gcpr4" output="screen" />
+	</group>
+	<group ns="bot5">
+	  <node pkg="gcpr_runner" type="argos_gcpr.py" name="gcpr5" output="screen" />
+	</group>
+
+</launch>
