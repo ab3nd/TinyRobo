@@ -7,6 +7,10 @@ import random
 import math
 from tf import transformations as transf
 
+# The file name isn't great, this script just tries to make the robot drive in a square. 
+# Turning in the other direction will be implemented once a robot actually manages a square. 
+# Turning in both directions is good because it will highlight assymetry in the robot's drive ability. 
+
 def dot(a, b):
 	assert len(a) == len(b)
 	d = 0
@@ -204,50 +208,53 @@ if __name__ == '__main__':
 			#Send it and wait for a little bit for it to take effect
 			twist_pub.publish(sTwist)
 			pub_rate.sleep()
+
+		# Let's pause and see if noise in rotational velocity drops when we're still
+		rospy.sleep(4.0)
+
+		# #Calculate the heading we want to be on if we turn 90 degrees L
+		# desired_heading = pc.currentHeading + 90.0 * (math.pi/180.0)
+		# #Wrap around 0 radians from one direction
+		# #Turning the other way requres different limit check
+		# if desired_heading > (2 * math.pi):
+		# 	desired_heading = desired_heading - (2*math.pi)
+
+		# while not pc.isTurning():
+		# 	#increment the turn speed
+		# 	rot_vel += rot_vel_inc
+
+		# 	#Create a twist message and send it 
+		# 	sTwist = Twist()
+		# 	#only two params are used for robots on a table
+		# 	sTwist.linear.x = 0 #We're not driving forwards
+		# 	sTwist.angular.z = rot_vel
+		# 	#The rest are not used
+		# 	sTwist.linear.y = sTwist.linear.z = 0
+		# 	sTwist.angular.x = sTwist.angular.y = 0
 		
-		#Calculate the heading we want to be on if we turn 90 degrees L
-		desired_heading = pc.currentHeading + 90.0 * (math.pi/180.0)
-		#Wrap around 0 radians from one direction
-		#Turning the other way requres different limit check
-		if desired_heading > (2 * math.pi):
-			desired_heading = desired_heading - (2*math.pi)
+		# 	#Send it
+		# 	twist_pub.publish(sTwist)
 
-		while not pc.isTurning():
-			#increment the turn speed
-			rot_vel += rot_vel_inc
+		# 	#wait for a little bit for it to take effect
+		# 	pub_rate.sleep()			
 
-			#Create a twist message and send it 
-			sTwist = Twist()
-			#only two params are used for robots on a table
-			sTwist.linear.x = 0 #We're not driving forwards
-			sTwist.angular.z = rot_vel
-			#The rest are not used
-			sTwist.linear.y = sTwist.linear.z = 0
-			sTwist.angular.x = sTwist.angular.y = 0
-		
-			#Send it
-			twist_pub.publish(sTwist)
+		# #Get the smallest angle, it should be aprox 90 degrees/1.5 rad or so		
+		# smallest_angle = math.atan2(math.sin(pc.currentHeading-desired_heading), math.cos(pc.currentHeading-desired_heading))
 
-			#wait for a little bit for it to take effect
-			pub_rate.sleep()			
+		# while smallest_angle > 0.05:
+		# 	#Watch the smallest angle while we turn
+		# 	smallest_angle = math.atan2(math.sin(pc.currentHeading-desired_heading), math.cos(pc.currentHeading-desired_heading))
+		# 	move_rate.sleep()
 
-		#Get the smallest angle, it should be aprox 90 degrees/1.5 rad or so		
-		smallest_angle = math.atan2(math.sin(pc.currentHeading-desired_heading), math.cos(pc.currentHeading-desired_heading))
-
-		while smallest_angle > 0.05:
-			#Watch the smallest angle while we turn
-			smallest_angle = math.atan2(math.sin(pc.currentHeading-desired_heading), math.cos(pc.currentHeading-desired_heading))
-			move_rate.sleep()
-
-		#Come to a stop after moving
-		while pc.isTurning():
-			#Send a message that stops all motors
-			sTwist = Twist()
-			#Set all params to zero
-			sTwist.linear.x = sTwist.linear.y = sTwist.linear.z = 0
-			sTwist.angular.z = sTwist.angular.x = sTwist.angular.y = 0
+		# #Come to a stop after turning
+		# while pc.isTurning():
+		# 	#Send a message that stops all motors
+		# 	sTwist = Twist()
+		# 	#Set all params to zero
+		# 	sTwist.linear.x = sTwist.linear.y = sTwist.linear.z = 0
+		# 	sTwist.angular.z = sTwist.angular.x = sTwist.angular.y = 0
 					
-			#Send it and wait for a little bit for it to take effect
-			twist_pub.publish(sTwist)
-			pub_rate.sleep()
+		# 	#Send it and wait for a little bit for it to take effect
+		# 	twist_pub.publish(sTwist)
+		# 	pub_rate.sleep()
 

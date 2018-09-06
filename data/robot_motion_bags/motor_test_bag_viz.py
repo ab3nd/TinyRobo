@@ -107,13 +107,14 @@ plt.rcParams['figure.figsize'] = [16,13]
 
 #Plot all together
 try:
-	by_time.plot(y=['lin_vel', 'vel', "rot_vel", "r_vel"], kind="line")
+	#by_time.plot(y=['lin_vel', 'vel', "rot_vel", "r_vel"], kind="line")
+	#For debugging, just the measured velocities
+	by_time.plot(y=['vel', "r_vel"], kind="line")
 
 	#Come up with a file name, save and close
-	figname = in_args.file.split(".")[0] + "-all.png"
+	figname = in_args.file.split(".")[0] + "-robot_{0}_all.png".format(in_args.robot)
 	plt.savefig(figname)
 	plt.close()
 
 except KeyError:
 	print "{0} didn't have the right data in it to plot".format(in_args.file)
-	
