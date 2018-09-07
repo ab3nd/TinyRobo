@@ -73,8 +73,7 @@ class Point_Converter():
 			y = tag.pose.pose.orientation.y
 			z = tag.pose.pose.orientation.z
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
-			#self.currentHeading = roll
-			self.currentHeading = yaw
+			self.currentHeading = roll
 			self.startHeading = self.currentHeading
 
 		else:
@@ -97,9 +96,8 @@ class Point_Converter():
 			z = tag.pose.pose.orientation.z
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
 			
-			#self.currentHeading = roll
-			self.currentHeading = yaw
-
+			self.currentHeading = roll
+			
 			#Now we have two poses, so we can measure travel between them
 			self.travelIsValid = True
 

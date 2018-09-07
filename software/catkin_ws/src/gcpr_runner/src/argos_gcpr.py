@@ -80,8 +80,7 @@ class GCPR_driver(object):
 
 			#Update the robot's heading.
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
-			#self.current_heading = roll
-			self.current_heading = yaw
+			self.current_heading = roll
 
 		#For future distance calculation
 		self.lastPosition = poseMsg

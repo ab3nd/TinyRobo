@@ -25,12 +25,10 @@ def dist(a, b):
 prev_pos = None
 prev_heading = None
 prev_pos_time = None
-#Set everything to 0 initially
-lin_vel = rot_vel = m1 = m2 = vel = 0
 #Store everything in a dict indexed by time
 events = {}
 #Assume everything starts at zero
-lin_vel = rot_vel = m1 = m2 = vel = r_vel = 0.0
+lin_vel = rot_vel = r = m1 = m2 = vel = r_vel = 0.0
 
 for topic, msg, t in bag.read_messages():
 	if topic == "/cmd_vel":
@@ -65,16 +63,16 @@ for topic, msg, t in bag.read_messages():
 					if prev_heading is not None:
 						#d = abs(prev_heading-r) #TODO this may fail weirdly across +/- pi radians
 						#THIS ASSUMES THAT THE SMALLER ANGLE IS THE DIRECTION WE'RE MOVING
-						d = abs(math.atan2(math.sin(y-prev_heading), math.cos(y-prev_heading)))
+						d = abs(math.atan2(math.sin(r-prev_heading), math.cos(r-prev_heading)))
 						delta_t = t - prev_pos_time
 						r_vel = d/delta_t.to_sec() # in rads/sec
-					prev_heading = y
+					prev_heading = r
 					prev_pos_time = t
 
 	else:
 		#This is an error, something got bagged that this script doesn't deal with
 		print topic, msg, t
-	events[t] = [lin_vel, rot_vel, m1, m2, vel, r_vel]
+	events[t] = [lin_vel, rot_vel, m1, m2, vel, r_vel, r]
 
 bag.close()
 
@@ -84,7 +82,7 @@ import matplotlib.pyplot as plt
 
 bag_frame = pd.DataFrame.from_dict(events, orient="index")
 by_time = bag_frame.sort_index()
-by_time = by_time.rename(columns={0:"lin_vel", 1: "rot_vel", 2: "m1", 3: "m2", 4:"vel", 5:"r_vel"})
+by_time = by_time.rename(columns={0:"lin_vel", 1: "rot_vel", 2: "m1", 3: "m2", 4:"vel", 5:"r_vel", 6:"theta"})
 
 #Imbiggen the plots
 plt.rcParams['figure.figsize'] = [16,13]
@@ -105,7 +103,6 @@ plt.rcParams['figure.figsize'] = [16,13]
 # plt.savefig(figname)
 # plt.close()
 
-#Plot all together
 try:
 	#by_time.plot(y=['lin_vel', 'vel', "rot_vel", "r_vel"], kind="line")
 	#For debugging, just the measured velocities
@@ -113,6 +110,14 @@ try:
 
 	#Come up with a file name, save and close
 	figname = in_args.file.split(".")[0] + "-robot_{0}_all.png".format(in_args.robot)
+	plt.savefig(figname)
+	plt.close()
+
+	#Plot angular velocity
+	by_time.plot(y=["theta", "r_vel"], kind="line")
+
+	#Come up with a file name, save and close
+	figname = in_args.file.split(".")[0] + "-robot_{0}-theta.png".format(in_args.robot)
 	plt.savefig(figname)
 	plt.close()
 

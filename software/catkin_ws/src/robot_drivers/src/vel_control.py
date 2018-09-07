@@ -61,7 +61,7 @@ class PointDriver(object):
 
 		#Update the robot's heading.
 		(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
-		current_heading = yaw
+		current_heading = roll
 		#print "Robot heading {}".format(current_heading)
 		
 		# Get the ray to the target point

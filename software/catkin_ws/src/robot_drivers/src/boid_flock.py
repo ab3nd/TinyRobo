@@ -63,8 +63,8 @@ class BoidFlocker(object):
 				(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
 				
 				#Accumulate x, y coordinates for each vector
-				angle_x += math.cos(yaw)
-				angle_y += math.sin(yaw)
+				angle_x += math.cos(roll)
+				angle_y += math.sin(roll)
 			avg_heading = math.atan2(angle_y, angle_x)
 
 			#Get average speed of neighbors (#2 - navigation)
