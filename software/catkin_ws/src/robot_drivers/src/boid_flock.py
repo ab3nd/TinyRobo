@@ -59,13 +59,12 @@ class BoidFlocker(object):
 				y = self.my_neighbors[neighbor_id].pose.pose.orientation.y
 				z = self.my_neighbors[neighbor_id].pose.pose.orientation.z
 
-				#The roll direction is what I'd call yaw.
 				#RPY are ambiguious, nothing to be done for it.
 				(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
 				
 				#Accumulate x, y coordinates for each vector
-				angle_x += math.cos(roll)
-				angle_y += math.sin(roll)
+				angle_x += math.cos(yaw)
+				angle_y += math.sin(yaw)
 			avg_heading = math.atan2(angle_y, angle_x)
 
 			#Get average speed of neighbors (#2 - navigation)

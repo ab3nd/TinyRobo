@@ -65,10 +65,10 @@ for topic, msg, t in bag.read_messages():
 					if prev_heading is not None:
 						#d = abs(prev_heading-r) #TODO this may fail weirdly across +/- pi radians
 						#THIS ASSUMES THAT THE SMALLER ANGLE IS THE DIRECTION WE'RE MOVING
-						d = abs(math.atan2(math.sin(r-prev_heading), math.cos(r-prev_heading)))
+						d = abs(math.atan2(math.sin(y-prev_heading), math.cos(y-prev_heading)))
 						delta_t = t - prev_pos_time
 						r_vel = d/delta_t.to_sec() # in rads/sec
-					prev_heading = r
+					prev_heading = y
 					prev_pos_time = t
 
 	else:

@@ -43,12 +43,12 @@ for topic, msg, t in bag.read_messages():
 				#We have a previous heading, so calculate the rotational velocity
 				if prev_headings[tag.id] is not None:
 					#THIS ASSUMES THAT THE SMALLER ANGLE IS THE DIRECTION WE'RE MOVING
-					d = abs(math.atan2(math.sin(r-prev_headings[tag.id]), math.cos(r-prev_headings[tag.id])))
+					d = abs(math.atan2(math.sin(y-prev_headings[tag.id]), math.cos(y-prev_headings[tag.id])))
 					delta_t = t - prev_pos_time
 					r_vel = d/delta_t.to_sec() # in rads/sec
 					vels[tag.id] = r_vel
 
-				prev_headings[tag.id] = r
+				prev_headings[tag.id] = y
 			prev_pos_time = t
 			events[t] = vels
 

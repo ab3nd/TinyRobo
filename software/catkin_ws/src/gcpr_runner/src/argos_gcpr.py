@@ -79,10 +79,9 @@ class GCPR_driver(object):
 			z = poseMsg.orientation.z
 
 			#Update the robot's heading.
-			#The roll direction is what I'd call yaw.
-			#RPY are ambiguious, nothing to be done for it.
 			(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
-			self.current_heading = roll
+			#self.current_heading = roll
+			self.current_heading = yaw
 
 		#For future distance calculation
 		self.lastPosition = poseMsg

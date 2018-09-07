@@ -60,10 +60,8 @@ class PointDriver(object):
 		z = tag.pose.pose.orientation.z
 
 		#Update the robot's heading.
-		#The roll direction is what I'd call yaw.
-		#RPY are ambiguious, nothing to be done for it.
 		(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
-		current_heading = roll
+		current_heading = yaw
 		#print "Robot heading {}".format(current_heading)
 		
 		# Get the ray to the target point
