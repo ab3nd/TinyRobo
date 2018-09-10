@@ -162,7 +162,7 @@ if __name__ == '__main__':
 	rot_vel_inc = 0.01 #rad/sec
 	side_len = 0.25 #m, side of the "8"
 
-	#publish messages every 20th of a second
+	#publish messages every 10th of a second
 	pub_rate = rospy.Rate(20)
 	
 	#Check distance 50 times a second
@@ -173,7 +173,7 @@ if __name__ == '__main__':
 		pc.clear_travel()
 
 		#Try to start the robot moving
-		while not pc.isMoving():
+		while not pc.isMoving() and not rospy.is_shutdown():
 			#increment the linear velocity
 			lin_vel += lin_vel_inc
 
@@ -193,11 +193,11 @@ if __name__ == '__main__':
 			pub_rate.sleep()
 
 		#Now the robot is moving, wait until it has gone a fixed distance
-		while pc.get_travel() < side_len:
+		while pc.get_travel() < side_len and not rospy.is_shutdown():
 			#Delay a little to let it move
 			move_rate.sleep()
 
-		while pc.isMoving():
+		while pc.isMoving() and not rospy.is_shutdown():
 			lin_vel = rot_vel = 0.0
 			#Send a message that stops all motors
 			sTwist = Twist()

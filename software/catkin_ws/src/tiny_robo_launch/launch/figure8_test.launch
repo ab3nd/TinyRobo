@@ -23,7 +23,7 @@
 	<node pkg="tf" type="static_transform_publisher" name="world_broadcaster" args="1.220 0.637 1.4 0 1 0 0 world_base camera_frame 50" />
 
 	<node name="driver" pkg="robot_drivers" type="figure8.py" required="true" output="screen">
-		<param name="/robot_id" value='0' type="int"/>
+		<param name="/robot_id" value='6' type="int"/>
 	</node>
 
 	<!-- Motor translation for tank-style driving -->
@@ -33,7 +33,7 @@
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
-		<param name="robot_addr" value="192.168.1.176" type="str" />
+		<param name="robot_addr" value="192.168.1.119" type="str" />
 	</node>
 
 	<arg name="topics_name" default="/cmd_vel /diff_drive_node/drive_cmd /limited_cmds /tag_detections /ui_twist"/>

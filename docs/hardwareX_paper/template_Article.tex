@@ -584,6 +584,34 @@ For example, the likelihood that a message arrives at the robot to which it was 
 	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
 \end{figure}
 
+\section{Control of TinyRobos}
+
+In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program which instructed them to move forwards until the Apriltag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
+
+Each robot was run 5 times, starting from the same location each time. The robot was power-cycled between runs. Each run was recorded using rosbag, and the data from the recordings were used to generate \todo{MAKE YOU SOME FIGS FOR GREAT GOOD}. 
+
+The robots consisted of three toy tanks from the same manufacturer, a differential-drive Hexbug-brand robot, a differential-drive toy car with large wheels, a hexapod bug-like walker, and an Ackerman-drive toy car. 
+The bug-like walker and the Ackerman-drive car both have different turning kinematics from the differential drive tanks, but this test only consists of forward drive.
+It would have been preferable to have the test include turning, but control of the yaw rotation of a robot via feedback from the Apriltag system was found to be problematic. 
+As the number of pixels that an Apriltag takes up on a camera image decreases, the accuracy of the subpixel estimation used to localize the corners of the tag decreases. 
+Each estimation of the tag location from the ROS Apriltag detection node can then differ from previous estimations, and so even when the robot remains still, there is some noise in its detected position. 
+
+The effect of the noise in subpixel position on the perceived rotation of the tags is larger than its effect on the perceived rotation of the tags, since rotation around the center of the tag does not change the position of its center at all. As a consequence, the tags could be detected to be in lateral motion by comparing the displacement of the center of the tag and checking that it was greater than the expected noise, but detection of rotational motion and velocity calculation was sometimes swamped by noise. 
+
+The noise was also determined to be unevenly distributed over the robot arena. Because the arena is wide, a wide-angle lens \todo{check amazon receipts, figure out how wide that lens is} is used to ensure that the entire arena is visible. 
+ROS provides tools for removing the distortion inherent in the use of a wide-angle lens, but at a cost of decreased effective resolution at the edges of the image. 
+This decrease in resolution results in reduction of subpixel location accuracy, and so increased noise in localization of the tag. 
+
+This problem can be mitigated in a number of ways. 
+First, the resolution of the camera can be increased while keeping the tags the same size and the camera the same distance away. 
+This solution ends up requiring more computational power as the image size increase, in order to keep the tag detection framerate high enough to be useful for realtime control. 
+Second, the tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
+Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
+
+\todo{decription of control program algorithm}
+
+\todo{results for robots}
+
 
 \section{Conclusions}
 
