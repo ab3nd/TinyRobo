@@ -596,7 +596,8 @@ It would have been preferable to have the test include turning, but control of t
 As the number of pixels that an Apriltag takes up on a camera image decreases, the accuracy of the subpixel estimation used to localize the corners of the tag decreases. 
 Each estimation of the tag location from the ROS Apriltag detection node can then differ from previous estimations, and so even when the robot remains still, there is some noise in its detected position. 
 
-The effect of the noise in subpixel position on the perceived rotation of the tags is larger than its effect on the perceived rotation of the tags, since rotation around the center of the tag does not change the position of its center at all. As a consequence, the tags could be detected to be in lateral motion by comparing the displacement of the center of the tag and checking that it was greater than the expected noise, but detection of rotational motion and velocity calculation was sometimes swamped by noise. 
+The effect of the noise in subpixel position on the perceived rotation of the tags is larger than its effect on the perceived rotation of the tags, since rotation around the center of the tag does not change the position of its center at all. 
+As a consequence, the tags could be detected to be in lateral motion by comparing the displacement of the center of the tag and checking that it was greater than the expected noise, but detection of rotational motion and velocity calculation was sometimes swamped by noise. 
 
 The noise was also determined to be unevenly distributed over the robot arena. Because the arena is wide, a wide-angle lens \todo{check amazon receipts, figure out how wide that lens is} is used to ensure that the entire arena is visible. 
 ROS provides tools for removing the distortion inherent in the use of a wide-angle lens, but at a cost of decreased effective resolution at the edges of the image. 
@@ -608,10 +609,50 @@ This solution ends up requiring more computational power as the image size incre
 Second, the tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
 Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
 
-\todo{decription of control program algorithm}
+Because the desired figure-8 motion could not be performed with the rotational localization noise present in the system, the robots were instead commanded to move forward 0.25m, stop, and repeat that sequence of actions until the program was stopped. 
+The program was stopped if the robot was about to run into the wall of the arena, or had entered a state in which it could not move forward anymore. 
+Acceleration during the movement phases was managed by increasing the commanded velocity of the robot until the April tag tracking detected that the robot had begun moving. 
+Once the robot began moving, it was not commanded to change velocity until it had moved at least 0.25m.
+In the following descriptions of the motions of the robots, the directions left and right are relative to the direction of travel of the robot. 
 
-\todo{results for robots}
+The big wheel robot displayed an unfortunately small range of commanded velocities between those which caused it to begin moving, and those which caused it to flip over on its side.
+In three of its five runs, the big wheel accelerated quickly and then flipped during the first motion period. 
+In the remaining two runs, it did not move at all, possibly due to gears jamming. 
 
+The Hexbug-branded 6-wheeled bug displayed an asymmetry in its motor drive speeds. 
+For three of its five runs, both motors ran, and the wheels on both sides rotated, but the right side was driven more quickly, and so the robot made a wide arc to the right and hit the wall of the arena behind the starting location. 
+In one run, one side didn't begin moving at all, causing the robot to rotate rapidly around that side. 
+In another run, the robot twitched briefly, remained still, and then accelerated backwards quickly. 
+This was likely caused by the gradual incrementing of the forward velocity eventually causing an integer overflow, resulting in a large forward velocity command being interpreted as a large negative velocity.
+
+The green tank experienced problems with one side of its drive train in three of its five runs.
+One tread drive did not move, while the other did, resulting in tight turns to the left in two runs, and to the right in one run. In one of the two remaining runs, the green tank did not move at all. In the second, the tank alternated movement and stopped periods until it reached the other side of the arena, which constituted success on this test. 
+
+There are two blue tanks, carrying April tags #8 and #18. 
+Tank #8 moved slightly on four of its 5 runs, and did not move on one of them. 
+At no point did it move the full 0.25m. 
+Tank #18 moved much more consistently, but displayed an arc to the right in four of its 5 runs. 
+In one run, the tank failed to restart after one of the stop phases, and eventually accelerated quickly in reverse. 
+As with the 6-wheeled bug, this was likely the failure of the robot to move leading to a long enough delay that incrementing the commanded acceleration resulted in an integer overflow. 
+
+The single-motor Hexbug-branded blue bug moved consistently, but with a heavy bias towards turning to the left. 
+In every run, it started and stopped, but the curvature of the path to the left caused it to run into one side of the arena or the other. 
+In one run, it fell over while moving, due to the somewhat ``bouncy'' nature of the toy's gait.
+
+The Ackerman-steering toy car also displayed very consistent mobility. In four out of its five runs, it crossed the arena without incident. 
+In one run, it started and went a small distance, but then did not start again. 
+However, the Ackerman-steering toy car has a gearbox that permits backdriving, so when commanded to stop, it coasts for a few centimeters. 
+The toy tanks use a worm gear in their drivetrains, and so do not permit backdriving of the motors by the vehicle's inertia. 
+Instead of coasting, they immediately stop when the motor is commanded to 0 velocity. 
+
+Some of these problems, such as the coasting of the Ackerman-steering car and the biases towards the left or right of some of the robots when commanded to move straight, can be overcome by software. 
+For example, assuming the tags could be used to accurately measure the rotation of the robots, error between the detected rotational velocity and perceived rotational velocity could be accounted for in subsequent motion commands. 
+The Ackerman-steering car drift could be reduced by sending a ``brake'' command to the motor driver IC to activate its back-EMF braking mode, rather than simply stopping by reducing the power output to zero. 
+However, some of the problems are more difficult to alleviate. 
+The tendency of the big wheel robot to flip over could be mitigated by very gradually increasing its speed, at the cost of reducing its control responsiveness. 
+Increasing the frequency of the feedback loop that checks its speed, perhaps by parallelizing the April tag library, would allow it to be operated in the narrow range of stable speeds. 
+Perhaps the blue bug would not fall over if its height were reduced, or the battery were placed lower on the body of the robot.
+However, these mechanical problems could be more easily avoided by simply not using toys that have them. 
 
 \section{Conclusions}
 
