@@ -15,7 +15,6 @@ bg_draw = ImageDraw.Draw(bgnd)
 #For random path colors
 rand_color = randomcolor.RandomColor()
 
-
 def getPoints(bagfile):
 	#Ends up being lists of sorted timestamps and points, indexed by tag id
 	tag_points = {}
@@ -41,7 +40,11 @@ def getPoints(bagfile):
 		tag_points[tag].sort(key= lambda x: x[0])
 		
 	return tag_points
-					
+			
+
+#Log the robots seen for file name
+robots = []
+
 #Some very stupid command line processing here
 files = sys.argv[1:]
 for file in files:
@@ -51,11 +54,12 @@ for file in files:
 		
 		points = getPoints(bag)
 		for robot_id in points.keys():
+			robots.append(robot_id)
 			#Pick a color
 			color = rand_color.generate()[0] #It returns an array
 
+			#Draw the lines
 			for pointIdx in range(1,len(points[robot_id])):
-				#import pdb; pdb.set_trace()
 				x1, y1 = points[robot_id][pointIdx-1][1:]
 				x2, y2 = points[robot_id][pointIdx][1:]
 
@@ -66,5 +70,6 @@ for file in files:
 	else:
 		print "*** Warning: {0} is not a file".format(file)
 
-#TODO Better file name
-bgnd.save("test.png")
+#Create file name
+fname = "robots_"+ "_".join([str(x) for x in list(set(robots))]) + ".png"
+bgnd.save(fname)
