@@ -8,9 +8,6 @@ import rosbag
 import os.path
 import randomcolor #sudo -H pip install randomcolor, because I'm done doing it with numpy rotating matrix hax
 
-#Load the picture
-bgnd = Image.open("arena.png").convert('RGB')
-bg_draw = ImageDraw.Draw(bgnd)
 
 #For random path colors
 rand_color = randomcolor.RandomColor()
@@ -45,6 +42,10 @@ def getPoints(bagfile):
 #Log the robots seen for file name
 robots = []
 
+#Lists of points, indexed by robot id
+all_tracks = {}
+
+#Collect all tracks, indexed per robot
 #Some very stupid command line processing here
 files = sys.argv[1:]
 for file in files:
@@ -54,22 +55,32 @@ for file in files:
 		
 		points = getPoints(bag)
 		for robot_id in points.keys():
-			robots.append(robot_id)
-			#Pick a color
-			color = rand_color.generate()[0] #It returns an array
-
-			#Draw the lines
-			for pointIdx in range(1,len(points[robot_id])):
-				x1, y1 = points[robot_id][pointIdx-1][1:]
-				x2, y2 = points[robot_id][pointIdx][1:]
-
-				#Draw a line in that color between the points
-				bg_draw.line([(x1, y1), (x2, y2)], fill=color, width=5)
-
-			#TODO Line end finials?
+			if robot_id in all_tracks.keys():
+				all_tracks[robot_id].append(points[robot_id])
+			else:
+				all_tracks[robot_id] = []
+				all_tracks[robot_id].append(points[robot_id])
 	else:
 		print "*** Warning: {0} is not a file".format(file)
 
-#Create file name
-fname = "robots_"+ "_".join([str(x) for x in list(set(robots))]) + ".png"
-bgnd.save(fname)
+#Render each robot's tracks to a different file
+for robot in all_tracks.keys():
+	#Load the picture background
+	bgnd = Image.open("arena.png").convert('RGB')
+	bg_draw = ImageDraw.Draw(bgnd)
+
+	for path in all_tracks[robot]:
+		#Pick a color
+		color = rand_color.generate()[0] #It returns an array
+
+		#Draw the lines
+		for pointIdx in range(1,len(path)):
+			x1, y1 = path[pointIdx-1][1:]
+			x2, y2 = path[pointIdx][1:]
+
+			#Draw a line in that color between the points
+			bg_draw.line([(x1+43, y1+34), (x2+43, y2+34)], fill=color, width=5)
+		
+	#Create file name
+	fname = "robot_{}.png".format(robot)
+	bgnd.save(fname)
