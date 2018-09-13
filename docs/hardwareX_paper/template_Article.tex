@@ -8,7 +8,7 @@
 \newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
 \newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
-
+\usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage{auto-pst-pdf}
 \usepackage{graphviz}
@@ -35,14 +35,11 @@ However, the use of toys as a platform for swarm robotics poses some implementat
 
 Simulation of robots is clearly the lowest cost option for performing tests with large collections of robots. 
 Once the simulation environment is created, adding additional robots does not cost more. 
-Larger simulations may require more computer time, of course, but by running at less than realtime or improving the hardware on which the simulation runs, this problem can be ameliorated. 
-
 However, simulation brings with it a number of problems. 
 Because simulations often can have bugs in them that are exploitable by agents operating in the simulation, it is sometimes possible to develop solutions that cannot be reproduced in reality. 
 Additionally, simulations are often more perfect than the real world. 
 In simulation, factors such as wheel slip, which adds error to robot odometry, and other forms of noise and sensor error can be left out of the simulation. 
 Even if these factors are included, the simulated version may lack complexities that are present in the real world, such as the effects of tires bending under load as the robot turns. 
-Range limitations for sensors and communications can also be ignored, as distances in simulation are abstractions. 
 These sorts of departures from reality are tempting, because they save processor time and development effort.
 However, they complicate bringing the resulting software designs into the real world.  
 With real hardware, these effects are included at no cost. 
@@ -56,7 +53,6 @@ This paper describes the design of a hardware platform and the associated softwa
 Swarm robots are generally small. 
 The reason to keep swarm robots small is related to both the cost of making them and the cost of using them. 
 Larger robots consume more materials per unit, and so cost more money.
-As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
 Also, each robot requires some amount of space in which to move.
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
 If the ratio is not kept constant, the robots will crowd each other, and so large robots will require either a very large space, a small swarm, or become overly crowded.
@@ -64,7 +60,7 @@ Finally, larger robots are just more cumbersome to deal with.
 They require larger storage areas, possibly teamwork to lift or repair, and so forth, all multiplied by the number of robots in the swarm. 
 
 The robots used in most swarm research are of a sufficiently small size that many of them can fit in a room. In addition to budgetary constraints, interaction with an environment built for humans places an upper bound on the scale of the individual swarm members. 
-Normal interior doors are around 80 cm wide, and so a robot larger than 80cm across will not be able to move between rooms in a normal building.
+Normal interior doors are around 80 cm wide, and so a robot larger than 80 cm across will not be able to move between rooms in a normal building.
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
 As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
 This scale range can be divided into robots that can operate in swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
@@ -83,44 +79,15 @@ Alice robots are no longer available for purchase.
 The AmIR robot was similar to Alice in size and capability, but with a more modern processor \cite{arvin2009development}.
 There is no evidence that AmIR was ever widely available.
 
-The successsors to AmIR, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \cite{arvin2014colias, arvin2015colias}. 
-Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
-Of particular note, the Colias-$\Phi$ lower processor is responsible for detecting light on the underside of the robot. 
-Because of this downward facing light sensor, Colias-$\Phi$ robots can operate on an LCD screen or translucent table illuminated from beneath by a projector, for experiments in pheromone robotics. 
-The light patterns displayed by the projector act as pheromones, which the robot can detect based on its position on the table. 
-Colias robots cost \pounds25, or \$35US, in parts, but are not commercially available. 
-The Colias-$\Phi$ model has an even more impressive price, at \pounds16, or \$22 USD.
-Part of this drop in price may be due to the omission of the IR inter-robot communication system which Colias robots have. 
-
-The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \cite{kernbach2011swarmrobot}.
+The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice \cite{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and li-po batteries.
 Unfortunately, Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
-The plans and information required to reproduce Jasmine units are available for free at Swarmrobot.org.
-Assembling a Jasmine robot is not beyond the reach of competent electronics hobbyists, but it does require some unusual build processes, such as grinding down the cases of certain electronic parts and filling holes in the PCB with solder to prevent light leaks. 
-The chassis of Jasmine is also a custom mechanical assembly, rather than a commercially available product. 
 
-InsBot was a small robot, measuring 41mm x 30mm x 19mm, that was designed to interact with cockroaches \cite{colot2004insbot}.
-It used two processors, one to run higher level behaviors and one to interface with a suite of sensors that included 12 IR sensors and a linear camera. 
-InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
-However, the construction process appears to have been relatively straightforward. 
-
-Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
-The Epuck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
-The high price of the Epuck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
-Epucks also require a fairly smooth operating surface.
-The Epuck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
-Due to the relatively sharp corner of the lower edges of the robot, the Epuck can become stuck on 2-3mm high obstacles. 
-
-The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
-The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
-The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
-
-The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
-Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
-The Kilobots are intended for research in a highly homogeneous environment, with most or all of the robots executing the same program. 
-They are designed to be programmed in parallel using an IR interface. 
-For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
-The Kilobots move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
+Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \cite{arvin2014colias, arvin2015colias}. 
+Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
+Parts for Colias robots cost \pounds25, or \$35US, but assembled are not commercially available. 
+The Colias-$\Phi$ model has an even more impressive price, at \pounds16, or \$22 USD.
+Part of this drop in price may be due to the omission of the IR inter-robot communication system which Colias robots have.
 
 The GRITSBots platform is a differential-drive platform using stepper motors \cite{pickem2015gritsbot}.
 GRITSBots use the same processor as Colias, in a similar configuration, with one processor operating sensors and the other controlling the robot's motors. 
@@ -133,31 +100,45 @@ All of this hardware is only \$60 per unit in quantities of 25 or more units.
 In order to permit an overhead camera to localize the mROBerTO robots, a single RGB LED on top of the camera can be lit in a unique color to localize the robot, and a green LED on the front of the robot indicates its heading. 
 The use of color information is likely much faster to process than fiducual tags, but does have the disadvantage that it is only useful in 2D unless a stereo camera is used. 
 
+Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
+The Epuck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
+The high price of the Epuck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
+
+The r-one research robot is cheaper than the Epuck, at approximately \$220 USD per unit \cite{mclurkin2013low}. 
+The developers of the r-one position it as a more-featureful and less expensive alternative to the Epuck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
+The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
+
+The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \cite{rubenstein2014kilobot}. 
+Kilobots contain about \$15 worth of parts, but a 10-pack sells for 1100 Swiss francs, or about \$112 (US) per robot. 
+The Kilobots are intended for research in a highly homogeneous environment, with most or all of the robots executing the same program. 
+They are designed to be programmed in parallel using an IR interface. 
+For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \cite{bergbreiter2003cotsbots, soule2011cotsbots}.
-The first COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board \cite{bergbreiter2003cotsbots}. 
-The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
+The first COTSBots used Mica mote hardware for the communications link and sensing, plus a motor control add-on board \cite{bergbreiter2003cotsbots}. 
+The mobility platform was a modified toy, in particular, a specific brand of high-quality micro RC car.
 At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100 (US) per unit. 
-COTSBots use TinyOS, a modular and event-driven framework for developing node software \cite{levis2005tinyos}. 
-TinyOS is written in a dialect of C called nesC. The motor and mote boards communicate using a messaging layer. 
-The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
+The motor driver board is not commercially available, but can be custom-built by board fabrication companies. 
+As of this writing, the mote board is also no longer available, and the company producing it has gone out of business. 
 
 The other COTSBots platform is composed of a laptop for processing interfaced via an Arduino or similar microcontroller board to a modified RC car, tank, or similar toy as a mobility platform \cite{soule2011cotsbots}.
 These COTSBots are no longer a tabletop platform, but they have a more flexible design than the previous COTSBots, as they do not call for a specific toy to be used.
 Due to the diversity of possible combinations of hardware that can be assembled into this configuration, it is still a very viable platform. 
-However, the minimum size of this style of COTSBot is the size of a laptop, which is in turn dictated largely by the minimum size of a useful keyboard. 
-The large size of these COTSBots demands a very large space if the density of robots in a large swarm is to be kept low. 
-Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
-All of these parts add to the overall cost of the swarm. 
+However, the minimum size of this style of COTSBot is the size (and cost) of a laptop.
+The idea of having a standard computer and a variable base, which can be customized to the task at hand, is applicable even if a full laptop is not used. 
 
 \section{Hardware}
 
-The robot swarm developed for this work consists of a WiFi-enabled microcontroller module controlling two motors of a toy, such as a small RC car, for mobility. 
-The hardware module is called TinyRobo, both because of its small size, and because it is a minimalistic hardware platform for a robot. 
-The reasons for choosing this hardware design are explained in more detail below, but the overall intent is to have an inexpensive platform available for swarm research, without having to rely on any particular group of swarm robotics researchers starting and maintaining a side business supporting and selling robots.
+The controller module described in this work was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
+However, unlike the Spider-Bots and COTSBots, this platform does not specify a particular toy chassis to use for mobility. 
+Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
+Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provides steering. 
+All of these toys can be controlled by the hardware described in this work. 
 Duplication of software and other digital artifacts is trivial, so constructing a duplicate of the hardware is the primary difficulty. 
 The use of toys for the mechanical components of the robots is intended to reduce the difficulty of constructing the hardware. 
+The control module is called TinyRobo, both because of the small size of the toys it controls, and the relative simplicity of the controller.
 
 \begin{figure}
 \centering
@@ -165,16 +146,11 @@ The use of toys for the mechanical components of the robots is intended to reduc
 \caption{A tank-drive toy with a 3.7V lithium polymer battery and a TinyRobo control board mounted to it.}
 \end{figure}
 
-The use of children's toys as mobility platforms avoids the sensitivity to the work surface exhibited by the Kilobots and, to a lesser extent, the Epucks.
-The TinyRobo controller module was designed to be used as a replacement for the control electronics of children's toys, similar to the Spider-Bots developed by Laird, Price, and Raptis, or Bergbreiter's COTSBots \cite{lairdspider, bergbreiter2003cotsbots}.
-However, unlike the Spider-Bots and COTSBots, TinyRobo does not specify a particular toy chassis to use for mobility. 
-Most children's toys use either one motor with a mechanical linkage to cause the toy to turn when the motor is reversed, or two motors.
-Two-motor toys frequently use either differential steering or have one motor provide drive power and the other provides steering. 
-All of these toys can be controlled by the hardware described in this work. 
 
 TinyRobos are intended to be heterogeneous, partly because of the advantages of heterogeneity in a swarm, and partly because toy supplies are unreliable.
-While toys in the general case are expected to remain available, a particular line of toys might be discontinued or a modified version released. 
+A particular line of toys might be discontinued or a modified version released. 
 The software framework in development to support TinyRobos is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot, expressed as ROS Twist messages, into drive signals for the motors. 
+As a result, changing to a base with different drive kinematics requires minimal changes to the control software. 
 
  \begin{table}
 	\begin{tabular}{l l l l l l l }
@@ -206,7 +182,7 @@ The software framework in development to support TinyRobos is based on ROS, and 
  \end{table}
  
 The processor of the TinyRobo controller is an ESP-8266 WiFi module.
-The ESP-8266 costs approximately \$3-5, and contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
+The ESP-8266 contains both a wireless interface and a micro controller that can be programmed from a variety of programming environments and languages, including Lua and the Arduino variant of C/C++. The ESP-8266 module is based on the ESP-8266 IC, made by Expressif Systems. The IC itself has an 80Mhz Tensilica Xtensa L106 processor with 64kB of instruction memory and 96kB of data RAM. The modules come equipped with 512kB to 16MB of flash memory for program storage, and some combination of the 16 GPIO lines of the IC available for use. 
 The ESP-8266 is available in several form factors, each designated by a different suffix. 
 The version selected is the ESP-8266-03, which offers more GPIO pins than most other versions, and includes an internal antenna.
 
@@ -299,33 +275,6 @@ As of this writing, the VCNL3020 is \$3.44 and the VL53L0X costs \$6.28 in singl
 These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with the TinyRobo platform. 
 Numerous multichannel ADC ICs with I2C interfaces are also available, which permits the addition of analog sensors to the TinyRobo platform. 
 
-As a thought experiment, the cost of adding a 6-direction IR transmission and reception board  to the TinyRobo platform was explored. 
-This is not a finished design, but as much of the cost in a device of this type is in the semiconductors and PCB, it gives an estimate of the cost. 
-The IR receiver selected would have been the TSOP5700TR, as used in the E-Puck Range and Bearing sensor board, but it is listed as obsolete by the manufacturer (Vishay Semiconductors). 
-The modern replacement appears to be the TSMP6000.
-The IR LED was also selected to match the E-Puck Range and Bearing board.
-
-\begin{table}
-	\begin{tabular}{l l l l l l}
-	Part number & Cost (1) & Cost(100) & Count & Subtotal(1) & Subtotal (100)\\
-	\hline 
-	ATMega168 & 1.40 & 1.12 & 1 & 1.40 & 1.12  \\
-	TSMP6000 & 1.81 & 1.03 & 6 & 10.86 & 6.18  \\
-	SFH4255  & 1.06 & 0.59 & 6 & 6.36 & 3.54 \\
-	SN74ACT08DR & 0.51 & 0.32 & 2 & 1.02 & 0.64 \\
-	PCB & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
-	\hline 
-	Totals & & & & 22.94 & 12.27\\
-	\end{tabular}
-	\caption{Semiconductors for a simple IR communication ring, and their prices. The PCB is the same size and type as the TinyRobo controller, and so has the same cost.}
-	\label{tab:ir_ranger_board}
-\end{table}
-
-Colias appears to implement transmission power control for the infrared LEDs, and perform ranging by transmitting multiple times at varying power levels. 
-If an object is detected by a low-power transmission, it is nearby, but if it is only detected by higher power transmissions, it is further away. 
-Modulating the transmit power can also be used to limit range for inter-robot communication.
-This modulation can be achieved using an AND gate which is powered from a digital output line of the main microcontroller, and applying a PWM signal to that output line.
-Adding a 6-direction range and bearing board to the TinyRobo system could be expected to cost in the neighborhood of \$12-22 USD, depending on the quantity of boards produced. 
 \section {Firmware}
 
 The current version of the TinyRobo firmware is developed in the open-source Arduino development environment.
@@ -345,21 +294,7 @@ It accepts a single-byte command for each motor.
 Bits 7-2 of the byte define the output voltage to be applied to a motor, and the driver attempts to maintain that output voltage.
 The valid range of motor voltage commands for the DRV8830 driver is 0x06 to 0x3F, which corresponds to a range of 0.48V to 5.06V in 0.08V increments. 
 Because the TinyRobo battery is nominally 3.7V, the motor command 0x30 is the highest output available. 
-Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor, as per table \ref{tab:DRV8830_truth}.
-
-\begin{table}
-	\begin{tabular}{l l l l l}
-	Bit 1 & Bit 0 & Out 1 & Out 2 & Function\\
-	\hline
-	0 & 0 & Z & Z & Coast\\
-	0 & 1 & L & H & Reverse\\
-	1 & 0 & H & L & Forward\\
-	1 & 1 & H & H & Brake\\				
-	\end{tabular}
-	
-	\caption{Truth table for DRV8830 drive direction bits. Coast allows the motor to turn freely. Brake connects the motor leads, which results in braking using the motor's back-EMF}
-	\label{tab:DRV8830_truth}
-\end{table}
+Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor.
 
 Once the motor speed is set, the firmware reads the fault bytes from the DRV8830, and sends the motor command and the fault bytes for each motor back to the client over WiFi. 
 The client uses the fault bytes to detect overcurrent conditions in the motor drivers and reduce output power. 
@@ -458,7 +393,7 @@ However, the central computer provides a framework for implementing a decentrali
 		rp3 -> vrNet;
 		vrNet -> rpN;
 					
-		//April tags inform distance and laser
+		//AprilTags inform distance and laser
 		aprilTag -> vrDist;// [label=<apriltags\string_ros/TagDetections>];	
 		aprilTag -> vrLaser;// [label=<apriltags\string_ros/TagDetections>];
 		
@@ -478,79 +413,59 @@ However, since the ROS nodes are running on a relatively modern desktop PC, they
 As a result, the individual robots are small, lightweight, and consume relatively little electrical power, but still have significant computing power. 
 As more powerful and lower power consumption processors become available, more of the processing can be moved from the central computer and onto the actual robots, enabling a smooth transition from a simulated decentralized system to a real decentralized system. 
 
-Individual TinyRobos have minimal sensing capacity, due to their small size. 
+Individual TinyRobos have minimal sensing capacity. 
 The central computer has a top-down camera over the ``arena'' the TinyRobos are active in. 
 Each TinyRobo has an AprilTag \cite{olson2011tags} on top of it, so that the central computer can localize them within the arena. 
 The central computer uses the location information to create ``virtual sensors'' for each robot. 
 Since the central computer knows the location of each robot, the relevant information can be sent to each robot's control process as if it were coming from a sensor on the robot. 
 
-For example, since the central computer knows the location, adding a range and bearing sensor that allows each robot to detect the distance and angle of the nearby robots is simple to implement. 
-This functionality is available in hardware on Epucks and Marxbots, but since each robot must be equipped with it, the cost scales linearly with the number of robots to equip.  
-
-It is possible to calculate the odometry for individual robots by watching the change in position in their tags over time. 
-The calculated odometry could then be published as a ROS topic, just like odometry collected from e.g. wheel encoders. 
-This functionality has not been implemented yet, but would be useful for testing distributed SLAM algorithms on the swarm. 
-
-The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
-Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
-
-\subsection{Virtual Localization}
-
 The AprilTag tracking of the robots provides localization of the robots within a common coordinate frame. 
 It should be stressed that while the central computer can localize the robots, both relative to each other and by absolute position within the arena, this information may be withheld from the individual robots, or given to them if required. 
 The code virtually operating on the robot may be neither aware of its own position in the world, nor the location of other robots, if the experiment calls for such a lack of information. 
 
-Currently, the AprilTag-based localization is used to implement virtual laser scanners similar to the Sick or Hokoyu brand laser scanners used on larger robots. 
-It is also used to limit the range of messages sent between the robots through a virtual network. 
+By using the location of each robot, a virtual range and bearing sensor is available for each robot.
+The virtual sensor simply reports to each robot the range and bearing of the robots around it, if they are within the configured range of the virtual sensor.
+Range and bearing sensors are available in hardware on Epucks, Colias, and Marxbots, but since each robot must be equipped with it, the cost scales linearly with the number of robots to equip.  
 
-\subsection{Virtual Laser Scanners}
+The virtual sensors can also be configured to emulate error conditions such as noisy sensors, failed sensors, degraded localization, and so forth.
+Virtual parameter tweaking will allow fine-grained testing of the behavior of algorithms under imperfect conditions, and the response of human users to unreliability in the swarm. 
 
 The AprilTag localizations and the image of the arena are used to provide virtual laser rangers for each robot. 
 The virtual laser ranger consists of two ROS nodes, a service and clients for the service. 
-The service is called ``laser\_oracle\_server''. 
-It subscribes to the AprilTag detections and the images from the arena overhead camera. 
-
-As the virtual laser service receives images, it draws a blue dot over the location of every robot. 
-This dot provides the outer edge of each robot in the virtual laser scan. 
-The approach of using blue objects as obstacles was chosen because if the laser scanner service treats anything blue as an obstacle, then ``walls'' can be created in the arena by making lines of blue masking tape on the arena floor. 
- 
-When a client requests a laser scan, the virtual laser service masks the modified arena image with a circle with a radius of the laser range, centered on the robot requesting the scan.
-This masking removes all of the objects that are out of range of the laser, and so reduces the time spent calculating the laser scan points. 
+The service subscribes to the AprilTag detections and the images from the arena overhead camera. 
 
 Each sample of the laser scan is represented as a line segment, located based on the requested start, stop and inter-measurement angles for the virtual laser scanner. 
-Each line segment is checked for intersection with the lines defining the contours of the blue objects in the image. 
+Each line segment is checked for intersection with the lines defining the contours of objects in the image. 
 If multiple intersections are found for a line segment, the intersection closest to the robot is used, as the laser would stop after reflecting off an object.
 The service then formats the distances to the intersection points as a ROS sensor\_msgs/LaserScan and returns it as the service response to the requesting client. 
 
 The virtual laser clients take the place of the laser driver ROS nodes that would be used to control a real linear laser scanner. 
 The laser client is initialized with some parameters, such as the sweep angle and angular resolution of the virtual laser, and polls the laser service regularly. 
 As it receives laser scans from the service, it publishes them to a ROS topic in the same manner as a ROS node for a hardware laser. 
+%
+%The apriltags\_ros node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
+%In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
+%The modified version is available at https://github.com/ab3nd/apriltags\_ros.
 
-The apriltags\_ros node publishes the detected locations of the tags in meters, but the computer vision detection of blue objects in the arena camera image operates in pixels. 
-In order to convert from pixels to real-world distances, the apriltags\_ros node was forked and a modified version was created that provides the locations of the tags in pixel as well as real-world coordinates. 
-The modified version is available at https://github.com/ab3nd/apriltags\_ros.
-
-\begin{figure}
-	\centering
-	\digraph[scale=0.6]{VirtualLaserSystem}{
-	
-	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
-	vsc -> vls [label=<sensor\string_msgs/LaserScan>];
-	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
-	cam -> vls [label=<sensor\string_msgs/Image>];
-	cam -> atag	[label=<sensor\string_msgs/Image>];
-	atag -> vls [label=<apriltags\string_ros/TagDetections>];	
-		 
-	vls [label="Virtual Laser Service"];
-	vsc [label="Virtual Laser Client"];
-	atag [label="AprilTag Detector"];
-	cam [label="Arena Camera"];
-	sub1 [label="Subscriber"];
-	}
-	\caption{Data flow in the virtual laser service}
-\end{figure}
-
-\subsection{Virtual Networking}
+%\begin{figure}
+%	\centering
+%	\digraph[scale=0.6]{VirtualLaserSystem}{
+%	
+%	vls -> vsc [label=<std\string_msgs/Integer&nbsp;&nbsp;&nbsp;&nbsp;>];
+%	vsc -> vls [label=<sensor\string_msgs/LaserScan>];
+%	vsc -> sub1 [label=<sensor\string_msgs/LaserScan>];
+%	cam -> vls [label=<sensor\string_msgs/Image>];
+%	cam -> atag	[label=<sensor\string_msgs/Image>];
+%	atag -> vls [label=<apriltags\string_ros/TagDetections>];	
+%		 
+%	vls [label="Virtual Laser Service"];
+%	vsc [label="Virtual Laser Client"];
+%	atag [label="AprilTag Detector"];
+%	cam [label="Arena Camera"];
+%	sub1 [label="Subscriber"];
+%	}
+%	\caption{Data flow in the virtual laser service}
+%\end{figure}
 
 If the robots are required to communicate directly with each other, the communication passes through a virtual network.
 From the point of view of the robots, messages sent into the virtual network are delivered to other robots as if the messages were sent directly from one robot to another. 
@@ -558,300 +473,190 @@ However, all the communication is taking place between processes running on the 
 By changing how the messages are delivered by the central system, the virtual network can provide full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
 The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
 For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver. 
-
-\begin{figure}
-	\centering
-	\digraph[scale=0.6]{VirtualNetwork}{
-	
-	{rank=same atag dist}
-	{rank=same tx rx}
-
-	vns -> dist [label="Robot IDs"];
-	dist -> vns [label="Distance"];
-	cam -> atag	[label=<sensor\string_msgs/Image>];
-	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
-	vns -> rx [label="Network Message"];
-	tx -> vns [label="Network Message"];	 
-	
-		
-	vns [label="Virtual Network Service"];
-	dist [label="Distance Service"];
-	atag [label="AprilTag Detector"];
-	cam [label="Arena Camera"];
-	tx [label="Transmitter"];
-	rx [label="Receiver"];
-	}
-	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
-\end{figure}
-
+%
+%\begin{figure}
+%	\centering
+%	\digraph[scale=0.6]{VirtualNetwork}{
+%	
+%	{rank=same atag dist}
+%	{rank=same tx rx}
+%
+%	vns -> dist [label="Robot IDs"];
+%	dist -> vns [label="Distance"];
+%	cam -> atag	[label=<sensor\string_msgs/Image>];
+%	atag -> dist [label=<apriltags\string_ros/TagDetections>];	
+%	vns -> rx [label="Network Message"];
+%	tx -> vns [label="Network Message"];	 
+%	
+%		
+%	vns [label="Virtual Network Service"];
+%	dist [label="Distance Service"];
+%	atag [label="AprilTag Detector"];
+%	cam [label="Arena Camera"];
+%	tx [label="Transmitter"];
+%	rx [label="Receiver"];
+%	}
+%	\caption{Data flow in the virtual network. The virtual network service can take the distance between the transmitting robot and the receiving robot into account when determining if the message is delivered.}
+%\end{figure}
+%
 \section{Control of TinyRobos}
 
-In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program which instructed them to move forwards until the Apriltag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
+In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program which instructed them to move forwards until the AprilTag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
 
-Each robot was run 5 times, starting from the same location each time. The robot was power-cycled between runs. Each run was recorded using rosbag, and the data from the recordings were used to generate visualizations of the robot's commanded velocity and measured velocity from Apriltag tracking.
-
+Each robot was run 5 times, starting from the same location each time. The robot was power-cycled between runs. Each run was recorded using rosbag, and the data from the recordings were used to generate visualizations of the robot's commanded trajectory from the motion of the center of the robot's AprilTag.
 
 The robots consisted of three toy tanks from the same manufacturer, a differential-drive Hexbug-brand robot, a differential-drive toy car with large wheels, a hexapod bug-like walker, and an Ackerman-drive toy car. 
 The bug-like walker and the Ackerman-drive car both have different turning kinematics from the differential drive tanks, but this test only consists of forward drive.
-It would have been preferable to have the test include turning, but control of the yaw rotation of a robot via feedback from the Apriltag system was found to be problematic. 
-As the number of pixels that an Apriltag takes up on a camera image decreases, the accuracy of the subpixel estimation used to localize the corners of the tag decreases. 
-Each estimation of the tag location from the ROS Apriltag detection node can then differ from previous estimations, and so even when the robot remains still, there is some noise in its detected position. 
+It would have been preferable to have the test include turning, but control of the yaw rotation of a robot via feedback from the AprilTag system was found to be problematic. 
+As the number of pixels that an AprilTag takes up on a camera image decreases, the accuracy of the subpixel estimation used to localize the corners of the tag decreases. 
+Each estimation of the tag location from the ROS AprilTag detection node can then differ from previous estimations, and so even when the robot remains still, there is some noise in its detected position. 
 
 The effect of the noise in subpixel position on the perceived rotation of the tags is larger than its effect on the perceived rotation of the tags, since rotation around the center of the tag does not change the position of its center at all. 
 As a consequence, the tags could be detected to be in lateral motion by comparing the displacement of the center of the tag and checking that it was greater than the expected noise, but detection of rotational motion and velocity calculation was sometimes swamped by noise. 
 
 The noise was also determined to be unevenly distributed over the robot arena. Because the arena is wide, a wide-angle lens \todo{check amazon receipts, figure out how wide that lens is} is used to ensure that the entire arena is visible. 
-ROS provides tools for removing the distortion inherent in the use of a wide-angle lens, but at a cost of decreased effective resolution at the edges of the image. 
+ROS provides tools for removing the distortion inherent in the use of a wide-angle lens, but at the cost of decreased effective resolution at the edges of the image. 
 This decrease in resolution results in reduction of subpixel location accuracy, and so increased noise in localization of the tag. 
+%This problem can be mitigated in a number of ways. 
+%First, the resolution of the camera can be increased while keeping the tags the same size and the camera the same distance away. 
+%This solution ends up requiring more computational power as the image size increases, in order to keep the tag detection framerate high enough to be useful for realtime control. 
+%Second, the tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
+%Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
 
-This problem can be mitigated in a number of ways. 
-First, the resolution of the camera can be increased while keeping the tags the same size and the camera the same distance away. 
-This solution ends up requiring more computational power as the image size increase, in order to keep the tag detection framerate high enough to be useful for realtime control. 
-Second, the tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
-Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
+%AprilTags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
+%More tags leads to longer computation time, increasing the latency of the robot control loop. 
+%Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
+%
+%One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
+%This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
+%Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
+%The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
+%To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \cite{PickemGrits2014}. 
+%MROBerTO also used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
+
 
 Because the desired figure-8 motion could not be performed with the rotational localization noise present in the system, the robots were instead commanded to move forward 0.25m, stop, and repeat that sequence of actions until the program was stopped. 
 The program was stopped if the robot was about to run into the wall of the arena, or had entered a state in which it could not move forward anymore. 
-Acceleration during the movement phases was managed by increasing the commanded velocity of the robot until the April tag tracking detected that the robot had begun moving. 
+Acceleration during the movement phases was managed by increasing the commanded velocity of the robot until the AprilTag tracking detected that the robot had begun moving. 
 Once the robot began moving, it was not commanded to change velocity until it had moved at least 0.25m.
 In the following descriptions of the motions of the robots, the directions left and right are relative to the direction of travel of the robot. 
 
-The big wheel robot displayed an unfortunately small range of commanded velocities between those which caused it to begin moving, and those which caused it to flip over on its side.
-In three of its five runs, the big wheel accelerated quickly and then flipped during the first motion period. 
-In the remaining two runs, it did not move at all, possibly due to gears jamming. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{robot_1.png}
-	\caption{Motion of big wheel robot}
-\end{figure}
-
-The Hexbug-branded 6-wheeled bug displayed an asymmetry in its motor drive speeds. 
-For three of its five runs, both motors ran, and the wheels on both sides rotated, but the right side was driven more quickly, and so the robot made a wide arc to the right and hit the wall of the arena behind the starting location. 
-In one run, one side didn't begin moving at all, causing the robot to rotate rapidly around that side. 
-In another run, the robot twitched briefly, remained still, and then accelerated backwards quickly. 
-This was likely caused by the gradual incrementing of the forward velocity eventually causing an integer overflow, resulting in a large forward velocity command being interpreted as a large negative velocity.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{robot_6.png}
-	\caption{Motion of 6-wheel bug}
-\end{figure}
-
-The green tank, carrying the 0 Apriltag, experienced problems with one side of its drive train in three of its five runs.
-One tread drive did not move, while the other did, resulting in tight turns to the left in two runs, and to the right in one run. In one of the two remaining runs, the green tank did not move at all. In the second, the tank alternated movement and stopped periods until it reached the other side of the arena, which constituted success on this test. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{robot_0.png}
-	\caption{Motion of robot 0}
-\end{figure}
-
-There are two blue tanks, carrying Apriltags numbered 8 and 18. 
-Tank number 8 moved slightly on four of its 5 runs, and did not move on one of them. 
-At no point did it move the full 0.25m. 
-Tank number 18 moved much more consistently, but displayed an arc to the right in four of its 5 runs. 
-In one run, the tank failed to restart after one of the stop phases, and eventually accelerated quickly in reverse. 
-As with the 6-wheeled bug, this was likely the failure of the robot to move leading to a long enough delay that incrementing the commanded acceleration resulted in an integer overflow. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.45\textwidth]{robot_8.png}
-	\includegraphics[width=0.45\textwidth]{robot_18.png}
-	\caption{Motion of robots 8 (left) and 18 (right)}
-\end{figure}
-
-The single-motor Hexbug-branded blue bug moved consistently, but with a heavy bias towards turning to the left. 
-In every run, it started and stopped, but the curvature of the path to the left caused it to run into one side of the arena or the other. 
-In one run, it fell over while moving, due to the somewhat ``bouncy'' nature of the toy's gait.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{robot_5.png}
-	\caption{Motion of bug robot}
-\end{figure}
-
-The Ackerman-steering toy car also displayed very consistent mobility. In four out of its five runs, it crossed the arena without incident. 
+The Ackerman-steering toy car (page \pageref{img_traj}, image a) displayed very consistent mobility. In four out of its five runs, it crossed the arena without incident. 
 In one run, it started and went a small distance, but then did not start again. 
 However, the Ackerman-steering toy car has a gearbox that permits backdriving, so when commanded to stop, it coasts for a few centimeters. 
 The toy tanks use a worm gear in their drivetrains, and so do not permit backdriving of the motors by the vehicle's inertia. 
 Instead of coasting, they immediately stop when the motor is commanded to 0 velocity. 
 
+The big wheel robot (page \pageref{img_traj}, image b) displayed an unfortunately small range of commanded velocities between those which caused it to begin moving, and those which caused it to flip over on its side.
+In three of its five runs, the big wheel accelerated quickly and then flipped during the first motion period. 
+In the remaining two runs, it did not move at all, possibly due to gears jamming. 
+
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\textwidth]{robot_17.png}
-	\caption{Motion of toy car based robot}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_17.png}
+		\caption{Motion of toy car based robot}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_1.png}
+		\caption{Motion of big wheel robot}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_6.png}
+		\caption{Motion of 6-wheel bug}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_0.png}
+		\caption{Motion of robot 0}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_8.png}
+		\caption{Motion of robot 8}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_18.png}
+		\caption{Motion of robot 18}
+	\end{subfigure}
+	
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{robot_5.png}
+		\caption{Motion of bug robot}
+	\end{subfigure}
+	\label{img_traj}	
 \end{figure}
+
+The Hexbug-branded 6-wheeled bug (page \pageref{img_traj}, image c) displayed an asymmetry in its motor drive speeds. 
+For three of its five runs, both motors ran, and the wheels on both sides rotated, but the right side was driven more quickly, and so the robot made a wide arc to the right and hit the wall of the arena behind the starting location. 
+In one run, one side did not begin moving at all, causing the robot to rotate rapidly around that side. 
+In another run, the robot twitched briefly, remained still, and then accelerated backwards quickly. 
+This was likely caused by the gradual incrementing of the forward velocity eventually causing an integer overflow, resulting in a large forward velocity command being interpreted as a large negative velocity.
+
+
+The green tank, carrying the 0 AprilTag (page \pageref{img_traj}, image d), experienced problems with one side of its drive train in three of its five runs.
+One tread drive did not move, while the other did, resulting in tight turns to the left in two runs, and to the right in one run. In one of the two remaining runs, the green tank did not move at all. In the second, the tank alternated movement and stopped periods until it reached the other side of the arena, which constituted success on this test. 
+
+There are two blue tanks, carrying AprilTags numbered 8 and 18. 
+Tank number 8 (page \pageref{img_traj}, image e) moved slightly on four of its 5 runs, and did not move on one of them. 
+At no point did it move the full 0.25m. 
+Tank number 18 (page \pageref{img_traj}, image f) moved much more consistently, but displayed an arc to the right in four of its 5 runs. 
+In one run, the tank failed to restart after one of the stop phases, and eventually accelerated quickly in reverse. 
+As with the 6-wheeled bug, this was likely the failure of the robot to move leading to a long enough delay that incrementing the commanded acceleration resulted in an integer overflow. 
+
+The single-motor Hexbug-branded blue bug (page \pageref{img_traj}, image g) moved consistently, but with a heavy bias towards turning to the left. 
+In every run, it started and stopped, but the curvature of the path to the left caused it to run into the left side of the arena. 
+During one run, it fell over while moving, due to the somewhat ``bouncy'' nature of the toy's gait.
+
 
 Some of these problems, such as the coasting of the Ackerman-steering car and the biases towards the left or right of some of the robots when commanded to move straight, can be overcome by software. 
 For example, assuming the tags could be used to accurately measure the rotation of the robots, error between the detected rotational velocity and perceived rotational velocity could be accounted for in subsequent motion commands. 
 The Ackerman-steering car drift could be reduced by sending a ``brake'' command to the motor driver IC to activate its back-EMF braking mode, rather than simply stopping by reducing the power output to zero. 
 However, some of the problems are more difficult to alleviate. 
-The tendency of the big wheel robot to flip over could be mitigated by very gradually increasing its speed, at the cost of reducing its control responsiveness. 
-Increasing the frequency of the feedback loop that checks its speed, perhaps by parallelizing the April tag library, would allow it to be operated in the narrow range of stable speeds. 
+The tendency of the big wheel robot to flip over could be mitigated by very gradually increasing its speed, at the cost of reducing its control responsiveness, or by increasing the frequency of the feedback loop that checks its speed. 
 Perhaps the blue bug would not fall over if its height were reduced, or the battery were placed lower on the body of the robot.
 However, these mechanical problems could be more easily avoided by simply not using toys that have them. 
 
-\section{Conclusions}
+\section{Future Work}
+Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
+As a result, robots should have autonomous charging, and be able to monitor their own battery level. 
+The alternative, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
+In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
+For the GRITSBbots, pins on the front of each robot allow the robot to connect to a charging station by itself, rather than requiring a human to connect it. 
+The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition.
+At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
 
-Swarm software is frequently described as centralized or decentralized. 
-In a centralized system, a single computer coordinates the actions of the swarm by commanding each individual robot. 
-In a decentralized system, robots use their local processors and sensor information to make control decisions. 
-The TinyRobo design works with ROS to provide an emulation of a decentralized system within a centralized system. 
-While this paper presents it in the context of a complete system, the software framework is not tightly bound to the TinyRobo hardware, and so may be useful to other users of tabletop swarms. 
-
-The combination of hardware and software presented in this work makes it possible to construct swarm robots at a cost of around \$30 per robot. 
-While the hardware platform was ultimately insufficiently reliable to be a good platform for swarm robot experimentation, the lessons learned in developing it may be of use to future developers of swarm platforms. 
-The software is designed to be adaptable to a wide variety of mobility platforms, and to accommodate new hardware with minimal alteration of the software controlling it. 
-As a result, while the specific hardware platform described in this paper is unsatisfactory, the control software design is not tied to the hardware, and remains useful.  
-
-\subsection{Anti-scaling of Hardware Failures} \label{section:Anti_scaling_of_Hardware_Failures}
-
-Due to mechanical flaws in the toys used as motion platforms in TinyRobo, the robots would sometimes not move as commanded (see figure \ref{motor-speed-fig}). 
-In a single-robot system, transient failures can sometimes be accommodated by repeated effort or replanning. 
-However, in a multi-robot system the scale of the system works to offset the reliability of each individual robot. 
-If robots have an individual mean time between failures (MTBF), the expected mean time to any failure is the MBTF divided by the number of robots. 
-For example, if an individual robot can work for 100 hours between failures, it would be reasonable to expect it to work for at least a day. 
-However, if the swarm consists of 1000 such robots, a failure of at least one robot can be expected within 6 minutes. 
-
-This problem was highlighted by the use of inexpensive toys. 
-It is desirable to have a swarm platform be able to run for extended periods, in order to acquire data for experiments. 
-Toys, especially cheap ones, are designed for low cost and an MBTF more compatible with the attention span of children than that of researchers. 
-The amount of effort devoted to locating and eliminating mechanical problems relative to the runtime of the system was not acceptable.
-
-\subsection{Calibration} \label{section:Calibration}
-
-Children's toys are prone to failure and inaccuracy.
-In toys, particularly remote controlled toys, the user acts as a the feedback element of a control system, observing the behavior of the toy and changing their actions as a result. 
-If an individual toy, for example, has a bias to turn to the left, the user will learn this and apply a correcting bias.https://ieeexplore.ieee.org/document/5442595/
-To extend this to a computerized system requires some form of calibration. 
-These calibration steps, combined with appropriate control, such as PID loops, can account for systemic inaccuracies. 
-However, the use of toys also introduces some failures which are not consistent or linear. 
-For example, the tanks used in some instances of the TinyRobo platform use motors with high speed, but relatively low torque. 
-As a result, dirt in the drivetrain near the motor can cause the motor to become difficult to start, but can be removed by the user, or by operation once the motor does start. 
-Calibration when the dirt is present means the robot will start very abruptly when the dirt is removed, while calibration when the dirt is absent means the robot may not start if dirt gets into it later. 
-It is worth noting, in light of this example, that GritsBots, Kilobots, and mROBerTO all use nearly-sealed drivetrains, either direct motor drive of the wheels or sealed vibration motors \cite{rubenstein2014kilobot, Kim2016mROBerTOAM, pickem2015gritsbot}. 
-
-An early intent of the author was to have the system learn the control law for each robot through observation of the relationship between the commanded motion of the robot and the resulting motion. 
-Due to the overarching concern with human control of a swarm, such online calibration was decided to be out of scope for this work. 
-However, a computer-vision-guided calibration technique was used in the mROBerTO swarm robots to compensate for manufacturing differences between robots \cite{Kim2016mROBerTOAM}. 
-This approach results in learning bad controls if the system observes the robot during a temporary failure. 
-In a system with minimal failures, this problem can be minimized, but as discussed earlier, inexpensive children's toys are not such a system. 
-
-\begin{figure}[t]
-\includegraphics{../thesis/motion_vs_cmd}
-\centering
-\caption{Commanded velocity (lin\_vel) as opposed to recorded motion (vel). Vel is always positive because it is measured in terms of euclidian distance moved by the center of the AprilTag between successive updates of the tag tracking. 
-Note that while the magnitude of the motion is proportional to the commanded motion, sometimes the robot did not move at all, and when it did move, the recorded velocity is quite noisy. Noise may be removed in software, mechanical failure cannot.} 
-\label{motor-speed-fig}
-\end{figure}
-
-GRITSBots have a calibration step, but the calibration is automated, and is only performed once for each robot, after which it is assumed that the calibration variables are constant.
-Calibration can be automated in a homogenous platform with reasonably reliable hardware. 
-Non-homogenous platforms require different calibration for different platforms, which reduces the benefit of automation. 
-Further, it works against transitioning to a new platform by adding an additional hurdle in the form of developing a new calibration method for the new platform. 
-
-The lack of an automated calibration and control method drove the TinyRobo swarm to use more differential drive vehicles, as they struck a balance between the fully holonomic drive used in the SpiderBots, which is expensive but easy to control, and the Ackerman drive used in inexpensive RC cars, which is less expensive, but has more complex control math \cite{lairdspider}.
-It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity in swarm robotics. 
-
-\subsection{April Tag Latency} \label{section:April_Tag_Latency}
-
-April tags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
-More tags leads to longer computation time, increasing the latency of the robot control loop. 
-Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
-
-One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
-This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
-Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
-The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
-To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \cite{PickemGrits2014}. 
-MROBerTO also used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
-
-\subsection{Lessons for Future Swarm Hardware Developers}
-
-The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
-In retrospect, it seems indicative that out of all of the platforms found during the literature search for this paper, only three were based on modifying COTS drivetrains, and of those three, one used a rather expensive and precisely-made brand of toy car. 
-The relative absence of swarm robots using COTS drivetrains could be explained by a number of mechanisms.
-The use of cheap toys, in particular, is a bad idea, and prone to pitfalls that result in failed or suboptimal systems.
-As a result, systems that were developed using COTS drivetrains may fall prey to the ``file drawer problem'', a bias against publication of negative results \cite{file_drawer_prob_10.2307/2684823}.
-While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
-
-The drivetrain of the system is of paramount importance. 
-Sensors and networking can be virtualized, as in TinyRobo and GRITSBots, but no amount of clever programming will compensate for balky motion. 
-The use of direct drive, as in GRITSBots or mROBerTO, is encouraged because the resulting drive train will be sealed against foreign matter. 
+In future work, the use of a direct drive train, as in GRITSBots or mROBerTO, would likely provide more reliable motion, because the drive train is sealed against foreign matter. 
 Further, the use of stepper motors in GRITSBots provides some degree of precision in motion control by directing the motor in steps of known resolution, rather than commanding a particular speed. 
-If the system requires additional torque, use sealed micro gearmotors rather than adopting a drivetrain from a toy. 
+If the system requires additional torque, sealed micro gearmotors are preferable to adopting a drivetrain from a toy. 
 Toy drivetrains are designed for minimal cost over reliability and precision. 
 
 The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
 Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
 The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
 Using childrens' toys in TinyRobo was intended to avoid the use of such custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain and mechanical design. 
-Where possible, design to use the PCB instead. 
 
-Minimize parts count. 
-TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
-Multi-use devices like the ESP-8266 are becoming cheaper and more competent quickly.
-The processor in mROBerTO is both a 32-bit ARM processor, a low-power Bluetooth transceiver, and an ANT Wireless tranceiver. 
-The VL6180X IC combines an ambient light sensor and a laser-based time-of-flight range sensor in a package measuring approximately 5x8x1mm. 
-Reducing parts count reduces cost and speeds assembly. 
-
-Use autonomous charging, and have each robot be able to monitor its own battery level. 
-Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
-In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
-For the GRITSBbots, pins on the front of each robot allows the robot to connect to a charging station by itself, rather than requiring a human to connect it. 
-The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
-The alternative, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
-At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
-
-The TinyRobo hardware could be made more reliable by replacing the toy motion platform with a PCB carrying two motors directly driving a pair of wheels. 
 If stepper motors were used, this change would bring the TinyRobo platform very close to the GRITSBots platform in terms of hardware design. 
 If DC motors were used instead, the resulting platform would be closer to Colias. 
 In biology, the appearance of similar solutions to a design problem across different species, such as the similar fin placement on dolphins and sharks, is called convergent evolution. 
-It appears that over the development of tabletop swarm robots, stacked PCBs, IR sensor rings, and direct drivetrains are all convergent features, representing the best solutions at the lowest cost. 
-The use of toys as drivetrains is closer to the foot bones present in the skeletons of whales: of potential historical interest, but not terribly relevant as a modern method of locomotion. 
+It appears that over the development of tabletop swarm robots, stacked PCBs as mechanical structure, IR sensor rings, and direct drivetrains are all convergent features, representing the best solutions at the lowest cost. 
+The use of toys as drivetrains is closer to the foot bones present in the skeletons of whales: of potential historical interest, but superseded by better methods of locomotion. 
 
-However, while the toy-based design of TinyRobo may be an evolutionary dead end, the software is not.
-Because the software framework deliberately keeps the hardware specific implementation details at a low level of the software, the virtual sensors, virtual networking, and per-robot control process implementation all remain useful. 
-In the hopes that they will be of use to future swarm roboticists, the TinyRobo control software is available online at https://github.com/ab3nd/TinyRobo.
+\section{Conclusions}
 
+However, while the toy-based design of TinyRobo may be an evolutionary dead end, the software and control modules are not.
+Swarm software is frequently described as centralized or decentralized. 
+In a centralized system, a single computer coordinates the actions of the swarm by commanding each individual robot. 
+In a decentralized system, robots use their local processors and sensor information to make control decisions. 
+The TinyRobo design works with ROS to provide an emulation of a decentralized system within a centralized system. 
+While this paper presents it in the context of a complete system, the software framework is not tightly bound to the TinyRobo hardware, and so may be useful to other users of tabletop swarms. 
+
+The combination of hardware and software presented in this work makes it possible to construct swarm robots at a cost of \$20-\$40 per robot. 
+The hardware used in the construction of the TinyRobos tested in this paper was ultimately insufficiently reliable to be a good platform for swarm robot experimentation. 
+However, the TinyRobo control module is flexible enough to permit it to be used with better mobility platforms, assuming some time is set aside to characterize the behavior of the chosen mobility platforms. 
+
+In the hopes that they will be of use to future swarm roboticists, the TinyRobo control software and hardware design is available online at https://github.com/ab3nd/TinyRobo.
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{apalike}
-
- 
-%\change{More detail on the motors used in children's toys. Quantify the behavior of a bunch of motors.}
-
-%For tables \ref{tab:FA-series}, \ref{tab:RE-series}, and \ref{tab:coreless}, the motor current at stall was estimated by applying a regulated 3.3v supply to the motor and measuring the voltage drop across the motor. 
-
-%This was done to avoid damage to the motors. 
-%In toys, the current to the motors is frequently limited by the available current from the batteries, and stalling the motor is prevented by simple slip clutches or play in the motor drive train. 
-
-%\change{Add photos of motors, with cm scale for visual clairity}
-%\change{Two main types of motors, ~2cm$^3$ brushed DC and >1cm$^3$ coreless motors}
-
-%\begin{table}
-%	\begin{tabular}{l|l|l}
-%	Motor number & No Load Current & Stall Current (estimated)\\
-%	2 & 0.08 &
-%	3 & 0.35 &
-%	4 & 0.02 &
-%	5 & 0.11 &
-%	6 & 0.20 &
-%	7 & 0.02 &
-%	8 & 0.33 &
-%	\end{tabular}
-%	\caption{No load and stall current for Mabuchi FA series and similar motors. Measurements were performed at 3.3V supply voltage. Motor 1 was defective.}
-%	\label{tab:FA-series}
-%\end{table}
-
-
-%\begin{table}
-%	\begin{tabular}{l|l|l}
-%	Motor number & No Load Current & Stall Current (estimated)\\
-%	\end{tabular}
-%	\caption{No load and stall current for Mabuchi RE series and similar motors. Measurements were performed at 3V supply voltage.}
-%	\label{tab:RE-series}
-%\end{table}
 
 \end{document}
