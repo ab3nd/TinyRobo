@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#Decomposes a space into voroni cells, and figures out the vector for each 
+#Decomposes a space into square cells, and figures out the vector for each 
 #cell to drive robots in that cell along a specific path
 
 #For visualization
