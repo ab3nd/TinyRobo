@@ -2,7 +2,7 @@
 
 import math
 import rospy
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import Point
 from apriltags_ros.msg import *
 from image_geometry import PinholeCameraModel
 from sensor_msgs.msg import CameraInfo
@@ -20,7 +20,7 @@ def dist(a, b):
 	assert len(a) == len(b)
 	return math.sqrt(sum([math.pow(i-j, 2) for i, j in zip(a,b)]))
 
-class Point_Converter():
+class PointConverter():
 	def __init__(self):
 		#Location of the click, to be calculated
 		self.targetX = 0.0
@@ -73,12 +73,11 @@ class Point_Converter():
 		self.camera_model.fromCameraInfo(cam_info)
 		self.camera_frame = cam_info.header.frame_id
 
-	def update_target(self, point_msg):
-
+	def update_target(self, point_req):
 		#flip points on y axis because kivy (0,0) is bl, image (0,0) is tl
 		image_height = 768
-		px_x = point_msg.point.x
-		px_y = max(image_height-point_msg.point.y, 0)
+		px_x = point_req.inPixels.x
+		px_y = max(image_height-point_req.inPixels.y, 0)
 
 		#If we don't have a camera model yet, we can't figure out where the click is
 		if self.camera_model is None:
@@ -138,12 +137,11 @@ class Point_Converter():
 		#print "Current: {} {} {} Click: {}".format(self.currentX, self.currentY, self.currentZ, click_point)
 
 		#Ship it out!
-		point = PointStamped()
-		point.point.x = click_point[0]
-		point.point.y = click_point[1]
-		point.point.z = click_point[2]
-		point.header.stamp = rospy.Time.now()
-		point.header.frame_id = self.camera_frame
+		point = Point()
+		point.x = click_point[0]
+		point.y = click_point[1]
+		point.z = click_point[2]
+		
 		return point
 		
 if __name__ == '__main__':

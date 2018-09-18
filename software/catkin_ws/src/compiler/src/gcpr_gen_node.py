@@ -6,6 +6,8 @@
 # which is a drag of a single robot, from the location it is currently in, to a new location, where it stops. 
 
 from user_interface.msg import Gesture
+from robot_drivers.srv import MapPoint
+
 import rospy
 import decompose_space
 import math
@@ -40,9 +42,15 @@ class ProgGen(object):
 			minX = min(point[0], minX)
 			minY = min(point[1], minY)
 
+		#Pad min and max to ensure that there are spaces around each end of the path
+		maxX += 2 * self.resolution
+		maxY += 2 * self.resolution
+		minX -= 2 * self.resolution
+		minY -= 2 * self.resolution
+		
 		#Generate GCPR for the area inside the bounding box 
 		program = []
-		dec = decompose_space.get_decomposition((maxX, maxY), (minX, minY), points, self.resolution)
+		dec = decompose_space.get_decomposition((minX, maxY), (maxX, minY), points, self.resolution)
 		for square in dec:
 			program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
 
@@ -73,26 +81,27 @@ class ProgGen(object):
 			#First, get the points on the path in meters
 			path_points = []
 			#Persist so we don't have to set it up for each call (could be lots)
-			point_proxy = rospy.ServiceProxy(name, service_class, persistent=True)
+			point_proxy = rospy.ServiceProxy("map_point", MapPoint, persistent=True)
 			for stroke in self.gestures[-1].strokes:
 				for event in stroke.events:
 					#Convert points to meters from pixels
 					pt = point_proxy(event.point)
-					path_points.append((pt.x, pt.y))
+					path_points.append((pt.inMeters.x, pt.inMeters.y))
 			#Done using the proxy, close it
 			point_proxy.close()
 
-			#TODO, assure that these are sorted
+			#TODO, check that these are sorted by time
 			
 			#Simplify the path by dropping points that are less than the configured 
 			#resolution away from the next point in the path. Path ends up being entirely
 			#composed of points greater than the resolution from the next point in the path. 
 			simple_path = [path_points[0]]
 			for point in path_points:
-				if self.distance(point, path_points[-1]) >= self.resolution:
+				if self.distance(point, simple_path[-1]) >= self.resolution:
 					#Add it to the path
 					simple_path.append(point)
 
+			print simple_path
 			program = self.pathToGCPR(simple_path)
 			#Send the program
 			self.publishProgram(selected, program)
