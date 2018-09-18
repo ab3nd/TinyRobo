@@ -54,7 +54,10 @@
 
 	<!-- Debug node that dumps everything to pictures -->
 	<node name="dbg_vis" pkg="user_interface" type="gesture_debugger.py" required="true" output="screen" />
-	<!-- node name="point_translator" pkg="robot_drivers" type="point_mapper.py" output="screen"/ -->
+	
+	<!-- Converts pixel locations to meter locations -->
+	<node name="point_translator" pkg="robot_drivers" type="point_mapper_svc.py" output="screen"/>
+
 
 	<node name="compiler" pkg="compiler" type="gcpr_gen_node.py" required="true" output="screen"/>
 

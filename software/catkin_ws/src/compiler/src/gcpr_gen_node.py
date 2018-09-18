@@ -29,6 +29,36 @@ class ProgGen(object):
 	def distance(self, p1, p2):
 		return math.sqrt(math.pow(p1[0]-p2[0],2) + math.pow(p1[1]-p2[1],2))
 
+	def pathToGCPR(self, points):
+		#Given a list of points, convert them to a GCPR program to steer along those points
+		#Get the bounding box of the points
+		maxX = maxY = float('-inf')
+		minX = minY = float('inf')
+		for point in points:
+			maxX = max(point[0], maxX)
+			maxY = max(point[1], maxY)
+			minX = min(point[0], minX)
+			minY = min(point[1], minY)
+
+		#Generate GCPR for the area inside the bounding box 
+		program = []
+		dec = decompose_space.get_decomposition((maxX, maxY), (minX, minY), points, self.resolution)
+		for square in dec:
+			program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
+
+		#Generate GCPR for the area outside the bounding box (all remaining space)
+		program.append(("self.x_between({0}, {1}) and self.y_gt({2})".format(minX, maxX, maxY), "self.set_desired_heading()", 1.0))
+		program.append(("self.x_between({0}, {1}) and self.y_lt({2})".format(minX, maxX, minY), "self.set_desired_heading()", 1.0))
+		program.append(("self.y_between({0}, {1}) and self.x_gt({2})".format(minX, maxX, maxX), "self.set_desired_heading()", 1.0))
+		program.append(("self.y_between({0}, {1}) and self.x_lt({2})".format(minX, maxX, minX), "self.set_desired_heading()", 1.0))
+		program.append(("not(self.x_between({0}, {1})) and self.y_gt({2}) and self.x_gt({3})".format(minX, maxX, maxY, maxX), "self.set_desired_heading()", 1.0))
+		program.append(("not(self.x_between({0}, {1})) and self.y_lt({2}) and self.x_gt({3})".format(minX, maxX, minY, maxX), "self.set_desired_heading()", 1.0))
+		program.append(("not(self.y_between({0}, {1})) and self.y_gt({2}) and self.x_lt({3})".format(minX, maxX, maxY, minX), "self.set_desired_heading()", 1.0))
+		program.append(("not(self.y_between({0}, {1})) and self.y_lt({2}) and self.x_lt({3})".format(minX, maxX, minY, minX), "self.set_desired_heading()", 1.0))
+
+		return program
+
+
 	def checkGestureList(self):
 		#print the gesture list
 		for g in self.gestures:
@@ -40,11 +70,18 @@ class ProgGen(object):
 			selected = self.gestures[-2].robots
 
 			#Generate the GCPR path representation for them
-			#First, get the points on the path
+			#First, get the points on the path in meters
 			path_points = []
+			#Persist so we don't have to set it up for each call (could be lots)
+			point_proxy = rospy.ServiceProxy(name, service_class, persistent=True)
 			for stroke in self.gestures[-1].strokes:
 				for event in stroke.events:
-					path_points.append((event.point.x, event.point.y))
+					#Convert points to meters from pixels
+					pt = point_proxy(event.point)
+					path_points.append((pt.x, pt.y))
+			#Done using the proxy, close it
+			point_proxy.close()
+
 			#TODO, assure that these are sorted
 			
 			#Simplify the path by dropping points that are less than the configured 
@@ -56,9 +93,7 @@ class ProgGen(object):
 					#Add it to the path
 					simple_path.append(point)
 
-			print len(path_points), len(simple_path)
-
-			program = "foo"
+			program = self.pathToGCPR(simple_path)
 			#Send the program
 			self.publishProgram(selected, program)
 
@@ -79,7 +114,7 @@ class ProgGen(object):
 		return False
 
 	def publishProgram(self, robots, program):
-		print "{} get {}".format(robots, program)
+		print "{} gets {}".format(robots, program)
 
 #Start everything up and then just spin
 rospy.init_node('gcpr_gen')
