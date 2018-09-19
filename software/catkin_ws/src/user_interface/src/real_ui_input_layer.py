@@ -127,14 +127,15 @@ class ROSTouchImage(UIXImage):
         if self.collide_point(*touch.pos):
             self.rtr.log_touch_event(touch)
 
-class StupidApp(App):
+class OverheadUIApp(App):
 
     def __init__(self, **kwargs):
-        super(StupidApp, self).__init__(**kwargs)
+        super(OverheadUIApp, self).__init__(**kwargs)
 
         #intialize ROS and subscribe to an image topic
-        topic = "/overhead_cam/image_rect_color"
-        rospy.init_node('kivy_img_mauler')
+        rospy.init_node("ui") #Gets overwritten by launchfile
+        topic = rospy.get_param("{}/overhead_cam".format(rospy.get_name()), "/overhead_cam/image_rect_color")
+        
         #We can get away with not calling rospy.Spin() because Kivy keeps it running
         self.sub = rospy.Subscriber(topic, Image, self.update_image)
         #Gesture recognizers also publish on /gestures
@@ -226,5 +227,5 @@ class StupidApp(App):
         return True
 
 if __name__ == '__main__':
-    StupidApp().run()
+    OverheadUIApp().run()
 

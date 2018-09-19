@@ -35,8 +35,10 @@
 	<node name="destutter" pkg="user_interface" type="destutter.py" output="screen" required="true"/>
 
 	<!-- Launch the user interface -->
-	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen"/>
-	
+	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen">
+		<param name="overhead_cam" value="$(arg cam_name)/image_rect_color" />
+	</node>
+
 	<!-- Checker for box selection gestures -->
 	<node name="box_detector" pkg="user_interface" type="box_select_detector.py" required="true" output="screen" />
 

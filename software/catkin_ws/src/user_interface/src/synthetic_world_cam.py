@@ -9,6 +9,9 @@ from sensor_msgs.msg import Image as ImageMsg
 from PIL import Image, ImageDraw
 import yaml
 from sensor_msgs.msg import CameraInfo
+import rospkg
+import math
+from tf import transformations as transf
 
 class ImageConverter(object):
     """
@@ -56,8 +59,10 @@ class ROSImageSynth(object):
 		self.subs = {}
 		self.topicRE = re.compile("\/bot([0-9]*)\/position")
 		self.poses = {}
+		self.tags = {}
 
 		self.mToPx = 128 #1024px wide image for 8m wide arena
+		self.tagSize = 25 #in pixels, in the overhead camera view. With my system, ~25px
 		self.imWidth = 1024
 		self.imHeight = 768
 
@@ -70,6 +75,10 @@ class ROSImageSynth(object):
 
 		#Sign up for Argos position updates
 		self.checkSubs()
+
+		# Find the path to myself, for loading png files
+		rospack = rospkg.RosPack()
+		self.pkg_path = rospack.get_path('user_interface')
 
 
 	def loadCamInfo(self):
@@ -100,13 +109,20 @@ class ROSImageSynth(object):
 		robot_id = self.topicRE.match(topic).group(1)
 		#Store the new pose
 		self.poses[robot_id] = poseMsg
+		#If we haven't loaded the tag for this ID before, do it now
+		if robot_id not in self.tags.keys():
+			tag_path="{}/src/tag36h11/tag36_11_{:05d}.png".format(self.pkg_path, int(robot_id))
+			tag_image = Image.open(tag_path).convert('RGBA')
+			#Resize to the size specified
+			tag_image = tag_image.resize((self.tagSize, self.tagSize), Image.LANCZOS)
+			self.tags[robot_id] = tag_image
 
 	def publishNewFrame(self):
 		#Called by a timer, updates the image and publishes it
 		#Create a new white image
 		image = Image.new('RGB', (self.imWidth, self.imHeight), color='white')
 
-		robotDraw = ImageDraw.Draw(image)
+		#robotDraw = ImageDraw.Draw(image)
 		#Draw a dot for each robot 
 		for robot_id in self.poses.keys():
 			#Robot positions are in meters, convert to px to draw
@@ -119,10 +135,30 @@ class ROSImageSynth(object):
 			pX = int(pX)
 			pY = int(pY)
 
-			robotDraw.ellipse([pX-10, pY-10, pX+10, pY+10], fill='red')
-			robotDraw.text((pX-2, pY-5), robot_id, fill='black')
+			#robotDraw.ellipse([pX-10, pY-10, pX+10, pY+10], fill='red')
+			#robotDraw.text((pX-2, pY-5), robot_id, fill='black')
+			if robot_id not in self.tags.keys():
+				rospy.logwarn("Have pose but not tag for {}".format(robot_id))
+			else:
+				#Rotate the tag image to the appropriate angle
+				tag_img = self.tags[robot_id]
 
-		del robotDraw
+				w = self.poses[robot_id].orientation.w
+				x = self.poses[robot_id].orientation.x
+				y = self.poses[robot_id].orientation.y
+				z = self.poses[robot_id].orientation.z
+
+				#Update the robot's heading.
+				(roll, pitch, yaw) = transf.euler_from_quaternion([w, x, y, z]) 
+				#Roll is the robot's heading, but I want to change it 
+				#to degrees for PIL to rotate the image
+				roll = roll * (180/math.pi)
+				tag_img = tag_img.rotate(roll)
+				white = Image.new('RGBA', tag_img.size, (255,)*4)
+				tag_img = Image.composite(tag_img, white, tag_img)
+				image.paste(tag_img, box=(pX-self.tagSize/2, pY-self.tagSize/2))
+
+		#del robotDraw
 
 		#Publish the image on an image topic
 		rosImg = ImageConverter.to_ros(image)
