@@ -28,7 +28,7 @@
 
 	<!-- Launch the user interface -->
 	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen">
-		<param name="overhead_cam" value="/sim_cam/image" />
+		<param name="overhead_cam" value="/overhead_cam/image" />
 	</node>
 	
 	<!-- Checker for box selection gestures -->

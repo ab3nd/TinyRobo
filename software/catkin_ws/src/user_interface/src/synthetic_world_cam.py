@@ -66,8 +66,8 @@ class ROSImageSynth(object):
 		self.imWidth = 1024
 		self.imHeight = 768
 
-		self.imgPub = rospy.Publisher("/sim_cam/image", ImageMsg, queue_size=10)
-		self.infoPub = rospy.Publisher("/sim_cam/camera_info", CameraInfo, queue_size=10)
+		self.imgPub = rospy.Publisher("/overhead_cam/image", ImageMsg, queue_size=10)
+		self.infoPub = rospy.Publisher("/overhead_cam/camera_info", CameraInfo, queue_size=10)
 
 		#Load up our bogus camera information
 		self.camera_info = None
@@ -114,13 +114,13 @@ class ROSImageSynth(object):
 			tag_path="{}/src/tag36h11/tag36_11_{:05d}.png".format(self.pkg_path, int(robot_id))
 			tag_image = Image.open(tag_path).convert('RGBA')
 			#Resize to the size specified
-			tag_image = tag_image.resize((self.tagSize, self.tagSize), Image.LANCZOS)
+			tag_image = tag_image.resize((self.tagSize, self.tagSize), Image.BICUBIC)
 			self.tags[robot_id] = tag_image
 
 	def publishNewFrame(self):
 		#Called by a timer, updates the image and publishes it
 		#Create a new white image
-		image = Image.new('RGB', (self.imWidth, self.imHeight), color='white')
+		image = Image.new('RGBA', (self.imWidth, self.imHeight), color='white')
 
 		#robotDraw = ImageDraw.Draw(image)
 		#Draw a dot for each robot 
@@ -153,10 +153,8 @@ class ROSImageSynth(object):
 				#Roll is the robot's heading, but I want to change it 
 				#to degrees for PIL to rotate the image
 				roll = roll * (180/math.pi)
-				tag_img = tag_img.rotate(roll)
-				white = Image.new('RGBA', tag_img.size, (255,)*4)
-				tag_img = Image.composite(tag_img, white, tag_img)
-				image.paste(tag_img, box=(pX-self.tagSize/2, pY-self.tagSize/2))
+				tag_img = tag_img.rotate(roll, expand=True, resample=Image.BICUBIC)
+				image.paste(tag_img, box=(pX-self.tagSize/2, pY-self.tagSize/2), mask=tag_img)
 
 		#del robotDraw
 
