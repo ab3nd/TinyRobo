@@ -7,6 +7,8 @@ import re
 from geometry_msgs.msg import Pose
 from sensor_msgs.msg import Image as ImageMsg
 from PIL import Image, ImageDraw
+import yaml
+from sensor_msgs.msg import CameraInfo
 
 class ImageConverter(object):
     """
@@ -53,7 +55,6 @@ class ROSImageSynth(object):
 		#Subscribe to all of the robot position messages
 		self.subs = {}
 		self.topicRE = re.compile("\/bot([0-9]*)\/position")
-		self.checkSubs()
 		self.poses = {}
 
 		self.mToPx = 128 #1024px wide image for 8m wide arena
@@ -61,6 +62,31 @@ class ROSImageSynth(object):
 		self.imHeight = 768
 
 		self.imgPub = rospy.Publisher("/sim_cam/image", ImageMsg, queue_size=10)
+		self.infoPub = rospy.Publisher("/sim_cam/camera_info", CameraInfo, queue_size=10)
+
+		#Load up our bogus camera information
+		self.camera_info = None
+		self.loadCamInfo()
+
+		#Sign up for Argos position updates
+		self.checkSubs()
+
+
+	def loadCamInfo(self):
+		cal_file = rospy.get_param("/sim_cam/camera_info_url")
+		with open(cal_file, 'r') as cal_in:
+			cal_data = yaml.load(cal_in)
+
+		camera_info_msg = CameraInfo()
+		camera_info_msg.width = cal_data["image_width"]
+		camera_info_msg.height = cal_data["image_height"]
+		camera_info_msg.K = cal_data["camera_matrix"]["data"]
+		camera_info_msg.D = cal_data["distortion_coefficients"]["data"]
+		camera_info_msg.R = cal_data["rectification_matrix"]["data"]
+		camera_info_msg.P = cal_data["projection_matrix"]["data"]
+		camera_info_msg.distortion_model = cal_data["distortion_model"]
+		self.camera_info = camera_info_msg
+
 
 	def checkSubs(self):
 		#Check for new position topics and subscribe to them
@@ -101,6 +127,10 @@ class ROSImageSynth(object):
 		#Publish the image on an image topic
 		rosImg = ImageConverter.to_ros(image)
 		self.imgPub.publish(rosImg)
+
+		#Publish some camera info (it's all boooooggguussss!)
+		if self.camera_info is not None:
+			self.infoPub.publish(self.camera_info)
 
 		#See if we need to update
 		self.checkSubs()
