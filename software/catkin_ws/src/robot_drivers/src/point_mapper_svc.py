@@ -55,6 +55,10 @@ class PointConverter():
 			if tag.id in self.tagsizes.keys():
 				break
 
+		if tag is None:
+			#This was an empty tag detection message, so nothing updates
+			return
+			
 		tagsize = self.tagsizes[tag.id]
 		#Calculate the pixel to mm conversion for this tag
 		#Get the distance between two adjacent corners in pixels
