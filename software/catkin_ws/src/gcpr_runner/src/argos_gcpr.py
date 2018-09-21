@@ -244,7 +244,49 @@ class GCPR_driver(object):
 					return True
 		return False
 
+	#Bounds checks on x and y position for areas outside of defined paths
+	def x_gt(self, otherX):
+		if self.lastPosition is not None:
+			x = self.lastPosition.position.x
+			if x > otherX:
+				return True
+		return False
 
+	def y_gt(self, otherY):
+		if self.lastPosition is not None:
+			y = self.lastPosition.position.y
+			if y > otherY:
+				return True
+		return False
+
+	def x_lt(self, otherX):
+		if self.lastPosition is not None:
+			x = self.lastPosition.position.x
+			if x < otherX:
+				return True
+		return False
+
+	def y_lt(self, otherY):
+		if self.lastPosition is not None:
+			y = self.lastPosition.position.y
+			if y < otherY:
+				return True
+		return False
+		
+	def x_between(self, minX, maxX):
+		if self.lastPosition is not None:
+			x = self.lastPosition.position.x
+			if minX <= x <= maxX:
+				return True
+		return False
+	
+	def y_between(self, minY, maxY):
+		if self.lastPosition is not None:
+			y = self.lastPosition.position.y
+			if minY <= y <= maxY:
+				return True
+		return False
+			
 rospy.init_node("gcpr_driver", anonymous=True)
 
 #Get the ID of the robot that this instance of the driver is driving
