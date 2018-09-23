@@ -9,7 +9,7 @@
 	</node>
 
 	<!-- Fiducial tags -->
-	<include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
+	<include file="$(find tiny_robo_launch)/launch/sim_april_tags.launch" />
 
 	<!-- Fake laser readings --> 
 	<node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen"/>
@@ -51,7 +51,7 @@
 	
 	<!-- Converts pixel locations to meter locations -->
 	<!-- non-sim version is BADLY messed up for simulation, there's no barrel distortion in the sim camera, for example -->
-	<!node name="point_translator" pkg="robot_drivers" type="sim_point_mapper_svc.py" output="screen"/>
+	<node name="point_translator" pkg="robot_drivers" type="sim_point_mapper_svc.py" output="screen"/>
 
 
 	<node name="compiler" pkg="compiler" type="gcpr_gen_node.py" required="true" output="screen"/>

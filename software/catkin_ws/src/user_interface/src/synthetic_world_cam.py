@@ -61,10 +61,13 @@ class ROSImageSynth(object):
 		self.poses = {}
 		self.tags = {}
 
-		self.mToPx = 128 #1024px wide image for 8m wide arena
-		self.tagSize = 25 #in pixels, in the overhead camera view. With my system, ~25px
-		self.imWidth = 1024
-		self.imHeight = 768
+		#This image will get displayed by Kivy, which will do poorly if it's not the same
+		#aspect ratio as the screen 
+		self.imWidth = 1680
+		self.imHeight = 1050
+		self.arenaWidth = 8 #in meters
+		self.tagSize = int((self.imWidth/self.arenaWidth) * 0.15625) #px/m times size in m
+		self.mToPx = (self.imWidth/self.arenaWidth)
 
 		self.imgPub = rospy.Publisher("/overhead_cam/image", ImageMsg, queue_size=10)
 		self.infoPub = rospy.Publisher("/overhead_cam/camera_info", CameraInfo, queue_size=10)

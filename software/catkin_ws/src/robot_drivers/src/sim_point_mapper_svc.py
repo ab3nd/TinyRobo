@@ -20,19 +20,6 @@ def dist(a, b):
 
 class PointConverter():
 	def __init__(self):
-		#Location of the click, to be calculated
-		self.targetX = 0.0
-		self.targetY = 0.0
-		self.targetZ = 0.0
-
-		#Location of pretty much any tag, for making a triangle.
-		#Turns out robotics is pretty much trig and linear algebra on wheels. 
-		self.currentX = 0.0
-		self.currentY = 0.0
-		self.currentZ = 0.0
-		self.currentX_px = 0.0
-		self.currentY_px = 0.0
-
 		#Get the sizes of all the tags
 		all_tags = rospy.get_param('/apriltag_detector/tag_descriptions')
 		self.tagsizes = {0:0.051} #default, but we try to update it
@@ -62,30 +49,24 @@ class PointConverter():
 		#Convert to pixels/m
 		self.conversion = d/tagsize
 
-		self.currentX = tag.pose.pose.position.x 
-		self.currentY = tag.pose.pose.position.y 
-		self.currentZ = tag.pose.pose.position.z 
-		self.currentX_px = tag.tagCenterPx.x
-		self.currentY_px = tag.tagCenterPx.y
-
 	def update_target(self, point_req):
 		#The simulated area maps 1:1 with the 1024x768 image, so this conversion is a lot 
 		#simpler than the unsimulated point mapper, which uses camera intrinsics. 
 
-		#The Argos arena is 1024x768, the Argos arena is 8x6, so they have the same aspect ratio.
+		#The Kivy window is 1680x1050, the Argos arena is 8x6. 
 		#Kivy's (0,0) is at the bottom left of the screen, the arena (0,0) is at the center of the arena,
-		#so in full screen mode, arena (0,0) is at Kivy (1024/2, 768/2)
-		screen_w = 1024
-		screen_h = 768
+		#so in full screen mode, arena (0,0) is at Kivy (1680/2, 1050/2)
+		screen_w = 1680
+		screen_h = 1050
 		#Map the center shift, then convert to meters
 		px_x = (point_req.inPixels.x - screen_w/2)/self.conversion
-		px_y = (point_req.inPixels.y - screen_h/2)/self.conversion 
+		px_y = (max(screen_h-point_req.inPixels.y, 0) - screen_h/2)/self.conversion 
 
 		#Ship it out!
 		point = Point()
-		point.x = click_point[0]
-		point.y = click_point[1]
-		point.z = click_point[2]
+		point.x = px_x
+		point.y = px_y
+		point.z = 0
 		
 		return point
 		
@@ -95,8 +76,7 @@ if __name__ == '__main__':
 	pc = PointConverter()
 
 	loc_sub = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, pc.update_tags)
-	cam_sub = rospy.Subscriber('/overhead_cam/camera_info', CameraInfo, pc.update_cam)
-
+	
 	svc = rospy.Service("map_point", MapPoint, pc.update_target)
 	rospy.spin()
 
