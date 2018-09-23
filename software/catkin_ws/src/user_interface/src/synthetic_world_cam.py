@@ -85,6 +85,7 @@ class ROSImageSynth(object):
 
 
 	def loadCamInfo(self):
+		#TODO this probably isn't used anymore
 		cal_file = rospy.get_param("/sim_cam/camera_info_url")
 		with open(cal_file, 'r') as cal_in:
 			cal_data = yaml.load(cal_in)

@@ -210,8 +210,8 @@ class OverheadUIApp(App):
         if self.rosImage is not None and not self.uiImage.isTouched:
             tempImg = ImageConverter.from_ros(self.rosImage)
 
-             #Resize to fit screen
-            tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
+            #Resize to fit screen
+            #tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
             
             #Convert pil image to a kivy textureable image
             imageData = BytesIO()

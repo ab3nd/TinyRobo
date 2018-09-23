@@ -50,7 +50,7 @@ class PointConverter():
 		self.conversion = d/tagsize
 
 	def update_target(self, point_req):
-		#The simulated area maps 1:1 with the 1024x768 image, so this conversion is a lot 
+		#The simulated area maps 1:1 with the 1680x1050 image, so this conversion is a lot 
 		#simpler than the unsimulated point mapper, which uses camera intrinsics. 
 
 		#The Kivy window is 1680x1050, the Argos arena is 8x6. 
