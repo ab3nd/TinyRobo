@@ -95,14 +95,14 @@ class ProgGen(object):
 		program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
 
 		#Generate GCPR for the area outside the bounding box (all remaining space)
-		program.append(("self.x_between({0}, {1}) and self.y_gt({2})".format(minX, maxX, maxY), "self.set_desired_heading(math.pi/2.0)", 1.0))
-		program.append(("self.x_between({0}, {1}) and self.y_lt({2})".format(minX, maxX, minY), "self.set_desired_heading(-math.pi/2.0)", 1.0))
-		program.append(("self.y_between({0}, {1}) and self.x_gt({2})".format(minX, maxX, maxX), "self.set_desired_heading(0)", 1.0))
-		program.append(("self.y_between({0}, {1}) and self.x_lt({2})".format(minX, maxX, minX), "self.set_desired_heading(-math.pi)", 1.0))
-		program.append(("not(self.x_between({0}, {1})) and self.y_gt({2}) and self.x_gt({3})".format(minX, maxX, maxY, maxX), "self.set_desired_heading(math.pi/4.0)", 1.0))
-		program.append(("not(self.x_between({0}, {1})) and self.y_lt({2}) and self.x_gt({3})".format(minX, maxX, minY, maxX), "self.set_desired_heading(-math.pi/4.0)", 1.0))
-		program.append(("not(self.y_between({0}, {1})) and self.y_gt({2}) and self.x_lt({3})".format(minX, maxX, maxY, minX), "self.set_desired_heading((3*math.pi)/4.0)", 1.0))
-		program.append(("not(self.y_between({0}, {1})) and self.y_lt({2}) and self.x_lt({3})".format(minX, maxX, minY, minX), "self.set_desired_heading(-(3*math.pi)/4.0)", 1.0))
+		program.append(("self.x_between({0}, {1}) and self.y_gt({2})".format(minX, maxX, maxY), "self.set_desired_heading(-math.pi/2.0)", 1.0)) #math.pi)", 1.0))
+		program.append(("self.x_between({0}, {1}) and self.y_lt({2})".format(minX, maxX, minY), "self.set_desired_heading(math.pi/2.0)", 1.0))
+		program.append(("self.y_between({0}, {1}) and self.x_gt({2})".format(minX, maxX, maxX), "self.set_desired_heading(0)", 1.0))#math.pi/2.0)", 1.0))
+		program.append(("self.y_between({0}, {1}) and self.x_lt({2})".format(minX, maxX, minX), "self.set_desired_heading(-math.pi)", 1.0))#-math.pi/2.0)", 1.0))
+		program.append(("not(self.x_between({0}, {1})) and self.y_gt({2}) and self.x_gt({3})".format(minX, maxX, maxY, maxX), "self.set_desired_heading(-math.pi)", 1.0))#math.pi/4.0)", 1.0))
+		program.append(("not(self.x_between({0}, {1})) and self.y_lt({2}) and self.x_gt({3})".format(minX, maxX, minY, maxX), "self.set_desired_heading(-math.pi)", 1.0))#-math.pi/4.0)", 1.0))
+		program.append(("not(self.y_between({0}, {1})) and self.y_gt({2}) and self.x_lt({3})".format(minX, maxX, maxY, minX), "self.set_desired_heading(-math.pi)", 1.0))#-(3*math.pi)/4.0)", 1.0))
+		program.append(("not(self.y_between({0}, {1})) and self.y_lt({2}) and self.x_lt({3})".format(minX, maxX, minY, minX), "self.set_desired_heading(-math.pi)", 1.0))#(3*math.pi)/4.0)", 1.0))
 
 		#Add motion commands to turn to bearing and move forward
 		program.append(("self.on_heading() and not(self.is_near_anything())", "self.move_fwd(0.3)", 1.0))
@@ -126,11 +126,13 @@ class ProgGen(object):
 			path_points = []
 			#Persist so we don't have to set it up for each call (could be lots)
 			point_proxy = rospy.ServiceProxy("map_point", MapPoint, persistent=True)
+
 			for stroke in self.gestures[-1].strokes:
 				for event in stroke.events:
 					#Convert points to meters from pixels
 					pt = point_proxy(event.point)
 					path_points.append((pt.inMeters.x, pt.inMeters.y))
+					
 			#Done using the proxy, close it
 			point_proxy.close()
 

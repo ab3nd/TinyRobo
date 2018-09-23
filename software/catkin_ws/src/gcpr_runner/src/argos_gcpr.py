@@ -142,6 +142,7 @@ class GCPR_driver(object):
 
 	#Functions for handling heading
 	def set_desired_heading(self, value):
+		#rospy.logwarn("Set heading {}".format(value))
 		self.desired_heading = value
 
 	#Within threshold of heading
@@ -277,6 +278,7 @@ class GCPR_driver(object):
 		if self.lastPosition is not None:
 			x = self.lastPosition.position.x
 			if minX <= x <= maxX:
+				#rospy.logwarn("x {} is between {} and {}".format(x, minX, maxX))
 				return True
 		return False
 	
@@ -284,6 +286,7 @@ class GCPR_driver(object):
 		if self.lastPosition is not None:
 			y = self.lastPosition.position.y
 			if minY <= y <= maxY:
+				#rospy.logwarn("y {} is between {} and {}".format(y, minY, maxY))
 				return True
 		return False
 			
