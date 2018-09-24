@@ -211,6 +211,7 @@ class OverheadUIApp(App):
             tempImg = ImageConverter.from_ros(self.rosImage)
 
             #Resize to fit screen
+            #No longer needed because image is resized by ROS
             #tempImg = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
             
             #Convert pil image to a kivy textureable image

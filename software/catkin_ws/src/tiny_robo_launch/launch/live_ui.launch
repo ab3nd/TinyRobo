@@ -50,6 +50,42 @@
 		  <param name="height" type="int" value="1050" />
 	 </node>
 
+	<!-- Same stuff, but in mono for april tags -->
+	<!-- Video cropping -->
+	<node pkg="nodelet" type="nodelet" args="standalone image_proc/crop_decimate" name="crop_img_mono">
+		<param name="x_offset" type="int" value="0" />
+		<param name="y_offset" type="int" value="120" />
+		<param name="width" type="int" value="1024" />
+		<param name="height" type="int" value="684" />
+
+		<!-- remap input topics -->
+		<remap from="camera/image_raw" to="overhead_cam/image_rect"/>
+		<remap from="camera/image_info" to="overhead_cam/camera_info"/>
+
+		<!-- remap output topics -->
+		<remap from="camera_out/image_raw" to="camera_crop_mono/image_rect"/>
+		<remap from="camera_out/image_info" to="camera_crop_mono/camera_info"/>
+	</node>
+
+	<!-- Video resizing -->
+	<node pkg="nodelet" type="nodelet" args="standalone image_proc/resize" name="resize_img_mono">
+		<!-- remap input topics -->
+		<remap from="image" to="camera_crop_mono/image_rect"/>
+		<remap from="camera_info" to="camera_crop_mono/camera_info"/>
+
+		<!-- remap output topics -->
+		<remap from="resize_img_mono/image" to="camera_resize_mono/image_rect"/>
+		<remap from="resize_img_mono/camera_info" to="camera_resize_mono/camera_info"/>
+	</node>
+
+	<!-- Dynamic reconfigure the resizing nodelet -->
+	<node name="$(anon dynparam_mono)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters resize_img_mono">
+	 	  <param name="use_scale" type="int" value="0" />
+		  <param name="width" type="int" value="1680" />
+		  <param name="height" type="int" value="1050" />
+	 </node>
+
+
 	<!-- Fiducial tags -->
 	<include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
 
@@ -70,7 +106,7 @@
 
 	<!-- Launch the user interface -->
 	<node name="ui" pkg="user_interface" type="real_ui_input_layer.py" required="true" output="screen">
-		<param name="overhead_cam" value="$(arg cam_name)/image_rect_color" />
+		<param name="overhead_cam" value="/resize_img/image" />
 	</node>
 
 	<!-- Checker for box selection gestures -->
