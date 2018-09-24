@@ -47,12 +47,11 @@
 	<node name="path_detector" pkg="user_interface" type="path_detector.py" required="true" output="screen" />
 
 	<!-- Debug node that dumps everything to pictures -->
-	<!-- node name="dbg_vis" pkg="user_interface" type="gesture_debugger.py" required="true" output="screen" / -->
+	<node name="dbg_vis" pkg="user_interface" type="gesture_debugger.py" required="true" output="screen" />
 	
 	<!-- Converts pixel locations to meter locations -->
 	<!-- non-sim version is BADLY messed up for simulation, there's no barrel distortion in the sim camera, for example -->
 	<node name="point_translator" pkg="robot_drivers" type="sim_point_mapper_svc.py" output="screen"/>
-
 
 	<node name="compiler" pkg="compiler" type="gcpr_gen_node.py" required="true" output="screen"/>
 

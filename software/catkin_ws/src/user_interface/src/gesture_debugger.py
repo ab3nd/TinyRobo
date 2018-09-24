@@ -169,11 +169,13 @@ class GestureVisualizer(object):
 	def update_image(self, msg):
 		tempImg = ImageConverter.from_ros(msg)
 
-		#Resize to fit screen
-		self.image = tempImg.crop((0,120,1024,768)).resize((1680, 1050))
+		#Resize to fit screen not needed due to doing it with imageproc
+		self.image = tempImg #.crop((0,120,1024,768)).resize((1680, 1050))
 
 	def render_stroke(self, msg):
 		#Render the april tag detections onto the image
+		if self.image is None:
+			rospy.logwarn("Tried to debug stroke, but don't have image yet")
 		tempImg = self.image
 		pilDraw = ImageDraw.Draw(tempImg)
 		for tag in self.currentTags.values():
@@ -210,6 +212,6 @@ rospy.init_node('box_select_detect')
 gv = GestureVisualizer()
 strokeSub = rospy.Subscriber("/strokes", Stroke, gv.render_stroke)
 tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, gv.update_robot_points)
-imgSub = rospy.Subscriber("/overhead_cam/image_rect_color", ROSImage, gv.update_image)
+imgSub = rospy.Subscriber("/overhead_cam/image", ROSImage, gv.update_image) #_rect_color", ROSImage, gv.update_image)
 
 rospy.spin()

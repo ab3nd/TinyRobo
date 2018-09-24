@@ -44,8 +44,8 @@ class BoxSelectDetector(object):
 				#Get all the tags that have at least one corner in the box
 				for tag in self.currentTags.values():
 					# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
-					tag_x = tag.tagCenterPx.x * 1.640625
-					tag_y = (tag.tagCenterPx.y - 120) * 1.640625
+					tag_x = tag.tagCenterPx.x #* 1.640625
+					tag_y = tag.tagCenterPx.y #(tag.tagCenterPx.y - 120) * 1.640625
 
 					if (minX < tag_x < maxX) and (minY < tag_y < maxY):
 						selected_tags.append(tag.id)

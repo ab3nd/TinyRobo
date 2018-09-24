@@ -36,8 +36,8 @@ class TapWaypointDetector(object):
 			min_dist = float('inf')
 			for tag in self.currentTags.values():
 				# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
-				tag_x = tag.tagCenterPx.x * 1.640625
-				tag_y = (tag.tagCenterPx.y - 120) * 1.640625
+				tag_x = tag.tagCenterPx.x # * 1.640625
+				tag_y = tag.tagCenterPx.y #(tag.tagCenterPx.y - 120) * 1.640625
 
 				#Tap is going to have a centroid v. near the various taps
 				tap_x = msg.centroid.x
