@@ -16,6 +16,40 @@
 	<!-- Video un-distorting -->
 	<node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg cam_name)"/>
 
+	<!-- Video cropping -->
+	<node pkg="nodelet" type="nodelet" args="standalone image_proc/crop_decimate" name="crop_img">
+		<param name="x_offset" type="int" value="0" />
+		<param name="y_offset" type="int" value="120" />
+		<param name="width" type="int" value="1024" />
+		<param name="height" type="int" value="684" />
+
+		<!-- remap input topics -->
+		<remap from="camera/image_raw" to="overhead_cam/image_rect_color"/>
+		<remap from="camera/image_info" to="overhead_cam/camera_info"/>
+
+		<!-- remap output topics -->
+		<remap from="camera_out/image_raw" to="camera_crop/image_rect_color"/>
+		<remap from="camera_out/image_info" to="camera_crop/camera_info"/>
+	</node>
+
+	<!-- Video resizing -->
+	<node pkg="nodelet" type="nodelet" args="standalone image_proc/resize" name="resize_img">
+		<!-- remap input topics -->
+		<remap from="image" to="camera_crop/image_rect_color"/>
+		<remap from="camera_info" to="camera_crop/camera_info"/>
+
+		<!-- remap output topics -->
+		<remap from="resize_image/image" to="camera_resize/image_rect_color"/>
+		<remap from="resize_image/camera_info" to="camera_resize/camera_info"/>
+	</node>
+
+	<!-- Dynamic reconfigure the resizing nodelet -->
+	<node name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters resize_img">
+	 	  <param name="use_scale" type="int" value="0" />
+		  <param name="width" type="int" value="1680" />
+		  <param name="height" type="int" value="1050" />
+	 </node>
+
 	<!-- Fiducial tags -->
 	<include file="$(find tiny_robo_launch)/launch/april_tags.launch" />
 
