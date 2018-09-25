@@ -1909,3 +1909,211 @@ Mong-ying A. Hsieh and Vijay Kumar
 	Similar to the other papers from Kumar's group's work
 	Adds constraint to maintain communication network
 	
+
+Notes on Assessment of swarm robotic systems
+============================================
+
+Open-hardware e-puck Linux extension board for experimental swarm robotics research
+Wenguo Liu, Alan FT Winfield
+Basically just an ARM9 board for the epuck to let people run linux on it
+	Raspberry Pi would do this now
+
+Human Interaction with Robot Swarms: A Survey
+Andreas Kolling, Phillip Walker, Nilanjan Chakraborty, Katia Sycara, Michael Lewis
+	"But the presence of a human operator
+	can be beneficial and even necessary since the operator could
+	(a) recognize and mitigate shortcomings of the autonomy, (b)
+	have available ”out of band” information not accessible to the
+	autonomy and that can be utilized to increase performance,
+	and (c) convey changes in intent as mission goals change."
+
+http://robotics.cse.tamu.edu/dshell/cs689/papers/holland99stigmergy.pdf
+Interesting paper on collection and clustering of frisbees by robots using stigmergy
+Assessment seems to just be based on examining overhead cam images and seeing how frisbees are clustered
+	Cutoff for assessment was that 90% of frisbees were in a cluster
+	Assessments were very specific to the various algorithms being tested
+
+https://www.researchgate.net/profile/Ramon_Estana/publication/221116450_The_I-SWARM_Project_Intelligent_Small_World_Autonomous_Robots_for_Micro-manipulation/links/5666c35608ae418a786f52e8/The-I-SWARM-Project-Intelligent-Small-World-Autonomous-Robots-for-Micro-manipulation.pdf
+The I-SWARM Project:Intelligent Small World Autonomous Robots for Micro-manipulation
+Jorg Seyfried, Marc Szymanski, Natalie Bender,Ramon Estana, Michael Thiel, and Heinz Worn
+Good overview of Iswarm goals, but no assessment, just brainstorming
+
+AutoMoDe: A novel approach to the automatic design of control software for robot swarms
+Gianpiero Francesca, Manuele Brambilla, Arne Brutschy, Vito Trianni, Mauro Biratta
+Optomizes a task-specific objective function for the transition rules and parameters of a PFSM composed of parametric modules
+Aggregation and foraging tasks
+Authors feel that evolving software is prone to exploiting simulation because the simulation is regular and predictable, while the dynamic and complex environment being simulated is not
+	This is actually a really interesting point
+	They further claim that the use of e.g. ANNs to have high representational power allows this sort of exploitation
+		You can't exploit what you're not smart enough to model
+		Reality gap as an example of overfitting to the simulation
+	Parametric models in a PFSM probably has some mathematical relationship to GCPR
+		Esp. if GCPR actions are the modular components
+			I wasn't doing this in favor of trying to generate as much as possible, but e.g. "turn to heading" is kind of like that
+	Also pretty similar to behavior-based robotics
+Bias-variance tradeoff
+	Being able to reproduce any input-output mapping results in being v. sensitive to the elements in the training set
+	Adding variability/noise to training data helps reduce this
+	But swarm state is exponential in number of robots
+	Can also reduce the ability to represent all possible mappings
+		By reducing representational power
+Has to be adapted to a specific model of robot
+	reference model of the robot
+		created by an expert
+	modules use the reference model robot
+		can be reused
+Control cycle sounds a lot like GCPR cycle as well
+	But not binary predicates
+Behaviors used in the paper
+	Explore (wander/obstacle avoid)
+	Stop
+	Move towards light (with obstacle avoid)
+	Move away from light (with obstacle avoid)
+	Go towards the robots nearby (with obstacle avoid)
+	Go away from the robots nearby (with obstacle avoid)
+Conditions
+	Floor color is black|grey|white
+	Neighbor count (probablistic transition with a threshold)
+	Inverted neighbor count
+	Fixed probablity
+Optimization using F-Race
+	Iterative, done in simulation, gets rid of low performers
+Limited number of states and transitions
+	Intended to minimize complexity, paper uses 4 states and up to 4 transitions each
+Assessment
+	Aggregation objective function is the max number of robots in one black area of arena over total number of robots
+	Foraging objective function is count of trips between source location (black) and home (white, marked with light)
+	Performance on both tasks is compared to evostick (neural network algorithim for robot controllers)
+	Compared simulation and real for both systems
+		evostick has reality gap problems
+			robots in simulation interfered with each other less
+			robots in sim had a larger turning radius than in reality (problem with model of e-puck?)
+		automode doesn't have them, and outperforms evostick
+What this doesn't have that mine does is direct user input into how the task is done.
+
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.32.5571&rep=rep1&type=pdf
+Assessment in simulation
+	Specific to task, motion of a box using limited sensors and Adaptive Logic Network
+	Distance traveled, success of moving the target object 100 units in any direction
+		Not in a user-specified direction
+Mentions need of ability to measure progress and avoid stagnation (balanced forces on box) and cyclic behavior
+
+https://dash.harvard.edu/bitstream/handle/1/8954815/ICRA11_Final.pdf?sequence=1
+Design of Control Policies for Spatially Inhomogeneous Robot Swarms with Application to Commercial Pollination
+Spring Berman, Vijay Kumar, and Radhika Nagpal
+Supervisor computes parameters for robots and task transitions, and broadcasts to swarm
+	Sounds like AutoMoDe
+	Brings up connection to chemical reaction systems as well
+Fluid dynamic model of robot motion, rather than e.g. grid-based
+	Mathematically, this seems a little over the top. 
+	Transition in eq. 19 looks a lot like the stuff from GCPR papers
+Assessment was based on concentrations of types of pollen in a simulated raspberry patch
+Model used to set control paramters for robobees, which then moved pollen around
+
+https://www.researchgate.net/profile/Maja_Mataric/publication/224658369_Minimizing_complexity_in_controlling_a_mobile_robot_population/links/0c96052747a2ce920b000000.pdf
+Assessment of various conditions for robot awareness
+Score was time to get all robots to goal in homing task
+	Ignorant co-existence
+		inter-robot interference caused problems when robots treated each other as obstacles
+	Informed co-existence
+		Robots stopped and let each other pass
+	Intelligent co-existence
+		Robots used information about relative density to arbitrate behavior
+
+https://www.researchgate.net/profile/Andry_Tanoto/publication/4363364_Analysis_and_design_of_human-robot_swarm_interaction_in_firefighting/links/09e41512f50aeabee6000000.pdf
+Guardian system for firefighters
+Assessment plans "are being prepared", requires system to be working first
+
+AutoMoDe-Chocolate: automatic design of control software for robot swarms 
+Gianpiero Francesca, Manuele Brambilla
+Arne Brutschy, Lorenzo Garattoni, Roman Miletitch, Gaëtan Podevijn, Andreagiovanni Reina, Touraj Soleymani, Mattia Salvaro, Carlo Pinciroli, Franco Mascia, Vito Trianni, Mauro Birattari
+Chocolate is Vanilla, only with a better optimization strategy
+Assessment shows that it outdoes a human designer
+	Vanilla got beaten by a human using the same modules that vanilla could use
+Seems to support the idea that the performance measure is specified in terms of the task required
+	So there isn't going to be a universal performance measure
+The various AutoMoDe flavors don't seem to have support for teamwork, so much as some degree of emergence based on treating the other robots positions as an input
+	There are not, for example, communication methods other than being present or absent
+Bunch more tasks
+	Shelter with confined access
+	Largest covering network
+	Cover with forbidden areas
+	Surface and Perimeter Coverage
+	Aggregation with ambient cues
+Performance measure specified by experts, varies with task
+Also, Vanilla and evostick both take over 2 hours on a 400-core cluster
+	200k executions of ARGoS
+
+A Distributed Feedback Mechanism to Regulate Wall Construction by a Robotic Swarm
+Robert L. Stewart and R. Andrew Russell 
+	Assessed in terms of wall constuction, minimizing robot "frustration"
+
+Swarm Intell Swarm robotics: a review from the swarm engineering perspective
+Manuele Brambilla, Eliseo Ferrante, Mauro Birattari, Marco Dorigo
+I think I have other notes on this higher up in this file, mostly looking at assessment now
+2013, surely something has happened in 5 years
+	If not, what would prevent it?
+	"Unfortunately, in swarm robotics there are
+	still no formal or precise ways to design individual level behaviors that produce
+	the  desired  collective  behavior.  The  intuition  of  the  human  designer  is  still  the
+	main ingredient in the development of swarm robotics systems."
+PFSMs are more or less the way it's done
+	AutoMoDe is a PFSM testing system
+	Formal design of PFSM rather than iterative assessment might be faster, if more complex
+Analysis
+	Microscopic - individual robots and robot-to-robot or robot-to-environment interactions
+		Varying abstraction levels, point robots, 2d with kinematics, 3d with physics, etc. 
+		Done in simulation 
+			This isn't analysis so much as it is an enabler of trial and error
+	Macroscopic
+		Rate and differential equations
+			The robobees, mass flow and turbulence 
+			Can be derived from a PFSM
+				Paper has sketch of method
+			Still seems inclined towards task specific models of assessment
+			Doesn't model space and time
+				So implies that robots can be anywhere at any time
+			Langevin and Fokker-Plank equations
+				Model robot as partially stochastic fluid flow
+			Still doesn't cover communications, but at least adds spatial aspects
+		Classical control theory
+			Tends to rely on assumptions that don't hold
+				Point robots with holonomic steering and perfect sensing in the presence of global information
+		Probablistic model checking
+			Konur 2012, Brambilla et al 2012
+		Linear Temporal Logic
+			Safety and aliveness, a la Hadas
+		A lot of the macroscopic with other apporaches was then "validated in simulation"
+			So demonstrated first mathematically, and then in simulation
+"Verification and validation.
+Verification and validation exploit analysis methods,
+which have been discussed in detail in Section 2.2. Despite the great number of
+analysis methods, performing verification and validation of a swarm robotics sys-
+tem  and  comparing  one  system  with  another  are  still  very  difficult  tasks.  The
+reason  behind  this  is  the  lack  of  well  defined  metrics  and  testbed  applications.
+Very often, metrics are too tightly related to a specific solution and thus cannot
+be reused for other systems or for comparisons. The lack of common metrics is
+also related to the lack of well defined testbed applications. As said, foraging and
+construction are the only commonly used testbed applications. However, foraging
+is limited in its use to some collective behaviors, such as task allocation or area
+coverage and cannot be used in others. Moreover, as discussed in the taxonomy
+presented by Winfield (2009), there is no single definition of a standard foraging
+scenario. In order to promote the comparison of swarm robotics systems, it would
+be necessary to define a set of standard foraging scenarios and promote the distri-
+bution of open-source behaviors and public available datasets. Construction, as a
+testbed, suffers from similar limitations."
+	So yeah, still no consistent set of tests and methods, nothing across all swarms or even across all tasks
+
+
+http://www.dtic.mil/dtic/tr/fulltext/u2/a445596.pdf
+Has a section on performance of a plan
+Partial plans on limited information to obtain a subgoal
+
+https://drum.lib.umd.edu/bitstream/handle/1903/6383/TR_2003-35.pdf;sequence=1
+On the Structural Complexity of the Motion Description Language MDLe
+	MDLe sounds a lot like a continuious rather than a discrete finite state aautomaton (an infinite state automaton?)
+
+https://smartech.gatech.edu/bitstream/handle/1853/38598/04739185.pdf
+MDLn
+	For networked systems
+	
