@@ -112,51 +112,55 @@ class ProgGen(object):
 
 
 	def checkGestureList(self):
-		#print the gesture list
-		for g in self.gestures:
-			print g.stamp, g.eventName
+		#If the last thing in is an end gesture, we're good to try to parse the gestures
+		if self.gestures[-1].eventName == "end":
+			#For now just print it out, this is input to the parser, which I'm saving to test it
+			print " ".join([g.eventName for g in self.gestures])
+			#flush the gesture buffer
+			self.gestures = []
 
-		#If we have two gestures, the top gesture is a path, and the previous gesture is a select of any sort
-		if len(self.gestures) >= 2 and self.isPath(self.gestures[-1]) and self.isSelect(self.gestures[-2]):
-			#Get the selected robots
-			selected = self.gestures[-2].robots
 
-			#Generate the GCPR path representation for them
-			#First, get the points on the path in meters
-			path_points = []
-			#Persist so we don't have to set it up for each call (could be lots)
-			point_proxy = rospy.ServiceProxy("map_point", MapPoint, persistent=True)
+		# #If we have two gestures, the top gesture is a path, and the previous gesture is a select of any sort
+		# if len(self.gestures) >= 2 and self.isPath(self.gestures[-1]) and self.isSelect(self.gestures[-2]):
+		# 	#Get the selected robots
+		# 	selected = self.gestures[-2].robots
 
-			for stroke in self.gestures[-1].strokes:
-				for event in stroke.events:
-					#Convert points to meters from pixels
-					pt = point_proxy(event.point)
-					path_points.append((pt.inMeters.x, pt.inMeters.y))
+		# 	#Generate the GCPR path representation for them
+		# 	#First, get the points on the path in meters
+		# 	path_points = []
+		# 	#Persist so we don't have to set it up for each call (could be lots)
+		# 	point_proxy = rospy.ServiceProxy("map_point", MapPoint, persistent=True)
+
+		# 	for stroke in self.gestures[-1].strokes:
+		# 		for event in stroke.events:
+		# 			#Convert points to meters from pixels
+		# 			pt = point_proxy(event.point)
+		# 			path_points.append((pt.inMeters.x, pt.inMeters.y))
 					
-			#Done using the proxy, close it
-			point_proxy.close()
+		# 	#Done using the proxy, close it
+		# 	point_proxy.close()
 
-			#TODO, check that these are sorted by time
+		# 	#TODO, check that these are sorted by time
 			
-			#Simplify the path by dropping points that are less than the configured 
-			#resolution away from the next point in the path. Path ends up being entirely
-			#composed of points greater than the resolution from the next point in the path. 
-			simple_path = [path_points[0]]
-			for point in path_points:
-				if self.distance(point, simple_path[-1]) >= self.resolution:
-					#Add it to the path
-					simple_path.append(point)
+		# 	#Simplify the path by dropping points that are less than the configured 
+		# 	#resolution away from the next point in the path. Path ends up being entirely
+		# 	#composed of points greater than the resolution from the next point in the path. 
+		# 	simple_path = [path_points[0]]
+		# 	for point in path_points:
+		# 		if self.distance(point, simple_path[-1]) >= self.resolution:
+		# 			#Add it to the path
+		# 			simple_path.append(point)
 
-			print simple_path
-			program = self.pathToGCPR(simple_path)
-			#Send the program
-			self.publishProgram(selected, program)
+		# 	print simple_path
+		# 	program = self.pathToGCPR(simple_path)
+		# 	#Send the program
+		# 	self.publishProgram(selected, program)
 
-			#The last and second-from-last gestures have been handled, remove from the stack
-			self.gestures = self.gestures[:-2]
+		# 	#The last and second-from-last gestures have been handled, remove from the stack
+		# 	self.gestures = self.gestures[:-2]
 
-		#TODO expire gestures due to old age?
-		print "----"
+		# #TODO expire gestures due to old age?
+		# print "----"
 
 	def isPath(self, gestureMsg):
 		if gestureMsg.eventName == "path":

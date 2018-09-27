@@ -43,6 +43,9 @@
 	<!-- Tap waypoint gestures -->
 	<node name="waypoint_detector" pkg="user_interface" type="tap_waypoint_detector.py" required="true" output="screen" />
 
+	<!-- Checker for box selection gestures -->
+	<node name="end_detector" pkg="user_interface" type="end_cmd_detector.py" required="true" output="screen" />
+
 	<!-- Paths that are not selections -->
 	<node name="path_detector" pkg="user_interface" type="path_detector.py" required="true" output="screen" />
 
