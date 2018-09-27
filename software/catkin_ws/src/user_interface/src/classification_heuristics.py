@@ -67,8 +67,7 @@ GestureType = Enum(["LINE", "CIRCLE", "ARC", "TAP"])#, "DOUBLE_TAP", "TRIPLE_TAP
 
 
 def get_class(stroke):
-	if len(stroke.events) < 10:
-		if getAvgCentroidDist(stroke) < 10:
+	if len(stroke.events) < 10 or getAvgCentroidDist(stroke) < 10:
 			#Less than 10 events, close in position in space
 			return GestureType.TAP
 	else:	

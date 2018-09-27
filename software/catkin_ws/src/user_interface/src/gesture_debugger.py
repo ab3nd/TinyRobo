@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import rospy
-from user_interface.msg import Kivy_Event, Stroke
+from user_interface.msg import Kivy_Event, Stroke, Gesture
 from geometry_msgs.msg import Point
 from sensor_msgs.msg import Image as ROSImage
 import math
@@ -172,20 +172,37 @@ class GestureVisualizer(object):
 		#Resize to fit screen not needed due to doing it with imageproc
 		self.image = tempImg #.crop((0,120,1024,768)).resize((1680, 1050))
 
-	def render_stroke(self, msg):
+	def render_stroke(self, msg, img = None):
 		#Render the april tag detections onto the image
 		if self.image is None:
 			rospy.logwarn("Tried to debug stroke, but don't have image yet")
-		tempImg = self.image
+		if img is None:
+			tempImg = self.image
+		else:
+			tempImg = img
 		pilDraw = ImageDraw.Draw(tempImg)
 		for tag in self.currentTags.values():
-			tag_x = tag.tagCenterPx.x * self.scale
-			tag_y = (tag.tagCenterPx.y - 120) * self.scale
+			tag_x = tag.tagCenterPx.x# * self.scale
+			tag_y = tag.tagCenterPx.y# - 120) * self.scale
 
 			pilDraw.ellipse(((tag_x-2,tag_y-2), (tag_x+2,tag_y+2)), outline="red", fill="red")
 		del pilDraw
 		#Render the stroke onto the image
 		dumpStroke(msg, image=tempImg)
+
+	def render_gesture(self, msg):
+		if self.image is None:
+			rospy.logwarn("Tried to debug stroke, but don't have image yet")
+		tempImg = self.image
+		for stroke in msg.strokes:
+			x1 = stroke.events[0].point.x
+			y1 = stroke.events[0].point.y
+			pilDraw = ImageDraw.Draw(tempImg)
+			pilDraw.text((x1,y1), msg.eventName, fill=(128,128,128))
+			del pilDraw
+			self.render_stroke(stroke, tempImg)
+
+
 
 		# selected_tags = []
 		# if len(self.currentTags) > 0:
@@ -208,9 +225,10 @@ class GestureVisualizer(object):
 		# 		#This is possibly a box select, pack it up and publish it
 		# 		rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
 		
-rospy.init_node('box_select_detect')
+rospy.init_node('gesture_debugger')
 gv = GestureVisualizer()
-strokeSub = rospy.Subscriber("/strokes", Stroke, gv.render_stroke)
+gestureSub = rospy.Subscriber("/gestures", Gesture, gv.render_gesture)
+#strokeSub = rospy.Subscriber("/strokes", Stroke, gv.render_stroke)
 tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, gv.update_robot_points)
 imgSub = rospy.Subscriber("/overhead_cam/image", ROSImage, gv.update_image) #_rect_color", ROSImage, gv.update_image)
 
