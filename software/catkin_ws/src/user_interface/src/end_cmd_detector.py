@@ -15,7 +15,7 @@ import numpy as np
 # accept or reject the box selection canidates based on state and previous actions
 
 
-class TapSelectDetector(object):
+class EndDetector(object):
 	def __init__(self):
 		self.gesturePub = rospy.Publisher("gestures", Gesture, queue_size=10)
 
@@ -30,14 +30,14 @@ class TapSelectDetector(object):
 
 	def check_stroke(self, msg):
 		#Make sure the gesture is a single tap
-		if classification_heuristics.is_tap(msg): # or msg.isDoubletap or msg.isTripletap:
+		if msg.isDoubletap:
 		
-			#Get the tag closest to the tap
-			closest_tag = None
+			#Make sure no tag is close enough to get selected
 			min_dist = float('inf')
 			for tag in self.currentTags.values():
-				tag_x = tag.tagCenterPx.x
-				tag_y = tag.tagCenterPx.y
+				# Rescale from pixels in camera view to pixels in UI view (cropped, embiggened image)
+				tag_x = tag.tagCenterPx.x # * 1.640625
+				tag_y = tag.tagCenterPx.y #(tag.tagCenterPx.y - 120) * 1.640625
 
 				#Tap is going to have a centroid v. near the various taps
 				tap_x = msg.centroid.x
@@ -50,25 +50,21 @@ class TapSelectDetector(object):
 					min_dist = d
 					closest_tag = tag.id
 
-			#This is about the width of a fingertip in pixels on the screen
-			if min_dist < 80 and closest_tag is not None:
-				#This is possibly a tap select, pack it up and publish it
-				#rospy.loginfo("{0} selects {1}".format(msg.uid, closest_tag))
+			#80 px is about the width of a fingertip in pixels on the screen	
+			#This is a doubletap on empty space, so possibly an end-command signal
+			if min_dist > 80 or closest_tag is None:
 				evt = Gesture()
-				evt.eventName = "tap_select"
+				evt.eventName = "end"
 				evt.stamp = rospy.Time.now()
 				evt.isButton = False 
-				evt.robots = [closest_tag]
+				evt.robots = None
 				evt.strokes = [msg]
 				self.gesturePub.publish(evt)
-				
-				#Clear for next pass
-				closest_tag = None
-
+			
 		
-rospy.init_node('tap_select_detect')
-tsd = TapSelectDetector()
-strokeSub = rospy.Subscriber("/strokes", Stroke, tsd.check_stroke)
-tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, tsd.update_robot_points)
+rospy.init_node('end_msg_detect')
+ed = EndDetector()
+strokeSub = rospy.Subscriber("/strokes", Stroke, ed.check_stroke)
+tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, ed.update_robot_points)
 
 rospy.spin()

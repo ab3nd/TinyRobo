@@ -1074,3 +1074,17 @@ If it is bounded, it either fits on the screen or does not fit on the screen, an
 If the area the robots are in does not fit on the screen, the user likely views it by panning or zooming in and out, and so can pan or zoom so that the area covered by the buttons is not an area which they have to interact with to perform a task. 
 If the area the robots are displayed on and interacted with in does fit on the screen, it can be shrunk slightly, and the buttons can be placed so they don't cover the interaction area. 
 In either case, the design of the interface can accommodate a few buttons without seriously harming the user interaction, although the unchecked proliferation of buttons could lead to design difficulties. 
+
+\section{Termination of Commands}
+
+Some of the potential gesture commands, such as selection of a group of robots followed by tapping waypoints for them to follow, do not have a clear termination, as the system cannot tell if the user is done tapping waypoints, or simply has not tapped the next one yet. 
+One potential solution to this problem is to attempt to parse the user command once enough time has elapsed since the last gesture received. 
+Using a timeout to commit the command was rejected for two reasons. 
+First, the timeout can result in the system beginning to take an action which the user did not want. If the timeout is too short, it could result in a program being transmitted to the robots before the user is done specifying it. 
+If it is too long, it may never be triggered, and so all of the user's gestures could be gathered into one, potentially uncompilable, program. 
+Second, the timeout is could be invisible, resulting in a system that appears to do things for no reason, as far as the user is concerned. 
+It could also be made visible, using a countdown timer, which may then make the user feel pressured to act. 
+
+There are, however, limited instances where it is safe to assume that the user's command is complete. 
+Because commands are generally of the form subject-verb-object, a new subject begins a new command. 
+The exception to this rule is tap selections, which some users used to select multiple robots by sequentially tapping on them. 

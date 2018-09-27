@@ -29,8 +29,8 @@ class TapWaypointDetector(object):
 		return math.sqrt(pow(x1 - x2, 2) + pow(y1 -y2, 2))
 
 	def check_stroke(self, msg):
-		#Make sure the gesture is a tap of any sort
-		if classification_heuristics.is_tap(msg) or msg.isDoubletap or msg.isTripletap:
+		#Make sure the gesture is a single tap
+		if classification_heuristics.is_tap(msg): # or msg.isDoubletap or msg.isTripletap:
 		
 			#Make sure no tag is close enough to get selected
 			min_dist = float('inf')
@@ -62,6 +62,7 @@ class TapWaypointDetector(object):
 				self.gesturePub.publish(evt)
 				#Clear for next pass
 				closest_tag = None
+
 		
 rospy.init_node('tap_waypoint_detect')
 twd = TapWaypointDetector()
