@@ -57,7 +57,7 @@ class EndDetector(object):
 				evt.eventName = "end"
 				evt.stamp = rospy.Time.now()
 				evt.isButton = False 
-				evt.robots = None
+				evt.robots = []
 				evt.strokes = [msg]
 				self.gesturePub.publish(evt)
 			

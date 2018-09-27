@@ -18,7 +18,8 @@ gesture_grammar='''
 
 	drag_path : "drag_robot"
 
-	path : "path" | "tap_waypoint"+ //may need to add option to treat box/lasso as path
+	tap_waypoint : "tap_waypoint"
+	path : "path" | tap_waypoint+ //may need to add option to treat box/lasso as path
 
 	patrol_cmd : select? patrol path
 	formation_cmd : select? formation path
@@ -36,4 +37,38 @@ gesture_grammar='''
 
 l = Lark(gesture_grammar)
 
-print l.parse("tap_robot select_group disperse_gesture end").pretty()
+live_attempts=[
+"lasso_select path tap_waypoint path tap_waypoint end",
+"tap_waypoint path path tap_waypoint end",
+"tap_waypoint path path tap_waypoint tap_waypoint end",
+"path tap_select path tap_waypoint tap_waypoint end",
+"tap_waypoint path tap_select end",
+"tap_waypoint path tap_select end",
+"path tap_waypoint lasso_select path path end",
+"tap_waypoint path end",
+"box_select path tap_waypoint tap_waypoint end",
+"path tap_waypoint tap_waypoint box_select path end",
+"path path tap_waypoint end",
+"lasso_select tap_waypoint path path end",
+"box_select path tap_waypoint end",
+"box_select path path end",
+"path path path path tap_select path path tap_waypoint path tap_waypoint end",
+"path path path tap_select tap_select path path tap_select path end",
+"tap_waypoint path end",
+"box_select lasso_select end",
+"box_select path path end",
+"lasso_select path end",
+"lasso_select Patrol path tap_waypoint path tap_waypoint end",
+"lasso_select Formation path end",
+"lasso_select Move Object path end",
+"tap_waypoint Remove Robot path tap_waypoint end",
+"remove_robot path tap_select tap_waypoint end",
+"path remove_robot tap_waypoint end",
+"tap_select select_group tap_waypoint end",
+"path tap_select select_group select_group tap_select path path tap_waypoint path tap_waypoint end",
+"select_group tap_select end",
+"tap_waypoint tap_select select_group tap_waypoint end",
+"tap_waypoint end"]
+
+for line in live_attempts:
+	print l.parse(line).pretty()

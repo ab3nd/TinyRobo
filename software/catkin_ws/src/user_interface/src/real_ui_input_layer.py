@@ -182,8 +182,7 @@ class OverheadUIApp(App):
     def handle_button(self, instance):
         evt = Gesture()
         evt.stamp = rospy.Time.now()
-        evt.eventName = instance.text
-        evt.isButton = True
+        evt.eventName = instance.text.lower().replace(" ", "_")
         self.button_pub.publish(evt)
         return True
 

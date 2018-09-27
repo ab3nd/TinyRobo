@@ -63,19 +63,24 @@ class Enum(set):
 			return name
 		raise AttributeError
 
-GestureType = Enum(["LINE", "CIRCLE", "ARC"])#, "TAP", "DOUBLE_TAP", "TRIPLE_TAP", "CMD_GO"])
+GestureType = Enum(["LINE", "CIRCLE", "ARC", "TAP"])#, "DOUBLE_TAP", "TRIPLE_TAP", "CMD_GO"])
 
 
 def get_class(stroke):
-	angle = get_centroid_angle(stroke)
-	if angle < 1:
-		return GestureType.CIRCLE
-	elif angle < 2.5:
-		return GestureType.ARC
-	elif angle is not None:
-		return GestureType.LINE
-	else:
-		return None
+	if len(stroke.events) < 10:
+		if getAvgCentroidDist(stroke) < 10:
+			#Less than 10 events, close in position in space
+			return GestureType.TAP
+	else:	
+		angle = get_centroid_angle(stroke)
+		if angle < 1:
+			return GestureType.CIRCLE
+		elif angle < 2.5:
+			return GestureType.ARC
+		elif angle is not None:
+			return GestureType.LINE
+		else:
+			return None
 
 def is_line(stroke):
 	return get_class(stroke) == GestureType.LINE
@@ -87,8 +92,4 @@ def is_circle(stroke):
 	return get_class(stroke) == GestureType.CIRCLE
 
 def is_tap(stroke):
-	if len(stroke.events) < 10:
-		if getAvgCentroidDist(stroke) < 10:
-			#Less than 10 events, close in position in space
-			return True
-	return False
+	return get_class(stroke) == GestureType.TAP

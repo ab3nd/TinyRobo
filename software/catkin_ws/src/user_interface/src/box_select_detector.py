@@ -61,7 +61,6 @@ class BoxSelectDetector(object):
 
 				if len(selected_tags) > 0 and not isDrag:
 					#This is possibly a box select, pack it up and publish it
-					rospy.loginfo("{0} selects {1}".format(msg.uid, selected_tags))
 					evt = Gesture()
 					evt.eventName = "box_select"
 					evt.stamp = rospy.Time.now()
