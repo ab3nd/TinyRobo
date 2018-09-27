@@ -11,9 +11,6 @@
 	<!-- Fiducial tags -->
 	<include file="$(find tiny_robo_launch)/launch/sim_april_tags.launch" />
 
-	<!-- Fake laser readings --> 
-	<node pkg="laser_oracle" type="laser_oracle_server.py" name="fake_laser_service" output="screen"/>
-
 	<!-- Distance oracle -->
 	<node pkg="distance_oracle" type="distance_oracle_server.py" name="fake_range_service" output="screen"/>
 

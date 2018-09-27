@@ -13,6 +13,7 @@ import rospy
 import decompose_space
 import math
 import re
+from lark import Lark
 
 class ProgSender(object):
 	def __init__(self):
@@ -51,6 +52,41 @@ class ProgGen(object):
 
 		#Object to handle sending programs to robots
 		self.sender = ProgSender()
+
+		gesture_grammar='''
+			select : tap_select | box_select | lasso_select | select_group
+			tap_select : "tap_robot"+ 
+			box_select : "box_select"
+			lasso_select : "lasso_select"
+			select_group : "tap_robot" "select_group" | "select_group" "tap_robot" //order doesn't matter
+
+			patrol : "patrol"
+			formation : "formation"
+			move : "move_object"
+			remove : "remove_object"
+			
+			disperse : "disperse_gesture"
+
+			drag_path : "drag_robot"
+
+			tap_waypoint : "tap_waypoint"
+			path : "path" | tap_waypoint+ //may need to add option to treat box/lasso as path
+
+			patrol_cmd : select? patrol path
+			formation_cmd : select? formation path
+			move_obj_cmd : select? move path 
+			disperse_cmd : select? disperse
+			path_cmd : drag_path | select? path
+
+			start : (patrol_cmd | formation_cmd | move_obj_cmd | disperse_cmd | path_cmd) end
+
+			end : "end"
+
+			%import common.WS
+			%ignore WS
+		'''
+
+		self.parser = Lark(gesture_grammar)
 
 	def addGesture(self, gestureMsg):
 		self.gestures.append(gestureMsg)
@@ -111,14 +147,47 @@ class ProgGen(object):
 		return program
 
 
+	def parseGestures(self, gesture_list):
+		#Get a list of the gestures
+		prog_str = " ".join([g.eventName for g in gesture_list])
+		#Parse it to build the tree
+		parse_tree = self.parser.parse(prog_str)
+
+		#For now just prettyprint it
+		print prog_str
+		print parse_tree.pretty()
+		print "---"
+		
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
 		if self.gestures[-1].eventName == "end":
+			print "--> gesture ended"
 			#For now just print it out, this is input to the parser, which I'm saving to test it
 			print " ".join([g.eventName for g in self.gestures])
 			#flush the gesture buffer
 			self.gestures = []
 
+		#If the last thing in is a select, and there are any selects already present in the buffer,
+		#then it's time to end the previous gesture and parse that, and leave the select in as
+		#the beginning of a new gesture
+		elif self.isSelect(self.gestures[-1]) and any([self.isSelect(x) for x in self.gestures[:-1]]):
+			print "--> select started new gesture"
+			#insert an end to it and ship it to the parser
+			toParse = self.gestures[:-1]
+
+			evt = Gesture()
+			evt.eventName = "end"
+			evt.stamp = rospy.Time.now()
+			evt.isButton = False 
+			evt.robots = []
+			evt.strokes = []
+			
+			toParse.append(evt)
+			
+			print " ".join([g.eventName for g in toParse])
+
+			#Clear the stuff that was just sent to the parser
+			self.gestures = [self.gestures[-1]]
 
 		# #If we have two gestures, the top gesture is a path, and the previous gesture is a select of any sort
 		# if len(self.gestures) >= 2 and self.isPath(self.gestures[-1]) and self.isSelect(self.gestures[-2]):
