@@ -13,7 +13,7 @@ import rospy
 import decompose_space
 import math
 import re
-from lark import Lark
+from lark import Lark, UnexpectedInput
 
 class ProgSender(object):
 	def __init__(self):
@@ -150,21 +150,26 @@ class ProgGen(object):
 	def parseGestures(self, gesture_list):
 		#Get a list of the gestures
 		prog_str = " ".join([g.eventName for g in gesture_list])
-		#Parse it to build the tree
-		parse_tree = self.parser.parse(prog_str)
 
-		#For now just prettyprint it
-		print prog_str
-		print parse_tree.pretty()
-		print "---"
-		
+		try:
+			#Parse it to build the tree
+			parse_tree = self.parser.parse(prog_str)
+
+			#For now just prettyprint it
+			print prog_str
+			print parse_tree.pretty()
+			print "---"
+		except UnexpectedInput as e:
+			print e
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
 		if self.gestures[-1].eventName == "end":
 			print "--> gesture ended"
-			#For now just print it out, this is input to the parser, which I'm saving to test it
-			print " ".join([g.eventName for g in self.gestures])
-			#flush the gesture buffer
+			
+			#Call the parser on it
+			self.parseGestures(self.gestures)
+
+			#Flush the gesture buffer
 			self.gestures = []
 
 		#If the last thing in is a select, and there are any selects already present in the buffer,
@@ -174,19 +179,18 @@ class ProgGen(object):
 			print "--> select started new gesture"
 			#insert an end to it and ship it to the parser
 			toParse = self.gestures[:-1]
-
 			evt = Gesture()
 			evt.eventName = "end"
 			evt.stamp = rospy.Time.now()
 			evt.isButton = False 
 			evt.robots = []
 			evt.strokes = []
-			
 			toParse.append(evt)
-			
-			print " ".join([g.eventName for g in toParse])
 
-			#Clear the stuff that was just sent to the parser
+			self.parseGestures(toParse)
+			
+			#Clear the stuff that was just sent to the parser, but leave the 
+			#selection gesture that kicked off this parse attempt
 			self.gestures = [self.gestures[-1]]
 
 		# #If we have two gestures, the top gesture is a path, and the previous gesture is a select of any sort

@@ -1048,6 +1048,21 @@ Of the users who indicated a need to convey that the swarm keep patrolling, some
 Some users reused gestures for different purposes, such as tapping a robot to select it, but also tapping a robot to remove it.
 Because 30.2\% of the selection gestures were taps, it was decided that selection, which occurs often, would be done by tapping, while removal of a robot, which is rare, would be performed by a different action. 
 
+The user drawing a line over a group of robots could be interpreted a number of ways: as a dividing line, as a box selection, as a path for a single robot to follow, as a path for a group of robots to follow, and as the location of a line formation. 
+Because a number of other, more explicit commands are available for dividing robots into groups, such as moving one group away from the other, the division line interpretation was rejected. 
+A line drawn over robots is treated as a box selection, unless it begins on a single robot, in which case it is interpreted as a path for that robot to follow. 
+For the purposes of this work, beginning ``on'' a robot was defined as the beginning of the line being within 80 pixels of the location of the robot on the screen. 
+80 pixels was selected because it is the approximate width of a human finger on the screen used in this work. 
+Obviously, this distance will vary with the resolution of the screen, but the mechanism for obtaining the resolution and physical size of attached screens varies with operating systems, and is outside of the scope of this work, aside from noting that this parameter may vary.
+
+The distinction between interpreting a line drawn over robots as a command for one robot to follow versus a command for multiple robots to follow may depend on the number of robots present.
+As seen in section \todo{what section} the use of commands directed to the entire swarm without the use of a selection gesture beforehand is most common in the 1000 robot case, and is uncommon in the 10 robot case. 
+This is one area in which the interface may change depending on the number of units being commanded, with small groups requiring that all robots be selected before a command can be applied to them, and larger groups defaulting to issuing the command to all robots if some subset has not already been selected. 
+However, care must be taken to avoid learning effects. 
+If the user has previously been exposed to a condition where the system defaults to selecting all robots, they may develop an expectation that other conditions behaves the same, and neglect to select robots, resulting in incomplete commands (or commands being applied to no robots). 
+Interestingly, the opposite case, where the user makes a selection of all the robots that is not actually required, because it is the default, does not result in a surprise for the user. 
+Because the failure mode encouraged by a system that requires explicit selection is less surprising than one that has implicit select-all, the system was developed to require selection to issue a command to multiple robots. 
+As described above, issuing a command to a single robot may be done without selecting it first, by beginning the desired path on the robot. 
 
 %Drawing a line to divide the robots into groups vs. drawing a path to follow vs. drawing a line for the robots to get in formation on.
 
@@ -1082,9 +1097,16 @@ One potential solution to this problem is to attempt to parse the user command o
 Using a timeout to commit the command was rejected for two reasons. 
 First, the timeout can result in the system beginning to take an action which the user did not want. If the timeout is too short, it could result in a program being transmitted to the robots before the user is done specifying it. 
 If it is too long, it may never be triggered, and so all of the user's gestures could be gathered into one, potentially uncompilable, program. 
-Second, the timeout is could be invisible, resulting in a system that appears to do things for no reason, as far as the user is concerned. 
-It could also be made visible, using a countdown timer, which may then make the user feel pressured to act. 
+Second, the timeout is could be invisible. From the user's perspective, this causes the system to appear to begin acting at random, which is undesirable. 
+The timeout could be made visible, using a countdown timer, which may then make the user feel pressured to act. 
 
-There are, however, limited instances where it is safe to assume that the user's command is complete. 
+In order to avoid having the system act prematurely, the system treats a doubletap on open space as an "end of command" signifier \todo{justify that doubletap wasn't otherwise consistently used}.
+If the hardware used in the system were capable of detecting it, the user placing their hands in their lap or away from the screen could also be used as a signifier that the user has completed entry of their command. 
+Most users moved back from the screen slightly and removed their hands from the volume above it once they were finished issuing their command, and no users were observed to rest their hands on the screen while not issuing commands. 
+However, this behavior may have been a consequence of the particular arrangement of the screen and user seating, so further work would be required to determine if it is a sufficiently robust indication of command completion. 
+ 
+There are, limited instances where it is safe for the system to assume that the user's command is complete. 
 Because commands are generally of the form subject-verb-object, a new subject begins a new command. 
 The exception to this rule is tap selections, which some users used to select multiple robots by sequentially tapping on them. 
+Tap selections are accumulated until a gesture other than a tap selection is entered. 
+

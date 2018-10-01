@@ -112,51 +112,42 @@ class PathDetector(object):
 			closest_distance = float("inf")
 
 			if len(self.currentTags) > 0:
-				#Get the minimum bounding oval of the lasso gesture
+				#Get the points of the lasso as a list
 				points = [(event.point.x, event.point.y) for event in msg.events]
-				try:
-					A, c = self.min_bounding_oval(points)
-					#A lot of this test is based on https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
-					# but since the ellipse isn't axis-aligned, the E matrix isn't [[1 0]
-					#                                                               [0 1]]
-					# and the algorthm for the best fit ellipse above includes the unit vectors for the axes already.
-					# I think at an abstract level, what this ends up doing is calculating a matrix representing a
-					# conversion from the ellipse to a unit circle at (0,0), and then subtracting the ellipse center
-					# moves the canidate point to the (0,0) of the transformed space. I could be wrong about that, though. 
 
-					#Convert A to a whitening matrix (W = A**-1/2)
-					w, v = np.linalg.eig(A)
-					D = np.diagflat(w)
-					W = v * np.sqrt(D) * v.I
+				#See which points fall inside the list (which represents a polygon)
+				for tag in self.currentTags.values():
+					tag_x = tag.tagCenterPx.x
+					tag_y = tag.tagCenterPx.y
 
+					# From http://www.ariel.com.au/a/python-point-int-poly.html
+					n = len(points)
+					inside =False
 
-					#Get all the tags that have their center in the ellipse
-					for tag in self.currentTags.values():
-						tag_x = tag.tagCenterPx.x
-						tag_y = tag.tagCenterPx.y
+					p1x,p1y = points[0]
+					for i in range(n+1):
+						p2x,p2y = points[i % n]
+						if tag_y > min(p1y,p2y):
+							if tag_y <= max(p1y,p2y):
+								if tag_x <= max(p1x,p2x):
+									if p1y != p2y:
+										xinters = (tag_y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+									if p1x == p2x or tag_x <= xinters:
+										inside = not inside
+						p1x,p1y = p2x,p2y
 
-						#Subtract the center of the ellipse and use the whitening matrix
-						p = np.matrix([[tag_x],[tag_y]])
-						p_center = p - c
-						p_white = W * p_center
+					if inside:
+						selected_tags.append(tag.id)
 
-						#Check if the whitened point is in the ellipse
-						if np.linalg.norm(p_white) <= 1:
-							selected_tags.append(tag.id)
-
-						#Keep track of the closest tag to the start of the original circle
-						d = math.sqrt(math.pow(tag_x - msg.events[0].point.x, 2) + math.pow(tag_y - msg.events[0].point.y, 2))
-						if d < closest_distance:
-							closest_robot = tag.id
-							closest_distance = d
-
-				except np.linalg.LinAlgError:
-					#Singular matrix usually causes this, the stroke was probably a tap
-					return 	
-				
-				#Approx width of a finger on my screen
-				if closest_distance < 80: 
-					isDrag = True
+					#Keep track of the closest tag to the start of the original circle
+					d = math.sqrt(math.pow(tag_x - msg.events[0].point.x, 2) + math.pow(tag_y - msg.events[0].point.y, 2))
+					if d < closest_distance:
+						closest_robot = tag.id
+						closest_distance = d
+					
+					#Approx width of a finger on my screen
+					if closest_distance < 80: 
+						isDrag = True
 		
 				evt = Gesture()	
 				evt.stamp = rospy.Time.now()
