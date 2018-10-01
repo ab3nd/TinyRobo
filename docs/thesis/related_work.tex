@@ -837,7 +837,7 @@ Other work with modular robots has used sensing to characterize the environment 
 The high-level planner uses linear temporal logic in a tool called LTLMoP (Linear Temporal Logic MissiOn Planning) to synthesize a controller for the robot task, and from the behaviors required from the controller, a sequence of transformations of the robot into forms that provide those behaviors. 
 	
 Generation of programs from e.g. LTL descriptions of the task and environment are promising because they can generate provably correct controllers.
-Unfortunately, these approaches to program generation are prone to extreme conservationism in the face of an unknown environment. 
+Unfortunately, these approaches to program generation are prone to extreme conservatism in the face of an unknown environment. 
 Assume that a robot is placed in a simply-connected maze, with instructions to traverse the maze. 
 Selecting one wall, either the left or the right, and following it, will result in the robot finding the exit, or returning to the entrance if there is none. 
 However, the \emph{a priori} generation of a motion plan to reach the exit from the entrance is impossible, as the actual path taken is unknown. 
