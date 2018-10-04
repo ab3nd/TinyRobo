@@ -262,3 +262,28 @@ Because every iteration of this step fills the point closest to the goal with a 
  	\caption{The proposed modifications (in blue) to the Tomita and Yamamoto Tangent-bug algorithm for user path following in cases with multiple robots, some of which may be treated as moving obstacles. This flow chart does not include the option for maximally dense packing at the goal described in the text. }
  \end{figure}
 
+\chapter{Compiler Verification}
+
+The design of a compiler which verifies that its output is correct What does it mean for a program to be correct? Free from things like assignment of variables to the wrong type, buffer overflows, off-by-one errors, etc. Does not mean that the program does what the programmer intended, just that it does whatever it does without errors. 
+Correctness is judged with respect to a specification. 
+Partial correctness - if an answer is returned, it is correct. 
+Total correctness - requires that program is partially correct and terminates
+No general solution to halting problem, needs specific proof per-program
+Compiler correctness shows that a compiler behaves according to its specification
+I don't currently have a language specification for the gesture language 
+
+One method of testing compilers is the operation of a fuzzer \citep{miller1990empirical}. A fuzzer, in the general case, generates input for programs that, while technically legitimate input, causes unexpected behavior such as program crashes. A fuzzer for compilers uses a description of the source language to generate programs that are considered valid under the description, and then attempts to compile them using the compiler. It can also attempt to generate programs that are deliberately incorrect, to test the ability of the compiler to accurately report errors, and to ensure that the compiler accepts all correct programs and no incorrect programs, as in \citep{bazzichi1982automatic}. 
+Because the internal structure of the compiler is not known, a generator cannot be certain that it causes all code paths in the compiler to be executed, but it can be certain that the generated test programs use all of the syntactical elements of the language, since all of the elements are described in the language specification. Interestingly, Bazzichi and Spadafora's work predates the use of the term ``fuzzer'' by 8 years, but clearly describes the same process.
+
+Translation validation \citep{pnueli1998translation}
+verifies compiled code against input code rather than attempting to verify that a compiler correctly translates all input programs.
+Verifies that the compiler correctly transforms a specific input program. 
+Needs:
+ - A common semantic framework for the representation of the source code and the generated target code (probablistic finite automaton?)
+ - A formal description of "correct implementation"
+ - A proof method for verifying that one instance of the semantic framework (the output) correctly implements another one (the input)
+How is the IR not the common semantic framework?
+%
+ 
+
+

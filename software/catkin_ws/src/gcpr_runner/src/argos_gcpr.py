@@ -53,6 +53,11 @@ class GCPR_driver(object):
 		self.traveled_y = 0.0
 		self.lastPosition = None
 
+		#for Bug algo
+		self.closest_visited_point = None
+		self.target_point = None
+		self.hit_point = None
+
 		#For GCPR program counter, default to 0
 		self.prog_ctr = 0
 
@@ -63,7 +68,6 @@ class GCPR_driver(object):
 
 		#For debugging
 		self.ns = rospy.get_namespace()
-
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -199,8 +203,13 @@ class GCPR_driver(object):
 		#rospy.loginfo_throttle(3, "{} Turning with speed {}".format(self.ns, speed))
 		self.move_arc(speed, 0)
 
-	# Stopping is moving with no velocity. Have you ever, like, REALLY, looked at your hands, man?
-	def stop(self):
+	# Stopping is moving with no velocity.
+	def stop(self, success=None):
+		if success is not None:
+			if success:
+				rospy.loginfo_throttle(5, "{} arrived".format(self.ns))
+			else:
+				rospy.loginfo_throttle(5, "{} cannot arrive".format(self.ns))
 		#rospy.loginfo_throttle(10, "{} Stopping".format(self.ns))
 		self.move_arc(0,0)
 
@@ -289,7 +298,74 @@ class GCPR_driver(object):
 				#rospy.logwarn("y {} is between {} and {}".format(y, minY, maxY))
 				return True
 		return False
-			
+		
+	#=============== Sensors for bug algorithims ====================
+	#Return the closest point to the goal in the tangent graph
+	def closest_tangent_point(self):
+		min_d = float('inf')
+		closest = None
+		#For each non-zero point in the sensor reading
+		for index, reading in enumerate(self.proxReadings):
+			isTangent = False
+			if reading.value != 0;
+				#This reading detects something, check if either of the readings around it are 0
+				#If it is, this is a tangent
+				if index == 0:
+					if self.proxReadings[1] == 0 or self.proxReadings[23] == 0:
+						isTangent = True
+				elif index == 23:
+					if self.proxReadings[0] == 0 or self.proxReadings[22] == 0:
+						isTangent = True
+				else:
+					if self.proxReadings[index-1] == 0 or self.proxReadings[index+1] == 0:
+						self.isTangent = True
+			if isTangent:
+				#Argos prox sensors have a 10cm range, convert this angle and range to a point
+				#10 cm is 1 dm is 0.1 m
+				x = 0.10 * math.cos(reading.angle)
+				y = 0.10 * math.sin(reading.angle)
+				d = self.distance((x,y), (self.target_point[0], self.target_point[1]))
+				
+				#If it is closer to the target point than previously seen, save it
+				if d < min_d:
+					min_d = d
+					closest = (x,y)
+		return closest
+
+	#Return the closest point to the goal in free space
+	def closest_free_point(self):
+		min_d = float('inf')
+		closest = None
+		for reading in self.proxReadings:
+			#For each zero point in the sensor readings
+			if reading.value == 0:
+				#Argos prox sensors have a 10cm range, convert this angle and range to a point
+				#10 cm is 1 dm is 0.1 m
+				x = 0.10 * math.cos(reading.angle)
+				y = 0.10 * math.sin(reading.angle)
+				d = self.distance((x,y), (self.target_point[0], self.target_point[1]))
+				
+				#If it is closer to the target point than previously seen, save it
+				if d < min_d:
+					min_d = d
+					closest = (x,y)
+		return closest
+
+	#Distance between two points
+	def distance(self, p1, p2):
+		return math.sqrt(math.pow(p1[0] - p2[0] , 2) + math.pow(p1[1] - p2[1], 2))
+
+	#Calculate the heading to a point from the current location
+	def heading_to(self, p2):
+		pass
+
+	#True if within a specified distance of a point
+	def at(p1, threshold = 0.05):
+		if distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:
+			return True
+		return False
+
+
 rospy.init_node("gcpr_driver", anonymous=True)
 
 #Get the ID of the robot that this instance of the driver is driving
