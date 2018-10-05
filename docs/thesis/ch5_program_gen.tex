@@ -31,7 +31,7 @@ However, certain minimum bounds on the problem may be able to be used to determi
 \section{Localization}
 
 The initial vision for this work was to have minimal sensing and no localization. 
-Minimal sensing results in a lower cost per robot. 
+Minimal sensing results in a lower cost per robot, as it reduces the amount spent on sensors. 
 Not relying on localization, especially localization via approaches such as GPS, which are easily blocked or interfered with, allows the resulting algorithms to be useful in situations where global localization is not available. 
 
 However, a user interface that can display the swarm from an overhead view assumes that there is some form of localization, at least in terms of relative distances and bearings between the robots.
@@ -157,17 +157,17 @@ Changing to randomly-selected lh- or rh-wall following changes the shape of the 
 
 In none of these cases is the goal unreachable, in that it is a member of the same set of points as the open space of the environment, but attempts at obstacle avoidance preclude the robot reaching it. 
 
-\section{Code generation refinement}
+\section{Code Generation Refinement}
 
 Rather than rejecting bug algorithms because they cannot be usefully combined with a global vector field, the vector field representation of the space was rejected. 
-Vector fields have other problems, beyond unsatisfactory composition with complete motion control planners such as the bug algorithm families. 
+Vector fields have other problems, beyond unsatisfactory composition with complete motion control planners such as the bug algorithm family. 
 A vector field cannot represent a path that crosses itself, such as a patrol route that is a loop.
 In the continuous case, a vector field is represented by a function that maps all points in the space to a vector representing the desired robot heading at that point. 
 However, because a function produces exactly one value, each point can only have one heading, while the intersection point of a path has two headings, at different points in time. 
 For a vector field broken up into discrete grid cells, the same problem applies, but to regions rather than points. 
 
 One potential solution to this problem with vector fields is to have multiple vector fields, or multiple values at each point, and allow the robot to maintain a program counter, which it uses to determine which field or which value to use at a given point. 
-The counter is incremented on arrival in a vector field grid cell, and then on return to that cell, the new value of the program counter is used in a guard, which results in the robot using the second value of the heading. 
+The counter is incremented on departure from a vector field grid cell, and then on return to that cell, the new value of the program counter is used in a guard, which results in the robot using the second value of the heading. 
 
 For example, the GCPR statements:\\
 (self.is\_in((1.745, 1.921), (1.245, 1.421)) and pc\_is(1), self.set\_desired\_heading(2.332), 0.9)\\
@@ -195,10 +195,10 @@ However, robots also take up space in the real world, and so as more and more me
 In this case, it is desirable to have a definition of arrival that expands to allow robots to approach the point as closely as they can and stop when that condition is met. 
 
 For example, when a robot arrives at the point, it might stop, but broadcast a message to local robots that it is at the point. 
-Robots arriving after the first would then navigate around it until they either reach a point which is as close to the target point as they can approach, by keeping track of the minimum distance, or they have completed a fixed number of circumnavigations. 
-The bound on the number of circumnavigations is required because as more robots arrive, local minima in the approach to the target point may become occupied by another robot, and so requiring a return to a given minimum point may lead to unbounded looping around the target point. 
-Once the prescribed number of circumnavigations is reached or a local minimum is found, the robot would stop and begin to announce to others that it also has arrived. 
-This algorithm may be sub-optimal, but methods for maximizing the density of clusterings around a point are well-covered in the literature on aggregation of swarm robots\todo{so cite some of them}. 
+Robots arriving after the first would then navigate around it, keeping track of the minimum distance to the goal. 
+After finishing a circumnavigation, the robot would then return to the closest point to the goal. 
+As more robots arrive, the local minimum in the approach to the target point may become occupied by another robot, and so if that point is occupied, the robot would then have to perform another circumnavigation to find a new closest point. 
+Because every iteration of this loop either occupies the closest point with a robot, or detects that the closest point has become occupied by another robot, and triggers another iteration, it will eventually position every robot as close as possible to the goal. 
 
 \section{Completeness of Navigation}
 
@@ -218,7 +218,7 @@ Unless it is known whether the obstacle will move off the goal in the future, it
 The Tangent-bug algorithm has been extended to handle moving obstacles, given a number of constraints \citep{kamon1998tangentbug, tomita2009sensor}.
 The main constraint that affects the use of this algorithm is that the obstacles are constrained to be moving at a velocity that is slower than that of the robot.
 This constraint is required because if the robot is circumnavigating the obstacle, and the obstacle is moving faster than the robot, then in the time that the robot requires to circumnavigate the perimeter of the obstacle, the obstacle will have moved a distance greater than its own perimeter is long, and the circumnavigating robot will have moved with it.
-As a consequence, the circumnavigating robot could not return to its own previous path and cross it, which is the condition that Tomita and Yamamoto use to determine that the robot should leave the obstacle. 
+As a consequence, the circumnavigating robot might not return to its own previous path and cross it, which is the condition that Tomita and Yamamoto use to determine that the robot should leave the obstacle. 
 
 At first, this would appear to be a problem for swarm robots, because if the robots are the same, they will be moving at the same speed. 
 If one moves in a straight line, and the other attempts to circumnavigate it, the circumnavigating robot will never cross its own path for the reason described above, and so never leave. 
@@ -226,9 +226,9 @@ However, if the robots are using the same bug algorithm, this trap will not be s
 If they attempt to circumnavigate each other in opposite directions, they will spiral around each other, leading to at least one of the robots crossing its own previous path, and triggering the leave condition of the algorithm. 
 If they attempt to circumnavigate each other in the same direction, they will come to a position side-by-side, as neither can outpace the other, but neither will pull away from the other because they are attempting to follow each other's perimeters. 
 In this case, they are pointed towards the goal, because in the absence of an obstacle, Tomita and Yamamoto's modified Tangent-bug orients the robot towards the goal, and so before they encountered each other, the robots were oriented towards the goal.
-The robots will then approach the goal, and one will arrive, while the other circumnavigates it until it detects that it cannot arrive at the goal. 
+The robots will then approach the goal, and one will arrive, while the other circumnavigates the first until it detects that it cannot arrive at the goal. 
 
-Tomita and Yamamoto do not deal with the decidability of their modification of Tangent-bug because they constrain the goal point to be not within an obstacle, and so reachable by the robot, because the original Tangent-bug will navigate the robot to the goal if it is reachable, or circumnavigate the obstacle, returning to its starting point, whereupon it detects that the point is unreachable \citep{kamon1998tangentbug}.
+Tomita and Yamamoto do not deal with the decidability of their modification of Tangent-bug because they constrain the goal point to be not within an obstacle, and so reachable by the robot. The original Tangent-bug will navigate the robot to the goal if it is reachable, or circumnavigate the obstacle, returning to its starting point, whereupon it detects that the point is unreachable \citep{kamon1998tangentbug}. Since Tomita and Yamamoto constrain the goal to not be within an obstacle, the original Tangent-bug will reach it. 
 
 In the case of moving obstacles, if the goal is covered by an obstacle, the obstacle is either moving or not moving. If the obstacle is moving, the modified Tangent-bug will not return to its original hit point, which is either left behind or covered by the obstacle, but will eventually cross itself, and leave the object towards the goal.
 If the obstacle is still covering the goal, this process will repeat until the object is not covering the goal anymore, and the robot will reach the goal. 

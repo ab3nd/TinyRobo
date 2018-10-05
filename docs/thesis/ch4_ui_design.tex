@@ -1,27 +1,19 @@
+% !TeX root = ams_thesis.tex
 \chapter{UI Design and Implementation}
 
+In order to convert the user gestures collected in the gesture collection experiment into a user interface, a subset of the gestures was selected to support the majority of the user-defined gestures. 
 
+In some cases, the user defined gestures were ambiguous, either across users, or with a user across tasks. 
+Where design decisions were made to work around these ambiguities, they are described. 
 
-
-
-\chapter{Selection of Gestures for Control of Swarms}
+\section{Selection of Gestures for Control of Swarms}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{../thin_grey_text.png}
-	%	\begin{subfigure}{0.28\textwidth}
-	%		\includegraphics[width=\linewidth]{../move_grey_no_grid_text.png}
-	%	\end{subfigure}
-	%	\begin{subfigure}{0.28\textwidth}
-	%		\includegraphics[width=\linewidth]{../select_grey_no_grid_text.png}
-	%	\end{subfigure}
-	%	\begin{subfigure}{0.28\textwidth}
-	%		\includegraphics[width=\linewidth]{../ui_grey_no_grid_text.png}
-	%	\end{subfigure}
 	\caption{Motion, selection, and UI gestures.}
 	\label{fig:select_ui_move_breakdown}
 \end{figure}
-
 
 For position commands, drag, tap, and ``other'' would cover 94.8\% of the gestures. 
 Unfortunately, the ``other'' commands are not a single gesture, but include a diverse collection of gestures, such as pushing with the side of the finger or making a picking-up, carrying, and setting-down motion over the screen.
@@ -35,7 +27,7 @@ The user noted that the direction of the lasso disambiguated it from lasso as se
 
 Achieving 90\% recognition of the most common UI widgets would include buttons for special functions, handwriting recognition, voice commands, and other menus on the screen (totaling 90.8\%). 
 However, a successful menu-based UI would not be composed simply by taking the sum of all of the user interface designs suggested by users, as there would be significant redundancy in the UI commands, and in ways of bringing up the UI for interaction. 
-Instead, the tasks in which the users invoked the UI most often were examined, and the requested UI functions were considered for inclusion. \todo{Do this, figure out what they are}
+Instead, the tasks in which the users invoked the UI most often were examined, and the requested UI functions were considered for inclusion.
 
 Both voice commands and handwritten commands together account for 47.1\% of the user interface elements used.
 While the broad categories make up nearly half of the UI elements, the individual uses of the gestures did not display a significant unity within the broad categories.
@@ -56,7 +48,7 @@ In addition, two users stated that they would like to have a vocal stop command 
 These users did not issue other voice commands, as the other tasks were not perceived to be as urgent as the ``stop the robots'' task. 
 The syntactic similarity between the voice commands and the gesture commands is because the gesture commands frequently take the subject-verb-object ordering of spoken sentences. 
 For example, selecting the robot group indicates a subject, and drawing the path indicates the verb (``go this way"). 
-Objects are optional or implied, as going to a location doesn't have a clear object that the robots are instructed to act upon. 
+Objects are optional or implied, as going to a location does not have a clear object that the robots are instructed to act upon. 
 In some cases, the subject is implied as well.
 For example, some users would make gestures intended to move the robot group as a whole by simply dragging the path, without selecting the subject first. 
 In such a case, the implied subject was all of the robots. 
@@ -118,17 +110,15 @@ For the purposes of this work, beginning ``on'' a robot was defined as the begin
 Obviously, this distance will vary with the resolution of the screen, but the mechanism for obtaining the resolution and physical size of attached screens varies with operating systems, and is outside of the scope of this work, aside from noting that this parameter may vary.
 
 The distinction between interpreting a line drawn over robots as a command for one robot to follow versus a command for multiple robots to follow may depend on the number of robots present.
-As seen in section \todo{what section} the use of commands directed to the entire swarm without the use of a selection gesture beforehand is most common in the 1000 robot case, and is uncommon in the 10 robot case. 
-This is one area in which the interface may change depending on the number of units being commanded, with small groups requiring that all robots be selected before a command can be applied to them, and larger groups defaulting to issuing the command to all robots if some subset has not already been selected. 
+As seen in section \ref{section:Selection_Gestures} the use of selection gestures was low in the 1000 robot case, but and much higher in the 10 robot case, implying that with a large robot group, it might make sense to default to using all robots if none are selected. 
+The interface could even change depending on the number of units being commanded, with small groups requiring that all robots be selected before a command can be applied to them, and larger groups defaulting to issuing the command to all robots if some subset has not already been selected. 
 However, care must be taken to avoid learning effects. 
-If the user has previously been exposed to a condition where the system defaults to selecting all robots, they may develop an expectation that other conditions behaves the same, and neglect to select robots, resulting in incomplete commands (or commands being applied to no robots). 
-Interestingly, the opposite case, where the user makes a selection of all the robots that is not actually required, because it is the default, does not result in a surprise for the user. 
+If the user has previously been exposed to a condition where the system defaults to selecting all robots, they may develop an expectation that other conditions behave the same, and neglect to select robots, resulting in incomplete commands (or commands being applied to no robots). 
+Interestingly, the opposite case, where the user makes a selection of all the robots, but it is not actually required because it is the default behavior, does not result in a surprise for the user. 
 Because the failure mode encouraged by a system that requires explicit selection is less surprising than one that has implicit select-all, the system was developed to require selection to issue a command to multiple robots. 
 As described above, issuing a command to a single robot may be done without selecting it first, by beginning the desired path on the robot. 
 
-%Drawing a line to divide the robots into groups vs. drawing a path to follow vs. drawing a line for the robots to get in formation on.
-
-The gestures used by the users could be divided between selection and position gestures, within which there was a great deal of agreement \todo{quantify agreement, maybe after Wobbrock's agreement}, and more complex actions, such as patrol, formations, picking up or moving objects, removing robots, and selection by color. 
+The gestures used by the users could be divided between selection and position gestures, within which there was a great deal of agreement, and more complex actions, such as patrol, formations, picking up or moving objects, removing robots, and selection by color. 
 
 For selection, if the system accepts taps (of any form), lasso, and box select, 91.3\% of the user selection gestures are covered. For position, tapping (again, of any form) to set goals or way points and dragging paths will cover 89.2\% of user position gestures.
 
@@ -162,13 +152,14 @@ If it is too long, it may never be triggered, and so all of the user's gestures 
 Second, the timeout is could be invisible. From the user's perspective, this causes the system to appear to begin acting at random, which is undesirable. 
 The timeout could be made visible, using a countdown timer, which may then make the user feel pressured to act. 
 
-In order to avoid having the system act prematurely, the system treats a doubletap on open space as an "end of command" signifier \todo{justify that doubletap wasn't otherwise consistently used}.
+In order to avoid having the system act prematurely, the system treats a doubletap on open space as an "end of command" signifier.
 If the hardware used in the system were capable of detecting it, the user placing their hands in their lap or away from the screen could also be used as a signifier that the user has completed entry of their command. 
 Most users moved back from the screen slightly and removed their hands from the volume above it once they were finished issuing their command, and no users were observed to rest their hands on the screen while not issuing commands. 
 However, this behavior may have been a consequence of the particular arrangement of the screen and user seating, so further work would be required to determine if it is a sufficiently robust indication of command completion. 
 
-There are, limited instances where it is safe for the system to assume that the user's command is complete. 
+In addition to doubletaps, there are limited instances where it is safe for the system to assume that the user's command is complete. 
 Because commands are generally of the form subject-verb-object, a new subject begins a new command. 
 The exception to this rule is tap selections, which some users used to select multiple robots by sequentially tapping on them. 
-Tap selections are accumulated until a gesture other than a tap selection is entered. 
+Tap selections are accumulated until a gesture other than a tap selection is entered.
+After a non-tap action is entered, a new selection gesture will begin a new command. 
 
