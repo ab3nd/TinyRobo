@@ -161,6 +161,7 @@ class ProgGen(object):
 			print "---"
 		except UnexpectedInput as e:
 			print e
+			
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
 		if self.gestures[-1].eventName == "end":

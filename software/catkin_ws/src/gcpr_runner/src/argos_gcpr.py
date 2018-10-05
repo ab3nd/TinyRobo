@@ -307,7 +307,7 @@ class GCPR_driver(object):
 		#For each non-zero point in the sensor reading
 		for index, reading in enumerate(self.proxReadings):
 			isTangent = False
-			if reading.value != 0;
+			if reading.value != 0:
 				#This reading detects something, check if either of the readings around it are 0
 				#If it is, this is a tangent
 				if index == 0:
