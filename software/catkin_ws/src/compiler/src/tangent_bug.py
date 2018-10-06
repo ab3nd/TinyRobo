@@ -135,10 +135,13 @@ program.append(("not(self.is_near_front())", "self.move_fwd(0.3)", 1.0))
 #Move towards a free point nearest to the goal
 #program.append(("self.is_near_left() and self.is_near_right()", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
 #Left wall follow
-program.append(("self.is_near_left() and not(self.is_near_right())", "self.move_turn(-0.5)", 1.0))
+program.append(("self.is_near_left() and not(self.is_near_left_third()) and not(self.is_near_right())", "self.move_turn(-0.5)", 1.0))
+program.append(("self.is_near_left() and self.is_near_left_third() and not(self.is_near_right())", "self.move_turn(-0.5)", 1.0))
+
 #program.append(("not(self.is_near_center()) and self.is_near_left and not(self.is_near_right)", "self.move_fwd(0.3)", 1.0))
 #Right wall follow
-program.append(("not(self.is_near_left()) and self.is_near_right()", "self.move_turn(0.5)", 1.0))
+program.append(("not(self.is_near_left()) and not(self.is_near_right_third()) and self.is_near_right()", "self.move_turn(0.5)", 1.0))
+program.append(("not(self.is_near_left()) and self.is_near_right_third() and self.is_near_right()", "self.move_turn(0.5)", 1.0))
 #Symmetry breaking
 program.append(("self.is_near_left() and self.is_near_right()", "self.move_turn(-0.5)", 1.0))
 
