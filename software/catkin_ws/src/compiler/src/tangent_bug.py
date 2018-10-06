@@ -85,8 +85,7 @@ from std_msgs.msg import String
 class ProgSender(object):
 	def __init__(self):
 		self.robotPubs = {}
-		self.topicRE = re.compile("\/bot([0-9]*)\/position")
-		self.updatePubs()
+		self.topicRE = re.compile("\/bot([0-9]*)\/cmd_vel")
 
 	def updatePubs(self):
 		#We can't get a list via rospy.get_published_topics(), because this node
@@ -97,6 +96,8 @@ class ProgSender(object):
 				robot_id = self.topicRE.match(topic[0]).group(1)
 				if robot_id not in self.robotPubs.keys():
 					self.robotPubs[robot_id] = rospy.Publisher('/bot{}/robot_prog'.format(robot_id), String, queue_size=10)
+		#Wait for publishers to be ready, and yes, this can be a problem. 
+		rospy.sleep(0.5)
 
 	def getRobots(self):
 		return self.robotPubs.keys()
@@ -108,11 +109,13 @@ class ProgSender(object):
 			#Wait for publisher to be ready, and yes, this can be a problem. 
 			rospy.sleep(0.5)
 
-		self.robotPubs[robot].publish(json.dumps(program))
-		print "Sent {0} the program:\n {1}".format(robot, json.dumps(program))
+		msg = json.dumps(program)
+		self.robotPubs[robot].publish(msg)
+		print "Sent {0} the program:\n {1}".format(robot, msg)
 
-#Start everything up and then just spin
+# #Start everything up and then just spin
 rospy.init_node('tangent_bug')
+
 program_sender = ProgSender()
 
 program = []
@@ -128,8 +131,9 @@ program.append(("self.is_near_center() and not(self.is_near_right()) and not(sel
 #Move away from stuff behind
 program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
 
+program_sender.updatePubs()
 robots = program_sender.getRobots()
-
 program_sender.pubProg(robots[0], program)
 
 rospy.spin()
+
