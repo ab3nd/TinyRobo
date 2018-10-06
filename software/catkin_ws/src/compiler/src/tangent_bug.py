@@ -120,16 +120,23 @@ program_sender = ProgSender()
 
 program = []
 
-#Generic move forward
-program.append(("not self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
+goal = (0,0)
+
+#Add motion commands to turn to bearing and move forward
+program.append(("self.on_heading(self.get_heading({})) and not(self.is_near_anything())".format(goal), "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.on_heading(self.get_heading({}))) and not(self.is_near_anything())".format(goal), "self.turn_heading(1, self.get_heading({}))".format(goal), 1.0))
+
+#Move forward if no sensor is tripped
+#program.append(("not self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
+
 #Reactive obstacle avoidance
-program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))
-program.append(("self.is_near_right() and not(self.is_near_left()) and not(self.is_near_center())", "self.move_turn(0.9)", 0.9))
+#program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))
+#program.append(("self.is_near_right() and not(self.is_near_left()) and not(self.is_near_center())", "self.move_turn(0.9)", 0.9))
 #Back and turn away
-program.append(("self.is_near_left() and self.is_near_right() and not(self.is_near_center())", "self.move_arc(2.0, -0.5)", 0.8))
-program.append(("self.is_near_center() and not(self.is_near_right()) and not(self.is_near_left())", "self.move_arc(2.0, -0.5)", 1.0))
+#program.append(("self.is_near_left() and self.is_near_right() and not(self.is_near_center())", "self.move_arc(2.0, -0.5)", 0.8))
+#program.append(("self.is_near_center() and not(self.is_near_right()) and not(self.is_near_left())", "self.move_arc(2.0, -0.5)", 1.0))
 #Move away from stuff behind
-program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
+#program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
 
 program_sender.updatePubs()
 robots = program_sender.getRobots()

@@ -1,7 +1,7 @@
 
 <launch>
 	<!-- Launch Argos simulator and GCPR runners for Argos robots-->
-	<node name="argos_ros_launcher" pkg="user_interface" type="ui_sim_launch.sh"/>
+	<node name="argos_ros_launcher" pkg="user_interface" type="gcpr_sim_launch.sh"/>
 	
 	<!-- Simulated camera watching the Argos simulated world -->
 	<node name="sim_cam" pkg="user_interface" type="synthetic_world_cam.py" output="screen">

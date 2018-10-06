@@ -150,16 +150,21 @@ class GCPR_driver(object):
 		self.desired_heading = value
 
 	#Within threshold of heading
-	def on_heading(self):
-		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
+	def on_heading(self, heading = None):
+		if heading is None:
+			heading = self.desired_heading
+		smallest_angle = math.atan2(math.sin(self.current_heading-heading), math.cos(self.current_heading-heading))
 	 	if abs(smallest_angle) < 0.05:
 	 		return True	
 	 	return False
 
- 	def turn_heading(self, speed):
- 		if not self.on_heading():
+ 	def turn_heading(self, speed, heading = None):
+ 		if heading is None:
+			heading = self.desired_heading
+		
+ 		if not self.on_heading(heading):
 	 		#Decide turn direction
-	 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
+	 		smallest_angle = math.atan2(math.sin(self.current_heading-heading), math.cos(self.current_heading-heading))
 	 		
 	 		if smallest_angle > 0:
 	 			self.move_turn(abs(speed))
@@ -356,8 +361,8 @@ class GCPR_driver(object):
 		return math.sqrt(math.pow(p1[0] - p2[0] , 2) + math.pow(p1[1] - p2[1], 2))
 
 	#Calculate the heading to a point from the current location
-	def heading_to(self, p2):
-		pass
+	def get_heading(self, p2):
+		return 2 * math.atan2(p2[0] - self.lastPosition.position.x, p2[1] - self.lastPosition.position.y)
 
 	#True if within a specified distance of a point
 	def at(p1, threshold = 0.05):

@@ -2116,4 +2116,154 @@ On the Structural Complexity of the Motion Description Language MDLe
 https://smartech.gatech.edu/bitstream/handle/1853/38598/04739185.pdf
 MDLn
 	For networked systems
+
+Control Strategies for Mobile Robot With Obstacle Avoidance
+M. Zohaib, M. Pasha, R. A. Riaz, N. Javaid, M. Ilahi, R. D. Khan
+Overview, no new info
+	Bug algos - provably correct, non-optimal paths
+	Potential field - gets stuck in local minima
+	VFH - better path, more computation
+	Gap following - trapped by U-shaped obstacles
+	New Hybrid Navigation - complete, requires a map (at which point you use A* instead)
+
+An Improved Tangent Bug Method Integrated with Artificial Potential Field for Multi-robot Path Planning
+Emam Fathy Mohamed, Khaled El-Metwally, A.R. Hanafy
+Potential field is great for formations, allows robots to clump together dynamically
+Some can get trapped in a local minimum
+Need to detect that they're trapped to switch to modified tangent-bug
+Uses minimum safe distance to switch between potential field and tangent-bug
+	So if the distance is set larger than the field trap range, it doesn't get trapped
+
+A New Bug-type Navigation Algorithm Considering Practical Implementation Issues for Mobile Robots 
+Yi Zhu, Tao Zhang, Jingyan Song, Xiaqin Li 	
+Testing bug algo on a real robot
+Uses distance histogram/gap follow for local movement
+
+A new bug-type navigation algorithm for mobile robots in unknown environments containing moving obstacles
+Yi Zhu, Tao Zhang, Jingyan Song and Xiaqin Li
+Distance Histogram bug algo (DH-Bug)
+A lot of the same area as the other paper by them
+	Points out some good reasons you can't have convergence in dynamic environments
+		Goal accessability may change
+		Changes can't be predicted
+		Moving objects might be fast and mean enough to try to hit you
+
+Gap Navigation Trees: Minimal
+Representation for Visibility-based Tasks
+Benjamın Tovar, Luis Guilamo, and Steven M. LaValle
+Gap navigation tree data structure
+Gap is sudden transition in distance from robot
+	uses e.g. a 360 degree range sensor
+	actually even simpler, a 360 degree gap sensor, no metric range
+Move towards gaps
+	Assumes a point robot
+Gaps appear or disappear as a result of movement
+	Tree maintained by adding or removing gaps
+Can't tell obstacles apart
+Will loop around circles forever (gap chasing tangent) unless it drops a pebble first
+	"pebbles" mean localization, usually robots don't actually carry pebbles
+
+
+--> IS AUTOMATICLY-MODIFIED TANGENT BUG THE "HOLY GRAIL"? <--
+Tangent Bug can be erpresented as DFA
+GCPR as PFA
+Composition via substitution of states for various tasks
+Admits relatively easy modeling of programs
+
+Computer-Aided Compositional Design and Verification for Modular Robots
+Tarik Tosun, Gangyuan Jing, Hadas Kress-Gazit, and Mark Yi
+Series-parallel action graphs
+Create complex behaviors by composition of simpler ones
+Behaviors are supported by physical configurations of the robot
+	Other behavior approaches are for cyclic behaviors
+	gait tables, phased automata, hormone and role-based control
+Uses domino timing, so actions can be blocked by failures
+	Timeouts allow actions to progress, but may not succeed
+		e.g. attempts to close gripper, doesn't do it in time, continues with gripper open
+Composed in series (execute one after another) or parallel (execute at the same time)
+Intended to trade richness for programmer time
+	So not a fully-featured plan execution model
+Checks physical stability, self-collision, conflict between commanded actions, simulated over-torque and other forces
+Users still have to come up with configurations to compose
+	Not that bad, since they can be created by composition, and checked automatically
+
+
+Directed Graphs and Motion Description Languages for Robot Navigation and Control
+D. Hristu-Varsakelis and S. Andersson
+Abstract seems like Maja Mataric's landmark based navigation from the '80s
+MDLe uses time and interrupt conditions to control actions
+	"kinetic state machine"
+Statememts in MDLe were of the form (atom (condition) (action))
+Plans are a sequence of statements
+Going from lab1 to lab2 could be expressed as going lab1 to office, then office to lab2
+ 	builds local landmarks (lab1, office, etc)
+ 	Combines via simple sequences of MDLe
+ Landmarks recognized with rich sensor information
+ Paths much sparser
+
+Navigation Strategies for Multiple Autonomous Mobile Robots Moving in Formation 
+P. K. C. Wang 
+Implementable navigation strategies for fleets in formation
+How are perturbations delt with?
+Particle robots with a cone of vision
+	Control-theoretic view of a number of swarm flocking algorithms 
+	Doesn't include collision avoidance strategies
+Needs communication and visibility at all times
+Nice theoretical work, but not useful for my system
+
+Robotic Urban Search and Rescue: A Surveyfrom the Control Perspective
+Yugang Liu, Goldie Nejat
+Has a good overview of multi-robot in USAR
+Multi-robot more than swarm, though
+	Very few collaborative approaches
+
+A Simple Local Path Planning Algorithm for Autonomous Mobile Robots 
+Buniyamin N., Wan Ngah W.A.J., Sariff N., Mohamad Z. 
+Point- Bug Seems a bit like TangentBug, but maybe simpler sensing
+
+Sensory-Based Motion Planning with Global Proofs
+Ishay  Kamon and  Ehud  Rivlin
+DistBug, uses distance sensors
+Tested on a real robot
+Some of this write-up sounds a lot like Emam Fathy Mohamed, Khaled El-Metwally, A.R. Hanafy bagging on local minima in potential fields
+	Probably to be expected, similar topics and similar motivation
+
+Compiler testing using a sentence generator
+Celentano, A., Reghizzi, S. C., Vigna, P. D., Ghezzi, C., Granata, G., & Savoretti, F.
+Produces compilable programs 
+	from BNF 
+	plus some actions to e.g. keep variable names consistent
+Lists a bunch of correctnesses
+	"Lexical correctness: the program tokens are well formed. 
+	Syntactical (or context-free) correctness: the program structure is derived according to its formal context-free description. 
+	Compile-time correctness: the program can be compiled without diagnostic messages (i.e. it is syntactically correct and satisfies context dependencies). 
+	Run-time correctness: the program can be executed without run-time errors such as infinite loops or arithmetic faults (i.e. it is correct with respect to the syntax, the context dependencies and the semantics). 
+	Logical correctness: the program can be executed and it produces the expected results."
+Compiler checkers don't need to care about runtime and logical errors. 
+	Those are the programmer's problem. The compiler doesn't put them in. 
+
+Since I'm doing a BNF-like expression of the language for the parser, I can operate this, generate programs, and then run them. Might not end up doing anything useful, though. 
+	I think maybe this work predates tools that generated compilers 
+		It's from 1980 or so
+	And so it's more for compilers that people hacked on and defined the language for later
+Generator only automates input production, human has to check that object code is right
+	If it could generate test object code too, it would be the (correct) compiler
+
+
+Will You Still Compile Me Tomorrow? Static Cross-Version Compiler Validation
+Chris Hawblitzel, Shuvendu K. Lahiri, Kshama Pawar, Hammad Hashmi, Sedar Gokbulut, Lakshan Fernando, Dave Detlefs, and Scott Wadsworth
+Checks for semantically equivalent assembly from various versions of the compiler
+	Same input, 2 compilers, should have the "same" output
+Compiler validation vs Tranlation Validation
+	CV - theorem prover on the compiler, so all compiler output is valid for all valid source programs
+	TV - theorem prober on the output of a compilation, to check that translation is semantically equivalent to source. 
+		Isn't actually decidable, so prone to false alarms
+	As of 2013, compiler verification has scaled to moderately-sized research compilers
+Cross-version validation can miss bugs that have always been there
+	TV can catch these, one hopes
+Validator translates everything into Boogie, which is statically checkable for validity
+I'm not running on a defined machine architecture
+	So I don't have to worry about assembly language sequences that are legit operations,
+	but don't do what the original source code says. 
+
 	
