@@ -123,11 +123,22 @@ program = []
 goal = (0,0)
 
 #Add motion commands to turn to bearing and move forward
-program.append(("self.on_heading(self.get_heading({})) and not(self.is_near_anything())".format(goal), "self.move_fwd(0.3)", 1.0))
-program.append(("not(self.on_heading(self.get_heading({}))) and not(self.is_near_anything())".format(goal), "self.turn_heading(1, self.get_heading({}))".format(goal), 1.0))
+program.append(("not(self.is_near_front())", "self.set_desired_heading(self.get_heading({}))".format(goal), 1.0))
+program.append(("self.on_heading()", "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.on_heading())", "self.turn_heading(1)", 1.0))
 
-#Move forward if no sensor is tripped
-#program.append(("not self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
+#Stop at the goal 
+program.append(("self.at({})".format(goal), "self.stop()", 1.0))
+
+#Move towards a free point nearest to the goal
+program.append(("self.is_near_left() and self.is_near_right()", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
+#Left wall follow
+program.append(("self.is_near_left() and not(self.is_near_right())", "self.move_turn(-0.3)", 1.0))
+#program.append(("not(self.is_near_center()) and self.is_near_left and not(self.is_near_right)", "self.move_fwd(0.3)", 1.0))
+#Right wall follow
+program.append(("not(self.is_near_left()) and self.is_near_right()", "self.move_turn(0.3)", 1.0))
+#program.append(("not(self.is_near_center()) and not(self.is_near_left) and self.is_near_right", "self.move_fwd(0.3)", 1.0))
+
 
 #Reactive obstacle avoidance
 #program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))

@@ -231,33 +231,31 @@ class GCPR_driver(object):
 			return True
 		return False
 
-	def is_near_right(self):
-		start = -(math.pi/2)
-		end = -0.5 
-		for reading in self.proxReadings:
-			if reading.angle > start and reading.angle < end:
-				if reading.value > 0:
-					return True
-		return False
+	def is_near_right_third(self):
+		return self.check_readings(-(math.pi/2), -0.5 )
 
+	def is_near_left_third(self):
+		return self.check_readings(0.5, (math.pi/2))
+
+	def is_near_center_third(self):
+		return self.check_readings(-0.5, 0.5)
+	
+	def is_near_front(self):
+		return self.check_readings(-(math.pi/2), (math.pi/2))
 
 	def is_near_left(self):
-		start = 0.5
-		end = (math.pi/2)
+		return self.check_readings(0.0, (math.pi/2))
+
+	def is_near_right(self):
+		return self.check_readings(-(math.pi/2), 0.0)
+
+	def check_readings(self, start, end):
 		for reading in self.proxReadings:
 			if reading.angle > start and reading.angle < end:
 				if reading.value > 0:
 					return True
 		return False
 
-	def is_near_center(self):
-		start = -0.5
-		end = 0.5
-		for reading in self.proxReadings:
-			if reading.angle > start and reading.angle < end:
-				if reading.value > 0:
-					return True
-		return False
 
 	#Bounds checks on x and y position for areas outside of defined paths
 	def x_gt(self, otherX):
@@ -338,7 +336,7 @@ class GCPR_driver(object):
 		return closest
 
 	#Return the closest point to the goal in free space
-	def closest_free_point(self):
+	def closest_free_point(self, goal):
 		min_d = float('inf')
 		closest = None
 		for reading in self.proxReadings:
@@ -346,14 +344,15 @@ class GCPR_driver(object):
 			if reading.value == 0:
 				#Argos prox sensors have a 10cm range, convert this angle and range to a point
 				#10 cm is 1 dm is 0.1 m
-				x = 0.10 * math.cos(reading.angle)
-				y = 0.10 * math.sin(reading.angle)
-				d = self.distance((x,y), (self.target_point[0], self.target_point[1]))
+				x = 0.10 * math.cos(reading.angle) + self.lastPosition.position.x
+				y = 0.10 * math.sin(reading.angle) + self.lastPosition.position.y
+				d = self.distance((x,y), (goal[0], goal[1]))
 				
 				#If it is closer to the target point than previously seen, save it
 				if d < min_d:
 					min_d = d
 					closest = (x,y)
+		#rospy.logwarn("Closest free point ({},{})".format(closest[0], closest[1]))
 		return closest
 
 	#Distance between two points
@@ -365,8 +364,8 @@ class GCPR_driver(object):
 		return 2 * math.atan2(p2[0] - self.lastPosition.position.x, p2[1] - self.lastPosition.position.y)
 
 	#True if within a specified distance of a point
-	def at(p1, threshold = 0.05):
-		if distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:
+	def at(self, p1, threshold = 0.05):
+		if self.distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:
 			return True
 		return False
 
