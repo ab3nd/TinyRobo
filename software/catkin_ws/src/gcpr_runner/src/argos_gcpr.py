@@ -233,10 +233,16 @@ class GCPR_driver(object):
 		return False
 
 	def is_near_left_f_quarter(self):
-		return self.check_readings(-(math.pi/2) - 0.3, 0.0 )
+		return self.check_readings(-(math.pi/2), 0.0 )
 
 	def is_near_right_f_quarter(self):
-		return self.check_readings(0.0, (math.pi/2) + 0.3)
+		return self.check_readings(0.0, (math.pi/2))
+	
+	def is_near_left_r_quarter(self):
+		return self.check_readings(-(math.pi/2), -math.pi)
+
+	def is_near_right_r_quarter(self):
+		return self.check_readings((math.pi/2), math.pi)
 	
 	def is_near_front(self):
 		return self.check_readings(-(math.pi/2), (math.pi/2))

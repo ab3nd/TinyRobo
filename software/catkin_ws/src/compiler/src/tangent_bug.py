@@ -133,7 +133,7 @@ goal = (0,0)
 program.append(("self.at({})".format(goal), "self.stop()", 1.0))
 
 #Just go forwards
-program.append(("not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter())", "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter()) and not(self.is_near_right_r_quarter()) and not (self.is_near_left_r_quarter())", "self.move_fwd(0.3)", 1.0))
 
 #Symmetry breaking
 program.append(("self.is_near_left_f_quarter() and self.is_near_right_f_quarter()", "self.move_turn(-0.8)", 1.0))
@@ -144,6 +144,7 @@ program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_qua
 program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_arc(-0.8, 0.1)", 1.0))
 program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_arc(0.8, 0.1)", 1.0))# if 17 > 18, turn r
 #Try to get around corners
+program.append(("not(self.is_near_right_f_quarter()) and self.is_near_right_r_quarter()", "self.move_turn(0.8)", 1.0))
 #program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[19].value == 0 or self.proxReadings[17].value != 0)", "self.move_turn(0.8)", 1.0))
 #program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[19].value != 0 or self.proxReadings[17].value == 0)", "self.move_turn(-0.8)", 1.0))# if 17 > 18, turn r
 
@@ -154,6 +155,7 @@ program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quar
 program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.8, 0.1)", 1.0))
 program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.8, 0.1)", 1.0))
 #Attempt to turn sharply when off the edge of something the robot is following
+program.append(("not(self.is_near_left_f_quarter()) and self.is_near_left_r_quarter()", "self.move_turn(0.8)", 1.0))
 #program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[4].value == 0 and self.proxReadings[6].value != 0)", "self.move_turn(-0.8)", 1.0))
 #program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[4].value != 0 and self.proxReadings[6].value == 0)", "self.move_turn(0.8)", 1.0))
 
@@ -163,8 +165,8 @@ program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quar
 
 program_sender.updatePubs()
 robots = program_sender.getRobots()
-#for robot in robots:
-program_sender.pubProg(robots[0], program)
+for robot in robots:
+	program_sender.pubProg(robot, program)
 
 rospy.spin()
 
