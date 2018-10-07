@@ -97,6 +97,7 @@ class GCPR_driver(object):
 		self.proxReadings = proxMsg.proximities
 		self.proxReadings.sort(key=lambda item:item.angle)
 
+		#rospy.logwarn(self.proxReadings)
 		#Calculate collision avoidance vector
 		#Only updates if we were not near something and now we are
 		if self.is_near_anything() and self.avoid_heading == 0:
@@ -231,27 +232,18 @@ class GCPR_driver(object):
 			return True
 		return False
 
-	def is_near_right_third(self):
-		return self.check_readings(-(math.pi/2), -0.5 )
+	def is_near_left_f_quarter(self):
+		return self.check_readings(-(math.pi/2), 0.0 )
 
-	def is_near_left_third(self):
-		return self.check_readings(0.5, (math.pi/2))
-
-	def is_near_center_third(self):
-		return self.check_readings(-0.5, 0.5)
+	def is_near_right_f_quarter(self):
+		return self.check_readings(0.0, (math.pi/2))
 	
 	def is_near_front(self):
 		return self.check_readings(-(math.pi/2), (math.pi/2))
 
-	def is_near_left(self):
-		return self.check_readings(0.0, (math.pi/2))
-
-	def is_near_right(self):
-		return self.check_readings(-(math.pi/2), 0.0)
-
 	def check_readings(self, start, end):
 		for reading in self.proxReadings:
-			if reading.angle > start and reading.angle < end:
+			if reading.angle >= start and reading.angle <= end:
 				if reading.value > 0:
 					return True
 		return False
@@ -399,7 +391,7 @@ rospy.on_shutdown(gDriver.stop)
 
 #TODO figure out what a good rate for the driver to run at is,
 # and update at that rate
-r = rospy.Rate(10) # 10hz
+r = rospy.Rate(100) # in Hz
 while not rospy.is_shutdown():
     #Update the GCPR driver
     gDriver.run_gcpr()

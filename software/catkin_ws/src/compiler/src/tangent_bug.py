@@ -131,19 +131,38 @@ goal = (0,0)
 program.append(("self.at({})".format(goal), "self.stop()", 1.0))
 
 #Just go forwards
-program.append(("not(self.is_near_front())", "self.move_fwd(0.3)", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter())", "self.move_fwd(0.3)", 1.0))
+
+#Symmetry breaking
+program.append(("self.is_near_left_f_quarter() and self.is_near_right_f_quarter()", "self.move_turn(-0.8)", 1.0))
+
+
+#program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter()", "self.move_turn(0.8)", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value == 0 and self.proxReadings[17].value== 0)", "self.move_turn(-0.8)", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0)", "self.stop()", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter()) and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0)", "self.dbg_print(\"bad overlap r\")", 1.0))
+#program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter())", "self.move_turn(-0.8)", 1.0))
+program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value == 0 and self.proxReadings[6].value == 0)", "self.move_turn(0.8)", 1.0))
+program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0)", "self.stop()", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0)", "self.dbg_print(\"bad overlap l\")", 1.0))
 #Move towards a free point nearest to the goal
 #program.append(("self.is_near_left() and self.is_near_right()", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
 #Left wall follow
-program.append(("self.is_near_left() and not(self.is_near_left_third()) and not(self.is_near_right())", "self.move_turn(-0.5)", 1.0))
-program.append(("self.is_near_left() and self.is_near_left_third() and not(self.is_near_right())", "self.move_turn(-0.5)", 1.0))
+# program.append(("not(self.is_near_right()) and self.is_near_left() and (self.proxReadings[4] == 0 and self.proxReadings[6] == 0)", "self.move_turn(2.0)", 1.0))
+# program.append(("not(self.is_near_right()) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(2.0,0.2)", 1.0))
+# program.append(("not(self.is_near_right()) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-2.0,0.2)", 1.0))
+#program.append(("self.is_near_left() and not(self.is_near_left_third()) and not(self.is_near_right())", "self.move_turn(-0.5)", 1.0))
+#program.append(("self.is_near_left() and self.is_near_left_third() and not(self.is_near_right())", "self.move_arc(0.2, 0.3)", 1.0))
 
 #program.append(("not(self.is_near_center()) and self.is_near_left and not(self.is_near_right)", "self.move_fwd(0.3)", 1.0))
 #Right wall follow
-program.append(("not(self.is_near_left()) and not(self.is_near_right_third()) and self.is_near_right()", "self.move_turn(0.5)", 1.0))
-program.append(("not(self.is_near_left()) and self.is_near_right_third() and self.is_near_right()", "self.move_turn(0.5)", 1.0))
-#Symmetry breaking
-program.append(("self.is_near_left() and self.is_near_right()", "self.move_turn(-0.5)", 1.0))
+
+# program.append(("not(self.is_near_left()) and self.is_near_right() and (self.proxReadings[18] == 0 and self.proxReadings[17] == 0)", "self.move_turn(-2.0)", 1.0))
+# program.append(("not(self.is_near_left()) and self.proxReadings[18].value < self.proxReadings[17].value", "self.move_arc(-2.0,0.2)", 1.0))
+# program.append(("not(self.is_near_left()) and self.proxReadings[18].value > self.proxReadings[17].value", "self.move_arc(2.0,0.2)", 1.0))
+#program.append(("not(self.is_near_left()) and not(self.is_near_right_third()) and self.is_near_right()", "self.move_turn(0.5)", 1.0))
+#program.append(("not(self.is_near_left()) and self.is_near_right_third() and self.is_near_right()", "self.move_arc(-0.2, 0.3)", 1.0))
+
 
 #program.append(("not(self.is_near_center()) and not(self.is_near_left) and self.is_near_right", "self.move_fwd(0.3)", 1.0))
 
@@ -159,6 +178,7 @@ program.append(("self.is_near_left() and self.is_near_right()", "self.move_turn(
 
 program_sender.updatePubs()
 robots = program_sender.getRobots()
+#for robot in robots:
 program_sender.pubProg(robots[0], program)
 
 rospy.spin()
