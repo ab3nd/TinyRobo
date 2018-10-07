@@ -140,8 +140,8 @@ program.append(("self.is_near_left_f_quarter() and self.is_near_right_f_quarter(
 #program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter()", "self.move_turn(0.8)", 1.0))
 program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value == 0 and self.proxReadings[17].value== 0)", "self.move_turn(-0.8)", 1.0))
 #program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0)", "self.dbg_print(\"{}, {}\".format(self.proxReadings[17].value,self.proxReadings[18].value))", 1.0))
-program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_turn(-0.8)", 1.0))
-program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_turn(0.8)", 1.0))# if 17 > 18, turn r
+program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_arc(-0.8, 0.1)", 1.0))
+program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and (self.proxReadings[18].value != 0 or self.proxReadings[17].value != 0) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_arc(0.8, 0.1)", 1.0))# if 17 > 18, turn r
 # if 18 > 17, turn l
 
 #For debuging overlap
@@ -149,8 +149,8 @@ program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_qua
 #program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter())", "self.move_turn(-0.8)", 1.0))
 program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value == 0 and self.proxReadings[6].value == 0)", "self.move_turn(0.8)", 1.0))
 #program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0)", "self.dbg_print(\"{}, {}\".format(self.proxReadings[5].value,self.proxReadings[6].value))", 1.0))
-program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_turn(-0.8)", 1.0))
-program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_turn(0.8)", 1.0))
+program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.8, 0.1)", 1.0))
+program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.8, 0.1)", 1.0))
 
 #Used for debugging overlap
 #program.append(("not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter()) and (self.proxReadings[5].value != 0 or self.proxReadings[6].value != 0)", "self.dbg_print(\"bad overlap l\")", 1.0))
