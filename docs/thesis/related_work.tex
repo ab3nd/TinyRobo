@@ -955,25 +955,21 @@ One potential upper bound that is simply numeric is Dunbar's Number, a constrain
 For humans, Dunbar's number is estimated to be around 150 individuals, and beyond that, people would be expected to begin chunking the people in their social network into hierarchies or groups in order to keep track of a reduced number of entities (e.g. one group called "co-workers" instead of every individual on the team). 
 
 
-\subsection{human/robot teaming} \label{section:human_robot_teaming}
+\subsection{Human/robot Teaming} \label{section:human_robot_teaming}
 
-Does driving real robots affect user behavior?
-	Does realism of NUI affect user behavior?
+One area that may have interesting insights into control interfaces for heterogenous swarms is work on human/robot teams. 
+Typically, human/robot teams involve robots working along side humans in a team, as peers or subordinates. 
+As a result, the interface design is primarily for control of the robots, and the return of data to the humans, rather than in control of the team as a whole.
+One attempt to unify the command and control of a human/robot team did so by expanding previous work, which had only commanded robots \citep{lopez2017unified}. 
+The resulting interface allowed the end user to command robots and humans using the same command modalities, rather than specializing the command set based on the type of unit being commanded. 
+In user tests, commanders of human teams, robot teams, and mixed teams had similar performance, and used similar control strategies.
+The use of similar control strategies is surprising, because this includes direct, joystick-like control of human team members, which the researchers originally thought would be an unusual way to instruct a person to move. 
+The users also mentioned that having an interface that reflects the generally superior mobility and perception of humans would be an improvement, so while the unspecialized interface did not appear to hinder users, it may have not taken full advantage of the team ability. 
+By similar arguments, it could be that an interface for a heterogeneous swarm should support special operations for robots that can support them, rather than attempting to treat all robots the same in the interest of interface consistency. 
 
-
-Unified Human and Robot Command for Disaster Recovery Situations
-Carlos Ibarra Lopez, James Kuczynski, Holly A. Yanco
-	(Hey, I know that guy!)
-	Multi-agent command software
-		Expanded on Mark's work, small group and individual C\&C, not swarm scale
-		DREAM controller
-	People are willing to use manual control mode on people
-		if they're inexperienced with robots, they're more likely to use it on people than on robots
-		If they're experinced with robots, they use it more on robots than on people
-	Similar level of success with both people and robots and mixte teams
-
-So driving real robots vs. driving people does affect human behavior, what about driving real robots vs. simulated robots?
-
-
-Carlos cites Humphrey et. al. 2007 for interface for control, but it's for multiple individuals, not swarms
-	What does Humphrey cite? Can talk about distinction between multi-individual and swarm
+The multi-robot interface is also distinct from a swarm interface, although there is some overlap. 
+A purely swarm-oriented interface would issue commands to groups of robots, and not have the ability to command single robots, under the assumption that tasks assigned through the interface were not possible for a single robot to complete. 
+A pure multi-robot interface is designed to command multiple robots as individuals, with their own tasks. 
+The interface described by Lopez, Kuczynski, and Yanco is somewhat in the overlap area, as it allows group selection and task assignment as well as individual command, both as ``groups'' of one, using similar command interactions to the group commands, and direct, joystick-like interaction. 
+The interface described by Humphrey \emph{et al} is an interface at the multi-robot end of the spectrum, as it does not appear to provide any faculty for assigning a task to multiple robots at once.
+It does, however, encourage the user to be aware of the functioning of all of the robots. 
