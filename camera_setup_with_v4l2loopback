@@ -1,0 +1,2 @@
+sudo modprobe v4l2loopback devices=2
+gst-launch-1.0 v4l2src device=/dev/video0 ! "image/jpeg,width=1024,height=768" ! tee name=f ! queue ! v4l2sink device=/dev/video1 f. ! queue ! v4l2sink device=/dev/video2

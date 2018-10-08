@@ -53,6 +53,11 @@ class GCPR_driver(object):
 		self.traveled_y = 0.0
 		self.lastPosition = None
 
+		#for Bug algo
+		self.closest_visited_point = None
+		self.target_point = None
+		self.hit_point = None
+
 		#For GCPR program counter, default to 0
 		self.prog_ctr = 0
 
@@ -63,7 +68,6 @@ class GCPR_driver(object):
 
 		#For debugging
 		self.ns = rospy.get_namespace()
-
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -93,6 +97,7 @@ class GCPR_driver(object):
 		self.proxReadings = proxMsg.proximities
 		self.proxReadings.sort(key=lambda item:item.angle)
 
+		#rospy.logwarn(self.proxReadings)
 		#Calculate collision avoidance vector
 		#Only updates if we were not near something and now we are
 		if self.is_near_anything() and self.avoid_heading == 0:
@@ -120,14 +125,20 @@ class GCPR_driver(object):
 		todo_list = []
 
 		#Get all the rules and see if any of them have satisfied guards
-		for rule in self.programLoader.getProgram():
-			if eval(rule[0]):
-				#Check the rate
-				if random.random() < rule[2]:
-					#Add to the list of things to do
-					todo_list.append(rule[1])
-		
-		random.shuffle(todo_list)
+		try:
+			
+			for rule in self.programLoader.getProgram():
+				if eval(rule[0]):
+					#Check the rate
+					if random.random() < rule[2]:
+						#Add to the list of things to do
+						todo_list.append(rule[1])
+			
+			random.shuffle(todo_list)
+		except IndexError as e:
+			print e
+			print "---caused by---"
+			print rule
 
 		#This needs some smarter method to unify the drive commands than just FIFO
 		#Or does it? FIFO fast enough, plus a short-cycle time would be a sort of
@@ -146,16 +157,21 @@ class GCPR_driver(object):
 		self.desired_heading = value
 
 	#Within threshold of heading
-	def on_heading(self):
-		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
+	def on_heading(self, heading = None):
+		if heading is None:
+			heading = self.desired_heading
+		smallest_angle = math.atan2(math.sin(self.current_heading-heading), math.cos(self.current_heading-heading))
 	 	if abs(smallest_angle) < 0.05:
 	 		return True	
 	 	return False
 
- 	def turn_heading(self, speed):
- 		if not self.on_heading():
+ 	def turn_heading(self, speed, heading = None):
+ 		if heading is None:
+			heading = self.desired_heading
+		
+ 		if not self.on_heading(heading):
 	 		#Decide turn direction
-	 		smallest_angle = math.atan2(math.sin(self.current_heading-self.desired_heading), math.cos(self.current_heading-self.desired_heading))
+	 		smallest_angle = math.atan2(math.sin(self.current_heading-heading), math.cos(self.current_heading-heading))
 	 		
 	 		if smallest_angle > 0:
 	 			self.move_turn(abs(speed))
@@ -199,8 +215,13 @@ class GCPR_driver(object):
 		#rospy.loginfo_throttle(3, "{} Turning with speed {}".format(self.ns, speed))
 		self.move_arc(speed, 0)
 
-	# Stopping is moving with no velocity. Have you ever, like, REALLY, looked at your hands, man?
-	def stop(self):
+	# Stopping is moving with no velocity.
+	def stop(self, success=None):
+		if success is not None:
+			if success:
+				rospy.loginfo_throttle(5, "{} arrived".format(self.ns))
+			else:
+				rospy.loginfo_throttle(5, "{} cannot arrive".format(self.ns))
 		#rospy.loginfo_throttle(10, "{} Stopping".format(self.ns))
 		self.move_arc(0,0)
 
@@ -217,33 +238,28 @@ class GCPR_driver(object):
 			return True
 		return False
 
-	def is_near_right(self):
-		start = -(math.pi/2)
-		end = -0.5 
+	def is_near_left_f_quarter(self):
+		return self.check_readings(-(math.pi/2), 0.0 )
+
+	def is_near_right_f_quarter(self):
+		return self.check_readings(0.0, (math.pi/2))
+	
+	def is_near_left_r_quarter(self):
+		return self.check_readings(-(math.pi/2), -math.pi)
+
+	def is_near_right_r_quarter(self):
+		return self.check_readings((math.pi/2), math.pi)
+	
+	def is_near_front(self):
+		return self.check_readings(-(math.pi/2), (math.pi/2))
+
+	def check_readings(self, start, end):
 		for reading in self.proxReadings:
-			if reading.angle > start and reading.angle < end:
+			if reading.angle >= start and reading.angle <= end:
 				if reading.value > 0:
 					return True
 		return False
 
-
-	def is_near_left(self):
-		start = 0.5
-		end = (math.pi/2)
-		for reading in self.proxReadings:
-			if reading.angle > start and reading.angle < end:
-				if reading.value > 0:
-					return True
-		return False
-
-	def is_near_center(self):
-		start = -0.5
-		end = 0.5
-		for reading in self.proxReadings:
-			if reading.angle > start and reading.angle < end:
-				if reading.value > 0:
-					return True
-		return False
 
 	#Bounds checks on x and y position for areas outside of defined paths
 	def x_gt(self, otherX):
@@ -289,7 +305,77 @@ class GCPR_driver(object):
 				#rospy.logwarn("y {} is between {} and {}".format(y, minY, maxY))
 				return True
 		return False
-			
+		
+	#=============== Sensors for bug algorithims ====================
+	#Return the closest point to the goal in the tangent graph
+	def closest_tangent_point(self):
+		min_d = float('inf')
+		closest = None
+		#For each non-zero point in the sensor reading
+		for index, reading in enumerate(self.proxReadings):
+			isTangent = False
+			if reading.value != 0:
+				#This reading detects something, check if either of the readings around it are 0
+				#If it is, this is a tangent
+				if index == 0:
+					if self.proxReadings[1] == 0 or self.proxReadings[23] == 0:
+						isTangent = True
+				elif index == 23:
+					if self.proxReadings[0] == 0 or self.proxReadings[22] == 0:
+						isTangent = True
+				else:
+					if self.proxReadings[index-1] == 0 or self.proxReadings[index+1] == 0:
+						self.isTangent = True
+			if isTangent:
+				#Argos prox sensors have a 10cm range, convert this angle and range to a point
+				#10 cm is 1 dm is 0.1 m
+				x = 0.10 * math.cos(reading.angle)
+				y = 0.10 * math.sin(reading.angle)
+				d = self.distance((x,y), (self.target_point[0], self.target_point[1]))
+				
+				#If it is closer to the target point than previously seen, save it
+				if d < min_d:
+					min_d = d
+					closest = (x,y)
+		return closest
+
+	#Return the closest point to the goal in free space
+	def closest_free_point(self, goal):
+		min_d = float('inf')
+		closest = None
+		for reading in self.proxReadings:
+			#For each zero point in the sensor readings
+			if reading.value == 0:
+				#Argos prox sensors have a 10cm range, convert this angle and range to a point
+				#10 cm is 1 dm is 0.1 m
+				x = 0.10 * math.cos(reading.angle) + self.lastPosition.position.x
+				y = 0.10 * math.sin(reading.angle) + self.lastPosition.position.y
+				d = self.distance((x,y), (goal[0], goal[1]))
+				
+				#If it is closer to the target point than previously seen, save it
+				if d < min_d:
+					min_d = d
+					closest = (x,y)
+		#rospy.logwarn("Closest free point ({},{})".format(closest[0], closest[1]))
+		return closest
+
+	#Distance between two points
+	def distance(self, p1, p2):
+		return math.sqrt(math.pow(p1[0] - p2[0] , 2) + math.pow(p1[1] - p2[1], 2))
+
+	#Calculate the heading to a point from the current location
+	def get_heading(self, p2):
+		return 2 * math.atan2(p2[0] - self.lastPosition.position.x, p2[1] - self.lastPosition.position.y)
+
+	#True if within a specified distance of a point
+	def at(self, p1, threshold = 0.05):
+		if self.lastPosition is None:
+			return False #It's not a place, we can't possibly be there
+		if self.distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:
+			return True
+		return False
+
+
 rospy.init_node("gcpr_driver", anonymous=True)
 
 #Get the ID of the robot that this instance of the driver is driving
@@ -319,7 +405,7 @@ rospy.on_shutdown(gDriver.stop)
 
 #TODO figure out what a good rate for the driver to run at is,
 # and update at that rate
-r = rospy.Rate(10) # 10hz
+r = rospy.Rate(100) # in Hz
 while not rospy.is_shutdown():
     #Update the GCPR driver
     gDriver.run_gcpr()
