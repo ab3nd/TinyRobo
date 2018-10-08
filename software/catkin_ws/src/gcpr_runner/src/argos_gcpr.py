@@ -178,6 +178,19 @@ class GCPR_driver(object):
 	 		else:
 	 			self.move_turn(-abs(speed))
 
+ 	def turn_heading_arc(self, rot_speed, fwd_speed, heading = None):
+ 		if heading is None:
+			heading = self.desired_heading
+		
+ 		if not self.on_heading(heading):
+	 		#Decide turn direction
+	 		smallest_angle = math.atan2(math.sin(self.current_heading-heading), math.cos(self.current_heading-heading))
+	 		
+	 		if smallest_angle > 0:
+	 			self.move_arc(abs(rot_speed), fwd_speed)
+	 		else:
+	 			self.move_arc(-abs(rot_speed), fwd_speed)
+
 		
  	def reset_travel(self):
  		self.traveled_y = self.traveled_x = 0
@@ -325,7 +338,7 @@ class GCPR_driver(object):
 						isTangent = True
 				else:
 					if self.proxReadings[index-1] == 0 or self.proxReadings[index+1] == 0:
-						self.isTangent = True
+						isTangent = True
 			if isTangent:
 				#Argos prox sensors have a 10cm range, convert this angle and range to a point
 				#10 cm is 1 dm is 0.1 m
@@ -343,15 +356,54 @@ class GCPR_driver(object):
 	def closest_free_point(self, goal):
 		min_d = float('inf')
 		closest = None
-		for reading in self.proxReadings:
+		for index, reading in enumerate(self.proxReadings):
 			#For each zero point in the sensor readings
 			if reading.value == 0:
+				isEdge = False
+				x0 = y0 = 0
+				#This reading detects something, check if either of the readings around it are 0
+				if index == 0:
+					if self.proxReadings[1] != 0:
+						x0 = 0.10 * math.cos(self.proxReadings[1].angle) + self.lastPosition.position.x
+						y0 = 0.10 * math.sin(self.proxReadings[1].angle) + self.lastPosition.position.y
+					if self.proxReadings[23] != 0:
+						x0 = 0.10 * math.cos(self.proxReadings[23].angle) + self.lastPosition.position.x
+						y0 = 0.10 * math.sin(self.proxReadings[23].angle) + self.lastPosition.position.y
+					isEdge = True
+				elif index == 23:
+					if self.proxReadings[0] != 0:
+						x0 = 0.10 * math.cos(self.proxReadings[0].angle) + self.lastPosition.position.x
+						y0 = 0.10 * math.sin(self.proxReadings[0].angle) + self.lastPosition.position.y
+					if self.proxReadings[22] != 0:
+						x0 = 0.10 * math.cos(self.proxReadings[22]) + self.lastPosition.position.x
+						y0 = 0.10 * math.sin(self.proxReadings[22]) + self.lastPosition.position.y
+					isEdge = True						
+				else:
+					if self.proxReadings[index-1] != 0:
+						x0 = 0.10 * math.cos(self.proxReadings[index-1].angle) + self.lastPosition.position.x
+						y0 = 0.10 * math.sin(self.proxReadings[index-1].angle) + self.lastPosition.position.y
+					if self.proxReadings[index+1] != 0:
+						x0 = 0.10 * math.cos(self.proxReadings[index+1].angle) + self.lastPosition.position.x
+						y0 = 0.10 * math.sin(self.proxReadings[index+1].angle) + self.lastPosition.position.y
+					isEdge = True
+
 				#Argos prox sensors have a 10cm range, convert this angle and range to a point
 				#10 cm is 1 dm is 0.1 m
-				x = 0.10 * math.cos(reading.angle) + self.lastPosition.position.x
-				y = 0.10 * math.sin(reading.angle) + self.lastPosition.position.y
-				d = self.distance((x,y), (goal[0], goal[1]))
-				
+				x1 = 0.10 * math.cos(reading.angle) + self.lastPosition.position.x
+				y1 = 0.10 * math.sin(reading.angle) + self.lastPosition.position.y
+				d = self.distance((x1,y1), (goal[0], goal[1]))
+
+				#Detectected object check
+				if isEdge:
+					x2 = self.lastPosition.position.x
+					y2 = self.lastPosition.position.y
+					dObj = abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)/self.distance((x1,y1),(x2,y2))
+
+					#If the distance from the detected object to the line for the free point is less than
+					#the width of the robot, the point isn't clear enough to head for
+					rospy.logwarn("dObj = {}".format(dObj))
+
+
 				#If it is closer to the target point than previously seen, save it
 				if d < min_d:
 					min_d = d
@@ -365,6 +417,8 @@ class GCPR_driver(object):
 
 	#Calculate the heading to a point from the current location
 	def get_heading(self, p2):
+		if self.lastPosition is None:
+			return 0.0 #This is not great, but it beats crashing
 		return 2 * math.atan2(p2[0] - self.lastPosition.position.x, p2[1] - self.lastPosition.position.y)
 
 	#True if within a specified distance of a point
