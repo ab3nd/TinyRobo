@@ -104,7 +104,7 @@ program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_qua
 #Try to get around corners
 program.append(("not(self.is_near_right_f_quarter()) and self.is_near_right_r_quarter()", "self.move_turn(0.8)", 1.0))
 #Keep the range better
-program.append(("self.proxReadings[19].value > 0.3 or self.proxReadings[17].value > 0.3", "self.move_arc(-1, 0.2)", 1.0))
+program.append(("self.proxReadings[19].value > 0.3 or self.proxReadings[17].value > 0.3", "self.move_arc(-1.3, 0.2)", 1.0))
 
 #Turn to have the left side to the object, 5 is forward of 6
 program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and (self.proxReadings[4].value == 0 and self.proxReadings[6].value == 0)", "self.move_turn(0.8)", 1.0))
@@ -114,7 +114,7 @@ program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quar
 #Attempt to turn sharply when off the edge of something the robot is following
 program.append(("not(self.is_near_left_f_quarter()) and self.is_near_left_r_quarter()", "self.move_turn(-0.8)", 1.0))
 #Fix range
-program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(1, 0.2)", 1.0))
+program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(1.3, 0.2)", 1.0))
 #Move towards a free point nearest to the goal
 #program.append(("self.is_near_left() and self.is_near_right()", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
 

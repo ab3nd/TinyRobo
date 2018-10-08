@@ -125,14 +125,20 @@ class GCPR_driver(object):
 		todo_list = []
 
 		#Get all the rules and see if any of them have satisfied guards
-		for rule in self.programLoader.getProgram():
-			if eval(rule[0]):
-				#Check the rate
-				if random.random() < rule[2]:
-					#Add to the list of things to do
-					todo_list.append(rule[1])
-		
-		random.shuffle(todo_list)
+		try:
+			
+			for rule in self.programLoader.getProgram():
+				if eval(rule[0]):
+					#Check the rate
+					if random.random() < rule[2]:
+						#Add to the list of things to do
+						todo_list.append(rule[1])
+			
+			random.shuffle(todo_list)
+		except IndexError as e:
+			print e
+			print "---caused by---"
+			print rule
 
 		#This needs some smarter method to unify the drive commands than just FIFO
 		#Or does it? FIFO fast enough, plus a short-cycle time would be a sort of
@@ -363,6 +369,8 @@ class GCPR_driver(object):
 
 	#True if within a specified distance of a point
 	def at(self, p1, threshold = 0.05):
+		if self.lastPosition is None:
+			return False #It's not a place, we can't possibly be there
 		if self.distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:
 			return True
 		return False
