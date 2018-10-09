@@ -93,17 +93,10 @@ class GCPR_driver(object):
 		#print poseMsg
 
 	def update_prox(self, proxMsg):
-		#Sort prox messages by angle
+		#They arrive sorted by angle
+		#The array is wrapped around the robot CCW, with 0 being just left of the front 
+		#and 23 being just right of the front. 
 		self.proxReadings = proxMsg.proximities
-		self.proxReadings.sort(key=lambda item:item.angle)
-
-		#rospy.logwarn(self.proxReadings)
-		#Calculate collision avoidance vector
-		#Only updates if we were not near something and now we are
-		if self.is_near_anything() and self.avoid_heading == 0:
-			self.avoid_heading = -1 * max(self.proxReadings, key=lambda x: x.value).angle
-		else:
-			self.avoid_heading = 0
 
 	def is_in(self, tl, br):
 		if self.lastPosition is not None:
@@ -356,6 +349,8 @@ class GCPR_driver(object):
 	def closest_free_point(self, goal):
 		min_d = float('inf')
 		closest = None
+		x2 = self.lastPosition.position.x
+		y2 = self.lastPosition.position.y
 		for index, reading in enumerate(self.proxReadings):
 			#For each zero point in the sensor readings
 			if reading.value == 0:
@@ -363,51 +358,55 @@ class GCPR_driver(object):
 				x0 = y0 = 0
 				#This reading detects something, check if either of the readings around it are 0
 				if index == 0:
-					if self.proxReadings[1] != 0:
-						x0 = 0.10 * math.cos(self.proxReadings[1].angle) + self.lastPosition.position.x
-						y0 = 0.10 * math.sin(self.proxReadings[1].angle) + self.lastPosition.position.y
-					if self.proxReadings[23] != 0:
-						x0 = 0.10 * math.cos(self.proxReadings[23].angle) + self.lastPosition.position.x
-						y0 = 0.10 * math.sin(self.proxReadings[23].angle) + self.lastPosition.position.y
-					isEdge = True
+					if self.proxReadings[1].value > 0:
+						x0 = (self.proxReadings[1].value *  0.10) * math.cos(self.proxReadings[1].angle) + x2
+						y0 = (self.proxReadings[1].value *  0.10) * math.sin(self.proxReadings[1].angle) + y2
+						isEdge = True
+					if self.proxReadings[23].value > 0:
+						x0 = (self.proxReadings[23].value *  0.10) * math.cos(self.proxReadings[23].angle) + x2
+						y0 = (self.proxReadings[23].value *  0.10) * math.sin(self.proxReadings[23].angle) + y2
+						isEdge = True
 				elif index == 23:
-					if self.proxReadings[0] != 0:
-						x0 = 0.10 * math.cos(self.proxReadings[0].angle) + self.lastPosition.position.x
-						y0 = 0.10 * math.sin(self.proxReadings[0].angle) + self.lastPosition.position.y
-					if self.proxReadings[22] != 0:
-						x0 = 0.10 * math.cos(self.proxReadings[22]) + self.lastPosition.position.x
-						y0 = 0.10 * math.sin(self.proxReadings[22]) + self.lastPosition.position.y
-					isEdge = True						
+					if self.proxReadings[0].value > 0:
+						x0 = (self.proxReadings[0].value *  0.10) * math.cos(self.proxReadings[0].angle) + x2
+						y0 = (self.proxReadings[0].value *  0.10) * math.sin(self.proxReadings[0].angle) + y2
+						isEdge = True
+					if self.proxReadings[22].value > 0:
+						x0 = (self.proxReadings[22].value *  0.10) * math.cos(self.proxReadings[22].angle) + x2
+						y0 = (self.proxReadings[22].value *  0.10) * math.sin(self.proxReadings[22].angle) + y2
+						isEdge = True						
 				else:
-					if self.proxReadings[index-1] != 0:
-						x0 = 0.10 * math.cos(self.proxReadings[index-1].angle) + self.lastPosition.position.x
-						y0 = 0.10 * math.sin(self.proxReadings[index-1].angle) + self.lastPosition.position.y
-					if self.proxReadings[index+1] != 0:
-						x0 = 0.10 * math.cos(self.proxReadings[index+1].angle) + self.lastPosition.position.x
-						y0 = 0.10 * math.sin(self.proxReadings[index+1].angle) + self.lastPosition.position.y
-					isEdge = True
+					if self.proxReadings[index-1].value > 0:
+						x0 = (self.proxReadings[index-1].value *  0.10) * math.cos(self.proxReadings[index-1].angle) + x2
+						y0 = (self.proxReadings[index-1].value *  0.10) * math.sin(self.proxReadings[index-1].angle) + y2
+						isEdge = True						
+					if self.proxReadings[index+1].value > 0:
+						x0 = (self.proxReadings[index+1].value *  0.10) * math.cos(self.proxReadings[index+1].angle) + x2
+						y0 = (self.proxReadings[index+1].value *  0.10) * math.sin(self.proxReadings[index+1].angle) + y2
+						isEdge = True
 
 				#Argos prox sensors have a 10cm range, convert this angle and range to a point
 				#10 cm is 1 dm is 0.1 m
-				x1 = 0.10 * math.cos(reading.angle) + self.lastPosition.position.x
-				y1 = 0.10 * math.sin(reading.angle) + self.lastPosition.position.y
+				x1 = 0.10 * math.cos(reading.angle) + x2
+				y1 = 0.10 * math.sin(reading.angle) + y2
 				d = self.distance((x1,y1), (goal[0], goal[1]))
 
-				#Detectected object check
+				#Detected object check
 				if isEdge:
-					x2 = self.lastPosition.position.x
-					y2 = self.lastPosition.position.y
+
 					dObj = abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)/self.distance((x1,y1),(x2,y2))
 
 					#If the distance from the detected object to the line for the free point is less than
 					#the width of the robot, the point isn't clear enough to head for
-					rospy.logwarn("dObj = {}".format(dObj))
-
-
+					#rospy.logwarn("index: {} dObj = {}".format(index, dObj))
+					width = 0.01
+					if dObj < width:
+						continue
+						
 				#If it is closer to the target point than previously seen, save it
 				if d < min_d:
 					min_d = d
-					closest = (x,y)
+					closest = (x1,y1)
 		#rospy.logwarn("Closest free point ({},{})".format(closest[0], closest[1]))
 		return closest
 

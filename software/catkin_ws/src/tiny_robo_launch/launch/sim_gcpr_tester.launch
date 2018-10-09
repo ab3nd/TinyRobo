@@ -17,7 +17,5 @@
 	<!-- Bearing oracle -->
 	<node pkg="bearing_oracle" type="bearing_oracle_server.py" name="fake_bearing_service" output="screen"/>
 
-	<!-- pub sub test -->
-	<!-- node pkg="compiler" type="listener_test.py" name="listener" output="screen"/ -->
-	<!-- node pkg="compiler" type="talker_test.py" name="talker" output="screen"/ -->
+
 </launch>

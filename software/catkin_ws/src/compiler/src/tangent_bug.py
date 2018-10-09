@@ -78,7 +78,7 @@ program_sender = ProgSender()
 
 program = []
 
-goal = (0,3)
+goal = (3,0)
 
 
 # 1. Move towards the target in the locally optimal direction in the local 
@@ -123,24 +123,26 @@ goal = (0,3)
 # program.append(("not(self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0 or self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and self.on_heading()", "self.move_fwd(0.3)", 1.0))
 # program.append(("not(self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0 or self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and not(self.on_heading())", "self.turn_heading_arc(1,0.2)", 1.0))
 # #Keep the object to the side
-# program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and ((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_arc(-0.3, 0.2)", 1.0))
-# program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter() and ((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_arc(0.3, 0.2)", 1.0))# if 17 > 18, turn r
-# program.append(("self.proxReadings[19].value > 0.3 or self.proxReadings[17].value > 0.3", "self.move_arc(-1.3, 0.2)", 1.0))
+program.append(("((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_arc(0.3, 0.2)", 1.0))
+program.append(("((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_arc(-0.3, 0.2)", 1.0))
+program.append(("self.proxReadings[19].value > 0.3 or self.proxReadings[17].value > 0.3", "self.move_arc(1.3, 0.2)", 1.0))
 
 # #Keep the object to one side
-# program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and ((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.3, 0.2)", 1.0))
-# program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter()) and ((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.3, 0.2)", 1.0))
-# program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(1.3, 0.2)", 1.0))
+program.append(("((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.3, 0.2)", 1.0))
+program.append(("((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.3, 0.2)", 1.0))
+program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(-1.3, 0.2)", 1.0))
 
 # #Move towards a free point nearest to the goal
-program.append(("True", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
-program.append(("self.on_heading()", "self.move_fwd(0.3)", 1.0))
-program.append(("not(self.on_heading())", "self.turn_heading_arc(1,0.2)", 1.0))
+program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
+program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0 and self.on_heading()", "self.move_fwd(0.3)", 1.0))
+program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0 and not(self.on_heading())", "self.turn_heading(1)", 1.0))
 
 program_sender.updatePubs()
 robots = program_sender.getRobots()
-for robot in robots:
-	program_sender.pubProg(robot, program)
+# for robot in robots:
+# 	program_sender.pubProg(robot, program)
+
+program_sender.pubProg(robots[0], program)
 
 rospy.spin()
 
