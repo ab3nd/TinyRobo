@@ -332,7 +332,27 @@ Backup mode where the robot moves away if it detects more robots? Requires perce
 
 \subsection{Swarm Manipulation}
 
+One interesting minimum case for transportation is the use of granular convection to transport an object that is larger than the robots to a goal, without inter-robot communication or sensing beyond a weak repulsion from the goal \citep{sugawara2014object}. 
+However, this form of box-pushing has some limitations, such as the space being enclosed, and the shape of the transported object being such that it cannot become trapped against the sides of the enclosed space.
+
+Another possible approach is the use of occlusion-based transportation \citep{chen2015occlusion}. 
+The robots push on the object if the object is between them and the goal, and so occludes their view of it. 
+By adding a moving goal, as in the case of path following via bug algorithms as discussed earlier, this transportation method can even cope with environments where the eventual goal is not visible from the starting point. 
+The user-supplied path, expressed as a sequence of goals, provides information on the obstacle-free route through the space. 
+Again, this form of transportation is prone to failure in the case of the object arriving an a position where one face of it is against a wall, and so no robot can get behind it to push it off the wall. 
+It is also only proven to work for arbitrarily shaped convex objects. Certain patholgical concave objects can actually result in a net force away from the goal. 
+
+However, if it is acceptable that the box pushing be complete, that is to say, the system either pushes the object to the goal, or detects that the task is not possible and 
+
+Constraint that all spaces between obstacles are larger than the largest dimension of the object. 
+Can detect that object is against an obstacle, and push against any point where the obstacle is not visible. 
+Still runs into problems with e.g. a square shape object and an obstacle shaped like two sides of the square, so that the square fits into it. Once pushed in, no amount of pushing will get it back out.
+If the obstacles are all convex, and the shape is also convex (so it doesn't have an obstacle-shaped hole), then this can detect an obstacle and attempt to push away from it. Since there are no corners (because everything is convex), and no narrow gaps, the box will not get stuck in any narrow halls. 
+
+
+There seems to be very little work attempting to approach the task of box-pushing with 
 Can manipulation be done with bug or bug-like algorithms. 
+Possibly because of the large number of constraints on such a system preventing it being useful in uncontrolled environments. All rooms are concave. 
 
 Bug algos usually have a motion to goal task, and a join/leave criterion for moving around an object. 
 
@@ -357,6 +377,7 @@ What about pushing when the obstacle is no longer visible? Sum of all forces may
 How to detect success? If alternating push phases and circumnavigate phases, the goal point is inside the object if a circumnavigation doesn't find any point where the robot is closer to the goal than points on the perimeter of the object (assuming the object is convex. Concave objects may have the goal and the robot in a hole/concavity in their perimeter, but still be "around" the goal.)
 
 Probably need to constrain circumnavitation to be non-contact/using range sensors, because otherwise robots doing circumnavigation become obstacles to robots doing pushing. 
+
 
 \subsection{Patrol}
 
