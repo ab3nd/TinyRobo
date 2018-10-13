@@ -28,7 +28,7 @@ The synthesized program should result in convergence of the swarm's overall beha
 Clearly, in a developing situation in the real world, success may become impossible, and so there is not a practical way to guarantee that a particular valid command sequence will result in a particular desired state of the world. 
 However, certain minimum bounds on the problem may be able to be used to determine if a desired task is certain to fail. 
 
-\section{Localization}
+\section{Localization}\label{sec:localization}
 
 The initial vision for this work was to have minimal sensing and no localization. 
 Minimal sensing results in a lower cost per robot, as it reduces the amount spent on sensors. 
@@ -204,13 +204,8 @@ Because every iteration of this loop either occupies the closest point with a ro
 \section{Completeness of Navigation}
 
 Moving to a point is implemented as a bug algorithm. As described earlier, bug algorithms are complete, in that they navigate the robot to a point, or determine that the point cannot be reached. A review of eleven bug algorithms can be found in \citep{ng2007performance}. 
-
-As stated earlier, it is preferable to have the robots follow the user-specified path, as following the user path is both more understandable to the user, and may allow the system to use information that the user has and the robot does not. 
-A user path can be followed by a bug algorithm by breaking the user path into a series of points, and using a bug algorithm to navigate to each point in turn. 
-Because the bug algorithm is complete, it can either reach the target point, or determine in finite time that the point is not reachable. 
-For every point except the last in the user path, if the point is not reachable, the program can simply reset its target point to the next point along the path. 
-Dropping points from consideration in this way will result in the robot deviating from the path, but the reason for the deviation is clearly explainable to the user, both from a program logic standpoint, and visually, as the interface displays the progress of the robot around the obstacle. 
-If the last point of the user path is not reachable, the user-commanded path cannot be successfully completed, and so the user should be informed that the robot cannot reach it. 
+Bug algorithms also generally rely on only local sensing and minimal data storage, and so are appealing for use in swarm control. 
+In this section, the basic bug algorithms are extended to determine if it is possible to provide local-sensing-based complete algorithms for the tasks from the user test. 
 
 Unfortunately, most of the bug algorithms have the requirement that the obstacles in the environment are not moving.
 Indeed, the presence of moving obstacles results in navigation becoming undecidable without knowledge of the future movement of the obstacles, as an obstacle can move to occupy the robot's goal. 
@@ -301,6 +296,8 @@ The reasons for this are twofold:
 	\item The user path may be chosen as a consequence of information that the user has and that the robots do not, and so satisfies some property other than simply arriving at the goal, such as avoiding a dangerous area or providing a sensor sweep of an unexamined area. 
 \end{enumerate}
 
+A user path can be followed by a bug algorithm by breaking the user path into a series of points, and using a bug algorithm to navigate to each point in turn. 
+Because the bug algorithm is complete, it can either reach the target point, or determine in finite time that the point is not reachable. 
 Path following can be handled as an iterated application of the bug algorithm for motion to a point.
 The path is represented as a sequence of points, ending with the goal point.
 Rather than terminating when a point is either reached or determined to be unreachable, the algorithm changes the goal to be the next point of the user path. 
@@ -335,15 +332,15 @@ However, once the robot reaches any point on the perimeter, there are two option
 The robot can stop, as it is now on the perimeter and so ``in formation''. 
 Any subsequent robot following the path will then treat that point on the path as blocked by an obstacle, and proceed to attempt to reach the next point. 
 As a result, each robot stops at the first unoccupied space on the path, or fails to find any unoccupied spaces and terminates upon failure to reach the last point in the path. 
-Alternatively, the robot could stop when it reaches the last point, or, on failure, backtrack to the last point that it could reach. 
+Alternatively, the robot could stop when it reaches the last point, or, on failure, backtrack to the last point that it could reach. \todo{is it valuable to attempt to explore the entire formation before picking a spot?} 
 In either case, as with basic path following, the algorithm is complete. 
 
-Interestingly, the Bug2 algorithm from the original work on bug algorithms is a better choice for the basic bug algorithm used this style of formation than e.g. tangent bug \citep{lumelsky1987path}. 
-While tangent bug does have a lower bound on the maximum path length, Bug2 uses a path called the m-line which is the line segment passing between the start point and the target point.
+Interestingly, the Bug2 algorithm from the original work on bug algorithms is a better choice for the basic bug algorithm used this style of formation than the modified tangent bug algorithm \citep{lumelsky1987path}. 
+While tangent bug does have a lower bound than Bug2 on the maximum path length, Bug2 uses a path called the m-line which is the line segment passing between the start point and the target point.
 For a polygonal formation expressed as a list of points, the m-lines between each subsequent set of points form the perimeter of the formation. 
 As a result, any point which is on an m-line and in free space, rather than within an obstacle, is a valid point for the robot to stop on and consider itself ``in formation''. 
 
-The use of bug algorithms as outlined here does not address the problem of dispersion within a formation. 
+The use of bug algorithms as outlined here does not address the problem of dispersion along the edge of a formation. 
 A reasonable expectation of the behavior of a swarm commanded to form e.g. a square shaped formation is that the robots would be approximately evenly distributed along the perimeter of the square, at least where there were no obstacles to prevent it. 
 Having the robots all located around one corner of the square or along one edge, while technically on the perimeter, would be less satisfactory. 
 There are a number of possible approaches to spacing along the formation perimeter that might be adopted, depending on the robots' sensing abilities.
@@ -353,29 +350,82 @@ If the programs used the second alternative for stopping at unoccupied points wh
 If the robots can sense each other, they could disperse along the perimeter according to some higher-level rules for setting their own goals, but using bug algorithms to navigate. 
 For example, if it is known that enough robots exist to cover the perimeter tightly enough that every robot can see a robot to its left and right, bounded by some limited sensing radius, robots could move on the perimeter to keep the distances between the robots to their left and right equal, treating points where obstacles intersect the perimeter as robots.
 However, if the unobstructed perimeter of the formation is greater than the twice the robots' sensing radius times the number of robots, gaps in the perimeter will lead to oscillation as robots attempt to fill them. 
+Lacking a global knowledge of the situation, the robots cannot determine that the perimeter is unfilled. 
 
-\todo{can I have a general bug-algo that does dispersion well? What is the minimum to sense in that case?}
+\subsection{Patrol}
 
-%Can also be split into phases, first phase is arrival at the perimeter, second is motion along it to disperse. Dispersion could be controlled by e.g. sighting other robots and trying to maintain two other robots in sensor view, one to left and one to right (assuming robots can tell if they're properly positioned, and can tell each other that). Runs into a problem where the robots may get in some weird pinch shapes if there's a tight concavity in the formation perimeter and the robots can see each other across the concavity, rather than just looking along the line. Since the user shape description is in some coordinate space (on the screen) the program can map that into the space of the robot interaction. 
-%
-%In the case where the robots are poorly localized, but a bound can be had on the outside edge of the swarm (cloud case), how is a formation different? Looking at moving the cloud bound to be within the formation. 
-%
-%Within-formation vs. on-edge formation. 
+Patrol is distinct from the other tasks because it has an infinite loop in it by design. The robots patrol the area, and once they finish the patrol, they begin again. 
+A complete algorithm is one which will either obtains the correct result, if possible, or indicates failure. 
+In either case, a complete algorithm terminates, while a patrol does not. 
+However, the navigation algorithm can simply be the same as the path algorithm, only looping over the list of goal points rather than passing through each of them once. 
+While not complete because it does not terminate, each attempt to reach a point on the patrol path is complete, in the sense that it either reaches the point, or determines that it cannot be reached. 
+The algorithm moves on to the next point in either case, rather than terminating. 
+
+In a non-dynamic environment, obstacle-free environment, the algorithm will cause the robot to arrive at every point of the patrol path, since there are no obstacles to prevent it.
+Adding obstacles raises the possibility that the robot may have to deviate from the patrol route to circumnavigate obstacles. 
+As a result, while the robot will attempt to reach all of the points in the patrol loop, it may miss any or all of them due to obstacles. 
+In this case there needs to be some sort of criterion for how bad the deviations from the patrol route can be and still be regarded as a satisfactory patrol.
+Since this criterion is most likely something related to the overall goals of the user, such as detecting the approach of some other actor to the patrol area, the failure of the criterion is unlikely to be detected by the individual robots. 
+Instead, the detection of failure to reach patrol points should be propagated back to the user in a way that allows the user to decide if the patrol path is still acceptable. 
+
+Adding dynamism to the environment raises a concern with the modifications of tangent bug required to allow it to operate in a dynamic environment. 
+In the modified tangent bug, a robot crossing its own path is caused by a dynamic obstacle, but in the case of a patrol, the robot constantly crosses its own path. 
+In order to detect the path crossings, the modified tangent bug of Tomita and Yamamoto keeps track of its own past locations, and detects the intersection of its current location and next position with each line segment between each of its own past locations. 
+However, this problem is not as dire as might be expected. 
+Because the path following is considered an iterative application of the modified tangent bug, the buffer of previous path locations is cleared on beginning the next iteration, which is caused by either arriving at a goal or determining that the goal is unreachable. 
+This also greatly reduces the storage requirements for the path, as not all points along the path are required to be stored, and allows the user path to have loops, which motivated the use of modified tangent-bug to begin with. 
 
 \subsection{Dispersion}
 
 Dispersion can be treated as movement to points, but the selection of points can be handled in a number of ways. 
 If the robots can communicate and are localized, they can agree on a dispersion based on e.g. the space covered by the swarm and a desired density. 
-With non-communicating, non-localized robots that can detect range to each other, e.g. via intensity of wireless signals, dispersion over an area can be accomplished by having all robots move to minimize the proximity of other robots.
+As with formation, each robot could be assigned a target point to disperse to.
+Unlike formation, the primary concern is that the robots be evenly spread throughout the area, rather than within or along a specific perimeter. 
+However, in the presence of obstacles, attempts to approach the target points could be thwarted by inter-robot interference. 
+For example, if many of the dispersion points are within an obstacle, and one is in the only, narrow corridor into that obstacle, the arrival at the robot assigned to the corridor dispersion point will block all the others from arriving at their dispersion points. 
+Because of this problem, it is preferable to have each robot be able to determine whether the dispersion is at least locally complete, rather than rely on simple arrival at a point to regard itself as ``dispersed''.
 
-However, if there's some big obstacle, this can lead to a very bad distribution. 
-Assume there's a very large obstacle with concavity and the points end up such that all the robots'target points are inside the obstacle, and the closest approach to all of them is only one point. All the robots will pile up at that point, which is not actually dispersed. 
+Unfortunately, this change renders dispersion more complex than formation. 
+While a single robot may have some way to detect that it is ``in formation'', such as being at a point within a polygon, it has no way to detect that it is dispersed, and indeed, it makes little sense to talk about a single robot being dispersed. 
 
-Other approaches to dispersion. Maintaining an N-connected network
+Dispersion is, instead, a state of the swarm as a whole, rather than the state of a single robot. 
+If the robots can sense each other, it becomes easier, because they can at least determine if they have neighbors, or possibly how far their neighbors are away, and so can examine local conditions of dispersion. If all robots can detect that in their local area, they are well-dispersed, and all robots act to be locally well-dispersed, then the swarm as a whole will tend towards being well dispersed. 
+For the purposes of further discussion, the definition of ``dispersion'' is that for some integer threshold $\alpha$ and some finite sensing radius $r$, there are no more than $\alpha$ other robots within $r$. 
+This definition has some limitations, such as regarding a single robot ``swarm'' as permanently dispersed. 
+For the purposes of this argument, we will assume robots are points, but aside from some degenerate cases, the argument can be shown to generalize to robots with area. 
+Point robots raise the problem that if $\alpha$ is allowed to equal the number of other robots in the swarm, then all of the robots in the swarm are permitted to be arbitrarily close to each other within $r$, and so the criterion will consider a state with all robots occupying the same point to be ``dispersed''. 
+This is counter to the intuitive understanding of dispersal, and so $\alpha$ is constrained to be less than the number of robots in the swarm. 
+%This runs into the paradox of the heap. 
+%How much lower than the number of robots in the swarm must $\alpha$ be for the robots to be considered dispersed. 
+\todo{hexagonal close packing of circles of radius r, so 6 seems to be the upper bound, beyond which there is some other kind of problem}.
 
-Robot localization may be poor, as in cloud case, in which case it might be required to scatter uniformly rather than moving to specific locations. 
+It may be that dispersion cannot be performed, for example due to limited space in the area to be dispersed into. 
+In order to derive a complete local-sensing-only dispersion algorithm, the algorithm must be shown to move every robot to a location where the robot can detect using local sensing that it is dispersed, or determine that such a location does not exist.
 
-Backup mode where the robot moves away if it detects more robots? Requires perception capable of detecting other robots. 
+For two robots and $\alpha = 0$, there must exist two points in the space such that the distance between those points is greater than $r$. 
+Because the sensing range of the robots is $r$, a robot located at a point cannot tell if a point greater than $r$ distance away is unoccupied, and so the algorithm requires some form of non-local sensing, either communication with other robots or map building. 
+In fact, in order to determine that there exists no such pair of points in the space, the robots must be aware of all the accessible points in the space, which amounts to global, rather than local knowledge.\todo {is this correct?} 
+For two robots, $\alpha$ may not be increased, as it would then violate the constraint that $\alpha$ be less than the number of other robots in the swarm. 
+
+If the number of robots in the swarm is increased by one, the number of points in the space that are required to be greater than $r$ apart increases by one. 
+If $\alpha$ is increased by one, allowing one robot to be within $r$ of another robot, then the problem reduces to the two robot case with $\alpha=0$ and the third robot able to be placed anywhere. 
+However, as the two robot case requires global sensing to determine whether there exist two points that are greater than $r$ apart from each other, it is still not a complete local-sensing-only algorithm. 
+
+For any number of robots $M$ and $\alpha < M$, split the swarm into a group of $\alpha$ robots and and the remaining $M - \alpha$ robots. 
+Because $\alpha$ robots may be within $r$ of each other, put them all at the same arbitrarily selected point. 
+The remaining $M - \alpha$ robots must be placed at points that are more than $r$ from that point, or else the group of size $\alpha$ will have more than $\alpha$ robots within $r$ of them.
+As with the two-robot case, determining that there does not exist an accessible point greater than $r$ distance from any point in the space requires global information about the space. 
+As a consequence, a complete local-sensing-only dispersion controller for point robots does not exist.
+It either requires global information, in which case it is not local-only, or it cannot determine that a satisfactory target point does or does not exist, and so it is not complete.
+
+Making the robots take up space, rather than being points, can result in the condition that $\alpha$ robots simply cannot fit within the disc of radius $r$ around one robot (for example, if the robot radius is $r$), and so even close-packing of the robots is considered ``dispersed".
+Leaving aside this degeneracy, if $\alpha + 1$ robots can fit within $r$ of one robot, and $\alpha$ is constrained to be less than $M$, then the extra robot is required to be greater than $r$ from the surrounded robot, and the same argument holds with regard to determining if a point greater than $r$ distance from the surrounded robot exists or not for all possible placements of the surrounded robot.
+
+Despite the fact that a complete, local-only dispersion controller cannot be found, there are controllers for dispersion of robots that are proven to converge, and to operate without localization \cite{correll2009ad}. 
+This style of dispersion does require that the robots be able to detect and communicate with each other.
+With non-communicating, non-localized robots that can detect range to other objects, e.g. via intensity of reflected light, dispersion over an area can be accomplished by having all robots move to keep all objects that they can detect within a fixed range.
+Even simpler, robots could travel towards open space until they detect no surrounding objects and then stop, or stop if they detect no open space.  
+Varying the detection range will the density of the swarm, both in terms of distance from each other and from obstacles. 
 
 \subsection{Swarm Manipulation}
 
@@ -387,66 +437,124 @@ The robots push on the object if the object is between them and the goal, and so
 By adding a moving goal, as in the case of path following via bug algorithms as discussed earlier, this transportation method can even cope with environments where the eventual goal is not visible from the starting point. 
 The user-supplied path, expressed as a sequence of goals, provides information on the obstacle-free route through the space. 
 Again, this form of transportation is prone to failure in the case of the object arriving an a position where one face of it is against a wall, and so no robot can get behind it to push it off the wall. 
-It is also only proven to work for arbitrarily shaped convex objects. Certain patholgical concave objects can actually result in a net force away from the goal. 
+It is also only proven to work for arbitrarily shaped convex objects. Certain pathological concave objects can actually result in a net force away from the goal. 
 
-The use of simple sensors can be used to coordinate mulitple robots to move a box to an illuminated goal \citep{kube1996use}. Kube and Hong used sensors to track a light on the box and distinguish the box from other, unlit boxes, which were treated as obstacles. 
+The use of simple sensors can be used to coordinate multiple robots to move a box to an illuminated goal \citep{kube1996use}. 
+Kube and Hong used sensors to track a light on the box and distinguish the box from other, unlit boxes, which were treated as obstacles. 
 If distinguishing obstacles is unnecessary, the robot could simply use two light sensors, and push forward if the lower one is occluded by the box and the higher one can see the goal. 
 However, such a simple robot will push against obstacles that cannot move, and other robots. 
 
-However, if it is acceptable that the box pushing be complete, that is to say, the system either pushes the object to the goal, or detects that the task is not possible and 
+It would be good to determine if manipulation in this style, which is to say simple pushing rather than caging or pulling manipulation, admits a complete controller as path following and formation do, or if it is not possible to, in finite time, either move an object to a goal, or determine that it is not possible. 
+For the purposes of this argument, it will be assumed that the object can be pushed in any direction, and that there are sufficient robots present to push it. 
+In reality, it is possible that the object cannot be pushed at all, or that constraints on its dynamics render it impossible to push it to the desired location. 
+For example, it is possible for a human to push a car with its gearbox in neutral forward or backwards, but not sideways. 
 
-Constraint that all spaces between obstacles are larger than the largest dimension of the object. 
-Can detect that object is against an obstacle, and push against any point where the obstacle is not visible. 
-Still runs into problems with e.g. a square shape object and an obstacle shaped like two sides of the square, so that the square fits into it. Once pushed in, no amount of pushing will get it back out.
-If the obstacles are all convex, and the shape is also convex (so it doesn't have an obstacle-shaped hole), then this can detect an obstacle and attempt to push away from it. Since there are no corners (because everything is convex), and no narrow gaps, the box will not get stuck in any narrow halls. 
+In unlimited free space, it is clearly possible to push an object to the goal.
+The robot must be able to locate the object and goal in some way, but as discussed by Kube and Hong, the required sensor precepts may be fairly simple even for real robots. 
 
+In bounded free space, there is the possibility that the object can be placed against the boundary of the space in such a way that no pushing force can remove it from the wall again. 
+For example, an oblique triangle with one face against a straight wall is pushed towards the wall by forces normal to its exposed faces. 
+Of course, under some conditions of friction and pushing forces, the triangle may rotate away from the wall, but as the length of the wall-facing side grows, the more normal the forces become to the wall itself, and so at some point the friction against the wall will exceed the pushing force of the robots on its sides. 
 
-There seems to be very little work attempting to approach the task of box-pushing with 
-Can manipulation be done with bug or bug-like algorithms. 
-Possibly because of the large number of constraints on such a system preventing it being useful in uncontrolled environments. All rooms are concave. 
+Using only local sensing, it is possible to detect this sort of stuck condition, and indicate that the attempt has failed. 
+If the robot detects that it is pushing the object, but the robot is not moving, then the object is also not moving. 
+If the robot then circumnavigates the object and is able to pass from the object to an obstacle and back, then one side of the object is against the wall. 
+Note that this may require the robot to also circumnavigate the boundary of the space, if the object is against a wall, which may be large. 
+It also assumes that the robot can detect its own motion. 
 
-Bug algos usually have a motion to goal task, and a join/leave criterion for moving around an object. 
+In an unbounded space with obstacles, the object may be able to be pushed to the goal if there is an unoccupied path that the object can pass through in order to arrive at the goal. 
+While having a clear path is a necessary condition, it is not sufficient. 
+For example, if a square object is being pushed down a corridor that is exactly wide enough to admit the square, and has a 90$^{\circ}$ bend in it, the square will fill the bend and become stuck, as no pushing force on either of its exposed faces will move it in either direction along the corridor. 
+Nonetheless, the corridor is wide enough to admit the square, and so even if traversing the corridor is required to get to the goal, it does not violate the condition that there be an unoccupied free path that the object can pass through in order to reach the goal. 
+Further, being able to detect such a path requires being able to check assertions about distances across sets of points throughout the space, and so global, rather than local, sensing or knowledge. 
 
-Assuming a single robot can push the object, and the goal direction is known, this can generalize to that box pushing without computation scheme\todo{cite me}. The robot pushes against the object if the object is between the robot and the goal. 
+By adding various levels of communication, more complex sensing, and global planning to the capabilities of the robots, autonomous box pushing can be performed under different conditions. 
+A review of these techniques is beyond the scope of this section, but for recent results see \citep{tuci2018cooperative, rahimi2018comparison, alkilabi2017cooperative}. 
+Occlusion-based transportation, on the other hand, is effective with minimal sensing, and as discussed above, similar bug-algorithm-based path following. 
 
-This approach fails if there's an obstacle between the robots and the goal, because it's on the other side of the object from the robots, and so the object gets pushed up against the obstacle. 
+Users frequently positioned robots near the object or used a dragging action of the box itself in the interface, so the path for the robots to follow is defined as the list of points that the user dragged over. 
+However, the robot's goal is no longer to arrive at the destination.
+Instead, the robot's goal is to arrive at the box and circumnavigate it while detecting the points where the line between the robot's location and the goal (the m-line in the Bug2 algorithm) passes through the box. 
+If there are no points where the m-line does not pass through the object, then the object is sitting on the goal and the robot should stop. 
+If there are points where the m-line does not pass through the object, then the robot should return to a point where the m-line does pass through the object, and push there. 
+If there are no points where the m-line passes through the object, the object has a hole in it with both the goal and the robot in it, and the robot can sit still, as the object is already surrounding the goal.
+This algorithm does not detect arrival at the point, but will instead cause the robots to push the object back and forth over the goal. 
+If enough robots are present, the object will stagnate at the goal as the forces of the robots on all sides of it come into balance as indicated in by Chen et al. \cite{chen2015occlusion}.
 
-Can failure be detected?
+Unfortunately, the lack of a path point for the robots to arrive at means that they will need some alternative method of detecting that a path point has been reached, and they should begin moving to the next point. 
+If stagnation is used as the criterion for detecting arrival at a path point, the point may be overshot in cases where there are not more robots constantly arriving at the object.
+In a theoretical case with the number of robots tending towards infinity, this is not a problem, but if there are only small number of robots pushing the object, they may all be on one side, and so not be balanced by recently arrived robots pushing from the other side. 
 
-Depends on robot sensing. If robot knows own location, and most bug algos do, the robot can detect failure to move the object, but can't attribute it to anything. If the robot is pushing, and detects failure to move, it can circumnavigate the object. If it hits an non-box before returning to its hit point, it can tell that the box is up against an obstacle. If the box is not up against an obstacle, the robot can return to its start point without leaving the box (other robots shouldn't count as leaving the box, since they may be doing the same check). In that case, the box is either too heavy for a single robot to move, too heavy for the swarm to move, or cannot actually be moved at all. There isn't a way to disambiguate this.
+For a single robot, alternating between pushing the object a fixed distance and then circumnavigating to check if the goal was under the object yet would allow the robot to check if the object had arrived at a path point. However, in the case of multiple robots, this means that any robot making the check would be circumnavigating a mobile obstacle, and so cannot tell when the circumnavigation is complete because it won't return to the same point. 
 
-However, if the robots have any form of quorum sensing, they can begin to pile up at the object and keep a count of how many robots are pushing. If that number goes over some cutoff, the robots could decide that the object is not movable.  
-
-This is an area where following the user gesture is the best plan. The user gesture will likely describe a free path for the object, rather than an attempt to e.g. push the object through another object. 
-
-However, this is never going to be a decidable problem in the real world. The box may be too heavy for the swarm to move, or nailed to the ground and so too heavy for anything to move. It might be a tromp l'oiel illusion, and not actually a movable object at all, but a drawing of one. 
-
-Dynamics of moving objects are also kind of a problem. Robot wants to keep robot motion normal to object and pointed at goal. How does rotation of object end up affecting this? Eventually object rotates off front of robot, so motion towards goal is no longer normal to object surface. At that point robot should find a new place to push. This can kind-of be viewed as a tangent graph problem, because the two tangent points on the surface of the object (kind of assuming it's locally flat) should be kept roughly equidistant from the goal. If it's locally convex, locally concave, I think this still applies, but do some sketches to find out, maybe pathological objects. How does this work when there are multiple robots?
-
-What about pushing when the obstacle is no longer visible? Sum of all forces may vary when robots are in motion around object. Alternating push phases with circumnavigate phases may be useful. 
-
-How to detect success? If alternating push phases and circumnavigate phases, the goal point is inside the object if a circumnavigation doesn't find any point where the robot is closer to the goal than points on the perimeter of the object (assuming the object is convex. Concave objects may have the goal and the robot in a hole/concavity in their perimeter, but still be "around" the goal.)
-
-Probably need to constrain circumnavitation to be non-contact/using range sensors, because otherwise robots doing circumnavigation become obstacles to robots doing pushing. 
-
-
-\subsection{Patrol}
-
-Patrol is an unusual case because it has an infinite loop in it by design. The robots patrol the area, and once they finish the patrol, they do it again. 
-
-In a non-dynamic environment, returning to the start of the patrol loop sort-of indicates that a patrol is possible, because the robot can do one loop, and since the environment is not dynamic, the patrol can be done again. 
-
-In a dynamic environment, the robot could be moved from the patrol route by a dynamic obstacle, so there is a potential for unsuccessful iterations of the patrol loop. 
-
-In the case of unknown obstacles, there is the possibility that some or all of the patrol route might lie inside of an obstacle. In this case there needs to be some sort of criterion for how bad the deviations from the patrol route can be and still be regarded as a satisfactory patrol. Tangent bug has bounds on how far from minimal the path can be. The minimal path between two points of a patrol is a straight line, so the sum of the deviations is the bound on how bad the path can be. May still be quite bad. 
-
-If the return to the patrol start point becomes impossible due to dynamism, is it still failure?
-
-What if the start of the patrol point is inside an obstacle? Make the new start point the first reachable point in the patrol path? If no point is actually reachable, perhaps return to own path is the success condition? But this is a failure under the modified tangent bug, because the robot crosses its own path, which was previously being detected as a deviation from goal seeking due to a moving obstacle. Perhaps if the failure is due to a crossing on the current segment, that is to say before hitting the next subgoal point, then hitting an old segment doesn't count, or can be counted differently, as a success for the return to original point. 
+%
+%
+%There seems to be very little work attempting to approach the task of box-pushing with 
+%Can manipulation be done with bug or bug-like algorithms. 
+%Possibly because of the large number of constraints on such a system preventing it being useful in uncontrolled environments. All rooms are concave. 
+%
+%Bug algos usually have a motion to goal task, and a join/leave criterion for moving around an object. 
+%
+%Assuming a single robot can push the object, and the goal direction is known, this can generalize to that box pushing without computation scheme\todo{cite me}. The robot pushes against the object if the object is between the robot and the goal. 
+%
+%This approach fails if there's an obstacle between the robots and the goal, because it's on the other side of the object from the robots, and so the object gets pushed up against the obstacle. 
+%
+%Can failure be detected?
+%
+%Depends on robot sensing. If robot knows own location, and most bug algos do, the robot can detect failure to move the object, but can't attribute it to anything. If the robot is pushing, and detects failure to move, it can circumnavigate the object. If it hits an non-box before returning to its hit point, it can tell that the box is up against an obstacle. If the box is not up against an obstacle, the robot can return to its start point without leaving the box (other robots shouldn't count as leaving the box, since they may be doing the same check). In that case, the box is either too heavy for a single robot to move, too heavy for the swarm to move, or cannot actually be moved at all. There isn't a way to disambiguate this.
+%
+%However, if the robots have any form of quorum sensing, they can begin to pile up at the object and keep a count of how many robots are pushing. If that number goes over some cutoff, the robots could decide that the object is not movable.  
+%
+%This is an area where following the user gesture is the best plan. The user gesture will likely describe a free path for the object, rather than an attempt to e.g. push the object through another object. 
+%
+%However, this is never going to be a decidable problem in the real world. The box may be too heavy for the swarm to move, or nailed to the ground and so too heavy for anything to move. It might be a tromp l'oiel illusion, and not actually a movable object at all, but a drawing of one. 
+%
+%Dynamics of moving objects are also kind of a problem. Robot wants to keep robot motion normal to object and pointed at goal. How does rotation of object end up affecting this? Eventually object rotates off front of robot, so motion towards goal is no longer normal to object surface. At that point robot should find a new place to push. This can kind-of be viewed as a tangent graph problem, because the two tangent points on the surface of the object (kind of assuming it's locally flat) should be kept roughly equidistant from the goal. If it's locally convex, locally concave, I think this still applies, but do some sketches to find out, maybe pathological objects. How does this work when there are multiple robots?
+%
+%What about pushing when the obstacle is no longer visible? Sum of all forces may vary when robots are in motion around object. Alternating push phases with circumnavigate phases may be useful. 
+%
+%How to detect success? If alternating push phases and circumnavigate phases, the goal point is inside the object if a circumnavigation doesn't find any point where the robot is closer to the goal than points on the perimeter of the object (assuming the object is convex. Concave objects may have the goal and the robot in a hole/concavity in their perimeter, but still be "around" the goal.)
+%
+%Probably need to constrain circumnavitation to be non-contact/using range sensors, because otherwise robots doing circumnavigation become obstacles to robots doing pushing. 
+%
 
 \section{Completeness Under Poor or Absent Localization}
 
+The majority of the user tests were done using robots that can localize, and so their locations, at least relative to each other and nearby objects, could be displayed to the user. 
+The cloud/unknown number of robots case, however, indicates that the robots are not able to report a location that can be mapped into a useful display for the user. 
 \todo{Can't really do bugs without location, aside from IBug, which uses beacon}
+Unfortunately, lack of localization implies the lack of a number of other mechanisms. 
+As discussed in section \ref{sec:localization}, local coordinate systems can be derived from range sensing, bearing sensing to other robots, and of course combinations of range and bearing sensing. 
+As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system.
+
+However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, to create representations of the space as a sequence of actions. 
+
+\subsection{Motion to a Point}
+
+Move randomly until sensor precepts match desired target. Assumes interface can send a description of the desired target region, or that there is a shared information about things in the region. For example, if someone wants me to go to a road with a specific name, they say "turn left on Foo st" and I just drive straight until I see a sign for Foo St. This works way better on graphs/roads than in free space. 
+Interface presented to the user could be as a graph with interesting points at the nodes. Return to a point is relatively easy, reverse the sequence of actions. 
+
+\subsection{Path Following}
+
+Ends up not mattering, since user can't see what the robot is doing. Graph traversal in a non-metric map. 
+
+\subsection{Formation}
+
+How would you know if they were in formation?
+
+\subsection{Patrol}
+
+Graph traversal in a cycle on the non-metric map. 
+
+\subsection{Dispersion}
+
+Can't detect other robots, as above, except perhaps in a binary way, so move to graph nodes that are unoccupied?
+
+\subsection{Swarm Manipulation}
+
+I rather doubt it. 
+
+If the robot localization is merely poor, rather than totally absent, other problems appear. 
 
 Bad localization can eventually become a problem for correctness of bug algorithms. If the localization is assumed to be noisy, then returning to e.g. the hit point while circumnavigating an obstacle becomes returning to within close enough to the hit point, according to the sensor (assuming gaussian or similar noise). However, if the threshold is too wide, the robot may get close enough to the hit point to think that it has completed the circumnavigation, when it has really almost completed the circumnavigation, but missed a small door in the obstacle, which is not circular but an almost-closed ``C'' shape]. 
 In this case, the robot will think the goal is unreachable, but the goal is actually reachable. 
