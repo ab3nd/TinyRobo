@@ -520,14 +520,16 @@ For a single robot, alternating between pushing the object a fixed distance and 
 
 \section{Completeness Under Poor or Absent Localization}
 
-The majority of the user tests were done using robots that can localize, and so their locations, at least relative to each other and nearby objects, could be displayed to the user. 
+The majority of the user tests were done with a visual representation of robots that can localize, and so their locations, at least relative to each other and nearby objects, could be displayed to the user. 
 The cloud/unknown number of robots case, however, indicates that the robots are not able to report a location that can be mapped into a useful display for the user. 
-\todo{Can't really do bugs without location, aside from IBug, which uses beacon}
 Unfortunately, lack of localization implies the lack of a number of other mechanisms. 
 As discussed in section \ref{sec:localization}, local coordinate systems can be derived from range sensing, bearing sensing to other robots, and of course combinations of range and bearing sensing. 
-As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system.
+As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system. 
+While the robots could measure distance, using their own odometery, they cannot know the distance to anything that they haven't been to already, and cannot store locations such as hit points, which are used in bug algorithms. 
 
-However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, to create representations of the space as a sequence of actions. 
+Pheromone approaches and I-bug \cite{taylor2009bug} are tempting, but have implementation problems. If there's an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then why doesn't the user just use that to either do the task or bootstrap a coordinate system? 
+
+However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, to create representations of the space as a sequence of actions. \todo{mataric, cite others} 
 
 \subsection{Motion to a Point}
 
@@ -540,7 +542,7 @@ Ends up not mattering, since user can't see what the robot is doing. Graph trave
 
 \subsection{Formation}
 
-How would you know if they were in formation?
+How would you know if they were in formation? Could perhaps represent closure of a loop-shaped formation as occupying every node of a cycle on a graph. Once all nodes are full, then the formation is complete, but it's actual shape and location in space are not known. All formations are topologically a circle.
 
 \subsection{Patrol}
 
