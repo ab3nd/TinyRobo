@@ -527,7 +527,7 @@ As discussed in section \ref{sec:localization}, local coordinate systems can be 
 As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system. 
 While the robots could measure distance, using their own odometery, they cannot know the distance to anything that they haven't been to already, and cannot store locations such as hit points, which are used in bug algorithms. 
 
-Pheromone approaches and I-bug \cite{taylor2009bug} are tempting, but have implementation problems. If there's an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then why doesn't the user just use that to either do the task or bootstrap a coordinate system? 
+Pheromone approaches and I-bug \cite{taylor2009bug} are tempting, but have implementation problems. If there's an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then the user can just use that to either do the task or bootstrap a coordinate system. 
 
 However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, to create representations of the space as a sequence of actions. \todo{mataric, cite others} 
 
