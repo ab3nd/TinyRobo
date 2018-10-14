@@ -527,45 +527,97 @@ As discussed in section \ref{sec:localization}, local coordinate systems can be 
 As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system. 
 While the robots could measure distance, using their own odometery, they cannot know the distance to anything that they haven't been to already, and cannot store locations such as hit points, which are used in bug algorithms. 
 
-Pheromone approaches and I-bug \cite{taylor2009bug} are tempting, but have implementation problems. If there's an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then the user can just use that to either do the task or bootstrap a coordinate system. 
-
-However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, to create representations of the space as a sequence of actions. \todo{mataric, cite others} 
-
-\subsection{Motion to a Point}
-
-Move randomly until sensor precepts match desired target. Assumes interface can send a description of the desired target region, or that there is a shared information about things in the region. For example, if someone wants me to go to a road with a specific name, they say "turn left on Foo st" and I just drive straight until I see a sign for Foo St. This works way better on graphs/roads than in free space. 
-Interface presented to the user could be as a graph with interesting points at the nodes. Return to a point is relatively easy, reverse the sequence of actions. 
-
-\subsection{Path Following}
-
-Ends up not mattering, since user can't see what the robot is doing. Graph traversal in a non-metric map. 
-
-\subsection{Formation}
-
-How would you know if they were in formation? Could perhaps represent closure of a loop-shaped formation as occupying every node of a cycle on a graph. Once all nodes are full, then the formation is complete, but it's actual shape and location in space are not known. All formations are topologically a circle.
-
-\subsection{Patrol}
-
-Graph traversal in a cycle on the non-metric map. 
-
-\subsection{Dispersion}
-
-Can't detect other robots, as above, except perhaps in a binary way, so move to graph nodes that are unoccupied?
-
-\subsection{Swarm Manipulation}
-
-I rather doubt it. 
-
-If the robot localization is merely poor, rather than totally absent, other problems appear. 
-
-Bad localization can eventually become a problem for correctness of bug algorithms. If the localization is assumed to be noisy, then returning to e.g. the hit point while circumnavigating an obstacle becomes returning to within close enough to the hit point, according to the sensor (assuming gaussian or similar noise). However, if the threshold is too wide, the robot may get close enough to the hit point to think that it has completed the circumnavigation, when it has really almost completed the circumnavigation, but missed a small door in the obstacle, which is not circular but an almost-closed ``C'' shape]. 
+Even if the localization is not absent, bad localization can eventually become a problem for correctness of bug algorithms. 
+If the localization is assumed to be noisy, then returning to e.g. the hit point while circumnavigating an obstacle becomes returning to within close enough to the hit point, according to the sensor (assuming gaussian or similar noise). 
+However, if the threshold is too wide, the robot may get close enough to the hit point to think that it has completed the circumnavigation, when it has really almost completed the circumnavigation, but missed a small door in the obstacle, which is not circular but actually an almost-closed ``C'' shape. 
 In this case, the robot will think the goal is unreachable, but the goal is actually reachable. 
-The sensor noise does not affect the completeness of the algorithm, in that it will still terminate, just the correctness. 
+The sensor noise does not affect the completeness of the algorithm, in that it will still terminate, but it will be incorrect.
 \todo{is it really just correctness?}
 
 What if the noise was so high the robot couldn't detect returns to the hit point, and so never left the object? or couldn't detect distance to the goal correctly, and so left at points that did cause loops, rather than points that couldn't cause loops?
 
 \todo{what is the bound on the noise such that the algorithm remains complete?}
+
+Pheromone approaches and I-bug are tempting, as they use gradients of intensity rather than actual location to represent information about the location, but they present a conundrum to the assertion that the robots cannot localize \citep{taylor2009bug}. 
+If there exists an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then why can the user not just use that to either do the task or bootstrap a coordinate system?
+Conversely, if the user cannot accurately place the transmitter or pheromone emitter, then how can they hope to use it to control the swarm? 
+
+However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, which consist of sensor precepts, possibly classified into groups, and motions or connections between them \citep{mataric1991navigating, franz1998learning}. 
+As the available technology has developed, the landmarks have moved from rings of sonar sensors to include representations derived from 360$^\circ$ photographs \citep{tapus2005incremental, goedeme2007omnidirectional}. 
+The integration of such a graph based representation with a user interface is a very interesting topic, and one that does not appear to be discussed in the literature until very recently \citep{landsiedel2018semantic}. 
+The extension of topological maps to include semantic information allows the robot to operate under directions that are very intuitive to humans, such as ``Take the first left after the Dunkin' Donuts", rather than ``Go 32.5 meters, stop, and turn -1.02 radians".
+The robot's view of the space could be presented to the user in a number of ways, such as a chronological list of places visited, and attendant images of them, or a flexible graph of the related images and the topological connections between them. 
+If the representation of landmarks is such that each robot will derive essentially the same representation at a given point, then such a graph extends naturally to multi-robot navigation. 
+Each robot builds its own map, but by sharing maps and finding overlapping landmarks, they may gain the ability to navigate to places that they have never been, but were visited by other robots. 
+
+In the interests of completeness, the next few subsections explore the possibilities for performing the user interface tasks under a non-metric map. 
+While topological maps do represent a form of localization, it is not a form that can be converted into a representation to a user in the same way that metric localization would permit. 
+The map represents locations and connections between them, but not angles and distances. 
+
+\subsection{Motion to a Point}
+
+In an interface presented to the user as a graph with the landmark points at the nodes, return to a known point is planned using graph search over the map, and executed using visual servoing or known sequences of actions to move from node to node. 
+
+Motion to a point outside of the areas the robot has explored becomes difficult in a topological map. 
+Indeed, since there are no landmarks in unexplored area, all unexplored area is the same to the robot. 
+However, there are some methods of potentially moving to user-commanded areas that have not been explored. 
+If the robot has come within sensor range of the area, then some sub-segment of a 360$^\circ$ image can be used as a representation of the target. 
+When the robot returns to the area that it saw that image, the matching features in the 360$^\circ$ image from that area provide the heading to move towards the target, and so the robot can, essentially, servo towards something it has seen before, but did not approach. 
+Even if the robot has not seen the target, if the user has an image of it, the robot can explore areas it has not seen before, looking for the target.
+The topological map gives the robot the ability to recognize areas it has been before, and avoid them while searching for something that it has not seen before. 
+
+This sort of searching assumes interface can send a description of the desired target region. 
+For humans, this kind of navigation is quite common. 
+To return to the example from before, ``Take the first left after the Dunkin' Donuts", there is no need for the person issuing the direction to offer an image of the specific Dunkin' Donuts that they mean. 
+As long as both people have enough overlap in their idea of what a ``Dunkin' Donuts" is, the direction is understandable. 
+
+\subsection{Path Following}
+
+While the user cannot see the exact path taken by the robots, as the map doesn't have a metric space for the points of the path to be defined in, the robot can still follow user-specified paths in the graph.
+As with moving to a point, motion along a path that goes outside of the map is problematic. 
+The path could be represented by a sequence of desired sensor precepts and actions, similar to human directions like ``Go past Mark's office and turn right after Terry's office", but without knowledge of the space in advance, such directions might be wrong. 
+In the case of a metric map with possible obstacles, some subgoals might be able to be dropped so that the system can move on towards a known final goal. 
+However, in a sequence of desired sensor precepts, if one precept is not detected, such as ``Terry's office", there is no clear method to recover. 
+
+\subsection{Formation and Patrol}
+
+As with path following, in a non-metric map, the idea of forming e.g. a square becomes somewhat ill-defined. 
+After all, angles and distances are defined in a metric space, and so while the robots might be in a square, the map might not display them that way, and they might not be aware of it themselves. 
+However, certain formations that could be defined over a non-metric map may still have some utility. 
+For example, formations topologically equivalent to circles could be formed by occupying cycles on the map, and so regions of the map could be segregated from others by an enclosing ring. 
+By looping over such a cycle, the robots could be said to be patrolling the perimeter of a region, in the sense that all nodes adjacent to the patrol area would be regularly visited by a patrolling robot. Similarly, if a ``front'' has to be guarded, the robots could be commanded to positions such that they divide the graph, and indeed, choke points could be detected for optimizing guarding of regions.
+
+\subsection{Dispersion}
+
+Dispersion is one of the more important abilities for robots using a topological map to have. 
+In order to form the map, the robots would have to move through the space and explore it. 
+Assuming the robots have some form of range sensing, as would be used for obstacle avoidance, they could simply scatter stochastically, choosing random headings and following walls while avoiding locations that they have seen before. 
+The fact that the robots have the ability to recognize places and so avoid locations that they have been too before means that they can be quite efficient at spreading over an area. 
+Assuming the area is closed, a traversal of it can be represented as a tree. 
+The robot breaks any cycles that would appear in the traversal by refusing to return to nodes that it has visited before, unless it is backtracking to a node that has areas the robot has not visited before near it. 
+For this sort of traversal ``areas the robot has not visited before'' could simply mean areas in a node/location that were not detected to be occupied by obstacles. 
+While traversing the area, the robot would enter areas it has not visited before, possibly creating new nodes/locations, and keeping track of unvisited areas to potentially visit in future. 
+Such a tree search for a single robot is effectively depth first search, and is linear in the size of the graph (in this case, the area to be explored).
+Some bound such as graph distance from the starting point might be desired, as performing a depth-first search in an open environment could lead to runaway robots. 
+Adding other robots that can share maps allows the area to be explored in parallel. 
+As each robot receives updates to its map from other robots, the areas that they consider unvisited will be removed by the other robots visiting them. 
+Once such a map is generated, the robots can disperse over the map either by agreeing on a dispersion, such that each robot only has some fixed number of robots in adjacent nodes, or simply moving so that no node of the map is occupied by more than one robot. 
+
+\subsection{Swarm Manipulation}
+
+Because a topological map doesn't have metric information, reasoning about a path to push an object over isn't possible. 
+If the map were enhanced by metric information, even just the narrowest point along each edge and node, then graph search techniques could be used to determine if pushing a box along a path were impossible, although not to determine if it were possible, due to the 90$^\circ$ bend problem discussed above. 
+The problem of topological mapping without localization is somewhat orthogonal to the problem of pushing a box, as the topological map may be able to answer some questions about pushing an object, but does not provide useful information on the local interactions required to actually perform the pushing. 
+In the most abstract case, an intangible 360$^circ$ camera with mobility can perform all of the other tasks listed above, with the same ease as a mobile robot, but clearly cannot push anything, so this kind of mapping and control does not provide much information to guide swarm manipulation. 
+
+However, since the approaches that use 360$^circ$ cameras have the ability to use the camera information to provide a heading towards a given node, and the nodes could be chained to provide a path, a combination of information about which nodes and edges are locally obstacle-free and occlusion-based transportation could be used to guess at a path that is locally obstacle-free over its length, and a pushing direction for each segment of the path. 
+Such a controller would not be complete, particularly in a dynamic environment, nor totally local, as it relies on a global map, but the task could be attempted without localization. 
+
+\chapter{Compiler Implementation}
+
+Ok, so you talked a good game about ways the behaviors could be done. 
+
+HOW DO YOU ACTUALLY DO THEM.
 
 \chapter{Compiler Verification}
 
