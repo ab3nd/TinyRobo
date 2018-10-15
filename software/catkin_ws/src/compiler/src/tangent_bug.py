@@ -123,12 +123,10 @@ program.append(("not(self.at({})) and not(self.is_near_anything()) and self.on_h
 program.append(("not(self.at({})) and not(self.is_near_anything()) and not(self.on_heading())".format(goal), "self.turn_heading(0.7)", 1.0))
 program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() == self.get_r_front() == 0)".format(goal), "self.move_fwd(0.5)", 1.0))
 #----- OK down to here, so far -----
-#program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0)", "self.move_arc(0.2, -0.5"))
-program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 or self.get_r_front() > 0) and self.get_l_front() <= self.get_r_front()".format(goal), "self.move_arc(0.8, 0.04)", 1.0))
-program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 or self.get_r_front() > 0) and self.get_l_front() > self.get_r_front()".format(goal), "self.move_arc(-0.8, 0.04)", 1.0))
-# program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() == 0)".format(goal), "self.move_arc(0.8, 0.04)", 1.0))
-# program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() == 0 and self.get_r_front() > 0)".format(goal), "self.move_arc(-0.8, 0.04)", 1.0))
-
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() == 0)".format(goal), "self.move_arc(-0.8, 0.04)", 1.0))
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() == 0 and self.get_r_front() > 0)".format(goal), "self.move_arc(0.8, 0.04)", 1.0))
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0) and self.get_l_front() <= self.get_r_front()".format(goal), "self.move_arc(-0.8, -0.05)", 1.0))
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0) and self.get_l_front() > self.get_r_front()".format(goal), "self.move_arc(-0.8, -0.05)", 1.0))
 
 program_sender.updatePubs()
 robots = program_sender.getRobots()
