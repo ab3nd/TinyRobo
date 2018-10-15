@@ -128,7 +128,7 @@ class GCPR_driver(object):
 						todo_list.append(rule[1])
 			
 			random.shuffle(todo_list)
-		except IndexError as e:
+		except (IndexError, KeyError) as e:
 			print e
 			print "---caused by---"
 			print rule
