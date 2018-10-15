@@ -619,6 +619,27 @@ Ok, so you talked a good game about ways the behaviors could be done.
 
 HOW DO YOU ACTUALLY DO THEM.
 
+motion to a point, path following
+ - modified tangent bug
+ 
+formation 
+ - modified tangent bug
+ 
+patrol
+ - modified tangent bug? 
+ - never going to be complete anyway
+ 
+dispersion
+ - assume robots can get range to each other?
+ - In that case, move away from densest others until can only see 2 others
+ - if only angle, move away from angle to all others
+ 
+manipulation
+ - if they can get range to each other
+ - move to object
+ - keep others 1 robot-width away (or as close as possible without collision)
+ - move to goal 
+
 \chapter{Compiler Verification}
 
 The design of a compiler which verifies that its output is correct What does it mean for a program to be correct? Free from things like assignment of variables to the wrong type, buffer overflows, off-by-one errors, etc. Does not mean that the program does what the programmer intended, just that it does whatever it does without errors. 

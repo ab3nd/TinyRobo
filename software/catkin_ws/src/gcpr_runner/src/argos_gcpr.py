@@ -266,6 +266,12 @@ class GCPR_driver(object):
 					return True
 		return False
 
+	#Check the sensors that indicate stuff the robot will hit if it goes forward
+	def get_l_front(self):
+		return sum([s.value for s in self.proxReadings[:3]])
+
+	def get_r_front(self):
+		return sum([s.value for s in self.proxReadings[-3:]])
 
 	#Bounds checks on x and y position for areas outside of defined paths
 	def x_gt(self, otherX):
@@ -345,6 +351,30 @@ class GCPR_driver(object):
 					closest = (x,y)
 		return closest
 
+	#Gets the center of the closest set of 6 unoccupied sensor readings
+	def closest_free_window(self, goal):
+		window_width = 6
+		free_heading = None
+		min_angle = float('inf')
+		for index, reading in enumerate(self.proxReadings):
+			if reading.value == 0:
+				#Check if the next N readings are also 0
+				window_open = True
+				for ii in range(1,window_width+1):
+					if self.proxReadings[(index + ii) % len(self.proxReadings)].value != 0:
+						window_open = False
+						#Don't need to continue
+						break
+				if window_open:
+					g_angle = self.get_heading(goal)
+					#6 readings, so center is between two readings, so get one of them
+					w_angle = self.proxReadings[(index + 2) % len(self.proxReadings)].angle
+					smallest_angle = abs(math.atan2(math.sin(w_angle-g_angle), math.cos(w_angle-g_angle)))
+					if smallest_angle < min_angle:
+						min_angle = smallest_angle
+						free_heading = w_angle
+		return free_heading
+
 	#Return the closest point to the goal in free space
 	def closest_free_point(self, goal):
 		min_d = float('inf')
@@ -410,6 +440,12 @@ class GCPR_driver(object):
 		#rospy.logwarn("Closest free point ({},{})".format(closest[0], closest[1]))
 		return closest
 
+	def wall_follow(self, goal):
+		#Lower level controller, triggered by being near anything
+		#This is basically a big dumb case statement looking at the sensors
+		#If there is something on the 
+		pass
+
 	#Distance between two points
 	def distance(self, p1, p2):
 		return math.sqrt(math.pow(p1[0] - p2[0] , 2) + math.pow(p1[1] - p2[1], 2))
@@ -421,7 +457,7 @@ class GCPR_driver(object):
 		return 2 * math.atan2(p2[0] - self.lastPosition.position.x, p2[1] - self.lastPosition.position.y)
 
 	#True if within a specified distance of a point
-	def at(self, p1, threshold = 0.05):
+	def at(self, p1, threshold = 0.25):
 		if self.lastPosition is None:
 			return False #It's not a place, we can't possibly be there
 		if self.distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:

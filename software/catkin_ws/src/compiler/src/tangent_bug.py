@@ -117,32 +117,25 @@ goal = (3,0)
 # # so far. Return to step 1. 
 
 
+program.append(("self.at({})".format(goal), "self.stop()", 1.0))
+program.append(("not(self.at({})) and not(self.is_near_anything())".format(goal), "self.set_desired_heading(self.get_heading({}))".format(goal), 1.0))
+program.append(("not(self.at({})) and not(self.is_near_anything()) and self.on_heading()".format(goal), "self.move_fwd(0.5)", 1.0))
+program.append(("not(self.at({})) and not(self.is_near_anything()) and not(self.on_heading())".format(goal), "self.turn_heading(0.7)", 1.0))
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() == self.get_r_front() == 0)".format(goal), "self.move_fwd(0.5)", 1.0))
+#----- OK down to here, so far -----
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0)", "self.move_arc(0.2, -0.5"))
+# program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() == 0) and self.get_l_front() <= self.get_r_front()".format(goal), "self.move_arc(0.8, 0.04)", 1.0))
+# program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() == 0 and self.get_r_front() > 0) and self.get_l_front() > self.get_r_front()".format(goal), "self.move_arc(-0.8, 0.04)", 1.0))
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() == 0)".format(goal), "self.move_arc(0.8, 0.04)", 1.0))
+program.append(("not(self.at({})) and self.is_near_anything() and (self.get_l_front() == 0 and self.get_r_front() > 0)".format(goal), "self.move_arc(-0.8, 0.04)", 1.0))
 
-# #Add motion commands to turn to bearing and move forward
-# #program.append(("not(self.is_near_front())", "self.set_desired_heading(self.get_heading({}))".format(goal), 1.0))
-# program.append(("not(self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0 or self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and self.on_heading()", "self.move_fwd(0.3)", 1.0))
-# program.append(("not(self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0 or self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and not(self.on_heading())", "self.turn_heading_arc(1,0.2)", 1.0))
-# #Keep the object to the side
-program.append(("((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_arc(0.3, 0.2)", 1.0))
-program.append(("((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_arc(-0.3, 0.2)", 1.0))
-program.append(("self.proxReadings[19].value > 0.3 or self.proxReadings[17].value > 0.3", "self.move_arc(1.3, 0.2)", 1.0))
-
-# #Keep the object to one side
-program.append(("((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.3, 0.2)", 1.0))
-program.append(("((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.3, 0.2)", 1.0))
-program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(-1.3, 0.2)", 1.0))
-
-# #Move towards a free point nearest to the goal
-program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
-program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0 and self.on_heading()", "self.move_fwd(0.3)", 1.0))
-program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0 and not(self.on_heading())", "self.turn_heading(1)", 1.0))
 
 program_sender.updatePubs()
 robots = program_sender.getRobots()
-# for robot in robots:
-# 	program_sender.pubProg(robot, program)
+for robot in robots:
+	program_sender.pubProg(robot, program)
 
-program_sender.pubProg(robots[0], program)
+#program_sender.pubProg(robots[0], program)
 
 rospy.spin()
 
@@ -176,3 +169,30 @@ rospy.spin()
 # program.append(("not(self.is_near_left_f_quarter()) and self.is_near_left_r_quarter()", "self.move_turn(-0.8)", 1.0))
 # #Fix range
 # program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(1.3, 0.2)", 1.0))
+
+
+# #Add motion commands to turn to bearing and move forward
+# #program.append(("not(self.is_near_front())", "self.set_desired_heading(self.get_heading({}))".format(goal), 1.0))
+# program.append(("not(self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0 or self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and self.on_heading()", "self.move_fwd(0.3)", 1.0))
+# program.append(("not(self.proxReadings[4].value != 0 or self.proxReadings[6].value != 0 or self.proxReadings[19].value != 0 or self.proxReadings[17].value != 0) and not(self.on_heading())", "self.turn_heading_arc(1,0.2)", 1.0))
+# #Keep the object to the side
+# program.append(("((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value > self.proxReadings[18].value", "self.move_arc(0.3, 0.2)", 1.0))
+# program.append(("((0.0 < self.proxReadings[19].value < 0.3) or (0.0 < self.proxReadings[17].value < 0.3)) and self.proxReadings[17].value < self.proxReadings[18].value", "self.move_arc(-0.3, 0.2)", 1.0))
+# program.append(("self.proxReadings[19].value > 0.3 or self.proxReadings[17].value > 0.3", "self.move_arc(1.3, 0.2)", 1.0))
+
+# # #Keep the object to one side
+# program.append(("((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.3, 0.2)", 1.0))
+# program.append(("((0.0 < self.proxReadings[4].value < 0.3) or (0.0 < self.proxReadings[6].value < 0.3)) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.3, 0.2)", 1.0))
+# program.append(("self.proxReadings[4].value > 0.3 or self.proxReadings[6].value > 0.3", "self.move_arc(-1.3, 0.2)", 1.0))
+
+# # #Move towards a free point nearest to the goal
+# program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0", "self.set_desired_heading(self.get_heading(self.closest_free_point({})))".format(goal), 1.0))
+# program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0 and self.on_heading()", "self.move_fwd(0.3)", 1.0))
+# program.append(("self.proxReadings[4].value == self.proxReadings[6].value == self.proxReadings[17].value == self.proxReadings[19].value== 0.0 and not(self.on_heading())", "self.turn_heading(1)", 1.0))
+
+# #Different attempt
+# program.append(("not(self.is_near_anything())", "self.set_desired_heading(self.get_heading({}))".format(goal), 1.0))
+# program.append(("not(self.is_near_anything()) and self.on_heading()", "self.move_fwd(0.5)", 1.0))
+# program.append(("not(self.is_near_anything()) and not(self.on_heading())", "self.turn_heading(0.5)", 1.0))
+# program.append(("self.is_near_anything()", "self.wall_follow({})".format(goal), 1.0))
+# # program.append(("self.is_near_anything()", "self.stop()", 1.0))
