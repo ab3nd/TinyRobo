@@ -177,23 +177,21 @@ class ProgGen(object):
 			#Uniqueify them
 			list(set(end_strokes))
 
-			clean_gestures = []
-
 			#Check all the other gestures and delete any events that were part of the end event
-			for gIdx, gesture in enumerate(self.gestures[:-1]):
-				for sIdx, stroke in enumerate(gesture.strokes):
-					for eIdx, event in enumerate(stroke.events):
-						if event.uid in end_strokes:
-							#Was part of the end, delete it
-							del stroke.events[eIdx]
-					if len(stroke.events) == 0:
-						#The stroke has no events left in it, delete it
-						del gesture.strokes[sIdx]
-				if len(gesture.strokes) == 0:
-					#The gesture has no strokes left in it, so delete the whole gesture
-					del self.gestures[gIdx]
+			# for gIdx, gesture in enumerate(self.gestures[:-1]):
+			# 	for sIdx, stroke in enumerate(gesture.strokes):
+			# 		for eIdx, event in enumerate(stroke.events):
+			# 			if event.uid in end_strokes:
+			# 				#Was part of the end, delete it
+			# 				del stroke.events[eIdx]
+			# 		if len(stroke.events) == 0:
+			# 			#The stroke has no events left in it, delete it
+			# 			del gesture.strokes[sIdx]
+			# 	if len(gesture.strokes) == 0:
+			# 		#The gesture has no strokes left in it, so delete the whole gesture
+			# 		del self.gestures[gIdx]
 
-			import pdb; pdb.set_trace()
+			# import pdb; pdb.set_trace()
 			
 			#Call the parser on it
 			self.parseGestures(self.gestures)

@@ -18,7 +18,7 @@ class TouchCollector(object):
 		#In the original destutter code, empirically, events that overlapped by less than 0.01s
 		#or didn't overlap but were more than 0.099s apart could be merged. 
 		self.merge_overlap_threshold = rospy.Duration.from_sec(0.01)
-		self.merge_gap_threshold = rospy.Duration.from_sec(0.099)
+		self.merge_gap_threshold = rospy.Duration.from_sec(0.15)
 		#On the 3M screen, a fingertip is about 70px wide, because a finger is about 2cm, 
 		#and the screen is 47.5cm wide or 1680px wide, so 2*1680/47.5 = ~70.
 		self.merge_distance_threshold = 80
@@ -134,6 +134,6 @@ tc = TouchCollector()
 #Subscribe to touch events that may have stutter from fingers skipping on the screen
 touchSub = rospy.Subscriber(topic, Kivy_Event, tc.touch_event_callback)
 #Check for finished strokes and send them
-strokeTimer = rospy.Timer(rospy.Duration(0.1), tc.timer_callback);
+strokeTimer = rospy.Timer(rospy.Duration(0.2), tc.timer_callback);
 
 rospy.spin()

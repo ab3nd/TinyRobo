@@ -30,7 +30,7 @@ class TapSelectDetector(object):
 
 	def check_stroke(self, msg):
 		#Make sure the gesture is a single tap
-		if classification_heuristics.is_tap(msg): # or msg.isDoubletap or msg.isTripletap:
+		if classification_heuristics.is_tap(msg) and not msg.isDoubletap: # or msg.isDoubletap or msg.isTripletap:
 		
 			#Get the tag closest to the tap
 			closest_tag = None
