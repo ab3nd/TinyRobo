@@ -31,45 +31,26 @@ Other techniques have been developed to use magnetic fields to apply force to sm
 These systems are not amenable to decentralized control, because the moving components are not themselves robots. 
 The moving parts are more accurately viewed as manipulators, with the instrumented environment, any sensors for feedback from that environment, and the manipulators themselves comprising a single robot. 
 
+Early small-scale swarm robots were based on microprocessors, and were primarily research platforms for the groups that developed them, rather than commercially available products.
 Alice, by Caprari \emph{et al}. combined a PIC16F84 processor, motors, RF and IR networking, and enough battery power for 10 hours of autonomy into a robot measuring under 2.5cm$^3$ \citep{caprari1998autonomous}. 
-The processor used in Alice is relatively underpowered compared to modern processors at the same price point and power consumption. 
-Alice robots are no longer available for purchase. 
-
-
-The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice  \citep{kernbach2011swarmrobot}.
+The Jasmine swarm robots were possibly the closest thing to a commercially-available successor to Alice \citep{kernbach2011swarmrobot}.
 Jasmine measured 26x26x20mm, and included an ATMega processor, IR close range communication and obstacle detection, two motor skid steering, and lithium-polymer batteries.
-Unfortunately, Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
-The plans and information required to reproduce Jasmine units are available for free at Swarmrobot.org.
-Assembling a Jasmine robot is not beyond the reach of competent electronics hobbyists, but it does require some unusual build processes, such as grinding down the cases of certain electronic parts and filling holes in the PCB with solder to prevent light leaks. 
-The chassis of Jasmine is also a custom mechanical assembly, rather than a commercially available product. 
-
+Jasmine units cost about 100 Euro (\$111 USD) each when they were available, and they are no longer available for purchase. 
 InsBot was a small robot, measuring 41mm x 30mm x 19mm, that was designed to interact with cockroaches \citep{colot2004insbot}.
 It used two processors, one to run higher level behaviors and one to interface with a suite of sensors that included 12 IR sensors and a linear camera. 
-InsBots were never commercially available, and each required approximately 6 hours of work to assemble by hand. 
-However, the construction process appears to have been relatively straightforward. 
-
 The AmIR robot measured 6.5cm in diameter and 6cm tall. It has a more modern processor than Alice \citep{arvin2009development}.
 There is no evidence that AmIR was ever widely available, and it cost \pounds65, or \$92 USD per unit \citep{arvin2015colias}.
-The successsors to Amir, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheremone robotics applications \citep{arvin2014colias, arvin2015colias}. 
-It is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
-Of particular note, the Colias-$\Phi$ lower processor is responsible for detecting light on the underside of the robot. 
-Because of this downward facing light sensor, Colias-$\Phi$ robots can operate on an LCD screen or translucent table illuminated from beneath with a projector, for experiments in pheromone robotics. 
-The light patterns displayed by the projector act as pheromones, which the robot can detect based on its position on the table. 
+The successors to Amir, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheromone robotics applications \citep{arvin2014colias, arvin2015colias}. 
+Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
 Colias robots cost \pounds25, or \$35US, in parts, but are not commercially available. 
 The Colias-$\Phi$ model has an even more impressive price, at \pounds16, or \$22 USD.
-Part of this drop in price may be due to the omission of the IR inter-robot communication system which Colias robots have. 
 
 Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
 The E-puck from EFPL is approximately 800 Swiss francs (\$810 USD) per unit, so the cost of maintaining a large swarm can become daunting quickly. 
 The high price of the E-puck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
-E-pucks also require a fairly smooth operating surface.
-The E-puck uses differential drive, and allows the front or back edge of the robot to serve as a skid. 
-Due to the relatively sharp corner of the lower edges of the robot, the E-puck can become stuck on 2-3mm high obstacles. 
 
 The r-one research robot is cheaper than the E-puck, at approximately \$220 USD per unit \citep{mclurkin2013low}. 
 The developers of the r-one position it as a more-featureful and less expensive alternative to the E-puck (\$810, cannot sense neighbors without additional hardware), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). 
-The main advantage in sensing that the r-one has over these other platforms is neighbor sensors and ground truth position sensing, both of which are implemented on the r-one using infrared.
-The design of the r-one is open source, but it does not appear to be commercially available as of this writing.   
 
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \citep{rubenstein2014kilobot}. 
 Kilobots contain about \$15 worth of parts. 
@@ -80,6 +61,29 @@ As a result, they are designed to be programmed in parallel using an IR interfac
 For small groups, individual Kilobots can be programmed differently, but any attempt to give each of a very large collection of robots an unique program will take a long time. 
 The Kilobots also move by stick-slip motion, and so must operate on a smooth surface, such as a whiteboard. 
 
+The GRITSBots platform is a differential-drive platform using stepper motors \citep{pickem2015gritsbot}.
+GRITSBots use the same processor as Colias, in a similar configuration, with one processor operating sensors and the other controlling the robot's motors. 
+The sensor board incorporate a 3D accelerometer and gyro as well as a 6-direction IR distance sensing ring. 
+GRITSBots measure 31mm x 33mm, and cost approximately \$50 for parts per unit. 
+
+The Psi Swarm robot is a 10cm diameter round robot with proximity sensing, a compass, bluetooth wireless connectivity, and autonomous charging via ground contacts \citep{hilder2016psi}.
+As with many of the platforms described in this section, it is not commercially available, but the designs to have the circuit boards fabricated and the body 3D printed are freely available. 
+
+MROBerTO is a swarm robot with a 16mm$^2$ footprint. It has modular expandability via a header for daughterboards, and includes a single-point laser rangefinder, gyro, accelerometer, compass, and a VGA resolution camera \citep{Kim2016mROBerTOAM}. 
+The mROBerTO processor is a 32-bit ARM processor with Bluetooth and ANT+ wireless. 
+All of this hardware is only \$60 per unit in quantities of 25 or more units. 
+In order to permit an overhead camera to localize the mROBerTO robots, a single RGB LED on top of the camera can be lit in a unique color to localize the robot, and a green LED on the front of the robot indicates its heading. 
+The use of color information is likely much faster to process than fiducual tags, but does have the disadvantage that it is only useful in 2D unless a stereo camera is used. 
+
+The Zooids of Le Goc \emph{et al.} are interesting in that the robots themselves are positioned as both a physical interface and a swarm \citep{le2016zooids}. 
+They are designed to be used as physical controls, such as knobs or sliders, as well as being able to move themselves.
+The individual robots measure 2.6cm in diameter, and localize themselves using a projected grey coded light signal from a high-speed projector. 
+The authors estimate the individual cost of a Zooid at around \$50. 
+
+Swarm robots have also been developed for aquatic and aerial robotics as well, although the problems unique to those domains are outside of the scope of this work \citep{costa2016design, preiss2017crazyswarm}. 
+It is worth noting that the Crazyflie quadcopter platform on which the Crazyswarm is based is a commercial product, and so available to everyone. 
+At least one legged, inexpensive robot platform has also been proposed as a swarm platform, but no swarm composed of them appears in the literature \citep{kalat2015tribot}. 
+
 One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (COTS) hardware in the construction of the robot. 
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \citep{bergbreiter2003cotsbots, soule2011cotsbots}.
@@ -87,15 +91,11 @@ The first COTSBots used mote hardware for the communications link and sensing, p
 The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
 At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, although quite cheap for a research robot, costing a little over \$100USD per unit. 
 COTSBots use TinyOS, a modular and event-driven framework for developing software for low-power wireless devices \citep{levis2005tinyos}. 
-TinyOS is written in a dialect of C called nesC. 
-The motor and mote boards communicate using a messaging layer. 
-The motor driver board is not commercially available, but can be custom-built by board fabrication companies, without the researcher having to assemble it by hand. 
-The second COTSBots is larger, and will be discussed in the next section. 
+
 
 \subsection{Room-sized Swarms} \label{section:Room_sized_Swarms}
 
-One potential problem with extremely small swarms is that while the robots may scale down, the scale of obstacles they have to traverse may not scale with them. 
-As previously mentioned, the Kilobots require a smooth surface, and the E-puck can be stopped by obstacles no more than a few millimetres tall. 
+One potential problem with extremely small swarms is that while the robots may scale down, the obstacles they have to traverse do not scale with them. 
 This sort of vulnerability prevents the smaller, tabletop swarm robots from operating well in human-scaled environments. 
 In order to overcome this problem, larger swarm robots can be constructed.
  
@@ -118,8 +118,13 @@ The large size of these COTSBots demands a very large space if the density of ro
 Additionally, each laptop has a screen, keyboard, and so forth that are not useful while the robot is operating. 
 All of these parts add to the overall cost of the swarm. 
 
+Pheeno is an inexpensive robot of approximately the same scale as the MarxBots \citep{wilson2016pheeno}.
+It has an optional gripper module, and uses a Raspberry Pi miniature computer for its main processing power. 
+The developers of Pheeno provide a comparison with other robots in the same size range, which cost from \$150 for the Parallax Scribbler 2 to over \$3,000 for the much more sensor-rich Khephra IV. 
+
 Beyond the scale of rooms, swarm research has been done with Amigobots and Roombas, as well as larger custom platforms for outdoor multi-robot work \citep{guo2007bio, tammet2008rfid, olson2013cacm}.
 In theory, swarm research could be performed using robots of any size, but financial limitations would place it out of the reach of most academic organizations. 
+
 
 \section{Swarm User Interface Designs} \label{section:Swarm_User_Interface_Designs}
 
@@ -237,6 +242,15 @@ For example, if a robot can send video and range information, the information ca
 Such a projection allows the user to easily relate visual and range information, and relate that information to the ongoing robot control task, which in turn increases task performance \citep{ricks2004ecological}.
 Previous work in multi-touch interfaces directly satisfies these requirements of EID by providing both an omniscient camera view for direct manipulation of the high-level, functional actions of the entire swarm, and the ability to move down the hierarchy to control individual swarm members \citep{Micire:2009:ANG:1731903.1731912}.
 The ability to display information about individual robots along side or on top of the interface representation of the robot is an important method of providing feedback to the user \citep{Kato:2009:MIC:1520340.1520500}. 
+
+Due to their strategic potential, research in human-swarm interface for UAV swarms is a rapidly developing field \citep{hocraffer2017meta}. 
+Potential issues for an interface can be cognitive limitations of the users, or actual design problems in the interface. 
+Research in the field attempts to measure the difficulty of using the interfaces in a number of ways, including cognitive workload, task effectiveness, effective use of operator time, and situational awareness. 
+Perhaps due to the expected mission parameters, very few studies are performed using swarms of more than tens of robots. 
+\todo{more write up of this paper, follow it's cites}
+
+Because of the limitations on individual sensing, especially in the case of a robot with poor localization, providing a third-person user interface rather than a first-person one is better for control of swarm robots \citep{kapellmann2016human}. 
+Kapellmann \emph{et al.} provided a user interface that allowed users to control swarms through the influence of teleoperated leaders. 
 
 \subsection{UI Designs}
 Previous work in multitouch user interface gesture sets can be broadly separated into two classes: those that attempt to build a general gesture set, and those that attempt to build a gesture set to be used for a specific task. 

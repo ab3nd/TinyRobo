@@ -2267,3 +2267,61 @@ I'm not running on a defined machine architecture
 	but don't do what the original source code says. 
 
 	
+
+Supervisory control theory applied to swarm robotics
+Yuri K . Lopes, Stefan M. Trenkwalder, André B. Leal, Tony J. Dodd, Roderich Groß
+Formal methods don't guarntee that the implementation matches the spec
+	because the control code is generated manually
+	Experiments on real robots (e-pucks and kilobots)
+Supervisory control theory
+	formally synthesizes controllers called "supervisors"
+		Not the same as supervisory control / level-of-autonomy a la Parasuraman
+	Formally models the capabilities of the robots and specs for the system
+	Ramadge and Wonham Framework (?)
+	Assumes discrete system states
+		Hybrid System Theory allows discrete and continuious states
+		Discrete event systems (DES)
+			Changes in states are triggered by events
+			Uncontrollable events are feedback, eg. from sensors
+			Controllable events are command signals e.g. to move the robot forwards
+			Free behavior models
+				Represent what the system si capable of doing
+				Realized as generators
+			Control specification
+				Represents what the system should do
+				Also realized as a generator 
+			Both free behavior model and control spec are in a formal language
+				words in the language consit of symbols over an alphabet
+				symbols are events in the DES
+			Desireable sequences of events are the words in the language
+			SCT prevents controllable events that are not desired, based on the state
+Segregation
+	Leaders broadcast a color
+	Followers with one leader don't move
+	Followers with no leader don't move
+	Followers with more than one leader move randomly
+Aggregation
+	Uses a known correct controller from the literature
+	Formalized into SCT
+Object Clustering
+	Uses one of the evolved controllers from the literature
+	Model developed into SCT state diagrams
+Group Formation
+	Model based on communication
+
+Composition semantics are a bit confusing to me
+Operators on the composed transition graph make sure that the resulting language has no deadlocks (!)
+Can have problems with exponential growth 
+	Exponential in the number of free behavior mdoels and specs
+		The very simple models from the example section ended up with hundreds or thousands of states and transitions
+	Modular approach to fix
+		One supervisor for each spec
+		All supeprvisors run at once
+	Local modular approach to reduce state count in supervisors
+		Supeprvisor for each control spec
+		Only free behavior models that the control spec metions are take into account
+			So if the spec doesn't say anything about an event, don't use that fbm
+
+
+I'm not seeing how this changes the development process, it just puts it in a formal representation instead of code
+
