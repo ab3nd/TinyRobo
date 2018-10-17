@@ -317,6 +317,14 @@ While this is likely not an optimal interface for controlling the synthesizer, i
 
 \subsection{Human/Swarm Interaction} \label{section:Existing_Research_on_Swarm_Controlability}
 
+There does not appear to be a consensus on how the user interface for a swarm should work
+Indeed, the term "Swarm UI" is sometimes used to describe the user interface to a swarm, and sometimes used to describe a user interface which is itself a swarm \citep{le2016zooids, suzuki2018reactile}
+
+Swarm interaction is distinct from multi-robot HRI. 
+Multi-robot HRI interfaces typically allow the user direct control of individual robots, which can be switched betweenm but generally do not treat the group as a whole. 
+An example of a multi-robot HRI study is the assessment by Humphrey et al of the scalability of a multiple-robot control interface that uses a ``halo'' around the view from the currently-controlled robot to provide awareness of the positions of the other robots \citep{humphrey2007assessing}
+While this interface did appear to have a positive influence on the number of robots the user could control, it is not a swarm interface, but an interface for individual control of multiple robots. 
+
 Previous work in human-swarm interaction (HSI) shows an interesting diversity of methods to convey a command to a swarm. 
 One approach, for co-located swarms, has the user making hand signals to the robots. 
 If the swarm is equipped with cameras, the hand signs can be recognized visually by members of the swarm \citep{nagi2014online, giusti2012human, nagi2014human}. 
@@ -337,7 +345,6 @@ Alternatively, the user can directly place Gaussian functions in the space and v
 The resulting desired densities are smoothed to avoid discontinuities.
 
 The use of density over location is similar to a number of interface methods that function by allowing the user to specify attractors and repulsion points in the swarm space \citep{goodrich2011toward, brown2014human, vasile2011integrating, kira2009exerting}. 
-
 Goodrich et al use an attractor model under two different design metaphors, physicomimetics and a biomemetic model based on the dynamics of schooling fish, to solve an abstract information foraging problem \citep{goodrich2011toward}. 
 The human influence is applied to a swarm system that is capable of some aspects of the problem without supervision, but is improved by the addition of human control. 
 In keeping with the bio-inspired metaphor, the human can either control a leader, which the other members of the swarm are attracted to and follow, or a predator, which repels and can chase other members of the swarm. 
@@ -373,7 +380,7 @@ The fact that the user interface and the user's intuition about the swarm could 
 Nunnally \emph{et al} explored the condition where a limited amount of information was available, but the time it takes for that information to become available (latency) is another factor in human-swarm interaction \citep{walker2012neglect}.
 In the study , the latency was either absent, present both between members of the swarm and between the swarm and the user, and present, but the interface to the user predicted future swarm motion and displayed it. 
 The task was similar to Nunnally \emph{et al}, in that the swarm was used to search a region for targets in a foraging task. 
-The swarm could be commanded to move to a heading, stop, or flock under a model similar to boids \cite{reynolds1987flocks}.
+The swarm could be commanded to move to a heading, stop, or flock under a model similar to boids \citep{reynolds1987flocks}.
 The latency condition was significantly worse, in terms of targets found, than the no-latency condition, but the predictive display countered the latency sufficiently that the predictive and no-latency conditions were not significantly different. 
 Interestingly, latency also drove the appearance of what the authors refer to as ``neglect benevolence", where the user not interacting with the system was not only tolerated, but actually helped improve the behavior of the system. 
 Under latency, the user would issue a command, and then wait out the latency period to see how the system responded.
@@ -382,10 +389,6 @@ The resulting delay allowed operations such as flocking to converge and stabiliz
 The previously discussed work on attractor management and control under latency and bandwidth restriction is concerned with UI design for swarm robots from the point of view of controllability and influence, which is to say whether or not the user can maintain desirable aspects of the swarm under the given conditions. 
 It is not largely concerned with whether the interface itself, as presented in the experiment, is the best way for the user to attempt to control the swarm.
 That is to say, the interface is taken as a fixed point, and the experimental condition is variation in the quality of the link between the user interface and the swarm. 
-
-Humphrey et al assess the scalability of a multiple-robot control interface that uses a ``halo'' around the view from the currently-controlled robot to provide awareness of the positions of the other robots \citep{humphrey2007assessing}
-The commands available to control each robot were high-level commands such as looking at specfic items or going to a point, which relied on the robot's autonomy, and more teleoperation oriented commands such as turning left or right, stopping, and moving. 
-While this interface did appear to have a positive influence on the number of robots the user could control, it is not a swarm interface, but an interface for individual control of multiple robots. 
 
 Kolling et al compared two forms of influence-oriented UI, selection and beacon based control, with a variable number of robots \citep{kolling2013human}. 
 Selection control requires that the user select groups and then influence the selected group or put them into a specific autonomous behavior mode. 
@@ -400,7 +403,6 @@ The authors indicate that as the swarm size increased, the per-robot precision o
 This indicates that the selection and operation control scheme used in this thesis is a better method for controlling large swarms than beacon or attractor based schemes. 
 However, humans were solidly outperformed by fully autonomous benchmarks developed to more optimally perform the foraging task in the experiment, which indicates that human control is more useful in conditions where the humans may have access to information that the robots do not have access to. 
 Otherwise, human control may present a bottleneck, rather than an advantage. 
-
 
 \subsection{The Interfaceless Interface} \label{section:The_Interfaceless_Interface}
 
@@ -510,27 +512,20 @@ The motivation for AC is that while it may be possible to produce arbitrary quan
 The goal of AC is to get useful work out of such materials, despite uncertainty as to their reliability and location. 
 Smart dusts are also the limit case, in terms of scale, for swarm robotics. 
 Indeed, most of the volume of existing swarm robots is motors and batteries, with the computational components taking far less space. 
-If AC promises to get useful work out of smart dust, then it also has some applicability to larger swarm robots.
+Unfortunately, the technology behind smart dust still does not exist, but programming methods for it have some applicability to larger swarm robots. \citep{Correll:2017:WRM:3131672.3131702}. 
 
 There are several languages intended to program amorphous computers. 
-``Proto" is a language for a continuous plane spatial computer \citep{correll2009ad}.
-Because the devices are distributed over a plane, the difficulty in communicating between any two devices is a function of the distance between them, much as with RF or other radiative communications.
-In Proto, the behavior of regions of space is described by the programmer, and the description is transformed into local actions for the network of devices. 
+``Proto" is a language for a continuous plane spatial computer which maps from behavior of regions at the global level to programs for discrete points at the level of individual devices \citep{beal2006infrastructure}. 
 Because devices have a size in the real world, and space between them, the devices cannot not have a one-to-one mapping with the space, but instead perform an approximation of the desired behavior. 
-Swarm robots are mobile, so some swarm algorithms can be implemented as a description of constraints on the robot's state, such as ``the robot must have communications links to no more than 2 and no less than 1 other robots", and a command to move randomly unless the constraint is satisfied. 
-Within a bounded environment, such an algorithm can be shown to converge to satisfy its constraints \citep{correll2009ad}. 
-
 Proto also has considerable appeal as a programming language for swarm control development because of the layering in its structure. 
-Proto is designed to map from behavior of regions at the global level to programs for discrete points at the level of individual devices \citep{beal2006infrastructure}. 
 If user interface interactions can be interpreted as indications of desired behaviors displayed over spatial regions, then conversion of those behaviors into programs in Proto may be amenable to automation. 
 Proto's layered structure also has a clear relationship to the hierarchical structure of EID, with the programming language serving as a user interface at the highest abstraction level of the interface design, but providing a smooth transition to the lower abstraction levels.  
 
-Origami Shape Language (OSL) uses the abstraction of a foldable sheet to form shapes, inspired by both origami and the folding of epithelial cells during the development of biological organisms \citep{nagpal2004engineering, nagpal2001programmable}.
-Regions and edges on the sheet can be defined by propagation of morphogens, and folds along the edges result in the development of the final form.
-Because of the use of morphogens and local communication between the agents on the sheet, there is no need for a global controller to dictate the development of the final form. 
-Further, because the high-level description of the desired form does not involve abstractions of the underlying modules, OSL could operate on interlocking modular robots, actuated flexible materials, swarms, or other kinds of computational media. 
-In fact, the flexible sheet could be assumed to be virtual, and the resulting motions of the sheet could be translated into motor commands to configure swarm robots into specific arrangements in space. 
-
+%Origami Shape Language (OSL) uses the abstraction of a foldable sheet to form shapes, inspired by both origami and the folding of epithelial cells during the development of biological organisms \citep{nagpal2004engineering, nagpal2001programmable}.
+%Regions and edges on the sheet can be defined by propagation of morphogens, and folds along the edges result in the development of the final form.
+%Because of the use of morphogens and local communication between the agents on the sheet, there is no need for a global controller to dictate the development of the final form. 
+%Further, because the high-level description of the desired form does not involve abstractions of the underlying modules, OSL could operate on interlocking modular robots, actuated flexible materials, swarms, or other kinds of computational media. 
+%In fact, the flexible sheet could be assumed to be virtual, and the resulting motions of the sheet could be translated into motor commands to configure swarm robots into specific arrangements in space. 
 Growing Point Language (GPL) allows the specification of topological patterns in an amorphous computer, and so can also be used to specify the distribution of swarm robots, or behaviors of the swarm robots, in a space \citep{nagpal2004engineering}. 
 GPL is inspired by the morphogenic controls present in biological organisms, which use gradients of chemicals called morphogens to dictate the development of cells \citep{turing1952chemical}.
 The name GPL arises from one of the language's main abstractions, the growing point. 
@@ -574,8 +569,10 @@ While it is possible to build a set of behavioral primitives out of pheromone si
 
 In all of these examples, the sensing of the pheromones is assumed to be local to the robot, at least metaphorically. 
 To actually maintain pheromones in the environment without robots being present to transmit them requires, again, a global representation of the task space which the robots can refer to when needed. 
+However, if some degradation in performance is acceptable, the robots can maintain a shared tuple space that lists information such as pheromone gradients and share it through local connections \citep{pinciroli2016tuple}. 
+
 Use of pheromones to guide swarm robots for simulated search and patrol tasks has been demonstrated, with the assumption that there is a central controller maintaining the concentration of pheromones on the map, and informing the swarm members \citep{coppin2012controlling}. 
-In a real implementation, some robots could remain stationary and only act as transponders, computing and transmitting the local pheromone information for a given area. 
+In a real implementation, some robots could remain stationary and only act as transponders, computing and transmitting the local pheromone information for a given area \citep{hoff2010two}. 
 Another possible approach to enable pheromones in space is to operate the robots in an area which is illuminated by a projector. 
 The projector can then color the area with light that the robots can sense, and modulate the intensity of the light to indicate the intensity of the pheromone \citep{arvin2015cosvarphi,diaz2017human}. 
 However, even if the robots are limited to only the pheromones they can directly perceive and emit at the present instant, some emergent behaviors are still possible. 
@@ -633,21 +630,23 @@ Another proposed catalog of behaviors for swarm control bases the simple behavio
 The proposed behaviors are the use of gradient sensing for position and direction information, local inhibition and competition, lateral inhibition for spatial information, local monitoring, quorum sensing for timing and counting, checkpoint and consensus sensing, and random exploration. 
 The first five are common in amorphous computing as well, but the last three are not. %TODO what are their uses?. 
 While these behaviors are themselves expressed in terms of pheromones, the composition of the primitives into complete programs is not dictated by a pheromone-based system.
-Furthermore, compostional approaches have been proposed in control-theoretic terms as well as pheremone-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheremone robotics \citep{belta2007symbolic}.
+Furthermore, compositional approaches have been proposed in control-theoretic terms as well as pheromone-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheromone robotics \citep{belta2007symbolic}.
 
-The pheromone based approaches to swarm programming are sufficient for relatively complex behaviors. 
-Quorum sensing is used to detect whether the local agent count is sufficient for a task. 
-By detecting the presence of sufficient robots to perform a task, the robots can allocate themselves to tasks in a just-in-time manner, rather than being pre-allocated when the task is designed. 
-Decentralizing the selection of robots, in turn, may be more robust against failures of individual robots, as it uses the robots that are in the right place at the right time, rather than waiting for specially assigned robots. 
-However, under sufficiently bad conditions, a sufficient quorum may never arrive, deadlocking the task. 
-In combination with domino timing, where completion of each phase triggers the next, locking at any step could then deadlock the entire process unless another mechanism detects and corrects it.
+%The pheromone based approaches to swarm programming are sufficient for relatively complex behaviors. 
+%Quorum sensing is used to detect whether the local agent count is sufficient for a task. 
+%By detecting the presence of sufficient robots to perform a task, the robots can allocate themselves to tasks in a just-in-time manner, rather than being pre-allocated when the task is designed. 
+%Decentralizing the selection of robots, in turn, may be more robust against failures of individual robots, as it uses the robots that are in the right place at the right time, rather than waiting for specially assigned robots. 
+%However, under sufficiently bad conditions, a sufficient quorum may never arrive, deadlocking the task. 
+%In combination with domino timing, where completion of each phase triggers the next, locking at any step could then deadlock the entire process unless another mechanism detects and corrects it.
 
-Individual robots can cooperate without communication to push an object to a beacon based on simple behaviors \citep{chen2015occlusion}. 
-Each robot has two simple behaviors.
-If the view of the beacon is blocked, and the robot is next to an object, the robot pushes on the object.
-If the robots can see the beacon, it wanders and avoids obstacles. 
-The sum of the two behaviors results in a net pushing force on the side of the object opposite the beacon, which moves the object to the beacon. 
-There do exist certain pathological shapes which the system cannot move towards the beacon, but it is demonstrated to work for all convex shapes. 
+%This stuff not actually compositional
+
+%Individual robots can cooperate without communication to push an object to a beacon based on simple behaviors \citep{chen2015occlusion}. 
+%Each robot has two simple behaviors.
+%If the view of the beacon is blocked, and the robot is next to an object, the robot pushes on the object.
+%If the robot can see the beacon, it wanders and avoids obstacles. 
+%The sum of the two behaviors results in a net pushing force on the side of the object opposite the beacon, which moves the object to the beacon. 
+%There do exist certain pathological shapes which the system cannot move towards the beacon, but it is demonstrated to work for all convex shapes. 
 
 Another compositional method for programming robots proposes that the behaviors can be separated into classes, such as motion, orientation, and so forth \citep{mclurkin2004stupid}. 
 Among these behaviors are ``primitives'' such as several forms of clustering, which other, later works have treated as an emergent behavior itself, arising from more primitive primitives. 
@@ -848,7 +847,7 @@ Controllers for modular robots that allow them to form shapes under stochastic m
 These controllers are focused on structures and formations that can be expressed as a tree. 
 They do not relate the structure to any other point in space, but are purely in terms of connectivity between modules. 
 
-Other work with modular robots has used sensing to characterize the environment and decide on the reconfiguration of the robot that will best allow it to complete the assigned task \cite{daudelin2017integrated, jing2016end}.
+Other work with modular robots has used sensing to characterize the environment and decide on the reconfiguration of the robot that will best allow it to complete the assigned task \citep{daudelin2017integrated, jing2016end}.
 The high-level planner uses linear temporal logic in a tool called LTLMoP (Linear Temporal Logic MissiOn Planning) to synthesize a controller for the robot task, and from the behaviors required from the controller, a sequence of transformations of the robot into forms that provide those behaviors. 
 	
 Generation of programs from e.g. LTL descriptions of the task and environment are promising because they can generate provably correct controllers.
@@ -919,6 +918,26 @@ While valuable for the strength of the assertions they can make about the genera
 %\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
 %\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
+Another potential approach to the generation of robot programs for swarms is the use of Supervisory Control Theory (SCT) \citep{lopes2016supervisory}.
+SCT provides a method to formally synthesize controllers called ``supervisors''. 
+Both the possible state transitions of the robot and the control specification are represented as state transition diagrams, and realized as generators. 
+The generators are then composed into a synchronous automaton, which is the supervisor. 
+Changes in state are caused by events.
+Uncontrollable events are produced by feedback, such as from sensors or timers, and controllable events are produced by the supervisor to control the robot. 
+The resulting controllers can be demonstrated to not deadlock, and with probabalistic extension into pSCT, also not to livelock, while safety can be formally determined by ensuring that there exists no path in the supervisor leading to a forbidden state \citep{lopes2017probabilistic}. 
+
+However, SCT alone is not sufficient to automate the generation of robot programs.
+The expression of the abilities of the robot and the desired behavior, as state transitions in some form, is left as an exercise for the swarm developer. 
+SCT supplies a way of ensuring that the resulting program does what the specification requires. 
+As noted in \citep{lopes2017probabilistic}, a specification which is logically incorrect, such as including a possiblity to livelock, will generate a program that can be formally demonstrated to match that specification, and so includes the specification's errors. 
+
+EvoStick and AutoMoDe-Vanilla both provide automatic design of swarm robot software using a test-and refine method \citep{francesca2014experiment}. 
+AutoMoDe creates controllers by combining parameterized modules in a PFSM. 
+AutoMoDe-Vanilla outperformed EvoStick, which is a typical neural network control evolution algorithm.
+It was also able to outperform unconstrained human programmers, but not humans using the same set of modules available to AutoMoDe. 
+An enhanced ``flavor'' of AutoMoDe, AutoMoDe-Chocolate, outperformed even the constrained humans \citep{francesca2015automode}. 
+The goal of using pre-defined modules is actually to simplify the design space, under the theory approaches such as evolutionary design of neural network controllers have, essentially, sufficient representational power to overfit to their test environment \citep{birattari2016observing}.
+
 \section{Group Perception of Humans} \label{section:Group_Perception_of_Humans}
 
 Because it is desirable to have the users operate in a manner that scales with the size of the swarm, and that because scaling implies that they treat the swarm as a whole, rather than as individuals, discovery of the factors that result in perception of groups as a single entity rather than a collection of individuals is important.
@@ -938,7 +957,8 @@ Objects that are visually similar are grouped together.
 \end{description}	
 
 There are various other principles, and the order in which they are assessed or their relative strengths are unclear, so it is difficult to determine how a complex scene will be parsed. 
-However, these general guidelines do appear to influence how people perceive groups of other people. For example, all of the people in a line or a parade move together, and so are perceived as a group, separate from people around them moving in other directions. 
+However, these general guidelines do appear to influence how people perceive groups of other people. For example, all of the people in a line or a parade move together, and so are perceived as a group, separate from people around them moving in other directions.
+It has been suggested that these principles may enhance the intelligibility of the behavior of robotic swarms \citep{nagavalli2018algorithms}. 
 
 Humans also make some distinction between aggregates and groups \citep{wilder1978perceiving}.
 Groups have a boundary, such as a common belief or goal, and sharing that element makes someone a member of the group or not. 
