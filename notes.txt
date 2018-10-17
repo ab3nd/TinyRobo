@@ -2270,58 +2270,148 @@ I'm not running on a defined machine architecture
 
 Supervisory control theory applied to swarm robotics
 Yuri K . Lopes, Stefan M. Trenkwalder, André B. Leal, Tony J. Dodd, Roderich Groß
-Formal methods don't guarntee that the implementation matches the spec
-	because the control code is generated manually
-	Experiments on real robots (e-pucks and kilobots)
-Supervisory control theory
-	formally synthesizes controllers called "supervisors"
-		Not the same as supervisory control / level-of-autonomy a la Parasuraman
-	Formally models the capabilities of the robots and specs for the system
-	Ramadge and Wonham Framework (?)
-	Assumes discrete system states
-		Hybrid System Theory allows discrete and continuious states
-		Discrete event systems (DES)
-			Changes in states are triggered by events
-			Uncontrollable events are feedback, eg. from sensors
-			Controllable events are command signals e.g. to move the robot forwards
-			Free behavior models
-				Represent what the system si capable of doing
-				Realized as generators
-			Control specification
-				Represents what the system should do
-				Also realized as a generator 
-			Both free behavior model and control spec are in a formal language
-				words in the language consit of symbols over an alphabet
-				symbols are events in the DES
-			Desireable sequences of events are the words in the language
-			SCT prevents controllable events that are not desired, based on the state
-Segregation
-	Leaders broadcast a color
-	Followers with one leader don't move
-	Followers with no leader don't move
-	Followers with more than one leader move randomly
-Aggregation
-	Uses a known correct controller from the literature
-	Formalized into SCT
-Object Clustering
-	Uses one of the evolved controllers from the literature
-	Model developed into SCT state diagrams
-Group Formation
-	Model based on communication
+	Formal methods don't guarntee that the implementation matches the spec
+		because the control code is generated manually
+		Experiments on real robots (e-pucks and kilobots)
+	Supervisory control theory
+		formally synthesizes controllers called "supervisors"
+			Not the same as supervisory control / level-of-autonomy a la Parasuraman
+		Formally models the capabilities of the robots and specs for the system
+		Ramadge and Wonham Framework (?)
+		Assumes discrete system states
+			Hybrid System Theory allows discrete and continuious states
+			Discrete event systems (DES)
+				Changes in states are triggered by events
+				Uncontrollable events are feedback, eg. from sensors
+				Controllable events are command signals e.g. to move the robot forwards
+				Free behavior models
+					Represent what the system si capable of doing
+					Realized as generators
+				Control specification
+					Represents what the system should do
+					Also realized as a generator 
+				Both free behavior model and control spec are in a formal language
+					words in the language consit of symbols over an alphabet
+					symbols are events in the DES
+				Desireable sequences of events are the words in the language
+				SCT prevents controllable events that are not desired, based on the state
+	Segregation
+		Leaders broadcast a color
+		Followers with one leader don't move
+		Followers with no leader don't move
+		Followers with more than one leader move randomly
+	Aggregation
+		Uses a known correct controller from the literature
+		Formalized into SCT
+	Object Clustering
+		Uses one of the evolved controllers from the literature
+		Model developed into SCT state diagrams
+	Group Formation
+		Model based on communication
 
-Composition semantics are a bit confusing to me
-Operators on the composed transition graph make sure that the resulting language has no deadlocks (!)
-Can have problems with exponential growth 
-	Exponential in the number of free behavior mdoels and specs
-		The very simple models from the example section ended up with hundreds or thousands of states and transitions
-	Modular approach to fix
-		One supervisor for each spec
-		All supeprvisors run at once
-	Local modular approach to reduce state count in supervisors
-		Supeprvisor for each control spec
-		Only free behavior models that the control spec metions are take into account
-			So if the spec doesn't say anything about an event, don't use that fbm
-
+	Composition semantics are a bit confusing to me
+	Operators on the composed transition graph make sure that the resulting language has no deadlocks (!)
+	Can have problems with exponential growth 
+		Exponential in the number of free behavior mdoels and specs
+			The very simple models from the example section ended up with hundreds or thousands of states and transitions
+		Modular approach to fix
+			One supervisor for each spec
+			All supeprvisors run at once
+		Local modular approach to reduce state count in supervisors
+			Supeprvisor for each control spec
+			Only free behavior models that the control spec metions are take into account
+				So if the spec doesn't say anything about an event, don't use that fbm
 
 I'm not seeing how this changes the development process, it just puts it in a formal representation instead of code
+	And seems kind of user-hostile
 
+Automatic Design of Robot Swarms: Achievements and Challenges (2016)
+Gianpiero Francesca, Mauro Birattari
+	Automatic design as a an optimization problem
+	Current dev methods as individual points, not a design science/engineering dicipline
+	Offline methods
+		Good overview of genetic algos
+		Has some mention of automode-chocolate/vanilla
+	Online methods
+		L-Alliance 
+		Methods that try different things and share results
+			Assessing results must be v. hard...
+		Embodied evolution
+			Robots broadcast mutated versions, do local assessment
+			MEDEA MONEE and odNEAT (for evolution section)
+	Calls for a reference design model
+		If specified in SCT, could ease at least some of that problem
+	Refs to Lopes call it a principled manual method, so I was right about it changing where the work is
+		"Some effort has been made recently to overcome this problem and a number of principled manual methods have been proposed [e.g., see Hamann and Wörn (2008), Kazadi et al. (2009), Berman et al. (2011), Werfel et al. (2014), Brambilla et al. (2015), Reina et al. (2015), and Lopes et al. (2016)]."
+
+Observing the Effects of Overdesign in the Automatic Design of Control Software for Robot Swarms
+Mauro Birattari, Brian Delhaisse, Gianpiero Francesca, and Yvon Kerdoncuff
+	Overdesign is the automated desgin analog of overtraining
+	The reality gap is like the generalization problem in ML
+		Similar to some of the statements about evolved controllers representing too much
+			And so being brittle, because they were beginning to represent their own environment too much
+		This is the bias-variance decomposition of the error
+			Complexity increases variance but decreases bias, at some point (optimal complexity), they cross over
+			Probably why the magic number of hidden units is like 3-5, no matter what you're doing
+				And why the number is fucking magic instead of an engineering result
+	Uses EvoStick, the one AutoMoDe beats...
+		Typical evo/neuro approach
+	And they get a divergence where the sim keeps getting better and the result in real life gets worse
+
+
+Probabilistic Supervisory Control Theory (pSCT) Applied to Swarm Robotics
+Yuri K . Lopes, Stefan M. Trenkwalder, André B. Leal, Tony J. Dodd, Roderich Groß
+	Probablistic extension of SCT
+		"Probabilistic generators differ from probabilistic automata.
+	Probabilistic automata are concerned with the uncertainty of
+	the system’s state, which is defined by a stochastic vector. In
+	a particular state, each event may have transitions to multi-
+	ple states (with associated probabilities). Note that this is one
+	approach to represent actuation uncertainty.  In [16], actua-
+	tion uncertainty is represented by probabilistic computation
+	tree logic in the context of a stochastic motion planning task.
+	Probabilistic generators, on the other hand, are concerned
+	with the uncertainty of events occurring in the system’s state,
+	which is assumed to be known.  Each event will result in a
+	transition to a single state"
+	Ok, so not quite the same thing as probablistic automata
+	This ends up apparently solving the choice of what action to take when multiple are available
+		Which is not something GCPR really handled
+	Deterministic controller can live-lock
+		e.g. always turning right when encountering a wall can get trapped by a slight spiral
+		SCT synthesis can prevent deadlocks, but not livelocks
+	Nondeterministic controller cannot live-lock
+		Will eventually try all combinations of possible actions
+		Could just do everything with equal probability
+			But some actions should probably be tried first/more likely to be tried earlier
+	pSCT has probablistic generators
+		Probability of generating a controllable event
+	The synchronization stuff is where you get the "no, fuck YOU sir" combinatorial explosions
+		Statespaces are multiplied by each other
+
+Viable Algorithmic Options for Designing Reactive Robot Swarms
+Todd Wareham, Andrew Vardy
+	"We show that the design of a generalized computation-free swarm for an arbi-
+	trary given task in an arbitrary given environment is not polynomial-time solvable either in general or by the
+	most desirable types of approximation algorithms (including evolutionary algorithms with high probabilities
+	of producing correct solutions) but is solvable in effectively polynomial time relative to several types of re-
+	strictions on swarms, environments, and tasks. "
+	Return of the son of gridworld!
+		Static env, squares are occupied or free for robot to occupy
+		Sensor can be oriented
+		Robot has a compass
+		Sensor has a fixed range
+		Control is just a bigass if-else based on the sensor
+			final else is just "if you don't see anything or you do and it wasn't otherwise covered"
+		Motion is atomic and always works
+		Sensors are perfect
+		
+
+Gauci et al. (2014b) sounds really cool
+	Reactive, single sensor of unlimited range that returns one bit (something is there or not)
+	Extended to trinary (it's a robot, it's nothing, it's a non-robot thing)
+	This is really cool in theory, and the dumbest thing I ever goddamn heard in practice
+	Can apparently do aggregation, clustering of objects, perimeter formation, foraging
+	Design using exhasutive search, evolutionary algos
+	This is tripping my "deep exestential horror" spidey sense. Assuming arbitrairly good sensors, is computation ever needed?
+	These are easy to implement in GCPR (really without the R)
