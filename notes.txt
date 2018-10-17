@@ -2405,7 +2405,67 @@ Todd Wareham, Andrew Vardy
 			final else is just "if you don't see anything or you do and it wasn't otherwise covered"
 		Motion is atomic and always works
 		Sensors are perfect
-		
+	Proof of intractability is by reduction to dominating set, which is NP-hard
+		The intractable thing is generalized computation free swarms with correct operation and polynomial runtime
+		Can relax to either 
+			Approximation algos - polynomial time, but might be wrong
+				Unfortunately, most of these can also be reduced to NP-hard, assuming bounded error
+					Unbounded error is kind of a bad scene
+			Restriction-bsed algos - correct, but over a restricted set of inputs
+				Some sets of aspects still end up allowing the reduction to dominating set/NP-hard
+	Extends to broader set of reactive swarms
+		Although keeps noncontinuious manner on a grid
+			I wonder how it works with continuious robots in a non-grid/real world
+				Paper discusses this, but answer isn't clear
+				"It often seems to be implicitly assumed that the
+				observed capabilities of reactive swarms come in large part from the offloading of the computa-
+				tional power of individual swarm members onto the physics of continuous motion in a Euclidean
+				environment like the real world."
+		Brooks-style subsumption and neural network with 1.0/0.0 weights
+			Which are kind of like the if/else structure previously described
+
+From Formalised State Machines to Implementations of Robotic Controllers
+Wei Li, Alvaro Miyazawa, Pedro Ribeiro, Ana Cavalcanti, Jim Woodcock, and Jon Timmis
+	Controller code generated from a state machine spec
+		RoboChart
+			Formal semantics allow for verification
+			Allows timed and probabalistc systems, multiple controllers
+			States have entry, during, and exit actions
+			State machines are, generally, pretty easy to transform into code
+	PRISM is for probablistic automata
+		This is probably what I'd end up using
+	Formal verification desirable for safety
+	Self-organized aggregation
+		Using one of the no-computation style controllers with binary sensor
+			Did not derive the controller from the user input, it was from the literature
+	Swarm taxis
+
+
+Modeling and Supervisory Control of Mobile Robots: A Case of a Sumo Robot
+César R. C. Torrico, André B. Leal, Ana T. Y. Watanabe
+	Looks into preventing combinatorial explosion
+	Reduces states based on physical layout of robot and env, to remove states that are physically impossible
+		Rather than all combinations of sensors, just those combinations that can realistically occur
+			Which in turn requires a controlled environment
+
+Scaling the Formal Synthesis of Supervisory Control Software for Multiple Robot Systems
+R.C. Hill and S. Lafortune
+	Hierarchical decomposition
+	Vague global plan
+		Assessment of blocking is inherently global
+	Precise local plan with receeding horizon
+	Ended up actually implementing to ROS and driving a simulation
+		Move-base doing the actual motion, so this was more of a planner
+
+Algorithms for Timing and Sequencing Behaviors in Robotic Swarms
+Sasanka Nagavalli (PhD Thesis)
+	Input timing and neglect benevolence
+	Library of swarm behaviors (probably already human-written)
+	Library is consensus-based behaviors
+	Intermediate goals and planning in state space, but unclear how the UI works into it
+	Interesting chapter on intelligibility
+		Also references gestalt perception, cite there
+	Seems a bit math heavy and actual-robot light
 
 Gauci et al. (2014b) sounds really cool
 	Reactive, single sensor of unlimited range that returns one bit (something is there or not)
@@ -2415,3 +2475,14 @@ Gauci et al. (2014b) sounds really cool
 	Design using exhasutive search, evolutionary algos
 	This is tripping my "deep exestential horror" spidey sense. Assuming arbitrairly good sensors, is computation ever needed?
 	These are easy to implement in GCPR (really without the R)
+
+	.  Konur,  C.  Dixon,  and  M.  Fisher.   Analysing  robot  swarm  behaviour  via
+probabilistic model checking.
+
+Ok, but is SCT actually going to get me a no-human-coding system?
+	No, not really, still have to read sensors and operate effectors
+		And given that the effectors appear to have some more grid-world kind of behaviors, rather than continuious behavior, this doesn't seem to be a minor concern, although Torrico/Sumo does have the robot's motions, rather than its positions as the final element
+	Might cut down on me personally having to write the big combinations of guards for GCPR
+	Also, the sensors appear to be binary (events either happen or don't, no concept of intensity, proximity, etc.)
+		Although there are some fuzzy extensions
+
