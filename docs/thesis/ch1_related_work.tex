@@ -251,6 +251,9 @@ Perhaps due to the expected mission parameters, very few studies are performed u
 
 Because of the limitations on individual sensing, especially in the case of a robot with poor localization, providing a third-person user interface rather than a first-person one is better for control of swarm robots \citep{kapellmann2016human}. 
 Kapellmann \emph{et al.} provided a user interface that allowed users to control swarms through the influence of teleoperated leaders. 
+Because teleoperation places the user in the point of view of the individual robot being operated (as with many combat UAV interfaces), the user had some difficulty acquiring an idea of the overall disposition of the robots. 
+Once the user was provided with a third-person, ``eye in the sky'' view, their performance increased. 
+Users with global information were able to aggregate 90\% of the robots, as opposed to approximately 50\% in situations without global information. 
 
 \subsection{UI Designs}
 Previous work in multitouch user interface gesture sets can be broadly separated into two classes: those that attempt to build a general gesture set, and those that attempt to build a gesture set to be used for a specific task. 
@@ -739,6 +742,19 @@ The resulting controllers only controls aggregation behavior, so each behavioral
 Solutions discovered by genetic algorithms are also prone to overfitting. 
 The swarms described in Dorigo \emph{et al}. decreased in performance when the number of robots involved in the swarm was changed from the values used to evolve the solutions, and when a more accurate physical model was used in the simulations.
 
+An interesting recent application of genetic algorithms (as well as simple exhaustive parameter searches) it the development of swarm robots that operate without computation. 
+These robots are generally theoretical, rather than actually implemented in hardware. 
+They typically have one sensor, which is binary and detects the presence or absence of an obstacle, and a program consisting of an if statement that branches according to the output of the sensor. 
+The output of the program is typically the speed of two wheels in a differential drive arrangement.
+Despite the minimalism of the model, by tuning the output parameters of the robot, they can be configured to form stable circles, and with a few more sensor states, to aggregate, shepherd ``sheep'' robots, forage, gather objects, follow walls, and disperse \citep{gauci2014self, johnson2016evolving, ozdemir2017shepherding, brown2018discovery, stcircle}. 
+
+While these abilities of computationless robots actually do cover the desired tasks from the user experiment in chapter \ref{chapter:user_experiment}, this approach has some problems with transition to deployment on real robots, rather than point robots in simulation. 
+The simulations used in computationless swarming frequently assume a perfect sensor of infinite range, which is unlikely to exist on a real robot.
+However, at least one study was performed with sensor noise that could change the sensor reading, causing it to indicate incorrectly with probability $p$, and found that the controller outperformed doing nothing, so long as $p$ was less than 0.5 \citep{gauci2014self}. 
+While extensions which admit a sensor that can detect obstacles, and so avoid it, are no doubt possible, there are more troubling results that indicate that the general design problem for an computation free swarm in an arbitrary environment is NP-complete \citep{wareham2018viable}
+Further, the use of evolutionary programs is still prone to long run times for the evolutionary algorithm itself, and to exploiting errors in the statement of the fitness function. 
+As a consequence, it is ill-suited to user interaction with users who are not experienced in genetic algorithms. 
+
 The common hope of users of genetic algorithms is that they can reduce the complexity of directly specifying the task to the (hopefully lower) complexity of describing the results in the fitness function.
 Rather than describing how to solve a problem, one simply describes what the solution would look like. 
 Unfortunately, the reduction in hands-on time spent programming frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
@@ -841,7 +857,7 @@ Using the neighbours abstraction, the robot can, for instance, query all its nei
 %	Eyebots collaborate to localize off each other
 %		Other robots can also localize off of them
 
-\subsection{Program Generation} \label{section:Program_Generation}
+\subsection{Program Generation from Formal Specification} \label{section:Program_Generation}
 
 Controllers for modular robots that allow them to form shapes under stochastic mixing have been automatically generated from descriptions of the desired shape \citep{klavins2002automatic}. 
 These controllers are focused on structures and formations that can be expressed as a tree. 
