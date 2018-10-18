@@ -1,7 +1,9 @@
 % !TeX root = ams_thesis.tex
 \chapter{Contributions} \label{chapter:Contributions}
 
-\subsection{Multitouch Gesture set for Swarm Control} \label{section:Multitouch_Gesture_set_for_Swarm_Control}
+\section{Swarm Hardware and Software Platform}
+
+\section{Multitouch Gesture set for Swarm Control} \label{section:Multitouch_Gesture_set_for_Swarm_Control}
 This work will attempt to determine if there is an multitouch gesture set for a single user to command a large swarm of robots.
 For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, and cloud (unknown robot count). 
 In all the cases except the cloud case, the robots are represented as individual robots on the screen of the interaction device. 
@@ -17,6 +19,38 @@ The data set will be analyzed and compared to existing work on multitouch gestur
 The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
 The influence of the presentation of the interface on the gesture set will be examined. 
 The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
+
+In future, it would be interesting to repeat this work with a condition that does not display the robots in the user interface at all. 
+We expect that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
+However, such an interface would not afford indicating particular robots or groups, so tasks such as dividing the robots around an obstacle may become impossible to perform.
+
+During this experiment, there were some cases where the users expectations of what was possible in the interface indicated a sort of ``metaphor failure" in the user interface. 
+Natural User Interfaces, of which multitouch screens are an example, are supposed to be able to leverage users' understanding of the physical world, and how objects behave in it, to build affordances for objects on the screen. 
+For example, a volume knob can be displayed as an actual knob, and the screen can react appropriately to attempts to rotate the knob. 
+However, people know that the objects on the screen are not e.g. knobs, switches, and so on, but pictures of those things, drawn by the computer. 
+As a result, the affordances are mixed. 
+The knob may afford turning, but it also affords dragging around the screen or deletion, which a knob on a real radio does not afford. 
+In this study, users were tasked with stopping the robots, which had begun to move around a wall to a target area. 
+One user dragged the wall in front of the robots, and another user asked if they could move the wall. 
+The wall was intended to represent an actual wall, which does not afford moving in the physical world, but it was represented in the experiment as a thick black line. 
+It may be that the users would have not attempted to move the wall if it was more clearly represented as e.g. a stone or brick wall, and so had connotations of excessive weight. 
+On the other hand, the users may have regarded it as what it actually was, an image of a wall on a computer screen, and decided that since images can be moved around the screen, the wall image can too. 
+Attempting to experimentally determine if the representation affects how the user interacts with the wall may require a large number of users, as out of 50 participants, only 2 even mentioned the idea of moving the wall. 
+
+In this experiment, some users were initially confused by the interface not responding. 
+It may be that running this experiment on a computer, rather than a paper prototype, contributed to the user expectation that the system could react. 
+Most users' experience with touch screens is that when they touch them, something visible happens nearly immediately. 
+A system that does not visibly react, as in this experiment, is usually assumed to be broken, or waiting for further input, but no one expects printed documents to react to touch.
+For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al.}. 
+The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
+Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
+Showing the response before asking for the gesture removes the expectation that the system will react. 
+
+Unfortunately, showing the response of the system may also act as a cue to the user that suggests a specific solution for gesture selection. 
+For example, if the system shows a square formation being formed by multiple robots moving directly to the closest point on the square to their starting location, the paths shown are multiple direct motions. 
+If instead, the system shows the robots forming a chain that snakes around the perimeter of the square before coming to a stop, the path shown is forming the snake, and then traversing the perimeter. 
+The motion in the first case may suggest that the user make individual gestures to position each robot, while the gesture suggested in the second case might be more like dragging a lasso around the group and then a line from the group around the perimeter of the box. 
+Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
 
 \subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
 The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.

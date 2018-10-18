@@ -537,21 +537,17 @@ Further, requiring calibration works against transitioning to a new platform by 
 The lack of an automated calibration and control method drove the TinyRobo swarm to use more differential drive vehicles, as they struck a balance between the fully holonomic drive used in the SpiderBots, which is expensive but easy to control, and the Ackerman drive used in inexpensive RC cars, which is less expensive, but has more complex control math \citep{lairdspider}.
 It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity as discussed in section \ref{section:Why_Heterogeneity_}
 
-\subsection{April Tag Latency} \label{section:April_Tag_Latency}
-
-April tags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
-More tags leads to longer computation time, increasing the latency of the robot control loop. 
-Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
-
-One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
-This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
-Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
-The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
-To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \citep{PickemGrits2014}. 
-MROBerTO, on the other hand, was designed to use color blob tracking by using a pair of LEDs on the top of the robot.
-One centrally-located LED was uniquely colored to identify the robot, while the other, on the front edge of the robot, provided an indication of bearing. 
-Kilobot robots also include an RGB LED, which may be set to any color by the software of the Kilobot. 
-These LEDs can also provide swarm feedback in a manner similar to the LEDs in McLurkin's Swarmish interface \cite{mclurkin2006speaking}.
+%\subsection{April Tag Latency} \label{section:April_Tag_Latency}
+%
+%April tags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
+%More tags leads to longer computation time, increasing the latency of the robot control loop. 
+%Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
+%
+%One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
+%This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
+%Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
+%The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
+%To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \citep{PickemGrits2014}. 
 
 
 \subsection{Drive Testing} \label{section:Drive_Testing}
@@ -658,7 +654,7 @@ While it did not fully achieve this goal, there are a number of lessons that wil
 
 The drivetrain of the system is of paramount importance. 
 Sensors and networking can be virtualized, as in TinyRobo and GRITSBots, but no amount of clever programming will compensate for balky motion. 
-The use direct drive, as in GRITSBots or mROBerTO, is encouraged because the resulting drive train will be sealed against foreign matter. 
+The use of direct drive, as in GRITSBots or mROBerTO, is encouraged because the resulting drive train will be sealed against foreign matter. 
 Further, the use of stepper motors in GRITSBots provides some degree of precision in motion control by directing the motor in steps of known resolution, rather than commanding a particular speed. 
 If the system requires additional torque, sealed micro gearmotors can provide increased torque (although with reduction in speed), and will be more reliable than adopting a drivetrain from a toy. 
 
@@ -697,6 +693,8 @@ Decreasing the size of the image in which the tags are detected speeds it up, at
 The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
 To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \cite{PickemGrits2014}. 
 MROBerTO also used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
+Kilobot robots also include an RGB LED, which may be set to any color by the software of the Kilobot. 
+These LEDs can also provide swarm feedback in a manner similar to the LEDs in McLurkin's Swarmish interface \cite{mclurkin2006speaking}.
 
 Second, the tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
 Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
