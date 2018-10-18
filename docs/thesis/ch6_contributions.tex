@@ -3,22 +3,46 @@
 
 \section{Swarm Hardware and Software Platform}
 
+A hardware platform for control of small, inexpensive swarm robots was developed. 
+While the resulting project as of this writing has a number of problems, none of them are insurmountable. 
+The use of children's toys as a mobility platform does not result in substantial savings. 
+During the course of this work, 3D printers have dropped substantially in price, so the difficulty of producing custom small mechanical assemblies has been significantly reduced. 
+Toys also have reliability problems that offset their possible utility as mobility platforms. 
+However, if some other drivetrain is used, the power and control module is still cheap, small, and easy to use. 
+
+Assuming the toys are replaced with either stepper motors or small DC motors with built-in gearboxes, the complete hardware platform is similar to Colias or the GRITSbots.
+A review of online suppliers at the time of this writing indicates that small stepper motors designed for use in cameras area available for well under one dollar per unit, so this change would actually result in substantial cost savings. 
+However, it would require alteration of the drive electronics to control a stepper motor. 
+Small DC motors with sealed gearboxes are available for \$3-5 in single quantities as well, so combining them with a 3D printed enclosure would likely yield a more reliable base, at a similar price to the toys used in this work. 
+
+Resolving the problems with AprilTags would result in an approach closer to mROBerTO.
+The motor drive electronics would remain the same, but either fixed color tags or LEDs as identity indicators would be used to track the robots. 
+It has been suggested that a ring of addressable LEDs could be used to convey information from the swarm to the control system, by changing the color of LEDs on the ring or animating them in patterns. 
+Since such a display could also be meaningful to the user, this may be an interesting direction for future research in HSI for co-located swarms.  
+
+The fact that swarm hardware appears to have converged on roughly the same general layout for the platform hardware can be viewed as an example of convergent evolution. 
+The GRITSbots, Amir, and Colias all have a ring of IR sensors, as do many other designs. 
+Most swarm robots use differential drive for steering, through either a sealed gearbox or direct drive.
+Gianpiero \emph{et al} describe a reference model for the robots in their work, which is inspired by the E-puck \cite{francesca2014automode}.
+The reference model could probably generalize well to other hardware, as the E-puck on which it is based also has a ring of IR sensors and differential drive. 
+A generalized reference model would also be useful for developing SCT generators for robot control, as the set of \todo{what was the actual term?} is specific to the robot, and so could be reused for new problems using the reference system. 
+
+TinyRobo aimed to drive the cost of this style of robot down further, by virtualizing the sensors. 
+The TinyRobo ROS modules include the ability to have configurable virtual laser scanners, range and bearing sensors for inter-robot sensing, and virtual networks, all of which can be easily customized to allow experimentation with sensor noise or failure. 
+
+Because of the modular nature of the system, the ROS stack can be interfaced with simulations as well as with real robots. 
+The main feature making this possible is the fact that the communication with the swarm hardware operates using standard ROS modules as much as possible, and only performs hardware-specific operations where they cannot be avoided. 
+This flexibility enabled an easy transition to testing in simulation when it became apparent that the toy bases were not going to become a useful platform. 
+
+%TODO If I get the 3D printed light ring hardware up and running, add a little blurb here
+
 \section{Multitouch Gesture set for Swarm Control} \label{section:Multitouch_Gesture_set_for_Swarm_Control}
-This work will attempt to determine if there is an multitouch gesture set for a single user to command a large swarm of robots.
-For the experiment, there are 5 cases: 1 robot, 10 robots, 100 robots, 1000 robots, and cloud (unknown robot count). 
-In all the cases except the cloud case, the robots are represented as individual robots on the screen of the interaction device. 
-In the cloud case, the robots are presented as a cloud covering the area that the robots are present in, but without precise representation of each individual robot. 
 
-There are 18 tasks. 
-Each user is assigned to one case, and then performs all the tasks using that case. 
-Having each user work on one case is intended to prevent the user from being influenced by their memory of what they did in a different case, and so creating a consistency that is not a product of the requirements of the task and case. 
-Some of the tasks do not make sense with the cloud case, such as interactions with a single robot, so users who are assigned to the cloud case will not view the tasks that are impossible in that case.
-Pilot runs of the study indicate that it can be completed in one hour. 
+Gestures were collected from 50 users to define a gesture set for multitouch swarm control. 
 
-The data set will be analyzed and compared to existing work on multitouch gestures for command and control. 
-The analysis will also attempt to determine if the gesture set shows a transition point between many and few robots. 
-The influence of the presentation of the interface on the gesture set will be examined. 
-The gesture set will also be analyzed to determine if the size of the swarm has any effect on the gestures used, or on neglect of individual robots by the user. 
+Analysis of the data showed that there were variations in the uses of certain gestures as the size of the swarm increased. 
+
+Showing the area occupied by the swarm did have some influence on \todo{What? Say what again, motherfucker!}
 
 In future, it would be interesting to repeat this work with a condition that does not display the robots in the user interface at all. 
 We expect that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
@@ -53,15 +77,18 @@ The motion in the first case may suggest that the user make individual gestures 
 Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
 
 \subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
-The automatic conversion from a user-specified task into a set of command programs to be distributed to the swarm robots is still an open question.
-One recent approach uses a human-in-the-loop multitouch interface to allow a human to guide a swarm by drawing a bounding prism that the swarm attempts to remain within \citep{ayanian2014controlling}. 
-As the bounding prism moves, the swarm moves with it, with the individual robots performing obstacle avoidance. 
-However, this work assumes that the individual swarm units can localize themselves, and that there is constant availability of communications between all swarm members and the central controller. 
-For a number of reasons, these assumptions frequently fail to hold, and so a more robust system can be designed by assuming that localization and communication are difficult. 
-This work will attempt to create an automated process by which user-specified behaviors of the swarm as a whole can be converted into programs that run on individual robots. 
-The behavior of the individual robots under this control should converge to the user-specified behavior without further communication from the central server.
 
-Previous work in gesture control for small groups of robots was able to recognize a grammar of user inputs using a finite state machine \citep{micire2010multi}.
-The intent of this work is to implement basic robot behaviors as statements in an implementation of guarded control programming with rates (GCPR), which can then be composed into more complex behaviors based on the recognized user gestures \citep{napp2011compositional}.  
+This project shows a basic conversion from user gestures into a set of command programs to be distributed to the swarm robots.
+These command programs are intended to balance desirable formal properties of the programs, such as convergence within bounded time, use of local-only sensing, and completeness, with reflecting the user's intentions in the observable behavior of the swarm. 
+
+In attempting to derive complete program frameworks for the tasks specified in the user studies, it was determined that complete controllers for some simple tasks may not exist. 
+For example, while it is possible to have a complete controller for motion to a point, it is impossible to have a complete dispersion controller that relies on only local sensing. 
+In cases where completeness could not be determined, or was determined to be impossible, the controllers used are developed to use local-only sensing and if they fail, to do so in a manner that is intelligible to the user. 
+
+The translation between user commands and robot programs in this work was developed using a method similar to compiler development, where an input language was defined from the user gesture commands, and an interpreter was developed to take strings in the language of gestures, and output control programs in as statements in an implementation of guarded control programming with rates (GCPR) \citep{napp2011compositional}.  
+Previous work in gesture control for small groups of robots was also able to recognize a grammar of user inputs using a finite state machine \citep{micire2010multi}.
+It had been initially hoped that there would be a universal abstraction or transformation that could represent the conversion of all gestures into all robot commands representing those gestures, rather than having different sets of behaviors, with different properties, which could be constructed from the user gestures after recognizing those gestures. 
+Supervisory Control Theory may provide an approach to reducing the amount of hand-developed code in the system, and so human error. 
+However, user gestures do not provide a sufficiently explicit means of designing a program in realtime to allow for the full automation of the generation of control programs without assuming an amount of \emph{a priori} knowledge that is unrealistic in practice. 
 
 

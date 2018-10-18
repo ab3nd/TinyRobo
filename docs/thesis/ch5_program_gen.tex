@@ -605,7 +605,7 @@ Once such a map is generated, the robots can disperse over the map either by agr
 
 \subsection{Swarm Manipulation}
 
-Because a topological map doesn't have metric information, reasoning about a path to push an object over isn't possible. 
+Because a purely topological map does not have metric information, reasoning about the dimensions available over path to push an object on is not possible. 
 If the map were enhanced by metric information, even just the narrowest point along each edge and node, then graph search techniques could be used to determine if pushing a box along a path were impossible, although not to determine if it were possible, due to the 90$^\circ$ bend problem discussed above. 
 The problem of topological mapping without localization is somewhat orthogonal to the problem of pushing a box, as the topological map may be able to answer some questions about pushing an object, but does not provide useful information on the local interactions required to actually perform the pushing. 
 In the most abstract case, an intangible 360$^circ$ camera with mobility can perform all of the other tasks listed above, with the same ease as a mobile robot, but clearly cannot push anything, so this kind of mapping and control does not provide much information to guide swarm manipulation. 
@@ -614,6 +614,21 @@ However, since the approaches that use 360$^circ$ cameras have the ability to us
 Such a controller would not be complete, particularly in a dynamic environment, nor totally local, as it relies on a global map, but the task could be attempted without localization. 
 
 \chapter{Compiler Implementation}
+
+At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
+While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and (probablistic) Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using e.g. PRISM \citep{KNP11}.
+
+However, the user gesture language as defined by this work is actually quite vague, when it comes to allowing a robot to perform the expected actions. 
+Users were told to assume that the system was capable of understanding their orders, so they merely had to indicate what they wanted the system to do, and it would then do it. 
+Alan Perlis, in ACM-SIGPLAN'82 has been quoted as saying ``When someone says `I want a programming language in which I need only say what I wish done,' give him a lollipop.'' \citep{PerlisYaleLolz}.  
+Such systems are substantially more difficult than the recipients of lollipops expect, because they rely on a large amount of \emph{a priori} information shared between the person issuing the command, and the system executing it. 
+
+For example, in the box-moving task, the users would frequently move the robots to surround the box, and then move the robots to the goal area. 
+However, one might expect that robots that avoid obstacles would just go around a box. Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
+Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot, since there are not clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that anything can be pushed, rather than just boxes. 
+In the task, there was only one box and one goal, but the real world is rarely so simple. 
+
+, such that while the transformation may have to be developed by a human, 
 
 Ok, so you talked a good game about ways the behaviors could be done. 
 
