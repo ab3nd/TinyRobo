@@ -162,7 +162,7 @@ class OverheadUIApp(App):
         self.patrol.bind(on_press=self.handle_button)
         self.layout.add_widget(self.patrol)
         #Formation
-        self.formation = Button(text="Formation", pos_hint={'right': 0.2, "top": 0.98}, size_hint=(0.07, 0.05))
+        self.formation = Button(text="Make Formation", pos_hint={'right': 0.2, "top": 0.98}, size_hint=(0.07, 0.05))
         self.formation.bind(on_press=self.handle_button)
         self.layout.add_widget(self.formation)
         #Move object

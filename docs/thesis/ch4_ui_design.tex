@@ -31,7 +31,7 @@ Instead, the tasks in which the users invoked the UI most often were examined, a
 
 Both voice commands and handwritten commands together account for 47.1\% of the user interface elements used.
 While the broad categories make up nearly half of the UI elements, the individual uses of the gestures did not display a significant unity within the broad categories.
-One user used symbols drawn over the swarm as commands, so a circle drawn within the swarm area meant "patrol", and would be followed by an indication of the area to be patrolled. 
+One user used symbols drawn over the swarm as commands, so a circle drawn within the swarm area meant ``patrol", and would be followed by an indication of the area to be patrolled. 
 Another user wrote commands, such as writing out ``0.5" to indicate that robots should divide in half, ``SQ'' to indicate that they should form a square, or ``C $\rightarrow$ A" to indicate that the crate (C) should be moved to area A. 
 The majority of the drawn commands were attributable to a single user, but two users drew an `X' over the defective robot in the ``mark defective robot'' and ``remove defective robot'' tasks and two users used an `X' and an `S' in the ``stop the robots'' task.
 
@@ -40,12 +40,13 @@ In addition to the set of English letters, the interface would have to consider 
 The experiment described in this thesis did not collect sufficient examples of handwritten commands to extrapolate a useful control scheme from them.
 Because of this lack of information, and the fact that most handwritten commands were proposed by a single user, the resulting interface does not contain support for handwriting recognition and symbol interpretation.  
 
-Interestingly, voice commands were similar to both handwriting, in terms of user choice, and gestures, in terms of syntax. 
-One user used voice commands for all tasks, but a few users also used voice commands for a few tasks, but not all of them. 
+Interestingly, voice commands were similar to both handwriting, in terms of distribution of user choice, and gestures, in terms of syntax. 
+One user used voice commands for all tasks, but a few \todo{numbers, no weasling} users also used voice commands for a few tasks, but not all of them. 
 This distribution is like the handwritten commands, in that one user used handwritten commands frequently, but a few other users used a few of them for some tasks.
 The accidental biasing of users towards use of voice for formation tasks was discussed earlier. 
 In addition, two users stated that they would like to have a vocal stop command for the ``stop the robots'' task, because it could be issued quickly and without having to accurately touch the moving robots. 
 These users did not issue other voice commands, as the other tasks were not perceived to be as urgent as the ``stop the robots'' task. 
+
 The syntactic similarity between the voice commands and the gesture commands is because the gesture commands frequently take the subject-verb-object ordering of spoken sentences. 
 For example, selecting the robot group indicates a subject, and drawing the path indicates the verb (``go this way"). 
 Objects are optional or implied, as going to a location does not have a clear object that the robots are instructed to act upon. 
@@ -152,7 +153,7 @@ If it is too long, it may never be triggered, and so all of the user's gestures 
 Second, the timeout is could be invisible. From the user's perspective, this causes the system to appear to begin acting at random, which is undesirable. 
 The timeout could be made visible, using a countdown timer, which may then make the user feel pressured to act. 
 
-In order to avoid having the system act prematurely, the system treats a doubletap on open space as an "end of command" signifier.
+In order to avoid having the system act prematurely, the system treats a doubletap on open space as an ``end of command" signifier.
 If the hardware used in the system were capable of detecting it, the user placing their hands in their lap or away from the screen could also be used as a signifier that the user has completed entry of their command. 
 Most users moved back from the screen slightly and removed their hands from the volume above it once they were finished issuing their command, and no users were observed to rest their hands on the screen while not issuing commands. 
 However, this behavior may have been a consequence of the particular arrangement of the screen and user seating, so further work would be required to determine if it is a sufficiently robust indication of command completion. 
@@ -162,4 +163,74 @@ Because commands are generally of the form subject-verb-object, a new subject be
 The exception to this rule is tap selections, which some users used to select multiple robots by sequentially tapping on them. 
 Tap selections are accumulated until a gesture other than a tap selection is entered.
 After a non-tap action is entered, a new selection gesture will begin a new command. 
+
+\section{Formal Definition of Command Sequences}
+
+The commands that use buttons are Patrol, Make Formation, Move Object, Remove Robot, and Select Group. 
+The text of the buttons is written as a verb phrase, as the buttons take the place of the verb in the subject-verb-object (SVO) structure. 
+To preserve the SVO ordering, the command parser expects a subject, specified by a selection gesture, a verb, expressed by a button, and then an object, expressed by another gesture. 
+
+For Patrol and Make Formation, the ``sentence'' reads somewhat like ``These robots, Patrol/Make Formation, this location/shape". 
+
+In the Move Object command, the sentence is more complex, as both an object to be moved and a location to move it to must be specified. 
+The sentence would read as ``These robots, Move Object, this object, to here". 
+This structure is somewhat in conflict with the most common user strategy to move the crate, which was to surround the crate with robots and move the robots, and also in conflict with the second most common strategy, which was to move the crate, with no reference to the robots. 
+The decision to differ from these strategies was undertaken for a number of reasons. 
+The first is that moving the crate with no reference to the robots has an implicit subject of the sentence, which is all of the robots. 
+As discussed previously, implicit selection of the entire swarm has a high potential to surprise the user, especially if the behavior changes across swarm sizes, while requiring explicit selection does not. 
+The second is that unless the system is aware of which objects in the environment constitute movable objects and which do not, there is no way to disambiguate a command to surround an object, and then leave it to go to another location from a command to move the object by surrounding it.
+This level of knowledge about a novel environment may not be possible to obtain in real-world situations. 
+
+The Select Group and Remove Robots are not commands to the robots. 
+They are commands to the system. 
+Select Group selects robots by some common feature (in the user test, common group membership was depicted by color). 
+Remove Robot instructs the system to mark a robot or robots as not to be used, and so they are excluded from having commands issued to them. 
+The system is the implied subject of the sentences ``[system] Remove Robot, these robots'' and ``[system], Select Group, these robots''. 
+Implying the subject of a command to the system is acceptable in a way that implying robots as a subject is not, because there is one control system, and so the subject is not ambiguous. 
+It can be viewed as similar to a desktop computer, where it is generally assumed that commands invoked through that computer's UI are for that computer to do. 
+
+The commands that are not invoked through buttons are the positioning commands, to move single robots or groups. 
+The division between buttons and ``pure'' gesture commands was made because there was higher agreement between users on the basic movement commands than on the more complex commands. 
+Additionally, some users implemented the more complex commands by sequences of basic motions. 
+This was especially apparent in formation commands with lower counts of robots, where some users issued a movement command to each robot that ended at a location within the formation. 
+
+Positioning commands consist of a subject and a verb phrase gesture that reads as ``These robots, go here". 
+However, there are a number of ways that these can be expressed. 
+The selection can be by any of the selection methods, tapping individual robots, box selection, or lasso selection. 
+The position commands can be by tapping a location, or by dragging a particular path for the robots to follow. 
+However, this raises the possibility that the dragged path is a line or loop over other robots. 
+There are two possible ways to treat this sequence. 
+
+The fact that there is an end-of-command marker, the ``period'' at the end of each sentence, means that the user could make a sequence of taps on robots, lassos, and box selection gestures, ending with either something that could be a path, a lasso, or a box selection and then the end-of-command marker. 
+The system would then interpret the last lasso or box selection as a path, and so the whole command as a sentence with a compound subject, ``These robots and this robot and...., go here''. 
+
+The other possibility is having each selection create a new command. 
+In that case, the subject-verb ordering allows the disambiguation of the action of drawing a line over a group of robots. 
+If no robots have been selected yet, drawing a line over a group constitutes a selection of that group. 
+The sentence begins with a subject. 
+If some robots have been selected, then drawing a line over a group indicates the path they are to follow. 
+The sentence ends with a verb phrase. 
+Then the sentence can be ended with either an explicit end-of-command gesture, or a selection that begins the next sentence. 
+
+However, the exact ambiguity is not between all selections and path commands, but between group selections and path commands.
+Tap selection of single robots is unambiguous, under the assumption that collisions are bad, and so it is never desirable to command one robot to another robot's exact location. 
+This raises the possibility of a third selection method, where single/tap selects can be chained to select multiple robots. 
+Allowing chaining of tap selections with other selections, however, creates an ordering effect. 
+Three taps on a robot followed by a gesture that could be a box select or a path would be interpreted as commanding three robots to follow the path. 
+A gesture that could be a box select or a path, followed by three taps on robots would be treated as a compound of a box selection and three tap selections, and so is an incomplete command. 
+
+If tap selections are allowed to chain, then there is an instance of a selection not terminating an old command and starting a new one, creating an inconsistency with the rule that starting a new selection begins a new command, and so implicitly ends any previous command.
+Allowing tap selections to chain also creates the ordering effect described above, where the gestural sentence can be read as "This robot, this robot, go here" or "These robots, this robot, this robot". 
+This effect would be unclear to the user, because some sequences would be full commands, while others would be only selections, and the interface would not make explict why there was a distinction. 
+As a consequence, it is not desirable to chain tap selections with other selections. 
+
+If tap selections are not allowed to chain at all, then tapping multiple robots one after another only selects the last one, and results in a sequence of incomplete programs consisting only of selections. 
+It also eliminates a behavior that some users did show, selecting a small number of robots by tapping on the individual robots. 
+
+However, if tap selections chain with each other, but not with any other form of selection, then there is no ordering effect from chaining with potentially ambiguous group selections, and the utility of tap selection is extended to cover multi-selection. 
+Because it both eliminates the ordering effect and admits very detailed multi-selection, tap selections were allowed to chain with each other, but not with other selections. 
+
+Multitouch problem of simultaneous actions
+
+
 
