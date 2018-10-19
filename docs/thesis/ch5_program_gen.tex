@@ -624,9 +624,13 @@ Alan Perlis, in ACM-SIGPLAN'82 has been quoted as saying ``When someone says `I 
 Such systems are substantially more difficult than the recipients of lollipops expect, because they rely on a large amount of \emph{a priori} information shared between the person issuing the command, and the system executing it. 
 
 For example, in the box-moving task, the users would frequently move the robots to surround the box, and then move the robots to the goal area. 
-However, one might expect that robots that avoid obstacles would just go around a box. Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
-Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot, since there are not clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that anything can be pushed, rather than just boxes. 
-In the task, there was only one box and one goal, but the real world is rarely so simple. 
+However, one might expect that robot control programs would attempt to avoid obstacles, and so would just go around a box. 
+Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
+Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot.
+The user data set does not have clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that any particular object can be pushed, rather than just boxes. 
+Instead, users seemed to assume that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told. 
+
+
 
 , such that while the transformation may have to be developed by a human, 
 
