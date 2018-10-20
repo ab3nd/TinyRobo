@@ -5,7 +5,7 @@ difference(){
     union(){
         //base shape
         translate([base_r, base_r, 0]){
-            cylinder(r=base_r, h=base_h);
+            cylinder(r=base_r, h=base_h, $fn=90);
         }
         
         //motor mount block
