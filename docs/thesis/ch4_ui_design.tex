@@ -245,7 +245,14 @@ However, two-handed gestures accounted for only 5.037\% of the gestures used, if
 As a consequence, the loss of the ability to perform simultaneous gestures, in a single-user context, does not result in a large loss of functionality.
 In a multi-user context, it would be desirable to have users be able to perform interactions simultaneously, but such an extension would also require additional information to associate contact points on the multitouch surface with particular users. 
 
-The command input language can be defined formally, given the constraints above. The BNF description of the language is:
+Abandoning the use of simultaneous gestures also allows the unambiguous use of the scatter gesture for triggering dispersion. 
+If simultaneous gestures are allowed, then performing the scatter gesture over a group of robots is detected by the system as several simultaneous attempts to drag robots and draw paths at the same time. 
+If it is performed over open space, it is detected as 4-5 paths being drawn at the same time. 
+If, as under previous assumptions, selection is required, the command sentence selects some group of robots and sends them multiple paths to possibly follow, with no ordering. 
+Abandoning simultaneous gestures allows the multiple contacts and to be combined as a single scatter gesture. 
+
+The command input language can be defined formally, given the constraints above. The ABNF description of the language is given below. Using the scatter gesture for dispersion is indicated in ABNF as 4*5(dragRobot|path) to require that there be at least four and at most five fingers used to make the gesture. 
+An alternate approach would be to have the gesture detection coalesce paths and robot drags that were close enough in space and overlapping in time, and present them as a single ``scatter'' gesture. 
 
 %Thanks to https://tex.stackexchange.com/questions/308726/place-newline-in-backnaur-package
 \newenvironment{bnfsplit}[1][0.7\textwidth]
@@ -277,7 +284,9 @@ The command input language can be defined formally, given the constraints above.
 	{\bnftd{Remove Robot}\bnfpn{selection}}\\
 %``These robots, scatter"
 \bnfprod{disperse}
-	{\bnfpn{selection}\bnfts{scatter}}\\
+	{\bnfpn{selection}\bnfpn{scatter}}\\
+\bnfprod{scatter}
+	{4*5(\bnfts{dragRobot} \bnfor \bnfts{path})}\\
 %``These robots, follow this path"
 %``These robots, go here"
 %``This robot, go here"

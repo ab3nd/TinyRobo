@@ -87,20 +87,20 @@ class ProgGen(object):
 		# '''
 
 
-		#Implemented as per my thesis paper
+		#Implemented as per my thesis paper, only without CamelCase because lark is case sensitive
 		gesture_grammar='''
-			start : cmd "end"
-			cmd: patrol | makeFormation | moveObject | removeRobot | disperse | goHere
+			start: cmd "end"
+			cmd: patrol | makeformation | moveobject | removerobot | disperse | gohere
 			patrol: selection "patrol" path
-			makeFormation: selection "formation" path
-			moveObject: selection "move_object" selection path
-			removeRobot: "remove_object" selection
-			disperse: selection "scatter"
-			goHere: selection path | "drag_robot"
+			makeformation: selection "formation" path
+			moveobject: selection "move_object" selection path
+			removerobot: "remove_object" selection
+			disperse: selection ("drag_robot" | path) ~ 4..5 
+			gohere: selection path | "drag_robot"
 			path: "path" | "tap_waypoint"+
-			selection: gestureSelect | groupSelect
-			gestureSelect: "tap_robot"+ | "lasso_select" | "box_select"
-			groupSelect: "select_group" | "tap_robot"
+			selection: gestureselect | groupselect
+			gestureselect: "tap_robot"+ | "lasso_select" | "box_select"
+			groupselect: "select_group" | "tap_robot"
 			%import common.WS
 			%ignore WS
 		'''
@@ -182,41 +182,10 @@ class ProgGen(object):
 			print e
 
 	def checkGestureList(self):
-
-		print self.gestures[]
-		#TODO FOR DEBUGGING
-		return
-
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
 		if self.gestures[-1].eventName == "end":
 			print "--> gesture ended"
 
-			#Suppress gestures that were part of the "end" gesture but got counted as tap waypoints
-			#or possibly tap selects
-			# end_strokes = []
-			# for stroke in self.gestures[-1].strokes:
-			# 	for event in stroke.events:
-			# 		end_strokes.append(event.uid)
-
-			# #Uniqueify them
-			# list(set(end_strokes))
-
-			#Check all the other gestures and delete any events that were part of the end event
-			# for gIdx, gesture in enumerate(self.gestures[:-1]):
-			# 	for sIdx, stroke in enumerate(gesture.strokes):
-			# 		for eIdx, event in enumerate(stroke.events):
-			# 			if event.uid in end_strokes:
-			# 				#Was part of the end, delete it
-			# 				del stroke.events[eIdx]
-			# 		if len(stroke.events) == 0:
-			# 			#The stroke has no events left in it, delete it
-			# 			del gesture.strokes[sIdx]
-			# 	if len(gesture.strokes) == 0:
-			# 		#The gesture has no strokes left in it, so delete the whole gesture
-			# 		del self.gestures[gIdx]
-
-			# import pdb; pdb.set_trace()
-			
 			#Call the parser on it
 			self.parseGestures(self.gestures)
 
