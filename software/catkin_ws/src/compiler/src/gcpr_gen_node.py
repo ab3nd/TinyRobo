@@ -90,17 +90,17 @@ class ProgGen(object):
 		#Implemented as per my thesis paper, only without CamelCase because lark is case sensitive
 		gesture_grammar='''
 			start: cmd "end"
-			cmd: patrol | makeformation | moveobject | removerobot | disperse | gohere
+			cmd: patrol | makeformation | moveobject | removerobot | disperse | gohere 
 			patrol: selection "patrol" path
-			makeformation: selection "formation" path
+			makeformation: selection "make_formation" path
 			moveobject: selection "move_object" selection path
-			removerobot: "remove_object" selection
-			disperse: selection ("drag_robot" | path) ~ 4..5 
+			removerobot: "remove_robot" selection
+			disperse: selection ("drag_robot" | path) ~ 4..5  
 			gohere: selection path | "drag_robot"
-			path: "path" | "tap_waypoint"+
+			path: "path" | "tap_waypoint"+ 
 			selection: gestureselect | groupselect
-			gestureselect: "tap_robot"+ | "lasso_select" | "box_select"
-			groupselect: "select_group" | "tap_robot"
+			gestureselect: "tap_select"+ | "lasso_select" | "box_select"
+			groupselect: "select_group" "tap_select"
 			%import common.WS
 			%ignore WS
 		'''
@@ -170,16 +170,12 @@ class ProgGen(object):
 		#Get a list of the gestures
 		prog_str = " ".join([g.eventName for g in gesture_list])
 
-		try:
-			#Parse it to build the tree
-			parse_tree = self.parser.parse(prog_str)
+		parse_tree = self.parser.parse(prog_str)
 
-			#For now just prettyprint it
-			print prog_str
-			print parse_tree.pretty()
-			print "---"
-		except UnexpectedInput as e:
-			print e
+		#For now just prettyprint it
+		print prog_str
+		print parse_tree.pretty()
+		print "---"
 
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
@@ -187,10 +183,14 @@ class ProgGen(object):
 			print "--> gesture ended"
 
 			#Call the parser on it
-			self.parseGestures(self.gestures)
-
-			#Flush the gesture buffer
-			self.gestures = []
+			try:
+				#Parse it to build the tree
+				self.parseGestures(self.gestures)
+			except UnexpectedInput as e:
+					print e
+			finally:
+				#Flush the gesture buffer
+				self.gestures = []
 
 		#If the last thing in is a select, and there are any selects already present in the buffer,
 		#then it's time to end the previous gesture and parse that, and leave the select in as
@@ -207,11 +207,15 @@ class ProgGen(object):
 			evt.strokes = []
 			toParse.append(evt)
 
-			self.parseGestures(toParse)
-			
-			#Clear the stuff that was just sent to the parser, but leave the 
-			#selection gesture that kicked off this parse attempt
-			self.gestures = [self.gestures[-1]]
+			#Call the parser on it
+			try:
+				self.parseGestures(toParse)
+			except UnexpectedInput as e:
+					print e
+			finally:			
+				#Clear the stuff that was just sent to the parser, but leave the 
+				#selection gesture that kicked off this parse attempt
+				self.gestures = [self.gestures[-1]]
 
 	def isPath(self, gestureMsg):
 		if gestureMsg.eventName == "path":
@@ -219,7 +223,7 @@ class ProgGen(object):
 		return False
 
 	def isSelect(self, gestureMsg):
-		if gestureMsg.eventName in ["box_select", "lasso_select", "tap_select"]:
+		if gestureMsg.eventName in ["box_select", "lasso_select"]: # tap not listed, we can chain tap selects
 			return True
 		return False
 
