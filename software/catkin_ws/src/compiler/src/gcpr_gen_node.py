@@ -53,54 +53,43 @@ class ProgGen(object):
 		#Object to handle sending programs to robots
 		self.sender = ProgSender()
 
-		# gesture_grammar='''
-		# 	select : tap_select | box_select | lasso_select | select_group
-		# 	tap_select : "tap_robot"+ 
-		# 	box_select : "box_select"
-		# 	lasso_select : "lasso_select"
-		# 	select_group : "tap_robot" "select_group" | "select_group" "tap_robot" //order doesn't matter
-
-		# 	patrol : "patrol"
-		# 	formation : "formation"
-		# 	move : "move_object"
-		# 	remove : "remove_object"
-			
-		# 	disperse : "disperse_gesture"
-
-		# 	drag_path : "drag_robot"
-
-		# 	tap_waypoint : "tap_waypoint"
-		# 	path : "path" | tap_waypoint+ //may need to add option to treat box/lasso as path
-
-		# 	patrol_cmd : select? patrol path
-		# 	formation_cmd : select? formation path
-		# 	move_obj_cmd : select? move path 
-		# 	disperse_cmd : select? disperse
-		# 	path_cmd : drag_path | select? path
-
-		# 	start : (patrol_cmd | formation_cmd | move_obj_cmd | disperse_cmd | path_cmd) end
-
-		# 	end : "end"
-
-		# 	%import common.WS
-		# 	%ignore WS
-		# '''
-
-
 		#Implemented as per my thesis paper, only without CamelCase because lark is case sensitive
 		gesture_grammar='''
-			start: cmd "end"
-			cmd: patrol | makeformation | moveobject | removerobot | disperse | gohere 
+			cmd: (patrol | makeformation | moveobject | removerobot | disperse | gohere) end
 			patrol: selection "patrol" path
 			makeformation: selection "make_formation" path
 			moveobject: selection "move_object" selection path
 			removerobot: "remove_robot" selection
-			disperse: selection ("drag_robot" | path) ~ 4..5  
-			gohere: selection path | "drag_robot"
-			path: "path" | "tap_waypoint"+ 
+			disperse: selection (drag_path | path) ~ 4..5  
+			gohere: selection path | drag_path
+			path: path | tap_waypoint+ 
 			selection: gestureselect | groupselect
-			gestureselect: "tap_select"+ | "lasso_select" | "box_select"
-			groupselect: "select_group" "tap_select"
+			gestureselect: tap_robot+ | lasso | box
+			groupselect: "select_group" tap_robot
+
+			drag_path : "drag_robot" robot_list point_list
+
+			waypoint: "tap_waypoint" point_list
+
+			path : "path" point_list
+
+			box : "box_select" robot_list
+
+			lasso : "lasso_select" robot_list
+
+			tap_robot: "tap_select" robot_list
+
+			robot_list: "[" robot_id "]"
+			robot_id: INTEGER 
+
+			point_list: "[" point* "]"
+			point: "(" x "," y ")"
+			x: DECIMAL.2
+			y: DECIMAL.2
+
+			INTEGER : ("0".."9")+
+			DECIMAL.2: INTEGER "." INTEGER
+
 			%import common.WS
 			%ignore WS
 		'''
@@ -165,17 +154,89 @@ class ProgGen(object):
 
 		return program
 
+	
+
+
+	def handle_instruction(self, t):
+		if t.data == 'start' or t.data == 'cmd':
+			#Syntactic sugar, really care about children
+			handle_instruction(self, t.children())
+		if t.data == 'gohere':
+			#Could be a drag path, could be a selection and then path
+			#sel_bots = self.get_selection(t.children)
+			#path_pts = self.get_path(t.children)
+			pass
+		if t.data == 'patrol':
+			#Get the path and the selected robots
+			#Give each robot a path
+			pass
+		if t.data == 'makeformation':
+		 	#Get the selected robots
+		 	pass
+		if t.data == 'moveobject':
+		 	#Two selections to get, first is robots, second is object
+		 	#One path to get, motion of object
+		 	pass
+		if t.data == 'removerobot':
+		 	#Get the selection
+		 	print "Delet this post"
+		if t.data == 'disperse':
+		 	#Get the selection
+		 	#Send a disperse controller program to selected robots
+		 	pass
+
+
+	def get_path(self,g):
+		path = []
+		for e in g.strokes:
+			for p in e.events:
+				path.append("(" + str(p.point.x) + "," + str(p.point.y)+ ")")
+		return path
+		
+
+	def get_start(self,g):
+		path = []
+		path.append("(" + str(g.strokes[0].events[0].point.x) + "," + str(g.strokes[0].events[0].point.y)+ ")")
+		return path
 
 	def parseGestures(self, gesture_list):
 		#Get a list of the gestures
-		prog_str = " ".join([g.eventName for g in gesture_list])
+		#prog_str = " ".join([g.eventName for g in gesture_list])
 
-		parse_tree = self.parser.parse(prog_str)
+		#Generate a code string from the gestures in the buffer
+		prog = []
+		for g in gesture_list:
+			prog.append(g.eventName)
+			if g.eventName in ["tap_select", "box_select", "lasso_select"]:
+				prog.append("[")
+				prog.extend([str(x) for x in g.robots])
+				prog.append("]")
+			if g.eventName in ["drag_robot"]:
+				prog.append("[")
+				prog.extend([str(x) for x in g.robots])
+				prog.append("]")
+				prog.append("[")
+				prog.extend(self.get_path(g))
+				prog.append("]")
+			if g.eventName in ["path"]:
+				prog.append("[")
+				prog.extend(self.get_path(g))
+				prog.append("]")
+			if g.eventName in ["tap_waypoint"]:
+				prog.append("[")
+				prog.extend(self.get_start(g)) #Only has one point
+				prog.append("]")
+		
+		print " ".join(prog)
+		# parse_tree = self.parser.parse(prog_str)
 
-		#For now just prettyprint it
-		print prog_str
-		print parse_tree.pretty()
-		print "---"
+		# #For now just prettyprint it
+		# print prog_str
+		# print parse_tree.pretty()
+		# print "---"
+
+		# for t in parse_tree.children:
+		# 	self.handle_instruction(t)
 
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures

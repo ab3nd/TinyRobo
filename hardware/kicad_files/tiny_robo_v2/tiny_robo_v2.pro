@@ -1,4 +1,4 @@
-update=Sun 21 Feb 2016 09:26:12 AM EST
+update=Mon 22 Oct 2018 03:27:22 PM EDT
 version=1
 last_client=kicad
 [general]
@@ -61,3 +61,13 @@ LibName29=contrib
 LibName30=valves
 LibName31=shardy
 LibName32=spdt
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60

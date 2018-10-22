@@ -205,30 +205,27 @@ The fact that there is an end-of-command marker, the ``period'' at the end of ea
 The system would then interpret the last lasso or box selection as a path, and so the whole command as a sentence with a compound subject, ``These robots and this robot and...., go here''. 
 
 The other possibility is having each selection create a new command. 
-In that case, the subject-verb ordering allows the disambiguation of the action of drawing a line over a group of robots. 
-If no robots have been selected yet, drawing a line over a group constitutes a selection of that group. 
-The sentence begins with a subject. 
-If some robots have been selected, then drawing a line over a group indicates the path they are to follow. 
-The sentence ends with a verb phrase. 
-Then the sentence can be ended with either an explicit end-of-command gesture, or a selection that begins the next sentence. 
-
-However, the exact ambiguity is not between all selections and path commands, but between group selections and path commands.
+If that is the case, it becomes impossible to patrol an area with robots in it, or have one robot move through a group of robots, as those gestures are a lasso or box selection which starts a new command. 
+The exact ambiguity is not between all selections and path commands, but between group selections and path commands.
 Tap selection of single robots is unambiguous, under the assumption that collisions are bad, and so it is never desirable to command one robot to another robot's exact location. 
 This raises the possibility of a third selection method, where single/tap selects can be chained to select multiple robots. 
-Allowing chaining of tap selections with other selections, however, creates an ordering effect. 
-Three taps on a robot followed by a gesture that could be a box select or a path would be interpreted as commanding three robots to follow the path. 
-A gesture that could be a box select or a path, followed by three taps on robots would be treated as a compound of a box selection and three tap selections, and so is an incomplete command. 
-
-If tap selections are allowed to chain, then there is an instance of a selection not terminating an old command and starting a new one, creating an inconsistency with the rule that starting a new selection begins a new command, and so implicitly ends any previous command.
-Allowing tap selections to chain also creates the ordering effect described above, where the gestural sentence can be read as "This robot, this robot, go here" or "These robots, this robot, this robot". 
-This effect would be unclear to the user, because some sequences would be full commands, while others would be only selections, and the interface would not make explicit why there was a distinction. 
-As a consequence, it is not desirable to chain tap selections with other selections. 
+If tap selections are allowed to chain, it does create an instance of a selection not terminating an old command and starting a new one, creating an inconsistency with the rule that starting a new selection begins a new command, and so implicitly ends any previous command.
 
 If tap selections are not allowed to chain at all, then tapping multiple robots one after another only selects the last one, and results in a sequence of incomplete programs consisting only of selections. 
 It also eliminates a behavior that some users did show, selecting a small number of robots by tapping on the individual robots. 
+Because it admits very detailed multi-selection and supports a selection style that users chose, tap selections were allowed to chain with each other, but not with other selections. 
 
-However, if tap selections chain with each other, but not with any other form of selection, then there is no ordering effect from chaining with potentially ambiguous group selections, and the utility of tap selection is extended to cover multi-selection. 
-Because it both eliminates the ordering effect and admits very detailed multi-selection, tap selections were allowed to chain with each other, but not with other selections. 
+Having selections end the previous command and start a new one, combined with the existence of lasso selection and box selection, adds some complexity to attempts to send the robots on a path that looks like a lasso or box selection. 
+Determining whether a loop-like gesture or a box-like gesture is intended as a path in the previous command, or the beginning of the next command, depends on whether it is immediately followed by an end-of-command gesture. 
+If the resulting stack of gestures consists of some form of selection, a box or lasso selection, and then an end-of-command, then the box or lasso selection can be replaced by a path gesture, and the program becomes valid. 
+However, if the stack contains some form of selection, a box or lasso selection, and e.g. a path gesture, then the first selection is an erroneous program consisting only of selection, and can be dumped from the stack. 
+
+Similar heuristic rewriting of the stack could be extended to e.g. remove erroneous waypoints resulting from triple-tapping instead of double-tapping to end gestures, but adding these sorts of heuristics poses something of a threat. 
+There is some rewriting of the user input which will eventually result in a sequence of gestures, even if it is a complete replacement of all of the user input. 
+However, at some point, the meaning of the rewritten stack will deviate from what the user intended. 
+While it will result in the generation of a program for the robots, it will not be a correct program, from the user's point of view. 
+In such a case, it would be better to have the parsing of the user input fail. 
+The determination of this threshold is not the core subject of this research, but is an interesting question. 
 
 Expecting a sentence-like form for commands does not take as much advantage as it possibly could of simultaneous actions. 
 Instead, commands are expected to be a subject, followed by a verb or verb phrase. 
