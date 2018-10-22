@@ -55,39 +55,39 @@ class ProgGen(object):
 
 		#Implemented as per my thesis paper, only without CamelCase because lark is case sensitive
 		gesture_grammar='''
-			cmd: (patrol | makeformation | moveobject | removerobot | disperse | gohere) end
+			start: (patrol | makeformation | moveobject | removerobot | disperse | gohere) "end"
 			patrol: selection "patrol" path
 			makeformation: selection "make_formation" path
 			moveobject: selection "move_object" selection path
 			removerobot: "remove_robot" selection
-			disperse: selection (drag_path | path) ~ 4..5  
-			gohere: selection path | drag_path
-			path: path | tap_waypoint+ 
+			disperse: selection (robot_path | path) ~ 4..5  
+			gohere: selection path | robot_path
+			path: drag_path | waypoint+ 
 			selection: gestureselect | groupselect
 			gestureselect: tap_robot+ | lasso | box
 			groupselect: "select_group" tap_robot
 
-			drag_path : "drag_robot" robot_list point_list
+			robot_path: "drag_robot" robot_list point_list
 
 			waypoint: "tap_waypoint" point_list
 
-			path : "path" point_list
+			drag_path: "path" point_list
 
-			box : "box_select" robot_list
+			box: "box_select" robot_list
 
-			lasso : "lasso_select" robot_list
+			lasso: "lasso_select" robot_list
 
 			tap_robot: "tap_select" robot_list
 
-			robot_list: "[" robot_id "]"
+			robot_list: "[" robot_id+ "]"
 			robot_id: INTEGER 
 
-			point_list: "[" point* "]"
+			point_list: "[" point+ "]"
 			point: "(" x "," y ")"
-			x: DECIMAL.2
-			y: DECIMAL.2
+			x: DECIMAL
+			y: DECIMAL
 
-			INTEGER : ("0".."9")+
+			INTEGER: ("0".."9")+
 			DECIMAL.2: INTEGER "." INTEGER
 
 			%import common.WS
@@ -227,13 +227,13 @@ class ProgGen(object):
 				prog.extend(self.get_start(g)) #Only has one point
 				prog.append("]")
 		
-		print " ".join(prog)
-		# parse_tree = self.parser.parse(prog_str)
+		prog_str = " ".join(prog)
+		parse_tree = self.parser.parse(prog_str)
 
-		# #For now just prettyprint it
-		# print prog_str
-		# print parse_tree.pretty()
-		# print "---"
+		#For now just prettyprint it
+		print prog_str
+		print parse_tree.pretty()
+		print "---"
 
 		# for t in parse_tree.children:
 		# 	self.handle_instruction(t)
