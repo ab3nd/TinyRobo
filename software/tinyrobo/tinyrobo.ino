@@ -12,8 +12,11 @@ int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 WiFiServer server(4321); //Totally arbitrary port number
 
-NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(12, 2); //newest version has LED display
-
+NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod> strip(12, 2); //newest version has LED display
+#define colorSaturation 100
+RgbColor red(colorSaturation, 0, 0);
+RgbColor green(0, colorSaturation, 0);
+RgbColor blue(0, 0, colorSaturation);
 
 /*
     Test the I2C motor drivers on the TinyRobo board
@@ -180,6 +183,12 @@ void setup() {
   server.begin();
 
   //Set up the initial light config
+  strip.Begin();
+  strip.SetPixelColor(0, red);
+  strip.SetPixelColor(3, green);
+  strip.SetPixelColor(6, green);
+  strip.SetPixelColor(9, green);
+  strip.Show();
   
 }
 
