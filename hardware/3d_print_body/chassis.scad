@@ -88,9 +88,9 @@ module motor(){
     intersection()
     {
         translate([0,0,9]){
-            cube([11, 8, 18], center=true);
+            cube([11, 8.1, 18], center=true);
         }
-        cylinder(r=5.5, h=18, $fn=40); 
+        cylinder(r=5.55, h=18, $fn=40); 
     }
 }
 
