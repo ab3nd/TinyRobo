@@ -1,12 +1,19 @@
+#include <NeoPixelBrightnessBus.h>
+#include <NeoPixelAnimator.h>
+#include <NeoPixelBus.h>
+
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
 //#define DEBUG
 char ssid[] = "TinyRoboBase";     //  your network SSID (name)
-//char pass[] = "sofullsuchinternets";  // your network password
+//char pass[] = "";  // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 WiFiServer server(4321); //Totally arbitrary port number
+
+NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(12, 2); //newest version has LED display
+
 
 /*
     Test the I2C motor drivers on the TinyRobo board
@@ -172,16 +179,8 @@ void setup() {
   //Start the server
   server.begin();
 
-  //Blink the LED to indicate connection
-  pinMode(2, OUTPUT);
-  for(int ii = 0; ii < 10; ii++)
-  {
-    digitalWrite(2, HIGH);
-    delay(100);
-    digitalWrite(2, LOW);
-    delay(100);
-    yield();
-  }
+  //Set up the initial light config
+  
 }
 
 /* Protocol from the client is as follows:

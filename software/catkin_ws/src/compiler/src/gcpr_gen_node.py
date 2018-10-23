@@ -53,34 +53,42 @@ class ProgGen(object):
 		#Object to handle sending programs to robots
 		self.sender = ProgSender()
 
+		#Implemented as per my thesis paper, only without CamelCase because lark is case sensitive
 		gesture_grammar='''
-			select : tap_select | box_select | lasso_select | select_group
-			tap_select : "tap_robot"+ 
-			box_select : "box_select"
-			lasso_select : "lasso_select"
-			select_group : "tap_robot" "select_group" | "select_group" "tap_robot" //order doesn't matter
+			start: (patrol | makeformation | moveobject | removerobot | disperse | gohere) "end"
+			patrol: selection "patrol" path
+			makeformation: selection "make_formation" path
+			moveobject: selection "move_object" selection path
+			removerobot: "remove_robot" selection
+			disperse: selection (robot_path | path) ~ 4..5  
+			gohere: selection path | robot_path
+			path: drag_path | waypoint+ 
+			selection: gestureselect | groupselect
+			gestureselect: tap_robot+ | lasso | box
+			groupselect: "select_group" tap_robot
 
-			patrol : "patrol"
-			formation : "formation"
-			move : "move_object"
-			remove : "remove_object"
-			
-			disperse : "disperse_gesture"
+			robot_path: "drag_robot" robot_list point_list
 
-			drag_path : "drag_robot"
+			waypoint: "tap_waypoint" point_list
 
-			tap_waypoint : "tap_waypoint"
-			path : "path" | tap_waypoint+ //may need to add option to treat box/lasso as path
+			drag_path: "path" point_list
 
-			patrol_cmd : select? patrol path
-			formation_cmd : select? formation path
-			move_obj_cmd : select? move path 
-			disperse_cmd : select? disperse
-			path_cmd : drag_path | select? path
+			box: "box_select" robot_list
 
-			start : (patrol_cmd | formation_cmd | move_obj_cmd | disperse_cmd | path_cmd) end
+			lasso: "lasso_select" robot_list
 
-			end : "end"
+			tap_robot: "tap_select" robot_list
+
+			robot_list: "[" robot_id+ "]"
+			robot_id: INTEGER 
+
+			point_list: "[" point+ "]"
+			point: "(" x "," y ")"
+			x: DECIMAL
+			y: DECIMAL
+
+			INTEGER: ("0".."9")+
+			DECIMAL.2: INTEGER "." INTEGER
 
 			%import common.WS
 			%ignore WS
@@ -146,58 +154,104 @@ class ProgGen(object):
 
 		return program
 
+	
+
+
+	def handle_instruction(self, t):
+		if t.data == 'start' or t.data == 'cmd':
+			#Syntactic sugar, really care about children
+			handle_instruction(self, t.children())
+		if t.data == 'gohere':
+			#Could be a drag path, could be a selection and then path
+			#sel_bots = self.get_selection(t.children)
+			#path_pts = self.get_path(t.children)
+			pass
+		if t.data == 'patrol':
+			#Get the path and the selected robots
+			#Give each robot a path
+			pass
+		if t.data == 'makeformation':
+		 	#Get the selected robots
+		 	pass
+		if t.data == 'moveobject':
+		 	#Two selections to get, first is robots, second is object
+		 	#One path to get, motion of object
+		 	pass
+		if t.data == 'removerobot':
+		 	#Get the selection
+		 	print "Delet this post"
+		if t.data == 'disperse':
+		 	#Get the selection
+		 	#Send a disperse controller program to selected robots
+		 	pass
+
+
+	def get_path(self,g):
+		path = []
+		for e in g.strokes:
+			for p in e.events:
+				path.append("(" + str(p.point.x) + "," + str(p.point.y)+ ")")
+		return path
+		
+
+	def get_start(self,g):
+		path = []
+		path.append("(" + str(g.strokes[0].events[0].point.x) + "," + str(g.strokes[0].events[0].point.y)+ ")")
+		return path
 
 	def parseGestures(self, gesture_list):
 		#Get a list of the gestures
-		prog_str = " ".join([g.eventName for g in gesture_list])
+		#prog_str = " ".join([g.eventName for g in gesture_list])
 
-		try:
-			#Parse it to build the tree
-			parse_tree = self.parser.parse(prog_str)
+		#Generate a code string from the gestures in the buffer
+		prog = []
+		for g in gesture_list:
+			prog.append(g.eventName)
+			if g.eventName in ["tap_select", "box_select", "lasso_select"]:
+				prog.append("[")
+				prog.extend([str(x) for x in g.robots])
+				prog.append("]")
+			if g.eventName in ["drag_robot"]:
+				prog.append("[")
+				prog.extend([str(x) for x in g.robots])
+				prog.append("]")
+				prog.append("[")
+				prog.extend(self.get_path(g))
+				prog.append("]")
+			if g.eventName in ["path"]:
+				prog.append("[")
+				prog.extend(self.get_path(g))
+				prog.append("]")
+			if g.eventName in ["tap_waypoint"]:
+				prog.append("[")
+				prog.extend(self.get_start(g)) #Only has one point
+				prog.append("]")
+		
+		prog_str = " ".join(prog)
+		parse_tree = self.parser.parse(prog_str)
 
-			#For now just prettyprint it
-			print prog_str
-			print parse_tree.pretty()
-			print "---"
-		except UnexpectedInput as e:
-			print e
+		#For now just prettyprint it
+		print prog_str
+		print parse_tree.pretty()
+		print "---"
+
+		# for t in parse_tree.children:
+		# 	self.handle_instruction(t)
 
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
 		if self.gestures[-1].eventName == "end":
 			print "--> gesture ended"
 
-			#Suppress gestures that were part of the "end" gesture but got counted as tap waypoints
-			#or possibly tap selects
-			end_strokes = []
-			for stroke in self.gestures[-1].strokes:
-				for event in stroke.events:
-					end_strokes.append(event.uid)
-
-			#Uniqueify them
-			list(set(end_strokes))
-
-			#Check all the other gestures and delete any events that were part of the end event
-			# for gIdx, gesture in enumerate(self.gestures[:-1]):
-			# 	for sIdx, stroke in enumerate(gesture.strokes):
-			# 		for eIdx, event in enumerate(stroke.events):
-			# 			if event.uid in end_strokes:
-			# 				#Was part of the end, delete it
-			# 				del stroke.events[eIdx]
-			# 		if len(stroke.events) == 0:
-			# 			#The stroke has no events left in it, delete it
-			# 			del gesture.strokes[sIdx]
-			# 	if len(gesture.strokes) == 0:
-			# 		#The gesture has no strokes left in it, so delete the whole gesture
-			# 		del self.gestures[gIdx]
-
-			# import pdb; pdb.set_trace()
-			
 			#Call the parser on it
-			self.parseGestures(self.gestures)
-
-			#Flush the gesture buffer
-			self.gestures = []
+			try:
+				#Parse it to build the tree
+				self.parseGestures(self.gestures)
+			except UnexpectedInput as e:
+					print e
+			finally:
+				#Flush the gesture buffer
+				self.gestures = []
 
 		#If the last thing in is a select, and there are any selects already present in the buffer,
 		#then it's time to end the previous gesture and parse that, and leave the select in as
@@ -214,53 +268,15 @@ class ProgGen(object):
 			evt.strokes = []
 			toParse.append(evt)
 
-			self.parseGestures(toParse)
-			
-			#Clear the stuff that was just sent to the parser, but leave the 
-			#selection gesture that kicked off this parse attempt
-			self.gestures = [self.gestures[-1]]
-
-		# #If we have two gestures, the top gesture is a path, and the previous gesture is a select of any sort
-		# if len(self.gestures) >= 2 and self.isPath(self.gestures[-1]) and self.isSelect(self.gestures[-2]):
-		# 	#Get the selected robots
-		# 	selected = self.gestures[-2].robots
-
-		# 	#Generate the GCPR path representation for them
-		# 	#First, get the points on the path in meters
-		# 	path_points = []
-		# 	#Persist so we don't have to set it up for each call (could be lots)
-		# 	point_proxy = rospy.ServiceProxy("map_point", MapPoint, persistent=True)
-
-		# 	for stroke in self.gestures[-1].strokes:
-		# 		for event in stroke.events:
-		# 			#Convert points to meters from pixels
-		# 			pt = point_proxy(event.point)
-		# 			path_points.append((pt.inMeters.x, pt.inMeters.y))
-					
-		# 	#Done using the proxy, close it
-		# 	point_proxy.close()
-
-		# 	#TODO, check that these are sorted by time
-			
-		# 	#Simplify the path by dropping points that are less than the configured 
-		# 	#resolution away from the next point in the path. Path ends up being entirely
-		# 	#composed of points greater than the resolution from the next point in the path. 
-		# 	simple_path = [path_points[0]]
-		# 	for point in path_points:
-		# 		if self.distance(point, simple_path[-1]) >= self.resolution:
-		# 			#Add it to the path
-		# 			simple_path.append(point)
-
-		# 	print simple_path
-		# 	program = self.pathToGCPR(simple_path)
-		# 	#Send the program
-		# 	self.publishProgram(selected, program)
-
-		# 	#The last and second-from-last gestures have been handled, remove from the stack
-		# 	self.gestures = self.gestures[:-2]
-
-		# #TODO expire gestures due to old age?
-		# print "----"
+			#Call the parser on it
+			try:
+				self.parseGestures(toParse)
+			except UnexpectedInput as e:
+					print e
+			finally:			
+				#Clear the stuff that was just sent to the parser, but leave the 
+				#selection gesture that kicked off this parse attempt
+				self.gestures = [self.gestures[-1]]
 
 	def isPath(self, gestureMsg):
 		if gestureMsg.eventName == "path":
@@ -268,7 +284,7 @@ class ProgGen(object):
 		return False
 
 	def isSelect(self, gestureMsg):
-		if gestureMsg.eventName in ["box_select", "lasso_select", "tap_select"]:
+		if gestureMsg.eventName in ["box_select", "lasso_select"]: # tap not listed, we can chain tap selects
 			return True
 		return False
 

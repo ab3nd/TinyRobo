@@ -196,7 +196,7 @@ This was especially apparent in formation commands with lower counts of robots, 
 
 Positioning commands consist of a subject and a verb phrase gesture that reads as ``These robots, go here". 
 However, there are a number of ways that these can be expressed. 
-The selection can be by any of the selection methods, tapping individual robots, box selection, or lasso selection. 
+The selection can be by any of the selection methods. 
 The position commands can be by tapping a location, or by dragging a particular path for the robots to follow. 
 However, this raises the possibility that the dragged path is a line or loop over other robots. 
 There are two possible ways to treat this sequence. 
@@ -205,32 +205,100 @@ The fact that there is an end-of-command marker, the ``period'' at the end of ea
 The system would then interpret the last lasso or box selection as a path, and so the whole command as a sentence with a compound subject, ``These robots and this robot and...., go here''. 
 
 The other possibility is having each selection create a new command. 
-In that case, the subject-verb ordering allows the disambiguation of the action of drawing a line over a group of robots. 
-If no robots have been selected yet, drawing a line over a group constitutes a selection of that group. 
-The sentence begins with a subject. 
-If some robots have been selected, then drawing a line over a group indicates the path they are to follow. 
-The sentence ends with a verb phrase. 
-Then the sentence can be ended with either an explicit end-of-command gesture, or a selection that begins the next sentence. 
-
-However, the exact ambiguity is not between all selections and path commands, but between group selections and path commands.
+If that is the case, it becomes impossible to patrol an area with robots in it, or have one robot move through a group of robots, as those gestures are a lasso or box selection which starts a new command. 
+The exact ambiguity is not between all selections and path commands, but between group selections and path commands.
 Tap selection of single robots is unambiguous, under the assumption that collisions are bad, and so it is never desirable to command one robot to another robot's exact location. 
 This raises the possibility of a third selection method, where single/tap selects can be chained to select multiple robots. 
-Allowing chaining of tap selections with other selections, however, creates an ordering effect. 
-Three taps on a robot followed by a gesture that could be a box select or a path would be interpreted as commanding three robots to follow the path. 
-A gesture that could be a box select or a path, followed by three taps on robots would be treated as a compound of a box selection and three tap selections, and so is an incomplete command. 
-
-If tap selections are allowed to chain, then there is an instance of a selection not terminating an old command and starting a new one, creating an inconsistency with the rule that starting a new selection begins a new command, and so implicitly ends any previous command.
-Allowing tap selections to chain also creates the ordering effect described above, where the gestural sentence can be read as "This robot, this robot, go here" or "These robots, this robot, this robot". 
-This effect would be unclear to the user, because some sequences would be full commands, while others would be only selections, and the interface would not make explict why there was a distinction. 
-As a consequence, it is not desirable to chain tap selections with other selections. 
+If tap selections are allowed to chain, it does create an instance of a selection not terminating an old command and starting a new one, creating an inconsistency with the rule that starting a new selection begins a new command, and so implicitly ends any previous command.
 
 If tap selections are not allowed to chain at all, then tapping multiple robots one after another only selects the last one, and results in a sequence of incomplete programs consisting only of selections. 
 It also eliminates a behavior that some users did show, selecting a small number of robots by tapping on the individual robots. 
+Because it admits very detailed multi-selection and supports a selection style that users chose, tap selections were allowed to chain with each other, but not with other selections. 
 
-However, if tap selections chain with each other, but not with any other form of selection, then there is no ordering effect from chaining with potentially ambiguous group selections, and the utility of tap selection is extended to cover multi-selection. 
-Because it both eliminates the ordering effect and admits very detailed multi-selection, tap selections were allowed to chain with each other, but not with other selections. 
+Having selections end the previous command and start a new one, combined with the existence of lasso selection and box selection, adds some complexity to attempts to send the robots on a path that looks like a lasso or box selection. 
+Determining whether a loop-like gesture or a box-like gesture is intended as a path in the previous command, or the beginning of the next command, depends on whether it is immediately followed by an end-of-command gesture. 
+If the resulting stack of gestures consists of some form of selection, a box or lasso selection, and then an end-of-command, then the box or lasso selection can be replaced by a path gesture, and the program becomes valid. 
+However, if the stack contains some form of selection, a box or lasso selection, and e.g. a path gesture, then the first selection is an erroneous program consisting only of selection, and can be dumped from the stack. 
 
-Multitouch problem of simultaneous actions
+Similar heuristic rewriting of the stack could be extended to e.g. remove erroneous waypoints resulting from triple-tapping instead of double-tapping to end gestures, but adding these sorts of heuristics poses something of a threat. 
+There is some rewriting of the user input which will eventually result in a sequence of gestures, even if it is a complete replacement of all of the user input. 
+However, at some point, the meaning of the rewritten stack will deviate from what the user intended. 
+While it will result in the generation of a program for the robots, it will not be a correct program, from the user's point of view. 
+In such a case, it would be better to have the parsing of the user input fail. 
+The determination of this threshold is not the core subject of this research, but is an interesting question. 
 
+Expecting a sentence-like form for commands does not take as much advantage as it possibly could of simultaneous actions. 
+Instead, commands are expected to be a subject, followed by a verb or verb phrase. 
+Constraining selections to not chain contributes to this effect further. 
+The multitouch surface used in this work can track 20 points at once, and some surfaces can track even more, which would permit users to, for example, perform selections with both hands at the same time and then draw a path with each hand. 
+Sentences, on the other hand, are generally spoken serially, instead of in parallel, so the analogy to language does not provide a convenient heuristic for determining which subjects go with which verbs.
+While two selections performed at the same time will overlap, one is almost certain to finish before the other, and so could be interpreted as a selection following another selection. 
+Even if overlapping selections result in two groups both being selected independently, if the user then taps two goal points and ends the command, the result is ambiguous. 
+If the two goals were tapped one after the other, they could each be a goal for one selected group, or both selected groups could visit the first goal, then arrive at the second. 
+If the two goals were tapped at the same time, perhaps they are each a goal for one group, but which group should go to which goal is unspecified.  
+While there are heuristics that could be used to guess user intention in these cases, such as always dispatching the closest selected group to a given goal, the system does not have the information to guess correctly, and so would likely confuse the user. 
 
+However, two-handed gestures accounted for only 5.037\% of the gestures used, if the motion of each hand is counted as a separate gesture. 
+As a consequence, the loss of the ability to perform simultaneous gestures, in a single-user context, does not result in a large loss of functionality.
+In a multi-user context, it would be desirable to have users be able to perform interactions simultaneously, but such an extension would also require additional information to associate contact points on the multitouch surface with particular users. 
 
+Abandoning the use of simultaneous gestures also allows the unambiguous use of the scatter gesture for triggering dispersion. 
+If simultaneous gestures are allowed, then performing the scatter gesture over a group of robots is detected by the system as several simultaneous attempts to drag robots and draw paths at the same time. 
+If it is performed over open space, it is detected as 4-5 paths being drawn at the same time. 
+If, as under previous assumptions, selection is required, the command sentence selects some group of robots and sends them multiple paths to possibly follow, with no ordering. 
+Abandoning simultaneous gestures allows the multiple contacts and to be combined as a single scatter gesture. 
+
+The command input language can be defined formally, given the constraints above. The ABNF description of the language is given below. Using the scatter gesture for dispersion is indicated in ABNF as 4*5(dragRobot|path) to require that there be at least four and at most five fingers used to make the gesture. 
+An alternate approach would be to have the gesture detection coalesce paths and robot drags that were close enough in space and overlapping in time, and present them as a single ``scatter'' gesture. 
+
+%Thanks to https://tex.stackexchange.com/questions/308726/place-newline-in-backnaur-package
+\newenvironment{bnfsplit}[1][0.7\textwidth]
+{\minipage[t]{#1}$}
+{$\endminipage}
+
+\begin{bnf}
+\bnfprod{sentence} 
+	{\bnfpn{cmd} \bnfts{endCmd}}\\
+\bnfprod{cmd}
+	{
+		\begin{bnfsplit}
+		\bnfpn{patrol} \bnfor \bnfpn{makeFormation} \bnfor \bnfpn{moveObject}\\
+		\bnfor \bnfpn{removeRobot} \bnfor \bnfpn{disperse} \bnfor \bnfpn{goHere} 
+		\vspace{2mm}
+		\end{bnfsplit}
+	}\\
+%``These robots, Patrol, this area". 
+\bnfprod{patrol}
+	{\bnfpn{selection}\bnftd{Patrol}\bnfpn{path}}\\
+%``These robots, Make Formation, this shape". 
+\bnfprod{makeFormation}
+	{\bnfpn{selection}\bnftd{Make Formation}\bnfpn{path}}\\
+%``These robots, Move Object, this object, to here". 
+\bnfprod{moveObject}
+	{\bnfpn{selection}\bnftd{Move Object}\bnfpn{selection}\bnfpn{path}}\\
+%``[system] Remove Robot, these robots''
+\bnfprod{removeRobot}
+	{\bnftd{Remove Robot}\bnfpn{selection}}\\
+%``These robots, scatter"
+\bnfprod{disperse}
+	{\bnfpn{selection}\bnfpn{scatter}}\\
+\bnfprod{scatter}
+	{4*5(\bnfts{dragRobot} \bnfor \bnfts{path})}\\
+%``These robots, follow this path"
+%``These robots, go here"
+%``This robot, go here"
+\bnfprod{goHere}
+	{\bnfpn{selection}\bnfpn{path} \bnfor \bnfts{dragRobot}}\\
+\bnfprod{path}
+	{\bnfts{tapWaypoint+} \bnfor \bnfts{dragPath}}\\
+%``[system], Select Group, these robots''. 
+\bnfprod{groupSelect}
+	{\bnftd{``Select Group"}\bnfts{tapSelect}}\\
+\bnfprod{gestureSelect}
+	{\bnfts{tapSelect+} \bnfor \bnfts{boxSelect} \bnfor \bnfts{lassoSelect}}\\
+\bnfprod{selection}
+	{\bnfpn{gestureSelect} \bnfor \bnfpn{groupSelect}}
+\end{bnf}
+
+The terminals of the language are the gestures recognized by the system, that is to say selection by tapping, box, or lasso, waypoint tapping, dragging a robot along a path, dragging a path, dispersion, the buttons and double-tapping to end a command. 
+The terminals in italics above are the names of the buttons. 
