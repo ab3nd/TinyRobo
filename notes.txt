@@ -2486,3 +2486,65 @@ Ok, but is SCT actually going to get me a no-human-coding system?
 	Also, the sensors appear to be binary (events either happen or don't, no concept of intensity, proximity, etc.)
 		Although there are some fuzzy extensions
 
+
+Improved Human-Robot Team Performance Using Chaski, A Human-Inspired Plan Execution System
+Julie Shah, James Wiken, Brian Williams, Cynthia Breazeal
+	Intended to make human-robot teaming better based on human-human teaming
+	Reduces human idle time by 85% relative to a verbally commanded robot
+	Drawn from studies of human interaction under stress
+		Military tactical teams, medical teams
+	Teammates make decisions on the fly
+		Swarm doesn't make a huge number of decisions
+		Decisionmaking isn't shared the same way, swarm isn't a peer
+	Teammated communicate progress
+		Communication channel back from the team is implicit, in whether the team appears to be doing what the user commanded
+			Should really do a test of this
+		Doesn't really communicate progress so much as perhaps provide information to be interpreted. 
+	Teammates consider consequences of decision on others
+		This is making my work feel very unlike a team
+		Swarm doesn't team with remote user, swarm is more like a tool than a teammate
+		Tool vs peer distinction is good to make
+	Equal partners
+		decentralized authority
+			My swarm design has a more centralized authority
+	Compiles into a format it can operate on quickly
+		Latency within the bounds of human reflexes
+	Doesn't support replanning if someone changes their mind partway through an activity
+
+Shared Understanding for Collaborative Control
+David J. Bruemmer, Douglas A. Few, Ronald L. Boring, Julie L. Marble, Miles C. Walton, and Curtis W. Nielse
+	Search and exploration task
+	Two experiments
+		First, human mostly drives with some robot help vs robot mostly drives with some human help
+			Robot better at driving
+		Second, 3D interface better than video stream from robot
+			Reduces operator workload
+			Reduced nav error
+	Hybrid deliberative/reactive architecture
+	Teleoperation and the DARPA humanoid challenge are use as a tool
+	Tools are not teammates
+	"However, although it allows the robot to take a role in  navigation,  safeguarded  teleoperation  does  not  permit  a  dynamic sharing  of  roles  and  responsibilities  customarily  found  in  an effective  team"
+	Robot as peer
+		Communication and support in both directions
+		Robot can have leadership in som parts of task
+		Not just letting robot take initiative
+	My control architecture is what this paper calls autonomous control
+		High-level tasking of robot 
+	Interesting point about video as a false sense of SA
+		Not a wide enough field to be really useful
+			Sometimes doesn't show obstacle
+		Sometimes only shows the obstacle
+			As in, that's all you can see
+	3D view replaced video in (...kinda nightmarish) interface
+		3D was extrusion of 2d laser scan, to show walls/spaces
+	Dennet ref at the end is interesting
+		Physical stance
+			Can see what robot can do from looking at it
+			4" tall robot with wheels can't climb stairs
+		Design stance
+			Cn usually guess how js motions become robot motions
+		Intentional stance
+			Understanding robot as a rational agent with goals and intentional states
+
+Whose Job Is It Anyway? A Study of Human–Robot Interaction in a Collaborative Task
+Pamela J. Hinds, Teresa L. Roberts, Hank Jones

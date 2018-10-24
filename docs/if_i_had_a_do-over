@@ -26,3 +26,9 @@ Deal with the hardware first, rather than switching back and forth and only find
 Robots capable of monitoring their own battery charge and recharging themselves. 
 
 SCT might be a better framework than GCPR for program generation
+
+Communication channel back from the team is implicit, in whether the team appears to be doing what the user commanded
+	Should really do a test of this
+	Does having the swarm use e.g. biased random walks to accomplish a task bother the users?
+		Probably better done in simulation, more control over the degree to which the swarm appears to be dicking around instead of working
+		
