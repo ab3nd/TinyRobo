@@ -1,9 +1,20 @@
+
+#include <ESP8266WiFi.h>
+#include <Wire.h>
+
+#define useNeoPixels 
+
+#ifdef useNeoPixels
 #include <NeoPixelBrightnessBus.h>
 #include <NeoPixelAnimator.h>
 #include <NeoPixelBus.h>
 
-#include <ESP8266WiFi.h>
-#include <Wire.h>
+NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod> strip(12, 2); //newest version has LED display
+#define colorSaturation 100
+RgbColor red(colorSaturation, 0, 0);
+RgbColor green(0, colorSaturation, 0);
+RgbColor blue(0, 0, colorSaturation);
+#endif
 
 //#define DEBUG
 char ssid[] = "TinyRoboBase";     //  your network SSID (name)
@@ -12,11 +23,6 @@ int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 WiFiServer server(4321); //Totally arbitrary port number
 
-NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod> strip(12, 2); //newest version has LED display
-#define colorSaturation 100
-RgbColor red(colorSaturation, 0, 0);
-RgbColor green(0, colorSaturation, 0);
-RgbColor blue(0, 0, colorSaturation);
 
 /*
     Test the I2C motor drivers on the TinyRobo board
@@ -178,10 +184,12 @@ void setup() {
   Serial.print("IP Address: ");
   Serial.println(ip);
 #endif
-  
+
+
   //Start the server
   server.begin();
 
+#ifdef useNeoPixels
   //Set up the initial light config
   strip.Begin();
   strip.SetPixelColor(0, red);
@@ -189,6 +197,18 @@ void setup() {
   strip.SetPixelColor(6, green);
   strip.SetPixelColor(9, green);
   strip.Show();
+#else
+  pinMode(2, OUTPUT);
+  
+  for(int ii = 0; ii < 10; ii++)
+  {
+    digitalWrite(2, HIGH);
+    delay(100);
+    digitalWrite(2, LOW);
+    delay(100);
+    yield();
+  }  
+#endif
   
 }
 
@@ -206,29 +226,29 @@ void loop() {
 
     while (client.connected()) {
 
-      //Heartbeat check. If no messages within 1/4 second, all stop
-      if((millis() - lastMsgTime > 250) && (lastMsgTime != 0))
-      {
-        state = HEARTBEAT_STOP;
-        lastMsgTime = 0;
-      }
+//      //Heartbeat check. If no messages within 1/4 second, all stop
+//      if((millis() - lastMsgTime > 250) && (lastMsgTime != 0))
+//      {
+//        state = HEARTBEAT_STOP;
+//        lastMsgTime = 0;
+//      }
           
       switch (state)
       {
-        case HEARTBEAT_STOP:
-          //stop motors
-          setMotor(addr1, 0x00, 0x00);
-          setMotor(addr2, 0x00, 0x00);
-            
-          //wait for new messages
-          state = CLI_READ;
-#ifdef DEBUG
-            Serial.println("Heartbeat stop");
-#endif
-
-          //Let ESP process
-          yield();
-          break;
+//        case HEARTBEAT_STOP:
+//          //stop motors
+//          setMotor(addr1, 0x00, 0x00);
+//          setMotor(addr2, 0x00, 0x00);
+//            
+//          //wait for new messages
+//          state = CLI_READ;
+//#ifdef DEBUG
+//            Serial.println("Heartbeat stop");
+//#endif
+//
+//          //Let ESP process
+//          yield();
+//          break;
         case CLI_READ:
           if (client.available()) {
       

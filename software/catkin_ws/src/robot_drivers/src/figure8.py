@@ -18,6 +18,19 @@ def dot(a, b):
 		d += i*j
 	return d
 
+class Window_Average(object):
+	def __init__(self, size=5):
+		self.values = []
+		self.size = size
+
+	def add(self, v):
+		self.values.append(v)
+		if len(self.values) > self.size:
+			del self.values[0]
+
+	def get(self):
+		return float(sum(self.values))/float(len(self.values))
+
 class Point_Converter():
 	def __init__(self, robot = 8):
 		
@@ -41,8 +54,9 @@ class Point_Converter():
 			if tag['id'] == self.robot_id:
 				self.tagsize = tag['size']
 
-		self.dist = 0
-		self.vel = 0
+		#For dealing with noise, at least somewhat
+		self.dist = Window_Average(size=10)
+		self.vel = Window_Average(size=10)
 		self.travelIsValid = False
 
 	def update_tags(self, tags_msg):
@@ -102,21 +116,22 @@ class Point_Converter():
 			self.travelIsValid = True
 
 			#Calculate the distance traveled
-			self.dist = math.sqrt(sum([pow(x - y, 2) for x,y in [(self.prevX, self.currentX),(self.prevY, self.currentY)]]))
+			dist_inst = math.sqrt(sum([pow(x - y, 2) for x,y in [(self.prevX, self.currentX),(self.prevY, self.currentY)]]))
+			self.dist.add(dist_inst)
 			#Travel is less than noise floor 
-			if self.dist < 0.01:
-				self.dist = 0.0
+			clean_dist = self.dist.get()
+			if clean_dist < 0.003:
+				clean_dist = 0.0
 			#Distance is in meters, this is in m/sec
-			self.lin_vel = self.dist/((self.currentTime - self.prevTime).to_sec())
+			self.lin_vel = clean_dist/((self.currentTime - self.prevTime).to_sec())
 			
-
-			#Calculate rotational vel in rads/sec
-			#This might be prone to oscillation very near +/-p
-			self.rot_dist = abs(self.currentHeading - self.prevHeading)
-			#Check if change is less than noise floor 
-			if self.rot_dist < 0.005: 
-				self.rot_dist = 0.0 
-			self.rot_vel = self.rot_dist/((self.currentTime - self.prevTime).to_sec())
+			# #Calculate rotational vel in rads/sec
+			# #This might be prone to oscillation very near +/-p
+			# self.rot_dist = abs(self.currentHeading - self.prevHeading)
+			# #Check if change is less than noise floor 
+			# if self.rot_dist < 0.005: 
+			# 	self.rot_dist = 0.0 
+			# self.rot_vel = self.rot_dist/((self.currentTime - self.prevTime).to_sec())
 
 	def get_travel(self):
 		if not self.travelIsValid:
@@ -146,6 +161,7 @@ class Point_Converter():
 			return self.rot_vel > 0.0
 		else:
 			return False
+
 if __name__ == '__main__':
 	rospy.init_node('point_driver', anonymous=True)
 
@@ -156,14 +172,14 @@ if __name__ == '__main__':
 
 	twist_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
-	lin_vel = 0.0
-	rot_vel = 0.0
-	lin_vel_inc = 0.02 #m/sec
-	rot_vel_inc = 0.01 #rad/sec
+	# lin_vel = 0.0
+	# rot_vel = 0.0
+	# lin_vel_inc = 0.02 #m/sec
+	# rot_vel_inc = 0.01 #rad/sec
 	side_len = 0.25 #m, side of the "8"
 
 	#publish messages every 10th of a second
-	pub_rate = rospy.Rate(20)
+	pub_rate = rospy.Rate(5)
 	
 	#Check distance 50 times a second
 	move_rate = rospy.Rate(50)
@@ -175,7 +191,10 @@ if __name__ == '__main__':
 		#Try to start the robot moving
 		while not pc.isMoving() and not rospy.is_shutdown():
 			#increment the linear velocity
-			lin_vel += lin_vel_inc
+			#lin_vel += lin_vel_inc
+
+			#Just set it high and see what happens
+			lin_vel = 2.0
 
 			#Create a twist message and send it 
 			sTwist = Twist()
@@ -192,10 +211,14 @@ if __name__ == '__main__':
 			#wait for a little bit for it to take effect
 			pub_rate.sleep()
 
+		rospy.logwarn("Started moving with linear = {}".format(sTwist.linear.x))
+
 		#Now the robot is moving, wait until it has gone a fixed distance
 		while pc.get_travel() < side_len and not rospy.is_shutdown():
 			#Delay a little to let it move
 			move_rate.sleep()
+
+		rospy.logwarn("Went {}, stopping".format(side_len))
 
 		while pc.isMoving() and not rospy.is_shutdown():
 			lin_vel = rot_vel = 0.0
@@ -209,6 +232,7 @@ if __name__ == '__main__':
 			twist_pub.publish(sTwist)
 			pub_rate.sleep()
 
+		rospy.logwarn("Stopped, waiting...")
 		# Let's pause and see if noise in rotational velocity drops when we're still
 		rospy.sleep(4.0)
 
