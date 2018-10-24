@@ -31,7 +31,7 @@ DRV8833 might be a good canidate for next driver, but only has PWM interface.
 IFX9201SGAUMA1 would also be good, but requires higher voltage (e.g. two-cell battery and voltage regulation)
 Has SPI interface, 6A(!) drive current, full bridge per chip. 
  
-https://github.com/esp8266/Arduino/issues/22 Has how to get automatic reset, easier than integrating the limpkin.fr reset circuit.  
+https://github.com/esp8266/Arduino/issues/22 Has how to get automatic reset, easier than integrating the limpkin.fr reset circuit. 
 Needs a serial adapter that has DTR line, ordered that. 
 
 Assembly pointers:
@@ -2486,3 +2486,155 @@ Ok, but is SCT actually going to get me a no-human-coding system?
 	Also, the sensors appear to be binary (events either happen or don't, no concept of intensity, proximity, etc.)
 		Although there are some fuzzy extensions
 
+
+Improved Human-Robot Team Performance Using Chaski, A Human-Inspired Plan Execution System
+Julie Shah, James Wiken, Brian Williams, Cynthia Breazeal
+	Intended to make human-robot teaming better based on human-human teaming
+	Reduces human idle time by 85% relative to a verbally commanded robot
+	Drawn from studies of human interaction under stress
+		Military tactical teams, medical teams
+	Teammates make decisions on the fly
+		Swarm doesn't make a huge number of decisions
+		Decisionmaking isn't shared the same way, swarm isn't a peer
+	Teammated communicate progress
+		Communication channel back from the team is implicit, in whether the team appears to be doing what the user commanded
+			Should really do a test of this
+		Doesn't really communicate progress so much as perhaps provide information to be interpreted. 
+	Teammates consider consequences of decision on others
+		This is making my work feel very unlike a team
+		Swarm doesn't team with remote user, swarm is more like a tool than a teammate
+		Tool vs peer distinction is good to make
+	Equal partners
+		decentralized authority
+			My swarm design has a more centralized authority
+	Compiles into a format it can operate on quickly
+		Latency within the bounds of human reflexes
+	Doesn't support replanning if someone changes their mind partway through an activity
+
+Shared Understanding for Collaborative Control
+David J. Bruemmer, Douglas A. Few, Ronald L. Boring, Julie L. Marble, Miles C. Walton, and Curtis W. Nielse
+	Search and exploration task
+	Two experiments
+		First, human mostly drives with some robot help vs robot mostly drives with some human help
+			Robot better at driving
+		Second, 3D interface better than video stream from robot
+			Reduces operator workload
+			Reduced nav error
+	Hybrid deliberative/reactive architecture
+	Teleoperation and the DARPA humanoid challenge are use as a tool
+	Tools are not teammates
+	"However, although it allows the robot to take a role in  navigation,  safeguarded  teleoperation  does  not  permit  a  dynamic sharing  of  roles  and  responsibilities  customarily  found  in  an effective  team"
+	Robot as peer
+		Communication and support in both directions
+		Robot can have leadership in som parts of task
+		Not just letting robot take initiative
+	My control architecture is what this paper calls autonomous control
+		High-level tasking of robot 
+	Interesting point about video as a false sense of SA
+		Not a wide enough field to be really useful
+			Sometimes doesn't show obstacle
+		Sometimes only shows the obstacle
+			As in, that's all you can see
+	3D view replaced video in (...kinda nightmarish) interface
+		3D was extrusion of 2d laser scan, to show walls/spaces
+	Dennet ref at the end is interesting
+		Physical stance
+			Can see what robot can do from looking at it
+			4" tall robot with wheels can't climb stairs
+		Design stance
+			Cn usually guess how js motions become robot motions
+		Intentional stance
+			Understanding robot as a rational agent with goals and intentional states
+
+Whose Job Is It Anyway? A Study of Human–Robot Interaction in a Collaborative Task
+Pamela J. Hinds, Teresa L. Roberts, Hank Jones
+	Deals more with human-like robots
+	Also how human-like-ness interacts with status in team
+	Probably not going to be seeing humanoid swarms for QUITE some time
+	Humans apparently have a hard time delegating responsibility to non-humanoids
+		In keeping with treatment of swarm as more like a tool than a peer
+		If I screw up, my hammer isn't to blame, I am
+	"Machine-like robots, however, may be more appropriate when robots are expected to be unreliable, are less well-equipped for the task than people are, or in other situations in which personal responsibility should be emphasized."
+		People tend to assume humanoids have human-level ability
+			Refrigerators on wheels don't get that assumption
+
+Which One? Grounding the Referent Based on
+Efficient Human-Robot Interaction
+Raquel Ros, Severin Lemaignan, E. Akin Sisbot, Rachid Alami, Jasmin Steinwender, Katharina Hamann, Felix Warneken
+	Perspective-taking for ambiguity resolution
+	Probably not very related
+
+Towards Predicting Robot Team Performance
+Jacob W. Crandall, Curtis W. Nelson, Michael A Goodrich
+	1 human, multiple robots (3 in example)
+	Measure neglect tolerance and interface efficiency
+	Also world complexity, but that's out of scope for this paper
+	This is from before neglect benevolence
+		which is totally a thing in modern swarms, emergent systems now
+	Interaction scheme depends on human OODA loop
+	Effeciency of a scheme p is given as a random process
+		args are p, mission time so far, world complexity, and time the robot has been neglected
+	Neglect tolerance given as random process of p, time since the robot was neglected, and world complexity
+	Restricted to a case where human can operate one robot at a time
+		So not properly a swarm interface, more a multi-robot interface
+	"At a certain robot attention demand robot performance peaks, after which increasing the percentage of time interacting with a robot only hinders its performance"
+		Hints of neglect benevolence
+
+
+Establishing Human Situation Awareness Using a Multi-Modal Operator Control Unit In An Urban Search & Rescue Human-Robot Team
+Benoit Larochelle, Geert-Jan M. Kruijff, Nanja Smets, Tina Mioch, Peter Groenewege
+	Single-robot single user
+	Intersting point about OCU being between the environment and the person, rather than the robot and the person
+	Still working with a tool in an environment, not a teammate
+
+
+Shared Environment Representation for a Human-Robot Team Performing Information Fusion
+Tobias Kaupp, Bertrand Douillard, Fabio Ramos, Alexei Makarenko, and Ben Upcroft
+	Humans provide high level info
+	Robots provid metric and low-level info
+	3 levels of abstraction
+		Geometric
+		Appearance
+		Identity
+	Semantic mapping stuff kind of related to this
+	Not really about teaming
+	Probablistic belief updating, bayes rule
+	Has some neat stuff on how humans estimate range and bearing 
+
+Common Metrics for Human-Robot Interaction
+	Aaron Steinfeld, Terrance Fong, David Kaber, Michael Lewis, Jean Sholtz, Alan Schultz, Michael Goodrich
+	Time-to-completion task specific
+		Some tasks take longer than others
+	Scoring by e.g. victims found means there have to be victims 
+		very search-and-rescue
+	Tasks
+		Have to support all autonomy scales
+		Navigation
+		Perception
+			Perceive and understand remot env
+		Management
+			Available units, best fit for task, coverage
+		Manipulation
+			Interaction with env, how to do it, outcomes
+		Social
+			Tour guiding and similar
+			Recognizing people, social norms and competencies
+	Some biasing factors
+		Comms
+			Latency, jitter, low bandwidth
+		Robot responsivness
+			V. slow planner makes robot look dull or unrepsonsive
+		User
+			Has their own biases and interests
+			Environmental factors on user
+			User may have different levels of skill & awareness
+		Good guidelines, but not for behavior of swarm, more for designing experiments in HRI to assess systems as a whole
+
+Awareness in Human-Robot Interactions
+Jill L. Drury , Jean Scholtz, Holly A. Yanco 
+	Framework for awareness in HRI
+	Based on computer-supported cooperative work
+		Humans working with humans, not humans working with robots
+	Big list of different awareness types
+	"HRI awareness (base case): Given one human and one robot working on a task together, HRI awareness is the understanding that the human has of the location, activities, status, and surroundings of the robot; and the knowledge that the robot has of the human’s commands necessary to direct its activities and the constraints under which it must operate. "
+	For interface evaulation, not swarm specific
