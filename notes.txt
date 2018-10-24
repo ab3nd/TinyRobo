@@ -31,7 +31,7 @@ DRV8833 might be a good canidate for next driver, but only has PWM interface.
 IFX9201SGAUMA1 would also be good, but requires higher voltage (e.g. two-cell battery and voltage regulation)
 Has SPI interface, 6A(!) drive current, full bridge per chip. 
  
-https://github.com/esp8266/Arduino/issues/22 Has how to get automatic reset, easier than integrating the limpkin.fr reset circuit.  
+https://github.com/esp8266/Arduino/issues/22 Has how to get automatic reset, easier than integrating the limpkin.fr reset circuit. 
 Needs a serial adapter that has DTR line, ordered that. 
 
 Assembly pointers:
@@ -2598,3 +2598,43 @@ Tobias Kaupp, Bertrand Douillard, Fabio Ramos, Alexei Makarenko, and Ben Upcroft
 		Identity
 	Semantic mapping stuff kind of related to this
 	Not really about teaming
+	Probablistic belief updating, bayes rule
+	Has some neat stuff on how humans estimate range and bearing 
+
+Common Metrics for Human-Robot Interaction
+	Aaron Steinfeld, Terrance Fong, David Kaber, Michael Lewis, Jean Sholtz, Alan Schultz, Michael Goodrich
+	Time-to-completion task specific
+		Some tasks take longer than others
+	Scoring by e.g. victims found means there have to be victims 
+		very search-and-rescue
+	Tasks
+		Have to support all autonomy scales
+		Navigation
+		Perception
+			Perceive and understand remot env
+		Management
+			Available units, best fit for task, coverage
+		Manipulation
+			Interaction with env, how to do it, outcomes
+		Social
+			Tour guiding and similar
+			Recognizing people, social norms and competencies
+	Some biasing factors
+		Comms
+			Latency, jitter, low bandwidth
+		Robot responsivness
+			V. slow planner makes robot look dull or unrepsonsive
+		User
+			Has their own biases and interests
+			Environmental factors on user
+			User may have different levels of skill & awareness
+		Good guidelines, but not for behavior of swarm, more for designing experiments in HRI to assess systems as a whole
+
+Awareness in Human-Robot Interactions
+Jill L. Drury , Jean Scholtz, Holly A. Yanco 
+	Framework for awareness in HRI
+	Based on computer-supported cooperative work
+		Humans working with humans, not humans working with robots
+	Big list of different awareness types
+	"HRI awareness (base case): Given one human and one robot working on a task together, HRI awareness is the understanding that the human has of the location, activities, status, and surroundings of the robot; and the knowledge that the robot has of the human’s commands necessary to direct its activities and the constraints under which it must operate. "
+	For interface evaulation, not swarm specific
