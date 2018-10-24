@@ -648,6 +648,60 @@ The tendency of the big wheel robot to flip over could be mitigated by very grad
 Perhaps the blue bug would not fall over if its height were reduced, or the battery were placed lower on the body of the robot.
 However, these mechanical problems could be more easily avoided by simply not using toys that have them. 
 
+\subsection{3D Printed Robots}
+
+Because the toys were demonstrated to be unreliable as motion platforms, a new design for the motion platform was developed using a 3D printer. 
+
+The 3D printer used is the Monoprice Maker Select Mini (MPMSM), which costs approximately \$200 (US) at the time of this writing.
+The MPMSM has a 120mm$^3$ build volume, and can print two robot chassis at the same time, as well as wheels for them. 
+For this version of the TinyRobos, the motor selected was a commercially available miniature gearmotor. 
+The gearmotor was selected because it was cheap, easily available from Amazon.com, and used the same voltage that the TinyRobo drive boards used. 
+The motor has a planetary gearbox, and a plastic output shaft. 
+Wheels were designed to be 3D printed along with the robot, and glued to the output shaft of the motor. 
+3D printing provides the flexibility to change the motor mounts of the robot to accommodate various motors.
+
+Because the 3D printed robots all used the same motors, there was no need to have them use an adaptive velocity control for drive testing as in the drive test for the toys. 
+Instead, they could be commanded to move at a fixed velocity, and observed from the camera. 
+However, the low output speed of the geared motors meant that the thresholds for detecting that the robot had stopped and started had to be changed. 
+Once the program was adjusted so that it could detect the robot's motion or lack thereof correctly, the robots were commanded to move 0.25m, stop, move 0.25m and so forth until they ran into a wall of the arena. 
+Once the robot hit a wall, it was reset and run again for 5 attempts. 
+Each 3D printed robot was tagged with an April tag, numbered 2, 3, and 5. 
+
+Robot 2 missed the first stop command on two of its runs, but worked normally for subsequent stop commands. 
+It stopped and started regularly on the other three runs.
+Robot 2 made a long arcing path to the left, indicating that one motor was running slightly faster than the other, or acquiring more traction.
+This sort of error can be compensated for by feedback, assuming the robot can detect its own trajectory. 
+
+Robot 3 missed all the stops on its first run and the first stop on its second run.
+On its last three runs, it started and stopped as expected. 
+Rather than arcing left as with robot 2, robot 3 arced to the right. 
+
+Robot 5 also had an arc to the right. For its first run, it missed the last stop, but otherwise functioned correctly. 
+On its second run, robot 5 started and stopped correctly, but hit something on the floor of the arena that caused it to turn more sharply right. 
+On its third run, the system incorrectly detected that robot 5 had started after coming to a stop, and so began waiting for it to move 0.25m. 
+The robot was not actually moving, so this condition would not have resolved. 
+For run four, robot 5 stopped during its first move and did not restart.
+The cause of this error is unknown, but it is possible that it was erroneously detected as having started before it did, and so was not sent motion commands to start. 
+On the last run, robot 5 started and stopped as commanded until it was nearly at the wall, and then one wheel got stuck on a bit of wood on the arena floor, causing the robot to spin around that wheel. 
+
+Overall, the 3D printed robots were more reliable than the majority of the toy bases, in terms of runs completed. 
+However, a direct comparison cannot be easily made due to the changes that had to be made to accommodate the new bases. 
+The use of a fixed velocity command for the forward motion is particularly problematic, as the gear ratio on the 3D printed robot motors is much higher than the gear ratio on most of the toys. 
+As a result, a command that moves the 3D printed robots at 3-4cm/sec will set the toy tank bases moving too quickly for the camera to track them. 
+The detection of robot motion also had problems due to the noise in the April tag detection and the low speed of the robots. 
+Given more accurate tracking, the 3D printed robots could be expected to have fewer false starts and erroneously-detected stops. 
+
+The 3D printed components of the robots do not add significantly to the cost of the robots. 
+Material for 3D printers is generally sold in spools containing 1kg of filament for \$15-35, although some types of material are much more expensive, depending on the qualities of the material.
+The robots described were printed in Hatchbox brand polylactic acid (PLA) filament, which costs \$20/kilogram. 
+The resulting prints are \todo{get number out of cura}, and so contain \todo{how much?} worth of material. 
+
+The motors used were listed on Amazon as "NW 3pcs 3V Micro Planetary Reducer Motor High Torque DC Motor DIY Robot Gearbox Motor". 
+Unfortunately, these particular motors are from an unknown supplier, and as such, may become unavailable. 
+However, a number of sellers are offering the same motors, or motors of similar size that could be used as replacements if the 3D print design were altered. 
+The motors cost \$9.69 for a package of three, so \$3.23 each or \$6.46 for the pair needed for a robot. 
+Given that the toys being used as mobility platforms cost \$8-20, depending on the volume purchased, even purchasing these motors at retail cost was a savings over using toys. 
+
 \subsection{Guidelines For Future Swarm Developers}
 The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
 While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
