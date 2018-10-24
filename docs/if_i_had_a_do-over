@@ -1,0 +1,28 @@
+
+Run experiment in style of Wobbrock et al
+	Show action of swarm, then ask user to make the gestures that caused it
+Because:
+	Flailing, users expected UI to be interactive even though it wasn't, and they were told it wasn't
+
+-or-
+
+run the experiment with paper prototypes
+	Users can't possibly expect paper to be interactive, they're used to it just being paper
+
+
+Keep the swarm robots the same size?
+They'd have to all be the really tiny size that was used for 1000 robot case
+Scale relative to the crate was an issue
+	Maybe make the crate really tiny too?
+
+
+Slides that say "tell the robots to..." would just be "form a line" or "form a square"
+	Some participants were very literal, but in colloquial english, we can say things like "a stop sign tells you to stop", despite the fact that it doesn't say "stop" out loud using a voice (although we would say that it "says stop")
+
+Drop the toys earlier, they really didn't work well. 3D printing is really the way to go, or using the PCB as the frame of the robot. 
+
+Deal with the hardware first, rather than switching back and forth and only finding tag tracking problems late in the game. 
+
+Robots capable of monitoring their own battery charge and recharging themselves. 
+
+SCT might be a better framework than GCPR for program generation
