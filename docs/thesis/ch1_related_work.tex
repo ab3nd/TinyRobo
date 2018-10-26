@@ -1005,7 +1005,7 @@ Human perception of groups has less to do with exact count of people, and far mo
 One potential upper bound that is simply numeric is Dunbar's Number, a constraint on the understanding of a social network placed by neocortex size \citep{dunbar1992neocortex}. 
 For humans, Dunbar's number is estimated to be around 150 individuals, and beyond that, people would be expected to begin chunking the people in their social network into hierarchies or groups in order to keep track of a reduced number of entities (e.g. one group called "co-workers" instead of every individual on the team). 
 
-\subsection{Human/robot Teaming} \label{section:human_robot_teaming}
+\section{Human/robot Teaming} \label{section:human_robot_teaming}
 
 One area that may have interesting insights into control interfaces for heterogenous swarms is work on human/robot teams. 
 Typically, human/robot teams involve robots working along side humans in a team, as peers or subordinates. 
@@ -1023,3 +1023,33 @@ A pure multi-robot interface is designed to command multiple robots as individua
 The interface described by Lopez, Kuczynski, and Yanco is somewhat in the overlap area, as it allows group selection and task assignment as well as individual command, both as ``groups'' of one, using similar command interactions to the group commands, and direct, joystick-like interaction. 
 The interface described by Humphrey \emph{et al} is an interface at the multi-robot end of the spectrum, as it does not appear to provide any faculty for assigning a task to multiple robots at once.
 It does, however, encourage the user to be aware of the functioning of all of the robots. 
+
+In this work, the description of the user interface does not position the robotic swarm as a teammate. 
+Robots can be team members with humans, but they can also be treated as remotely-operated tools. 
+Teleoperation is a case of treating the robot as a remotely-operated tool. 
+Rather than taking any initiative itself, the robot does as commanded, acting as the remote user's eyes and sometimes hands in the environment. 
+Indeed, a teleoperated system should be invisible to the user, with the UI acting as the user's interface to the remote environment, rather than to the remote robot \citep{larochelle2011establishing}.
+Examination of the work on robotic teammates lists some points about teammates that the swarm described in this work does not share.  
+
+Teammates make decisions during task execution, while considering the impact of those decisions on their teammates \citep{shah2011improved}. 
+The system described in this paper does not have any mechanism for the system to consider how its decisions will affect the human user. 
+Some of the design decisions were made by with the impact on the human user in mind, but these decisions were made by the author, not the system. 
+
+Teammates communicate progress and provide support  to each other. 
+This communication can be explicit, or implicit, by doing things like placing completed components of the task where the other teammates can see them. 
+The system described in this work can only be viewed as communicating implicitly, by having the swarm behavior attempt to match the user expectation. 
+
+Being a team or not can be viewed as a spectrum, with robots taking the place of equal peers at one end and remotely-operated tools at the other end. 
+Safeguards, such as safe-mode teleoperation, where the robot can act to prevent collisions, are on the spectrum, but more towards the remote tool end. 
+Safeguards do not permit the robot to assume responsibility for a role or task, which is a component of team membership \citep{bruemmer2005shared}. 
+Taking initiative combined with assuming responsibility is the basis of leadership, which, in a team of equal peers, can be distributed rather than centralized. 
+The system in this paper has a central authority, the human user, who commands, but is not commanded by the system. 
+Humans find it easier to delegate responsibility to more human-like robots than to non-human-like robots \citep{hinds2004whose}. 
+This is in keeping with the spectrum of remote tools versus equal peers. 
+A non-humanoid robot is easier to perceive as a tool, and a tool is not blamed if its user makes an error. 
+The difference in perception of humanoid robots can also serve as a design guideline, indicating that non-human robots are to be preferred if the robots are likely to be unreliable, as the robot's form will encourage people to take more responsibility themselves instead of delegating it to the robot. 
+
+On the spectrum between teammates and remotely operated tools, the swarm described in this work is solidly at the tool end of the spectrum. 
+The user controls the swarm in a task-based manner, assigning it a job they want done and then allowing the system to operate, much like a computer-controlled metal-cutting mill.
+The robots used are non-humanoid, both in their depiction on the user interface and their physical construction. 
+
