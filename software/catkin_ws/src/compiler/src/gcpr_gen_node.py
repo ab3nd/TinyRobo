@@ -154,34 +154,86 @@ class ProgGen(object):
 
 		return program
 
-	
 
+	def get_child(self, t, name):	
+		for child in t.children:
+			if child.data == name:
+				return child
+		return None
+
+	def get_data(self, t, name):	
+		for child in t.children:
+			if child.data == name:
+				return child
+		return None
+
+	def path_as_list(self, path):
+		point_list = []
+		try:
+			if path.data == "point_list":
+				for child in path.children:
+					x = float(self.get_child(child, 'x').value)
+					y = float(self.get_child(child, 'y').value)
+					point_list.append((x,y))
+				return point_list
+			else:
+				for c in path.children:
+					point_list.extend(self.path_as_list(c))
+				return point_list
+		except AttributeError as e:
+			#This is caused by trying to get path.data from a leaf node
+			return point_list
+
+	def robots_as_list(self, robots):
+		robot_list = []
+		try:
+			if robots.data == "robot_list":
+				for robot in robots.children:
+					robot_id = int(robot.children[0].value)
+					robot_list.append(robot_id)
+				return robot_list
+			else:
+				for c in robots.children:
+					robot_list.extend(self.robots_as_list(c))
+				return robot_list
+		except AttributeError as e:
+			#This is caused by trying to get path.data from a leaf node
+			return robot_list
 
 	def handle_instruction(self, t):
 		if t.data == 'start' or t.data == 'cmd':
 			#Syntactic sugar, really care about children
-			handle_instruction(self, t.children())
+			for child in t.children:
+				self.handle_instruction(child)
 		if t.data == 'gohere':
 			#Could be a drag path, could be a selection and then path
-			#sel_bots = self.get_selection(t.children)
-			#path_pts = self.get_path(t.children)
-			pass
+			path = self.path_as_list(t)
+			robots = self.robots_as_list(t)
+			rospy.logwarn("{} go on the path".format(robots))
 		if t.data == 'patrol':
 			#Get the path and the selected robots
+			path = self.path_as_list(t)
+			robots = self.robots_as_list(t)
 			#Give each robot a path
-			pass
+			rospy.logwarn("Patrol with {}".format(robots))
 		if t.data == 'makeformation':
-		 	#Get the selected robots
-		 	pass
+		 	#Get the path and the selected robots
+			formation = self.path_as_list(t)
+			robots = self.robots_as_list(t)
+			rospy.logwarn("Formation with {}".format(robots))
 		if t.data == 'moveobject':
 		 	#Two selections to get, first is robots, second is object
+		 	rospy.logwarn("Move doesn't get selections yet")
 		 	#One path to get, motion of object
-		 	pass
+		 	path = self.path_as_list(t)
 		if t.data == 'removerobot':
 		 	#Get the selection
-		 	print "Delet this post"
+		 	robot = self.robots_as_list(t)
+		 	rospy.logwarn("Delete {}".format(robot))
 		if t.data == 'disperse':
 		 	#Get the selection
+		 	robots = self.robots_as_list(t)
+		 	rospy.logwarn("Disperse {}".format(robot))
 		 	#Send a disperse controller program to selected robots
 		 	pass
 
@@ -231,12 +283,12 @@ class ProgGen(object):
 		parse_tree = self.parser.parse(prog_str)
 
 		#For now just prettyprint it
-		print prog_str
-		print parse_tree.pretty()
-		print "---"
+		# print prog_str
+		# print parse_tree.pretty()
+		# print "---"
 
 		# for t in parse_tree.children:
-		# 	self.handle_instruction(t)
+		self.handle_instruction(parse_tree)
 
 	def checkGestureList(self):
 		#If the last thing in is an end gesture, we're good to try to parse the gestures
