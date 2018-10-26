@@ -106,54 +106,141 @@ class ProgGen(object):
 	def distance(self, p1, p2):
 		return math.sqrt(math.pow(p1[0]-p2[0],2) + math.pow(p1[1]-p2[1],2))
 
-	def pathToGCPR(self, points):
-		#Given a list of points, convert them to a GCPR program to steer along those points
-		#Get the bounding box of the points
-		maxX = maxY = float('-inf')
-		minX = minY = float('inf')
-		for point in points:
-			maxX = max(point[0], maxX)
-			maxY = max(point[1], maxY)
-			minX = min(point[0], minX)
-			minY = min(point[1], minY)
+	# def pathToGCPR(self, points):
+	# 	#Given a list of points, convert them to a GCPR program to steer along those points
+	# 	#Get the bounding box of the points
+	# 	maxX = maxY = float('-inf')
+	# 	minX = minY = float('inf')
+	# 	for point in points:
+	# 		maxX = max(point[0], maxX)
+	# 		maxY = max(point[1], maxY)
+	# 		minX = min(point[0], minX)
+	# 		minY = min(point[1], minY)
 
-		#Pad min and max to ensure that there are spaces around each end of the path
-		maxX += 2 * self.resolution
-		maxY += 2 * self.resolution
-		minX -= 2 * self.resolution
-		minY -= 2 * self.resolution
+	# 	#Pad min and max to ensure that there are spaces around each end of the path
+	# 	maxX += 2 * self.resolution
+	# 	maxY += 2 * self.resolution
+	# 	minX -= 2 * self.resolution
+	# 	minY -= 2 * self.resolution
 		
-		#Generate GCPR for the area inside the bounding box 
+	# 	#Generate GCPR for the area inside the bounding box 
+	# 	program = []
+	# 	dec = decompose_space.get_decomposition((minX, maxY), (maxX, minY), points, self.resolution)
+	# 	for square in dec:
+	# 		program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
+
+	# 	#Reactive obstacle avoidance
+	# 	program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))
+	# 	program.append(("self.is_near_right() and not(self.is_near_left()) and not(self.is_near_center())", "self.move_turn(0.9)", 0.9))
+	# 	#Back and turn away
+	# 	program.append(("self.is_near_left() and self.is_near_right() and not(self.is_near_center())", "self.move_arc(2.0, -0.5)", 0.8))
+	# 	program.append(("self.is_near_center() and not(self.is_near_right()) and not(self.is_near_left())", "self.move_arc(2.0, -0.5)", 1.0))
+	# 	#Move away from stuff behind
+	# 	program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
+
+	# 	#Generate GCPR for the area outside the bounding box (all remaining space)
+	# 	program.append(("self.x_between({0}, {1}) and self.y_gt({2})".format(minX, maxX, maxY), "self.set_desired_heading(-math.pi/2.0)", 1.0)) #math.pi)", 1.0))
+	# 	program.append(("self.x_between({0}, {1}) and self.y_lt({2})".format(minX, maxX, minY), "self.set_desired_heading(math.pi/2.0)", 1.0))
+	# 	program.append(("self.y_between({0}, {1}) and self.x_gt({2})".format(minX, maxX, maxX), "self.set_desired_heading(0)", 1.0))#math.pi/2.0)", 1.0))
+	# 	program.append(("self.y_between({0}, {1}) and self.x_lt({2})".format(minX, maxX, minX), "self.set_desired_heading(-math.pi)", 1.0))#-math.pi/2.0)", 1.0))
+	# 	program.append(("not(self.x_between({0}, {1})) and self.y_gt({2}) and self.x_gt({3})".format(minX, maxX, maxY, maxX), "self.set_desired_heading(-math.pi/4.0)", 1.0))#math.pi/4.0)", 1.0))
+	# 	program.append(("not(self.x_between({0}, {1})) and self.y_lt({2}) and self.x_gt({3})".format(minX, maxX, minY, maxX), "self.set_desired_heading(math.pi/4.0)", 1.0))#-math.pi/4.0)", 1.0))
+	# 	program.append(("not(self.y_between({0}, {1})) and self.y_gt({2}) and self.x_lt({3})".format(minX, maxX, maxY, minX), "self.set_desired_heading((-3 * math.pi)/4)", 1.0))#-(3*math.pi)/4.0)", 1.0))
+	# 	program.append(("not(self.y_between({0}, {1})) and self.y_lt({2}) and self.x_lt({3})".format(minX, maxX, minY, minX), "self.set_desired_heading((3 * math.pi)/4)", 1.0))#(3*math.pi)/4.0)", 1.0))
+
+	# 	#Add motion commands to turn to bearing and move forward
+	# 	program.append(("self.on_heading() and not(self.is_near_anything())", "self.move_fwd(0.3)", 1.0))
+	# 	program.append(("not(self.on_heading()) and not(self.is_near_anything())", "self.turn_heading(1)", 1.0))
+
+	# 	return program
+
+
+
+	#Moving to a point with GCPR/Modified bug algo
+	def go_point(self):
 		program = []
-		dec = decompose_space.get_decomposition((minX, maxY), (maxX, minY), points, self.resolution)
-		for square in dec:
-			program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
-
-		#Reactive obstacle avoidance
-		program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))
-		program.append(("self.is_near_right() and not(self.is_near_left()) and not(self.is_near_center())", "self.move_turn(0.9)", 0.9))
-		#Back and turn away
-		program.append(("self.is_near_left() and self.is_near_right() and not(self.is_near_center())", "self.move_arc(2.0, -0.5)", 0.8))
-		program.append(("self.is_near_center() and not(self.is_near_right()) and not(self.is_near_left())", "self.move_arc(2.0, -0.5)", 1.0))
-		#Move away from stuff behind
-		program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
-
-		#Generate GCPR for the area outside the bounding box (all remaining space)
-		program.append(("self.x_between({0}, {1}) and self.y_gt({2})".format(minX, maxX, maxY), "self.set_desired_heading(-math.pi/2.0)", 1.0)) #math.pi)", 1.0))
-		program.append(("self.x_between({0}, {1}) and self.y_lt({2})".format(minX, maxX, minY), "self.set_desired_heading(math.pi/2.0)", 1.0))
-		program.append(("self.y_between({0}, {1}) and self.x_gt({2})".format(minX, maxX, maxX), "self.set_desired_heading(0)", 1.0))#math.pi/2.0)", 1.0))
-		program.append(("self.y_between({0}, {1}) and self.x_lt({2})".format(minX, maxX, minX), "self.set_desired_heading(-math.pi)", 1.0))#-math.pi/2.0)", 1.0))
-		program.append(("not(self.x_between({0}, {1})) and self.y_gt({2}) and self.x_gt({3})".format(minX, maxX, maxY, maxX), "self.set_desired_heading(-math.pi/4.0)", 1.0))#math.pi/4.0)", 1.0))
-		program.append(("not(self.x_between({0}, {1})) and self.y_lt({2}) and self.x_gt({3})".format(minX, maxX, minY, maxX), "self.set_desired_heading(math.pi/4.0)", 1.0))#-math.pi/4.0)", 1.0))
-		program.append(("not(self.y_between({0}, {1})) and self.y_gt({2}) and self.x_lt({3})".format(minX, maxX, maxY, minX), "self.set_desired_heading((-3 * math.pi)/4)", 1.0))#-(3*math.pi)/4.0)", 1.0))
-		program.append(("not(self.y_between({0}, {1})) and self.y_lt({2}) and self.x_lt({3})".format(minX, maxX, minY, minX), "self.set_desired_heading((3 * math.pi)/4)", 1.0))#(3*math.pi)/4.0)", 1.0))
-
-		#Add motion commands to turn to bearing and move forward
-		program.append(("self.on_heading() and not(self.is_near_anything())", "self.move_fwd(0.3)", 1.0))
-		program.append(("not(self.on_heading()) and not(self.is_near_anything())", "self.turn_heading(1)", 1.0))
-
+		program.append(("self.at(self.goal))", "self.stop()", 1.0))
+		program.append(("not(self.at(self.goal)) and not(self.is_near_anything())", "self.set_desired_heading(self.get_heading(self.goal))", 1.0))
+		program.append(("not(self.at(self.goal)) and not(self.is_near_anything()) and self.on_heading()", "self.move_fwd(0.5)", 1.0))
+		program.append(("not(self.at(self.goal)) and not(self.is_near_anything()) and not(self.on_heading())", "self.turn_heading(0.7)", 1.0))
+		program.append(("not(self.at(self.goal)) and self.is_near_anything() and (self.get_l_front() == self.get_r_front() == 0)", "self.move_fwd(0.5)", 1.0))
+		#----- OK down to here, so far -----
+		program.append(("not(self.at(self.goal)) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() == 0)", "self.move_arc(-0.8, 0.04)", 1.0))
+		program.append(("not(self.at(self.goal)) and self.is_near_anything() and (self.get_l_front() == 0 and self.get_r_front() > 0)", "self.move_arc(0.8, 0.04)", 1.0))
+		program.append(("not(self.at(self.goal)) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0) and self.get_l_front() <= self.get_r_front()", "self.move_arc(-0.8, -0.05)", 1.0))
+		program.append(("not(self.at(self.goal)) and self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0) and self.get_l_front() > self.get_r_front()", "self.move_arc(-0.8, -0.05)", 1.0))
 		return program
 
+
+	def follow_path(self, path):
+		program = self.go_point()
+		for idx, point in enumerate(path):
+			if idx == 0:
+				#First point, just set it as the goal
+				program.append(("self.pc == None", "self.set_pc({})".format(idx), 1.0))
+				program.append(("self.pc == {}".format(idx), "self.set_goal({})".format(point), 1.0))
+			elif idx == len(path)-1:
+				#Last point
+				#If the point is not reachable or we're there, stop
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.stop()", 1.0))
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.stop()", 1.0))
+			else:
+				#If we made it there, move on to the next point
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.set_pc({})".format(idx+1), 1.0))
+				program.append(("self.at({})".format(point), "self.set_goal({})".format(path[idx+1]), 1.0))
+				#If it's not reachable, increment the pc and move on to the next point
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.set_pc({})".format(idx+1), 1.0))
+				program.append(("self.not_reachable({})".format(point), "self.set_goal({})".format(path[idx+1]), 1.0))
+		return program
+
+	def patrol(self, path):
+		#Patrol is following a path without stopping
+		program = self.go_point()
+		for idx, point in enumerate(path):
+			if idx == 0:
+				#First point, just set it as the goal
+				program.append(("self.pc == None", "self.set_pc({})".format(idx), 1.0))
+				program.append(("self.pc == {}".format(idx), "self.set_goal({})".format(point), 1.0))
+			else:
+				#Roll the next index over at the end of the path
+				next_idx = idx+1
+				if next_idx >= len(path):
+					next_idx = 0
+				
+				#If we made it there, move on to the next point
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.set_pc({})".format(next_idx), 1.0))
+				program.append(("self.at({})".format(point), "self.set_goal({})".format(path[next_idx]), 1.0))
+				#If it's not reachable, increment the pc and move on to the next point
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.set_pc({})".format(next_idx), 1.0))
+				program.append(("self.not_reachable({})".format(point), "self.set_goal({})".format(path[next_idx]), 1.0))
+		return program
+
+
+	def disperse(self):
+		#See theis for how you decided to implement this
+		pass
+
+	def move_object(self, path):
+		#See theis for how you decided to implement this
+		pass
+
+	def formation(self, formation, robots):
+		while len(robots) > len(formation):
+			new_formation = []
+			#There are more robots than points in the formation, so interpolate points on the formation
+			for k in range(1,len(formation)):
+				p1 = formation[k]
+				p2 = formation[k-1]
+				new_formation.append(p2)
+				#average of points
+				x = (p1[0] + p2[0])/2.0
+				y = (p1[1] + p2[1])/2.0
+				new_formation.append((x,y))
+			formation = new_formation
+
+		#Pick points on the formation and just go to those
+		
+		
 
 	def get_child(self, t, name):	
 		for child in t.children:
