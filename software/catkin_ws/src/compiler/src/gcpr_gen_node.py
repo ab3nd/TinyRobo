@@ -217,12 +217,49 @@ class ProgGen(object):
 
 
 	def disperse(self):
-		#See theis for how you decided to implement this
-		pass
+		program = []
+		#Too many neighbors, drive forward with obstacle avoid
+		program.append(("not(self.is_near_anything())", "self.move_fwd(0.5)", 1.0))
+		program.append(("self.is_near_anything() and (self.get_l_front() == self.get_r_front() == 0)", "self.move_fwd(0.5)", 1.0))
+		program.append(("self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() == 0)", "self.move_arc(-0.8, 0.04)", 1.0))
+		program.append(("self.is_near_anything() and (self.get_l_front() == 0 and self.get_r_front() > 0)", "self.move_arc(0.8, 0.04)", 1.0))
+		program.append(("self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0) and self.get_l_front() <= self.get_r_front()", "self.move_arc(-0.8, -0.05)", 1.0))
+		program.append(("self.is_near_anything() and (self.get_l_front() > 0 and self.get_r_front() > 0) and self.get_l_front() > self.get_r_front()", "self.move_arc(-0.8, -0.05)", 1.0))
+		#Too few neighbors, so turn around TODO this should save some state so it doesn't just keep doing U-turns
+		#It should actually turn around and then go forwards some
+		program.append(("self.neighbors() < 2", "self.u_turn()", 1.0))
+		#Just right neighbors, stop
+		program.append(("self.neighbors() == 2", "self.stop()", 1.0))
 
-	def move_object(self, path):
-		#See theis for how you decided to implement this
-		pass
+	def move_object(self, object_loc, path):
+		program = go_point(self):
+		#Move to the object using modified bug
+		program.append(("self.pc == None", "self.set_pc(1)", 1.0))
+		program.append(("self.pc == 1", "self.set_goal({}})".format(object_loc), 1.0))
+		#At the object and the point is in it, or at the goal point
+		program.append(("self.pc == 1 and self.not_reachable({})".format(object_loc), "self.set_pc(2)", 1.0))
+		program.append(("self.pc == 1 and self.at({})".format(object_loc), "self.set_pc(2)", 1.0))
+
+		#Follow the path, but need to have this A) have the index start with the PC being 2 already, and B) add the code to push on things
+		for idx, point in enumerate(path):
+			if idx == 0:
+				#First point, just set it as the goal
+				program.append(("self.pc == None", "self.set_pc({})".format(idx), 1.0))
+				program.append(("self.pc == {}".format(idx), "self.set_goal({})".format(point), 1.0))
+			elif idx == len(path)-1:
+				#Last point
+				#If the point is not reachable or we're there, stop
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.stop()", 1.0))
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.stop()", 1.0))
+			else:
+				#If we made it there, move on to the next point
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.set_pc({})".format(idx+1), 1.0))
+				program.append(("self.at({})".format(point), "self.set_goal({})".format(path[idx+1]), 1.0))
+				#If it's not reachable, increment the pc and move on to the next point
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.set_pc({})".format(idx+1), 1.0))
+				program.append(("self.not_reachable({})".format(point), "self.set_goal({})".format(path[idx+1]), 1.0))
+		return program
+
 
 	def formation(self, formation, robots):
 		while len(robots) > len(formation):
@@ -239,7 +276,26 @@ class ProgGen(object):
 			formation = new_formation
 
 		#Pick points on the formation and just go to those
-		
+		program = self.go_point()
+		#TODO could assign each robot a different subset of the points in the formation, rather than all of them
+		#Or try to satisfy some sort of distribution requirement
+		for idx, point in enumerate(formation):
+			if idx == 0:
+				#First point, just set it as the goal
+				program.append(("self.pc == None", "self.set_pc({})".format(idx), 1.0))
+				program.append(("self.pc == {}".format(idx), "self.set_goal({})".format(point), 1.0))
+			elif idx == len(path)-1:
+				#Last point
+				#If the point is not reachable or we're there, stop
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.stop()", 1.0))
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.stop()", 1.0))
+			else:
+				#If we made to a point on the formation, stop, we're "in formation"
+				program.append(("self.pc == {} and self.at({})".format(idx, point), "self.stop()", 1.0))
+				#If it's not reachable, increment the pc and move on to the next point
+				program.append(("self.pc == {} and self.not_reachable({})".format(idx, point), "self.set_pc({})".format(idx+1), 1.0))
+				program.append(("self.not_reachable({})".format(point), "self.set_goal({})".format(path[idx+1]), 1.0))
+		return program
 		
 
 	def get_child(self, t, name):	
