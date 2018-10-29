@@ -106,55 +106,6 @@ class ProgGen(object):
 	def distance(self, p1, p2):
 		return math.sqrt(math.pow(p1[0]-p2[0],2) + math.pow(p1[1]-p2[1],2))
 
-	# def pathToGCPR(self, points):
-	# 	#Given a list of points, convert them to a GCPR program to steer along those points
-	# 	#Get the bounding box of the points
-	# 	maxX = maxY = float('-inf')
-	# 	minX = minY = float('inf')
-	# 	for point in points:
-	# 		maxX = max(point[0], maxX)
-	# 		maxY = max(point[1], maxY)
-	# 		minX = min(point[0], minX)
-	# 		minY = min(point[1], minY)
-
-	# 	#Pad min and max to ensure that there are spaces around each end of the path
-	# 	maxX += 2 * self.resolution
-	# 	maxY += 2 * self.resolution
-	# 	minX -= 2 * self.resolution
-	# 	minY -= 2 * self.resolution
-		
-	# 	#Generate GCPR for the area inside the bounding box 
-	# 	program = []
-	# 	dec = decompose_space.get_decomposition((minX, maxY), (maxX, minY), points, self.resolution)
-	# 	for square in dec:
-	# 		program.append(("self.is_in({0}, {1})".format(square.tl, square.br), "self.set_desired_heading({0})".format(math.pi - square.heading), 0.9))
-
-	# 	#Reactive obstacle avoidance
-	# 	program.append(("self.is_near_left() and not(self.is_near_right()) and not(self.is_near_center())", "self.move_turn(-0.9)", 0.9))
-	# 	program.append(("self.is_near_right() and not(self.is_near_left()) and not(self.is_near_center())", "self.move_turn(0.9)", 0.9))
-	# 	#Back and turn away
-	# 	program.append(("self.is_near_left() and self.is_near_right() and not(self.is_near_center())", "self.move_arc(2.0, -0.5)", 0.8))
-	# 	program.append(("self.is_near_center() and not(self.is_near_right()) and not(self.is_near_left())", "self.move_arc(2.0, -0.5)", 1.0))
-	# 	#Move away from stuff behind
-	# 	program.append(("self.is_near_anything() and not(self.is_near_left()) and not(self.is_near_center()) and not(self.is_near_right())", "self.move_fwd(0.4)", 1.0))
-
-	# 	#Generate GCPR for the area outside the bounding box (all remaining space)
-	# 	program.append(("self.x_between({0}, {1}) and self.y_gt({2})".format(minX, maxX, maxY), "self.set_desired_heading(-math.pi/2.0)", 1.0)) #math.pi)", 1.0))
-	# 	program.append(("self.x_between({0}, {1}) and self.y_lt({2})".format(minX, maxX, minY), "self.set_desired_heading(math.pi/2.0)", 1.0))
-	# 	program.append(("self.y_between({0}, {1}) and self.x_gt({2})".format(minX, maxX, maxX), "self.set_desired_heading(0)", 1.0))#math.pi/2.0)", 1.0))
-	# 	program.append(("self.y_between({0}, {1}) and self.x_lt({2})".format(minX, maxX, minX), "self.set_desired_heading(-math.pi)", 1.0))#-math.pi/2.0)", 1.0))
-	# 	program.append(("not(self.x_between({0}, {1})) and self.y_gt({2}) and self.x_gt({3})".format(minX, maxX, maxY, maxX), "self.set_desired_heading(-math.pi/4.0)", 1.0))#math.pi/4.0)", 1.0))
-	# 	program.append(("not(self.x_between({0}, {1})) and self.y_lt({2}) and self.x_gt({3})".format(minX, maxX, minY, maxX), "self.set_desired_heading(math.pi/4.0)", 1.0))#-math.pi/4.0)", 1.0))
-	# 	program.append(("not(self.y_between({0}, {1})) and self.y_gt({2}) and self.x_lt({3})".format(minX, maxX, maxY, minX), "self.set_desired_heading((-3 * math.pi)/4)", 1.0))#-(3*math.pi)/4.0)", 1.0))
-	# 	program.append(("not(self.y_between({0}, {1})) and self.y_lt({2}) and self.x_lt({3})".format(minX, maxX, minY, minX), "self.set_desired_heading((3 * math.pi)/4)", 1.0))#(3*math.pi)/4.0)", 1.0))
-
-	# 	#Add motion commands to turn to bearing and move forward
-	# 	program.append(("self.on_heading() and not(self.is_near_anything())", "self.move_fwd(0.3)", 1.0))
-	# 	program.append(("not(self.on_heading()) and not(self.is_near_anything())", "self.turn_heading(1)", 1.0))
-
-	# 	return program
-
-
 
 	#Moving to a point with GCPR/Modified bug algo
 	def go_point(self):
@@ -230,9 +181,10 @@ class ProgGen(object):
 		program.append(("self.neighbors() < 2", "self.u_turn()", 1.0))
 		#Just right neighbors, stop
 		program.append(("self.neighbors() == 2", "self.stop()", 1.0))
+		return program
 
 	def move_object(self, object_loc, path):
-		program = go_point(self):
+		program = self.go_point()
 		#Move to the object using modified bug
 		program.append(("self.pc == None", "self.set_pc(1)", 1.0))
 		program.append(("self.pc == 1", "self.set_goal({}})".format(object_loc), 1.0))
@@ -348,38 +300,58 @@ class ProgGen(object):
 			#Syntactic sugar, really care about children
 			for child in t.children:
 				self.handle_instruction(child)
+
 		if t.data == 'gohere':
 			#Could be a drag path, could be a selection and then path
 			path = self.path_as_list(t)
 			robots = self.robots_as_list(t)
-			rospy.logwarn("{} go on the path".format(robots))
+			program = self.follow_path(path)
+			self.publishProgram(robots, program)
+
 		if t.data == 'patrol':
 			#Get the path and the selected robots
 			path = self.path_as_list(t)
 			robots = self.robots_as_list(t)
 			#Give each robot a path
-			rospy.logwarn("Patrol with {}".format(robots))
+			program = self.patrol(path)
+			self.publishProgram(robots, program)
+
 		if t.data == 'makeformation':
 		 	#Get the path and the selected robots
 			formation = self.path_as_list(t)
 			robots = self.robots_as_list(t)
-			rospy.logwarn("Formation with {}".format(robots))
+			program = self.formation(formation, robots)
+			self.publishProgram(robots, program)
+
 		if t.data == 'moveobject':
 		 	#Two selections to get, first is robots, second is object
-		 	rospy.logwarn("Move doesn't get selections yet")
-		 	#One path to get, motion of object
+		 	robot_selection = None
+		 	obj_selection = None
+		 	for child in t.children:
+		 		if robot_selection is None:
+		 			if child.data == 'selection':
+		 				robot_selection = self.robots_as_list(child)
+		 		else:
+		 			if child.data == 'selection':
+		 				#TODO at the moment, robots are the only selectable things
+		 				obj_selection = self.robots_as_list(child)
+		 	
 		 	path = self.path_as_list(t)
+		 	program = self.move_object(obj_selection, path)
+		 	self.publishProgram(robots, program)
+
 		if t.data == 'removerobot':
 		 	#Get the selection
 		 	robot = self.robots_as_list(t)
 		 	rospy.logwarn("Delete {}".format(robot))
+		 	#TODO this doesn't actually delete the robot
+
 		if t.data == 'disperse':
 		 	#Get the selection
 		 	robots = self.robots_as_list(t)
-		 	rospy.logwarn("Disperse {}".format(robot))
-		 	#Send a disperse controller program to selected robots
-		 	pass
-
+		 	program = self.disperse()
+		 	self.publishProgram(robots, program)
+		
 
 	def get_path(self,g):
 		path = []
@@ -452,26 +424,28 @@ class ProgGen(object):
 		#then it's time to end the previous gesture and parse that, and leave the select in as
 		#the beginning of a new gesture
 		elif self.isSelect(self.gestures[-1]) and any([self.isSelect(x) for x in self.gestures[:-1]]):
-			print "--> select started new gesture"
-			#insert an end to it and ship it to the parser
-			toParse = self.gestures[:-1]
-			evt = Gesture()
-			evt.eventName = "end"
-			evt.stamp = rospy.Time.now()
-			evt.isButton = False 
-			evt.robots = []
-			evt.strokes = []
-			toParse.append(evt)
+			#A second select is possible for a move gesture, so we can accept it in this case
+			if not any(x.eventName == 'move_object' for x in self.gestures):
+				print "--> select started new gesture"
+				#insert an end to it and ship it to the parser
+				toParse = self.gestures[:-1]
+				evt = Gesture()
+				evt.eventName = "end"
+				evt.stamp = rospy.Time.now()
+				evt.isButton = False 
+				evt.robots = []
+				evt.strokes = []
+				toParse.append(evt)
 
-			#Call the parser on it
-			try:
-				self.parseGestures(toParse)
-			except UnexpectedInput as e:
-					print e
-			finally:			
-				#Clear the stuff that was just sent to the parser, but leave the 
-				#selection gesture that kicked off this parse attempt
-				self.gestures = [self.gestures[-1]]
+				#Call the parser on it
+				try:
+					self.parseGestures(toParse)
+				except UnexpectedInput as e:
+						print e
+				finally:			
+					#Clear the stuff that was just sent to the parser, but leave the 
+					#selection gesture that kicked off this parse attempt
+					self.gestures = [self.gestures[-1]]
 
 	def isPath(self, gestureMsg):
 		if gestureMsg.eventName == "path":
@@ -484,8 +458,11 @@ class ProgGen(object):
 		return False
 
 	def publishProgram(self, robots, program):
-		for robot in robots:
-			self.sender.pubProg(robot, program)
+		import pprint 
+		pprint.pprint(robots)
+		pprint.pprint(program)
+		# for robot in robots:
+		# 	self.sender.pubProg(robot, program)
 
 #Start everything up and then just spin
 rospy.init_node('gcpr_gen')
