@@ -717,6 +717,7 @@ Over the scales of forces present in tabletop swarms, PCB can be considered comp
 The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
 Where possible, small robots should be designed to use the PCB instead. 
 Using children's toys in TinyRobo was intended to avoid the use of such custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain. 
+The use of hobby-level or toy-like platforms for swarms is not certain to be a dead-end, as the UB Swarm and the Spider-bots demonstrate, but the resulting robots will only be one of either inexpensive or reliable \citep{patil2016ub, price2014spider}. 
 
 Parts count for small robots should be minimized.
 TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
@@ -728,7 +729,8 @@ Reducing parts count reduces cost and speeds assembly.
 Swarm robots should have autonomous charging, and have each robot be able to monitor its own battery level. 
 Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
 In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
-For the GRITSBbots, pins on the front of each robot allows the robot to connect to a charging station by itself, rather than requiring a human to connect it. 
+For the GRITSBbots, an early version used  pins on the front of each robot to connect to a charging station, rather than requiring a human to connect it. 
+Later versions used Qi wireless charging \citep{pickem2017robotarium}.
 The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
 The alternative to this, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
 At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
@@ -745,7 +747,7 @@ One version of the GRITSBots used AprilTags and a standard web cam, resulting in
 This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
 Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
 The update rate places an upper bound on the ability of the system to respond to the motion of the robots. 
-To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz \cite{PickemGrits2014}. 
+To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz, and for a web-based robot deployment environment, settled on ArUco tags \cite{PickemGrits2014, pickem2017robotarium}. 
 MROBerTO also used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
 Kilobot robots also include an RGB LED, which may be set to any color by the software of the Kilobot. 
 These LEDs can also provide swarm feedback in a manner similar to the LEDs in McLurkin's Swarmish interface \cite{mclurkin2006speaking}.

@@ -2638,3 +2638,48 @@ Jill L. Drury , Jean Scholtz, Holly A. Yanco
 	Big list of different awareness types
 	"HRI awareness (base case): Given one human and one robot working on a task together, HRI awareness is the understanding that the human has of the location, activities, status, and surroundings of the robot; and the knowledge that the robot has of the human’s commands necessary to direct its activities and the constraints under which it must operate. "
 	For interface evaulation, not swarm specific
+
+Compiler Verification Notes
+
+Experiences in building and using compiler validation systems 
+PAUL OLIVER 
+	Functional testing
+		"exercises the functional features of a software product"
+		Can't really do exhaustively 
+			Although my system is simple enough that I probably can
+	This was written when there was still some question that high level languages were a thing
+	Validation system throws a bunch of known-good programs through the software
+		Output programs are then checked that they do the right thing
+	I can generate known-good programs pretty easily
+		Given the language, it's possible to autogenerate valid strings in that language
+	Checking that they do the right thing is fairly hard
+		Requires running in simulation and assessing the results
+
+ORTHOGONAL LATIN SQUARES: AN APPLICATION OF EXPERIMENT DESIGN TO COMPILER TESTING 
+Robert Mandl (1985)
+	The number of possible correct programs blows up really fast in a complex language
+	(I don't have a complex language)
+	Attempts to formalize what constitutes coverage of the cases that are actually usefully distinct
+	Nice reduction, not terribly relevant to what I'm working on at the moment
+
+Formal verification of a realistic compiler
+Xavier Lero (2009)
+	Proof of semantic preservation of CompCert
+		CompCert is a compiler that takes in Clight (a subset of C) and outputs PPC assembly
+	Coq proof assistant
+		for both writing the compiler and proving it's correct
+	A lot of verficiation of code is done on the code, and then that is compiled
+		Which trusts the compiler rather a lot
+	This appears to be for languages that are rather a lot more sophisticated than what I have.
+
+It's probably possible to verify semantic transparency of my compiler?
+	Well, not really. Sensor noise and actuator imperfection means the system doesn't ever really do what its program says
+	Feedback loops allow it to converge towards what it says, but that doesn't really feel like the same thing
+
+Distributed  Algorithms  for  Autonomous  Mobile  Robots  
+Giuseppe Prencipe and Nicola Santoro
+	This is the paper that I was playing with writing that surveys what you can do with various levels of sensing and computing
+		Only I didn't have to write it!
+	Might be worth reading the cited papers for what they claim about the robots
+		Or whether any of them work in environments with obstacles, non-point robots, etc. 
+		
