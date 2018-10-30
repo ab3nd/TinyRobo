@@ -2738,3 +2738,6 @@ I think the thing that's going to be the most possible verification will be chec
 	Maybe asserting that the robot can always move?
 		Aliveness condition
 	Or that there isn't a state that results in stop forever?
+	PRISM supports priced probablistic timed automata, which is probalby overkill
+		Also probablistic automata, which are probably not overkill
+		
