@@ -332,7 +332,7 @@ However, once the robot reaches any point on the perimeter, there are two option
 The robot can stop, as it is now on the perimeter and so ``in formation''. 
 Any subsequent robot following the path will then treat that point on the path as blocked by an obstacle, and proceed to attempt to reach the next point. 
 As a result, each robot stops at the first unoccupied space on the path, or fails to find any unoccupied spaces and terminates upon failure to reach the last point in the path. 
-Alternatively, the robot could stop when it reaches the last point, or, on failure, backtrack to the last point that it could reach. \todo{is it valuable to attempt to explore the entire formation before picking a spot?} 
+Alternatively, the robot could stop when it reaches the last point, or, on failure, backtrack to the last point that it could reach.% \todo{is it valuable to attempt to explore the entire formation before picking a spot?} 
 In either case, as with basic path following, the algorithm is complete. 
 
 Interestingly, the Bug2 algorithm from the original work on bug algorithms is a better choice for the basic bug algorithm used this style of formation than the modified tangent bug algorithm \citep{lumelsky1987path}. 
@@ -397,14 +397,14 @@ Point robots raise the problem that if $\alpha$ is allowed to equal the number o
 This is counter to the intuitive understanding of dispersal, and so $\alpha$ is constrained to be less than the number of robots in the swarm. 
 %This runs into the paradox of the heap. 
 %How much lower than the number of robots in the swarm must $\alpha$ be for the robots to be considered dispersed. 
-\todo{hexagonal close packing of circles of radius r, so 6 seems to be the upper bound, beyond which there is some other kind of problem}.
+%\todo{hexagonal close packing of circles of radius r, so 6 seems to be the upper bound, beyond which there is some other kind of problem}.
 
 It may be that dispersion cannot be performed, for example due to limited space in the area to be dispersed into. 
 In order to derive a complete local-sensing-only dispersion algorithm, the algorithm must be shown to move every robot to a location where the robot can detect using local sensing that it is dispersed, or determine that such a location does not exist.
 
 For two robots and $\alpha = 0$, there must exist two points in the space such that the distance between those points is greater than $r$. 
 Because the sensing range of the robots is $r$, a robot located at a point cannot tell if a point greater than $r$ distance away is unoccupied, and so the algorithm requires some form of non-local sensing, either communication with other robots or map building. 
-In fact, in order to determine that there exists no such pair of points in the space, the robots must be aware of all the accessible points in the space, which amounts to global, rather than local knowledge.\todo {is this correct?} 
+In fact, in order to determine that there exists no such pair of points in the space, the robots must be aware of all the accessible points in the space, which amounts to global, rather than local knowledge.%\todo {is this correct?} 
 For two robots, $\alpha$ may not be increased, as it would then violate the constraint that $\alpha$ be less than the number of other robots in the swarm. 
 
 If the number of robots in the swarm is increased by one, the number of points in the space that are required to be greater than $r$ apart increases by one. 

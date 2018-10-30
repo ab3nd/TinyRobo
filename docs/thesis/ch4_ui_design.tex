@@ -41,14 +41,42 @@ The experiment described in this thesis did not collect sufficient examples of h
 Because of this lack of information, and the fact that most handwritten commands were proposed by a single user, the resulting interface does not contain support for handwriting recognition and symbol interpretation.  
 
 Interestingly, voice commands were similar to both handwriting, in terms of distribution of user choice, and gestures, in terms of syntax. 
-One user used voice commands for all tasks, but a few \todo{numbers, no weasling} users also used voice commands for a few tasks, but not all of them. 
+One user used voice commands for all tasks, but ten users also used voice commands for at least once. 
+
+\begin{table}
+	\centering
+	\begin{tabular}{l l}
+		Task & Uses of Voice Commands\\
+		\hline
+		line & 5\\
+		square & 4 \\
+		crate dispersed & 3 \\
+		divide color mix & 3\\
+		stop & 3\\
+		crate & 2\\
+		move a & 2\\
+		disperse & 2\\
+		merge & 2\\
+		split & 2\\
+		patrol a & 2 \\
+		divide & 1 \\
+		divide color 1 & 1\\
+		divide color 2 & 1\\
+		move wall & 1\\
+		remove & 1\\
+		mark & 1 \\
+		patrol screen & 1\\
+	\end{tabular}
+	\caption{Use of voice commands by task. The use of high numbers of voice commands for the formation tasks, line and square, was likely biased by the text of the instructional slides. }
+\end{table}
+
 This distribution is like the handwritten commands, in that one user used handwritten commands frequently, but a few other users used a few of them for some tasks.
 The accidental biasing of users towards use of voice for formation tasks was discussed earlier. 
 In addition, two users stated that they would like to have a vocal stop command for the ``stop the robots'' task, because it could be issued quickly and without having to accurately touch the moving robots. 
 These users did not issue other voice commands, as the other tasks were not perceived to be as urgent as the ``stop the robots'' task. 
 
 The syntactic similarity between the voice commands and the gesture commands is because the gesture commands frequently take the subject-verb-object ordering of spoken sentences. 
-Some parallelism in the structure of spoken commands and gestures is  unsurprising, as in human-to-human communication, vocal expressions and gestures are theorized to arise from the same internal representations citep{mcneill1985so}. 
+Some parallelism in the structure of spoken commands and gestures is  unsurprising, as in human-to-human communication, vocal expressions and gestures are theorized to arise from the same internal representations \citep{mcneill1985so}. 
 For example, selecting the robot group indicates a subject, and drawing the path indicates the verb (``go this way"). 
 Objects are optional or implied, as going to a location does not have a clear object that the robots are instructed to act upon. 
 In some cases, the subject is implied as well.
@@ -186,7 +214,7 @@ The Select Group and Remove Robots are not commands to the robots.
 They are commands to the system. 
 Select Group selects robots by some common feature (in the user test, common group membership was depicted by color). 
 Remove Robot instructs the system to mark a robot or robots as not to be used, and so they are excluded from having commands issued to them. 
-The system is the implied subject of the sentences ``[system] Remove Robot, these robots'' and ``[system], Select Group, these robots''. 
+The system is the implied subject of the sentences ``[System], Remove Robot, these robots'' and ``[System], Select Group, these robots''. 
 Implying the subject of a command to the system is acceptable in a way that implying robots as a subject is not, because there is one control system, and so the subject is not ambiguous. 
 It can be viewed as similar to a desktop computer, where it is generally assumed that commands invoked through that computer's UI are for that computer to do. 
 

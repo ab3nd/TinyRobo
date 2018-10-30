@@ -2671,6 +2671,29 @@ Xavier Lero (2009)
 	A lot of verficiation of code is done on the code, and then that is compiled
 		Which trusts the compiler rather a lot
 	This appears to be for languages that are rather a lot more sophisticated than what I have.
+	Varying levels of semantic preservation
+		source program S and compiled code C have exactly the same behaviors (as observed in e.g. strace)
+			This seems kind of meaningless, since you can't run uncompiled C code, so it has no behaviors?
+		S has no ill-defined behaviors (e.g. div/0), and as above, behaviors are the same
+		For all good behaviors, the source for those behaviors results in compiled code that has those behaviors
+	Really care if the program satisfies a spec
+		C safe (no behaviors go wrong) and all the behaviors of C are in the spec
+	So if you can verify that S satisifies the spec and C satisfies the spec, then the compiler is correct
+		S gets checked in a different way from C
+	Compiler is a function from source to either compiled code or errors
+	Verified compiler has a formal proof that compiling S successfully implies C preserves S's semantics
+	Translation validation 
+		Checks that C preserves S's semantics for a given S a posteriori
+			This might actually be a useful approach for me
+				Except that there's a gulf between what the user meant and what the program says due to the difference in abstraction levels between swarm-level commands and individual robot programs
+					And as far as is known in swarm robotics, there isn't a fix for this. 
+				In fact, they almost certainly don't mean the same thing, at the individual program level
+				What about swarm macrostate? Can it be reasoned about without running it in simulation?
+	Multipass compiler, each transformation and optimization pass proved to preserve semantics
+	Coq used as the prover for the semantic preservation proofs and as the programming language to write the compiler
+		Allows prover to directly operate on the modules of the compiler as first-class citizens
+
+
 
 It's probably possible to verify semantic transparency of my compiler?
 	Well, not really. Sensor noise and actuator imperfection means the system doesn't ever really do what its program says
@@ -2682,4 +2705,36 @@ Giuseppe Prencipe and Nicola Santoro
 		Only I didn't have to write it!
 	Might be worth reading the cited papers for what they claim about the robots
 		Or whether any of them work in environments with obstacles, non-point robots, etc. 
-		
+
+On Mimicking the Effects of the Reality Gap with Simulation-only Experiments
+Antoine Ligot and Mauro Birattari		
+	Still no silver bullet for software design for swarms (as of 2018, so... I didn't fix it either)
+	Can switch simulation models to get a reality gap
+		"reality" is just another, really detailed, simulator, as far as the robot is concerned
+		I hear that "the world is it's own best model"...
+	Can get reality-gap style failure even if the test simulator is more complex than the assessment simulator
+		Probably like that coriolis-force hack
+
+Is it possible to prove that there will BE no silver bullet, that you simply cannot automatically design an arbitrary emergent behavior for a swarm?
+
+Translation Validation  
+A. Pnueli, M. Siegel, E. Singerman 
+	Verfies that each run of the compiler generates target code that correctly implements the source code
+	Source and target get put into an analyzer
+		If they correspond, it outputs a proof script
+			Proof script gets put into a proof checker and is either ok or not
+		If they don't correspond, analyzer outputs a counterexample
+			Scenario shows how behavior is different between source and target code
+	System represents all changes of program as sequence of states
+		If the SIGNAL program and the C program at a particular point in the state sequence coincide, they are doing the same thing
+
+I think the thing that's going to be the most possible verification will be checking the output programs with a model checker
+	GCPR can likely be translated to PRISM
+	Can make assertions about the program based on PRISM model
+	How do assumptions about the robot have to be represented to have this work?
+		Motions are atomic and always successful?
+	Representation of how motion changes sensors are not present in the language at all
+		Sensing in e.g. LTL papers is always a little weird (perfect binary sensors)
+	Maybe asserting that the robot can always move?
+		Aliveness condition
+	Or that there isn't a state that results in stop forever?
