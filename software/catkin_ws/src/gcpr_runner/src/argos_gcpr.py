@@ -69,6 +69,14 @@ class GCPR_driver(object):
 		#For debugging
 		self.ns = rospy.get_namespace()
 
+		#ARGOS footbot prox sensor range in meters
+		self.proxRange = 0.1
+
+	def set_hit_point(self):
+		self.hit_point = self.lastPosition
+		rospy.logwarn("{} hit at {} {}".format(self.ns, self.hit_point.position.x, self.hit_point.position.y))
+
+
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
 		self.laser_msg = laserMsg
@@ -351,30 +359,46 @@ class GCPR_driver(object):
 					closest = (x,y)
 		return closest
 
+
+	def add_headings(self, h1, h2):
+		#Headings are +/- Pi, so they wrap at +/- Pi
+		tempHeading = h1+h2
+		if tempHeading < -math.pi:
+			tempHeading = math.pi - (tempHeading+math.pi)
+		if tempHeading > math.pi:
+			tempHeading = -math.pi + (tempHeading-math.pi)
+		return tempHeading
+
 	#Gets the center of the closest set of 6 unoccupied sensor readings
 	def closest_free_window(self, goal):
-		window_width = 6
-		free_heading = None
-		min_angle = float('inf')
-		for index, reading in enumerate(self.proxReadings):
-			if reading.value == 0:
-				#Check if the next N readings are also 0
-				window_open = True
-				for ii in range(1,window_width+1):
-					if self.proxReadings[(index + ii) % len(self.proxReadings)].value != 0:
-						window_open = False
-						#Don't need to continue
-						break
-				if window_open:
-					g_angle = self.get_heading(goal)
-					#6 readings, so center is between two readings, so get one of them
-					w_angle = self.proxReadings[(index + 2) % len(self.proxReadings)].angle
-					smallest_angle = abs(math.atan2(math.sin(w_angle-g_angle), math.cos(w_angle-g_angle)))
-					if smallest_angle < min_angle:
-						min_angle = smallest_angle
-						free_heading = w_angle
-		return free_heading
-
+		window_size = 7
+		#This is deliberately an integer division
+		center = window_size/2
+		#Initialize values for getting the closest point
+		closest = None
+		min_d = float('inf')
+		for idx, sensor in enumerate(self.proxReadings):
+			#Rotate the array
+			rotReadings = self.proxReadings[idx:] + self.proxReadings[:idx]
+			#Check that the first windowsize values are all 0 (unoccupied)
+			if all([sensor.value == 0.0 for sensor in rotReadings[:window_size]]):
+				#They are, so the center of this window is a canidate for the center
+				
+				sensor = rotReadings[center]
+				#Convert the sensor reading, which is 0 for unoccupied increasing to 1 at the robot, 
+				#into an actual distance (may be inaccurate if it's not linear)
+				sensor_d = self.proxRange - (self.proxRange * sensor.value)
+				#Convert that into a point in space
+				point_x = sensor_d * math.cos(self.add_headings(sensor.angle, self.current_heading)) + self.lastPosition.position.x
+				point_y = sensor_d * math.sin(self.add_headings(sensor.angle, self.current_heading)) + self.lastPosition.position.y
+				#If that point is closest to the goal, record it
+				d = self.distance((goal[0], goal[1]), (point_x, point_y))
+				if d < min_d:
+					min_d = d
+					closest = (point_x, point_y)
+		#Convert the angle of the closest sensor to a heading
+		return self.get_heading(closest)
+		
 	#Return the closest point to the goal in free space
 	def closest_free_point(self, goal):
 		min_d = float('inf')

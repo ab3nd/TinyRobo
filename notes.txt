@@ -2716,6 +2716,8 @@ Antoine Ligot and Mauro Birattari
 		Probably like that coriolis-force hack
 
 Is it possible to prove that there will BE no silver bullet, that you simply cannot automatically design an arbitrary emergent behavior for a swarm?
+	This is, to some extent, what that paper on the NP completeness of design in general did, isn't it?
+	Or at least that the transition is very difficult
 
 Translation Validation  
 A. Pnueli, M. Siegel, E. Singerman 
@@ -2738,6 +2740,6 @@ I think the thing that's going to be the most possible verification will be chec
 	Maybe asserting that the robot can always move?
 		Aliveness condition
 	Or that there isn't a state that results in stop forever?
+		other than stop state, of course
 	PRISM supports priced probablistic timed automata, which is probalby overkill
 		Also probablistic automata, which are probably not overkill
-		

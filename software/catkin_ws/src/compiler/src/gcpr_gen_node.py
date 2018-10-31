@@ -459,10 +459,10 @@ class ProgGen(object):
 
 	def publishProgram(self, robots, program):
 		import pprint 
-		pprint.pprint(robots)
-		pprint.pprint(program)
-		# for robot in robots:
-		# 	self.sender.pubProg(robot, program)
+		#pprint.pprint(robots)
+		#pprint.pprint(program)
+		for robot in robots:
+			self.sender.pubProg(robot, program)
 
 #Start everything up and then just spin
 rospy.init_node('gcpr_gen')
