@@ -7,7 +7,7 @@ A hardware platform for control of small, inexpensive swarm robots was developed
 The fact that swarm hardware across the literature has roughly the same general layout for the hardware can be viewed as an example of convergent evolution. 
 The GRITSbots, Amir, and Colias all have a ring of IR sensors, as do many other designs. 
 Most swarm robots use differential drive for steering, through either a sealed gearbox or direct drive.
-Gianpiero \emph{et al} describe a reference model for the robots in their work, which is inspired by the E-puck \cite{francesca2014automode}.
+Gianpiero \emph{et al} describe a reference model for the robots in their work, which is inspired by the E-puck \citep{francesca2014automode}.
 The reference model could probably generalize well to other hardware, as the E-puck on which it is based also has a ring of IR sensors and differential drive. 
 A generalized reference model would also be useful for developing SCT generators for robot control, as the set of free behavior models is specific to the robot, and so could be reused for new tasks using the reference system. 
 
@@ -35,19 +35,25 @@ This flexibility enabled an easy transition to testing in simulation when it bec
 \section{Multitouch Gesture set for Swarm Control} \label{section:Multitouch_Gesture_set_for_Swarm_Control}
 
 Gestures were collected from 50 users to define a gesture set for multitouch swarm control. 
-
 Analysis of the data showed that there were variations in the uses of certain gestures as the size of the swarm increased. 
 In particular, the use of selection gestures increased in the 10 and 100 robot cases, but dropped off for the 1000 robot swarm. 
 Tap gestures were more likely to be used for selection in the unknown, 1, and 10 robot cases than the other cases, while group selections were used mainly in the 10 and 100 robot cases, and less in the 1000 robot case. 
 The 10 robot case seems to be the transition point where use of group or single tap selections are equally used. 
+
 
 Showing the area occupied by the swarm as a cloud had very similar use of selections to the one robot case. 
 Box selection was never used, lasso was used rarely, and tap selections were the most common selection gesture by far. 
 These changes to the user's choices of gesture support the hypothesis that the gesture selection does change with the user's perception of the swarm, both the visible number of robots and whether the swarm is rendered as individual robots or a coverage area. 
 
 There is evidence from the user survey and gesture selection that video games and other prior experiences with multi-touch interaction devices have an influence on the gestures used. 
-Despite being told that the device is multitouch, most users made very few two-handed gestures, although half of the users made at least one gesture.  
+The interface design used in the experiment was initially somewhat like the interface of a realtime strategy game, and as a result, seems to have cued users who had played realtime strategy games (RTSs) to use styles of interaction common to RTSs.
+Designers of future interfaces can interpret this as both a strategy and a warning. 
+As a strategy, interfaces can be designed specifically to include design features from games, and so cue the users that the interface supports the interactions that are common in the genre of game that the interface emulates. 
+However, it can also be a warning that if an interface resembles a game, the users will expect those interaction styles, and may entirely avoid other interaction styles that do not fit with their expectations. 
+The total absence of pinch gestures on the part of RTS gaming users is such a missing interaction. 
+At a more abstract level, designers would be wise to avoid leaning too heavily on game-based cues in user interface design, unless they are certain that their users are gamers, or the cue will be missed. 
 
+Despite being told that the device is multitouch, most users made very few two-handed gestures, although half of the users made at least one two-handed gesture.  
 Voice commands were more common in the data set collected for this experiment than in previous experiments that allowed users free reign in choice of their command set. 
 It is speculated that this is due to the rise in functionality and prevalence of ``voice assistant'' technologies in smartphones and home appliances such as Google Home. 
 This transition would be similar to the transition observed in previous work, where people who had smartphones used pinch gestures far more than people who did not have experience with smartphones or similar multitouch devices. 
@@ -67,22 +73,7 @@ One user dragged the wall in front of the robots, and another user asked if they
 The wall was intended to represent an actual wall, which does not afford moving in the physical world, but it was represented in the experiment as a thick black line. 
 It may be that the users would have not attempted to move the wall if it was more clearly represented as e.g. a stone or brick wall, and so had connotations of excessive weight. 
 On the other hand, the users may have regarded it as what it actually was, an image of a wall on a computer screen, and decided that since images can be moved around the screen, the wall image can too. 
-Attempting to experimentally determine if the representation affects how the user interacts with the wall may require a large number of users, as out of 50 participants, only 2 even mentioned the idea of moving the wall. 
-
-In this experiment, some users were initially confused by the interface not responding. 
-It may be that running this experiment on a computer, rather than a paper prototype, contributed to the user expectation that the system could react. 
-Most users' experience with touch screens is that when they touch them, something visible happens nearly immediately. 
-A system that does not visibly react, as in this experiment, is usually assumed to be broken, or waiting for further input, but no one expects printed documents to react to touch.
-For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al.}. 
-The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
-Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
-Showing the response before asking for the gesture removes the expectation that the system will react. 
-
-Unfortunately, showing the response of the system may also act as a cue to the user that suggests a specific solution for gesture selection. 
-For example, if the system shows a square formation being formed by multiple robots moving directly to the closest point on the square to their starting location, the paths shown are multiple direct motions. 
-If instead, the system shows the robots forming a chain that snakes around the perimeter of the square before coming to a stop, the path shown is forming the snake, and then traversing the perimeter. 
-The motion in the first case may suggest that the user make individual gestures to position each robot, while the gesture suggested in the second case might be more like dragging a lasso around the group and then a line from the group around the perimeter of the box. 
-Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
+Attempting to experimentally determine if the representation affects how the user interacts with the wall would require an experiment better designed to examine that affordance, as out of 50 participants, only 2 even mentioned the idea of moving the wall. 
 
 \subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
 
@@ -96,7 +87,13 @@ In cases where completeness could not be determined, or was determined to be imp
 The translation between user commands and robot programs in this work was developed using a method similar to compiler development, where an input language was defined from the user gesture commands, and an interpreter was developed to take strings in the language of gestures, and output control programs in as statements in an implementation of guarded control programming with rates (GCPR) \citep{napp2011compositional}.  
 Previous work in gesture control for small groups of robots was also able to recognize a grammar of user inputs using a finite state machine \citep{micire2010multi}.
 It had been initially hoped that there would be a universal abstraction or transformation that could represent the conversion of all gestures into all robot commands representing those gestures, rather than having different sets of behaviors, with different properties, which could be constructed from the user gestures after recognizing those gestures. 
-Supervisory Control Theory may provide an approach to reducing the amount of hand-developed code in the system, and so human error. 
 However, user gestures do not provide a sufficiently explicit means of designing a program in realtime to allow for the full automation of the generation of control programs without assuming an amount of \emph{a priori} knowledge that is unrealistic in practice. 
+For example, while there is a gesture for disperse, the gesture itself does not contain information about how the dispersion should be performed. 
+Similarly, while the gestures used to indicate that an object should be moved to a location contain information about what the movement should be, they do not contain information about how the movement should be accomplished. 
+Because these elements are not present in the user input, any universal transformation that has them in its output would have to essentially make them up. 
+As a consequence, the translation was implemented in the way that programming languages are usually implemented, with a developer supplying the method that the robots would use to fulfill the user's commands. 
 
-
+There are a number of threads in current swarm robotic research that may eventually permit the engineering of swarm behavior from high level descriptions, many of which are discussed in section \ref{section:Swarm_Software_Development_Methods}. 
+One that is not discussed in great depth there is the field of attempts to find mappings between relatively low-dimensioned swarm macrostates and potentially extremely high-dimensional state spaces representing each robot individually. 
+While some work has been done in controlling swarms with controllers operating on macro-level behavior, such as attractors, there is not yet an engineering discipline that would guide the creation of arbitrary swarm behaviors under real-world complexity \citep{brown2014human}. 
+As this area of swarm robotics develops, user interfaces will have to develop with it, in order to allow humans to operate these systems in natural and fluent manners. 

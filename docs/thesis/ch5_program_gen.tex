@@ -421,7 +421,7 @@ It either requires global information, in which case it is not local-only, or it
 Making the robots take up space, rather than being points, can result in the condition that $\alpha$ robots simply cannot fit within the disc of radius $r$ around one robot (for example, if the robot radius is $r$), and so even close-packing of the robots is considered ``dispersed".
 Leaving aside this degeneracy, if $\alpha + 1$ robots can fit within $r$ of one robot, and $\alpha$ is constrained to be less than $M$, then the extra robot is required to be greater than $r$ from the surrounded robot, and the same argument holds with regard to determining if a point greater than $r$ distance from the surrounded robot exists or not for all possible placements of the surrounded robot.
 
-Despite the fact that a complete, local-only dispersion controller cannot be found, there are controllers for dispersion of robots that are proven to converge, and to operate without localization \cite{correll2009ad}. 
+Despite the fact that a complete, local-only dispersion controller cannot be found, there are controllers for dispersion of robots that are proven to converge, and to operate without localization \citep{correll2009ad}. 
 This style of dispersion does require that the robots be able to detect and communicate with each other.
 With non-communicating, non-localized robots that can detect range to other objects, e.g. via intensity of reflected light, dispersion over an area can be accomplished by having all robots move to keep all objects that they can detect within a fixed range.
 Even simpler, robots could travel towards open space until they detect no surrounding objects and then stop, or stop if they detect no open space.  

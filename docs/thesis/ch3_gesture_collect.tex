@@ -53,6 +53,21 @@ Users were seated in front of the interface and read a script describing the sys
 The interface did not visibly respond to user contact or move the robots depicted on it.
 In this regard, it more closely resembles the paper prototypes of the User-Centered Design process than a fully functional interface \citep{ehn1992cardboard}.
 
+In this experiment, some users were initially confused by the interface not responding. 
+It may be that running this experiment on a computer, rather than a paper prototype, contributed to the user expectation that the system could react. 
+Most users' experience with touch screens is that when they touch them, something visible happens nearly immediately. 
+A system that does not visibly react, as in this experiment, is usually assumed to be broken, or waiting for further input, but no one expects printed documents to react to touch.
+For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al.}. 
+The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
+Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
+Showing the response before asking for the gesture removes the expectation that the system will react. 
+
+Unfortunately, showing the response of the system may also act as a cue to the user that suggests a specific solution for gesture selection. 
+For example, if the system shows a square formation being formed by multiple robots moving directly to the closest point on the square to their starting location, the paths shown are multiple direct motions. 
+If instead, the system shows the robots forming a chain that snakes around the perimeter of the square before coming to a stop, the path shown is forming the snake, and then traversing the perimeter. 
+The motion in the first case may suggest that the user make individual gestures to position each robot, while the gesture suggested in the second case might be more like dragging a lasso around the group and then a line from the group around the perimeter of the box. 
+Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
+
 The multitouch user interface device used in this experiment is a 3M M2265PW touchscreen. 
 This screen can track up to 20 simultaneous points, but reports only points, rather than shapes or areas of contact. 
 While the user interacted with the touch screen, their touches and the positions of their hands were recorded by the computer connected to the screen and by the video cameras. 
@@ -141,6 +156,8 @@ The ``Merge groups" task was left out of the single robot case because of the po
 
 The unknown number of robots condition has the same tasks as the 10, 100, and 1000 robot cases, except for the ``Mark defective robot" and ``Remove defective robot" task. 
 Without UI elements that represent individual robots, the user cannot take any actions that refer to a specific robot. 
+
+
 
 \subsection{Participant Demographics} \label{section:Participant_Demographics}
 
