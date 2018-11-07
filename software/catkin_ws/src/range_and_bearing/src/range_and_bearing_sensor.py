@@ -6,6 +6,20 @@ import rospy
 from distance_oracle.srv import *
 from bearing_oracle.srv import *
 from range_and_bearing.msg import RangeAndBearing
+from apriltags_ros.msg import *
+
+class TagTracker(object):
+	def __init__(self):
+		self.currentTags = {}
+		self.tagSub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.update_tags)
+
+	def update_tags(self, msg):
+		self.currentTags = {}
+		for ii in range(len(msg.detections)):
+			self.currentTags[int(msg.detections[ii].id)] = msg.detections[ii].pose
+
+	def tag_list(self):
+		return self.currentTags.keys()
 
 def RaBSensor():
 	rospy.init_node('range_and_bearing', anonymous=True)
@@ -19,25 +33,37 @@ def RaBSensor():
 	#TODO make this a parameter
 	rate = rospy.Rate(3)
 
-	rospy.wait_for_service("distance_oracle")
-	rospy.wait_for_service("bearing_oracle")
+	rospy.logwarn("Waiting on oracles...")
+	rospy.wait_for_service("/distance_oracle")
+	rospy.wait_for_service("/bearing_oracle")
+	rospy.logwarn("...done waiting for oracles.")
+
+	#Set up to get a list of tags
+	tt = TagTracker()
 		
 	while not rospy.is_shutdown():
 		#Try the service call
 		try:
-			#TODO THIS IS A GRODY HACK
-			robots = [0,1,3]
+			robots = tt.tag_list()
+			rospy.logwarn("Calling on: {0}".format(robots))
+			msgOut = RangeAndBearing()
+			#Set up proxies once
+			distMsg = rospy.ServiceProxy("/distance_oracle", DistanceOracle)
+			bearingMsg = rospy.ServiceProxy("/bearing_oracle", BearingOracle)
+					
 			for ii in robots:
-				distMsg = rospy.ServiceProxy("distance_oracle", DistanceOracle)
+				#Repeated proxy calls
 				dResponse = distMsg(fromID = id, toID = ii)
-
-				bearingMsg = rospy.ServiceProxy("bearing_oracle", BearingOracle)
 				bResponse = bearingMsg(fromID = id, toID = ii)
-
-				rospy.logwarn("{0} -> {1}, {2}, {3}".format(id, ii, dResponse.distance, bResponse.bearing))
+				#Stick it in the message
+				msgOut.ids.append(ii)
+				msgOut.ranges.append(dResponse.distance)
+				msgOut.bearings.append(bResponse.bearing)
+			#Publish the message
+			pub.publish(msgOut)
 
 		except rospy.ServiceException, e:
-			print "Service call failed: {0}".format(e)
+			rospy.logwarn("Service call failed: {0}".format(e))
 
 		rate.sleep()
 

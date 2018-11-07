@@ -18,6 +18,11 @@ for ((i=0; i<n; i++)); do
     namespace="bot$i"
     echo -e "\t<group ns=\"$namespace\">"
     echo -e "\t\t<node pkg=\"gcpr_runner\" type=\"argos_gcpr.py\" name=\"bot_controller\" output=\"screen\" />"
+
+    echo -e "\t\t<node pkg=\"range_and_bearing\" type=\"range_and_bearing_sensor.py\" name=\"RaB_sensor\" output=\"screen\">"
+    echo -e "\t\t\t<param name=\"robot_id\" value=\"$i\" type=\"int\"/>"
+    echo -e "\t\t</node>"
+
     echo -e "\t</group>"
 done >> $LAUNCH_FILE
 echo -e "</launch>" >> $LAUNCH_FILE

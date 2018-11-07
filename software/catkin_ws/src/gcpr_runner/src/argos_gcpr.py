@@ -81,6 +81,9 @@ class GCPR_driver(object):
 		self.laser_readings = laserMsg.ranges
 		self.laser_msg = laserMsg
 
+	def update_RaB(self, rabMsg):
+		pass
+
 	def update_pose(self, poseMsg):
 		if self.lastPosition is not None:
 			self.traveled_x += abs(self.lastPosition.position.x - poseMsg.position.x)
