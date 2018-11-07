@@ -49,13 +49,14 @@ def RaBSensor():
 			bearingMsg = rospy.ServiceProxy("/bearing_oracle", BearingOracle)
 					
 			for ii in robots:
-				#Repeated proxy calls
-				dResponse = distMsg(fromID = id, toID = ii)
-				bResponse = bearingMsg(fromID = id, toID = ii)
-				#Stick it in the message
-				msgOut.ids.append(ii)
-				msgOut.ranges.append(dResponse.distance)
-				msgOut.bearings.append(bResponse.bearing)
+				if ii != id: #I already know how far I am from myself...
+					#Repeated proxy calls
+					dResponse = distMsg(fromID = id, toID = ii)
+					bResponse = bearingMsg(fromID = id, toID = ii)
+					#Stick it in the message if it's not myself
+					msgOut.ids.append(ii)
+					msgOut.ranges.append(dResponse.distance)
+					msgOut.bearings.append(bResponse.bearing)
 			#Publish the message
 			pub.publish(msgOut)
 

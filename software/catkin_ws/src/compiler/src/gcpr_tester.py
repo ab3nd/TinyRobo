@@ -51,13 +51,13 @@ program.append(("self.pc_is(0)", "self.set_desired_heading((random.random() * ma
 program.append(("self.pc_is(0)", "self.set_pc(1)", 1.0))
 
 #Move towards heading if not near anything
-program.append(("len(self.neighbors(d=2)) > 2 and not(self.is_near_anything()) and self.on_heading()", "self.move_fwd(0.4)", 1.0))
-program.append(("len(self.neighbors(d=2)) > 2 and not(self.is_near_anything()) and not(self.on_heading())", "self.turn_heading(0.8)", 1.0))
+program.append(("len(self.neighbors(d=4)) > 1 and not(self.is_near_anything()) and self.on_heading()", "self.move_fwd(0.4)", 1.0))
+program.append(("len(self.neighbors(d=4)) > 1 and not(self.is_near_anything()) and not(self.on_heading())", "self.turn_heading(0.8)", 1.0))
 
 # Too few neighbors, turn around		
-program.append(("len(self.neighbors(d=2)) < 2", "self.set_desired_heading(self.add_headings(self.current_heading, math.pi))", 1.0))
+program.append(("len(self.neighbors(d=4)) < 1", "self.set_desired_heading(self.add_headings(self.current_heading, math.pi))", 1.0))
 #Just right neighbors, stop
-program.append(("len(self.neighbors(d=2)) == 2", "self.stop()", 1.0))
+program.append(("len(self.neighbors(d=4)) == 1", "self.stop()", 1.0))
 
 #Avoid objects, by turning away from the object
 #Symmetry breaking

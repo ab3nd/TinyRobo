@@ -167,8 +167,9 @@ class GCPR_driver(object):
 	#Return all the robot IDs within d of this robot
 	#Could probably have used filter?
 	def neighbors(self, d=1):
-		return [n for n, dist in zip(self.other_ids, self.other_ranges) if dist < d]
-
+		neighbors = [n for n, dist in zip(self.other_ids, self.other_ranges) if dist < d]
+		rospy.logwarn_throttle(10, "{}: {}".format(self.ns, neighbors))
+		return neighbors
 
 	#Functions for handling heading
 	def set_desired_heading(self, value):
