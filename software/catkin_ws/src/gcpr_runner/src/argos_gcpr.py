@@ -53,6 +53,11 @@ class GCPR_driver(object):
 		self.traveled_y = 0.0
 		self.lastPosition = None
 
+		#Range and bearing sensor sets these
+		self.other_ids = []
+		self.other_ranges = []
+		self.other_bearings = []
+
 		#for Bug algo
 		self.closest_visited_point = None
 		self.target_point = None
@@ -72,6 +77,7 @@ class GCPR_driver(object):
 		#ARGOS footbot prox sensor range in meters
 		self.proxRange = 0.1
 
+
 	def set_hit_point(self):
 		self.hit_point = self.lastPosition
 		rospy.logwarn("{} hit at {} {}".format(self.ns, self.hit_point.position.x, self.hit_point.position.y))
@@ -81,8 +87,10 @@ class GCPR_driver(object):
 		self.laser_readings = laserMsg.ranges
 		self.laser_msg = laserMsg
 
-	def update_RaB(self, rabMsg):
-		pass
+	def update_rab(self, rabMsg):
+		self.other_ids = rabMsg.ids
+		self.other_ranges = rabMsg.ranges
+		self.other_bearings = rabMsg.bearings
 
 	def update_pose(self, poseMsg):
 		if self.lastPosition is not None:
@@ -154,6 +162,12 @@ class GCPR_driver(object):
 			eval(item)
 
 		#rospy.loginfo_throttle(3, "{} heading {}, distanceX {}, distanceY {}".format(self.ns, self.current_heading, self.traveled_x, self.traveled_y))
+
+	#Return all the robot IDs within d of this robot
+	#Could probably have used filter?
+	def neighbors(self, d=1):
+		return [n for n, dist in zip(self.other_ids, self.other_ranges) if dist < d]
+
 
 	#Functions for handling heading
 	def set_desired_heading(self, value):
@@ -514,6 +528,9 @@ poseSub = rospy.Subscriber("position", Pose, gDriver.update_pose)
 
 #Listen for new programs to load
 prog_sub = rospy.Subscriber("robot_prog", String, gDriver.replace_program)
+
+#Range and bearing messages for disperse (which really only uses range)
+rabSub = rospy.Subscriber("range_and_bearing", RangeAndBearing, gDriver.update_rab)
 
 #Cleanup code to make sure the robot stops moving when ros is shut down
 #Not guaranteed, because the message might not make it out

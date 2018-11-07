@@ -28,16 +28,14 @@ def RaBSensor():
 	#Rotation of the april tag relative to the robot front, in radians
 	tag_rotation = rospy.get_param("~tag_rotation", 0)
 
-	pub = rospy.Publisher('range_and_bearing_{0}'.format(id), RangeAndBearing, queue_size=0)
+	pub = rospy.Publisher('range_and_bearing'.format(id), RangeAndBearing, queue_size=0)
 
 	#TODO make this a parameter
 	rate = rospy.Rate(3)
 
-	rospy.logwarn("Waiting on oracles...")
 	rospy.wait_for_service("/distance_oracle")
 	rospy.wait_for_service("/bearing_oracle")
-	rospy.logwarn("...done waiting for oracles.")
-
+	
 	#Set up to get a list of tags
 	tt = TagTracker()
 		
@@ -45,7 +43,6 @@ def RaBSensor():
 		#Try the service call
 		try:
 			robots = tt.tag_list()
-			rospy.logwarn("Calling on: {0}".format(robots))
 			msgOut = RangeAndBearing()
 			#Set up proxies once
 			distMsg = rospy.ServiceProxy("/distance_oracle", DistanceOracle)
