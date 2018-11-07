@@ -16,6 +16,7 @@ from tf import transformations as transf
 from argos_bridge.msg import Proximity
 from argos_bridge.msg import ProximityList
 
+from range_and_bearing.msg import RangeAndBearing
 
 class ProgramLoader(object):
 	def __init__(self):
