@@ -514,6 +514,11 @@ class GCPR_driver(object):
 			return True
 		return False
 
+	def not_reachable(self, p1):
+		#TODO a point is not reachable if a wall follow returns to the hit point
+		#while following around an obstacle on the way to the point. Get the wall
+		#follow perfect first. 
+		return False
 
 rospy.init_node("gcpr_driver", anonymous=True)
 
