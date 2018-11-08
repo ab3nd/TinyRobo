@@ -54,6 +54,8 @@ class GCPR_driver(object):
 		self.traveled_y = 0.0
 		self.lastPosition = None
 
+		self.goal = None
+
 		#Range and bearing sensor sets these
 		self.other_ids = []
 		self.other_ranges = []
@@ -83,6 +85,9 @@ class GCPR_driver(object):
 		self.hit_point = self.lastPosition
 		rospy.logwarn("{} hit at {} {}".format(self.ns, self.hit_point.position.x, self.hit_point.position.y))
 
+	def set_goal(self, g):
+		self.goal = g
+		rospy.logwarn("{} goal is {}".format(self.ns, self.goal))
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -495,14 +500,16 @@ class GCPR_driver(object):
 
 	#Calculate the heading to a point from the current location
 	def get_heading(self, p2):
-		if self.lastPosition is None:
+		if self.lastPosition is None or p2 is None:
 			return 0.0 #This is not great, but it beats crashing
 		return 2 * math.atan2(p2[0] - self.lastPosition.position.x, p2[1] - self.lastPosition.position.y)
 
 	#True if within a specified distance of a point
 	def at(self, p1, threshold = 0.25):
 		if self.lastPosition is None:
-			return False #It's not a place, we can't possibly be there
+			return False #We're nowhwere, so we can't be at p1
+		if p1 is None:
+			return False #Were passed not a place, so we can't be there either
 		if self.distance((self.lastPosition.position.x, self.lastPosition.position.y), p1) < threshold:
 			return True
 		return False

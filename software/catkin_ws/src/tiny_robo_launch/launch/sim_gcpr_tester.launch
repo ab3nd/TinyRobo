@@ -17,5 +17,6 @@
 	<!-- Bearing oracle -->
 	<node pkg="bearing_oracle" type="bearing_oracle_server.py" name="fake_bearing_service" output="screen"/>
 
-
+	<!-- Converts pixel locations to meter locations -->
+	<node name="point_translator" pkg="robot_drivers" type="sim_point_mapper_svc.py" output="screen"/>
 </launch>
