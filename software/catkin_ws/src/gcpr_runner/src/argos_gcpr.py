@@ -54,17 +54,16 @@ class GCPR_driver(object):
 		self.traveled_y = 0.0
 		self.lastPosition = None
 
-		self.goal = None
-
 		#Range and bearing sensor sets these
 		self.other_ids = []
 		self.other_ranges = []
 		self.other_bearings = []
 
 		#for Bug algo
-		self.closest_visited_point = None
-		self.target_point = None
+		self.goal = None
 		self.hit_point = None
+		self.dReach = float('inf')
+		self.dFollow = float('inf')
 
 		#For GCPR program counter, default to 0
 		self.prog_ctr = 0
@@ -80,14 +79,6 @@ class GCPR_driver(object):
 		#ARGOS footbot prox sensor range in meters
 		self.proxRange = 0.1
 
-
-	def set_hit_point(self):
-		self.hit_point = self.lastPosition
-		rospy.logwarn("{} hit at {} {}".format(self.ns, self.hit_point.position.x, self.hit_point.position.y))
-
-	def set_goal(self, g):
-		self.goal = g
-		rospy.logwarn("{} goal is {}".format(self.ns, self.goal))
 
 	def update_laser(self, laserMsg):
 		self.laser_readings = laserMsg.ranges
@@ -375,7 +366,7 @@ class GCPR_driver(object):
 				#10 cm is 1 dm is 0.1 m
 				x = 0.10 * math.cos(reading.angle)
 				y = 0.10 * math.sin(reading.angle)
-				d = self.distance((x,y), (self.target_point[0], self.target_point[1]))
+				d = self.distance((x,y), (self.goal[0], self.goal[1]))
 				
 				#If it is closer to the target point than previously seen, save it
 				if d < min_d:
@@ -488,12 +479,6 @@ class GCPR_driver(object):
 		#rospy.logwarn("Closest free point ({},{})".format(closest[0], closest[1]))
 		return closest
 
-	def wall_follow(self, goal):
-		#Lower level controller, triggered by being near anything
-		#This is basically a big dumb case statement looking at the sensors
-		#If there is something on the 
-		pass
-
 	#Distance between two points
 	def distance(self, p1, p2):
 		return math.sqrt(math.pow(p1[0] - p2[0] , 2) + math.pow(p1[1] - p2[1], 2))
@@ -514,11 +499,44 @@ class GCPR_driver(object):
 			return True
 		return False
 
+	################################## Bug Algo Bookkeeping ###############################
 	def not_reachable(self, p1):
 		#TODO a point is not reachable if a wall follow returns to the hit point
 		#while following around an obstacle on the way to the point. Get the wall
 		#follow perfect first. 
 		return False
+
+	def set_hit_point(self):
+		self.hit_point = self.lastPosition
+		rospy.logwarn("{} hit at {} {}".format(self.ns, self.hit_point.position.x, self.hit_point.position.y))
+
+	def set_goal(self, g):
+		self.goal = g
+		rospy.logwarn("{} goal is {}".format(self.ns, self.goal))
+
+
+	def update_distances(self):
+		for sensor in self.proxReadings:
+			#Convert the sensor reading, which is 0 for unoccupied increasing to 1 at the robot, 
+			#into an actual distance (may be inaccurate if it's not linear)
+			sensor_d = self.proxRange - (self.proxRange * sensor.value)
+			#Convert that into a point in space
+			point_x = sensor_d * math.cos(self.add_headings(sensor.angle, self.current_heading)) + self.lastPosition.position.x
+			point_y = sensor_d * math.sin(self.add_headings(sensor.angle, self.current_heading)) + self.lastPosition.position.y
+			
+			#Get the distance from this point to the goal
+			d = self.distance((self.goal[0], self.goal[1]), (point_x, point_y))
+
+			if sensor.value == 0.0:
+				#This sensor is a free point, so update dReach
+				if d < self.dReach:
+					self.dReach = d
+			else:
+				#This sensor is an occupied point, so update dFollow
+				if d < self.dFollow:
+					self.dFollow = d
+
+			rospy.logwarn_throttle(10, "{}: reach: {} follow: {}".format(self.ns, self.dReach, self.dFollow))
 
 rospy.init_node("gcpr_driver", anonymous=True)
 
