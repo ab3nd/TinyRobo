@@ -46,13 +46,10 @@ program = []
 
 #Very simple program, move forward if not near anything
 program.append(("self.get_l_front() == self.get_r_front() == 0", "self.move_fwd(0.4)", 1.0))
-#Mutually exclusve and symmetry-breaking turning away from obstacles
-program.append(("self.get_l_front() > 0 and self.get_r_front() == 0", "self.move_arc(-1.2, 0.1)", 1.0))
-program.append(("self.get_l_front() == 0 and self.get_r_front() > 0", "self.move_arc(1.2, 0.1)", 1.0))
-program.append(("self.get_l_front() > 0 and self.get_r_front() > 0", "self.move_turn(-1.2)", 1.0))
-#program.append(("self.get_r_front() > self.get_l_front() >= 0", "self.move_turn(1.2)", 1.0))
-# program.append(("self.is_near_right_f_quarter() and not(self.is_near_left_f_quarter())", "self.move_arc(-0.8, 0.2)", 1.0))
-# program.append(("self.is_near_left_f_quarter() and self.is_near_right_f_quarter()", "self.move_turn(0.8)", 1.0))
+#If there is something in the way, rotate (always the same direction, setting up for edge follow)
+program.append(("self.get_l_front() > 0 or self.get_r_front() > 0", "self.move_turn(-1.2)", 1.0))
+
+
 
 #Send to either one robot or all of them
 one_robot = False
@@ -68,6 +65,15 @@ else:
 
 
 rospy.spin()
+
+# Wedge-free travel, for my own future reference
+# #Very simple program, move forward if not near anything
+# program.append(("self.get_l_front() == self.get_r_front() == 0", "self.move_fwd(0.4)", 1.0))
+# #Mutually exclusve and symmetry-breaking turning away from obstacles
+# program.append(("self.get_l_front() > 0 and self.get_r_front() == 0", "self.move_arc(-1.2, 0.1)", 1.0))
+# program.append(("self.get_l_front() == 0 and self.get_r_front() > 0", "self.move_arc(1.2, 0.1)", 1.0))
+# program.append(("self.get_l_front() > 0 and self.get_r_front() > 0", "self.move_turn(-1.2)", 1.0))
+
 
 #NEGATIVE ANGLES ARE TO THE ROBOT'S LEFT, DON'T FUCK UP
 
