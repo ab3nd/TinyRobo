@@ -44,28 +44,15 @@ program_sender = ProgSender()
 
 program = []
 
-goal = (3,0)
-
-#Initially, pick a random heading to travel on
-program.append(("self.pc_is(0)", "self.set_desired_heading((random.random() * math.pi * 2)-math.pi)", 1.0))
-program.append(("self.pc_is(0)", "self.set_pc(1)", 1.0))
-
-#Move towards heading if not near anything
-program.append(("len(self.neighbors(d=4)) > 1 and not(self.is_near_anything()) and self.on_heading()", "self.move_fwd(0.4)", 1.0))
-program.append(("len(self.neighbors(d=4)) > 1 and not(self.is_near_anything()) and not(self.on_heading())", "self.turn_heading(0.8)", 1.0))
-
-# Too few neighbors, turn around		
-program.append(("len(self.neighbors(d=4)) < 1", "self.set_desired_heading(self.add_headings(self.current_heading, math.pi))", 1.0))
-#Just right neighbors, stop
-program.append(("len(self.neighbors(d=4)) == 1", "self.stop()", 1.0))
-
-#Avoid objects, by turning away from the object
-#Symmetry breaking
-program.append(("self.is_near_left_f_quarter() and self.is_near_right_f_quarter()", "self.move_turn(-0.8)", 1.0))
-#Avoid object
-program.append(("self.is_near_left_f_quarter() and not(self.is_near_right_f_quarter())", "self.move_turn(0.8)", 1.0))
-program.append(("not(self.is_near_left_f_quarter()) and self.is_near_right_f_quarter()", "self.move_turn(-0.8)", 1.0))
-program.append(("self.is_near_anything() and not(self.is_near_left_f_quarter()) and not(self.is_near_right_f_quarter())", "self.move_fwd(0.4)", 1.0))
+#Very simple program, move forward if not near anything
+program.append(("self.get_l_front() == self.get_r_front() == 0", "self.move_fwd(0.4)", 1.0))
+#Mutually exclusve and symmetry-breaking turning away from obstacles
+program.append(("self.get_l_front() > 0 and self.get_r_front() == 0", "self.move_arc(-1.2, 0.1)", 1.0))
+program.append(("self.get_l_front() == 0 and self.get_r_front() > 0", "self.move_arc(1.2, 0.1)", 1.0))
+program.append(("self.get_l_front() > 0 and self.get_r_front() > 0", "self.move_turn(-1.2)", 1.0))
+#program.append(("self.get_r_front() > self.get_l_front() >= 0", "self.move_turn(1.2)", 1.0))
+# program.append(("self.is_near_right_f_quarter() and not(self.is_near_left_f_quarter())", "self.move_arc(-0.8, 0.2)", 1.0))
+# program.append(("self.is_near_left_f_quarter() and self.is_near_right_f_quarter()", "self.move_turn(0.8)", 1.0))
 
 #Send to either one robot or all of them
 one_robot = False
