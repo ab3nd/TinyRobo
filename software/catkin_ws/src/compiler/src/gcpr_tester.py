@@ -45,11 +45,20 @@ program_sender = ProgSender()
 program = []
 
 #Very simple program, move forward if not near anything
-program.append(("self.get_l_front() == self.get_r_front() == 0", "self.move_fwd(0.4)", 1.0))
+program.append(("self.get_l_front() == self.get_r_front() == 0 and self.proxReadings[6].value == 0", "self.move_fwd(0.4)", 1.0))
 #If there is something in the way, rotate (always the same direction, setting up for edge follow)
 program.append(("self.get_l_front() > 0 or self.get_r_front() > 0", "self.move_turn(-1.2)", 1.0))
 
+program.append(("self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) or (0.1 < self.proxReadings[6].value < 0.2)) and self.proxReadings[5].value > self.proxReadings[6].value", "self.move_arc(-0.3, 0.2)", 1.0))
+program.append(("self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) or (0.1 < self.proxReadings[6].value < 0.2)) and self.proxReadings[5].value < self.proxReadings[6].value", "self.move_arc(0.3, 0.2)", 1.0))
+#Attempt to turn sharply when off the edge of something the robot is following
+#program.append(("not(self.is_near_left_f_quarter()) and self.is_near_left_r_quarter()", "self.move_turn(-0.8)", 1.0))
+#Fix range
+program.append(("self.proxReadings[5].value > 0.2 and self.proxReadings[6].value > 0.2", "self.move_arc(-1.3, 0.5)", 1.0))
+program.append(("0.0 < self.proxReadings[5].value < 0.1 and 0.0 < self.proxReadings[6].value < 0.1", "self.move_arc(1.3, 0.5)", 1.0))
 
+#Attempt to turn corners of things when wall following, 5 is forward of 6 and so should go off first
+program.append(("self.proxReadings[5].value == 0 and self.proxReadings[6].value > 0.0", "self.move_turn(1.8)", 1.0))
 
 #Send to either one robot or all of them
 one_robot = False
