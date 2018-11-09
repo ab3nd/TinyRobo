@@ -71,6 +71,10 @@ program.append(("self.goal is None", "self.set_goal((3,0))", 1.0))
 # dReach - shortest distance from a point the robot can sense is free to the goal
 program.append(("self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) and (0.1 < self.proxReadings[6].value < 0.2))", "self.update_distances()", 1.0))
 
+# Check the tangent bug leave condition: We can see a point closer to the goal than anywhere along the edge of the 
+# object that we're following, so head for that point instead
+program.append(("(self.dReach < self.dFollow) and (self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) and (0.1 < self.proxReadings[6].value < 0.2)))", "rospy.logwarn(\"{} would leave.\".format(self.ns))", 1.0))
+
 #TODO eventually we're going to want to unset the hit point
 
 #Send to either one robot or all of them
