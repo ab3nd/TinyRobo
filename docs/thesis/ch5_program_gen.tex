@@ -174,7 +174,7 @@ In the real world, while a point may be described precisely, it is usually suffi
 However, robots also take up space in the real world, and so as more and more members of the swarm arrive at the point, the later arrivals may be precluded from actually approaching to within $\epsilon$ of the point.
 In this case, it is desirable to have a definition of arrival that expands to allow robots to approach the point as closely as they can and stop when that condition is met. 
 
-\section{Completeness of Navigation}
+\section{Completeness of Navigation} \label{sec:completeness_of_nav}
 
 As described earlier, bug algorithms are complete, in that they navigate the robot to a point, or determine that the point cannot be reached. A review of eleven bug algorithms can be found in \citep{ng2007performance}. 
 Bug algorithms also generally rely on only local sensing and minimal data storage, and so are appealing for use in swarm control. 
@@ -452,17 +452,51 @@ Occlusion-based transportation, on the other hand, is effective with minimal sen
 Rather than attempting to construct a local-sensing based complete path planner for e.g. caging manipulation, the system can take advantage of the user input as a suggestion of the best path along which to move the object. 
 Users frequently positioned robots near the object or used a dragging action of the box itself in the interface, so the path for the robots to follow is defined as the list of points that the user dragged over. 
 Each individual robot's program can be based on a bug-style algorithm, using local sensing information to determine what the robot should do. 
+However, since determining that the box can be pushed all the way to the goal or terminating with failure  would require non-local knowledge of the world, this algorithm is not complete.
 First, the robot must arrive at the box.
 Assuming the user has provided the location of the box, motion to it can be handled as with path following. 
 
-\todo{clear up commented out section below}
-%
+Once the robot is at the box, it alternates between two behaviors, edge following and pushing. 
+It starts with edge following, which has three exit conditions. 
+If a robot detects that the line from the robot to the goal has gone from not passing through the object to passing through the object, then the robot stops circling the object and begins pushing against it. 
+If a robot goes from the surface of the object to the surface of an obstacle and back while edge following, then the object has been pushed against an obstacle, and the robot stops because pushing has failed. 
+If a robot returns to the point it started circumnavigating the object from, then the robot detects that the object has stopped and is over the goal, so the robot stops because the pushing has succeeded. 
 
+So in the edge following case, there are three exit conditions, two of which end in termination of the program. 
+The third exit condition causes the robot to transition to pushing the object. 
+Pushing has two exit conditions, detection of stagnation or the m-line no longer pointing into the object. 
+The m-line no longer pointing into the object is caused by the object being pushed over the goal by the robots. 
+This is the weakness of this algorithm, as with a small enough collection of robots, such as one robot, the robot will push the object until the robot arrives at the goal, rather than being stopped by robots pushing from all sides resulting in the forces on the object being balanced. 
+Once the robot arrives at the goal, the m-line no longer points into the object, so the robot will circle the object until the m-line points into the object, push it across the goal, and repeat this process. 
+As a result, the algorithm becomes more stable and more likely to end with the object on the goal as the number of robots increases. 
 
-%
-%Once the robot is at the box, the robot circumnavigates it while detecting the points where the line between the robot's location and the goal (the m-line in the Bug2 algorithm) passes through the box. 
+Stagnation occurs in one of two cases: either the forces exerted by all robots are balanced, and so the object is not moving, or the object is against an obstacle, and so the object is not moving. 
+Stagnation is detected simultaneously by all robots, under the assumption that the object is rigid.
+Non-rigid objects are significantly more complex to manipulate. 
+When stagnation is detected, all robots begin circling the object. 
+Since the object is not moving, because all robots have stopped pushing it, the robots will all either detect that the goal is within the object, as above, and stop with success; detect that the object is against an obstacle, and stop with failure; or find a point where the m-line transitions and begin pushing the object again. 
+ 
+If a new robot arrives while the robots are circling, it has no effect, as it will initially also begin circling the object. 
+Since the other robots began circling because of stagnation, if there is a point that the m-line transitions, then the stagnation was caused by an obstacle, and so the new robot will either detect the obstacle and stop, or push the object against the obstacle as the others had been doing. 
+If there is no point where the m-line transitions, then the stagnation was caused by balanced forces, and so the new robot will detect that the goal is inside the object and stop.  
+
+%Once the robot is at the box, the robot circumnavigates it while detecting whether the line between the robot's location and the goal (the m-line in the Bug2 algorithm) passes through the box. 
 %If there are no points where the m-line does not pass through the object, then the object is sitting on the goal and the robot should stop. 
 %However, as the robot may be attempting to circumnavigate an object that another robot is pushing, and so may not be able to detect that it has circumnavigated the object completely. 
+%In order to handle this situation, the robot resets its hit point whenever it crosses its own previous path, as detected by the method from the modified tangent bug described in section \ref{sec:completeness_of_nav}.
+%
+%Each time the hit point is reset, there are 2 possibilities that could occur before the robot crosses its own path again. 
+%
+%The robot could pass from a point on the object where the m-line does not intersect the object to a point where the m-line does intersect the object. At such a point, the object is between the robot and the goal, so the robot stops following the edge of the object and starts pushing the object. 
+%
+%The object could stop moving.
+%The robot will then cross its own path and reset its hit point, and continue to circle the object. 
+%If the robot does not reach a point where the object is between the robot and the goal, as described above, then the robot will return to its hit point, detecting that the goal is unreachable, as it is inside the object, and stop. 
+%If, instead, the robot does reach a point where the m-line transitions to pointing into the object, the robot will stop following the edge and begin to push the object.
+%If the object begins moving again, the robot will continue to circulate around the object, resetting its hit point as it does. 
+
+%If, during a circumnavigation, there is a transition from the m-line not passing through the object to the m-line passing through the object, then the robot stops wall-following and begins pushing the object.  
+
 %If there are points where the m-line does not pass through the object, then the robot should return to a point where the m-line does pass through the object, and push there. 
 %If there are no points where the m-line passes through the object, the object has a hole in it with both the goal and the robot in it, and the robot can stop, as the object is already surrounding the goal.
 %
