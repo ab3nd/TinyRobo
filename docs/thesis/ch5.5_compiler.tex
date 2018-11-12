@@ -1,0 +1,73 @@
+% !TeX root = ams_thesis.tex
+\chapter{Compiler Implementation}
+
+At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
+While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using e.g. PRISM \citep{KNP11}.
+
+However, the user gesture language as defined by this work is actually quite vague, when it comes to allowing a robot to perform the expected actions. 
+Users were told to assume that the system was capable of understanding their orders, so they merely had to indicate what they wanted the system to do, and it would then do it. 
+Alan Perlis has been quoted as saying ``When someone says `I want a programming language in which I need only say what I wish done,' give him a lollipop.'' \citep{PerlisYaleLolz}.  
+Such systems are substantially more difficult than the recipients of lollipops expect, because they rely on a large amount of \emph{a priori} information shared between the person issuing the command, and the system executing it. 
+
+For example, in the box-moving task, the users would frequently move the robots to surround the box, and then move the robots to the goal area. 
+However, one might expect that robot control programs would attempt to avoid obstacles, and so would just go around a box. 
+Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
+Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot.
+The user data set does not have clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that any particular object can be pushed, rather than just boxes. 
+Instead, users seemed to assume that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told. 
+
+For the implementation in the gesture translation code, basic movement to points and formations is implemented using the variant of tangent bug described above. 
+Once tangent bug for movement to a point is implemented, it can be composed with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
+For motion along paths, the goals are set to points along the path, ending at the final goal. 
+Formation is a case of motion along a path, where the paths end at the formation, as previously described. 
+
+Patrol also uses modified tangent bug, but instead of terminating when the program counter, and so the goal, reach the final position, the program counter and goal are reset to the start point of the patrol.  
+As a consequence, the resulting program intentionally contains an infinite loop, but it can be interrupted by assigning a new program to the swarm. 
+
+Dispersion is implemented using a minimalistic range sensor. 
+Each robot can detect if there are other robots within a fixed range. 
+If there are more than two robots in the range, the robot executes a random walk, avoiding obstacles. 
+If there are exactly two robots in range, the robot stops. If there are less than two robots in range, the robot executes a U-turn and drives in a straight line, avoiding obstacles, until one of the other situations occurs. 
+This algorithm is a GCPR implementation of the $\alpha$-algorithm of Winfield \emph{et al}, and so shares its strengths and weaknesses  \citep{winfield2008modelling}.
+Notably, the algorithm is not certain to prevent the separation of the swarm into subswarms which are not connected. 
+More sophisticated programs, possibly using more communication, can prevent these issues, but since the requirement of the behavior is that the robots disperse, rather than that they maintain a particular level of network connectivity, there is no need for this particular implementation to enforce connectivity. 
+Indeed, simply moving the robots to random locations uniformly selected would ``disperse'' them. 
+%The more intelligent approach was selected with the intention of having the dispersion appear relatively even to the user, rather than being statistically uniformly distributed, and so possibly not evenly distributed. 
+
+Manipulation was implemented as a simple version of occlusion-directed transport. 
+If the robot is not near the target object, it attempts to move to the target object while avoiding obstacles, using the modified tangent bug algorithm. 
+When the tangent-bug algorithm detects that the goal is unreachable, because it is inside of the mobile object, the program switches to occlusion-based manipulation. 
+The robot wall-follows around the object until a line from the robot to the goal intersects the object, and then pushes in that direction. 
+While in this mode, the robot continually updates the direction of the goal, and switches between getting in position and pushing the object. 
+As with the original occlusion-based manipulation, this algorithm is ignorant of obstacles on the opposite side of the object from the robot, and so can get stuck. 
+However, as the system can accept a path for the object to be pushed on, the user can attempt to specify a clear path for the robots to move the object along. 
+
+%\chapter{Compiler Verification}
+%
+%The design of a compiler which verifies that its output is correct What does it mean for a program to be correct? Free from things like assignment of variables to the wrong type, buffer overflows, off-by-one errors, etc. Does not mean that the program does what the programmer intended, just that it does whatever it does without errors. 
+%Correctness is judged with respect to a specification. 
+%Partial correctness - if an answer is returned, it is correct. 
+%Total correctness - requires that program is partially correct and terminates
+%No general solution to halting problem, needs specific proof per-program
+%Compiler correctness shows that a compiler behaves according to its specification
+%I don't currently have a language specification for the gesture language 
+%
+%One method of testing compilers is the operation of a fuzzer \citep{miller1990empirical}. A fuzzer, in the general case, generates input for programs that, while technically legitimate input, causes unexpected behavior such as program crashes. A fuzzer for compilers uses a description of the source language to generate programs that are considered valid under the description, and then attempts to compile them using the compiler. It can also attempt to generate programs that are deliberately incorrect, to test the ability of the compiler to accurately report errors, and to ensure that the compiler accepts all correct programs and no incorrect programs, as in \citep{bazzichi1982automatic}. 
+%Because the internal structure of the compiler is not known, a generator cannot be certain that it causes all code paths in the compiler to be executed, but it can be certain that the generated test programs use all of the syntactical elements of the language, since all of the elements are described in the language specification. Interestingly, Bazzichi and Spadafora's work predates the use of the term ``fuzzer'' by 8 years, but clearly describes the same process.
+%
+%Translation validation \citep{pnueli1998translation}
+%verifies compiled code against input code rather than attempting to verify that a compiler correctly translates all input programs.
+%Verifies that the compiler correctly transforms a specific input program. 
+%Needs:
+% - A common semantic framework for the representation of the source code and the generated target code (probablistic finite automaton?)
+% - A formal description of "correct implementation"
+% - A proof method for verifying that one instance of the semantic framework (the output) correctly implements another one (the input)
+%How is the IR not the common semantic framework?
+%
+%\section{Limitations}
+%
+%input semantics don't include way for user to set robot heading, might be useful for sensor overwatch
+
+
+
+

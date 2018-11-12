@@ -377,7 +377,7 @@ In order to derive a complete local-sensing-only dispersion algorithm, the algor
 
 For two robots and $\alpha = 0$, there must exist two points in the space such that the distance between those points is greater than $r$. 
 Because the sensing range of the robots is $r$, a robot located at a point cannot tell if a point greater than $r$ distance away is unoccupied, and so the algorithm requires some form of non-local sensing, either communication with other robots or map building. 
-In fact, in order to determine that there exists no such pair of points in the space, the robots must be aware of all the accessible points in the space, which amounts to global, rather than local knowledge.%\todo {is this correct?} 
+In fact, in order to determine that there exists no such pair of points in the space, the robots must be aware of all the accessible points in the space, which amounts to global, rather than local knowledge. %\todo {is this correct?} 
 For two robots, $\alpha$ may not be increased, as it would then violate the constraint that $\alpha$ be less than the number of other robots in the swarm. 
 
 If the number of robots in the swarm is increased by one, the number of points in the space that are required to be greater than $r$ apart increases by one. 
@@ -417,84 +417,127 @@ Kube and Hong used sensors to track a light on the box and distinguish the box f
 If distinguishing obstacles is unnecessary, the robot could simply use two light sensors, and push forward if the lower one is occluded by the box and the higher one can see the goal. 
 However, such a simple robot will push against obstacles that cannot move, and other robots. 
 
-It would be good to determine if manipulation in this style, which is to say simple pushing rather than caging or pulling manipulation, admits a complete controller as path following and formation do, or if it is not possible to, in finite time, either move an object to a goal, or determine that it is not possible. 
-For the purposes of this argument, it will be assumed that the object can be pushed in any direction, and that there are sufficient robots present to push it. 
+It would be good to determine if manipulation in this style, which is to say simple pushing rather than caging or pulling manipulation, admits a complete controller as with path following and formation. 
+To be complete, a controller would have to, in finite time, either move an object to a goal, or determine that it is not possible to move the object to the goal. 
 In reality, it is possible that the object cannot be pushed at all, or that constraints on its dynamics render it impossible to push it to the desired location. 
 For example, it is possible for a human to push a car with its gearbox in neutral forward or backwards, but not sideways. 
+This human example is quite illustrative, as there are conditions where it is possible (car in neutral and human pushing on front or rear of car), and conditions where it is not possible (car in park or human pushing car sideways). 
+Asserting that the task is not possible would require testing all gears and pushing locations, and failing in each of them. 
+As the complexity of the environment grows, the space of possible pushing arrangements increases, possibly in ways the robot cannot detect. 
+Additionally, some attempts may appear initially successful, but lead to failure states, such as pushing an object into a hole that it cannot be pushed back out of. 
+Because of the potential explosion of problems with pushing, the environment must be constrained to one that is simpler to reason about, and then made more complex gradually to locate the minimal complexity that causes the creation of a complete, local-sensing-based controller to fail.
 
-In unlimited free space, it is clearly possible to push an object to the goal.
+For the purposes of this argument, it will be assumed that the object can be pushed in any direction, and that there are sufficient robots present to push it. 
+In unlimited free space, it is clearly possible to push such an object to the goal.
 The robot must be able to locate the object and goal in some way, but as discussed by Kube and Hong, the required sensor precepts may be fairly simple even for real robots. 
 
 In bounded free space, there is the possibility that the object can be placed against the boundary of the space in such a way that no pushing force can remove it from the wall again. 
 For example, an oblique triangle with one face against a straight wall is pushed towards the wall by forces normal to its exposed faces. 
 Of course, under some conditions of friction and pushing forces, the triangle may rotate away from the wall, but as the length of the wall-facing side grows, the more normal the forces become to the wall itself, and so at some point the friction against the wall will exceed the pushing force of the robots on its sides. 
-
 Using only local sensing, it is possible to detect this sort of stuck condition, and indicate that the attempt has failed. 
 If the robot detects that it is pushing the object, but the robot is not moving, then the object is also not moving. 
 If the robot then circumnavigates the object and is able to pass from the object to an obstacle and back, then one side of the object is against the wall. 
-Note that this may require the robot to also circumnavigate the boundary of the space, if the object is against a wall, which may be large. 
+Note that this may require the robot to also circumnavigate the boundary of the space, if the object is against a wall, which may be large, but so long as the boundary is finite, such a circumnavigation will take finite time. 
 It also assumes that the robot can detect its own motion. 
 
 In an unbounded space with obstacles, the object may be able to be pushed to the goal if there is an unoccupied path that the object can pass through in order to arrive at the goal. 
 While having a clear path is a necessary condition, it is not sufficient. 
 For example, if a square object is being pushed down a corridor that is exactly wide enough to admit the square, and has a 90$^{\circ}$ bend in it, the square will fill the bend and become stuck, as no pushing force on either of its exposed faces will move it in either direction along the corridor. 
 Nonetheless, the corridor is wide enough to admit the square, and so even if traversing the corridor is required to get to the goal, it does not violate the condition that there be an unoccupied free path that the object can pass through in order to reach the goal. 
-Further, being able to detect such a path requires being able to check assertions about distances across sets of points throughout the space, and so global, rather than local, sensing or knowledge. 
+Further, being able to detect such a path requires being able to check assertions about distances across sets of points throughout the space and the shape of the object, and so global, rather than local, sensing or knowledge. 
 
 By adding various levels of communication, more complex sensing, and global planning to the capabilities of the robots, autonomous box pushing can be performed under different conditions. 
 A review of these techniques is beyond the scope of this section, but for recent results see \citep{tuci2018cooperative, rahimi2018comparison, alkilabi2017cooperative}. 
-Occlusion-based transportation, on the other hand, is effective with minimal sensing, and as discussed above, similar bug-algorithm-based path following. 
-
+Occlusion-based transportation, on the other hand, is effective with minimal sensing, and so at an advantage for simple and inexpensive robots.
+Rather than attempting to construct a local-sensing based complete path planner for e.g. caging manipulation, the system can take advantage of the user input as a suggestion of the best path along which to move the object. 
 Users frequently positioned robots near the object or used a dragging action of the box itself in the interface, so the path for the robots to follow is defined as the list of points that the user dragged over. 
-However, the robot's goal is no longer to arrive at the destination.
-Instead, the robot's goal is to arrive at the box and circumnavigate it while detecting the points where the line between the robot's location and the goal (the m-line in the Bug2 algorithm) passes through the box. 
-If there are no points where the m-line does not pass through the object, then the object is sitting on the goal and the robot should stop. 
-If there are points where the m-line does not pass through the object, then the robot should return to a point where the m-line does pass through the object, and push there. 
-If there are no points where the m-line passes through the object, the object has a hole in it with both the goal and the robot in it, and the robot can sit still, as the object is already surrounding the goal.
-This algorithm does not detect arrival at the point, but will instead cause the robots to push the object back and forth over the goal. 
-If enough robots are present, the object will stagnate at the goal as the forces of the robots on all sides of it come into balance as indicated in by Chen et al. \cite{chen2015occlusion}.
+Each individual robot's program can be based on a bug-style algorithm, using local sensing information to determine what the robot should do. 
+First, the robot must arrive at the box.
+Assuming the user has provided the location of the box, motion to it can be handled as with path following. 
 
-Unfortunately, the lack of a path point for the robots to arrive at means that they will need some alternative method of detecting that a path point has been reached, and they should begin moving to the next point. 
-If stagnation is used as the criterion for detecting arrival at a path point, the point may be overshot in cases where there are not more robots constantly arriving at the object.
-In a theoretical case with the number of robots tending towards infinity, this is not a problem, but if there are only small number of robots pushing the object, they may all be on one side, and so not be balanced by recently arrived robots pushing from the other side. 
+\todo{clear up commented out section below}
+%
 
-For a single robot, alternating between pushing the object a fixed distance and then circumnavigating to check if the goal was under the object yet would allow the robot to check if the object had arrived at a path point. However, in the case of multiple robots, this means that any robot making the check would be circumnavigating a mobile obstacle, and so cannot tell when the circumnavigation is complete because it won't return to the same point. 
 
 %
+%Once the robot is at the box, the robot circumnavigates it while detecting the points where the line between the robot's location and the goal (the m-line in the Bug2 algorithm) passes through the box. 
+%If there are no points where the m-line does not pass through the object, then the object is sitting on the goal and the robot should stop. 
+%However, as the robot may be attempting to circumnavigate an object that another robot is pushing, and so may not be able to detect that it has circumnavigated the object completely. 
+%If there are points where the m-line does not pass through the object, then the robot should return to a point where the m-line does pass through the object, and push there. 
+%If there are no points where the m-line passes through the object, the object has a hole in it with both the goal and the robot in it, and the robot can stop, as the object is already surrounding the goal.
 %
-%There seems to be very little work attempting to approach the task of box-pushing with 
-%Can manipulation be done with bug or bug-like algorithms. 
-%Possibly because of the large number of constraints on such a system preventing it being useful in uncontrolled environments. All rooms are concave. 
+%Interestingly, such an algorithm is ineffective with a single robot, but works better the more robots are involved. 
+%A single robot, pushing along its m-line towards the goal, will eventually arrive at the goal and push the object off the goal. 
+%Then it will follow the edge of the object until it can no longer see the goal again, and push the object across the goal again. 
+%Two robots, exerting equal pushing force on the object, will result in a displacement that is the sum of the vectors between each robot and the goal.
+%As a result, the pushing force will diminish as the robots close on the goal, and so the angle between the two robots with the goal as the vertex increases towards 180$^\circ$. 
+%If enough robots are present, the object will stagnate at the goal as the forces of the robots on all sides of it come into balance as indicated in by Chen et al. \cite{chen2015occlusion}.
 %
-%Bug algos usually have a motion to goal task, and a join/leave criterion for moving around an object. 
+%Such an algorithm is not complete, as it does not detect failure, or stop on success.
+%Rather, the system as a whole comes to a stable state without awareness on the part of any robot that the goal has been achieved. 
+%In the absence of obstacles, the robots could check for stagnation, and then circle the perimeter of the object to check that the m-line points into the object for all points on the perimeter. 
+%In that case, the goal is inside the object, and success can be detected. 
+%However, in the presence of obstacles, the object can stagnate by running into an obstacle, rather than by the forces exerted by robots along the object's perimeter summing to zero. 
+%If stagnation detection is used to advance the goal to the next point along a user-specified path, the the robots will advance the goal at incorrect times, caused by obstacles rather than arrival at the goal.
+%The resulting behavior is not complete, as a correct solution to arriving at the goal may exist, but will not be found, and the system will fail instead. 
+
+%Simply checking once, when the robot arrives at the object, is not sufficient.
+%In the case of only one robot, the algorithm does not detect arrival at the point, but will instead cause the robot to push the object over the goal, as the robot attempts to reach the goal.
+%Additionally, if one robot is pushing the object while a more recently-arrived robot attempts to circumnavigate the object, the circumnavigating robot will not return to the point where it originally contacted the object, as the object has moved on. 
+%To counter the second problem, an arriving robot does not have to navigate around the object until it returns to its starting point. 
+%Instead, it navigates around the object until one of two things has occurred:
+%\begin{enumerate}[noitemsep]
+%	\item The robot passes from a point where the m-line does not intersect the object, to a point where it does. Such a transition indicates that the object is not over the goal, and so pushing is needed.
+%	\item The robot returns to its starting point without condition 1 occurring. If the robot can return to its starting point, the object is stationary, and if condition 1 does not occur, the object is over the goal. In this case, the robot can stop.
+%\end{enumerate}
+% 
+%These conditions leave out the possibility that the object is moving. If it is moving, either condition 1 will be triggered, and the robot will begin pushing, or condition 1 will not be triggered. 
+%Since the moving object prevents the robot returning to its starting place, but condition 1 has not occurred, another robot must be moving the object, but the object must also be over the goal, or else condition 1 would eventually trigger. 
 %
-%Assuming a single robot can push the object, and the goal direction is known, this can generalize to that box pushing without computation scheme\todo{cite me}. The robot pushes against the object if the object is between the robot and the goal. 
+%To counter the first problem, it is necessary to determine whether multiple robots will push the object over the goal, and how such events could be detected and prevented. 
+%the sum of their pushing forces. 
+%Until the forces are balanced, the object will move. 
+%Once it stops moving, all robots can detect that they are no longer able to push it, due to being balanced by other robots. 
+%At that point, the robots can all perform a check as above, to determine if the point is inside the object or not. 
 %
-%This approach fails if there's an obstacle between the robots and the goal, because it's on the other side of the object from the robots, and so the object gets pushed up against the obstacle. 
 %
-%Can failure be detected?
+%In order to complete bug-style box pushing, robots that are pushing must detect stagnation, and perform a circumnavigation check as above to detect for arrival at the goal, or stagnation due to pressing against an obstacle. 
+%The resulting algorithm is complete, in that it pushes an object to goal points or detects failure, but it is brittle. 
+%It requires that there be more than two robots, and it simply gives up if the object has been pushed against an obstacle. 
 %
-%Depends on robot sensing. If robot knows own location, and most bug algos do, the robot can detect failure to move the object, but can't attribute it to anything. If the robot is pushing, and detects failure to move, it can circumnavigate the object. If it hits an non-box before returning to its hit point, it can tell that the box is up against an obstacle. If the box is not up against an obstacle, the robot can return to its start point without leaving the box (other robots shouldn't count as leaving the box, since they may be doing the same check). In that case, the box is either too heavy for a single robot to move, too heavy for the swarm to move, or cannot actually be moved at all. There isn't a way to disambiguate this.
+% \begin{figure}
+% 	\centering
+% 	\digraph[scale=0.6]{PushyBug}{
+% 		
+% 		start [label="Start at Object"];
+% 		followEdge [label="Follow Object Edge"];
+% 		mlineTrans [label="M-line transitioned to pointing into object?"];
+% 		returnHit [label="Returned to starting point?"];
+% 		pushObj [label="Push along m-line"];
+% 		stagnant [label= "Stagnation detected?"];
+% 		mlineTransOut [label = "M-line transitioned to pointing out of object?"];
+% 		stop [label="Stop"];
 %
-%However, if the robots have any form of quorum sensing, they can begin to pile up at the object and keep a count of how many robots are pushing. If that number goes over some cutoff, the robots could decide that the object is not movable.  
-%
-%This is an area where following the user gesture is the best plan. The user gesture will likely describe a free path for the object, rather than an attempt to e.g. push the object through another object. 
-%
-%However, this is never going to be a decidable problem in the real world. The box may be too heavy for the swarm to move, or nailed to the ground and so too heavy for anything to move. It might be a tromp l'oiel illusion, and not actually a movable object at all, but a drawing of one. 
-%
-%Dynamics of moving objects are also kind of a problem. Robot wants to keep robot motion normal to object and pointed at goal. How does rotation of object end up affecting this? Eventually object rotates off front of robot, so motion towards goal is no longer normal to object surface. At that point robot should find a new place to push. This can kind-of be viewed as a tangent graph problem, because the two tangent points on the surface of the object (kind of assuming it's locally flat) should be kept roughly equidistant from the goal. If it's locally convex, locally concave, I think this still applies, but do some sketches to find out, maybe pathological objects. How does this work when there are multiple robots?
-%
-%What about pushing when the obstacle is no longer visible? Sum of all forces may vary when robots are in motion around object. Alternating push phases with circumnavigate phases may be useful. 
-%
-%How to detect success? If alternating push phases and circumnavigate phases, the goal point is inside the object if a circumnavigation doesn't find any point where the robot is closer to the goal than points on the perimeter of the object (assuming the object is convex. Concave objects may have the goal and the robot in a hole/concavity in their perimeter, but still be "around" the goal.)
-%
-%Probably need to constrain circumnavitation to be non-contact/using range sensors, because otherwise robots doing circumnavigation become obstacles to robots doing pushing. 
-%
+%  		start -> followEdge; 
+%  		followEdge -> mlineTrans;		
+% 		mlineTrans -> pushObj [label="Yes"];
+%  		mlineTrans -> returnHit [label="No"];
+%  		returnHit -> stop [label="Yes"];
+%		returnHit -> followEdge [label="No"];
+%  		pushObj -> mlineTransOut;
+%  		mlineTransOut -> followEdge [label="Yes"];
+%		mlineTransOut -> stagnant [label="No"];
+%  		stagnant -> followEdge [label="Yes"];
+%  		stagnant -> pushObj [label="No"];
+% 	}
+% 	\caption{Bug-style algorithm for pushing an object to a goal location.}
+% \end{figure}
+
 
 \section{Completeness Under Poor or Absent Localization}
 
 The majority of the user tests were done with a visual representation of robots that can localize, and so their locations, at least relative to each other and nearby objects, could be displayed to the user. 
-The cloud/unknown number of robots case, however, indicates that the robots are not able to report a location that can be mapped into a useful display for the user. 
+The cloud/unknown number of robots case, however, described robots which are not able to report a location that can be mapped into a useful display for the user. 
 Unfortunately, lack of localization implies the lack of a number of other mechanisms. 
 As discussed in section \ref{sec:localization}, local coordinate systems can be derived from range sensing, bearing sensing to other robots, and of course combinations of range and bearing sensing. 
 As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system. 
@@ -505,7 +548,7 @@ If the localization is assumed to be noisy, then returning to e.g. the hit point
 However, if the threshold is too wide, the robot may get close enough to the hit point to think that it has completed the circumnavigation, when it has really almost completed the circumnavigation, but missed a small door in the obstacle, which is not circular but actually an almost-closed ``C'' shape. 
 In this case, the robot will incorrectly determine that the goal is unreachable. 
 The robot could also fail to detect returns to the hit point, especially in the presence of biased noise or localization failures, and so would never leave the object. 
-Sensor noise is in general a problem for bug algorithms \cite{ng2007performance}.
+Sensor noise is, in general, a problem for bug algorithms \cite{ng2007performance}.
 
 Pheromone approaches and I-bug are tempting, as they use gradients of intensity rather than actual location to represent information about the location, but they present a conundrum to the assertion that the robots cannot localize \citep{taylor2009bug}. 
 If there exists an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then why can the user not just use that to either do the task or bootstrap a coordinate system?
@@ -519,7 +562,7 @@ The robot's view of the space could be presented to the user in a number of ways
 If the representation of landmarks is such that each robot will derive essentially the same representation at a given point, then such a graph extends naturally to multi-robot navigation. 
 Each robot builds its own map, but by sharing maps and finding overlapping landmarks, they may gain the ability to navigate to places that they have never been, but were visited by other robots. 
 
-In the interests of completeness, the next few subsections explore the possibilities for performing the user interface tasks under a non-metric map. 
+In the interests of completeness, the next few subsections explore the possibilities for performing the user experiment tasks under a non-metric map. 
 While topological maps do represent a form of localization, it is not a form that can be converted into a representation to a user in the same way that metric localization would permit. 
 The map represents locations and connections between them, but not angles and distances. 
 
@@ -535,18 +578,20 @@ When the robot returns to the area that it saw that image, the matching features
 Even if the robot has not seen the target, if the user has an image of it, the robot can explore areas it has not seen before, looking for the target.
 The topological map gives the robot the ability to recognize areas it has been before, and avoid them while searching for something that it has not seen before. 
 
-This sort of searching assumes interface can send a description of the desired target region. 
+This sort of searching assumes that the interface can send a description of the desired target region. 
 For humans, this kind of navigation is quite common. 
-To return to the example from before, ``Take the first left after the Dunkin' Donuts", there is no need for the person issuing the direction to offer an image of the specific Dunkin' Donuts that they mean. 
-As long as both people have enough overlap in their idea of what a ``Dunkin' Donuts" is, the direction is understandable. 
+To return to the example from before, in the instruction ``Take the first left after the Dunkin' Donuts", there is no need for the person issuing the direction to offer an image of the specific Dunkin' Donuts that they mean. 
+As long as both people have enough overlap in their idea of what a ``Dunkin' Donuts" is, the instruction is understandable. 
 
 \subsection{Path Following}
 
 While the user cannot see the exact path taken by the robots, as the map doesn't have a metric space for the points of the path to be defined in, the robot can still follow user-specified paths in the graph.
-As with moving to a point, motion along a path that goes outside of the map is problematic. 
-The path could be represented by a sequence of desired sensor precepts and actions, similar to human directions like ``Go past Mark's office and turn right after Terry's office", but without knowledge of the space in advance, such directions might be wrong. 
+The path could be represented by a sequence of desired sensor precepts and actions, similar to human directions like ``Go past Mark's office and turn right after Terry's office".
+As with moving to a point, motion along a path that goes outside of the map is problematic.
+Since unexplored regions do not have a known connectivity, such directions might be specified incorrectly. 
+To return to the previous example, Terry's office might not be past Mark's office, relative to the position of the robot, and so a route that passes from the robot's location, to Mark's office, and then to Terry's office may not exist.  
 In the case of a metric map with possible obstacles, some subgoals might be able to be dropped so that the system can move on towards a known final goal. 
-However, in a sequence of desired sensor precepts, if one precept is not detected, such as ``Terry's office", there is no clear method to recover. 
+The metric quality of the map allows attempts to move from arbitrary locations to others, by including information such as direction and distance, but in a sequence of desired sensor precepts, if one precept is not detected, such as ``Terry's office", there is no clear method to recover. 
 
 \subsection{Formation and Patrol}
 
@@ -561,7 +606,7 @@ By looping over such a cycle, the robots could be said to be patrolling the peri
 Dispersion is one of the more important abilities for robots using a topological map to have. 
 In order to form the map, the robots would have to move through the space and explore it. 
 Assuming the robots have some form of range sensing, as would be used for obstacle avoidance, they could simply scatter stochastically, choosing random headings and following walls while avoiding locations that they have seen before. 
-The fact that the robots have the ability to recognize places and so avoid locations that they have been too before means that they can be quite efficient at spreading over an area. 
+The fact that the robots have the ability to recognize places and so avoid locations that they have visited before means that they can be quite efficient at spreading over an area. 
 Assuming the area is closed, a traversal of it can be represented as a tree. 
 The robot breaks any cycles that would appear in the traversal by refusing to return to nodes that it has visited before, unless it is backtracking to a node that has areas the robot has not visited before near it. 
 For this sort of traversal ``areas the robot has not visited before'' could simply mean areas in a node/location that were not detected to be occupied by obstacles. 
@@ -577,80 +622,8 @@ Once such a map is generated, the robots can disperse over the map either by agr
 Because a purely topological map does not have metric information, reasoning about the dimensions available over path to push an object on is not possible. 
 If the map were enhanced by metric information, even just the narrowest point along each edge and node, then graph search techniques could be used to determine if pushing a box along a path were impossible, although not to determine if it were possible, due to the 90$^\circ$ bend problem discussed above. 
 The problem of topological mapping without localization is somewhat orthogonal to the problem of pushing a box, as the topological map may be able to answer some questions about pushing an object, but does not provide useful information on the local interactions required to actually perform the pushing. 
-In the most abstract case, an intangible 360$^circ$ camera with mobility can perform all of the other tasks listed above, with the same ease as a mobile robot, but clearly cannot push anything, so this kind of mapping and control does not provide much information to guide swarm manipulation. 
+In the most abstract case, an intangible 360$^\circ$ camera with mobility can perform all of the other tasks listed above, with the same ease as a mobile robot, but clearly cannot push anything, so this kind of mapping and control does not provide much information to guide swarm manipulation. 
 
-However, since the approaches that use 360$^circ$ cameras have the ability to use the camera information to provide a heading towards a given node, and the nodes could be chained to provide a path, a combination of information about which nodes and edges are locally obstacle-free and occlusion-based transportation could be used to guess at a path that is locally obstacle-free over its length, and a pushing direction for each segment of the path. 
-Such a controller would not be complete, particularly in a dynamic environment, nor totally local, as it relies on a global map, but the task could be attempted without localization. 
-
-\chapter{Compiler Implementation}
-
-At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
-While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and (probabilistic) Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using e.g. PRISM \citep{KNP11}.
-
-However, the user gesture language as defined by this work is actually quite vague, when it comes to allowing a robot to perform the expected actions. 
-Users were told to assume that the system was capable of understanding their orders, so they merely had to indicate what they wanted the system to do, and it would then do it. 
-Alan Perlis, in ACM-SIGPLAN'82 has been quoted as saying ``When someone says `I want a programming language in which I need only say what I wish done,' give him a lollipop.'' \citep{PerlisYaleLolz}.  
-Such systems are substantially more difficult than the recipients of lollipops expect, because they rely on a large amount of \emph{a priori} information shared between the person issuing the command, and the system executing it. 
-
-For example, in the box-moving task, the users would frequently move the robots to surround the box, and then move the robots to the goal area. 
-However, one might expect that robot control programs would attempt to avoid obstacles, and so would just go around a box. 
-Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
-Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot.
-The user data set does not have clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that any particular object can be pushed, rather than just boxes. 
-Instead, users seemed to assume that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told. 
-
-For the implementation in the gesture translation code, basic movement to points and formations is implemented using the variant of tangent bug described above. 
-Once tangent bug for movement to a point is implemented, it can be composed with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
-For motion along paths, the goals are set to points along the path, ending at the final goal. 
-Formation is a case of motion along a path, where the paths end at the formation, as previously described. 
-
-Patrol also uses modified tangent bug, but instead of terminating when the program counter, and so the goal, reach the final position, the program counter and goal are reset to the start point of the patrol.  
-As a consequence, the resulting program intentionally contains an infinite loop, but it can be interrupted by assigning a new program to the swarm. 
-
-Dispersion is implemented using a minimalistic range sensor. 
-Each robot can detect if there are other robots within a fixed range. 
-If there are more than two robots in the range, the robot executes a random walk, avoiding obstacles. 
-If there are exactly two robots in range, the robot stops. If there are less than two robots in range, the robot executes a U-turn and drives in a straight line, avoiding obstacles, until one of the other situations occurs. 
-This algorithm is a GCPR implementation of the $\alpha$-algorithm of Winfield \emph{et al}, and so shares its strengths and weaknesses  \cite{winfield2008modelling}.
-Notably, the algorithm is not certain to prevent the separation of the swarm into subswarms which are not connected. 
-More sophisticated programs, possibly using more communication, can prevent these issues, but since the requirement of the behavior is that the robots disperse, rather than that they maintain a particular level of network connectivity, there is no need for this particular implementation to enforce connectivity. 
-Indeed, simply moving the robots to random locations uniformly selected would ``disperse'' them. 
-The more intelligent approach was selected with the intention of having the dispersion appear relatively even to the user, rather than being statistically uniformly distributed, and so possibly not evenly distributed. 
-
-Manipulation was implemented as a simple version of occlusion-directed transport. 
-If the robot is not near the target object, it attempts to move to the target object while avoiding obstacles, using the modified tangent bug algorithm. 
-When the tangent-bug algorithm detects that the goal is unreachable, because it is inside of the mobile object, the program switches to occlusion-based manipulation. 
-The robot wall-follows around the object until a line from the robot to the goal intersects the object, and then pushes in that direction. 
-While in this mode, the robot continually updates the direction of the goal, and switches between getting in position and pushing the object. 
-As with the original occlusion-based manipulation, this algorithm is ignorant of obstacles on the opposite side of the object from the robot, and so can get stuck. 
-However, as the system can accept a path for the object to be pushed on, the user can attempt to specify a clear path for the robots to move the object along. 
-
-%\chapter{Compiler Verification}
-%
-%The design of a compiler which verifies that its output is correct What does it mean for a program to be correct? Free from things like assignment of variables to the wrong type, buffer overflows, off-by-one errors, etc. Does not mean that the program does what the programmer intended, just that it does whatever it does without errors. 
-%Correctness is judged with respect to a specification. 
-%Partial correctness - if an answer is returned, it is correct. 
-%Total correctness - requires that program is partially correct and terminates
-%No general solution to halting problem, needs specific proof per-program
-%Compiler correctness shows that a compiler behaves according to its specification
-%I don't currently have a language specification for the gesture language 
-%
-%One method of testing compilers is the operation of a fuzzer \citep{miller1990empirical}. A fuzzer, in the general case, generates input for programs that, while technically legitimate input, causes unexpected behavior such as program crashes. A fuzzer for compilers uses a description of the source language to generate programs that are considered valid under the description, and then attempts to compile them using the compiler. It can also attempt to generate programs that are deliberately incorrect, to test the ability of the compiler to accurately report errors, and to ensure that the compiler accepts all correct programs and no incorrect programs, as in \citep{bazzichi1982automatic}. 
-%Because the internal structure of the compiler is not known, a generator cannot be certain that it causes all code paths in the compiler to be executed, but it can be certain that the generated test programs use all of the syntactical elements of the language, since all of the elements are described in the language specification. Interestingly, Bazzichi and Spadafora's work predates the use of the term ``fuzzer'' by 8 years, but clearly describes the same process.
-%
-%Translation validation \citep{pnueli1998translation}
-%verifies compiled code against input code rather than attempting to verify that a compiler correctly translates all input programs.
-%Verifies that the compiler correctly transforms a specific input program. 
-%Needs:
-% - A common semantic framework for the representation of the source code and the generated target code (probablistic finite automaton?)
-% - A formal description of "correct implementation"
-% - A proof method for verifying that one instance of the semantic framework (the output) correctly implements another one (the input)
-%How is the IR not the common semantic framework?
-%
-%\section{Limitations}
-%
-%input semantics don't include way for user to set robot heading, might be useful for sensor overwatch
- 
-
-
+However, since the approaches that use 360$^\circ$ cameras have the ability to use the camera information to provide a heading towards a given node, and the nodes could be chained to provide a path, a combination of information about which nodes and edges are locally obstacle-free and occlusion-based transportation could be used to guess at a path that is locally obstacle-free over its length, and a pushing direction for each segment of the path. 
+Such a controller would not be complete, particularly in a dynamic environment, nor totally local, as it relies on a global map, but the task could at least be attempted without metric localization. 
 
