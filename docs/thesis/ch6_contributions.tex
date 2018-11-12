@@ -4,11 +4,11 @@
 \section{Swarm Hardware and Software Platform}
 
 A hardware platform for control of small, inexpensive swarm robots was developed. 
-The fact that swarm hardware across the literature has roughly the same general layout for the hardware can be viewed as an example of convergent evolution. 
-The GRITSbots, Amir, and Colias all have a ring of IR sensors, as do many other designs. 
-Most swarm robots use differential drive for steering, through either a sealed gearbox or direct drive.
+The fact that swarm hardware across the literature has roughly the same general layout for the hardware can be viewed as an example of similar needs leading to similar solutions.
 Gianpiero \emph{et al} describe a reference model for the robots in their work, which is inspired by the E-puck \citep{francesca2014automode}.
 The reference model could probably generalize well to other hardware, as the E-puck on which it is based also has a ring of IR sensors and differential drive. 
+The GRITSbots, Amir, and Colias all have a ring of IR sensors, as do many other designs. 
+Most swarm robots use differential drive for steering, through either a sealed gearbox or direct drive.
 A generalized reference model would also be useful for developing SCT generators for robot control, as the set of free behavior models is specific to the robot, and so could be reused for new tasks using the reference system. 
 
 TinyRobo aimed to drive the cost of this style of robot down further, by virtualizing the sensors. 
@@ -67,20 +67,7 @@ Their absence could be viewed as highlighting the users' understanding of the sc
 
 In future, it would be interesting to repeat this work with a condition that does not display the robots in the user interface at all. 
 We expect that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
-However, such an interface would not afford indicating particular robots or groups, so tasks such as dividing the robots around an obstacle may become impossible to perform.
-
-During this experiment, there were some cases where the users expectations of what was possible in the interface indicated a sort of ``metaphor failure" in the user interface. 
-Natural User Interfaces, of which multitouch screens are an example, are supposed to be able to leverage users' understanding of the physical world, and how objects behave in it, to build affordances for objects on the screen. 
-For example, a volume knob can be displayed as an actual knob, and the screen can react appropriately to attempts to rotate the knob. 
-However, people know that the objects on the screen are not e.g. knobs, switches, and so on, but pictures of those things, drawn by the computer. 
-As a result, the affordances are mixed. 
-The knob may afford turning, but it also affords dragging around the screen or deletion, which a knob on a real radio does not afford. 
-In this study, users were tasked with stopping the robots, which had begun to move around a wall to a target area. 
-One user dragged the wall in front of the robots, and another user asked if they could move the wall. 
-The wall was intended to represent an actual wall, which does not afford moving in the physical world, but it was represented in the experiment as a thick black line. 
-It may be that the users would have not attempted to move the wall if it was more clearly represented as e.g. a stone or brick wall, and so had connotations of excessive weight. 
-On the other hand, the users may have regarded it as what it actually was, an image of a wall on a computer screen, and decided that since images can be moved around the screen, the wall image can too. 
-Attempting to experimentally determine if the representation affects how the user interacts with the wall would require an experiment better designed to examine that affordance, as out of 50 participants, only 2 even mentioned the idea of moving the wall. 
+However, such an interface would not afford indicating particular robots or groups, so tasks such as dividing the robots around an obstacle may become impossible to perform. 
 
 \subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
 
@@ -103,4 +90,4 @@ As a consequence, the translation was implemented in the way that programming la
 There are a number of threads in current swarm robotic research that may eventually permit the engineering of swarm behavior from high level descriptions, many of which are discussed in section \ref{section:Swarm_Software_Development_Methods}. 
 One that is not discussed in great depth there is the field of attempts to find mappings between relatively low-dimensioned swarm macrostates and potentially extremely high-dimensional state spaces representing each robot individually. 
 While some work has been done in controlling swarms with controllers operating on macro-level behavior, such as attractors, there is not yet an engineering discipline that would guide the creation of arbitrary swarm behaviors under real-world complexity \citep{brown2014human}. 
-As this area of swarm robotics develops, user interfaces will have to develop with it, in order to allow humans to operate these systems in natural and fluent manners. 
+As this area of swarm robotics develops, user interfaces will have to develop with it, in order to allow humans to operate these systems in a fluent manner. 
