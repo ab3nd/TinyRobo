@@ -5,6 +5,7 @@ Methods for command and control that are based on issuing individual orders to i
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
 % Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
 While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
+Indeed, some systems already have moderately powerful computers, but at fairly high cost for each the individual robots \citep{millard2017pi}
 Until computational power in the individual swarm units does reach the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
 Centralizing the control of a large group of robots (a swarm) makes the system as a whole sensitive to the failure of the central controller. 
 To avoid this type of failure, the overall action of the swarm should be guided by decentralized emergent behavior, rather than a centralized orchestration. 
@@ -16,7 +17,7 @@ However, placing bounds on the sensing ability and communication ability of the 
 
 One potential method to control a swarm of robots is having a central computer dictate to individual robots how the robots should move.
 However, centralized control is only as robust as the central controller. 
-Distributed control systems do not have the single point of failure that centralized models have. 
+Distributed control systems do not have a single point of failure as centralized models do. 
 In order to create reliable and useful swarm robotic systems, users must be able to specify a desired end state of the system that the swarm can converge to without reliable orchestration from a central controller. 
 Moreover, this convergence must occur in the face of unreliability on the part of the individual swarm members. 
 
@@ -24,10 +25,6 @@ The current state of development of emergent control of swarms is guided by ad-h
 The motivating examples of uses for swarms are task oriented, such as sending swarm robots into disaster zones to search for survivors.
 Iterative software development does not have the ability to adapt quickly enough in the face of changing situations in a disaster area, and software development training would be out of scope for first responders. Therefore, it is desirable to automate the construction of control software for a swarm so that it can adapt to a situation, without requiring significant development time. 
 In order to support interactive control during a developing situation, the construction of the software should occur over a similar time scale to the user interactions.
-
-Another possible example of an application for swarm robotics is cleaning, whether in a user's house, or in a more hazardous contaminated area. 
-Modern household cleaning robots, such as the Roomba, are restricted to floors, and even specific types of flooring, but a heterogeneous cleaning swarm might include robots for cleaning windows and dusting surfaces as well. 
-As with disaster zone searches, it is desirable for the user to be able to release the robots into the work area with minimal oversight, and be able to control the robots without having to program them. 
 
 Initially, part of the intent of this work was to determine if robot control programs could be developed to function under the following assumptions, which mirror some of the difficulties found in operation of robots under difficult field conditions. 
 
@@ -37,6 +34,9 @@ Initially, part of the intent of this work was to determine if robot control pro
 	\item Because of limits in sensing and networking, it may be the case that global, absolute localization is unavailable. 
 	\item Robots can fail. Algorithms to control them should not depend on the perfect functioning of any individual robot. 
 \end{enumerate}
+
+Ultimately, while the resulting programs can operate under many of these conditions, the UI design used in user experiments implies at least some form of localization for the robots.
+Without metric localization, some of the tasks posed in the user experiments are still possible, if certain aspects of the goals are relaxed. 
 
 \section{Hypotheses} \label{section:Hypotheses}
 
@@ -60,14 +60,13 @@ This problem will arise at smaller scales if the swarm robots are themselves qui
 Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
 Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
 This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \citep{ayanian2014controlling}.
-Altering how the user interface displays the location of the robots in the swarm will affect the transition point. 
 
 This hypothesis would be invalidated by the gestures selected by the user in the single robot case being dissimilar from those selected in the case where the swarm is displayed as a cloud or covered region. 
 
 H3: User commands on a multitouch display can be automatically converted into programs for each robot which will converge to the desired behavior. These programs will operate using only local sensing and local communications, and without resorting to global, absolute localization. 
 
-Further, it is hypothesized that the user commands can be represented as a grammar which can be into programs for each robot. 
-These these programs should result in the convergence of the swarm to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. 
+Further, it is hypothesized that the user commands can be represented as a grammar which can be transformed into programs for each robot. 
+These programs should result in the convergence of the swarm to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. 
 However, this hypothesis must be modified with a few caveats. 
 First, under the assumption that robots can fail, it is possible that the entire behavior can fail. 
 For example, if enough of the robots are incapacitated, it may be that not enough are left to complete the task. 

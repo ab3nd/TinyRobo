@@ -18,18 +18,17 @@ Unfortunately, the use of screens with interactions inspired by the affordances 
 Most users understand that they are looking at pictures of things on a screen, and so default to single-point interactions \citep{vanacken2008ghosts}.
 Further, tangible UIs, a subset of UIs that include real, physical objects for the user to interact with, raise a set of possible interactions that the designer may not forsee, or that the system may not be able to support \citep{hornecker2012beyond}.
 Attempting to leverage the affordances of a physical object by depicting it on a screen adds another gap, where, in addition to failing to account for all of the affordances of the physical object (e.g. hitting it with another object), the system also fails to account for the affordances of a picture of an object (e.g. shrinking or enlarging it, which a real object cannot easily do). 
-Additionally, even if these affordances are handled, they may not have clear meaning. 
+Additionally, even if these affordances are handled, they may not have clear meanings. 
 What does it mean to use a photograph to hit a text file?
 
 The behavior of users interacting with an NUI device is not solely informed by their intuitions about the physical objects represented on the screen. 
 Smartphones, tablets, and other multitouch user interface devices, as well as specific types of computer programs, such as CAD and realtime strategy game programs, also inform the user's expectations about interactions with new interfaces. 
 Rather than claiming that the users are untrained, and the gestures are ``intuitive'', it would be more accurate to claim that the users already have a form of training, from the devices that they use in their daily lives. 
-We attempt to discover the gestures that users would choose themselves, based on their own thinking about the interface and their own past experience with computer technology such as tablets, smartphones, and video games. 
+This work attempts to discover the gestures that users would choose themselves, based on their own thinking about the interface and their own past experience with computer technology such as tablets, smartphones, and video games. 
 
 User-defined gestures have advantages in memorability and user preference over gestures designed by the researcher or interface programmer \citep{nacenta2013memorability}. 
-However, the study that indicated this preference was for gestures that each user defined for themselves, rather than a gesture set that was constructed by eliciting gestures from the users and compiling a gesture set as in \citep{Micire:2009:ANG:1731903.1731912}. 
-
-This work is an extension of previous work that used a similar process to discover user interface gestures for single or small groups of robots \citep{Micire:2009:ANG:1731903.1731912}. We extend this method from groups to larger swarms of robots, in an attempt to discover if the gestures that users select vary with the number of robots available.
+However, the study that indicated this preference was for gestures that each user explicitly defined for themselves, rather than a gesture set that was constructed by eliciting gestures from the users during task execution \citep{Micire:2009:ANG:1731903.1731912}. 
+By exending the task-oriented gesture collection from single or small groups of robots to swarms, this work attempts to discover if the gestures that users select vary with the number of robots available.
 
 %More specifically, it is hypothesized that there exists a swarm size beyond which users will transition from treating the swarm robots as individuals to interacting with the robots in small groups or as a single large group. 
 %This transition point will be apparent because of a change in the gesture set that users choose to interact with the swarm. 
@@ -48,25 +47,6 @@ This work is an extension of previous work that used a similar process to discov
 %More specifically, a display which obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use the same gestures that users select for controlling individual robots. 
 
 \section{Experiment Setup} \label{section:Experiment_Setup}
-
-Users were seated in front of the interface and read a script describing the system and the experiment. The user interface displayed alternating slides of instructions to the user, such as ``Move the robots to area A", and interface screens for them to interact with. 
-The interface did not visibly respond to user contact or move the robots depicted on it.
-In this regard, it more closely resembles the paper prototypes of the User-Centered Design process than a fully functional interface \citep{ehn1992cardboard}.
-
-In this experiment, some users were initially confused by the interface not responding. 
-It may be that running this experiment on a computer, rather than a paper prototype, contributed to the user expectation that the system could react. 
-Most users' experience with touch screens is that when they touch them, something visible happens nearly immediately. 
-A system that does not visibly react, as in this experiment, is usually assumed to be broken, or waiting for further input, but no one expects printed documents to react to touch.
-For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al.}. 
-The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
-Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
-Showing the response before asking for the gesture removes the expectation that the system will react. 
-
-Unfortunately, showing the response of the system may also act as a cue to the user that suggests a specific solution for gesture selection. 
-For example, if the system shows a square formation being formed by multiple robots moving directly to the closest point on the square to their starting location, the paths shown are multiple direct motions. 
-If instead, the system shows the robots forming a chain that snakes around the perimeter of the square before coming to a stop, the path shown is forming the snake, and then traversing the perimeter. 
-The motion in the first case may suggest that the user make individual gestures to position each robot, while the gesture suggested in the second case might be more like dragging a lasso around the group and then a line from the group around the perimeter of the box. 
-Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
 
 The multitouch user interface device used in this experiment is a 3M M2265PW touchscreen. 
 This screen can track up to 20 simultaneous points, but reports only points, rather than shapes or areas of contact. 
@@ -88,14 +68,36 @@ ROS was developed as a message-passing framework and hardware abstraction layer 
 Software using ROS is implemented as ``nodes'', which communicate by passing messages, generally in a publisher/subscriber pattern. 
 The format of the messages is formally defined, and the generation of the code for generating messages and handling routing of messages is provided by ROS. 
 
-It may seem unusual to use a framework intended for operating robots as a recording program for collecting experiment data, but ROS provides a utility called rosbag that records some or all of the messages emitted by the robot's sensors in a ``bag'' file. 
-In this case, the cameras, microphone, and UI application are the ``sensors'' which rosbag records.
+It may seem unusual to use a framework intended for operating robots as a recording program for collecting experiment data, but ROS provides a utility called rosbag that records some or all of the messages emitted by ROS nodes in a ``bag'' file. 
+In this case, the cameras, microphone, and UI application are all recorded by rosbag.
 A ROS launch file starts multiple ROS nodes to record image data from the cameras, audio from the microphone, and touch events and screen updates from the UI.
 ROS also provides tools for manipulating bag files, and playing them back. 
 All of the data in the file is timestamped, so it plays back with the audio, video, and UI interactions all accurately synchronized. 
 Because all of the data is treated as standard ROS message types, it is relatively easy to write custom processors for the recorded data.
 For example, a node was written that accepts the replayed UI screen changes and touch events, and renders them as a stream of ROS image messages showing the contact points overlaid on the UI screen. 
 Ultimately, the entire data stream was rendered to video, as the rosbag playback does not support rewinding the playback, and being able to re-view a section conveniently was useful for coding. 
+
+Users were seated in front of the interface and read a script describing the system and the experiment. The user interface displayed alternating slides of instructions to the user, such as ``Move the robots to area A", and interface screens for them to interact with. 
+The interface did not visibly respond to user contact or move the robots depicted on it.
+In this regard, it more closely resembles the paper prototypes of the User-Centered Design process than a fully functional interface \citep{ehn1992cardboard}.
+
+Some users were initially confused by the interface not responding. 
+It may be that running this experiment on a computer, rather than a paper prototype, contributed to the user expectation that the system could react.
+Paper prototypes, obviously, do not change in response to the user performing an action, although the experimenter may show the user new sheets of paper depicting the next state of the interface. 
+However, most users' experience with touch screens is that when they touch them, something visible happens nearly immediately. 
+A system that does not visibly react, as in this experiment, is usually assumed to be broken, or waiting for further input.
+
+For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al.}. 
+The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
+Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
+Showing the response before asking for the gesture removes the expectation that the system will react. 
+
+Unfortunately, showing the response of the system may also act as a cue to the user that suggests a specific solution for gesture selection. 
+For example, if the system shows a square formation being formed by multiple robots moving directly to the closest point on the square to their starting location, the paths shown are multiple direct motions. 
+If instead, the system shows the robots forming a chain that snakes around the perimeter of the square before coming to a stop, the path shown is forming the snake, and then traversing the perimeter. 
+The motion in the first case may suggest that the user make individual gestures to position each robot, while the gesture suggested in the second case might be more like dragging a lasso around the group and then a line from the group around the perimeter of the box. 
+Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
+
 
 \subsection{Experiment Conditions} \label{section:Experiment_Conditions}
 
@@ -182,7 +184,6 @@ The inital pass used open coding, where the ``codes'' were essentially free-form
 Rough counts of the open codes for the first 10 participants indicated that ten of the codes covered 81\% of the 580 total coded events. 
 The ten most heavily used codes are, in order of occurrence: drag, tap, voice command, box select, 2 finger drag, double-tap, lasso, tap and hold, 2 handed drag, reverse pinch, and parallel hands. 
 This pass of coding indicated that a majority of the user actions could be coded as some form of drag, some form of tap, box or lasso selection, pinch, and parallel hands. 
-The final gesture, ``parallel hands'' is placement of the hands, palms facing each other, over some area of the screen. This gesture was used many times by the same user who issued voice commands, to indicate where the robots should form a line. Because parallel hands only accounted for 0.69\% of the gestures, it was left out of the development of the coding application for the second stage of coding. 
 
 The most common code was drag, which accounts for 37.58\% of the rough coding, or 42.07\% if all forms of drag in the top ten codes are considered. ``Drag'' is when the user places one finger down, moves it to another location, and raises it again. Two finger drag is the same, only with two fingers on the same hand placed on the screen rather than one. Two-handed drag is single-finger drag, but executed with both hands at the same time. 
 
@@ -195,6 +196,7 @@ Pinch and reverse pinch are essentially two-hand drag or two-fingered drag but w
 This gesture is common for zooming in multitouch user interfaces on smartphones. 
 
 Voice command was used to code when a user spoke a command out loud, rather than using gestures. The high incidence of voice commands (7.07\% of all codes) in the first ten users can be attributed to a single user who issued commands almost exclusively through voice. 
+The final gesture, ``parallel hands'' is placement of the hands, palms facing each other, over some area of the screen. This gesture was used many times by the same user who issued voice commands, to indicate where the robots should form a line. Because parallel hands only accounted for 0.69\% of the gestures, it was left out of the development of the coding application for the second stage of coding. 
 
 \subsection{Second Coding Pass} \label{section:Second_Coding_Pass}
 
@@ -204,7 +206,7 @@ It also includes coding functions for user interface elements described by the u
 
 A second pass of coding of the first ten user recordings was performed by two coders. 
 Because the coders were responsible for deciding which user actions to code, as well as how to code them, it is possible for one coder to miss a gesture that another coder codes, or to split a single gesture into two coded units instead of one. 
-For example, one coder initially split spoken commands at conjunctions such as "and", resulting in two units both coded as voice commands, while the other coder coded the entire sentence as a single unit. 
+For example, one coder initially split spoken commands at conjunctions such as ``and", resulting in two units both coded as voice commands, while the other coder coded the entire sentence as a single unit. 
 This leads to the possibility that for a single task, the coders will produce different length lists of coded units. 
 
 Cohen's $\kappa$ is a measure of inter-coder reliability for categorical items, but it assumes that both coders are coding the same number of codable units \citep{cohen1960coefficient}. 
@@ -224,13 +226,13 @@ The other main source of confusion was lasso and box selection actions being cod
 The actual action performed in a lasso is a drag, in that the user puts their finger down and drags it in a circle around something before lifting it again, but it is intended as a selection of the things inside the circle rather than e.g. drawing a circle shape. 
 
 In order to reduce these errors, and ensure consistency in training the coders, the descriptions for each code were written up in discussion with the coder, so that questions about interpretations could be answered in advance and recorded. 
+The codes were box selection, lasso selection, drag, tap, pinch, ui widgets, voice command, and other. 
+The coding definitions, as presented to the coders, are documented in appendix \ref{chapter:coding_defs}.
 Another coder was trained with the code description document, and coded the first 5 participants. 
 This coder obtained Cohen's $\kappa$ of 0.728, 0.927, 0.75, 0.827, and 0.738 with one of the original coders.
 These values indicate a very high level of agreement, so the remaining videos were coded by these two coders, using the description of the codes from the code description document.  
 
 The resulting data set has 3,256 individual gestures coded. 
-In coding, the codes were box selection, lasso selection, drag, tap, pinch, ui widgets, voice command, and other. 
-The coding definitions, as presented to the coders, are documented in appendix  \ref{chapter:coding_defs}.
 For analysis, drags that were used to draw something on the screen were separated from non-drawing drags. 
 Taps were separated into single, double, and triple taps, plus tap and hold. 
 Pinch was separated into pinch (where the contact points move towards each other) and reverse pinch (where the contact points move apart).
@@ -299,7 +301,7 @@ Across all the common tasks the proportions of each gesture were collected per g
 
 For uses of tap as selection across the common tasks, the unknown number condition differs from the hundred (F=7.6964, p=0.0061) and thousand (F=5.5772, p=0.0193) robot conditions. 
 The one robot condition differs from the ten (F=4.3299, p=0.0389), hundred (F=13.5889, p=0.0003), and thousand (F=10.4274, p=0.0015) robot conditions.
-These differences are summarized in table \ref{tab:tap_select_per_user_norm}.
+These differences are summarized in table \ref{tab:tap_select_per_task_norm}.
 
 \begin{table}
 	\begin{tabular}{l|l l l l l}
@@ -433,12 +435,13 @@ Generally, these were pinches and reverse pinches with one finger on each hand.
 The other group of multi-hand gestures consists of a simultaneous pair of different gestures, one performed with each hand. 
 For purposes of coding, dragging one object to one place with two fingers was coded as a single drag with two fingers, while dragging two objects to two different places was coded as two single-fingered drags at the same time. 
 
-Fifty percent of the users performed at least one two-handed gesture. 
-This is fewer than in some previous research, but more than might be expected if users were generalizing from single-point mouse interaction \citep{micire2010multi, epps2006study}
-Epps et al required users to use a single hand for over half of the gestures in their study, and they point out that their use of a Windows desktop as the working environment of the study may have influenced people towards a single-point interaction style. 
-
 There were 82 instances of two-handed gesturing. 
 If this total is treated as 164 gestures, one for each hand, two-handed interactions account for 5.037\% of the gestures used.
+Fifty percent of the users performed at least one two-handed gesture. 
+This is fewer than in some previous research, but more than might be expected if users were generalizing from single-point mouse interaction \citep{micire2010multi, epps2006study}
+Epps \emph{et al} required users to use a single hand for over half of the gestures in their study, and they point out that their use of a Windows desktop as the working environment of the study may have influenced people towards a single-point interaction style. 
+
+
 
 \begin{table}
 	\centering
@@ -539,8 +542,8 @@ For example, a single robot user interface that displays a full-screen first-per
 Extending this metaphor, the use of mouse clicks would tell the robot to interact with things in the environment, since that is the usual ``shoot/interact" command in FPS games. 
 Unfortunately, this sort of emulation and leveraging of previous game experience does not provide any design heuristics for interfaces that would give similar cues to non-gamers. 
 
-This cuing effect is also important to recognize when considering the results of this study. 
-While the study does allow the development of a set of user gestures which matches the majority of the user-chosen gestures, those gestures were selected to operate with a graphic presentation of the swarm robots in a top-down view on a multitouch surface. 
+This cueing effect is also important to recognize when considering the results of this study. 
+While the study does allow the development of a set of user gestures which matches the majority of the user-chosen gestures, those gestures were selected to operate with a graphic presentation of the swarm robots, in a top-down view, on a multitouch surface. 
 It is possible that some other interaction modality would ultimately be more effective, or some other set of gestures would be more easily discovered and learned by naive users. 
 This set of gestures should not be understood to be the best or most general set, but the one that users felt best allowed them to control the given presentation. 
 
@@ -571,7 +574,7 @@ Overall, the 20\% use of voice commands is much higher than the 1.3\% observed i
 While that study took place as smartphones were becoming popular (and observed effects related to smartphone experience), this study was performed after the introduction of Google Now/Assistant (2012/2016), Microsoft Cortana (2014), Amazon Alexa (2014), and Apple Siri (2011). 
 Aside from Alexa, these voice assistants are all accessed through smartphones.  
 All of the users of voice commands reported high familiarity with Android or IPhone smartphones, but the survey did not ask if they used the voice assistant feature of their phones. 
-As a result, no conclusion can be drawn about the influence of voice assistant technology on user interface expectations from this study, but may be a topic of interest for further research. 
+As a result, no conclusion can be drawn about the influence of voice assistant technology on user interface expectations from this study, but it may be a topic of interest for further research. 
 
 \section{Use of User Interface Widgets}
 
@@ -783,7 +786,9 @@ The strategies used in the dispersed case were the same as those used in the non
 For these strategies, the users made gestures to clear the robots out of the path between the crate and the target area, and then issued movement gestures to the crate. 
 The robots between the crate and target area were perceived as being in the way. 
 
-In both the dispersed and non-dispersed case, ``Move Crate'' and ``Surround and Move'' were the dominant strategies, 
+In both the dispersed and non-dispersed case, ``Move Crate'' and ``Surround and Move'' were the dominant strategies, accounting for over half of the strategies used. 
+The ``Move Crate'' strategy does not specify any particular method for the robots to accomplish the task, but surrounding the crate does. 
+In future work, it may be useful to ask the users exactly how they imagine the robots performing the task, as surrounding could be a preliminary step in caging manipulation, or it could be that the users simply assumed that the robots had to be shown the way to the crate before they could do anything with it. 
 
 %For the task of removing the defective robot, the location selected for it to be removed to was usually either a corner, a ``recycle bin" or similar disposal area, or off the edge of the screen. This use of the area beyond the screen for placement of deleted or rejected things parallels that seen by Wobbrock \textit{et al} \citep{wobbrock2009user}.
 %
@@ -813,7 +818,7 @@ Rejecting ``hundreds'' and ``millions'' as outliers gives a mean of 11.86, with 
 Participant comments may shed some light on the source of this intuition. 
 One participant indicated during the study that they interpreted the corners of the polygonal cloud as possible robot locations, and so drew an idea of the scale of the swarm from the number of corners. 
 The cloud has 11 corners, 7 convex and 4 concave, which is consistent with the estimated robot count. 
-Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in fig. \ref{instructional slides}. 
+Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in fig. \ref{instructional_slides}. 
 These slides depicted 10 robots, and so may have biased participants to expect that the cloud had 10 robots in it. 
 However, multiple participants stated that the cloud represented an unknown number, or estimated more or less than 10 robots.
 
