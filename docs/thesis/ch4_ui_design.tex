@@ -196,7 +196,7 @@ The exception to this rule is tap selections, which some users used to select mu
 Tap selections are accumulated until a gesture other than a tap selection is entered.
 After a non-tap action is entered, a new selection gesture will begin a new command. 
 
-\section{Formal Definition of Command Sequences}
+\section{Acceptable Command Sequences}
 
 The commands that use buttons are Patrol, Make Formation, Move Object, Remove Robot, and Select Group. 
 The text of the buttons is written as a verb phrase, as the buttons take the place of the verb in the subject-verb-object (SVO) structure. 
@@ -261,7 +261,7 @@ While using such a stack of commands will result in the generation of a program 
 In such a case, it would be better to have the parsing of the user input fail. 
 The determination of what level of alteration of the user input is acceptable is not the core subject of this research, but is an interesting question. 
 
-\subsection{Simultaneous Actions}
+\section{Simultaneous Actions}
 
 Expecting a sentence-like form for commands does not take as much advantage as it possibly could of simultaneous actions. 
 The multitouch surface used in this work can track 20 points at once, and some surfaces can track even more. 
@@ -283,7 +283,7 @@ If the gesture is is performed over open space, it is detected as 4-5 paths bein
 With simultaneous gestures, the command sentence selects some group of robots and sends them multiple paths to possibly follow, with no order in which they should be followed. 
 However, without simultaneous gestures, the multiple contacts can be combined as a single scatter gesture. 
 
-\subsection{Representation Of The Command Language}
+\section{Representation Of The Command Language}
 The command input language can be defined formally, given the constraints above. The Augmented Backus-Naur Form (ABNF) description of the language is given below. Using the scatter gesture for dispersion is indicated in ABNF as 4*5(dragRobot|path) to require that there be at least four and at most five fingers used to make the gesture. 
 An alternate approach would be to have the gesture detection coalesce paths and robot drags that were close enough in space and overlapping in time, and present them as a single ``scatter'' gesture. 
 

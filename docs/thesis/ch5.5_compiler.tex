@@ -1,7 +1,5 @@
 % !TeX root = ams_thesis.tex
-\chapter{Compiler Implementation}
-
-\todo{expand this section}
+\chapter{Program Translation Implementation}
 
 At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
 While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using e.g. PRISM \citep{KNP11}.
@@ -16,31 +14,55 @@ However, one might expect that robot control programs would attempt to avoid obs
 Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
 Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot.
 The user data set does not have clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that any particular object can be pushed, rather than just boxes. 
-Instead, users seemed to assume that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told. 
+Instead, users seemed to assume that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told.
 
-For the implementation in the gesture translation code, basic movement to points and formations is implemented using the variant of tangent bug described above. 
-Once tangent bug for movement to a point is implemented, it can be composed with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
+Because the user gestures did not convey all of the information required to perform tasks, there is not a transformation that could operate purely on the user input to produce a program as output. 
+Instead, the output program also has to include elements of planning and other knowledge. 
+Because the system was intended to operate in a potentially unknown environment, the bug, dispersion, and occlusion-based transportation algorithms discussed in the previous section were used. 
+If the environment were known, or communication were assumed to be reliable, other algorithms could be used. 
+Indeed, the translation layer could be modified to switch algorithms based on the parameters of the swarm it is creating programs for and their environment. 
+
+The development of the translation layer was performed in a manner similar to a compiler, which permitted the planning and other other algorithms to be built into output programs by the translation layer. 
+The input language was the user gestures, including which robots were selected and which user-specified paths were created. 
+These inputs were used to parameterize the chosen algorithms, and the robots selected were used to determine the distribution of the resulting programs.
+As a result, this work does not end up breaking away from iterative hand-coding, it just moves it from being done as a way of controlling the swarm, to being done as part of the creation of the control interface. 
+For the motivating example from the introduction, urban search and rescue, this is acceptable, as it does not require the end user to program the swarm. 
+It is also somewhat risky, as the resulting system may not have the flexibility that end users require. 
+
+\section{Implementation Details}
+
+User gestures arriving at the translation layer are stored in a stack until an end-of-command gesture arrives. 
+The gesture sequence is then translated into a program that is parsed by the Lark parser library. 
+Lark is an Earley parser, and so can parse all context-free grammars, although the current gesture language is not sufficiently complex to actually need this level of power. 
+The resulting parse tree is then walked to generate GCPR programs that implement the algorithms described in chapter \ref{chapter:Implementation_of_Swarm_Actions}.
+
+Basic movement to points is implemented using the variant of tangent bug. 
+Path following and formation combines the basic movement to points with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
+As each point is either reached or determined to be unreachable, the goal is advanced to the next point.
 For motion along paths, the goals are set to points along the path, ending at the final goal. 
-Formation is a case of motion along a path, where the paths end at the formation, as previously described. 
+Formation allows the robot to stop at reachable points on the formation, but not unreachable points.  
 
 Patrol also uses modified tangent bug, but instead of terminating when the program counter, and so the goal, reach the final position, the program counter and goal are reset to the start point of the patrol.  
 As a consequence, the resulting program intentionally contains an infinite loop, but it can be interrupted by assigning a new program to the swarm. 
 
 Dispersion is implemented using a minimalistic range sensor. 
 Each robot can detect if there are other robots within a fixed range. 
-If there are more than two robots in the range, the robot executes a random walk, avoiding obstacles. 
+If there are more than two robots in the range, the robot moves forward, avoiding obstacles. 
 If there are exactly two robots in range, the robot stops. If there are less than two robots in range, the robot executes a U-turn and drives in a straight line, avoiding obstacles, until one of the other situations occurs. 
 This algorithm is a GCPR implementation of the $\alpha$-algorithm of Winfield \emph{et al}, and so shares its strengths and weaknesses  \citep{winfield2008modelling}.
 Notably, the algorithm is not certain to prevent the separation of the swarm into subswarms which are not connected. 
 More sophisticated programs, possibly using more communication, can prevent these issues, but since the requirement of the behavior is that the robots disperse, rather than that they maintain a particular level of network connectivity, there is no need for this particular implementation to enforce connectivity. 
 Indeed, simply moving the robots to random locations uniformly selected would ``disperse'' them. 
-%The more intelligent approach was selected with the intention of having the dispersion appear relatively even to the user, rather than being statistically uniformly distributed, and so possibly not evenly distributed. 
+However, selecting points would require foreknowledge of the area to disperse into. 
+The $\alpha$-algorithm was chosen instead because it can operate in a previously unknown area, and because the resulting distribution looks even, visually. 
+A randomly selected set of points from a uniform distribution may place two robots right next to each other, which, while ``uniform'' in a statistical sense, would appear uneven to the user, and not satisfy their intuitive understanding of dispersion. 
+If dispersion in swarm robots continues to be a problem of interest, it is likely worth investigating the tradeoffs between speed of convergence, quality of dispersion, and user satisfaction with various methods. 
 
 Manipulation was implemented as a simple version of occlusion-directed transport. 
 If the robot is not near the target object, it attempts to move to the target object while avoiding obstacles, using the modified tangent bug algorithm. 
 When the tangent-bug algorithm detects that the goal is unreachable, because it is inside of the mobile object, the program switches to occlusion-based manipulation. 
 The robot wall-follows around the object until a line from the robot to the goal intersects the object, and then pushes in that direction. 
-While in this mode, the robot continually updates the direction of the goal, and switches between getting in position and pushing the object. 
+While in this mode, the robot continually updates the direction of the goal, and switches between getting in position and pushing the object, as needed. 
 As with the original occlusion-based manipulation, this algorithm is ignorant of obstacles on the opposite side of the object from the robot, and so can get stuck. 
 However, as the system can accept a path for the object to be pushed on, the user can attempt to specify a clear path for the robots to move the object along. 
 
