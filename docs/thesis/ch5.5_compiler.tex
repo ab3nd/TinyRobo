@@ -49,7 +49,7 @@ Dispersion is implemented using a minimalistic range sensor.
 Each robot can detect if there are other robots within a fixed range. 
 If there are more than two robots in the range, the robot moves forward, avoiding obstacles. 
 If there are exactly two robots in range, the robot stops. If there are less than two robots in range, the robot executes a U-turn and drives in a straight line, avoiding obstacles, until one of the other situations occurs. 
-This algorithm is a GCPR implementation of the $\alpha$-algorithm of Winfield \emph{et al}, and so shares its strengths and weaknesses  \citep{winfield2008modelling}.
+This algorithm is a GCPR implementation of the $\alpha$-algorithm of Winfield \emph{et al.}, and so shares its strengths and weaknesses  \citep{winfield2008modelling}.
 Notably, the algorithm is not certain to prevent the separation of the swarm into subswarms which are not connected. 
 More sophisticated programs, possibly using more communication, can prevent these issues, but since the requirement of the behavior is that the robots disperse, rather than that they maintain a particular level of network connectivity, there is no need for this particular implementation to enforce connectivity. 
 Indeed, simply moving the robots to random locations uniformly selected would ``disperse'' them. 
