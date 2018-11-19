@@ -22,6 +22,9 @@ Slides that say "tell the robots to..." would just be "form a line" or "form a s
 Drop the toys earlier, they really didn't work well. 3D printing is really the way to go, or using the PCB as the frame of the robot. 
 
 Deal with the hardware first, rather than switching back and forth and only finding tag tracking problems late in the game. 
+Ideal organization would have been to get the swarm working, then do the user experiment (or the other way around), and then focus on the translation layer
+	Would have caught the convergence to gritsbots/colias/mroberto a lot earlier
+	Could have had implementing a bunch of swarm algos as ros nodes as part of the translation layer work?
 
 Robots capable of monitoring their own battery charge and recharging themselves. 
 
