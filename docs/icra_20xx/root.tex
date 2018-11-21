@@ -11,6 +11,14 @@
 
 \overrideIEEEmargins                                      % Needed to meet printer requirements.
 
+\usepackage{xargs} 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+
 \usepackage[pdf]{graphviz}
 %In case you encounter the following error:
 %Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
@@ -32,7 +40,7 @@
 %\usepackage{amssymb}  % assumes amsmath package installed
 
 \title{\LARGE \bf
-Extension of Tangent Bug to Swarm Robotics
+Extension of TangentBug to Swarm Robotics
 }
 
 
@@ -59,7 +67,7 @@ Extension of Tangent Bug to Swarm Robotics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-This electronic document is a “live” template. The various components of your paper [title, text, heads, etc.] are already defined on the style sheet, as illustrated by the portions given in this document.
+Swarm robots may have limited computation and communication. The need to complete assigned tasks under these constraints must be balanced with the need to have the behavior of the swarm be ledgible to the user, so that the user engages with the swarm an appropriate amount, not too little (neglect tolerance), nor too much (neglect benevolence). Bug algorithms present a possible mechanism for control of swarms with little or no communication which will be legible to end users. This work discusses an addition to TangentBug to perform path following and maximizing the density of robot clustering at a goal point. The limitations of bug algorithms for some common swarm tasks are also discussed. 
 
 \end{abstract}
 
@@ -91,34 +99,30 @@ There exist a family of algorithims, called ``bug algorithms'', which provide co
 The bug family is large, and some of its members require sensing which may not be available in all conditions, such as location information or infinite-range distance sensing, but many do not. 
 
 Generally, bug algorithms have two cases, the rules for motion in unobstructed space, and the rules for moving around obstacles. 
-Rules for motion around obstacles frequently combine wall following around the perimeter of the obstacle with a leave condition that causes the robot to stop wall following and return to moving in open space. 
-The leave condition is chosen so that there exists no condition where the robot will leave the obstacle further from the goal point than the location where the robot began responding to the presence of the obstacle (the ``hit point''). 
-As a result, obstacles cannot move the robot away from the goal, which, were it to happen, could result in loops. 
-In the initial bug algorithm paper, the leave condition for Bug1 is to depart the obstacle from the point on the obstacle closest to the target, which requires circumnavigating the obstacle once to find that point \cite{lumelsky1987path}.
-Bug1 performs a complete traversal of the edge of every obstacle it encounters, in order to find the closest point to the goal. 
-Bug2 measures the angle to the goal, and so can depart from the obstacle at a point on the straight line between the robot's initial position and the goal without having to completely circumnavigate the object. 
+The bug algorithm transitions between the two states based on some set of conditions, which are normally based on local sensing and minimal memory for storage of environment information. 
+In the initial bug algorithm paper, two bug algorithms are described, Bug1 and Bug2. 
+Bug1 moves straight towards the goal if there is nothing in its way. 
+When it detects an obstacle, the bug circumnavigates the obstacle until it returns to its starting point, called the ``hit point". 
+During circumnavigation, the bug records the point of closest approach to the goal. 
+After the circumnavigation is complete, the bug moves to the point on the obstacle perimeter closest to the goal and departs towards the goal \cite{lumelsky1987path}.
+Bug2 circumnavigates the perimeter of the object as with Bug1, but Bug2 measures the angle to the goal. 
+When the angle to the goal is the same as it was at the hit point, and the distance to the goal is less than it was at the hit point, Bug2 departs the obstacle perimeter and heads towards the goal. 
 
-Bug1 and Bug2 are inefficient, in terms of the resulting path length compared to the optimal path in a given environment. 
-VisBug extends the sensor range of bugs from the contact sensors of Bug1 and Bug2 to a limited vision sensor, which is used to take shortcuts \cite{lumelsky1990incorporating}.
-TangentBug is one of the most frequently referenced and modified bug algorithms. TangentBug results in much better path lengths than Bug1 and Bug2, and indeed approaches a globally optimal path as the sensor's range increases\cite{kamon1996new}.
-
-There are a large number of bug algorithms derived from each other with modifications to the leave and follow conditions to reduce overall path length or smooth the robot's trajectory. 
-A discussion of all of them is out of scope for this paper. 
+Bug1 and Bug2 are inefficient, in terms of the resulting path length compared to the optimal path in a given environment. By exending sensor range as in VisBug and TangentBug, the path can be greatly shortened \cite{lumelsky1990incorporating, kamon1996new}.
 PointBug is competitive with TangentBug in some environments \cite{buniyamin2011simple}.
 DistBug, RoverBug, and WedgeBug reduce the path length over Bug1 and Bug2, or have reduced sensing requirements \cite{kamon1997sensory, volpe2000enhanced}.
-Intelligent Bug Algorithm (IBA) improves on Dist-Bug by using range sensors to detect if there are obstacles in the path to the goal during the obstacle avoidance phase \cite{zohaib2013iba}. 
 I-bug has possibly the most-reduced sensing, using only signal strength or a gradient emanating from the goal point \cite{taylor2009bug}.
 
 Combining potential fields with bug algorithms yields controllers that can both move robots in formation and avoid obstacles \cite{weir2006potbug, mohamed2011improved}. 
-Smooth controllers, whether derived from potential fields or not, allow bug-like algorithms to respect nonholonomic motion constraints, including articulated vehicles and car-style drive systems \cite{1461311, 6530864, nayl2015autonomous}. 
 Implementation of TangentBug on real robots indicates that there is some complexity swept under the rug by the use of theoretical point robots with holonomic drive.
+Smooth controllers, whether derived from potential fields or not, allow bug-like algorithms to respect nonholonomic motion constraints, including articulated vehicles and car-style drive systems \cite{1461311, 6530864, nayl2015autonomous}. 
 Allowing a robot to follow walls and move in straight lines requires some degree of continuous control supporting the logical functioning of the bug algorithm \cite{marin2010implementation}.
 
-The simplicity of bug algorithms allows them to be used to quickly find potential paths in a known map, rather than navigating an unknown map \cite{antich2009bug}. 
-The resulting plans are, as with the bug algorithms that generated them, correct, and the creation of multiple bug paths allows selection of the best one \cite{Bhanu2016multibug}.
-By combining bug algorithms with visual topological maps, robots can navigate without metric localization \cite{Maravall2015VisualEntropyBug}. 
+%The simplicity of bug algorithms allows them to be used to quickly find potential paths in a known map, rather than navigating an unknown map \cite{antich2009bug}. 
+%The resulting plans are, as with the bug algorithms that generated them, correct, and the creation of multiple bug paths allows selection of the best one \cite{Bhanu2016multibug}.
+%By combining bug algorithms with visual topological maps, robots can navigate without metric localization \cite{Maravall2015VisualEntropyBug}. \todo{This is a page of related work in a 6 page paper with no experiment yet. Cut WAY down.}
 
-In a pursuit-evasion task, a bug algorithm variant (PE-Bug) has the same ability to detect the evader as a system with a complete map and perfect navigation \cite{rajko2001pursuit}.
+%In a pursuit-evasion task, a bug algorithm variant (PE-Bug) has the same ability to detect the evader as a system with a complete map and perfect navigation \cite{rajko2001pursuit}.
 
 A performance comparison of 11 bug algorithms (Bug1, Bug2, Alg1, Alg2, DistBug, Class1, Rev1, Rev2, OneBug, LeaveBug, and TangentBug) is given in \cite{ng2007performance}.
 TangentBug was found to achieve the shortest path in three of the four tested environments, but the geometry of the operating environment can impact the path length found by bug algorithms. 
@@ -128,31 +132,36 @@ With noise, especially in odometry or localization, the bug algorithms can fail 
 \subsection{Bugs with Moving Obstacles}
 
 Bug algorithms are rarely used in swarm robotics, although their minimal sensing and memory requirements would seem to predispose them to use on inexpensive robots. 
-However, simply applying a bug algorithm to the movement of each robot in the swarm may result in undesirable behavior in a number of ways. 
+The three primary problems with bug algorithms in practical situations are:
+
+\begin{enumerate}
+	\item Bug algorithms expect to control a point robot with holonomic drive. This is dealt with by hybrid controllers. 
+	\item Bug algorithms expect unrealistic sensors (noiseless, infinite range). This is only true of some varieties of bug, and the impact of noise can be reduced. 
+	\item Bug algorithms expect to control a single robot in a static environment. This is somewhat more problematic. 
+\end{enumerate}
+
+Ultimately, the presence of moving obstacles results in navigation becoming undecidable \todo{be damn sure this is correct} without knowledge of the future movement of the obstacles, as an obstacle can move to occupy the robot's goal. 
+Unless it is known whether the obstacle will move off the goal in the future, it cannot be determined whether the goal is unreachable, or just not currently reachable. 
+
+Simply applying a bug algorithm to the movement of each robot in the swarm may result in undesirable behavior in a number of ways. 
 First, many bug algorithms rely on wall following to pass around obstacles. 
 If the other obstacle is another robot, operating under the same algorithm, the robots may begin to circumnavigate each other. 
 If the leave condition for the circumnavigation is never met, this behavior would persist indefinitely. 
 Under the leave rule discussed for Bug1, if one of the robots is moving slightly faster than the other, the resulting path of the two robots would be a spiral moving in some direction in space. 
 Since Bug1 uses return to the same location to detect circumnavigation, and the spiral would never return to the same location, the leave condition would never be satisfied.
-
-Most bug algorithms operate in a static environment, where a single robot is the only moving object. 
-Obviously, in many real-world situations, this constraint does not hold. 
-Indeed, the presence of moving obstacles results in navigation becoming undecidable without knowledge of the future movement of the obstacles, as an obstacle can move to occupy the robot's goal. 
-Unless it is known whether the obstacle will move off the goal in the future, it cannot be determined whether the goal is unreachable, or just not currently reachable. 
 For swarm robotics, there are expected to be multiple robots operating in an area, and for human-robot teams, urban deployments, and household robots, there may be humans in the area as well. 
 
-By extending robots with the ability to detect the difference between other robots and obstacles, and the ability to assess the current motion of another robot, \cite{lumelsky1997decentralized}. 
+By extending robots with the ability to detect the difference between other robots and obstacles, and the ability to assess the current motion of another robot, a controller that  \cite{lumelsky1997decentralized}. 
 Disappointingly, a complete controller for non-communicating multiple robots is not feasible, although the incomplete controller by Lumelsky and Harinararyan has been determined to work well in situations that were not set up intentionally to confound it. 
 
 If the robots recognize each other and are allowed to communicate, they can navigate around objects in opposite directions, thus reducing the amount of time required to find the leave point for even the inefficient Bug1 algorithm \cite{kandathil2018modified}.
 Communicating robots moving using bug algorithms can also perform topological mapping of disconnected regions, so long as they can regularly communicate across the disconnect \cite{caccavale2017distributed}.
 
 Distance Histogram Bug (DH-Bug) follows obstacles and has an additional mode for avoiding moving obstacles while still attempting to move towards the goal \cite{zhu2012new}. 
-The creators of DH-Bug also implemented it on a real robot. 
-They point out that in dynamic environments, the completeness of bug algorithms can be confounded by malicious actors. 
+The creators of DH-Bug point out that in dynamic environments, the completeness of bug algorithms can be confounded by malicious actors. 
 For example, fast-moving objects can attack the robot, overrunning its ability to navigate away from them. 
 
-The Tangent-bug algorithm has been extended to handle moving obstacles, given a number of constraints \cite{ tomita2009sensor}.
+The Tangent-bug algorithm has been extended to handle moving obstacles, given a number of constraints \cite{tomita2009sensor}.
 The main constraint that affects the use of this algorithm is that the obstacles are constrained to be moving at a velocity that is slower than that of the robot.
 This constraint is required because if the robot is circumnavigating the obstacle, and the obstacle is moving faster than the robot, then in the time that the robot requires to circumnavigate the perimeter of the obstacle, the obstacle will have moved a distance greater than its own perimeter is long, and the circumnavigating robot will have moved with it.
 As a consequence, the circumnavigating robot might not return to its own previous path and cross it, which is the condition that Tomita and Yamamoto use to determine that the robot should leave the obstacle. 
@@ -236,7 +245,18 @@ Because every iteration of this step fills the point closest to the goal with a 
  
 \section{EXPERIMENTAL EVALUATION}
 
-Run you an experiment for great good! 
+Without user testing, this paper can't talk much about the legibility of the resulting paths. 
+
+If I do a proof instead that e.g. adding path following doesn't break the completeness of the program, that may be of some interest, although it's a pretty trivial thing. 
+
+Maybe handle which swarm algos are handlable by bugs and which are not, global/local sensing change, what about talkative bugs?
+
+This is rapidly turning into a research project of its own. 
+
+
+Hold off dealing with this until after PhD is complete.
+
+
 
 \bibliography{../proposal/swarm.bib}
 \bibliographystyle{IEEEtran}
