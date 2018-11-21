@@ -9,15 +9,15 @@ Larger robots consume more materials per unit, and so cost more money.
 As a result, for a given number of swarm units, larger robots will result in a higher cost swarm. 
 Also, each robot requires some amount of space to move around in. 
 To keep the ratio of free space to robots constant, the area of space used by the robots grows as the robots do. 
-If the ratio isn't kept constant, the robots will crowd each other, and so large robots will require either a very large space, or become overly crowded.
+If the ratio isn't kept constant, the robots will crowd each other: large robots will require either a very large space, or become overly crowded.
 Finally, larger robots are more cumbersome to deal with. 
 They require larger storage areas, possibly teamwork to lift or repair, and so forth. 
-All of these efforts are also multiplied by the number of robots in the swarm. 
+All of these efforts are multiplied by the number of robots in the swarm. 
  
-In addition to budgetary constraints, interaction with an environment built for humans places an upper bound the scale of the individual swarm members. 
+In addition to budgetary constraints, interaction with an environment built for humans places an upper bound on the scale of the individual swarm members. 
 For example, typical indoor doorways are around 80cm wide, so a robot would have to be less than 80cm wide to fit through them. 
 The lower bound on swarm robots is generally dictated by fabrication technology, with smaller robots becoming increasingly difficult to assemble. 
-As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 0.3m$^3$. 
+As a result of these bounds, swarm robots are mostly between 1cm$^3$ and 30cm$^3$. 
 This scale range divides fairly evenly into robots that can operate in large swarms on a table, and those that can operate in swarms within a room, albeit possibly a large room. 
 The challenge of construction of swarm robot hardware, then, is to put all of the same parts as non-swarm mobile robots into a small package.
 Many impressive designs for small swarm robot platforms have been proposed and constructed as part of research in swarm robotics. 
@@ -40,20 +40,20 @@ InsBot was a small robot, measuring 41mm x 30mm x 19mm, that was designed to int
 It used two processors, one to run higher level behaviors and one to interface with a suite of sensors that included 12 IR sensors and a linear camera. 
 The AmIR robot measured 6.5cm in diameter and 6cm tall. It has a more modern processor than Alice \citep{arvin2009development}.
 There is no evidence that AmIR was ever widely available, and it cost \$92 per unit \citep{arvin2015colias}.
-The successors to Amir, Colias and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, but with additional features for pheromone robotics applications \citep{arvin2014colias, arvin2015colias}. 
-Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and a few other sensors.
+The successors to Amir, Colias, and the related Colias-$\Phi$, are dual-microprocessor systems similar to Jasmine in functionality, with additional features for pheromone robotics applications \citep{arvin2014colias, arvin2015colias}. 
+Colias is built out of two PCBs, with the upper PCB and processor handling IR collision avoidance and communication, and the lower processor controlling the motors, power management, and various sensors.
 Colias robots cost \$35, in parts, but are not commercially available. 
 The Colias-$\Phi$ model has an even more impressively low price, at \$22.
 
 Even when they are commercially available, most existing swarm robots are too expensive to build a large swarm.
 The E-puck from EFPL is approximately \$795 per unit, so the cost of maintaining a large swarm can become daunting quickly. 
 The high price of the E-puck is a result of its extensive suite of sensors, including a camera and 360$^{\circ}$ IR range sensor and communication system. 
-As of January 2018, the E-Puck 2 has been available. 
+As of January 2018, the E-Puck 2 has been commercially available. 
 Version 2 E-pucks have a 168MHz, VGA-resolution camera, and WiFi connectivity in addition to the bluetooth that all E-Pucks use. 
 They cost 850 Swiss francs, or approximately \$845 as of this writing. 
 
 The r-one research robot is cheaper than the E-puck, at approximately \$220 per unit \citep{mclurkin2013low}. 
-The developers of the r-one position it as a more featureful and less expensive alternative to the E-puck (\$795), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), and the Pololu 3pi (\$99, minimal sensors). 
+The developers of the r-one position it as a more featureful and less expensive alternative to the E-puck (\$795), Parallax's Scribbler (\$198, minimal sensors), the iRobot Create (\$220, requires additional hardware to be programmable), the K-team Khepera III (\$2000), or the Pololu 3pi (\$99, minimal sensors). 
 
 The Harvard Kilobots are a more recent entry to inexpensive swarms, and have been produced in large quantities \citep{rubenstein2014kilobot}. 
 Kilobots contain \$15 worth of parts, while a 10-pack of assembled Kilobots sells for about \$112 per robot. 
@@ -78,8 +78,8 @@ The use of color information is likely much faster to process than fiducual tags
 
 The Zooids of Le Goc \emph{et al.} are interesting in that the robots themselves are positioned as both a physical interface and a swarm \citep{le2016zooids}. 
 They are designed to be used as physical controls, such as knobs or sliders, as well as being able to move themselves.
-The individual robots measure 2.6cm in diameter, and localize themselves using a projected grey coded light signal from a high-speed projector. 
-The authors estimate the individual cost of a Zooid at around \$50. 
+The individual robots measure just under 3cm in diameter, and localize themselves using a projected grey coded light signal from a high-speed projector. 
+Le Goc \emph{et al.} estimate the individual cost of a Zooid at around \$50. 
 
 Swarm robots have also been developed for aquatic and aerial robotics as well, although the problems unique to those domains are outside of the scope of this work \citep{costa2016design, preiss2017crazyswarm}. 
 It is worth noting that the Crazyflie quadcopter platform on which the Crazyswarm is based is a commercial product. 
@@ -90,7 +90,7 @@ One way to reduce the cost of swarm robots is to use commercial, off-the-shelf (
 Reusing existing hardware leverages the economies of scale that reduce the price of commercial hardware, as well as eliminating the need to design or build the COTS parts. 
 Use of COTS parts in research robotics has led to at least two platforms referred to as COTSBots \citep{bergbreiter2003cotsbots, soule2011cotsbots}.
 The first COTSBots used mote hardware for the communications link and sensing, plus a motor control add-on board \citep{bergbreiter2003cotsbots}. 
-The mobility platform is a modified toy, in particular, a specific brand of high-quality micro RC car.
+The mobility platform is a modified toy, in particular, a specific brand of high-quality micro radio controlled car.
 At the time of this writing, the car used in COTSBots is moderately expensive for a toy car, costing a little over \$100 per unit. 
 COTSBots use TinyOS, a modular and event-driven framework for developing software for low-power wireless devices \citep{levis2005tinyos}. 
 
@@ -137,10 +137,10 @@ For the purposes of this research, the user interface is a multitouch surface th
 The second function of a swarm user interface is to display information about the swarm, or to display information gathered by the swarm to the user. 
 By providing an overview of the activities of the swarm, the user interface can give the user feedback on the progress of the task as it proceeds, as well as allowing the user to detect problems. 
 
-Multitouch interfaces have been determined to improve on WIMP or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \citep{hayes2010multi}.
+Multitouch interfaces have been determined to improve on ``window, icon, mouse, pointer" (WIMP) or voice interfaces for multi-robot control in a sequence of command and control tasks, including commanding the swarm to a location, performing reconnaissance, and having the swarm cross a dangerous area \citep{hayes2010multi}.
 The interface displayed the locations of the robots on a directly manipulatable map, and used movable or semi-transparent user interface widgets, in order to minimize occlusion of the map. 
-Areas were selected with with drawing gestures, and paths with fluid strokes, rather than e.g. selection of vertices bounding an area.
-The use of multi-touch interaction is desirable because one-at-a-time selection doesn't scale beyond a very limited number of robots.
+Areas were selected with drawing gestures, and paths with fluid strokes, rather than, for example, selection of vertices bounding an area.
+The use of multi-touch interaction is desirable because one-at-a-time selection does not scale beyond a very limited number of robots.
 In order to interact with large groups of robots, the user must be able to perform operations on areas and groupings, rather than on the single point available with a traditional pointer-based interface. 
 
 Because of the limitations on individual sensing, especially in the case of a robot with poor localization, providing a third-person user interface rather than a first-person one is better for control of swarm robots \citep{kapellmann2016human}. 
@@ -658,7 +658,7 @@ Kato \emph{et al.} indicates that in order to use the vector field well, the use
 Interface changes, such as showing particles on the vector field, could improve usability, but these approaches would have the same scaling problems that the robot representation does. 
 When the view is zoomed out very far, individual whirls and eddies in the field may not be visible to the user. 
 
-Using a vector field  for the interface interface does not directly map to programs on the robots. 
+Using a vector field for the interface does not directly map to programs on the robots. 
 Instead, the vector field describes how a robot located at a specific point should move. 
 The central computer maintains the vector field representation and commands the individual robots.
 Because the vector field describes motions, rather than tasks, conversion from a task-based user command to a vector field, the task would have to be converted into a series of changes to the field at specific locations.
@@ -938,7 +938,7 @@ With one robot in a fairly simple map, the paper indicates that 16 revisions are
 Adding a second robot increases this to 1306 revisions.  
 
 Combinatorial explosions are a frequent problem in synthesis of provably correct controllers. 
-Mehta \emph{et al.} presented work that that synthesizes not just the controller, but the entire robot \citep{mehta2018robot}.
+Mehta \emph{et al.} presented work that synthesizes not just the controller, but the entire robot \citep{mehta2018robot}.
 In the controller, the sensors are represented by binary propositions of the controller logic, one for each possible sensed object.
 For small cases, this is sufficient, but the number of such propositions is $2^{|objects|}$, and so becomes unwieldy for more complex specifications and robots.  
 However, it does pose an interesting argument for heterogeneity of robots. 

@@ -2,14 +2,15 @@
 \chapter{Introduction and Research Statement}
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \citep{WangSearchScale}.
-By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous swarms.
+By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous groups of robots.
 % Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
 While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
-Indeed, some systems already have moderately powerful computers, but at fairly high cost for each the individual robots \citep{millard2017pi}
-Until computational power in the individual swarm units does reach the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
-Centralizing the control of a large group of robots (a swarm) makes the system as a whole sensitive to the failure of the central controller. 
+Indeed, some systems already have moderately powerful computers, but at fairly high cost for each the individual robots \citep{millard2017pi}.
+
+Until computational power in the individual swarm units reaches the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
+Centralizing the control of a single swarm of robots makes the system as a whole sensitive to the failure of the central controller. 
 To avoid this type of failure, the overall action of the swarm should be guided by decentralized emergent behavior, rather than a centralized orchestration. 
-Each robot receives its own program, and the sum of the execution of the programs on each robot results in completion of the task.
+Each robot receives its own program, and the sum of the execution of the programs on each robot results in completion of the swarm's task.
 The various approaches to development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
 However, placing bounds on the sensing ability and communication ability of the robots has substantial effects on the programs that can be developed for them. 
 
@@ -29,8 +30,8 @@ In order to support interactive control during a developing situation, the const
 Initially, part of the intent of this work was to determine if robot control programs could be developed to function under the following assumptions, which mirror some of the difficulties found in operation of robots under difficult field conditions. 
 
 \begin{enumerate}
-	\item Networking between robots is unreliable, due to range, limited power, and possible interference. It is not the case that any robot can reach any other robot at any time.
 	\item Robots' sensing is limited in range. Because of this limitation and dynamic environments, the information that robots can have about distant points is limited. 
+	\item Networking between robots is unreliable, due to range, limited power, and possible interference. It is not the case that any robot can reach any other robot at any time.
 	\item Because of limits in sensing and networking, it may be the case that global, absolute localization is unavailable. 
 	\item Robots can fail. Algorithms to control them should not depend on the perfect functioning of any individual robot. 
 \end{enumerate}
@@ -59,7 +60,7 @@ Once the ratio of the size of individual swarm members to the size of the area t
 This problem will arise at smaller scales if the swarm robots are themselves quite tiny, and some of the available swarm robots are indeed small \citep{pelrine2012diamagnetically}.
 Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
 Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
-This approach has been used successfully for navigation in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \citep{ayanian2014controlling}.
+This approach has been used successfully for navigation of a swarm of uncrewed aerial vehicles (UAVs) in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \citep{ayanian2014controlling}.
 
 This hypothesis would be invalidated by the gestures selected by the user in the single robot case being dissimilar from those selected in the case where the swarm is displayed as a cloud or covered region. 
 
@@ -77,9 +78,9 @@ H4: It is possible to build a swarm consisting of individual units with better a
 
 As computing hardware decreases in price and size, more and more ability can be built into smaller and smaller hardware. 
 The development and popularity of smartphones has driven the development of smaller sensors and lower power processors, as well as thinner and smaller battery technology. 
-As Internet of Things (IoT) technology becomes increasingly popular, the ability to add smaller and lower-power devices to communications networks is also dropping. 
+As Internet of Things (IoT) technology becomes increasingly popular, it becomes easier and cheaper to add smaller and lower-power devices to communications networks. 
 The parts that go into these consumer technologies are also made less expensive by economies of scale. 
 Assuming a fixed set-up cost, the more finished devices are produced, the greater the amortization of the setup cost across the devices. 
-Since IoT is expected to deliver connectivity for tens or hundreds of devices per end user, the expected economics will drive down the cost of network connectivity.
+Since IoT is expected to deliver connectivity for tens or hundreds of devices per end user, the expected economics drive down the cost of network connectivity.
 As a consequence, by using components intended for IoT devices, cell phones, and similar consumer electronics, the cost of building small robots will also continue to drop.
 This hypothesis would be disproved by the cost of mobility platforms and control hardware being more than twice the cost of a Kilobot in parts. 

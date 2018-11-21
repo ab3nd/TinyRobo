@@ -62,7 +62,7 @@ The combination of the spatial decomposition and the user input results in, esse
 By having the vectors in the field point towards a user supplied path, or along the path, the robots can follow the path using only their location in the local coordinate frame to guide them. 
 
 The space is decomposed into squares of uniform size. The size can be varied, but smaller squares result in a longer program for the robots and longer runtime for the decomposition algorithm. 
-To determine the desired vector for a the cells of the spatial spatial decomposition, a multipass algorithm is used. 
+To determine the desired vector for a the cells of the spatial decomposition, a multipass algorithm is used. 
 
 The first pass assigns the vectors for those squares containing a point of the user specified path, or on the line between two points of the user path. 
 Squares containing a point are assigned a vector pointing to the next point on the path. 
@@ -118,7 +118,7 @@ Unfortunately, composition with a vector field indicating the user-specified pat
 For example, assume that the goal is a point with a vector field pointing towards that point from all locations in the operational area. 
 A tempting bug algorithm for passing around obstacles is to circumnavigate the obstacle until the vector field points away from it, then leave and return to vector field control. 
 For a simple polygonal obstacle between the robot and the goal, this results in reaching the obstacle, navigating some distance around it, and then departing it again on the side closer to the goal. 
-However, if the the goal is surrounded by a right-handed spiral-shaped obstacle such that any straight line from the goal intersects the obstacle, the goal becomes unreachable. 
+However, if the goal is surrounded by a right-handed spiral-shaped obstacle such that any straight line from the goal intersects the obstacle, the goal becomes unreachable. 
 When a robot hits the spiral, it will wall follow in some direction.
 If it uses a right-handed wall follow, it will reach the outer lip of the spiral and depart the obstacle following the vector field. It will then hit the obstacle again, since the vector field across the mouth of the spiral points towards the goal in its center, and begin wall following again. 
 A left handed wall follow would reach the goal, but could be defeated by a left-handed spiral. 
@@ -384,7 +384,7 @@ If the number of robots in the swarm is increased by one, the number of points i
 If $\alpha$ is increased by one, allowing one robot to be within $r$ of another robot, then the problem reduces to the two robot case with $\alpha=0$ and the third robot able to be placed anywhere. 
 However, as the two robot case requires global sensing to determine whether there exist two points that are greater than $r$ apart from each other, it is still not a complete local-sensing-only algorithm. 
 
-For any number of robots $M$ and $\alpha < M$, split the swarm into a group of $\alpha$ robots and and the remaining $M - \alpha$ robots. 
+For any number of robots $M$ and $\alpha < M$, split the swarm into a group of $\alpha$ robots and the remaining $M - \alpha$ robots. 
 Because $\alpha$ robots may be within $r$ of each other, put them all at the same arbitrarily selected point. 
 The remaining $M - \alpha$ robots must be placed at points that are more than $r$ from that point, or else the group of size $\alpha$ will have more than $\alpha$ robots within $r$ of them.
 As with the two-robot case, determining that there does not exist an accessible point greater than $r$ distance from any point in the space requires global information about the space. 
@@ -512,7 +512,7 @@ If there is no point where the m-line transitions, then the stagnation was cause
 %In the absence of obstacles, the robots could check for stagnation, and then circle the perimeter of the object to check that the m-line points into the object for all points on the perimeter. 
 %In that case, the goal is inside the object, and success can be detected. 
 %However, in the presence of obstacles, the object can stagnate by running into an obstacle, rather than by the forces exerted by robots along the object's perimeter summing to zero. 
-%If stagnation detection is used to advance the goal to the next point along a user-specified path, the the robots will advance the goal at incorrect times, caused by obstacles rather than arrival at the goal.
+%If stagnation detection is used to advance the goal to the next point along a user-specified path, the robots will advance the goal at incorrect times, caused by obstacles rather than arrival at the goal.
 %The resulting behavior is not complete, as a correct solution to arriving at the goal may exist, but will not be found, and the system will fail instead. 
 
 %Simply checking once, when the robot arrives at the object, is not sufficient.
