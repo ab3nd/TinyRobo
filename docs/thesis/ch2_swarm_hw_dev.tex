@@ -153,7 +153,7 @@ While the board can supply sufficient current to control all of these toys, it h
 The current design for the robots does not include sensors as a cost-saving decision. 
 However, the communication between the ESP-8266 and the motor drivers uses the industry standard I2C bus serial interface. 
 Due to the non-proprietary nature of this interface standard, it has been widely adopted, and many sensors are available to connect to an I2C bus. 
-For example, Vishay Semiconductor makes the VCNL3020, which is an infrared proximity sensor with a 20mm range. 
+For example, Vishay Semiconductor makes the VCNL3020, an infrared proximity sensor with a 200mm range. 
 If greater range is required, The ST Microelectronics VL53L0X Time-of-flight (ToF) laser ranger and gesture sensor provides a 2M range and 1D gesture sensing in a 4.4mm x 2.4mm package. 
 As of this writing, the VCNL3020 is \$3.44 and the VL53L0X costs \$6.28 in single quantities.
 These prices are reduced significantly when buying components in bulk, but because they increase the cost, size, and power draw of the hardware, they have not yet been integrated with this platform. 
@@ -255,7 +255,7 @@ Bits 1 and 0 of the command byte control the polarity of the output voltage, and
 		1 & 1 & H & H & Brake\\				
 	\end{tabular}
 	
-	\caption{Truth table for DRV8830 drive direction bits. Coast allows the motor to turn freely. Brake connects the motor leads, which results in braking using the motor's back-EMF. Z indicates the output is in a high-impedance state}
+	\caption{Truth table for DRV8830 drive direction bits. Coast allows the motor to turn freely. Brake connects the motor leads, resulting in braking using the motor's back-EMF. Z indicates the output is in a high-impedance state}
 	\label{tab:DRV8830_truth}
 \end{table}
 
@@ -461,7 +461,7 @@ From the point of view of the robots, messages sent into the virtual network are
 However, all the communication is taking place between processes running on the central computer.
 By changing how the messages are delivered by the central system, the virtual network can provide full connectivity, range-limited mesh networking, directional beacons, or other forms of networking. 
 The reliability of the network can also be varied, by dropping some messages or otherwise changing them based on information about the robots. 
-For example, the likelihood that a message arrives at the robot to which it was transmitted may depend on the distance between the sender and receiver.
+For example, the likelihood that a message arrives at the robot that it was transmitted to may depend on the distance between the sender and receiver.
 Signals that pass through a virtual wall may have a reduced virtual signal strength and range.
 
  \begin{figure}
@@ -520,7 +520,7 @@ In toys, particularly remote controlled toys, the user acts as a the feedback el
 If an individual toy, for example, has a bias to turn to the left, the user will learn this and apply a correcting bias.
 To extend this to a computerized system requires some form of calibration. 
 These calibration steps, combined with appropriate control, such as PID loops, can account for systemic inaccuracies. 
-However, the use of toys also introduces some failures which are not consistent or linear. 
+However, the use of toys also introduces some failures that are not consistent or linear. 
 For example, the tanks used in some instances of the TinyRobo platform use motors with high speed, but relatively low torque. 
 As a result, dirt in the drivetrain near the motor can cause the motor to become difficult to start, but can be removed by the user, or by operation once the motor does start. 
 Calibration when the dirt is present means the robot will start very abruptly when the dirt is removed, while calibration when the dirt is absent means the robot may not start if dirt gets into it later. 
@@ -555,7 +555,7 @@ It also increases the difficulty of using a heterogenous system, and so operates
 
 \subsection{Drive Testing} \label{section:Drive_Testing}
 
-In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program which instructed them to move forwards until the AprilTag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
+In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program that instructed them to move forwards until the AprilTag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
 
 Each robot was run 5 times, starting from the same location each time. The robot was power-cycled between runs. Each run was recorded using rosbag, and the data from the recordings were used to generate visualizations of the robot's commanded trajectory from the motion of the center of the robot's AprilTag.
 
@@ -584,7 +584,7 @@ However, the Ackerman-steering toy car has a gearbox that permits backdriving, s
 The toy tanks use a worm gear in their drivetrains, and so do not permit backdriving of the motors by the vehicle's inertia. 
 Instead of coasting, they immediately stop when the motor is commanded to 0 velocity. 
 
-The big wheel robot (page \pageref{img_traj}, image b) displayed an unfortunately small range of commanded velocities between those which caused it to begin moving, and those which caused it to flip over on its side.
+The big wheel robot (page \pageref{img_traj}, image b) displayed an unfortunately small range of commanded velocities between those that caused it to begin moving, and those that caused it to flip over on its side.
 In three of its five runs, the big wheel accelerated quickly and then flipped during the first motion period. 
 In the remaining two runs, it did not move at all, possibly due to gears jamming. 
 
@@ -753,7 +753,7 @@ More tags also leads to longer computation time, increasing the latency of the r
 Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
 The latency and accuracy problems with AprilTags could be mitigated in a number of ways. 
 First, the resolution of the camera can be increased while keeping the tags the same size and the camera the same distance away. Increasing the image size requires more computational power to process the larger image, in order to keep the tag detection framerate high enough to be useful for realtime control. 
-Decreasing the size of the image in which the tags are detected speeds it up, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
+Decreasing the size of the image being checked for tags increases the speed of tag detection, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
 The update rate places an upper bound on the ability of the system to respond to the motion of the robots.
 The tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
 Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 

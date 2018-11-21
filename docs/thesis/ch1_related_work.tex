@@ -479,7 +479,7 @@ The influence of user interaction affordances in games with overhead views and c
 \end{figure}
 
 Realtime strategy games generally have the player playing against multiple other players, some or all of which may be controlled by the computer. 
-The goal of the game is typically to acquire some form of resources, which are used to develop military units or units which accelerate the acquisition of further resources. 
+The goal of the game is typically to acquire some form of resources, which are used to develop military units or units that accelerate the acquisition of further resources. 
 The military units are then used to attack the other players, with the goal of the game being to be the only remaining player. 
 Turn-based strategy games are similar to RTSs, but instead of all players acting simultaneously and asynchronously, each player's actions are taken on their turn. 
 
@@ -544,7 +544,7 @@ This loop of coding, testing, and coding again is repeated until the system beha
 
 Because the normal software development model is time-consuming, and outside of the abilities of many people who might want to use swarm robots, it is desirable to automate the development of software controllers for robots. 
 One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code. 
-The transformation operation can be codified as a sort of ``compiler'', or more accurately, a code generator, which creates programs for the robots. 
+The transformation operation can be codified as a sort of ``compiler'', or more accurately, a code generator that creates programs for the robots. 
 The possibility of coding for the swarm as an entire system, rather than writing each robot's program independently, has given rise to several programming paradigms and domain-specific languages for robotic swarms. 
 
 Another possibility is the composition of preexisting behaviors that each satisfy part of the user's desired behavior. 
@@ -565,7 +565,7 @@ Indeed, most of the volume of existing swarm robots is motors and batteries, wit
 Unfortunately, the technology behind smart dust still does not exist, but programming methods for it have some applicability to larger swarm robots. \citep{Correll:2017:WRM:3131672.3131702}. 
 
 There are several languages intended to program amorphous computers. 
-``Proto" is a language for a continuous plane spatial computer which maps from behavior of regions at the global level to programs for discrete points at the level of individual devices \citep{beal2006infrastructure}. 
+``Proto" is a language for a continuous plane spatial computer that maps from behavior of regions at the global level to programs for discrete points at the level of individual devices \citep{beal2006infrastructure}. 
 Because devices have a size in the real world, and space between them, the devices cannot not have a one-to-one mapping with the space, but instead perform an approximation of the desired behavior. 
 Proto also has considerable appeal as a programming language for swarm control development because of the layering in its structure. 
 If user interface interactions can be interpreted as indications of desired behaviors displayed over spatial regions, then conversion of those behaviors into programs in Proto may be amenable to automation. 
@@ -601,9 +601,9 @@ Each individual ant's contribution to the trail can be modulated by the quality 
 Because pheromones are chemicals with spatial locations, it would be possible to combine the use of pheromones with reaction diffusion equations to structure activity within a space or to converge to patterns of activity over time  \citep{turing1952chemical}. 
 Assuming even diffusion of the robots in space, the global map of the pheromone concentrations can be represented over the network by the locally-computed concentrations computed by each robot.
 
-In pheromone robotics, the pheromones are usually simulated or ``virtual'' pheromones, rather than real chemicals which are detected by chemical sensors (for an exception, see \citep{hayes2001swarm}). 
+In pheromone robotics, the pheromones are usually simulated or ``virtual'' pheromones, rather than real chemicals that are detected by chemical sensors (for an exception, see \citep{hayes2001swarm}). 
 Each pheromone can have properties such as diffusion and evaporation rates that result in the pheromone spreading in space or gradually disappearing. 
-For example, a robot may emit a pheromone which diffuses into the environment and evaporates quickly, so distance from the robot can be determined by the strength of the pheromone, and approaching or avoiding the robot may be accomplished by moving up or down the gradient of pheromone strength. 
+For example, a robot may emit a pheromone that diffuses into the environment and evaporates quickly, so distance from the robot can be determined by the strength of the pheromone, and approaching or avoiding the robot may be accomplished by moving up or down the gradient of pheromone strength. 
 If the swarm is engaged in a search, each searching robot may emit a ``search marker'' pheromone that lingers in the area after the robot leaves. 
 Other robots, on entering the area, would detect the pheromone and know that searching this area again would be fruitless. 
 If the object of the search can move, the marker pheromone could diminish as a function of time, so areas that have not been searched for a long time become unmarked and may be searched again. 
@@ -617,12 +617,12 @@ Rather than modelling the world based on the incoming messages, the content of t
 While it is possible to build a set of behavioral primitives out of pheromone signaling and associated behaviors, controlling the swarm to perform a task with these primitives is still done by hand \citep{payton2003compound}.
 
 In all of these examples, the sensing of the pheromones is assumed to be local to the robot, at least metaphorically. 
-To actually maintain pheromones in the environment without robots being present to transmit them requires, again, a global representation of the task space which the robots can refer to when needed. 
+To actually maintain pheromones in the environment without robots being present to transmit them requires, again, a global representation of the task space that the robots can refer to when needed. 
 However, if some degradation in performance is acceptable, the robots can maintain a shared tuple space that lists information such as pheromone gradients and share it through local connections \citep{pinciroli2016tuple}. 
 
 Use of pheromones to guide swarm robots for simulated search and patrol tasks has been demonstrated, with the assumption that there is a central controller maintaining the concentration of pheromones on the map, and informing the swarm members \citep{coppin2012controlling}. 
 In a real implementation, some robots could remain stationary and only act as transponders, computing and transmitting the local pheromone information for a given area \citep{hoff2010two}. 
-Another possible approach to enable pheromones in space is to operate the robots in an area which is illuminated by a projector. 
+Another possible approach to enable pheromones in space is to operate the robots in an area that is illuminated by a projector. 
 The projector can then color the area with light that the robots can sense, and modulate the intensity of the light to indicate the intensity of the pheromone \citep{arvin2015cosvarphi,diaz2017human}. 
 However, even if the robots are limited to only the pheromones they can directly perceive and emit at the present instant, some emergent behaviors are still possible. 
 
@@ -779,7 +779,7 @@ Instead, the selection of the leader arises from the evolutionary development of
 Genomes that did not encode such a symmetry-breaking reaction never developed a leader-follower distinction, and so failed to move in formation, and so received low fitness scores. 
 For the follow-the-leader task, genetic variation among the robots increased fitness more readily than having all robots share the same genome \citep{quinn2001comparison}.
 The condition where all robots shared the same genes was called ``clonal", while each robot having its own genome was ``aclonal".
-Oddly, while one would expect that the aclonal condition would result in a specialization, with each robot developing a genome that performed either the leader or follower role well, the aclonal condition developed robots which could perform both roles. 
+Oddly, while one would expect that the aclonal condition would result in a specialization, with each robot developing a genome that performed either the leader or follower role well, the aclonal condition developed robots that could perform both roles. 
 It was hypothesized that while the clonal condition had to evolve roles and an allocation mechanism simultaneously, the aclonal condition could specialize the roles during early evolution, and then develop an arbitration mechanism to select roles.
 
 Genetic algorithims have also been used to develop aggregation behavior in swarm robots \citep{bahgecci2005evolving, dorigo2004evolving}.  
@@ -804,7 +804,7 @@ As a consequence, it is ill-suited to user interaction with users who are not ex
 The common hope of users of genetic algorithms is that they can reduce the complexity of directly specifying the task to the (hopefully lower) complexity of describing the results in the fitness function.
 Rather than describing how to solve a problem, one simply describes what the solution would look like. 
 Unfortunately, the reduction in hands-on time spent programming frequently comes at the expense of time spent waiting for the system to converge, or determining why it converged on a problematic solution. 
-One attempt to evolve aggregation controllers had a fitness function which allowed the evolved motion strategy to acquire a high fitness by spinning in place.
+One attempt to evolve aggregation controllers had a fitness function that allowed the evolved motion strategy to acquire a high fitness by spinning in place.
 The ad hoc iterative process of creating emergent behaviors is replaced by an ad hoc iterative process of creating fitness functions.
 As a result, developing novel behavior in the field by converting user specifications of the behavior of the swarm into a fitness function for a genetic algorithm is unlikely to yield results in a timely manner. 
 However, individually evolved primitives could be saved in a library of primitives for use by a higher-level compositional approach. 
@@ -815,7 +815,7 @@ For example, a controller that aggregates small-scale UAVs outdoors is likely qu
 
 Proto and other programming languages for amorphous computers provide abstractions for computation performed on homogeneous spatially-distributed computing nodes. 
 Other versions of tuple-space based amorphous computation include motion of the agents, but do not explicitly support heterogeneity \citep{viroli2012linda}.
-Several programming languages have been developed which are designed specifically for programming swarm robots.
+Several programming languages have been developed that are designed specifically for programming swarm robots.
 
 The Voltron programming language provides what its authors describe as ``team-level programming'' for autonomous drones \citep{mottola2014team}.
 This level of programming is distinct from drone-level programming, where specific instructions are provided to each drone, and swarm programming, where each drone has the same instructions and operates without communication with other drones.
@@ -836,7 +836,7 @@ However, many of the problems facing an ensemble of modules are the same as thos
 Meld is written in terms of facts and rules. 
 Facts describe things such as adjacency between robots and location of robots. 
 Rules are applied to facts, resulting in the generation of new facts. 
-By including rules that generate facts which describe motor actions, the application of rules to the known state of the system can create a ``to-do list'' of actions for individual members of the system to perform. 
+By including rules that generate facts that describe motor actions, the application of rules to the known state of the system can create a ``to-do list'' of actions for individual members of the system to perform. 
 Rules are said to ``prove'' facts, and when no further facts can be proven, the system has arrived in a final state. 
 Since facts that alter the state of the world can make previous facts false, the set of facts available must be periodically purged of facts that no longer hold. 
 The authors of Meld point out that logic programming, of which Meld is an example, is poor at representing state beyond what can be computed as a consequence of the base facts. 
@@ -904,7 +904,7 @@ Using the neighbours abstraction, the robot can, for instance, query all its nei
 %	Eyebots collaborate to localize off each other
 %		Other robots can also localize off of them
 
-The design of a programming language can be considered a user interface, after a fashion, as it provides an abstraction of an underlying system which a user can use to control the system in a manner that is ideally easier than less abstract interfaces. 
+The design of a programming language can be considered a user interface, after a fashion, as it provides an abstraction of an underlying system that a user can use to control the system in a manner that is ideally easier than less abstract interfaces. 
 However, both domain specific programming languages and amorphous computing languages share the same problem: for end users, learning a programming language in order to command a swarm is an unacceptably high barrier to adoption. 
 
 \subsection{Program Generation from Formal Specification} \label{section:Program_Generation}
@@ -932,7 +932,7 @@ Rather than replanning as the environment changes, the system generates alternat
 Unfortunately, this controller synthesizer still relies on a known map of the entire environment (but not of the obstacles in it). 
 For real-world applications in disaster recovery, the map may not be available, or may be undergoing constant revision by the disaster. 
 The synthesizer also creates revisions to the assumptions about the environment, and the number of these revisions grows combinatorially. 
-Each revision is an assumption about the environment which must hold for the controller to be correct, such as "There will never be a deadlock if robot 1 is not in the hallway when robot 2 enters the hallway".
+Each revision is an assumption about the environment that must hold for the controller to be correct, such as "There will never be a deadlock if robot 1 is not in the hallway when robot 2 enters the hallway".
 The revision can be viewed as a constraint on the motion of the robots, preventing robot 1 from entering the hallway, or robot 2 from entering the hallway if robot 1 is in it. 
 With one robot in a fairly simple map, the paper indicates that 16 revisions are needed. 
 Adding a second robot increases this to 1306 revisions.  
@@ -995,7 +995,7 @@ The resulting controllers can be demonstrated to not deadlock, and with probabal
 However, SCT alone is not sufficient to automate the generation of robot programs.
 The expression of the abilities of the robot and the desired behavior, as state transitions in some form, is left as an exercise for the swarm developer. 
 SCT supplies a way of ensuring that the resulting program does what the specification requires. 
-As noted in \citep{lopes2017probabilistic}, a specification which is logically incorrect, such as including a possiblity to livelock, will generate a program that can be formally demonstrated to match that specification, and so includes the specification's errors. 
+As noted in \citep{lopes2017probabilistic}, a specification that is logically incorrect, such as including a possiblity to livelock, will generate a program that can be formally demonstrated to match that specification, and so includes the specification's errors. 
 
 EvoStick and AutoMoDe-Vanilla both provide automatic design of swarm robot software using a test-and refine method \citep{francesca2014experiment}. 
 AutoMoDe creates controllers by combining parameterized modules in a PFSM. 
@@ -1033,7 +1033,7 @@ The people inside a church at a given time are likely a group, the people on the
 This factor, combined with the gestalt common fate principle, may be useful for encouraging users to think of a swarm as a group. 
 Since it can be made explicit to the user that the swarm shares common goals, and the swarm can move together, the user would come to regard it as a group, rather than a simple aggregate. 
 
-Whether a set of people is perceived as a group is referred to as ``entitativity", which is to say, how much like a single entity they are perceived to be. 
+Whether a set of people is perceived as a group is referred to as ``entitativity".
 Groups with high entitativity are expected to have a higher degree of unity and consistency within the group. 
 The smaller a group is, the more similar its members are perceived to be, which seems to indicate that smaller groups would have higher entitativity \citep{stewart2003trust}. 
 
@@ -1092,7 +1092,8 @@ The system described in this work can only be viewed as communicating implicitly
 Being a team or not can be viewed as a spectrum, with robots taking the place of equal peers at one end and remotely-operated tools at the other end. 
 Safeguards, such as safe-mode teleoperation, where the robot can act to prevent collisions, are on the spectrum, but more towards the remote tool end. 
 Safeguards do not permit the robot to assume responsibility for a role or task, which is a component of team membership \citep{bruemmer2005shared}. 
-Taking initiative combined with assuming responsibility is the basis of leadership, which, in a team of equal peers, can be distributed rather than centralized. 
+Taking initiative combined with assuming responsibility is the basis of leadership.
+In a team of equal peers, initiative and responsibility, and so leadership, can be distributed rather than centralized. 
 The system in this paper has a central authority, the human user, who commands, but is not commanded by the system. 
 Humans find it easier to delegate responsibility to more human-like robots than to non-human-like robots \citep{hinds2004whose}. 
 This is in keeping with the spectrum of remote tools versus equal peers. 

@@ -17,7 +17,7 @@ Where design decisions were made to work around these ambiguities, they are desc
 
 For position commands, drag, tap, and ``other'' would cover 94.8\% of the gestures. 
 Unfortunately, the ``other'' commands are not a single gesture, but include a diverse collection of gestures, such as pushing with the side of the finger or making a picking-up, carrying, and setting-down motion over the screen.
-As a consequence, attempting to implement all the gestures in the ``other'' category would add significant complexity to the gesture recognition in order to support gestures which were rarely used. 
+As a consequence, attempting to implement all the gestures in the ``other'' category would add significant complexity to the gesture recognition in order to support gestures that were rarely used. 
 Many of the ``other'' gestures were also not recognizable by a multitouch surface, such as the user dividing the robots by parting their hands as if opening a bag in the air above the surface. 
 Since it does not contact the multitouch surface, such a gesture cannot be recognized without additional hardware. 
 If all forms of tap are considered the same when used as position commands, taps make up 14.2\% of the position commands, and together with drag, cover 89.2\% of the position commands. 
@@ -27,7 +27,7 @@ The user noted that the direction of the lasso disambiguated it from lasso as se
 
 Achieving 90\% recognition of the most common UI widgets would include buttons for special functions, handwriting recognition, voice commands, and other menus on the screen (totaling 90.8\%). 
 However, a successful menu-based UI would not be composed simply by taking the sum of all of the user interface designs suggested by users, as there would be significant redundancy in the UI commands, and in ways of bringing up the UI for interaction. 
-Instead, the tasks in which the users invoked the UI most often were examined, and the requested UI functions were considered for inclusion.
+Instead, the tasks that the users invoked the UI in most often were examined, and the requested UI functions were considered for inclusion.
 
 Both voice commands and handwritten commands together account for 47.1\% of the user interface elements used.
 While the broad categories make up nearly half of the UI elements, the individual uses of the gestures did not display a significant unity within the broad categories.
@@ -112,7 +112,8 @@ If the line formation started elsewhere, it could be disambiguated, because moti
 The user drawing a line over a group of robots could be interpreted a number of ways: as a dividing line, as a box selection, as a path for a single robot to follow, as a path for a group of robots to follow, and as the location of a line formation.
 
 Because a number of other, more explicit commands are available for dividing robots into groups, such as moving one group away from the other, the division line interpretation was rejected. 
-A line drawn over robots is treated as a box selection, unless it begins on a single robot, in which case it is interpreted as a path for that robot to follow. 
+A line drawn over robots is treated as a box selection, unless it begins on a single robot. 
+In that case it is interpreted as a path for that robot to follow. 
 For the purposes of this work, beginning ``on'' a robot was defined as the beginning of the line being within 80 pixels of the location of the robot on the screen. 
 80 pixels was selected because it is the approximate width of a human finger on the screen used in this work. 
 Obviously, this distance will vary with the resolution of the screen, but the mechanism for obtaining the resolution and physical size of attached screens varies with operating systems, and is outside of the scope of this work, aside from noting that this parameter may vary.
@@ -171,7 +172,7 @@ The use of buttons is more discoverable, as the button simply says on it what it
 Buttons do obscure some of the camera view that forms the main part of the user interface, but this problem is not as severe as it might appear. 
 The area the robots operate in is either bounded or unbounded.
 If it is bounded, it either fits on the screen or does not fit on the screen, and if it is unbounded, it does not fit on the screen.
-If the area the robots are in does not fit on the screen, the user likely views it by panning or zooming in and out, and so can pan or zoom so that the area covered by the buttons is not an area which they have to interact with to perform a task. 
+If the area the robots are in does not fit on the screen, the user likely views it by panning or zooming in and out, and so can pan or zoom so that the area covered by the buttons is not an area that they have to interact with to perform a task. 
 If the area the robots are displayed on and interacted with in does fit on the screen, it can be shrunk slightly, and the buttons can be placed so they don't cover the interaction area. 
 In either case, the design of the interface can accommodate a few buttons without seriously harming the user interaction, although the unchecked proliferation of buttons could lead to design difficulties. 
 
@@ -180,7 +181,7 @@ In either case, the design of the interface can accommodate a few buttons withou
 Some of the potential gesture commands, such as selection of a group of robots followed by tapping waypoints for them to follow, do not have a clear termination, as the system cannot tell if the user is done tapping waypoints, or simply has not tapped the next one yet. 
 One potential solution to this problem is to attempt to parse the user command once enough time has elapsed since the last gesture received. 
 Using a timeout to commit the command was rejected for two reasons. 
-First, the timeout can result in the system beginning to take an action which the user did not want. If the timeout is too short, it could result in a program being transmitted to the robots before the user is done specifying it. 
+First, the timeout can result in the system beginning to take an action that the user did not want. If the timeout is too short, it could result in a program being transmitted to the robots before the user is done specifying it. 
 If it is too long, it may never be triggered, and so all of the user's gestures could be gathered into one, potentially untranslatable, program. 
 Second, the timeout is could be invisible. From the user's perspective, this causes the system to appear to begin acting at random, which is undesirable. 
 The timeout could be made visible, using a countdown timer, which may then make the user feel pressured to act. 
@@ -209,9 +210,9 @@ In the Move Object command, the sentence is more complex, as both an object to b
 The sentence would read as ``These robots, Move Object, this object, to here". 
 This structure is somewhat in conflict with the most common user strategy to move the crate, which was to surround the crate with robots and move the robots, and also in conflict with the second most common strategy, which was to move the crate, with no reference to the robots. 
 The decision to differ from these strategies was undertaken for a number of reasons. 
-The first is that moving the crate with no reference to the robots has an implicit subject of the sentence, which is all of the robots. 
+The first is that moving the crate with no reference to the robots implies that the subject of the sentence is all of the robots. 
 As discussed previously, implicit selection of the entire swarm has a high potential to surprise the user, especially if the behavior changes across swarm sizes, while requiring explicit selection does not. 
-The second is that unless the system is aware of which objects in the environment constitute movable objects and which do not, there is no way to disambiguate a command to surround an object, and then leave it to go to another location, from a command to move the object by surrounding it.
+The second is that unless the system is aware of which objects in the environment are movable and which are not, there is no way to disambiguate a command to surround an object, and then leave it to go to another location, from a command to move the object by surrounding it.
 This level of knowledge about a novel environment may not be possible to obtain in real-world situations. 
 
 The Select Group and Remove Robots buttons are not commands to the robots. 
@@ -238,7 +239,7 @@ The fact that there is an end-of-command marker, the ``period'' at the end of ea
 The system would then interpret the last lasso or box selection as a path, and so the whole command as a sentence with a compound subject, ``These robots and this robot and..., go here''. 
 
 The other possibility is having each selection create a new command. 
-If that is the case, it becomes impossible to patrol an area with robots in it, or have one robot move through a group of robots, as those gestures are a lasso or box selection which starts a new command. 
+If that is the case, it becomes impossible to patrol an area with robots in it, or have one robot move through a group of robots, as those gestures are a lasso or box selection that starts a new command. 
 The exact ambiguity is not between all selections and path commands, but between group selections and path commands.
 Tap selection of single robots is unambiguous, under the assumption that collisions are bad, and so it is never desirable to command one robot to another robot's exact location. 
 
@@ -255,7 +256,7 @@ If the resulting stack of gestures consists of some form of selection, a box or 
 However, if the stack contains some form of selection, a box or lasso selection, and e.g. a path gesture, then the first selection is an erroneous program consisting only of selection, and can be dumped from the stack. 
 
 Similar heuristic rewriting of the stack could be extended to e.g. remove erroneous waypoints resulting from triple-tapping instead of double-tapping to end gestures, but adding these sorts of heuristics poses something of a threat. 
-There exists some rewriting of the user input which will eventually result in an acceptable sequence of gestures, even if it is a complete replacement of all of the user input. 
+There exists some rewriting of the user input that will eventually result in an acceptable sequence of gestures, even if it is a complete replacement of all of the user input. 
 However, at some point, the meaning of the rewritten stack will deviate from what the user intended. 
 While using such a stack of commands will result in the generation of a program for the robots, it will not be a correct program, from the user's point of view. 
 In such a case, it would be better to have the parsing of the user input fail. 
