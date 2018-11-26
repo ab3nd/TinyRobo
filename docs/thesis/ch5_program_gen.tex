@@ -32,8 +32,8 @@ Even the unknown number of robots case assumes that the outer bounds of the swar
 
 Fortunately for this work, there are a number of approaches to creating a local coordinate frame using robots with relatively simple sensors. 
 A local coordinate system can be created by communicating agents with a limited, known sensing range but no other concept of distance \citep{bachrach2004experimental}.
-One agent acts as a seed, and sends messages to its neighbours.
-The neighbours propagate those messages, incrementing a hop counter in the message, and ignore messages with a higher hop count to stop the message from propagating backwards. 
+One agent acts as a seed, and sends messages to its neighbors.
+The neighbors propagate those messages, incrementing a hop counter in the message, and ignore messages with a higher hop count to stop the message from propagating backwards. 
 As a result, each agent knows that its distance from the seed is at most the communication radius times the minimum hop count it has received. 
 By using multiple seeds, each non-seed can calculate it's position based on trilateration to the seeds. 
 Extending this method to use received signal strength as a proxy for distance, rather than the constant known sensing range, improves the accuracy of the approach.  
@@ -50,7 +50,7 @@ One way to do this is to use structure from motion (SfM) to estimate inter-agent
 Alternatively, a pair of beacons of known location could provide the scale information required to convert scale-free coordinates into a metric coordinate system. 
 
 Finally, systems that combine range and bearing information are common in swarm robotics \citep{caprari1998autonomous, mondada2009puck, arvin2009development, farrow2014miniature}. 
-Systems with range and bearing can use trigonometry to calculate relative positions of other robots, and so can bootstrap a coordinate frame by using a method such as spreading inhibition to elect an origin robot, which then informs its neighbours of their positions in its coordinate frame. The neighbours can then correct their position estimates based on communication with each other, as in range-based localization schemes, and inform their neighbours of their positions, propagating the coordinate system outward from the origin. 
+Systems with range and bearing can use trigonometry to calculate relative positions of other robots, and so can bootstrap a coordinate frame by using a method such as spreading inhibition to elect an origin robot, which then informs its neighbors of their positions in its coordinate frame. The neighbors can then correct their position estimates based on communication with each other, as in range-based localization schemes, and inform their neighbors of their positions, propagating the coordinate system outward from the origin. 
 
 As there already exist a large number of ways for robots to arrive at a local coordinate system without GPS or sophisticated sensors, the creation of a coordinate frame was determined to be outside of the scope of this work. 
 
@@ -69,7 +69,7 @@ Squares containing a point are assigned a vector pointing to the next point on t
 Squares between two points are assigned a vector pointing from the square center to the point closer to the end of the path. 
 After this step, all points on the path have a vector pointing along the path. 
 
-The second pass assigns to all squares neighbouring the end point of the path a vector pointed towards the end point of the path. 
+The second pass assigns to all squares neighboring the end point of the path a vector pointed towards the end point of the path. 
 As a result, the end point of the path becomes an attractor that robots attempt to reach. 
 
 The third pass assigns to all squares that are adjacent to assigned squares a vector which is the average of all of the values of the assigned neighbors. 
