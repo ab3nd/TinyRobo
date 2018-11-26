@@ -319,7 +319,8 @@ The resulting interface is modal.
 Depending on the selected mode, different gestures are available. 
 The interface also permits the combination of some gestures, such as panning or rotating the map while zooming in or out at the same time. 
 
-Micire \textit{et al.} developed a taxonomy of user gestures. 
+Micire \textit{et al.} developed a taxonomy of user gestures using a process similar to Wobbrock \emph{et al.}, but did not show the results of the actions. 
+Rather, the users were asked to perform tasks, and could use any gesture they chose. 
 The gestures controlled both the actions of the robots and the behavior of the interface to control them \citep{Micire:2009:ANG:1731903.1731912}. 
 The interface control gestures are for actions such as zooming in on the content of the screen or panning around a map. 
 Individual users chose a variety of gestures to perform the tasks, but for almost all types of tasks, having two gestures available to perform it would be sufficient to cover 60\% of the users. 
@@ -337,14 +338,14 @@ Multitouch user interfaces do not have an agreed-upon standard for the gestures 
 Early in the development of multitouch user interfaces, it became apparent that the window, icon, menu, and pointer (WIMP) interface would not be the best way to interact with novel interface technologies \citep{van1997post}. 
 WIMP interfaces are tied to a metaphor of a desktop, where a user interacts with 2D spreadsheets and documents. 
 To extend to information with higher dimensionality, the interfaces become more complex and less direct. 
-The somewhat precient model proposed by van Dam is a multi-modal interface of gestures and natural language, as is found in modern smartphones. 
+The somewhat prescient model proposed by van Dam is a multi-modal interface of gestures and natural language, as is found in modern smartphones. 
 This paper also shows an early example of a two-handed manipulation of a virtual object in a 3D environment, which presages the direct interaction style of multitouch user interfaces. 
 
 The directness of user interactions can be understood to be the degree to which the interaction resembles the same interaction with physical objects, such as flipping pages of a calendar. 
 With a physical calendar, one can turn pages by sliding a finger over them. 
 Having a slider or buttons to switch months in a virtual calendar is thus less direct, and with a mulitouch interface, can be replaced by the same finger motion that would flip a page of a physical calendar.
 
-This sort of emulation of design elements of an object the same when the object is moved to a new material or created by new techniques is called ``skeueomorphism", and the copied design elements are ``skeueomorphs''. 
+This sort of emulation of design elements of an object the same when the object is moved to a new material or created by new techniques is called ``skeueomorphism", and the copied design elements are ``skeueomorphs'' \citep{gross2014skeu}. 
 There are several reasons for skeueomorphs in design of user interactions. 
 One reason is effectively kitsch. 
 Design elements can be kept, despite not having a function in the new medium, simply because people find it entertaining to keep the appearance.
@@ -413,20 +414,20 @@ Playbook control provides a delegation layer to the interface, where the user do
 The use of delegation decreases mission time and increases success, in this case, winning the game of capture-the-flag.
 
 There have been previous studies of the behavior of users in control of swarms with poor localization and bandwidth constraints \citep{nunnally2012human}. 
-These constraints are realistic, as the motivating examples for swarm robotics, such as urban search and rescue or planetary exploration on e.g. Mars take place in locations where high-speed and high bandwidth networking infrastructure may be absent. 
+These constraints are realistic as the motivating examples for swarm robotics, urban search and rescue or planetary exploration on e.g. Mars, take place in locations where high-speed and high bandwidth networking infrastructure may be absent. 
 The study describes a task similar to foraging, but under human control, where a 30-robot swarm is used to find a sequence of targets. 
 The interface is mouse-based, and allows the user to issue two commands, ``head towards the selected point" and ``stop". 
-The robots had gaussian error added their estimated location and orientation, meaning that the robots could start on a heading that was not exactly towards the selected point, when the user gave them a point to move towards. 
-However, the robots had a consensus algorithm that would allow them to match heading with neighbors, which acts to counter the error in their initial headings. 
+The robots had Gaussian error added to their estimated location and orientation, meaning that the robots could start on a heading that was not exactly towards the selected point, when the user gave them a point to move towards. 
+However, the robots had a consensus algorithm that would allow them to match their heading with their neighbors, which acts to counter the error in their initial headings. 
 There were three conditions: low swarm-to-swarm bandwidth with low swarm-to-user bandwidth, high swarm-to-swarm with low swarm to user bandwidth, and high swarm-to-swarm bandwidth with high swarm-to user bandwidth.
 The results showed that the medium bandwidth condition, with high swarm-to-swarm bandwidth but low swarm-to-user bandwidth was sufficient to complete the task. 
 The users did adapt their behavior to match the information they had available, issuing more commands closer together in the medium bandwidth condition to drive the swarm into a smaller region and increase intra-swarm connectivity. 
 In the low bandwidth condition, the user did not receive updates about the swarm condition often enough to enable them to maintain a dense swarm, and as a result, had trouble finding targets. 
 The fact that the user interface and the user's intuition about the swarm could drive adoption of different behaviors supports the use of different rendering schemes for the swarm to encourage different user control strategies or conceptualizations about the swarm. 
 
-Nunnally \emph{et al.} explored the condition where a limited amount of information was available, but the time it takes for that information to become available (latency) is another factor in human-swarm interaction \citep{walker2012neglect}.
+Walker \emph{et al.} explored the condition where a limited amount of information was available, but the time it takes for that information to become available (latency) is another factor in human-swarm interaction \citep{walker2012neglect}.
 In the study, the latency was either absent, present both between members of the swarm and between the swarm and the user, and present, but the interface to the user predicted future swarm motion and displayed it. 
-The task was similar to Nunnally \emph{et al.}, in that the swarm was used to search a region for targets in a foraging task. 
+The task was similar to Walker \emph{et al.}, in that the swarm was used to search a region for targets in a foraging task. 
 The swarm could be commanded to move to a heading, stop, or flock under a model similar to boids \citep{reynolds1987flocks}.
 The latency condition was significantly worse, in terms of targets found, than the no-latency condition, but the predictive display countered the latency sufficiently that the predictive and no-latency conditions were not significantly different. 
 Interestingly, latency also drove the appearance of what the authors refer to as ``neglect benevolence", where the user not interacting with the system was not only tolerated, but actually helped improve the behavior of the system. 
@@ -438,10 +439,10 @@ It is not largely concerned with whether the interface itself, as presented in t
 Instead, the interface is taken as a fixed point, and the experimental condition is variation in the quality of the link between the user interface and the swarm. 
 
 Kolling \emph{et al.} compared two forms of influence-oriented UI, selection and beacon based control, with a variable number of robots \citep{kolling2013human}. 
-Selection control requires that the user select groups and then influence the selected group or put them into a specific autonomous behavior mode. 
+Selection control requires that the user select a group and then influence the selected group, or put the group into a specific autonomous behavior mode. 
 This is arguably a form of playbook control, where some robots are selected and then given a play to execute. 
 Beacon control has the user place beacons that attract the robots with a range, which is form of leader or attractor-based control. 
-The paper also refers to these control methods as ``intermittent'', for selection, and ``environmental'', for beacons. 
+The paper also refers to these control methods as ``intermittent,'' for selection, and ``environmental,'' for beacons. 
 The intermittent method is called that because the user issues infrequent commands, rather than continuously operating the group. 
 This is in opposition to a persistent control method, where the user might directly operate some of the robots with a joystick or other constant control input, as in some predator/leader systems. 
 The beacons are environmental, because rather than interacting with the robots, the user interacts with the beacons and their locations in the environment. 
@@ -455,12 +456,12 @@ Otherwise, human control may present a bottleneck, rather than an advantage.
 
 Some swarm robots are designed to be used with no control interface at all.
 By altering the shape of simple stick-slip locomotion toys with laser-cut foam ``hats'' that change their outer perimeter, and changing the outline of the laser-cut foam forms they interact with, the random motion of the toys can create stable structures \citep{andreen2016emergent}).
-The development of the shapes relies on human interaction, but specifying the shapes of the hats and interactive components seems amenable to solution with genetic algorithms. 
+The development of the shapes relies on human interaction, but specifying the shapes of the hats and interactive components seems amenable to be solved with genetic algorithms. 
 Because the toys used in this work were about \$4-8, and everything else was composed of laser-cut foam, the platform is extremely inexpensive, but the tasks it can solve are seemingly limited to self-assembly. 
 
 The Guardians project studied the deployment of sensor-equipped robots to support firefighters by providing mapping and sensor information that would not normally be available to the firefighter \citep{gancet2010user}.
 Rather than having the firefighter control the robots, the robots would deploy with the firefighters and swarm with them, attempting to maintain network connectivity and proximity to the firefighter. 
-The robots provide a stream of information via a heads-up display (HUD) constructed of LEDs on the firefighter's visor, which the firefighter may or may not choose to react to. 
+The robots provide a stream of information via a heads-up display (HUD) constructed of LEDs on the firefighter's visor, to which the firefighter may or may not choose to react. 
 Instead of having to control the swarm, the user acts as they feel is best, using both their own information and that from the swarm of robots that surrounds them and extends the firefighter's senses \citep{penders2011robot}. 
 
 
@@ -476,20 +477,20 @@ The influence of user interaction affordances in games with overhead views and c
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{Nuclear_Dawn_-_Oasis_RTS_02.png}
-	\caption{Typical top-down RTS view from the game Nuclear Dawn, by Interwave Studios. The view is of a courtyard and buildings, showing units (highlighted in red), a picture-in-picture map of the larger area (grey box in lower left corner), and game controls (yellow boxes in lower right corner)\protect\citep{nucleardawn}.}
+	\caption{Typical top-down RTS view from the game Nuclear Dawn, by Interwave Studios. The view is of a courtyard and buildings, showing units (highlighted in red), a picture-in-picture map of the larger area (grey box in lower left corner), and game controls (yellow boxes in lower right corner) \protect\citep{nucleardawn}.}
 	\label{fig:Nuclear_dawn_rts}
 \end{figure}
 
-Realtime strategy games generally have the player playing against multiple other players, some or all of which may be controlled by the computer. 
+Real time strategy games generally have the player playing against multiple other players, some or all of which may be controlled by the computer. 
 The goal of the game is typically to acquire some form of resources, which are used to develop military units or units that accelerate the acquisition of further resources. 
 The military units are then used to attack the other players, with the goal of the game being to be the only remaining player. 
-Turn-based strategy games are similar to RTSs, but instead of all players acting simultaneously and asynchronously, each player's actions are taken on their turn. 
+Turn-based strategy games are similar to RTS games, but instead of all players acting simultaneously and asynchronously, each player's actions are taken on their turn. 
 
-MOBAs have a smaller focus and more rapid play than RTS or turn-based strategy games. 
+MOBA games have a smaller focus and more rapid play than RTS or turn-based strategy games. 
 Typically, there are multiple players, but each player is on one of two sides battling over some set of objectives on the world map. 
 Rather than controlling multiple units, each player controls a single, powerful unit, and may be able to influence weaker, semi-autonomous computer-controlled units.  There may be resources as in RTS games, but typically they are far more limited in number, as the emphasis of the gameplay is on action rather than resource extraction.   
 
-MOBAs, RTSs, and turn-based strategy games all have a similar user interface. 
+MOBA games, RTS games, and turn-based strategy games all have a similar user interface. 
 The ``world'' or area of play is depicted as a map, typically viewed either top-down or an axonometric perspective. 
 The map is where the main action of the game takes place, and displays the relative position of the characters and other elements of the game. 
 Around the map are typically displays and interactive elements such as menus or buttons to interact with the game. 
@@ -497,11 +498,11 @@ Around the map are typically displays and interactive elements such as menus or 
 The control of units in the game is done using the mouse to select units and send commands via mouse clicks, while one hand operates keys, usually on the left side of the keyboard, for other functions. 
 The use of the left side of the keyboard is to leave the right hand free to remain on the mouse, but these controls can be customized for left-handed players. 
 How the keyboard is mapped depends on the pace of gameplay. 
-For extremely rapid games, such as Defense of the Ancients (DoTA, a MOBA), there are a small number of key commands that can all be operated without removing the fingers of the left hand from the keyboard. 
-DotA in particular uses mouse clicking, combined with the control, shift, and alt keys in various combinations, to perform all of the actions of gameplay \citep{DOTAControls}.
+For extremely rapid games, such as Defense of The Ancients (DoTA, a MOBA), there are a small number of key commands that can all be operated without removing the fingers of the left hand from the keyboard. 
+DoTA in particular uses mouse clicking, combined with the control, shift, and alt keys in various combinations, to perform all of the actions of gameplay \citep{DOTAControls}.
 
 Age of Empires is a RTS. 
-It is less fast-paced than DotA, but still takes place in realtime. 
+It is less fast-paced than DoTA, but still takes place in realtime. 
 Most of the keys of the keyboard are mapped to various commands, such as locating and selecting different types of units or buildings, or commanding those units and buildings. 
 Commands to buildings typically cause the construction of various units, while consuming resources. 
 For example, pressing `D' would find a Dock, and then pressing `A' would command the Dock to start work on a Fishing boat \citep{AOEControls}
@@ -509,7 +510,7 @@ For example, pressing `D' would find a Dock, and then pressing `A' would command
 Europa Universalis 4 uses the entire top row of letters on the keyboard to switch between different map modes, and every other key to activate some feature of the game, as well as mouse controls for interactions with individual units and locations \citep{EUControls}. 
 Europa Universalis gameplay does not take place in realtime, and the player may speed or slow the game clock, as well as pausing the game. 
 
-Another common feature of MOBA, RTS, and turn-based strategy games is the ``fog of war". 
+Another common feature of MOBA, RTS, and turn-based strategy games is the ``fog of war."
 The entire map is normally hidden from the player until they command their units to enter an area, whereupon the area is revealed. 
 In gameplay, the intent of fog of war is to prevent players from knowing about the opposing player's location without sending sorties. 
 This lack of information is almost identical to that experienced by a teleoperator of a robot exploring an area with a SLAM algorithm, with the map being revealed to the operator as the robot moves into the area. 
@@ -519,7 +520,7 @@ This lack of information is almost identical to that experienced by a teleoperat
 Intel has fielded drone fleets of up to 1,200 Shooting Star UAVs \citep{IntelDronesPage}. 
 While the control system for the drones is proprietary, some information about the user interface can be gleaned from the promotional videos for the controller. 
 The user interface for the creation of the light show appears to be very similar to those used in 3D rendering of computer graphics, including a timeline across the bottom of the screen, a preview in the center, and toolbars along the top and sides for interaction with the show. 
-Visible tabs on the interface include "Curves/Surfaces", "Poly Modeling", "Sculpting", "Rigging", "Animation", "FX", "FX Caching", and "HEALTH". 
+Visible tabs on the interface include ``Curves/Surfaces", ``Poly Modeling", ``Sculpting", ``Rigging", ``Animation", ``FX", ``FX Caching", and ``HEALTH". 
 These different tabs are likely different ways to configure the shape of the formation in 3D (Curves, Poly Modeling, and Sculpting), animating the resulting formation (Rigging, Animation, and FX), and determining the state of the swarm as a whole (HEALTH). 
 
 A screen that is likely part of the health interface is shown in one video \citep{OlympicTech}.
@@ -546,7 +547,7 @@ This loop of coding, testing, and coding again is repeated until the system beha
 
 Because the normal software development model is time-consuming, and outside of the abilities of many people who might want to use swarm robots, it is desirable to automate the development of software controllers for robots. 
 One approach to the conversion of the command language to programs for the robots is to define a transformation from the command language to executable code. 
-The transformation operation can be codified as a sort of ``compiler'', or more accurately, a code generator that creates programs for the robots. 
+The transformation operation can be codified as a sort of ``compiler,'' or more accurately, a code generator that creates programs for the robots. 
 The possibility of coding for the swarm as an entire system, rather than writing each robot's program independently, has given rise to several programming paradigms and domain-specific languages for robotic swarms. 
 
 Another possibility is the composition of preexisting behaviors that each satisfy part of the user's desired behavior. 
