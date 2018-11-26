@@ -1,5 +1,5 @@
 % !TeX root = ams_thesis.tex
-\chapter{Introduction and Research Statement}
+\chapter{Introduction}
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \citep{WangSearchScale}.
 By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous groups of robots.
@@ -9,20 +9,20 @@ Indeed, some systems already have moderately powerful computers, but at fairly h
 
 Until computational power in the individual swarm units reaches the levels required for complex computation, virtualization of computing resources can provide an adequate test environment for the development of swarm control algorithms at modest requirements in terms of space and power consumption. 
 Centralizing the control of a single swarm of robots makes the system as a whole sensitive to the failure of the central controller. 
-To avoid this type of failure, the overall action of the swarm should be guided by decentralized emergent behavior, rather than a centralized orchestration. 
-Each robot receives its own program, and the sum of the execution of the programs on each robot results in completion of the swarm's task.
-The various approaches to development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
+To avoid this type of failure, the overall action of the swarm should be guided by decentralized emergent behavior, rather than centralized orchestration. 
+Each robot receives its own program, and the sum of the execution of the programs on each robot results in the completion of the swarm's task.
+The various approaches to the development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
 However, placing bounds on the sensing ability and communication ability of the robots has substantial effects on the programs that can be developed for them. 
 
 \section{Problem Statement} \label{section:Problem_Statement}
 
 One potential method to control a swarm of robots is having a central computer dictate to individual robots how the robots should move.
-However, centralized control is only as robust as the central controller. 
+However, centralized control is only as robust as the central controller and its connection to the robots. 
 Distributed control systems do not have a single point of failure as centralized models do. 
-In order to create reliable and useful swarm robotic systems, users must be able to specify a desired end state of the system that the swarm can converge to without reliable orchestration from a central controller. 
+In order to create reliable and useful swarm robotic systems, users must be able to specify a desired end state of the system to which the swarm can converge without reliable orchestration from a central controller. 
 Moreover, this convergence must occur in the face of unreliability on the part of the individual swarm members. 
 
-The current state of development of emergent control of swarms is guided by ad-hoc, iterative development models that are somewhat suited to software developers, but not suited to use by non-programming end users \citep{palmer2005behavioral}.
+The current state of development of emergent control of swarms is guided by ad-hoc, iterative development models that are somewhat suited to software developers, but not suited for use by non-programming end users \citep{palmer2005behavioral}.
 The motivating examples of uses for swarms are task oriented, such as sending swarm robots into disaster zones to search for survivors.
 Iterative software development does not have the ability to adapt quickly enough in the face of changing situations in a disaster area, and software development training would be out of scope for first responders. Therefore, it is desirable to automate the construction of control software for a swarm so that it can adapt to a situation, without requiring significant development time. 
 In order to support interactive control during a developing situation, the construction of the software should occur over a similar time scale to the user interactions.
@@ -36,25 +36,35 @@ Initially, part of the intent of this work was to determine if robot control pro
 	\item Robots can fail. Algorithms to control them should not depend on the perfect functioning of any individual robot. 
 \end{enumerate}
 
-Ultimately, while the resulting programs can operate under many of these conditions, the UI design used in user experiments implies at least some form of localization for the robots.
-Without metric localization, some of the tasks posed in the user experiments are still possible, if certain aspects of the goals are relaxed. 
+Ultimately, while the resulting programs can operate under many of these conditions, the user interface (UI) design used in user experiment implies some form of localization for the robots.
+For the study described in this work, the UI displays, on a multi-touch screen, a top-down view of the robots and their surroundings. 
+Placing the robots in a map-like view relative to each other implies that the locations of the robots relative to each other can be determined. 
+With this interface, the users were presented with a series of tasks, and could use any method they wished to command the robots to perform the task. 
+Without metric localization, some of the tasks posed in the user experiments are possible, if certain aspects of the goals are relaxed. 
+
 
 \section{Hypotheses} \label{section:Hypotheses}
 
-H1: There exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
+\subsection{H1: User gestures change based on the size of the swarm}
 
-This transition point will be apparent because of a change in the gesture set that the user uses to interact with the swarm. 
+It is hypothesized that there exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
+As the user interacts with the multi-touch user interface, they will choose the gestures that they feel convey their intention to the system. 
+The collected gestures for a particular user are their gesture set.
+Across multiple users, the transition point will be apparent because of a change in the gesture set that the users choose to interact with the swarm. 
 It is hypothesized that above the transition point, users will be more likely to neglect some subset of the available robots. 
-The user will instead use commands that control the bulk of the robots as a cloud or flock, but may leave some robots unused. 
+The user will instead issue commands that control the bulk of the robots as a cloud or flock, but may leave some robots unused. 
 For example, the user may switch from selecting robots as individuals to shaping and pushing the swarm the way a child might play with a bug, putting their hand down so the bug goes around or avoids it, touching the back of the bug gently to make it scurry forwards, and so forth, or by shaping the group as if sculpting, with pushing and pinching to ``carry'' groups around. 
 The user may also change how they indicate which robots are to be interacted with. 
-Rather than selecting each robot by clicking on it, the may ``paint'' over the area containing the robots they want to use, or draw a circle around them. 
+Rather than selecting each robot by clicking on it, they may ``paint'' over the area containing the robots they want to use, or draw a circle around them. 
 The size of the swarm where changes in the user gestures occur will indicate the transition point between interacting with individual robots and interacting with the swarm as a whole. 
 %Harriet \emph{et al}. also put the estimated transition point between multi-agent control and swarm around 50 individuals \citep{harriott2014biologically}.  
 %Above that threshold, human interaction may be able to remain focused on macro level behavior, influencing the overall behavior of the swarm rather than control of individuals.
 This hypothesis would be invalidated by the gestures selected by the user displaying no correlation with the size of the swarm that they are controlling. 
 
-H2: A display that obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use the same gestures they would use to control a single robot. 
+
+\subsection{H2: Changes in display of the swarm can change user behavior}
+
+It is hypothesized that a display that obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use the same gestures they would use to control a single robot. 
 
 Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
 This problem will arise at smaller scales if the swarm robots are themselves quite tiny, and some of the available swarm robots are indeed small \citep{pelrine2012diamagnetically}.
@@ -64,7 +74,9 @@ This approach has been used successfully for navigation of a swarm of uncrewed a
 
 This hypothesis would be invalidated by the gestures selected by the user in the single robot case being dissimilar from those selected in the case where the swarm is displayed as a cloud or covered region. 
 
-H3: User commands on a multitouch display can be automatically converted into programs for each robot that will converge to the desired behavior. These programs will operate using only local sensing and local communications, and without resorting to global, absolute localization. 
+\subsection{H3: User gestures can be converted to programs}
+
+It is hypothesized that user commands on a multitouch display can be automatically converted into programs for each robot that will converge to the desired behavior. These programs will operate using only local sensing and local communications, and without resorting to global, absolute localization. 
 
 Further, it is hypothesized that the user commands can be represented as a grammar that can be transformed into programs for each robot. 
 These programs should result in the convergence of the swarm to the desired behavior using only local sensing and local communications, and without resorting to global, absolute localization. 
@@ -73,9 +85,14 @@ First, under the assumption that robots can fail, it is possible that the entire
 For example, if enough of the robots are incapacitated, it may be that not enough are left to complete the task. 
 It's also possible that at compile time, the task is still possible, but a later change of the environment renders it impossible. 
 Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future, but in some limited cases, it may be possible to determine whether a specified action is impossible. The goal of this work is to provide a best-effort attempt to satisfy the user command, rather than prove anything about the possibility of doing so. 
+This hypothesis would be disproven by demonstration that a desired user action, as represented by control gestures on the user interface, could not be converted to a program that operates without global localization and that requires only local sensing and communication.
 
-H4: It is possible to build a swarm consisting of individual units with better ability to navigate terrain than Kilobots, at a comparable price point. 
+\subsection{H4: A cheap indoor swarm can be built with commodity hardware}
 
+The Kilobots set a remarkably low price point for individual swarm robots, with the parts for each robot costing approximately \$15 \citep{rubenstein2014kilobot}. 
+However, the Kilobots move by stick-slip locomotion, and so require a smooth, level surface to operate on. 
+Children's toys, such as radio controlled (RC) toy cars, tanks, and legged ``insects'' are designed to operate on slightly more difficult terrain, and so could be used to extend swarm robotic experiments into natural indoor settings. 
+In order to enable the control of toy mobility platforms as swarm robots, a common controller with the ability to adapt to various toys is needed.   
 As computing hardware decreases in price and size, more and more ability can be built into smaller and smaller hardware. 
 The development and popularity of smartphones has driven the development of smaller sensors and lower power processors, as well as thinner and smaller battery technology. 
 As Internet of Things (IoT) technology becomes increasingly popular, it becomes easier and cheaper to add smaller and lower-power devices to communications networks. 
@@ -83,4 +100,5 @@ The parts that go into these consumer technologies are also made less expensive 
 Assuming a fixed set-up cost, the more finished devices are produced, the greater the amortization of the setup cost across the devices. 
 Since IoT is expected to deliver connectivity for tens or hundreds of devices per end user, the expected economics drive down the cost of network connectivity.
 As a consequence, by using components intended for IoT devices, cell phones, and similar consumer electronics, the cost of building small robots will also continue to drop.
-This hypothesis would be disproved by the cost of mobility platforms and control hardware being more than twice the cost of a Kilobot in parts. 
+
+This hypothesis would be disproved by a swarm robot capable of operating in a naturalistic indoor setting requiring more than twice the cost of a Kilobot in parts. 
