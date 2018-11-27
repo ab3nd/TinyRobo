@@ -23,8 +23,8 @@ The hardware resulting from this work is designed so that it can be duplicated b
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\textwidth]{../robot_makers_2/tiny_tank}
-	\caption{A tank-drive toy with a 3.7V lithium polymer battery and a control board mounted to it.}
+	\includegraphics[width=0.9\textwidth]{../robots_with_ruler_small}
+	\caption{Toys with controller boards and batteries mounted. The spider has a two-motor holonomic drive, the tank uses differential drive, and the car is Ackerman drive.}
 \end{figure}
 
 In order to be both heterogeneous and inexpensive, the robots used for this work were initially designed to be constructed by developing a modular control hardware platform that can be attached to children's toys. 
@@ -396,7 +396,7 @@ Virtual parameter tweaking allows fine-grained testing of the behavior of algori
 	rp3 -> robotCode3 [label="WiFi", dir="both"];
 	rpN -> robotCodeN [label="WiFi", dir="both"];
 	}
-	\caption{Overview of the planned framework. Rectangular nodes are hardware, oval nodes are software.}
+	\caption{Overview of the software framework. Rectangular nodes are hardware, oval nodes are software.}
 \end{figure}
 
 Since the robots are reporting to a central server, and the central server also receives the video from the overhead camera, it may appear that this is a highly centralized system. 
@@ -503,7 +503,7 @@ Signals that pass through a virtual wall may have a reduced virtual signal stren
 
 \section{Swarm Hardware Results} \label{section:The_Desert_of_the_Real}
 
-Due to mechanical flaws in the toys used as motion platforms in TinyRobo, the robots would sometimes not move as commanded (see figure \ref{motor-speed-fig}). 
+Due to mechanical flaws in the toys used as motion platforms in TinyRobo, the robots would sometimes not move as commanded (see Figure \ref{motor-speed-fig}). 
 In a single-robot system, transient failures can sometimes be accommodated by repeated effort or replanning. 
 However, in a multi-robot system the scale of the system works to offset the reliability of each individual robot. 
 If robots have an individual mean time between failures (MTBF), the expected mean time to any failure is the MBTF divided by the number of robots. 
@@ -516,7 +516,7 @@ Tracking the failure of existing platforms in the field placed the average MBTF 
 	\includegraphics{motion_vs_cmd}
 	\centering
 	\caption{Commanded velocity (lin\_vel) as opposed to recorded motion (vel). Vel is always positive because it is measured in terms of euclidian distance moved by the center of the AprilTag between successive updates of the tag tracking. 
-		Note that while the magnitude of the motion is proportional to the commanded motion, sometimes the robot did not move at all, and when it did move, the recorded velocity is quite noisy. Noise may be removed in software, mechanical failure cannot.} 
+		Note that while the magnitude of the motion is proportional to the commanded motion, sometimes the robot did not move at all, and when it did move, the recorded velocity is quite noisy. Noise may be removed in software, but mechanical failure cannot.} 
 	\label{motor-speed-fig}
 \end{figure}
 
@@ -550,7 +550,7 @@ Non-homogenous platforms require different calibration for different platforms, 
 Further, requiring calibration works against transitioning to a new platform by adding an additional hurdle in the form of developing a new calibration method.
 
 The lack of an automated calibration and control method drove the TinyRobo swarm to use more differential drive vehicles, as they struck a balance between the fully holonomic drive used in the SpiderBots, which is expensive but easy to control, and the Ackerman drive used in inexpensive RC cars, which is less expensive, but has more complex control math \citep{lairdspider}.
-It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity as discussed in section \ref{section:Why_Heterogeneity_}
+It also increases the difficulty of using a heterogenous system, and so operates against the advantages of heterogeneity as discussed in Section \ref{section:Why_Heterogeneity_}
 
 %\subsection{April Tag Latency} \label{section:April_Tag_Latency}
 %
@@ -567,7 +567,7 @@ It also increases the difficulty of using a heterogenous system, and so operates
 
 \subsection{Drive Testing} \label{section:Drive_Testing}
 
-In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program that instructed them to move forwards until the AprilTag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
+In order to characterize the behavior of the various toy hardware that the TinyRobo platform could be used on, seven TinyRobos were commanded by a program that instructed them to move forward until the AprilTag tracking determined that they had moved a fixed distance, stop, and move again, in a loop. This program was run until the robot failed to move or ran into the walls of the robot arena.
 
 Each robot was run 5 times, starting from the same location each time. The robot was power-cycled between runs. Each run was recorded using rosbag, and the data from the recordings were used to generate visualizations of the robot's commanded trajectory from the motion of the center of the robot's AprilTag.
 
@@ -590,69 +590,79 @@ Acceleration during the movement phases was managed by increasing the commanded 
 Once the robot began moving, it was not commanded to change velocity until it had moved at least 0.25m.
 In the following descriptions of the motions of the robots, the directions left and right are relative to the direction of travel of the robot. 
 
-The Ackerman-steering toy car (page \pageref{img_traj}, image a) displayed very consistent mobility. In four out of its five runs, it crossed the arena without incident. 
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.47\textwidth}
+		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_17.png}
+		\caption{Motion of toy car based robot\label{fig:car_motion}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.47\textwidth}
+		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_1.png}
+		\caption{Motion of big wheel robot\label{fig:big_wheel_motion}}
+	\end{subfigure}
+	\caption{} %Triggers rendering of Figure label
+\end{figure}
+
+The Ackerman-steering toy car (Figure \ref{fig:car_motion}) displayed very consistent mobility. In four out of its five runs, it crossed the arena without incident. 
 In one run, it started and went a small distance, but then did not start again. 
 However, the Ackerman-steering toy car has a gearbox that permits backdriving, so when commanded to stop, it coasts for a few centimeters. 
 The toy tanks use a worm gear in their drivetrains, and so do not permit backdriving of the motors by the vehicle's inertia. 
 Instead of coasting, they immediately stop when the motor is commanded to 0 velocity. 
 
-The big wheel robot (page \pageref{img_traj}, image b) displayed an unfortunately small range of commanded velocities between those that caused it to begin moving, and those that caused it to flip over on its side.
+The big wheel robot (Figure \ref{fig:big_wheel_motion}) displayed an unfortunately small range of commanded velocities between those that caused it to begin moving, and those that caused it to flip over on its side.
 In three of its five runs, the big wheel accelerated quickly and then flipped during the first motion period. 
 In the remaining two runs, it did not move at all, possibly due to gears jamming. 
 
-\begin{figure}
-	\centering
-	\begin{subfigure}[t]{0.47\textwidth}
-		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_17.png}
-		\caption{Motion of toy car based robot}
-	\end{subfigure}
-	\begin{subfigure}[t]{0.47\textwidth}
-		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_1.png}
-		\caption{Motion of big wheel robot}
-	\end{subfigure}
-	
+
+\begin{figure}[h]
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_6.png}
-		\caption{Motion of 6-wheel bug}
+		\caption{Motion of 6-wheel bug\label{fig:bug_motion}}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_0.png}
-		\caption{Motion of green tank}
+		\caption{Motion of green tank\label{fig:green_tank_motion}}
 	\end{subfigure}
-	
-	\begin{subfigure}[t]{0.47\textwidth}
-		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_8.png}
-		\caption{Motion of blue tank \#8}
-	\end{subfigure}
-	\begin{subfigure}[t]{0.47\textwidth}
-		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_18.png}
-		\caption{Motion of blue tank \#18}
-	\end{subfigure}
-	
-	\begin{subfigure}[t]{0.47\textwidth}
-		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_5.png}
-		\caption{Motion of bug robot}
-	\end{subfigure}
-	\label{img_traj}	
+	\caption{} %Triggers rendering of Figure label
 \end{figure}
 
-The Hexbug-branded 6-wheeled bug (page \pageref{img_traj}, image c) displayed an asymmetry in its motor drive speeds. 
+
+The Hexbug-branded 6-wheeled bug (Figure \ref{fig:bug_motion}) displayed an asymmetry in its motor drive speeds. 
 For three of its five runs, both motors ran, and the wheels on both sides rotated, but the right side was driven more quickly, and so the robot made a wide arc to the right and hit the wall of the arena behind the starting location. 
 In one run, one side did not begin moving at all, causing the robot to rotate rapidly around that side. 
 In another run, the robot twitched briefly, remained still, and then accelerated backwards quickly. 
 This was likely caused by the gradual incrementing of the forward velocity eventually causing an integer overflow, resulting in a large forward velocity command being interpreted as a large negative velocity.
 
-The green tank, carrying the number 0 AprilTag (page \pageref{img_traj}, image d), experienced problems with one side of its drive train in three of its five runs.
+The green tank, carrying the number 0 AprilTag (Figure \ref{fig:green_tank_motion}), experienced problems with one side of its drive train in three of its five runs.
 One tread drive did not move, while the other did, resulting in tight turns to the left in two runs, and to the right in one run. In one of the two remaining runs, the green tank did not move at all. In the second, the tank alternated movement and stopped periods until it reached the other side of the arena, which constituted success on this test. 
 
+\begin{figure}[h]
+	\begin{subfigure}[t]{0.47\textwidth}
+		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_8.png}
+		\caption{Motion of blue tank \#8\label{fig:tank_motion_8}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.47\textwidth}
+		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_18.png}
+		\caption{Motion of blue tank \#18\label{fig:tank_motion_18}}
+	\end{subfigure}
+	\caption{} %Triggers rendering of Figure label
+\end{figure}
+
 There are two blue tanks, carrying AprilTags numbered 8 and 18. 
-Tank number 8 (page \pageref{img_traj}, image e) moved slightly on four of its 5 runs, and did not move on one of them. 
+Tank number 8 (Figure \ref{fig:tank_motion_8}) moved slightly on four of its 5 runs, and did not move on one of them. 
 At no point did it move the full 0.25m. 
-Tank number 18 (page \pageref{img_traj}, image f) moved much more consistently, but displayed an arc to the right in four of its 5 runs. 
+Tank number 18 (Figure \ref{fig:tank_motion_18}) moved much more consistently, but displayed an arc to the right in four of its 5 runs. 
 In one run, the tank failed to restart after one of the stop phases, and eventually accelerated quickly in reverse. 
 As with the 6-wheeled bug, this was likely the failure of the robot to move leading to a long enough delay that incrementing the commanded acceleration resulted in an integer overflow. 
 
-The single-motor Hexbug-branded blue bug (page \pageref{img_traj}, image g) moved consistently, but with a heavy bias towards turning to the left. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.47\textwidth]{../hardwareX_paper/robot_5.png}
+	\caption{Motion of bug robot}
+	\label{fig:bug_robot}
+\end{figure}
+
+The single-motor Hexbug-branded blue bug (Figure \ref{fig:bug_robot}) moved consistently, but with a heavy bias towards turning to the left. 
 In every run, it started and stopped, but the curvature of the path to the left caused it to run into the left side of the arena. 
 During one run, it fell over while moving, due to the somewhat ``bouncy'' nature of the toy's gait.
 
@@ -707,15 +717,15 @@ This sort of error can be compensated for by feedback, assuming the robot can de
 
 Robot 3 missed all the stops on its first run and the first stop on its second run.
 On its last three runs, it started and stopped as expected. 
-Rather than arcing left as with robot 2, robot 3 arced to the right. 
+Rather than arcing left as with Robot 2, Robot 3 arced to the right. 
 
 Robot 5 also had an arc to the right. For its first run, it missed the last stop, but otherwise functioned correctly. 
-On its second run, robot 5 started and stopped correctly, but hit something on the floor of the arena that caused it to turn more sharply right. 
+On its second run, Robot 5 started and stopped correctly, but hit something on the floor of the arena that caused it to turn more sharply right. 
 On its third run, the system incorrectly detected that robot 5 had started after coming to a stop, and so began waiting for it to move 0.25m. 
 The robot was not actually moving, so this condition would not have resolved. 
-For run four, robot 5 stopped during its first move and did not restart.
+For run four, Robot 5 stopped during its first move and did not restart.
 The cause of this error is unknown, but it is possible that it was erroneously detected as having started before it did, and so was not sent motion commands to start. 
-On the last run, robot 5 started and stopped as commanded until it was nearly at the wall, and then one wheel got stuck on a bit of wood on the arena floor, causing the robot to spin around that wheel. 
+On the last run, Robot 5 started and stopped as commanded until it was nearly at the wall, and then one wheel got stuck on a bit of wood on the arena floor, causing the robot to spin around that wheel. 
 
 Overall, the 3D printed robots were more reliable than the majority of the toy bases, in terms of runs completed. 
 However, a direct comparison cannot be easily made due to the changes that had to be made to accommodate the new bases. 
@@ -739,7 +749,7 @@ If the system requires additional torque, sealed micro gearmotors can provide in
 
 The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
 Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
-The use of custom mechanical assemblies in e.g. Jasmine micro robots adds complexity to the build process. 
+The use of custom mechanical assemblies (e.g. in Jasmine micro robots) adds complexity to the build process. 
 Where possible, small robots should be designed to use the PCB instead. 
 Using children's toys in TinyRobo was intended to avoid the use of custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain. 
 The use of hobby-level or toy-like platforms for swarms is not certain to be a dead-end, as the UB Swarm and the Spider-bots demonstrate, but the resulting robots will only be one of either inexpensive or reliable \citep{patil2016ub, price2014spider}. 
@@ -789,6 +799,28 @@ On top of the TinyRobo, posts can hold up an LED ring for color blob tracking, o
 The LED rings on the new swarm robots have 12 RGB LEDs, which can be lit to indicate the robot's heading to the camera, but can also convey information to the user. 
 For example, robots could illuminate LEDs based on the value of a sensor, resulting in a visible map over the swarm of the sensed quantity at the location of each robot. 
 They could also illuminate a single LED pointing to the next robot in a chain, and so indicate a path that the user could follow.
+
+\subsection{Conclusion}
+
+Overall, the project to develop the TinyRobo swarm robot platform was something of a success. 
+The TinyRobo controller module can control small toys with up to two motors, and by combining it with a 3D printed base, the hardware can be made more reliable. 
+
+However, there are a number of questions left open.
+Because it was assumed that the AprilTag fiducial tracking would be sufficiently accurate, the tradeoffs between camera resolution, tag size, and tracking speed have not been fully explored. 
+ArUco tags were tested briefly during this project, and rejected as being insufficiently accurate, but they apparently work for the GRITSBots, so clearly there is some configuration that allows them to be used to track small robots. 
+Ultimately, it would be preferable to not use an overhead camera at all, but that approach was a good fit for the budget and goals of this project. 
+
+The flexibility of the 3D printed design also opens up possible extension to hardware with e.g. whegs or other unusual forms of mobility. 
+These directions have not been explored in any depth.
+Currently, the 3D printed TinyRobo base suffers from a problem also seen in E-Pucks: the edge of the robot can catch on small obstacles. 
+It is unlikely that any single design is best for all users, but development of various designs using the same control hardware could produce a library of designs with different features to suit different tasks. 
+ 
+One goal of the personal project that this work developed from was to provide an inexpensive swarm platform that could be used by hobbyists and other non-traditional researchers to work with swarms. 
+In academic robotics, E-Pucks seem to be the platform of choice, but for home users, they are likely too expensive. 
+ROS's free and open source development model would enable the software to be shared easily, but there was perceived to be a need for a cheap swarm platform to work on. 
+The TinyRobo platform development is not yet at a point where it could be viewed as a finished product for hobbyists to purchase, but it is hoped that the lessons learned from its development will make the development of future cheap swarms easier and faster. 
+
+\todo{make this conclusion suck less}
 
 %\section{Swarm Simulation} \label{section:Swarm_Simulation}
 %
