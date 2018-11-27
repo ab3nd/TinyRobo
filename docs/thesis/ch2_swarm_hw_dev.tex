@@ -39,31 +39,33 @@ While toys in the general case are expected to remain available, a particular li
 %The software framework in development to support the robots is based on ROS, and so allows modular replacement of the control algorithms used to convert desired motion of the robot into drive signals for the motors. 
 
 \begin{table}
-	\begin{tabular}{l l l l l l l l }
-		Name & Value & Cost (1) & Cost (100) & Count & Subtotal & Subtotal (100)\\
+	\begin{tabular}{l l r r r r r}
+		Name & Value & Cost & Cost & Count & Subtotal & Subtotal\\
+		& & (1) & (100) & & (1) & (100)\\
 		\hline
-		Battery & 3.7V & 3.41 & 1.5 & 1 & 3.41 & 1.5\\
-		C1, C2 & 4.7uF & 0.5 & 0.2 & 2 & 1 & 0.4\\
-		C3 & 0.1uF & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+		Battery & 3.7V & 3.41 & 1.50 & 1 & 3.41 & 1.50\\
+		C1, C2 & 4.7uF & 0.50 & 0.20 & 2 & 1.00 & 0.40\\
+		C3 & 0.1uF & 0.10 & 0.02 & 1 & 0.10 & 0.02\\
 		C4 & 10uF & 0.19 & 0.06 & 1 & 0.19 & 0.06\\
 		Charge IC & MCP73831 & 0.59 & 0.44 & 1 & 0.59 & 0.44\\
-		Charge LED & Green & 0.54 & 0.3 & 1 & 0.54 & 0.3\\
+		Charge LED & Green & 0.54 & 0.30 & 1 & 0.54 & 0.30\\
 		Diode & GF1A & 0.51 & 0.23 & 1 & 0.51 & 0.23\\
 		Motor driver & DRV8830 & 2.27 & 1.64 & 2 & 4.54 & 3.28\\
 		Header & 6-pin  & 0.52 & 0.37 & 1 & 0.52 & 0.37\\
-		PCB &  & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
-		R1 & 470 ohm & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
-		R2 & 2k & 0.1 & 0.02 & 1 & 0.1 & 0.02\\
+		PCB &  & 3.30 & 0.79 & 1 & 3.30 & 0.79\\
+		R1 & 470 ohm & 0.10 & 0.02 & 1 & 0.10 & 0.02\\
+		R2 & 2k & 0.10 & 0.02 & 1 & 0.10 & 0.02\\
 		R3, R4 & 0.22 ohm & 0.46 & 0.13 & 2 & 0.92 & 0.26\\
-		R5, R8-12 & 10k & 0.1 & 0.01 & 6 & 0.6 & 0.06\\
-		R6, R7 & 1k & 0.1 & 0.01 & 2 & 0.2 & 0.02\\
+		R5, R8-12 & 10k & 0.10 & 0.01 & 6 & 0.60 & 0.06\\
+		R6, R7 & 1k & 0.10 & 0.01 & 2 & 0.20 & 0.02\\
 		Switch & 410-2016 & 0.91 & 0.72 & 1 & 0.91 & 0.72\\
-		Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.1 & 1 & 0.13 & 0.1\\
-		V Regulator & MIC5265 & 1.4 & 1.06 & 1 & 1.4 & 1.06\\
+		Thermal Fuse & 0ZB0050FF2G1 & 0.13 & 0.10 & 1 & 0.13 & 0.10\\
+		V Regulator & MIC5265 & 1.40 & 1.06 & 1 & 1.40 & 1.06\\
 		Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
 		\hline
-		Total Cost &  &  &  &  & 23.38 & 11.9\\
+		\multicolumn{2}{l}{Total Cost for One Robot} &  &  &  & 23.38 & 11.9\\
 	\end{tabular}
+	\caption{Prices in US Dollars for TinyRobo components.}
 \end{table}
 
 The mobility platforms used for the existing TinyRobo swarm cost 12-20 dollars in single quantities, putting the total cost for a single robot at \$35-45.
@@ -111,15 +113,15 @@ These motors use simple metal brushes and are constructed to be inexpensive, rat
 The intended voltage range of the motors varies with different winding types, but according to datasheets available from Mabuchi Motor, the voltage ranges and current draws for motors in this range are as shown in table \ref{tab:properBrandedMotors}.
 
 \begin{table}
-	\begin{tabular}{l l l l l}
+	\begin{tabular}{l r r r r}
 		Model & Voltage & No Load Current & Max Efficiency & Stall Current\\
 		\hline
-		RE-140RA-2270 & 1.5-3 & 0.21 & 0.66 & 2.1 \\
-		RE-140RA-18100 & 1.5-3 & 0.13 & 0.37 & 1.07 \\
-		RE-140RA-12240 & 3-6 & 0.05 & 0.14 & 0.39 \\
-		FA-130RA-2270 & 1.5-3 & 0.2 & 0.66 & 2.2\\
-		FA-130RA-18100 & 1.5-3 & 0.15 & 0.56 & 2.1\\
-		FA-130RA-14150 & 1.5-4.5 & 0.11 & 0.31 & 0.9\\
+		RE-140RA-2270 & 1.5-3 & 0.21A & 0.66 & 2.1A\\
+		RE-140RA-18100 & 1.5-3 & 0.13A & 0.37 & 1.07A\\
+		RE-140RA-12240 & 3-6 & 0.05A & 0.14 & 0.39A\\
+		FA-130RA-2270 & 1.5-3 & 0.2A & 0.66 & 2.2A\\
+		FA-130RA-18100 & 1.5-3 & 0.15A & 0.56 & 2.1A\\
+		FA-130RA-14150 & 1.5-4.5 & 0.11A & 0.31 & 0.9A\\
 	\end{tabular}
 	\caption{Current draw for Mabuchi-branded motors.}
 	\label{tab:properBrandedMotors}
@@ -127,12 +129,12 @@ The intended voltage range of the motors varies with different winding types, bu
 
 These motors have a volume of around 2cm$^3$.
 For smaller toys, coreless motors are more common. 
-The values in table \ref{tab:coreless} were measured from six of the toys used in constructing the swarm.
+The values in Table \ref{tab:coreless} were measured from six of the toys used in constructing the swarm.
 The measurements from the toy helicopter and toy quadcopter are included for comparison.
 While the board can supply sufficient current to control all of these toys, it has not been tested in flying platforms.
 
 \begin{table}
-	\begin{tabular}{l l l}
+	\begin{tabular}{l r r}
 		Motor number & No Load Current & Stall Current (measured)\\
 		\hline 
 		Hexbug brand mini spider & 0.03A & 0.13A (see caption) \\
@@ -144,7 +146,7 @@ While the board can supply sufficient current to control all of these toys, it h
 		Toy helicopter & 0.07A & 1.12A \\
 		Toy quadcopter & 0.74A & 1.99A \\
 	\end{tabular}
-	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. The Hexbug mini spider includes a slip clutch, so attempting to stall the motors by holding the toy still does not prevent the motor from turning}
+	\caption{No load and stall current for coreless DC micromotors. Measurements were performed at 3V supply voltage. The Hexbug mini spider includes a slip clutch, so attempting to stall the motor by holding the toy does not prevent the motor from turning}
 	\label{tab:coreless}
 \end{table}
 
@@ -171,18 +173,18 @@ If coding is not required, as in rangefinding, the clock and data signals can be
 Colias implements rangefinding by detecting the intensity of received IR light from either reflections of IR emitted by the robot, or the strength of IR messages arriving from other roobts. 
 
 \begin{table}
-	\begin{tabular}{l l l l l l}
+	\begin{tabular}{l r r r r r }
 		Part number & Cost (1) & Cost(100) & Count & Subtotal(1) & Subtotal (100)\\
 		\hline 
 		ATMega168 & 1.40 & 1.12 & 1 & 1.40 & 1.12  \\
 		TSMP6000 & 1.81 & 1.03 & 6 & 10.86 & 6.18  \\
 		SFH4255  & 1.06 & 0.59 & 6 & 6.36 & 3.54 \\
 		SN74ACT08DR & 0.51 & 0.32 & 2 & 1.02 & 0.64 \\
-		PCB & 3.3 & 0.79 & 1 & 3.3 & 0.79\\
+		PCB & 3.30 & 0.79 & 1 & 3.30 & 0.79\\
 		\hline 
 		Totals & & & & 22.94 & 12.27\\
 	\end{tabular}
-	\caption{Semiconductors for a simple IR communication ring, and their prices. The PCB is the same size and type as the TinyRobo controller, and so has the same cost.}
+	\caption{Semiconductors for a simple IR communication ring, and their prices, in US Dollars. The PCB is the same size and type as the TinyRobo controller, and so has the same cost.}
 	\label{tab:ir_ranger_board}
 \end{table}
 
@@ -244,9 +246,10 @@ It accepts a single-byte command for each motor.
 Bits 7-2 of the byte define the output voltage to be applied to a motor, and the driver attempts to maintain that output voltage.
 The valid range of motor voltage commands for the DRV8830 driver is 0x06 to 0x3F, which corresponds to a range of 0.48V to 5.06V in 0.08V increments. 
 Because the robot battery is nominally 3.7V, the motor command 0x30 is the highest output available. 
-Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor, as per table \ref{tab:DRV8830_truth}.
+Bits 1 and 0 of the command byte control the polarity of the output voltage, and so the direction of the motor, as per Table \ref{tab:DRV8830_truth}.
 
 \begin{table}
+	\centering
 	\begin{tabular}{l l l l l}
 		Bit 1 & Bit 0 & Out 1 & Out 2 & Function\\
 		\hline
@@ -260,16 +263,16 @@ Bits 1 and 0 of the command byte control the polarity of the output voltage, and
 	\label{tab:DRV8830_truth}
 \end{table}
 
-\begin{center}
+\begin{figure}
+	\centering
 	\begin{bytefield}[bitheight=\widthof{~Sign~},
 		boxformatting={\centering\small}]{8}
-		\bitheader[endianness=big]{7,2,0} \\
-		\colorbitbox{lightred}{5}{Speed} &
-		\colorbitbox{lightgreen}{2}{Dir}	
+		\bitheader[endianness=big]{7,2,0}\\
+		\colorbitbox{lightred}{5}{Speed}\colorbitbox{lightgreen}{2}{Dir}	
 	\end{bytefield}
 	%Can't caption here because this is outside float
-	%\caption{Layout of bits in motor command byte for DRV8830}
-\end{center}
+	\caption{Layout of bits in motor command byte for DRV8830}
+\end{figure}
 
 Once the motor speed is set, the firmware reads the fault bytes from the DRV8830, and sends the motor command and the fault bytes for each motor back to the client over WiFi. 
 The client uses the fault bytes to detect overcurrent conditions in the motor drivers and reduce output power. 
@@ -280,16 +283,16 @@ By moving the control to the main computer, the firmware can be kept simple whil
  
 \subsection{Why Heterogeneity?} \label{section:Why_Heterogeneity_}
 
-Heterogeneity is a is a good model of many real-world systems where members of a group have different capabilities. 
+Heterogeneity is a good model of many real-world systems where members of a group have different capabilities. 
 Family groups of pack animals have young and old members, sometimes ill members, and sometimes infant members that cannot participate fully in pack activities. 
 In human groups, work is divided according to ability, so a contractor may hire an electrician, a framing carpenter, and a plumber to build a house, to much better effect than attempting to do it with a team consisting entirely of plumbers. 
 
 Another use of heterogeneity in swarms is to prevent individual robots from becoming overly complex by sparing them from having to be capable of doing everything. 
 The presence of multiple robots with a given ability in a swarm strikes a compromise between all robots having that ability (and being complex and expensive) and only one robot having that ability (and so providing a single point of failure). 
-Perhaps the most impressive recent demonstration of a highly heterogeneous swarm is the Swamanoid project's video ``Swarmanoid: The Movie", in which three different kinds of medium-sized robots cooperate to retrieve a book from a shelf \citep{oʼgrady2011swarmanoid}.
+Perhaps the most impressive recent demonstration of a highly heterogeneous swarm is the Swarmanoid project's video ``Swarmanoid: The Movie", in which three different kinds of medium-sized robots cooperate to retrieve a book from a shelf \citep{oʼgrady2011swarmanoid}.
 The movie explicitly mentions that one sub-team of robots (two mobile robots and one gripper robot) is positioned as back-up, in case the first sub-team fails. 
 
-Beyond the possible utility of robots with multiple abilities, the swarm design presented in this work was intended to be heterogenous as a matter of convenience of implementation. 
+Beyond the possible utility of robots with multiple abilities, the swarm design presented in this work was intended to be heterogeneous as a matter of convenience of implementation. 
 As toys go out of production and are replaced by others, it may not be possible to continue to operate the swarm on an entirely homogeneous mobility platform. 
 Because of this possibility, the software infrastructure tries to keep platform-specific calculations in a single module, and allow the rest of the system to operate using standard ROS messages. 
 At present, these calculations only consist of conversion of ROS twist messages, which contain rotational and angular velocities in 3 axes each, into motor speed commands for the robot, which consist of a speed and direction for up to two motors. 
@@ -307,6 +310,14 @@ The individual robots being developed for this research have minimal sensing cap
 The majority of the processing is performed on a host computer running the ROS software framework. 
 Each robot's processor is mostly concerned with controlling the motors of the robot. 
 The structure of the software framework is such that as available processing power on each individual robot increases, more of the processing can be handled locally, without changing the overall design of the system.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.45\textwidth]{../swarm_table_no_bg_small}
+	\includegraphics[width=0.45\textwidth]{../overhead_view}
+	\caption{Swarm arena, showing top-down camera and robot area. The image to the left shows the camera view before ROS image rectification removes barrel distortion.} 
+	\label{fig:robot_arena}
+\end{figure}
 
 The central computer has a top-down camera over the ``arena'' the robots are active in. 
 Each robot has an AprilTag on top of it, so that the central computer can localize them within the arena \citep{olson2011tags}. 
@@ -760,21 +771,21 @@ The tag size could be increased, either by moving the tags closer to the camera 
 Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
 As was observed in the robot drive tests, the bug and big wheel bases were already prone to tipping over. 
 
-One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz. 
+One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz \citep{PickemGrits2014}. 
 This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
-To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz, and for a web-based robot deployment environment, settled on ArUco tags \citep{PickemGrits2014, pickem2017robotarium}. 
-MROBerTO also used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
+To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz, and for a web-based robot deployment environment, settled on ArUco tags\citep{pickem2017robotarium}. 
+MROBerTO used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
 Kilobot robots also include an RGB LED, which may be set to any color by the software of the Kilobot. 
 These LEDs can also provide swarm feedback in a manner similar to the LEDs in McLurkin's Swarmish interface \citep{mclurkin2006speaking}.
 
-The final version of the TinyRobos incorporates many of these changes. 
+The final version of the TinyRobos incorporates many of these design improvements. 
 The robot chassis is a 3D printed assembly, moved by a sealed drivetrain that directly drives the wheels. 
 Changing the drivetrain eliminated many of the problems with unreliable motion. 
 This is not a perfect solution, as the TinyRobos now have a problem that the E-Pucks also have: they can become stuck on small obstacles. 
-E-Pucks and TinyRobos use the front edge of the robot as a skid, so if there is a small obstacle. 
+E-Pucks and TinyRobos use the front edge of the robot as a skid, so if there is a small obstacle, the front edge of the robot can push against it rather than riding over it. 
 This problem arose during early testing of the swarm robots, when a piece of sawdust that had been adhered to the swarm arena surface by paint was able to stop E-Pucks or deflect their motion. 
 
-On top of the robot, posts can hold up an LED ring for color blob tracking, or any kind of trackable code. 
+On top of the TinyRobo, posts can hold up an LED ring for color blob tracking, or any kind of trackable code. 
 The LED rings on the new swarm robots have 12 RGB LEDs, which can be lit to indicate the robot's heading to the camera, but can also convey information to the user. 
 For example, robots could illuminate LEDs based on the value of a sensor, resulting in a visible map over the swarm of the sensed quantity at the location of each robot. 
 They could also illuminate a single LED pointing to the next robot in a chain, and so indicate a path that the user could follow.

@@ -681,7 +681,6 @@ A compositional approach to program generation requires the definition of primit
 One possible list of primitives is disperse (no other nodes within distance $d$), general disperse (no more than $n$ nodes within distance $d$), clump/cluster, attract to location, swarm in a direction, and scan area \citep{evans2000programming}.
 Another proposed catalog of behaviors for swarm control bases the simple behaviors on pheromones or chemical sensing in single cells \citep{nagpal2004catalog}. 
 The proposed behaviors are the use of gradient sensing for position and direction information, local inhibition and competition, lateral inhibition for spatial information, local monitoring, quorum sensing for timing and counting, checkpoint and consensus sensing, and random exploration. 
-The first five are common in amorphous computing as well, but the last three are not. %TODO what are their uses?. 
 While these behaviors are themselves expressed in terms of pheromones, the composition of the primitives into complete programs is not dictated by a pheromone-based system.
 Furthermore, compositional approaches have been proposed in control-theoretic terms as well as pheromone-based terms, so the process of composition of primitives can be viewed as a metastrategy for the creation of programs, rather than a process specific to pheromone robotics \citep{belta2007symbolic}.
 
@@ -702,7 +701,7 @@ Furthermore, compositional approaches have been proposed in control-theoretic te
 %There do exist certain pathological shapes which the system cannot move towards the beacon, but it is demonstrated to work for all convex shapes. 
 
 Another compositional method for programming robots proposes that the behaviors can be separated into classes, such as motion, orientation, and so forth \citep{mclurkin2004stupid}. 
-Among these behaviors are ``primitives'' such as several forms of clustering, which other, later works have treated as an emergent behavior itself, arising from more primitive primitives. 
+Among these behaviors are ``primitives'' such as several forms of clustering, which other, later works have treated as an emergent behavior itself, arising from more atomic primitives. 
 The variable granularity of the primitives available to compose swarm control programs seems to point to a hierarchy of control elements, with perhaps single motor operations at the bottom, and an increasing composition of elements to create more and more complex behaviors.
 Swarm control programs would then call multiple primitive behaviors, providing them with parameters such as degrees of bearing and centimeters of proximity. 
 The behaviors ideally run concurrently, and some of them respond to sensor inputs. 
@@ -719,14 +718,14 @@ When a condition is met, the robot performs actions at a given rate.
 In the concurrent case, this is modeled as each action happening one at a time, but in random order. 
 On a real swarm, the actions would take place in parallel, but the concurrent model is more amenable to analysis. 
 To determine if a set of actions will be successful, it is required to ensure that for all orderings of all actions, the final state space of the swarm is the desired final state. 
-Correct programs are those that reach the target state with probability one, even when composed with bounded failures. 
+Correct programs are those that reach the target state with probability 1.0, even when composed with bounded failures. 
 Once the target state is reached, the program is assumed to halt, so while the final state may be reached very slowly, once it is reached, it is not left. 
 In the GCPR models, the time to execution of an action is stochastic, but in the real-world case of noisy or imperfect sensors, the variable time to execution of a guarded behavior would be caused by the imperfection of the robot's ability to detect that the guard was satisfied. 
 
 \subsection{Evolutionary Composition} \label{section:Evolutionary_Composition}
 
 Determining how the behaviors should be composed for an individual swarm robot's controller is difficult. 
-Unfortunately, much of the process of composing of programs for swarm robots consists of iterating between composing sets of primitives and observing behavior of the system in an ad hoc process, just as with the creation of control programs by coding \citep{palmer2005behavioral}. 
+Unfortunately, much of the process of composing programs for swarm robots consists of iterating between composing sets of primitives and observing the behavior of the system in an ad hoc process, just as with the creation of control programs by coding \citep{palmer2005behavioral}. 
 Rather than removing iterative software design from the process, it has simply been moved up one layer of abstraction, from writing code for the robots to composing that code from behavior primitives. 
 
 One possibility is to permit composition to behave like the programming environment Tierra \citep{ray1991approach}.
@@ -742,7 +741,7 @@ However, it is still useful to examine the possibility of developing a fitness f
 Without some way of determining the ``goodness'' of a swarm's behavior, it is difficult to say that one algorithm or design paradigm is better or worse than another. 
 
 In order to determine the quality of the behavior of the swarm, its behavior must be measured.
-Harriott \emph{et al.} propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots, and can be broken down into 9 classes \citep{harriott2014biologically}. 
+Harriott \emph{et al.} propose that metrics for measuring the interaction of humans and swarms differs significantly from the interaction of humans and individual robots, and can be broken down into nine classes, summarized below \citep{harriott2014biologically}. 
 \begin{enumerate}[noitemsep]
 \item Human attributes - Interaction, trust, intervention frequency 
 \item Task performance - Ability to accomplish task, speed, accuracy, cost
@@ -798,9 +797,9 @@ They typically have one sensor, which is binary and detects the presence or abse
 The output of the program is typically the speed of two wheels in a differential drive arrangement.
 Despite the minimalism of the model, by tuning the output parameters of the robot, they can be configured to form stable circles, and with a few more sensor states, to aggregate, shepherd ``sheep'' robots, forage, gather objects, follow walls, and disperse \citep{gauci2014self, johnson2016evolving, ozdemir2017shepherding, brown2018discovery, stcircle}. 
 
-While these abilities of computationless robots actually do cover the desired tasks from the user experiment in chapter \ref{chapter:user_experiment}, this approach has some problems with transition to deployment on real robots, rather than point robots in simulation. 
+While these abilities of computationless robots actually do cover the desired tasks from the user experiment in Chapter \ref{chapter:user_experiment}, this approach has some problems with transition to deployment on real robots, rather than point robots in simulation. 
 The simulations used in computationless swarming frequently assume a perfect sensor of infinite range, which is unlikely to exist on a real robot.
-However, at least one study was performed with sensor noise that could change the sensor reading, causing it to indicate incorrectly with probability $p$, and found that the controller outperformed doing nothing, so long as $p$ was less than 0.5 \citep{gauci2014self}. 
+However, at least one study was performed with sensor noise that could change the sensor reading, causing it to give an incorrect value with probability $p$, and found that the controller outperformed doing nothing, so long as $p$ was less than 0.5 \citep{gauci2014self}. 
 While extensions which admit a sensor that can detect obstacles, and so avoid them, are no doubt possible, there are more troubling results that indicate that the general design problem for an computation-free swarm in an arbitrary environment is NP-complete \citep{wareham2018viable}
 Further, the use of evolutionary programs is still prone to long run times for the evolutionary algorithm itself, and to exploiting errors in the statement of the fitness function. 
 As a consequence, it is ill-suited to user interaction with users who are not experienced in genetic algorithms. 
@@ -920,7 +919,7 @@ They do not relate the structure to any other point in space, but are purely in 
 Other work with modular robots has used sensing to characterize the environment and decide on the reconfiguration of the robot that will best allow it to complete the assigned task \citep{daudelin2017integrated, jing2016end}.
 The high-level planner uses linear temporal logic in a tool called LTLMoP (Linear Temporal Logic MissiOn Planning) to synthesize a controller for the robot task, and from the behaviors required from the controller, a sequence of transformations of the robot into forms that provide those behaviors. 
 	
-Generation of programs from e.g. LTL descriptions of the task and environment are promising because they can generate provably correct controllers.
+Generation of programs from e.g. linear temporal logic (LTL) descriptions of the task and environment are promising because they can generate provably correct controllers.
 Unfortunately, these approaches to program generation are prone to extreme conservatism in the face of an unknown environment. 
 Assume that a robot is placed in a simply-connected maze, with instructions to traverse the maze. 
 Selecting one wall, either the left or the right, and following it, will result in the robot finding the exit, or returning to the entrance if there is none. 
@@ -936,8 +935,8 @@ Rather than replanning as the environment changes, the system generates alternat
 Unfortunately, this controller synthesizer still relies on a known map of the entire environment (but not of the obstacles in it). 
 For real-world applications in disaster recovery, the map may not be available, or may be undergoing constant revision by the disaster. 
 The synthesizer also creates revisions to the assumptions about the environment, and the number of these revisions grows combinatorially. 
-Each revision is an assumption about the environment that must hold for the controller to be correct, such as "There will never be a deadlock if robot 1 is not in the hallway when robot 2 enters the hallway".
-The revision can be viewed as a constraint on the motion of the robots, preventing robot 1 from entering the hallway, or robot 2 from entering the hallway if robot 1 is in it. 
+Each revision is an assumption about the environment that must hold for the controller to be correct, such as ``There will never be a deadlock if Robot 1 is not in the hallway when Robot 2 enters the hallway".
+The revision can be viewed as a constraint on the motion of the robots, preventing Robot 1 from entering the hallway, or Robot 2 from entering the hallway if Robot 1 is in it. 
 With one robot in a fairly simple map, the paper indicates that 16 revisions are needed. 
 Adding a second robot increases this to 1306 revisions.  
 
@@ -981,15 +980,15 @@ One would expect that once a diverse enough pool of robots exists, the work of M
 It has been suggested that LTL is not the best formalism for the description of desired behavior for robot controllers \citep{belta2007symbolic}.
 Belta \emph{et al.} also raises some other problems with symbolic control and planning as a paradigm for robot control. 
 Among others, they point out that the invariance of the dynamics of the robots to certain transformations, such as rotation around certain axes, permits symbolic control. 
-However, as pointed out by Rodney Brooks in ``Artificial life and Real Robots'', environment conditions such as carpet nap can change dynamics of the robots in ways that break the symmetry of the dynamics about some axes \citep{brooks1992artificial}.
+However, as pointed out by Rodney Brooks in ``Artificial life and Real Robots,'' environment conditions such as carpet nap can change dynamics of the robots in ways that break the symmetry of the dynamics about some axes \citep{brooks1992artificial}.
 In addition, the symbolic methods still have problems with incomplete knowledge, and dynamic worlds (which imply incomplete knowledge, as things may change without being observed). 
-While valuable for the strength of the assertions they can make about the generated controllers, symbolic and formal methods still require some level of reactive or heuristic buffering from the real world, to present them with the atomic actions and perfect sensors that their assertions rely on. 
+While valuable for the strength of the assertions they can make about the generated controllers, symbolic and formal methods still require some level of reactive or heuristic buffering from the real world, to present them with the atomic actions and perfect sensors on which their assertions rely. 
 %(Hadas http://link.springer.com/chapter/10.1007/978-3-642-22110-1_54#page-1 makes a distinction between unsatisfyable and unrealizable specifications. Unsatisfyable specs are those that the robot cannot do in any environment. Unrealizable specifications are those cases where there exist environments that can thwart the robot. In Hadas' work, there's also the idea that environments are finite in number. )
 %\unsure{``Best effort", based on the information available, it's worth an attempt vs. not worth an attempt.}
 %\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
 Another potential approach to the generation of robot programs for swarms is the use of Supervisory Control Theory (SCT) \citep{lopes2016supervisory}.
-SCT provides a method to formally synthesize controllers called ``supervisors''. 
+SCT provides a method to formally synthesize controllers called ``supervisors.''
 Both the possible state transitions of the robot and the control specification are represented as state transition diagrams, and realized as generators. 
 The generators are then composed into a synchronous automaton, which is the supervisor. 
 Changes in state are caused by events.
@@ -1037,7 +1036,7 @@ The people inside a church at a given time are likely a group, the people on the
 This factor, combined with the gestalt common fate principle, may be useful for encouraging users to think of a swarm as a group. 
 Since it can be made explicit to the user that the swarm shares common goals, and the swarm can move together, the user would come to regard it as a group, rather than a simple aggregate. 
 
-Whether a set of people is perceived as a group is referred to as ``entitativity".
+Whether a set of people is perceived as a group is referred to as ``entitativity."
 Groups with high entitativity are expected to have a higher degree of unity and consistency within the group. 
 The smaller a group is, the more similar its members are perceived to be, which seems to indicate that smaller groups would have higher entitativity \citep{stewart2003trust}. 
 
@@ -1046,7 +1045,7 @@ Rather, it is a spectrum, with groups such as families or organizations at the h
 By surveys, some clusters of groups have been elucidated, such as intimacy groups (family and friends), task groups (co-workers, juries), social groups (gender, race, class), and loose associations (parade crowds, fans of a music genre) \citep{lickel2001elements}. 
 In a situation familiar to computer scientists, the analysis of perception of group entitativity is prone to the curse of dimensionality: what counts as a group is highly variable along multiple axes \citep{lickel2000varieties}.  
 Among the factors influencing it are differences in the perceiver (level of need to perceive a group, individualism or collectivism bias), contextual factors (group membership or opposition), and properties of the group itself (visual or behavioral similarity).
-Minorities become higher in entitativity due possibly to the perception of them as figures distinct from a ``ground'', as in the gestalt figure/ground principle, or because stereotyping increases the perception of similarity within the group. 
+Minorities become higher in entitativity due possibly to the perception of them as figures distinct from a ``ground,'' as in the gestalt figure/ground principle, or because stereotyping increases the perception of similarity within the group. 
 The perception of similarity within the group may be in turn be related to the gestalt perception of similarity, and so visually-similar minorities would be expected to have a higher entitativity than visually dis-similar groups of people. 
 	
 Research in the influence of group size on effectiveness of persuasion reveals that the gestalt principle of similarity works on the level of information as well as visual similarity \citep{wilder1977perception}. 
@@ -1057,14 +1056,14 @@ The first person from the group who expresses their opposition may be viewed as 
 Unfortunately, the study of the entitativity of groups makes it clear that the factors that humans consider when deciding how strongly an association of other humans count as a group extend well beyond how many of people are in the group.
 Human perception of groups has less to do with exact count of people, and far more to do with common cause, visible similarity, tasks, interpersonal relations, and so forth. 
 One potential upper bound that is simply numeric is Dunbar's Number, a constraint on the understanding of a social network placed by neocortex size \citep{dunbar1992neocortex}. 
-For humans, Dunbar's number is estimated to be around 150 individuals, and beyond that, people would be expected to begin chunking the people in their social network into hierarchies or groups in order to keep track of a reduced number of entities (e.g. one group called "co-workers" instead of every individual on the team). 
+For humans, Dunbar's number is estimated to be around 150 individuals, and beyond that, people would be expected to begin chunking the people in their social network into hierarchies or groups in order to keep track of a reduced number of entities (e.g. one group called ``co-workers" instead of every individual on the team). 
 
 \section{Human/Robot Teaming} \label{section:human_robot_teaming}
 
 One area that may have interesting insights into control interfaces for heterogenous swarms is work on human/robot teams. 
 Typically, human/robot teams involve robots working along side humans in a team, as peers or subordinates. 
 As a result, the interface design is primarily for control of the robots, and the return of data to the humans, rather than in control of the team as a whole.
-One attempt to unify the command and control of a human/robot team did so by expanding previous work, which had only commanded robots \citep{lopez2017unified}. 
+One attempt to unify the command and control of a human/robot team \citep{lopez2017unified} did so by expanding previous work, which had only commanded robots \cite{Micire:2009:ANG:1731903.1731912}. 
 The resulting interface allowed the end user to command robots and humans using the same command modalities, rather than specializing the command set based on the type of unit being commanded. 
 In user tests, commanders of human teams, robot teams, and mixed teams had similar performance, and used similar control strategies.
 The use of similar control strategies is surprising, because this includes direct, joystick-like control of human team members, which the researchers originally thought would be an unusual way to instruct a person to move. 
