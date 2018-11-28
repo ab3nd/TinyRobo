@@ -12,7 +12,7 @@ Where design decisions were made to work around these ambiguities, they are desc
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{../thin_grey_text.png}
-	\caption{Motion, selection, and UI gestures.}
+	\caption{UI gestures, selection gestures, and position gestures.}
 	\label{fig:select_ui_move_breakdown}
 \end{figure}
 
@@ -50,26 +50,26 @@ These users did not issue other voice commands, as the other tasks were not perc
 
 \begin{table}
 	\centering
-	\begin{tabular}{l l}
-		Task & Uses of Voice Commands\\
+	\begin{tabular}{l r}
+		Task & Voice Commands\\
 		\hline
-		line & 5\\
-		square & 4 \\
-		crate dispersed & 3 \\
-		divide color mix & 3\\
-		stop & 3\\
-		crate & 2\\
-		move a & 2\\
-		disperse & 2\\
-		merge & 2\\
-		split & 2\\
-		patrol a & 2 \\
-		divide & 1 \\
-		divide color 1 & 1\\
-		divide color 2 & 1\\
-		move wall & 1\\
-		remove & 1\\
-		mark & 1 \\
+		Line & 5\\
+		Square & 4 \\
+		Crate (dispersed) & 3 \\
+		Divide color mix & 3\\
+		Stop & 3\\
+		Crate & 2\\
+		Move to A & 2\\
+		Disperse & 2\\
+		Merge & 2\\
+		Split & 2\\
+		Patrol A & 2 \\
+		Divide & 1 \\
+		Divide color 1 & 1\\
+		Divide color 2 & 1\\
+		Move wall & 1\\
+		Remove defective robot & 1\\
+		Mark defective robot & 1 \\
 		patrol screen & 1\\
 	\end{tabular}
 	\caption{Use of voice commands by task. The use of high numbers of voice commands for the formation tasks, line and square, was likely biased by the text of the instructional slides. }
@@ -92,7 +92,7 @@ Reverse pinch was used as an interface command to zoom in or out of the view of 
 The user who made this gesture was in the 1000 robot case, and stated that they wanted to zoom in because the defective robot was a small target and close to other robots. 
 There was no explicit zoom or change of viewpoint task, but users expected the functionality when they had to interact with a small target.
 
-To accommodate 90\% of the user gestures for selection, recognition of tap, lasso, box select, doubletap, drag, hold, and ``other'', totaling 91.9\% of the selection gestures.
+Tap, lasso, box select, doubletap, drag, hold, and ``other'' cover a total of 91.9\% of the selection gestures.
 As discussed above, the ``other'' category is not practical to implement. 
 If, instead, all forms of tap are considered the same for purposes of selection, they comprise 42.5\% of the selection gestures, and together with lasso and box select, cover 91.3\% of the selections. 
 
@@ -116,8 +116,9 @@ Because a number of other, more explicit commands are available for dividing rob
 A line drawn over robots is treated as a box selection, unless it begins on a single robot. 
 In that case it is interpreted as a path for that robot to follow. 
 For the purposes of this work, beginning ``on'' a robot was defined as the beginning of the line being within 80 pixels of the location of the robot on the screen. 
-80 pixels was selected because it is the approximate width of a human finger on the screen used in this work. 
+This number of pixels was selected because it is the approximate width of a human finger on the screen used in this work. 
 Obviously, this distance will vary with the resolution of the screen, but the mechanism for obtaining the resolution and physical size of attached screens varies with operating systems, and is outside of the scope of this work, aside from noting that this parameter may vary.
+The selection of parameters like this for an interface intended for real-world, rather than experimental use, should be guided by understanding of human factors and UI design principles, such as Fitts' Law \citep{fitts1954information}.
 
 Similarly, some users divided the robots into two groups by drawing a line separating the groups.
 Typically, this line started outside the group and passed through it, so it could be disambiguated from instructing the robots to move along the line.
@@ -131,7 +132,7 @@ However, this sort of recognition means that a square lasso select, or an arbitr
 It would be preferable to be able to make arbitrary formations, and arbitrarily-shaped lasso selections, and have them be disambiguated by some other method. 
 One method that users proposed was to have a ``draw formation" button, which would then cause the next form that the user drew to be treated as the perimeter of the formation. 
 Some users also held one finger down at the start of the formation, while tracing the perimeter with the other finger. 
-Using a multi-finger gesture has the advantage of not adding UI elements, but is not easily discoverable by a user examining the UI. 
+Using a multi-finger gesture has the advantage of not adding UI elements, but is not easily discoverable by a user examining the UI, and so would require some form of training. 
 
 In order to patrol area A or the screen border, users frequently dragged the robots as if issuing a basic motion command. 
 Some users indicated that there would have to be an additional signal to the robots to keep moving on the patrol route, once it was assigned, but there was not an agreement as to what that command should be. 
@@ -143,7 +144,7 @@ Because 30.2\% of the selection gestures were taps, it was decided that selectio
 \subsection{Implicit Selection}
 
 The distinction between interpreting a line drawn over robots as a command for one robot to follow versus a command for multiple robots to follow may depend on the number of robots present.
-As seen in section \ref{section:Selection_Gestures} the use of selection gestures was low in the 1000 robot case, but and much higher in the 10 robot case, implying that with a large robot group, it might make sense to default to using all robots if none are selected. 
+As seen in Section \ref{section:Selection_Gestures} the use of selection gestures was low in the 1000 robot case, and much higher in the 10 robot case, implying that with a large robot group, it might make sense to default to using all robots if none are selected. 
 The interface could even change depending on the number of units being commanded, with small groups requiring that all robots be selected before a command can be applied to them, and larger groups defaulting to issuing the command to all robots if some subset has not already been selected. 
 However, care must be taken to avoid learning effects. 
 If the user has previously been exposed to a condition where the system defaults to selecting all robots, they may develop an expectation that other conditions behave the same, and neglect to select robots, resulting in incomplete commands (or commands being applied to no robots). 
@@ -153,11 +154,11 @@ As described above, issuing a command to a single robot may be done without sele
 
 \subsection{Gesture Complexity}
 
-The gestures used by the users could be divided between selection and position gestures, within which there was a great deal of agreement, and more complex actions, such as patrol, formations, picking up or moving objects, removing robots, and selection by color. 
+The gestures used by the particpants in the experiment could be divided between selection and position gestures, within which there was a great deal of agreement, and more complex actions, such as patrol, formations, picking up or moving objects, removing robots, and selection by color. 
 
 For selection, if the system accepts taps (of any form), lasso, and box select, 91.3\% of the user selection gestures are covered. For position, tapping (again, of any form) to set goals or way points and dragging paths will cover 89.2\% of user position gestures.
 
-Because the more complex tasks had higher variety of gestures that could be used to convey the user intent, as well as some users performing the more complex tasks by repeated selection and position gestures, attempting to handle this variety of gestures leads to two problems with the discoverability of the interface. 
+Because the more complex tasks had a higher variety of gestures that could be used to convey the user intent, as well as some users performing the more complex tasks by repeated selection and position gestures, attempting to handle this variety of gestures leads to two problems with the discoverability of the interface. 
 
 First, since each of the gestures was chosen by a smaller number of the users, some training must be performed to inform users who would not have chosen that gesture. 
 This training could be done with a ``cheat-sheet'' that users could pull up for reference, or an animated introductory tutorial sequence. 
@@ -174,7 +175,7 @@ Buttons do obscure some of the camera view that forms the main part of the user 
 The area the robots operate in is either bounded or unbounded.
 If it is bounded, it either fits on the screen or does not fit on the screen, and if it is unbounded, it does not fit on the screen.
 If the area the robots are in does not fit on the screen, the user likely views it by panning or zooming in and out, and so can pan or zoom so that the area covered by the buttons is not an area that they have to interact with to perform a task. 
-If the area the robots are displayed on and interacted with in does fit on the screen, it can be shrunk slightly, and the buttons can be placed so they don't cover the interaction area. 
+If the area the robots are displayed on and interacted with in does fit on the screen, it can be shrunk slightly, and the buttons can be placed so they do not cover the interaction area. 
 In either case, the design of the interface can accommodate a few buttons without seriously harming the user interaction, although the unchecked proliferation of buttons could lead to design difficulties. 
 
 \section{Termination of Commands}
@@ -187,12 +188,12 @@ If it is too long, it may never be triggered, and so all of the user's gestures 
 Second, the timeout is could be invisible. From the user's perspective, this causes the system to appear to begin acting at random, which is undesirable. 
 The timeout could be made visible, using a countdown timer, which may then make the user feel pressured to act. 
 
-In order to avoid having the system act prematurely, the system treats a doubletap on open space as an ``end of command" signifier.
+In order to avoid having the system act prematurely, the system treats a double tap on open space as an ``end of command" signifier, as in \cite{micire2010multi}.
 If the hardware used in the system were capable of detecting it, the user placing their hands in their lap or away from the screen could also be used as a signifier that the user has completed entry of their command. 
 Most users moved back from the screen slightly and removed their hands from the volume above it once they were finished issuing their command, and no users were observed to rest their hands on the screen while not issuing commands. 
 However, this behavior may have been a consequence of the particular arrangement of the screen and user seating, so further work would be required to determine if it is a sufficiently robust indication of command completion. 
 
-In addition to doubletaps, there are limited instances where it is safe for the system to assume that the user's command is complete. 
+In addition to double taps, there are limited instances where it is safe for the system to assume that the user's command is complete. 
 Because commands are generally of the form subject-verb-object, a new subject begins a new command. 
 The exception to this rule is tap selections, which some users used to select multiple robots by sequentially tapping on them. 
 Tap selections are accumulated until a gesture other than a tap selection is entered.
@@ -220,7 +221,7 @@ The Select Group and Remove Robots buttons are not commands to the robots.
 They are commands to the system. 
 Select Group selects robots by some common feature (in the user test, common group membership was depicted by color). 
 Remove Robot instructs the system to mark a robot or robots as not to be used, and so they are excluded from having commands issued to them. 
-The system is the implied subject of the sentences ``[System], Remove Robot, these robots'' and ``[System], Select Group, these robots''. 
+The system is the implied subject of the sentences ``[System], Remove Robot, these robots'' and ``[System], Select Group, these robots.''
 Implying the subject of a command to the system is acceptable in a way that implying robots as a subject is not, because there is one control system, and so the subject is not ambiguous. 
 The interface can be viewed as similar to a desktop computer, where it is generally assumed that commands invoked through that computer's UI are for that computer to do. 
 
@@ -229,7 +230,7 @@ The division between buttons and ``pure'' gesture commands was made because ther
 Additionally, some users implemented the more complex commands by sequences of basic motions. 
 This was especially apparent in formation commands with lower counts of robots, where some users issued individual movement commands to each robot, which ended at a location within the formation. 
 
-Positioning commands consist of a subject and a verb phrase gesture that reads as ``These robots, go here". 
+Positioning commands consist of a subject and a verb phrase gesture that reads as ``These robots, go here."
 However, there are a number of ways that these can be expressed. 
 The selection can be by any of the selection methods. 
 The position commands can be by tapping a location, or by dragging a path for the robots to follow. 
@@ -256,7 +257,7 @@ Determining whether a loop-like gesture or a box-like gesture is intended as a p
 If the resulting stack of gestures consists of some form of selection, a box or lasso selection, and then an end-of-command, then the box or lasso selection can be replaced by a path gesture, and the program becomes valid. 
 However, if the stack contains some form of selection, a box or lasso selection, and e.g. a path gesture, then the first selection is an erroneous program consisting only of selection, and can be dumped from the stack. 
 
-Similar heuristic rewriting of the stack could be extended to e.g. remove erroneous waypoints resulting from triple-tapping instead of double-tapping to end gestures, but adding these sorts of heuristics poses something of a threat. 
+Similar heuristic rewriting of the stack could be extended to remove erroneous waypoints resulting from triple-tapping instead of double-tapping to end gestures, but adding these sorts of heuristics poses something of a threat. 
 There exists some rewriting of the user input that will eventually result in an acceptable sequence of gestures, even if it is a complete replacement of all of the user input. 
 However, at some point, the meaning of the rewritten stack will deviate from what the user intended. 
 While using such a stack of commands will result in the generation of a program for the robots, it will not be a correct program, from the user's point of view. 
@@ -265,7 +266,7 @@ The determination of what level of alteration of the user input is acceptable is
 
 \section{Simultaneous Actions}
 
-Expecting a sentence-like form for commands does not take as much advantage as it possibly could of simultaneous actions. 
+Expecting a sentence-like form for commands does not take as much advantage as it of simultaneous actions possibly could. 
 The multitouch surface used in this work can track 20 points at once, and some surfaces can track even more. 
 As a result, the hardware will allow users to, for example, perform selections with both hands at the same time and then draw a path with each hand. 
 Sentences, on the other hand, are generally spoken serially, instead of in parallel, so the analogy to language does not provide a convenient heuristic for determining which subjects go with which verbs.
@@ -275,7 +276,7 @@ If the two goals were tapped one after the other, they could each be a goal for 
 If the two goals were tapped at the same time, perhaps they are each a goal for one group, but which group should go to which goal is unspecified.  
 While there are heuristics that could be used to guess user intention in these cases, such as always dispatching the closest selected group to a given goal, the system does not have the information to properly guess the user's intent.
 
-However, two-handed gestures accounted for only 5.037\% of the gestures used, if the motion of each hand is counted as a separate gesture. 
+However, two-handed gestures accounted for only 2.52\% of the gestures used.
 As a consequence, the loss of the ability to perform simultaneous gestures, in a single-user context, does not result in a large loss of functionality.
 In a multi-user context, it would be desirable to have users be able to perform interactions simultaneously, but such an extension would also require additional information to associate contact points on the multitouch surface with particular users. 
 

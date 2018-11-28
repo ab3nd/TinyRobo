@@ -3,7 +3,7 @@
 \thispagestyle{fancy}
 
 Multitouch gestural interfaces, like those found on tablets and smartphones, offer the possibility of a very direct user experience, especially compared to the Windows, Icons, Mouse, Pointer (WIMP) interface design. 
-Rather than, for example, using an arrow key to scroll in a document, the user can drag the document directly, as though they were sliding a long piece of paper on a table. 
+Rather than, for example, using an arrow key to scroll in a document, the user can drag the document directly, as though they were sliding a  piece of paper on a table. 
 
 This directness is a hallmark of what has come to be called Natural User Interfaces, or NUI. 
 A natural user interface is one that allows the user to re-use existing skills and natural motions to interact directly with content \citep{blakeNUIWin}. 
@@ -13,7 +13,7 @@ By way of contrast, the command line interface is defined in terms of typing wit
 However, as the number of operations the user wishes to perform increases, the limitations of multitouch screens become more apparent. 
 Screens are flat, and so only afford 2-dimensional gestures, such as dragging, poking, and tapping. 
 Even if the screen depicts a 2-dimensional projection of a 3-dimensional world, operations that would make sense in the 3D world, such as grasping, have to be mapped to the 2-dimensional space of operations to be performed. 
-Typically, the gestures that the user uses to perform the available operations are chosen by the interface developer, and the user is trained to perform them, possibly by a short tutorial program \citep{wobbrock2009user, vanacken2008ghosts, freeman2009shadowguides}. 
+Typically, the gestures used to perform the available operations are chosen by the interface developer, and the user is trained to perform them, possibly by a short tutorial program \citep{wobbrock2009user, vanacken2008ghosts, freeman2009shadowguides}. 
 
 Unfortunately, the use of screens with interactions inspired by the affordances of physical objects leads to the user having to decide between ``natural'' skills and motions, which are used on physical objects, and the skills and actions used with screens: single-point dragging and clicking. 
 Most users understand that they are looking at pictures of things on a screen, and so default to single-point interactions \citep{vanacken2008ghosts}.
@@ -24,7 +24,7 @@ What does it mean to use a photograph to hit a text file?
 
 The behavior of users interacting with an NUI device is not solely informed by their intuitions about the physical objects represented on the screen. 
 Smartphones, tablets, and other multitouch user interface devices, as well as specific types of computer programs, such as CAD and realtime strategy game programs, also inform the user's expectations about interactions with new interfaces. 
-Rather than claiming that the users are untrained, and the gestures are ``intuitive'', it would be more accurate to claim that the users already have a form of training, from the devices that they use in their daily lives. 
+Rather than claiming that the users are untrained, and the gestures are ``intuitive,'' it would be more accurate to claim that the users already have a form of training, from the devices that they use in their daily lives. 
 This work attempts to discover the gestures that users would choose themselves, based on their own thinking about the interface and their own past experience with computer technology such as tablets, smartphones, and video games. 
 
 User-defined gestures have advantages in memorability and user preference over gestures designed by the researcher or interface programmer \citep{nacenta2013memorability}. 
@@ -55,7 +55,7 @@ While the user interacted with the touch screen, their touches and the positions
 One video camera was placed high, looking down at the screen, to track where the user's hand position over the screen. 
 The other video camera was placed in front of the screen at a low angle, in order to observe whether the user's hands were touching the screen, or moving above it. 
 In addition to screen contacts and video, users were asked to think aloud about their actions.
-A microphone placed near the screen was used to record everything the user said. 
+A microphone placed near the screen was used to record everything that the user said. 
 
 \begin{figure}
 	\centering
@@ -66,7 +66,7 @@ A microphone placed near the screen was used to record everything the user said.
 
 The software used to record all of this information is ROS, the Robot Operating System \citep{ROS_announcement_paper}. 
 ROS was developed as a message-passing framework and hardware abstraction layer for robots. 
-Software using ROS is implemented as ``nodes'', which communicate by passing messages, generally in a publisher/subscriber pattern. 
+Software using ROS is implemented as ``nodes,'' which communicate by passing messages, generally in a publisher/subscriber pattern. 
 The format of the messages is formally defined, and the generation of the code for generating messages and handling routing of messages is provided by ROS. 
 
 It may seem unusual to use a framework intended for operating robots as a recording program for collecting experiment data, but ROS provides a utility called rosbag that records some or all of the messages emitted by ROS nodes in a ``bag'' file. 
@@ -88,7 +88,7 @@ Paper prototypes, obviously, do not change in response to the user performing an
 However, most users' experience with touch screens is that when they touch them, something visible happens nearly immediately. 
 A system that does not visibly react, as in this experiment, is usually assumed to be broken, or waiting for further input.
 
-For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al}. 
+For future work, it may be desirable to structure attempts to elicit user gestures as in Wobbrock \emph{et al.} \citep{wobbrock2009user}. 
 The experiment described in this section showed the initial situation, and asked the users how they would make a specific change. 
 Wobbrock \emph{et al.} showed the change occurring, and then asked the users what command they would issue to cause that result. 
 Showing the response before asking for the gesture removes the expectation that the system will react. 
@@ -97,7 +97,7 @@ Unfortunately, showing the response of the system may also act as a cue to the u
 For example, if the system shows a square formation being formed by multiple robots moving directly to the closest point on the square to their starting location, the paths shown are multiple direct motions. 
 If instead, the system shows the robots forming a chain that snakes around the perimeter of the square before coming to a stop, the path shown is forming the snake, and then traversing the perimeter. 
 The motion in the first case may suggest that the user make individual gestures to position each robot, while the gesture suggested in the second case might be more like dragging a lasso around the group and then a line from the group around the perimeter of the box. 
-Even simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
+Even for simple cases like moving to a target area, if the robots are shown moving along a path, it might discourage the user from using waypoints instead of dragging a path.
 
 
 \subsection{Experiment Conditions} \label{section:Experiment_Conditions}
@@ -106,32 +106,33 @@ Each user was assigned to one of five conditions, varying by how many robots wer
 The conditions consisted of 1-2 robots, 10 robots, 100 robots, 1000 robots, or an unknown number of robots.
 In the unknown number condition, the area the robots were present in was represented by a cloud. 
 For each condition, the user was requested to perform a sequence of tasks. 
-The exact number of tasks varied between conditions due to some tasks not making sense with the number of robots involved. 
+The exact number of tasks varied between conditions due to some tasks not making sense with the number of robots involved, as shown in Table \ref{tab:tasks_per_condition}. 
 
 \begin{figure}
-	\centering
-	\begin{subfigure}{0.4\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_10_Robot_0004.png}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\fbox{\includegraphics[width=0.4\textwidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_10_Robot_0004.png}}		
+		\fbox{\includegraphics[width=0.4\textwidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Single_Robot_0005.png}}
 	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Single_Robot_0005.png}
+	\vspace{2mm}
+	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\fbox{\includegraphics[width=0.4\textwidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_10_Robot_0005.png}}		
+		\fbox{\includegraphics[width=0.4\textwidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_100_Robot_0005.png}}	
 	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_10_Robot_0005.png}
-	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_100_Robot_0005.png}
-	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_1000_Robot_0005.png}
-	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0007.png}
+	\vspace{2mm}
+	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\fbox{\includegraphics[width=0.4\textwidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_1000_Robot_0005.png}}		
+		\fbox{\includegraphics[width=0.4\textwidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0007.png}}
 	\end{subfigure}
 	\caption{Instructional slide and situations for moving around the wall to area A, in each condition.}
 	\label{fig:move_around_wall}
 \end{figure}
 
+\begin{table}
 \begin{tabular}{l|l|l|l|l|l}
 	& 1 & 10 & 100 & 1000 & Unknown \\
 	Move to area A & x & x & x & x & x\\
@@ -153,6 +154,8 @@ The exact number of tasks varied between conditions due to some tasks not making
 	Patrol area A & x & x & x & x & x \\
 	Disperse over screen & x & x & x & x & x \\
 \end{tabular}
+\caption{User tasks per condition.}\label{tab:tasks_per_condition}
+\end{table}
 
 The individual robot case is lacking the tasks that do not make sense for a single robot. A single robot cannot, for example, divide around an obstacle or form a square. 
 The ``Merge groups" task was left out of the single robot case because of the potential for confusion when referring to a single robot as a group. 
@@ -164,6 +167,8 @@ Without UI elements that represent individual robots, the user cannot take any a
 
 \subsection{Participant Demographics} \label{section:Participant_Demographics}
 
+Participants were recruited through fliers distributed on campus and in the surrounding city. 
+The recruitment process and experiment were approved by the UMass Lowell institutional review board.
 The experiment had 50 participants, 10 in each condition. 28 of the participants were male, 22 were female. The average age of participants was 22.1 years, with a standard deviation of 3.16. 
 
 These demographics are representative of the location that the study was performed, the campus of an American college. 
@@ -184,9 +189,9 @@ These memos are eventually written up as a social scientific theory that is beli
 The inital pass used open coding, where the ``codes'' were essentially free-form text entry. 
 Rough counts of the open codes for the first 10 participants indicated that ten of the codes covered 81\% of the 580 total coded events. 
 The ten most heavily used codes are, in order of occurrence: drag, tap, voice command, box select, 2 finger drag, double-tap, lasso, tap and hold, 2 handed drag, reverse pinch, and parallel hands. 
-This pass of coding indicated that a majority of the user actions could be coded as some form of drag, some form of tap, box or lasso selection, pinch, and parallel hands. 
+This coding pass indicated that a majority of the user actions could be coded as some form of drag, some form of tap, box or lasso selection, pinch, and parallel hands. 
 
-The most common code was drag, which accounts for 37.58\% of the rough coding, or 42.07\% if all forms of drag in the top ten codes are considered. ``Drag'' is when the user places one finger down, moves it to another location, and raises it again. Two finger drag is the same, only with two fingers on the same hand placed on the screen rather than one. Two-handed drag is single-finger drag, but executed with both hands at the same time. 
+The most common code was ``drag'', which accounts for 37.58\% of the rough coding, or 42.07\% if all forms of drag in the top ten codes are considered. ``Drag'' is when the user places one finger down, moves it to another location, and raises it again. Two finger drag is the same, only with two fingers on the same hand placed on the screen rather than one. Two-handed drag is single-finger drag, but executed with both hands at the same time. 
 
 The second most common code was ``tap'', with 20.34\% of the rough coding, or 25.34\% if tap, double-tap, and tap and hold are all considered. Tap is when the user places a finger down and then very quickly raises it again. Double-tap is two taps in the same location in quick succession. Tap and hold is when the user places their finger on the screen and leaves it in one place for more than a second before raising it. 
 
@@ -216,24 +221,24 @@ The codes were then aligned chronologically, with pairs consisting of an item fr
 As a result, the alignment process created pairs of a valid code and the ``no data" code for the codes in the longer list that did not have a good chronological match in the shorter list.
 This was based on the assumption that the source of the error is one coder missing an event that did occur, rather than the other coder coding an event that did not occur. 
 
-The initial pass of coding got poor inter-coder reliability, with the first 10 participants having Cohen's $\kappa$ of 0.357, 0.266, 0.398, 0.387, 0.643, 0.428, 0.407, 0.56, 0.273, and 0.502. 
-Cohen's $\kappa$ of over 0.75 is excellent agreement, 0.4-0.75 is fair, and below 0.4 is poor, so the average $\kappa$ was barely above the cutoff for fair agreement. 
+The initial pass of coding got poor inter-coder reliability, with the first 10 participants having an average Cohen's $\kappa$ of 0.422. % 0.357, 0.266, 0.398, 0.387, 0.643, 0.428, 0.407, 0.56, 0.273, and 0.502. 
+Cohen's $\kappa$ of over 0.75 is excellent agreement, 0.4-0.75 is fair, and below 0.4 is poor, so the average $\kappa$ was barely above the cutoff for fair agreement \citep{Fleiss_stats_methods}. 
 
 Analysis of the data, particularly with confusion matrices, showed several problems. 
 The simplest was training error in the training of the coders.
 One coder had not been instructed that the ``UI'' code existed, and so had coded user interface widgets as ``tap'' events.   
-This was immediately apparent in the confusion matrix as a very high confusion between ui and tap events. 
+This was immediately apparent in the confusion matrix as a very high confusion between UI and tap events. 
 The other main source of confusion was lasso and box selection actions being coded as drag events, and vice versa.
 The actual action performed in a lasso is a drag, in that the user puts their finger down and drags it in a circle around something before lifting it again, but it is intended as a selection of the things inside the circle rather than e.g. drawing a circle shape. 
 
 In order to reduce these errors, and ensure consistency in training the coders, the descriptions for each code were written up in discussion with the coder, so that questions about interpretations could be answered in advance and recorded. 
 The codes were box selection, lasso selection, drag, tap, pinch, ui widgets, voice command, and other. 
-The coding definitions, as presented to the coders, are documented in appendix \ref{chapter:coding_defs}.
+The coding definitions, as presented to the coders, are documented in Appendix \ref{chapter:coding_defs}.
 Another coder was trained with the code description document, and coded the first 5 participants. 
 This coder obtained Cohen's $\kappa$ of 0.728, 0.927, 0.75, 0.827, and 0.738 with one of the original coders.
 These values indicate a very high level of agreement, so the remaining videos were coded by these two coders, using the description of the codes from the code description document.  
 
-The resulting data set has 3,256 individual gestures coded. 
+The resulting data set had 3,256 individual gestures coded. 
 For analysis, drags that were used to draw something on the screen were separated from non-drawing drags. 
 Taps were separated into single, double, and triple taps, plus tap and hold. 
 Pinch was separated into pinch (where the contact points move towards each other) and reverse pinch (where the contact points move apart).
@@ -243,21 +248,21 @@ All of these divisions were based on modification flags recorded by the coders d
 	\begin{tabular}{l r r}
 		Gesture & Count & Percent\\
 		\hline
-		drag & 1084 & 33.29 \\%24 \\
-		draw & 761 & 23.37 \\%22 \\
-		tap & 514 & 15.78 \\%62\\
-		other & 189 & 5.80 \\%47 \\
-		lasso & 184 & 5.65 \\%11 \\
-		box & 113 & 3.47 \\%05 \\
-		ui & 112 & 3.43 \\%98\\
-		double tap & 95 & 2.91 \\%77 \\
-		hold & 66 & 2.02 \\%70\\
-		reverse pinch & 49 & 1.50 \\%49 \\
-		voice & 44 & 1.35 \\%13\\
-		pinch & 26 & 0.79 \\%85 \\
-		triple tap & 19 & 0.58 \\%35\\
+		Drag & 1084 & 33.29 \\%24 \\
+		Draw & 761 & 23.37 \\%22 \\
+		Tap & 514 & 15.78 \\%62\\
+		Other & 189 & 5.80 \\%47 \\
+		Lasso & 184 & 5.65 \\%11 \\
+		Box Select & 113 & 3.47 \\%05 \\
+		UI & 112 & 3.43 \\%98\\
+		Double tap & 95 & 2.91 \\%77 \\
+		Hold & 66 & 2.02 \\%70\\
+		Reverse Pinch & 49 & 1.50 \\%49 \\
+		Voice & 44 & 1.35 \\%13\\
+		Pinch & 26 & 0.79 \\%85 \\
+		Triple Tap & 19 & 0.58 \\%35\\
 	\end{tabular}
-	\caption{Gestures used by experiment participants, by count and as a percentage of the total gestures used. This table includes examples, as defined in appendix \ref{chapter:coding_defs}.}
+	\caption{Gestures used by experiment participants, by count and as a percentage of the total gestures used. This table includes example gestures in the counts, as defined in appendix \ref{chapter:coding_defs}.}
 \end{table}
 
 \section{Selection Gestures} \label{section:Selection_Gestures}
@@ -276,11 +281,11 @@ Similarly to the count of group selections, tap events were counted where the ob
 	\begin{tabular}{l r r r r}
 		Condition & Box Select & Lasso & Tap & Total (condition)\\
 		\hline
-		unknown & 0 & 1 & 43 & 44 \\
-		one & 0 & 3 & 78 & 81\\
-		ten & 26 & 105 & 140 & 271\\
-		hundred & 68 & 53 & 35 & 156\\
-		thousand & 18 & 16 & 22 & 56\\
+		Unknown & 0 & 1 & 43 & 44 \\
+		One & 0 & 3 & 78 & 81\\
+		Ten & 26 & 105 & 140 & 271\\
+		Hundred & 68 & 53 & 35 & 156\\
+		Thousand & 18 & 16 & 22 & 56\\
 		\hline
 		TOTAL & 112 & 178 & 318 & 608\\
 	\end{tabular}
@@ -302,10 +307,10 @@ Across all the common tasks the proportions of each gesture were collected per g
 
 For uses of tap as selection across the common tasks, the unknown number condition differs from the hundred (F=7.6964, p=0.0061) and thousand (F=5.5772, p=0.0193) robot conditions. 
 The one robot condition differs from the ten (F=4.3299, p=0.0389), hundred (F=13.5889, p=0.0003), and thousand (F=10.4274, p=0.0015) robot conditions.
-These differences are summarized in table \ref{tab:tap_select_per_task_norm}.
+These differences are summarized in Table \ref{tab:tap_select_per_task_norm}.
 
 \begin{table}
-	\begin{tabular}{l|l l l l l}
+	\begin{tabular}{l|r r r r r}
 		& unknown & one    & ten        & hundred     & thousand   \\ 
 		\hline
 		unknown & & 0.5622 & 0.1772 & \textbf{0.0006} & \textbf{0.0193} \\   
@@ -323,10 +328,10 @@ The one robot condition differs from the ten (F=47.6359, p \textless 0.0001), hu
 The ten robot condition differs from the thousand robot condition (F=19.0110, p \textless 0.0001).
 The hundred robot condition differs from the thousand robot condition (F=30.2373, p \textless 0.0001).
 The identical F and p values for the one and unknown robot conditions and the various conditions that they differ from are because for the one and unknown robot conditions, no group selection gestures were used in the common tasks. 
-These differences are summarized in table \ref{tab:group_select_per_task_norm}.
+These differences are summarized in Table \ref{tab:group_select_per_task_norm}.
 
 \begin{table}
-	\begin{tabular}{l|l l l l l}
+	\begin{tabular}{l|r r r r r }
 		& unknown & one    & ten        & hundred     & thousand   \\ 
 		\hline
 		unknown & & * & \textbf{0.0000} & \textbf{0.0000} & \textbf{0.0016} \\   
@@ -340,7 +345,8 @@ These differences are summarized in table \ref{tab:group_select_per_task_norm}.
 \end{table}
 
 \begin{table}
-	\begin{tabular}{l | l l}
+	\centering
+	\begin{tabular}{l | r r }
 		& common tasks & all tasks\\
 		\hline
 		unknown & 0 & 1\\
@@ -354,6 +360,7 @@ These differences are summarized in table \ref{tab:group_select_per_task_norm}.
 \end{table}
 
 \begin{table}
+	\centering
 	\begin{tabular}{l | l l}
 		& common tasks & all tasks\\
 		\hline
@@ -371,12 +378,12 @@ Examining the non-normalized counts of taps as selections and group selections a
 
 It was surmised that users may have been performing multiple tap selections in a row to select robots in the ten robot case, but that a 10-robot tap selection would be condensed by the normalization into the same proportion of the overall gestures as a single-robot tap selection. 
 To check if users were performing multiple taps in a row as selections, the lengths of sequences of tap actions were checked across all cases. 
-As seen in table \ref{tab:tap_seq_len}, while the ten robot case does have a much higher count of sequences of taps, the mean is higher than the other cases, and the standard deviation much higher. 
+As seen in Table \ref{tab:tap_seq_len}, while the ten robot case does have a much higher count of sequences of taps, the mean is higher than the other cases, and the standard deviation is much higher. 
 On examining the data, there was exactly one case of a 10-tap sequence in the ten robot case.
 While it is possible that a user in the ten-robot case might perform a selection by tapping each of the ten robots, it is not a common occurrence. 
 
 \begin{table}
-	\begin{tabular}{l | l l l}
+	\begin{tabular}{l | r r r}
 		& Sequence Count & Mean Length & Standard Deviation \\ 
 		\hline
 		unknown & 28 & 1.0357 & 0.1856 \\
@@ -436,17 +443,16 @@ Generally, these were pinches and reverse pinches with one finger on each hand.
 The other group of multi-hand gestures consists of a simultaneous pair of different gestures, one performed with each hand. 
 For purposes of coding, dragging one object to one place with two fingers was coded as a single drag with two fingers, while dragging two objects to two different places was coded as two single-fingered drags at the same time. 
 
-There were 82 instances of two-handed gesturing. 
-If this total is treated as 164 gestures, one for each hand, two-handed interactions account for 5.037\% of the gestures used.
+There were 82 instances of two-handed gesturing, which makes up 2.519\% of the gestures used.
 Fifty percent of the users performed at least one two-handed gesture. 
-This is fewer than in some previous research, but more than might be expected if users were generalizing from single-point mouse interaction \citep{micire2010multi, epps2006study}
+This is fewer than in some previous research, but more than might be expected if users were generalizing from single-point mouse interaction \citep{micire2010multi, epps2006study}.
 Epps \emph{et al.} required users to use a single hand for over half of the gestures in their study, and they point out that their use of a Windows desktop as the working environment of the study may have influenced people towards a single-point interaction style. 
 
 
 
 \begin{table}
 	\centering
-	\begin{tabular}{l l}
+	\begin{tabular}{l r}
 		Gesture Pair & Count\\
 		\hline
 		drag and drag (different objects) & 26 \\
@@ -466,16 +472,16 @@ Epps \emph{et al.} required users to use a single hand for over half of the gest
 \end{table}
 
 Most of the two-handed gestures were simultaneous drags of two different objects. 
-Simultaneous drags and two handed pinches or reverse pinches account for 58.537\% of the two-handed gestures.  
+Simultaneous drags and two handed pinches or reverse pinches account for 58.5\% of the two-handed gestures.  
 
 Due to the prevalence of smartphone adoption, it is no longer simple to determine if smartphone use contributes to the use of pinch and reverse pinch gestures, because there are almost no smartphone non-users in the population of this study. 
-Out of 50 subjects, 46 (92\%) reported using an Android or Iphone smartphone daily. 
-Only one user did not report having used an Android or Iphone at least moderately, and stated that they did not own any touchscreen devices. 
+Out of 50 subjects, 46 (92\%) reported using an Android or iPhone smartphone daily. 
+Only one user did not report having used an Android or iPhone at least moderately, and stated that they did not own any touchscreen devices. 
 Despite not having any touchscreens, even this user made two-handed gestures. 
 
 \begin{table}
 	\centering
-	\begin{tabular}{l l}
+	\begin{tabular}{l r}
 		Task & 2-Handed Gesture Count\\
 		\hline
 		merge&14\\
@@ -534,7 +540,7 @@ This difference is statistically significant (F = 14.5905 p = 0.0001).
 Because of the differences in use of box selection, pinch gestures, and UI widget interactions, it appears that previous user interface experience not only biases users to expect specific types of interaction, but also to expect the absence of other types. 
 In the case of RTS gamers, they use an RTS-like interaction style, with box selection and UI widgets, but they also exclude interactions absent from RTS games, such as pinch. 
 If an interface were designed to query new users as to their previous UI experiences and customize the available interaction methods to anticipate the user's biases, it may be useful to disable some functionality, in addition to adding likely expected functions. 
-As a result, the user will not be confused or surprised by accidentally triggering interaction methods that they don't expect to exist.
+As a result, the user will not be confused or surprised by accidentally triggering interaction methods that they do not expect to exist.
 
 It is also likely that the top-down view and multi-unit control in this experiment is similar enough to the interfaces presented by RTS games that RTS users recognized the similarity and so treated it as an RTS game.
 This idea was confirmed by a few users, who referred to the interface as being ``like Starcraft". 
@@ -554,7 +560,8 @@ For the disperse task, 12 users made a gesture that was similar across multiple 
 Because a single robot cannot disperse, this task was only presented to users in the unknown, 10, 100, and 1000 robot cases, so 40 users saw this task. 
 Several users compared the multi-finger scatter to a gesture to show the desktop or all the windows on a Macintosh computer, and Apple's multitouch help indicates that spreading the thumb away from three fingers on the touchpad of a Macintosh laptop will have this effect \citep{AppleTouchpadHelp}. 
 
-Unfortunately, the possibility that a desktop OS might predispose users to a certain style of multitouch interaction was not considered, and so the post-test survey did not ask users what OS they were familiar with. Of the 12 scatter gesture users, 8 reported familiarity with other Apple iOS devices, but this should not be taken to imply that they were familiar with the Mac OS multitouch gestures. 
+Unfortunately, the possibility that a desktop OS might predispose users to a certain style of multitouch interaction was not considered, as desktops have only recently begun to integrate multitouch interaction.
+As a result, the post-test survey did not ask users what OS they were familiar with. Of the 12 scatter gesture users, 8 reported familiarity with other Apple iOS devices, but this should not be taken to imply that they were familiar with the Mac OS multitouch gestures. 
 
 \subsection{Use of Voice Commands}
 
@@ -585,7 +592,7 @@ Of 50 users, 13 used UI widgets.
 As discussed previously, the desire for UI widgets was higher among gamers, who likely had previous experience with them in games with a similar interface to the experiment tasks. 
 
 \begin{table}
-	\begin{tabular}{l l l}
+	\begin{tabular}{l r r}
 		Task & Interactions & UI users \\
 		\hline
 		Mark & 9 & 7\\
@@ -613,7 +620,7 @@ As discussed previously, the desire for UI widgets was higher among gamers, who 
 
 UI widgets were not used in all tasks. 
 However, the only tasks that did not have at least one user suggest a UI element are the ``move'' and ``move with a wall in the way'' tasks. 
-Table \ref{tab:widget_counts_task} is sorted by how many users expressed a desire to use UI widgets, as this may indicate which of the gestures seemed most difficult to do with a gesture and instead should be done via a conventional UI. 
+Table \ref{tab:widget_counts_task} is sorted by how many users expressed a desire to use UI widgets, as this may indicate which of the gestures seemed most difficult to do with a gesture and instead should be done via a more conventional UI. 
 
 
 \section{User Strategies}
@@ -634,7 +641,7 @@ If the square overlapped the robots, this gesture could also be interpreted as a
 As presented in the experiment, this overlap was extremely likely, as the robots in the square formation task were evenly distributed over the screen, and so there was very little space to draw a square in that would not include at least one robot. 
 In order to determine how these strategies they could be disambiguated from other gestures, the sequences of gestures used by each user were examined and grouped by the overall strategy employed. 
 
-For the square formation task, table \ref{tab:square_strategies} shows the counts of each strategy. 
+For the square formation task, Table \ref{tab:square_strategies} shows the counts of each strategy. 
 ``Draw Square'' refers to the user simply drawing a square shape on the screen. 
 ``Single Moves'' means that the user moved individual robots, usually with drag or select and drag gestures, until each robot was positioned on the border of a square region. 
 This strategy was used by 5 users in the 10-robot case and one user in the unknown case, who treated the corners of the cloud depiction of the swarm as individual points to be moved. 
@@ -652,7 +659,8 @@ The most common gesture used was to simply draw the square in the desired locati
 However, as mentioned previously, this strategy was ambiguous when the square overlapped the displayed location of the robots.
 
 \begin{table}
-	\begin{tabular}{l l}
+\centering
+	\begin{tabular}{l r}
 		Strategy & Count\\
 		\hline
 		Draw Square & 10\\
@@ -684,7 +692,8 @@ To ``Select \& Tap'', the user selected all of the robots and then tapped a seri
 While they did this, the user held one finger down at the beginning of the line, and indicated that they could just hold the finger down and draw the line, as with the ``Hold \& Draw'' strategy for the square formation task. 
 
 \begin{table}
-	\begin{tabular}{l l}
+	\centering
+	\begin{tabular}{l r}
 		Strategy & Count\\
 		\hline
 		Draw Line & 14\\
@@ -719,7 +728,8 @@ Users in the 10, 100, 1000 and unknown number of robots conditions saw both vers
 Because a single robot cannot be dispersed over the screen, users in the 1 robot case only saw the version where the robot started in the lower left area of the screen. 
 
 \begin{table}
-	\begin{tabular}{l l}
+	\centering
+	\begin{tabular}{l r}
 		Strategy & Count\\
 		\hline
 		Surround \& Move & 18\\
@@ -740,21 +750,24 @@ Because a single robot cannot be dispersed over the screen, users in the 1 robot
 ``Surround and Move'' refers to strategies where the user moved the robots to surround the crate and then move it to the target area. 
 ``Move Crate" means that the user did not command the robots at all, but performed gestures on the crate, such as dragging from its location to the target area, or tapping the crate and then the target area. 
 These gestures were the same as the gestures that the users would use when commanding robots, so these gestures could be read as more general motion commands, rather than being specific to robot control. 
+
 ``Drag Through'' strategies were gestures where the user selected robots and then dragged a path for them that passed through the crate towards the target area, so that the robots would encounter the crate on the way and push it along. 
 Interestingly, ``Drag Through'' strategies were more common in the task where the robots were not dispersed, but instead were in the lower left corner of the screen. 
 This seems to imply that when the robots are closely grouped, they are viewed as a single unit that can be dragged through the crate to push it. 
 However, of the seven ``Drag Through'' users, three were in the one robot condition, three were in the unknown condition, and one was in the thousand robot condition. 
 Because six of the seven users were in conditions where the robot or group are presented as a single visual object, either a single robot or a single cloud, the idea that the swarm is treated as a single unit because of being presented individually but in a small region does not seem very well supported. 
+
 ``UI \& Move'' strategies combine some elements of user interface widgets, such as ``pick up" or ``move object" buttons, combined with movement gestures such as drags to indicate what was to be picked up or where it was to be moved. 
 ``Surround and No Move'' describes strategies where the users used robot positioning commands to surround the crate, but did not issue commands to move from the crate to area A.
 It is possible that the users felt that surrounding the crate adequately conveyed to the system the desired action. 
 ``Voice'' strategies used verbal commands, while ``Voice \& Drag'' supplemented verbal commands with drags to indicate the desired path of the crate. 
 ``Select and Move'' means that the user selected the robots, then dragged the crate.
+
 ``Tap Targets'' tapped on the crate, then the robots, then the target area. 
 If user commands are understood to be a grammatical construction, with subjects being commanded to perform an action, e.g. ``These robots, go to this location", then this example is syntactically unusual for English, as it would be more like ``This object, be moved by these robots, to this location" instead of ``These robots, move this object to this location". 
 While examples like this would be possible to automatically ``rephrase'' under the assumption that the robots are the only element of the system that can act, and all other objects are acted upon, it would be difficult to extend such automated rephrasing to more complex environments. 
 Such rephrasing would also not be justified in the presence of only one counterexample, but may be relevant for cultures with different common orderings of subjects, verbs, and objects. 
-The user who used ``Write'' drew abbreviations naming the objects. The full command was ``C $\rightarrow$ A", indicating that the crate (C) should be moved to the target area (called ``Area A'' and labeled with an A).
+The user who used ``Write'' drew abbreviations naming the objects. The full command was ``C $\rightarrow$ A", indicating that the crate (which was unlabeled, but starts with ``C'') should be moved to the target area (called ``Area A'' and labeled with an A).
 
 The strategies used in manipulation did not generally result in the users creating novel gestures specifically for manipulation tasks. 
 Instead, they used the same sort of gestures that they had been using for the other tasks, in sequences to cause the system to perform the intended task. 
@@ -764,7 +777,8 @@ The user stated that if a path were drawn with one finger, it meant the robots s
 This use of an ``adverb'' in the grammatical structure meant that the user could form the robots into a scoop around the crate, and then have them move to area A while staying in the scoop formation that would drag the crate with them. 
 
 \begin{table}
-	\begin{tabular}{l l}
+	\centering
+	\begin{tabular}{l r}
 		Strategy & Count\\
 		\hline
 		Surround \& Move & 15\\
@@ -799,18 +813,14 @@ In the condition where the exact number of robots was unknown, and the swarm was
 Generally, the participant expectation was that the cloud represented tens of robots, but simply averaging the responses would not be useful, as one participant said that it ``could be millions''. 
 For those that did answer with a single number or range, the answers were 10-20, 10-``hundreds'', 12, 7, 10, 2-10, 10-12, 2-``millions', 5-10, 8, and 50. 
 If the endpoints of ranges are treated as answers, with ``hundreds'' and ``millions'' set to 500 and 5,000,000 respectively, the median answer is 10, but the mean and standard deviation are not illustrative of the user responses. 
-Rejecting ``hundreds'' and ``millions'' as outliers gives a mean of 11.86, with a standard deviation of 11.04, which adequately covers the common intuition that the swarm contains at least 2 members and many have tens, but not likely hundreds, of robots in it.
+Rejecting ``hundreds'' and ``millions'' as outliers gives a mean of 11.86, with a standard deviation of 11.04, which matches the common intuition that the swarm contains at least 2 members and many have tens, but not likely hundreds, of robots in it.
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.3\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0001.png}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0002.png}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\includegraphics[width=\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0003.png}
+	\begin{subfigure}{\textwidth}
+		\fbox{\includegraphics[width=0.3\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0001.png}}
+		\fbox{\includegraphics[width=0.3\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0002.png}}
+		\fbox{\includegraphics[width=0.3\linewidth]{../ui_experiment/slide_images/Swarm_Robot_Control_-_Unknown_Number_of_Robots_0003.png}}
 	\end{subfigure}
 	\caption{Instructional slides for the unknown number of robots condition, showing cloud representation of robot swarm.}
 	\label{instructional_slides}
@@ -819,7 +829,7 @@ Rejecting ``hundreds'' and ``millions'' as outliers gives a mean of 11.86, with 
 Participant comments may shed some light on the source of this intuition. 
 One participant indicated during the study that they interpreted the corners of the polygonal cloud as possible robot locations, and so drew an idea of the scale of the swarm from the number of corners. 
 The cloud has 11 corners, 7 convex and 4 concave, which is consistent with the estimated robot count. 
-Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in fig. \ref{instructional_slides}. 
+Another participant said their estimate was informed by the instructional slides preceding the test, which depicted a number of robots, the outline around them, and the resulting cloud, as shown in Figure~\ref{instructional_slides}. 
 These slides depicted 10 robots, and so may have biased participants to expect that the cloud had 10 robots in it. 
 However, multiple participants stated that the cloud represented an unknown number, or estimated more or less than 10 robots.
 
@@ -850,36 +860,39 @@ Users in the single robot case were shown the selection image with ten robots in
 In the unknown number of robots case, 7 participants indicated that all the robots were selected, 3 of the participants indicated that some robots were left out, and one participant indicated that whether the selection included all of the robots could depend on the task. 
 
 Because the 1 and 10 robot cases saw the same selection image, they are reported together. 
-12 participants indicated that robots that were inside the selection or touched by the selection line should be considered selected. 
-2 participants indicated that robots depicted with half or more of the robot inside the circle should be considered selected. 
+Twelve participants indicated that robots that were inside the selection or touched by the selection line should be considered selected. 
+Two participants indicated that robots depicted with half or more of the robot inside the circle should be considered selected. 
 One participant indicated that the robot half out of the circle should \emph{not} be selected. 
 One participant indicated that robots on the border should be included or not included in the selection, depending on the task. %\todo{Three answers are missing, find those and fix}
 One user indicated that only the first robot touched should be selected, which is consistent with control strategies that move each robot individually. 
 The remaining three responses were not recorded due to researcher error. 
 
 For the hundred robot case, 3 participants indicated that robots inside or touching the line were selected. 
-3 participants said that robots should be mostly inside the line to be counted, with one participant stating that robots should be 80\% or more inside the line to count. 
-2 participants indicated that robots should be more than halfway inside the line to be selected. 
+Three participants said that robots should be mostly inside the line to be counted, with one participant stating that robots should be 80\% or more inside the line to count. 
+Two participants indicated that robots should be more than halfway inside the line to be selected. 
 One participant stated that only robots completely inside the line should be counted. %\todo{One answer missing, find and fix}
 
 In the thousand robot case, 7 participants indicated that robots inside or touching the line should be selected. 
-2 participants indicated that robots must be completely inside the line to be selected. 
-1 participant indicated that robots mostly inside the line should be selected. 
+Two participants indicated that robots must be completely inside the line to be selected. 
+One participant indicated that robots mostly inside the line should be selected. 
 
 Overall, participants generally err on the side of inclusion, rather than exclusion of robots from selection.
 If a user interface is required to include or exclude ambiguous elements from a selection, it appears that including ambiguous elements will satisfy users. 
 User comments also suggested that ways to amend selections before further commanding the robots would be desirable.
 
-\begin{tabular}{ l l l l l}
+\begin{table}
+\begin{tabular}{ r r r r r}
 	Condition & Completely inside & Half or more in & Touching line & Other\\
 	\hline
-	10 & 0 & 2 & 12 & 3 \\
+	10 & 0 & 2 (10\%) & 12 (60\%) & 3 (15\%)\\
 	
-	100 & 1 & 5 & 3 & 0 \\
-	1000 & 2 & 1 & 7 & 0\\
+	100 & 1 (10\%) & 5 (50\%) & 3 (30\%) & 0 \\
+	1000 & 2 (20\%) & 1 (10\%) & 7 (70\%) & 0\\
 	\hline
 	Totals & 3 & 8 & 22 & 2 \\
 \end{tabular}
+\caption{User responses for whether robots on the edge of a selection should be included. The unknown case is omitted because the relationship of individual robots to the line is not visible in that case. }
+\end{table}
 
 It is interesting to note that two participants, one from the unknown number of robots case, and one from the 10 robot case, said that in cases of ambiguous selection, the system should add or remove robots from the selection based on the task. 
 As the system cannot predict the task it is about to be commanded to perform, it is likely best to err on the side of selecting too many robots, rather than too few. 
@@ -889,7 +902,7 @@ As the system cannot predict the task it is about to be commanded to perform, it
 During this experiment, there were some cases where the users expectations of what was possible in the interface indicated a sort of ``metaphor failure" in the user interface. 
 Natural User Interfaces, of which multitouch screens are an example, are supposed to be able to leverage users' understanding of the physical world, and how objects behave in it, to build affordances for objects on the screen. 
 For example, a volume knob can be displayed as an actual knob, and the screen can react appropriately to attempts to rotate the knob. 
-However, people know that the objects on the screen are not e.g. knobs, switches, and so on, but pictures of those things, drawn by the computer. 
+However, people know that the objects on the screen are not knobs, switches, and so on, but pictures of those things, drawn by the computer. 
 As a result, the affordances are mixed. 
 The knob may afford turning, but it also affords dragging around the screen or deletion, which a knob on a real radio does not afford. 
 
