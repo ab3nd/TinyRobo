@@ -37,13 +37,13 @@ The gesture sequence is then translated into a program that is parsed by the Lar
 Lark is an Earley parser, and so can parse all context-free grammars, although the current gesture language is not sufficiently complex to actually need this level of power. 
 The resulting parse tree is then walked to generate GCPR programs that implement the algorithms described in chapter \ref{chapter:Implementation_of_Swarm_Actions}.
 
-Basic movement to points is implemented using the variant of tangent bug. 
+Basic movement to points is implemented using the variant of TangentBug. 
 Path following and formation combines the basic movement to points with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
 As each point is either reached or determined to be unreachable, the goal is advanced to the next point.
 For motion along paths, the goals are set to points along the path, ending at the final goal. 
 Formation allows the robot to stop at reachable points on the formation, but not unreachable points.  
 
-Patrol also uses modified tangent bug, but instead of terminating when the program counter, and so the goal, reach the final position, the program counter and goal are reset to the start point of the patrol.  
+Patrol also uses modified TangentBug, but instead of terminating when the program counter, and so the goal, reach the final position, the program counter and goal are reset to the start point of the patrol.  
 As a consequence, the resulting program intentionally contains an infinite loop, but it can be interrupted by assigning a new program to the swarm. 
 
 Dispersion is implemented using a minimalistic range sensor. 
@@ -60,8 +60,8 @@ A randomly selected set of points from a uniform distribution may place two robo
 If dispersion in swarm robots continues to be a problem of interest, it is likely worth investigating the tradeoffs between speed of convergence, quality of dispersion, and user satisfaction with various methods. 
 
 Manipulation was implemented as a simple version of occlusion-directed transport. 
-If the robot is not near the target object, it attempts to move to the target object while avoiding obstacles, using the modified tangent bug algorithm. 
-When the tangent-bug algorithm detects that the goal is unreachable, because it is inside of the mobile object, the program switches to occlusion-based manipulation. 
+If the robot is not near the target object, it attempts to move to the target object while avoiding obstacles, using the modified TangentBug algorithm. 
+When the TangentBug algorithm detects that the goal is unreachable, because it is inside of the mobile object, the program switches to occlusion-based manipulation. 
 The robot wall-follows around the object until a line from the robot to the goal intersects the object, and then pushes in that direction. 
 While in this mode, the robot continually updates the direction of the goal, and switches between getting in position and pushing the object, as needed. 
 As with the original occlusion-based manipulation, this algorithm is ignorant of obstacles on the opposite side of the object from the robot, and so can get stuck. 

@@ -185,7 +185,7 @@ Unfortunately, most of the bug algorithms have the requirement that the obstacle
 Indeed, the presence of moving obstacles results in navigation becoming undecidable without knowledge of the future movement of the obstacles, as an obstacle can move to occupy the robot's goal. 
 Unless it is known whether the obstacle will move off the goal in the future, it cannot be determined whether the goal is unreachable, or just not currently reachable. 
 
-The Tangent-bug algorithm has been extended to handle moving obstacles, given a number of constraints \citep{kamon1998tangentbug, tomita2009sensor}.
+The TangentBug algorithm has been extended to handle moving obstacles, given a number of constraints \citep{kamon1998tangentbug, tomita2009sensor}.
 The main constraint that affects the use of this algorithm is that the obstacles are constrained to be moving at a velocity that is slower than that of the robot.
 This constraint is required because if the robot is circumnavigating the obstacle, and the obstacle is moving faster than the robot, then in the time that the robot requires to circumnavigate the perimeter of the obstacle, the obstacle will have moved a distance greater than its own perimeter is long, and the circumnavigating robot will have moved with it.
 As a consequence, the circumnavigating robot might not return to its own previous path and cross it, which is the condition that Tomita and Yamamoto use to determine that the robot should leave the obstacle. 
@@ -195,26 +195,26 @@ If one moves in a straight line, and the other attempts to circumnavigate it, th
 However, if the robots are using the same bug algorithm, this trap will not be sprung, because each robot will attempt to circumnavigate the other. 
 If they attempt to circumnavigate each other in opposite directions, they will spiral around each other, leading to at least one of the robots crossing its own previous path, and triggering the leave condition of the algorithm. 
 If they attempt to circumnavigate each other in the same direction, they will come to a position side-by-side, as neither can outpace the other, but neither will pull away from the other because they are attempting to follow each other's perimeters. 
-In this case, they are pointed towards the goal, because in the absence of an obstacle, Tomita and Yamamoto's modified Tangent-bug orients the robot towards the goal, and so before they encountered each other, the robots were oriented towards the goal.
+In this case, they are pointed towards the goal, because in the absence of an obstacle, Tomita and Yamamoto's modified TangentBug orients the robot towards the goal, and so before they encountered each other, the robots were oriented towards the goal.
 The robots will then approach the goal, and one will arrive, while the other circumnavigates the first until it detects that it cannot arrive at the goal. 
 
-Tomita and Yamamoto do not deal with the decidability of their modification of Tangent-bug because they constrain the goal point to be not within an obstacle, and so reachable by the robot. The original Tangent-bug will navigate the robot to the goal if it is reachable, or circumnavigate the obstacle, returning to its starting point, whereupon it detects that the point is unreachable \citep{kamon1998tangentbug}. Since Tomita and Yamamoto constrain the goal to not be within an obstacle, the original Tangent-bug will reach it. 
+Tomita and Yamamoto do not deal with the decidability of their modification of TangentBug because they constrain the goal point to be not within an obstacle, and so reachable by the robot. The original TangentBug will navigate the robot to the goal if it is reachable, or circumnavigate the obstacle, returning to its starting point, whereupon it detects that the point is unreachable \citep{kamon1998tangentbug}. Since Tomita and Yamamoto constrain the goal to not be within an obstacle, the original TangentBug will reach it. 
 
 In the case of moving obstacles, if the goal is covered by an obstacle, the obstacle is either moving or not moving. 
 If the obstacle is not moving, the arriving robot will circumnavigate the obstacle, return to the hit point, and stop, having detected that the goal cannot be reached.
-If the obstacle is moving, the modified Tangent-bug will not return to its original hit point, which is either left behind or covered by the obstacle, but will eventually cross itself, and leave the object towards the goal.
+If the obstacle is moving, the modified TangentBug will not return to its original hit point, which is either left behind or covered by the obstacle, but will eventually cross itself, and leave the object towards the goal.
 If the obstacle is still covering the goal, this process will repeat until the object is not covering the goal anymore, and the robot will reach the goal. 
 
 In the case of swarm robots, as described above, some mechanism may be needed to determine that the goal is occupied, possibly by other swarm members, and to stop at a location near the goal. 
-The stopping condition of the original Tangent-bug in the case where the goal is unreachable extends naturally to swarm robots. 
+The stopping condition of the original TangentBug in the case where the goal is unreachable extends naturally to swarm robots. 
 
 If a robot is the first to arrive at the goal, the goal is not occupied, so the robot occupies it and stops. 
 If a robot is not first to arrive at the goal, the goal is occupied by a robot, which is stopped. 
 The new arrival treats the stopped robot as an obstacle, circumnavigates it, returns to the original hit point and so detects that the goal is unreachable, and stops. 
 If multiple new arrivals get to the stopped robot(s) at the same time, the conditions above hold, and so they eventually either cross their own paths while trying to circumnavigate another robot that is also circumnavigating an obstacle, and so leave and return (and so become later arrivals), or complete a circumnavigation and return to their own starting point and stop (becoming part of the obstacle).
-Unfortunately, this method of handling late arrival will cause the robot cluster to grow in the direction most robots are arriving from. 
+Unfortunately, this method of handling late arrival will cause the robot cluster to grow in the direction from which most of the robots arrive. 
 
-If a maximally dense cluster of robots is desired, the unreachability check of Tangent-bug can be extended. 
+If a maximally dense cluster of robots is desired, the unreachability check of TangentBug can be extended. 
 Once the goal is determined to be unreachable, the robot performs another circumnavigation of the blocking obstacle to find the closest point to the goal, and returns to that point. 
 That point has either been occupied by another robot, in which case the robot repeats this step, or occupies that point if it is free. 
 Because every iteration of this step fills the point closest to the goal with a robot, the resulting cluster of robots is packed as close to the goal as possible. 
@@ -223,10 +223,10 @@ Because every iteration of this step fills the point closest to the goal with a 
  	\centering
  	\digraph[scale=0.6]{TangentBugMod}{
  		
- 		start -> obstacleToGoal;
+ 		Start -> obstacleToGoal;
  		obstacleToGoal -> aimToGoal [label="No"];
  		aimToGoal -> atGoal;
- 		atGoal -> stop [label="Yes"]; 
+ 		atGoal -> Stop [label="Yes"]; 
  		atGoal -> obstacleToGoal [label="No"];
  		obstacleToGoal -> recordHit  [label="Yes"];
  		recordHit -> followEdge;
@@ -234,13 +234,13 @@ Because every iteration of this step fills the point closest to the goal with a 
  		closerPoint -> leaveObstacle [label="Yes"];
  		leaveObstacle -> obstacleToGoal;
  		closerPoint -> pathCross [label="No"];
- 		pathCross -> returnToHit [label="No", color="blue"];
- 		returnToHit -> followEdge [label="No", color="blue"];
- 		returnToHit -> unreachable [label="Yes", color="blue"];
- 		unreachable -> lastPoint [color="blue"];
- 		lastPoint -> updateGoal  [label="No", color="blue"];
- 		lastPoint -> stop  [label="Yes", color="blue"];
- 		updateGoal -> obstacleToGoal [color="blue"];
+ 		pathCross -> returnToHit [label="No", color="green"];
+ 		returnToHit -> followEdge [label="No", color="green"];
+ 		returnToHit -> unreachable [label="Yes", color="green"];
+ 		unreachable -> lastPoint [color="green"];
+ 		lastPoint -> updateGoal  [label="No", color="green"];
+ 		lastPoint -> Stop  [label="Yes", color="green"];
+ 		updateGoal -> obstacleToGoal [color="green"];
  		pathCross -> obstacleToGoal3 [label="Yes"];		
 		obstacleToGoal3 -> followEdge2 [label="Yes"];		
 		obstacleToGoal3 -> aimToGoal[label="No"];		
@@ -251,17 +251,17 @@ Because every iteration of this step fills the point closest to the goal with a 
  		atGoal [label="At goal?"];
  		leaveObstacle[label="Leave obstacle"];
  		recordHit [label="Record hit point"];
- 		unreachable [label="Goal is unreachable", color="blue"];
- 		updateGoal [label="Next point is new goal", color="blue"];
- 		lastPoint [label="Is this the last point?", color="blue"];
+ 		unreachable [label="Goal is unreachable", color="green"];
+ 		updateGoal [label="Next point is new goal", color="green"];
+ 		lastPoint [label="Is this the last point?", color="green"];
  		followEdge [label="Follow obstacle edge"];
- 		returnToHit [label="Returned to hit point?", color="blue"];
+ 		returnToHit [label="Returned to hit point?", color="green"];
  		closerPoint [label="Closer to goal than hit point?"];
  		pathCross [label="Crossed own path?"];
  		obstacleToGoal3 [label="Obstacle in direction of goal?"];
  		followEdge2 [label="Follow obstacle edge"];
  	}
- 	\caption{The proposed modifications (in blue) to the Tomita and Yamamoto Tangent-bug algorithm for user path following in cases with multiple robots, some of which may be treated as moving obstacles. This flow chart does not include the option for maximally dense packing at the goal described in the text. }
+ 	\caption{The proposed modifications (in green) to the Tomita and Yamamoto TangentBug algorithm for user path following in cases with multiple robots, some of which may be treated as moving obstacles. This flow chart does not include the option for maximally dense packing at the goal described in the text. }
  \end{figure}
 
 \subsection{Path Following}
@@ -275,18 +275,18 @@ The reasons for this are twofold:
 
 A user path can be followed by a bug algorithm by breaking the user path into a series of points, and using a bug algorithm to navigate to each point in turn. 
 Because the bug algorithm is complete, it can either reach the target point, or determine in finite time that the point is not reachable. 
-Motion to the goal point is complete, as it is simply tangent-bug navigation to a point and tangent-bug navigation has been demonstrated to be complete under reasonable constraints. 
+Motion to the goal point is complete, as it is simply TangentBug navigation to a point and TangentBug navigation has been demonstrated to be complete under reasonable constraints. 
 Motion to the point prior to the goal point can either reach the prior point, or detect that it is unreachable. 
 In either case, the algorithm then transitions to attempting to reach the goal point, which has been demonstrated to be complete.
 Since motion to the point before the goal is guaranteed to transition to a complete approach to the goal, it does not alter the completeness of the algorithm. 
 The same logic holds for each point prior to the attempt to reach the goal point, and so the entire path following algorithm is complete.  
 
 However, the path followed by the robot may miss one or more of the user-defined points, and in fact may miss all of them, if, for example, the entire user path happens to be within a previously undiscovered obstacle.  
-The upper bound on the length of the path that tangent bug will produce is given by 
+The upper bound on the length of the path that TangentBug will produce is given by 
 \[P_{max} = ||S-G|| + \sum_{i}\mathsmaller{\prod_i} + \sum_{i}\mathsmaller{\prod_i} \times \#Minima_i \]
 where $||S-G||$ is the straight line distance from the start to the goal, $\prod_i$ is the perimeter of the $i^{th}$ object, over all objects $i$ in the disk with radius $||S-G||$ centered at the goal, and $\#Minima_i$ is the count of local minima in distance to the goal on the perimeter of the $i^{th}$ object. 
-In the case of iterated tangent bug, this bound is then summed over each goal point. 
-While the perimeters of the objects are constrained to be finite in order for tangent bug to converge, they may be very large, and so send the robot far from the user path. 
+In the case of iterated TangentBug, this bound is then summed over each goal point. 
+While the perimeters of the objects are constrained to be finite in order for TangentBug to converge, they may be very large, and so send the robot far from the user path. 
 Whether this deviation is acceptable or not depends on factors outside of the scope of \emph{a priori} algorithm development, such as the parameters of the mission that the user is sending the robots on, and so is not amenable to solution here. 
 
 \subsection{Formation}
@@ -309,13 +309,13 @@ As a result, each robot stops at the first unoccupied space on the path, or fail
 Alternatively, the robot could stop when it reaches the last point, or, on failure, backtrack to the last point that it could reach.% \todo{is it valuable to attempt to explore the entire formation before picking a spot?} 
 In either case, as with basic path following, the algorithm is complete. 
 
-Interestingly, the Bug2 algorithm from the original work on bug algorithms is a better choice for the basic bug algorithm used this style of formation than the modified tangent bug algorithm \citep{lumelsky1987path}. 
-While tangent bug does have a lower bound than Bug2 on the maximum path length, Bug2 uses a path called the m-line which is the line segment passing between the start point and the target point.
+Interestingly, the Bug2 algorithm from the original work on bug algorithms is a better choice for the basic bug algorithm used this style of formation than the modified TangentBug algorithm \citep{lumelsky1987path}. 
+While TangentBug does have a lower bound than Bug2 on the maximum path length, Bug2 uses a path called the m-line which is the line segment passing between the start point and the target point.
 For a polygonal formation expressed as a list of points, the m-lines between each subsequent set of points form the perimeter of the formation. 
 As a result, any point which is on an m-line and in free space, rather than within an obstacle, is a valid point for the robot to stop on and consider itself ``in formation''. 
 
 The use of bug algorithms as outlined here does not address the problem of dispersion along the edge of a formation. 
-A reasonable expectation of the behavior of a swarm commanded to form e.g. a square shaped formation is that the robots would be approximately evenly distributed along the perimeter of the square, at least where there were no obstacles to prevent it. 
+A reasonable expectation of the behavior of a swarm commanded to form, for example, a square shaped formation is that the robots would be approximately evenly distributed along the perimeter of the square, at least where there were no obstacles to prevent it. 
 Having the robots all located around one corner of the square or along one edge, while technically on the perimeter, would be less satisfactory. 
 There are a number of possible approaches to spacing along the formation perimeter that might be adopted, depending on the robots' sensing abilities.
 Since the basis of this work includes a central user interface which generates the robot programs and transmits them to the individual robots, one way to distribute the robots would be to base the decomposition of the formation perimeter into segments based on the number of robots available, and have each robot's final destination be a different point on the formation perimeter. 
@@ -342,22 +342,22 @@ In this case there needs to be some sort of criterion for how bad the deviations
 Since this criterion is most likely something related to the overall goals of the user, such as detecting the approach of some other actor to the patrol area, the failure of the criterion is unlikely to be detected by the individual robots. 
 Instead, the detection of failure to reach patrol points should be propagated back to the user in a way that allows the user to decide if the patrol path is still acceptable. 
 
-Adding dynamism to the environment raises a concern with the modifications of tangent bug required to allow it to operate in a dynamic environment. 
-In the modified tangent bug, a robot crossing its own path is caused by a dynamic obstacle, but in the case of a patrol, the robot constantly crosses its own path. 
-In order to detect the path crossings, the modified tangent bug of Tomita and Yamamoto keeps track of its own past locations, and detects the intersection of its current location and next position with each line segment between each of its own past locations. 
+Adding dynamism to the environment raises a concern with the modifications of TangentBug required to allow it to operate in a dynamic environment. 
+In the modified TangentBug, a robot crossing its own path is caused by a dynamic obstacle, but in the case of a patrol, the robot constantly crosses its own path. 
+In order to detect the path crossings, the modified TangentBug of Tomita and Yamamoto keeps track of its own past locations, and detects the intersection of its current location and next position with each line segment between each of its own past locations. 
 However, this problem is not as dire as might be expected. 
-Because the path following is considered an iterative application of the modified tangent bug, the buffer of previous path locations is cleared on beginning the next iteration, which is caused by either arriving at a goal or determining that the goal is unreachable. 
-This also greatly reduces the storage requirements for the path, as not all points along the path are required to be stored, and allows the user path to have loops, which motivated the use of modified tangent-bug to begin with. 
+Because the path following is considered an iterative application of the modified TangentBug, the buffer of previous path locations is cleared on beginning the next iteration, which is caused by either arriving at a goal or determining that the goal is unreachable. 
+This also greatly reduces the storage requirements for the path, as not all points along the path are required to be stored, and allows the user path to have loops, which initially motivated the use of modified TangentBug. 
 
 \subsection{Dispersion}
 
-Unlike formation, the primary concern is that the robots be evenly spread throughout the area, rather than within or along a specific perimeter. 
+Unlike formation, the primary concern of dispersion is that the robots be evenly spread throughout the area, rather than within or along a specific perimeter. 
 Dispersion can be treated as movement to points, but the selection of points can be handled in a number of ways. 
-If the robots can communicate and are localized, they can agree on a dispersion based on e.g. the space covered by the swarm and a desired density. 
-As with formation, each robot could be assigned a target point to disperse to.
+If the robots can communicate and are localized, they can agree on a dispersion based on the space covered by the swarm and a desired density. 
+As with formation, each robot could be assigned a target point to which it should move.
 However, in the presence of obstacles, attempts to approach the target points could be thwarted by inter-robot interference. 
-For example, if many of the dispersion points are within an obstacle, and one is in the only, narrow corridor into that obstacle, the arrival at the robot assigned to the corridor dispersion point will block all the others from arriving at their dispersion points. 
-Because of this problem, it is preferable to have each robot be able to determine whether the dispersion is at least locally complete, rather than rely on simple arrival at a point to regard itself as ``dispersed''.
+For example, if many of the dispersion points are within an obstacle, and one is in the only, narrow corridor into that obstacle, the arrival at its assigned point of a robot assigned to the point in the corridor will block all the others from arriving at their dispersion points. 
+Because of this problem, it is preferable to have each robot be able to determine whether the dispersion is at least locally complete, rather than rely on simple arrival at a point to regard itself as ``dispersed.''
 
 Unfortunately, this change renders dispersion more complex than formation. 
 While a single robot may have some way to detect that it is ``in formation'', such as being at a point within a polygon, it has no way to detect that it is dispersed, and indeed, it makes little sense to talk about a single robot being dispersed. 
@@ -365,9 +365,10 @@ While a single robot may have some way to detect that it is ``in formation'', su
 Dispersion is, instead, a state of the swarm as a whole, rather than the state of a single robot. 
 If the robots can sense each other, it becomes easier, because they can at least determine if they have neighbors, or possibly how far their neighbors are away, and so can examine local conditions of dispersion. If all robots can detect that in their local area, they are well-dispersed, and all robots act to be locally well-dispersed, then the swarm as a whole will tend towards being well dispersed. 
 For the purposes of further discussion, the definition of ``dispersion'' is that for some integer threshold $\alpha$ and some finite sensing radius $r$, there are no more than $\alpha$ other robots within $r$. 
+With $\alpha$ of zero, this is the same as the dispersion described as a basic behavior by Matarić \citep{mataric1994interaction}.
 This definition has some limitations, such as regarding a single robot ``swarm'' as permanently dispersed. 
 For the purposes of this argument, we will assume robots are points, but aside from some degenerate cases, the argument can be shown to generalize to robots with area. 
-Point robots raise the problem that if $\alpha$ is allowed to equal the number of other robots in the swarm, then all of the robots in the swarm are permitted to be arbitrarily close to each other within $r$, and so the criterion will consider a state with all robots occupying the same point to be ``dispersed''. 
+Point robots raise the problem that if $\alpha$ is allowed to equal the number of other robots in the swarm, then all of the robots in the swarm are permitted to be arbitrarily close to each other within $r$, and so the criterion will consider a state with all robots occupying the same point to be ``dispersed''.
 This is counter to the intuitive understanding of dispersal, and so $\alpha$ is constrained to be less than the number of robots in the swarm, other than the robot measuring $\alpha$. 
 %This runs into the paradox of the heap. 
 %How much lower than the number of robots in the swarm must $\alpha$ be for the robots to be considered dispersed. 
@@ -422,7 +423,7 @@ It would be good to determine if manipulation in this style, which is to say sim
 To be complete, a controller would have to, in finite time, either move an object to a goal, or determine that it is not possible to move the object to the goal. 
 In reality, it is possible that the object cannot be pushed at all, or that constraints on its dynamics render it impossible to push it to the desired location. 
 For example, it is possible for a human to push a car with its gearbox in neutral forward or backwards, but not sideways. 
-This human example is quite illustrative, as there are conditions where it is possible (car in neutral and human pushing on front or rear of car), and conditions where it is not possible (car in park or human pushing car sideways). 
+This human example is quite illustrative, as there are conditions where it is possible (car in neutral and human pushing on front or rear of car), and conditions where it is not possible (car in park, human pushing car sideways, car in neutral but against a curb). 
 Asserting that the task is not possible would require testing all gears and pushing locations, and failing in each of them. 
 As the complexity of the environment grows, the space of possible pushing arrangements increases, possibly in ways the robot cannot detect. 
 Additionally, some attempts may appear initially successful, but lead to failure states, such as pushing an object into a hole that it cannot be pushed back out of. 
@@ -430,7 +431,7 @@ Because of the potential explosion of problems with pushing, the environment mus
 
 For the purposes of this argument, it will be assumed that the object can be pushed in any direction, and that there are sufficient robots present to push it. 
 In unlimited free space, it is clearly possible to push such an object to the goal.
-The robot must be able to locate the object and goal in some way, but as discussed by Kube and Hong, the required sensor precepts may be fairly simple even for real robots. 
+The robot must be able to locate the object and goal in some way, but as discussed by Kube and Zhang, the required sensor precepts may be fairly simple even for real robots \cite{kube1996use}. 
 
 In bounded free space, there is the possibility that the object can be placed against the boundary of the space in such a way that no pushing force can remove it from the wall again. 
 For example, an oblique triangle with one face against a straight wall is pushed towards the wall by forces normal to its exposed faces. 
@@ -450,7 +451,7 @@ Further, being able to detect such a path requires being able to check assertion
 By adding various levels of communication, more complex sensing, and global planning to the capabilities of the robots, autonomous box pushing can be performed under different conditions. 
 A review of these techniques is beyond the scope of this section, but for recent results see \citep{tuci2018cooperative, rahimi2018comparison, alkilabi2017cooperative}. 
 Occlusion-based transportation, on the other hand, is effective with minimal sensing, and so at an advantage for simple and inexpensive robots.
-Rather than attempting to construct a local-sensing based complete path planner for e.g. caging manipulation, the system can take advantage of the user input as a suggestion of the best path along which to move the object. 
+Rather than attempting to construct a local-sensing based complete path planner, the system can take advantage of the user input as a suggestion of the best path along which to move the object. 
 Users frequently positioned robots near the object or used a dragging action of the box itself in the interface, so the path for the robots to follow is defined as the list of points that the user dragged over. 
 Each individual robot's program can be based on a bug-style algorithm, using local sensing information to determine what the robot should do. 
 However, since determining that the box can be pushed all the way to the goal or terminating with failure  would require non-local knowledge of the world, this algorithm is not complete.
@@ -461,7 +462,7 @@ Once the robot is at the box, it alternates between two behaviors, edge followin
 It starts with edge following, which has three exit conditions. 
 If a robot detects that the line from the robot to the goal has gone from not passing through the object to passing through the object, then the robot stops circling the object and begins pushing against it. 
 If a robot goes from the surface of the object to the surface of an obstacle and back while edge following, then the object has been pushed against an obstacle, and the robot stops because pushing has failed. 
-If a robot returns to the point it started circumnavigating the object from, then the robot detects that the object has stopped and is over the goal, so the robot stops because the pushing has succeeded. 
+If a robot returns to the point from which it started circumnavigating the object, then the robot detects that the object has stopped and is over the goal, so the robot stops because the pushing has succeeded. 
 
 So in the edge following case, there are three exit conditions, two of which end in termination of the program. 
 The third exit condition causes the robot to transition to pushing the object. 
@@ -484,7 +485,7 @@ If there is no point where the m-line transitions, then the stagnation was cause
 %Once the robot is at the box, the robot circumnavigates it while detecting whether the line between the robot's location and the goal (the m-line in the Bug2 algorithm) passes through the box. 
 %If there are no points where the m-line does not pass through the object, then the object is sitting on the goal and the robot should stop. 
 %However, as the robot may be attempting to circumnavigate an object that another robot is pushing, and so may not be able to detect that it has circumnavigated the object completely. 
-%In order to handle this situation, the robot resets its hit point whenever it crosses its own previous path, as detected by the method from the modified tangent bug described in section \ref{sec:completeness_of_nav}.
+%In order to handle this situation, the robot resets its hit point whenever it crosses its own previous path, as detected by the method from the modified TangentBug described in section \ref{sec:completeness_of_nav}.
 %
 %Each time the hit point is reset, there are 2 possibilities that could occur before the robot crosses its own path again. 
 %
@@ -574,25 +575,25 @@ If there is no point where the m-line transitions, then the stagnation was cause
 The majority of the user tests were done with a visual representation of robots that can localize, and so their locations, at least relative to each other and nearby objects, could be displayed to the user. 
 The cloud/unknown number of robots case, however, described robots which are not able to report a location that can be mapped into a useful display for the user. 
 Unfortunately, lack of localization implies the lack of a number of other mechanisms. 
-As discussed in section \ref{sec:localization}, local coordinate systems can be derived from range sensing, bearing sensing to other robots, and of course combinations of range and bearing sensing. 
+As discussed in Section \ref{sec:localization}, local coordinate systems can be derived from range sensing, bearing sensing to other robots, and of course combinations of range and bearing sensing. 
 As a result, robots that cannot arrive at a local coordinate system also cannot sense each other's range or bearing, or they could use that information to derive a local coordinate system. 
 While the robots could measure distance, using their own odometery, they cannot know the distance to anything that they haven't been to already, and cannot store locations such as hit points, which are used in bug algorithms. 
 
 Even if the localization is not absent, bad localization can eventually become a problem for correctness of bug algorithms. 
-If the localization is assumed to be noisy, then returning to e.g. the hit point while circumnavigating an obstacle becomes returning to within close enough to the hit point, according to the sensor (assuming gaussian or similar noise). 
-However, if the threshold is too wide, the robot may get close enough to the hit point to think that it has completed the circumnavigation, when it has really almost completed the circumnavigation, but missed a small door in the obstacle, which is not circular but actually an almost-closed ``C'' shape. 
+If the localization is assumed to be noisy, then returning to the hit point while circumnavigating an obstacle becomes returning to within close enough to the hit point, according to the sensor (assuming gaussian or similar noise). 
+However, if the threshold is too wide, the robot may get close enough to the hit point to think that it has completed the circumnavigation, when it has really almost completed the circumnavigation, but missed a small door in the obstacle, which is not circular but actually an almost-closed, ``C'' shape. 
 In this case, the robot will incorrectly determine that the goal is unreachable. 
 The robot could also fail to detect returns to the hit point, especially in the presence of biased noise or localization failures, and so would never leave the object. 
-Sensor noise is, in general, a problem for bug algorithms \cite{ng2007performance}.
+Sensor noise is, in general, a problem for bug algorithms \citep{ng2007performance}.
 
-Pheromone approaches and I-bug are tempting, as they use gradients of intensity rather than actual location to represent information about the location, but they present a conundrum to the assertion that the robots cannot localize \citep{taylor2009bug}. 
-If there exists an object in the world that the user can precisely control and know the position of, either a pheromone emitter or the transmitter tower for I-Bug, then why can the user not just use that to either do the task or bootstrap a coordinate system?
+Pheromone approaches are tempting, as they use gradients of intensity rather than actual location to represent information about the location, but they present a conundrum to the assertion that the robots cannot localize \citep{taylor2009bug}. 
+If there exists an object in the world that the user can precisely control and know the position of, such as a pheromone emitter, then why can the user not just use that to either do the task or bootstrap a coordinate system?
 Conversely, if the user cannot accurately place the transmitter or pheromone emitter, then how can they hope to use it to control the swarm? 
 
 However, there is a line of work in robotics that uses non-metric maps, such as sequences of landmarks, which consist of sensor precepts, possibly classified into groups, and motions or connections between them \citep{mataric1991navigating, franz1998learning}. 
 As the available technology has developed, the landmarks have moved from rings of sonar sensors to include representations derived from 360$^\circ$ photographs \citep{tapus2005incremental, goedeme2007omnidirectional}. 
-The integration of such a graph based representation with a user interface is a very interesting topic, and one that does not appear to be discussed in the literature until very recently \citep{landsiedel2018semantic}. 
-The extension of topological maps to include semantic information allows the robot to operate under directions that are very intuitive to humans, such as ``Take the first left after the Dunkin' Donuts", rather than ``Go 32.5 meters, stop, and turn -1.02 radians".
+The integration of such a graph-based representation with a user interface is a very interesting topic, and one that does not appear to be discussed in the literature until very recently \citep{landsiedel2018semantic}. 
+The extension of topological maps to include semantic information allows the robot to operate under directions that are very intuitive to humans, such as ``Take the first left after the Dunkin' Donuts," rather than ``Go 32.5 meters, stop, and turn -1.02 radians."
 The robot's view of the space could be presented to the user in a number of ways, such as a chronological list of places visited, and attendant images of them, or a flexible graph of the related images and the topological connections between them. 
 If the representation of landmarks is such that each robot will derive essentially the same representation at a given point, then such a graph extends naturally to multi-robot navigation. 
 Each robot builds its own map, but by sharing maps and finding overlapping landmarks, they may gain the ability to navigate to places that they have never been, but were visited by other robots. 
@@ -615,12 +616,12 @@ The topological map gives the robot the ability to recognize areas it has been b
 
 This sort of searching assumes that the interface can send a description of the desired target region. 
 For humans, this kind of navigation is quite common. 
-To return to the example from before, in the instruction ``Take the first left after the Dunkin' Donuts", there is no need for the person issuing the direction to offer an image of the specific Dunkin' Donuts that they mean. 
+To return to the example from before, in the instruction ``Take the first left after the Dunkin' Donuts," there is no need for the person issuing the direction to offer an image of the specific Dunkin' Donuts that they mean. 
 As long as both people have enough overlap in their idea of what a ``Dunkin' Donuts" is, the instruction is understandable. 
 
 \subsection{Path Following}
 
-While the user cannot see the exact path taken by the robots, as the map doesn't have a metric space for the points of the path to be defined in, the robot can still follow user-specified paths in the graph.
+While the user cannot see the exact path taken by the robots, as the map does not have a metric space for the points of the path to be defined in, the robot can still follow user-specified paths in the graph.
 The path could be represented by a sequence of desired sensor precepts and actions, similar to human directions like ``Go past Mark's office and turn right after Terry's office".
 As with moving to a point, motion along a path that goes outside of the map is problematic.
 Since unexplored regions do not have a known connectivity, such directions might be specified incorrectly. 

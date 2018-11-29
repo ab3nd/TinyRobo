@@ -802,25 +802,25 @@ They could also illuminate a single LED pointing to the next robot in a chain, a
 
 \subsection{Conclusion}
 
-Overall, the project to develop the TinyRobo swarm robot platform was something of a success. 
-The TinyRobo controller module can control small toys with up to two motors, and by combining it with a 3D printed base, the hardware can be made more reliable. 
-
-However, there are a number of questions left open.
-Because it was assumed that the AprilTag fiducial tracking would be sufficiently accurate, the tradeoffs between camera resolution, tag size, and tracking speed have not been fully explored. 
-ArUco tags were tested briefly during this project, and rejected as being insufficiently accurate, but they apparently work for the GRITSBots, so clearly there is some configuration that allows them to be used to track small robots. 
-Ultimately, it would be preferable to not use an overhead camera at all, but that approach was a good fit for the budget and goals of this project. 
-
-The flexibility of the 3D printed design also opens up possible extension to hardware with e.g. whegs or other unusual forms of mobility. 
-These directions have not been explored in any depth.
-Currently, the 3D printed TinyRobo base suffers from a problem also seen in E-Pucks: the edge of the robot can catch on small obstacles. 
-It is unlikely that any single design is best for all users, but development of various designs using the same control hardware could produce a library of designs with different features to suit different tasks. 
- 
 One goal of the personal project that this work developed from was to provide an inexpensive swarm platform that could be used by hobbyists and other non-traditional researchers to work with swarms. 
 In academic robotics, E-Pucks seem to be the platform of choice, but for home users, they are likely too expensive. 
 ROS's free and open source development model would enable the software to be shared easily, but there was perceived to be a need for a cheap swarm platform to work on. 
-The TinyRobo platform development is not yet at a point where it could be viewed as a finished product for hobbyists to purchase, but it is hoped that the lessons learned from its development will make the development of future cheap swarms easier and faster. 
+The TinyRobo platform development is not yet at a point where it could be offered as a finished product for hobbyists to purchase, but it is hoped that the lessons learned from its development will make the development of future cheap swarms easier and faster. 
+Even without solutions to some of the concerns raised in this chapter, the project to develop the TinyRobo swarm robot platform was something of a success. 
+The TinyRobo controller module can control small toys with up to two motors, and by combining it with a 3D printed base, the hardware can be made more reliable. 
+The total cost of the resulting platform is in line with that of other low-cost swarm robots, and the flexibility of the design allows it to be duplicated relatively easily.
 
-\todo{make this conclusion suck less}
+However, there are a number of questions left open.
+Because it was assumed that the AprilTag fiducial tracking would be sufficiently accurate, the tradeoffs between camera resolution, tag size, and tracking speed have not been fully explored. 
+ArUco tags were tested briefly during this project, and rejected as being insufficiently accurate, but they are in use on the GRITSBots, so clearly there is some configuration that allows them to be used to track small robots. 
+Quantifying the relationship between the parameters of fiducial systems, such as camera quality, tag size, and camera calibration, with the output quality of the fiducial systems would likely be a help to other researchers as well. 
+
+Currently, the 3D printed TinyRobo base suffers from a problem also seen in E-Pucks: the edge of the robot can catch on small obstacles. 
+There is still at least a little work that could be done to improve the shape of the 3D base. 
+The flexibility of the 3D printed design also opens up possible extension to hardware with e.g. whegs or other unusual forms of mobility. 
+These directions have not been explored in any depth.
+It is unlikely that any single design is best for all users, but development of various designs using the same control hardware could produce a library of designs with different features to suit different tasks. 
+
 
 %\section{Swarm Simulation} \label{section:Swarm_Simulation}
 %
