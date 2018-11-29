@@ -2,8 +2,9 @@
 \chapter{Implementation of Swarm Actions} \label{chapter:Implementation_of_Swarm_Actions}
 \thispagestyle{fancy}
 
+Finally, the commands specified by the user must be conveyed to the swarm. 
 It is important to include the path specified by the user in the path planning for members of the swarm. 
-By following the path laid out for it, the behavior of the swarm is made legible by the human user. 
+By following the path laid out for it, the behavior of the swarm is made legible to the human user. 
 Compliance with the requested path indicates to the user that the swarm is under their control, and allows them to assess the progress of the system towards the goal. 
 If, instead, the system uses some other form of path planning, it will initially appear to not be doing what the user requested, even if the end state does eventually become what the user intended. 
 What factors contribute to this legibility and how best to balance them with other operational constraints of the system is beyond the scope of this paper, but has been examined in the context of manipulation, navigation around people, and combined in mobile manipulation around people \citep{beetz2010generality, kruse2013human, dragan2015effects}.
@@ -36,10 +37,10 @@ A local coordinate system can be created by communicating agents with a limited,
 One agent acts as a seed, and sends messages to its neighbors.
 The neighbors propagate those messages, incrementing a hop counter in the message, and ignore messages with a higher hop count to stop the message from propagating backwards. 
 As a result, each agent knows that its distance from the seed is at most the communication radius times the minimum hop count it has received. 
-By using multiple seeds, each non-seed can calculate it's position based on trilateration to the seeds. 
+By using multiple seeds, each non-seed can calculate its position based on trilateration to the seeds. 
 Extending this method to use received signal strength as a proxy for distance, rather than the constant known sensing range, improves the accuracy of the approach.  
 The Kilobot swarm uses a range-only sensor along with communication to create a local coordinate system \citep{Rubenstein795}.
-A set of four stationary seed robots act as the origin of the coordinate system. As robots surround the four known robots, the new robot localizes from them and then begins broadcasting it's own position. 
+A set of four stationary seed robots act as the origin of the coordinate system. As robots surround the four known robots, the new robot localizes from them and then begins broadcasting its own position. 
 Each new robot that joins the group uses trilateration to localize itself based on the robots that it can communicate with.
 
 In addition to range-only approaches, bearing-only approaches to robot localization have been created, including an approach that uses the bearings to landmarks to create a vector field to drive the robot to a goal \citep{loizou2007biologically}. 
@@ -122,8 +123,8 @@ For a simple polygonal obstacle between the robot and the goal, this results in 
 However, if the goal is surrounded by a right-handed spiral-shaped obstacle such that any straight line from the goal intersects the obstacle, the goal becomes unreachable. 
 When a robot hits the spiral, it will wall follow in some direction.
 If it uses a right-handed wall follow, it will reach the outer lip of the spiral and depart the obstacle following the vector field. It will then hit the obstacle again, since the vector field across the mouth of the spiral points towards the goal in its center, and begin wall following again. 
-A left handed wall follow would reach the goal, but could be defeated by a left-handed spiral. 
-Changing to randomly-selected left-handed or right-haded wall following changes the shape of the obstacles that can trap the robot, but does not remove the possibility, so long as the leave condition is simply that the vector field point away from the obstacle. 
+A left-handed wall follow would reach the goal, but could be defeated by a left-handed spiral. 
+Changing to randomly-selected left-handed or right-handed wall following changes the shape of the obstacles that can trap the robot, but does not remove the possibility, so long as the leave condition is simply that the vector field point away from the obstacle. 
 
 \begin{figure}
 	\centering
@@ -137,7 +138,7 @@ Changing to randomly-selected left-handed or right-haded wall following changes 
 	\label{traps_for_wall_follow}
 \end{figure}
 
-Neither of the cases depicted in figure \ref{traps_for_wall_follow} has an unreachable goal, in that the goal is a member of the same set of points as the open space of the environment, but attempts at obstacle avoidance preclude the robot reaching it. 
+Neither of the cases depicted in Figure \ref{traps_for_wall_follow} has an unreachable goal, in that the goal is a member of the same set of points as the open space of the environment, but attempts at obstacle avoidance preclude the robot reaching it. 
 
 \section{Code Generation Refinement}
 
@@ -152,9 +153,9 @@ One potential solution to this problem with vector fields is to have multiple ve
 The counter is incremented on departure from a vector field grid cell, and then on return to that cell, the new value of the program counter is used in a guard, which results in the robot using the second value of the heading. 
 
 For example, the GCPR statements:\\
-(self.is\_in((1.745, 1.921), (1.245, 1.421)) and pc\_is(1), self.set\_desired\_heading(2.332), 0.9)\\
-(self.is\_in((1.745, 1.921), (1.245, 1.421)) and pc\_is(2), self.set\_desired\_heading(1.031), 0.9)\\
-will result in the robot using the heading 2.332 when it passes through the grid region if the program counter is 1, and 1.031 when it passes through the grid region with the program counter set to 2 (while, unfortunately, not defining a desired heading if the program counter is set to some other value).
+(self.is\_in((1.74, 1.92), (1.24, 1.42)) and pc\_is(1), self.set\_desired\_heading(2.33), 0.9)\\
+(self.is\_in((1.74, 1.92), (1.24, 1.42)) and pc\_is(2), self.set\_desired\_heading(1.03), 0.9)\\
+will result in the robot using the heading 2.33 when it passes through the grid region if the program counter is 1, and 1.03 when it passes through the grid region with the program counter set to 2 (while, unfortunately, not defining a desired heading if the program counter is set to some other value).
 
 Using a program counter to select possible headings for a discrete vector field grid cell has the drawback that the program counter must be incremented on leaving the cell, as incrementing it while remaining in the cell will cause a change of heading.
 As a result, the generated program must have guards on all cells surrounding the cell, which increment the program counter when triggered. 
