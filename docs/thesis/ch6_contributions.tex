@@ -67,10 +67,10 @@ Physical affordances like this were speculated to be more likely, given the dire
 Their absence could be viewed as highlighting the users' understanding of the screen as an image, and so not something that supports physically-afforded interactions. 
 
 In future, it would be interesting to repeat this work with a condition that does not display the robots in the user interface at all. 
-We expect that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
+It is expected that for conditions such as the ``move the crate'' tasks, the user would simply indicate the crate should move to area A, without concern for which robots perform the moving. 
 However, such an interface would not afford indicating particular robots or groups, so tasks such as dividing the robots around an obstacle may become impossible to perform. 
 
-\subsection{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
+\section{Compilation of User Gestures into Robot Programs} \label{section:Compilation_of_User_Gestures_into_Robot_Programs}
 
 This project shows a basic conversion from user gestures into a set of command programs to be distributed to the swarm robots.
 These command programs are intended to balance desirable formal properties of the programs, such as convergence within bounded time, use of local-only sensing, and completeness, with reflecting the user's intentions in the observable behavior of the swarm. 
@@ -88,7 +88,7 @@ Similarly, while the gestures used to indicate that an object should be moved to
 Because these elements are not present in the user input, any universal transformation that has them in its output would have to essentially make them up. 
 As a consequence, the translation was implemented in the way that programming languages are usually implemented, with a developer supplying the method that the robots would use to fulfill the user's commands. 
 
-There are a number of threads in current swarm robotic research that may eventually permit the engineering of swarm behavior from high level descriptions, many of which are discussed in section \ref{section:Swarm_Software_Development_Methods}. 
+There are a number of threads in current swarm robotic research that may eventually permit the engineering of swarm behavior from high level descriptions, many of which are discussed in Section \ref{section:Swarm_Software_Development_Methods}. 
 One that is not discussed in great depth there is the field of attempts to find mappings between relatively low-dimensioned swarm macrostates and potentially extremely high-dimensional state spaces representing each robot individually. 
 While some work has been done in controlling swarms with controllers operating on macro-level behavior, such as attractors, there is not yet an engineering discipline that would guide the creation of arbitrary swarm behaviors under real-world complexity \citep{brown2014human}. 
 As this area of swarm robotics develops, user interfaces will have to develop with it, in order to allow humans to operate these systems in a fluent manner. 

@@ -3,7 +3,7 @@
 \thispagestyle{fancy}
 
 Methods for command and control that are based on issuing individual orders to individual robots do not scale to large numbers of robots \citep{WangSearchScale}.
-By defining a mapping from user interface gestures to individual programs loaded on each robot, we can allow an individual to control arbitrarily large, heterogeneous groups of robots.
+By defining a mapping from user interface gestures to individual programs loaded on each robot, an individual can control arbitrarily large, heterogeneous groups of robots.
 % Previous work in HRI shows that multi-touch interfaces allow a scalable and direct mapping between the desires of the user and sequences of commands to the swarm \cite{micire2009multi}. 
 While swarm hardware is not yet at a point where very complex computation may be pushed directly to the swarm nodes themselves, that time is not far off. 
 Indeed, some systems already have moderately powerful computers, but at fairly high cost for each the individual robots \citep{millard2017pi}.
@@ -15,7 +15,7 @@ Each robot receives its own program, and the sum of the execution of the program
 The various approaches to the development of swarm robot control programs show that a wide variety of approaches can still result in robust controllers for swarm robots. 
 However, placing bounds on the sensing ability and communication ability of the robots has substantial effects on the programs that can be developed for them. 
 
-\section{Problem Statement} \label{section:Problem_Statement}
+\section{Thesis Statement} \label{section:Problem_Statement}
 
 One potential method to control a swarm of robots is having a central computer dictate to individual robots how the robots should move.
 However, centralized control is only as robust as the central controller and its connection to the robots. 
@@ -46,7 +46,24 @@ Without metric localization, some of the tasks posed in the user experiments are
 
 \section{Hypotheses} \label{section:Hypotheses}
 
-\subsection{H1: User gestures change based on the size of the swarm}
+\subsection{H1: A cheap indoor swarm can be built with commodity hardware}
+
+The Kilobots set a remarkably low price point for individual swarm robots, with the parts for each robot costing approximately \$15 \citep{rubenstein2014kilobot}. 
+However, the Kilobots move by stick-slip locomotion, and so require a smooth, level surface to operate on. 
+Children's toys, such as radio controlled (RC) toy cars, tanks, and legged ``insects'' are designed to operate on slightly more difficult terrain, and so could be used to extend swarm robotic experiments into natural indoor settings. 
+In order to enable the control of toy mobility platforms as swarm robots, a common controller with the ability to adapt to various toys is needed.   
+As computing hardware decreases in price and size, more and more ability can be built into smaller and smaller hardware. 
+The development and popularity of smartphones has driven the development of smaller sensors and lower power processors, as well as thinner and smaller battery technology. 
+As Internet of Things (IoT) technology becomes increasingly popular, it becomes easier and cheaper to add smaller and lower-power devices to communications networks. 
+The parts that go into these consumer technologies are also made less expensive by economies of scale. 
+Assuming a fixed set-up cost, the more finished devices are produced, the greater the amortization of the setup cost across the devices. 
+Since IoT is expected to deliver connectivity for tens or hundreds of devices per end user, the expected economics drive down the cost of network connectivity.
+As a consequence, by using components intended for IoT devices, cell phones, and similar consumer electronics, the cost of building small robots will also continue to drop.
+
+This hypothesis would be disproved by a swarm robot capable of operating in a naturalistic indoor setting requiring more than \$30 in parts. 
+
+
+\subsection{H2: User gestures change based on the size of the swarm}
 
 It is hypothesized that there exists a number of robots beyond which users will transition from treating robots as individuals to interacting with the robots in small groups or as a single large group. 
 As the user interacts with the multi-touch user interface, they will choose the gestures that they feel convey their intention to the system. 
@@ -63,19 +80,19 @@ The size of the swarm where changes in the user gestures occur will indicate the
 This hypothesis would be invalidated by the gestures selected by the user displaying no correlation with the size of the swarm that they are controlling. 
 
 
-\subsection{H2: Changes in display of the swarm can change user behavior}
+\subsection{H3: Changes in display of the swarm can change user behavior}
 
 It is hypothesized that a display that obscures individual robots and displays a cloud or swarm boundary will cause the user to treat the swarm as a whole rather than individuals, which will be apparent because the user will use the same gestures they would use to control a single robot. 
 
 Once the ratio of the size of individual swarm members to the size of the area the swarm is in becomes sufficiently large, displaying the swarm members at the same scale as the map will result in the representation of the swarm members being too small to interact with. 
 This problem will arise at smaller scales if the swarm robots are themselves quite tiny, and some of the available swarm robots are indeed small \citep{pelrine2012diamagnetically}.
 Scaling the representation of the robots up, relative to the map, will make the robot representations overlap unrealistically and obscure the map. 
-Instead, we propose that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
+Instead, it is proposed that for certain scales of swarms, it makes sense to represent the swarm as the area covered, rather than the locations of the individual robots.
 This approach has been used successfully for navigation of a swarm of uncrewed aerial vehicles (UAVs) in three dimensions, by developing a controller that causes the individual UAVs to remain within a bounding prism, and allowing the user to control the shape and location of that prism \citep{ayanian2014controlling}.
 
 This hypothesis would be invalidated by the gestures selected by the user in the single robot case being dissimilar from those selected in the case where the swarm is displayed as a cloud or covered region. 
 
-\subsection{H3: User gestures can be converted to programs}
+\subsection{H4: User gestures can be converted to programs}
 
 It is hypothesized that user commands on a multitouch display can be automatically converted into programs for each robot that will converge to the desired behavior. These programs will operate using only local sensing and local communications, and without resorting to global, absolute localization. 
 
@@ -88,18 +105,3 @@ It's also possible that at compile time, the task is still possible, but a later
 Assessing whether or not a user-specified action will be completed is not possible for all of the usual reasons that prevent prediction of the future, but in some limited cases, it may be possible to determine whether a specified action is impossible. The goal of this work is to provide a best-effort attempt to satisfy the user command, rather than prove anything about the possibility of doing so. 
 This hypothesis would be disproven by demonstration that a desired user action, as represented by control gestures on the user interface, could not be converted to a program that operates without global localization and that requires only local sensing and communication.
 
-\subsection{H4: A cheap indoor swarm can be built with commodity hardware}
-
-The Kilobots set a remarkably low price point for individual swarm robots, with the parts for each robot costing approximately \$15 \citep{rubenstein2014kilobot}. 
-However, the Kilobots move by stick-slip locomotion, and so require a smooth, level surface to operate on. 
-Children's toys, such as radio controlled (RC) toy cars, tanks, and legged ``insects'' are designed to operate on slightly more difficult terrain, and so could be used to extend swarm robotic experiments into natural indoor settings. 
-In order to enable the control of toy mobility platforms as swarm robots, a common controller with the ability to adapt to various toys is needed.   
-As computing hardware decreases in price and size, more and more ability can be built into smaller and smaller hardware. 
-The development and popularity of smartphones has driven the development of smaller sensors and lower power processors, as well as thinner and smaller battery technology. 
-As Internet of Things (IoT) technology becomes increasingly popular, it becomes easier and cheaper to add smaller and lower-power devices to communications networks. 
-The parts that go into these consumer technologies are also made less expensive by economies of scale. 
-Assuming a fixed set-up cost, the more finished devices are produced, the greater the amortization of the setup cost across the devices. 
-Since IoT is expected to deliver connectivity for tens or hundreds of devices per end user, the expected economics drive down the cost of network connectivity.
-As a consequence, by using components intended for IoT devices, cell phones, and similar consumer electronics, the cost of building small robots will also continue to drop.
-
-This hypothesis would be disproved by a swarm robot capable of operating in a naturalistic indoor setting requiring more than twice the cost of a Kilobot in parts. 

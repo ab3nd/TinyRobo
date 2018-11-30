@@ -64,7 +64,7 @@ While toys in the general case are expected to remain available, a particular li
 		Wifi & ESP-8266-03 & 4.32 & 2.25 & 1 & 4.32 & 2.25\\
 		\hline
 		\multicolumn{2}{l}{Total Cost for One Robot} &  &  &  & 23.38 & 11.9\\
-	\end{tabular}
+	\end{tabular}\label{tab:per_robot_parts_cost}
 	\caption{Prices in US Dollars for TinyRobo components.}
 \end{table}
 
@@ -189,43 +189,6 @@ Colias implements rangefinding by detecting the intensity of received IR light f
 \end{table}
 
 Adding a 6-direction range and bearing board to the TinyRobo system could be expected to cost in the neighborhood of \$12-22 USD, depending on the quantity of boards produced. 
-
-%Cooperative interaction of walking human and distributed robot maintaining stability of swarm 
-
-%Development of IR-based short-range communication techniques for swarm robot applications 
-
-%The Wanda Robot and Its Development System for Swarm Algorithms
-
-%Stability of swarm robot based on local forces of local swarms
-
-%Swarm robot pattern formation using a morphogenetic multi-cellular based self-organizing algorithm 
-
-%A particle-swarm-optimized fuzzy-neural network for voice-controlled robot systems 
-
-%The I-SWARM project 
-% %
-%\subsection{Current Consumption of Children's Toys} \label{section:Current_Consumption_of_Children_s_Toys}
-%Motor driver test required, a well as quantification of motor current draw for children's toys. 
-%Quantification of required power may indicate that larger motor driver power is needed.
-% %
-%Toys are effectively black boxes to the end user.
-%Motors in particular are a commodity item, manufactured in large quantities without particular demand for electrical efficiency. 
-%In the toys \improvement{Photos of motors and toys} used in this work, the most common motors are coreless brushed DC motors, although some of the larger toys also used brushed DC motors with cores. 
-%The presence or absence of a core in the motor is of little practical concern in toys or in swarm robotic applications, as they are driven identically. 
-% %
-%All of the motors were driven at 3.7VDC. 
-%This voltage was chosen because it is the output voltage of a fully-charged COTS lithium-polymer battery, which the platform uses for power. 
-%Current was recorded for each motor running without the robot being in contact with the ground, to assess the minimum current draw, and stalled, to determine the potential maximum draw. 
-%Current was measured using a multimeter, which does not have storage or recording capability, and so no attempt was made to determine peak surge current. 
-% %
-%Hexbug brand mini spider (two coreless brushed DC motors) Free run: 0.03A    Stall: 0.13A
-%Hexbug brand 6-legged insect (one coreless brushed DC motor) Free run: 0.06A    Stall: 0.25A
-%Miniature toy RC car, unknown model (one coreless brushed DC motor) Free run: 0.21A   Stall: 0.8A
-%Miniature toy RC insect, unknown model (two motors, unknown construction) Free run: 0.19A    Stall: 1.13A
-%Miniature toy RC car, differential steering (two motors, unknown construction) Free run: 0.37A    Stall: 0.8A
-%Miniature toy RC vehicle, differential steering (two motors, unknown construction) Free run: 0.06A    Stall: 0.74A
-%Toy helicopter (two motors, unknown construction, probably brushless) Free run: 0.07A   Stall: 1.12A
-%Toy quadcopter (four motors, unknown construction, probably brushless) Free run: 0.74A   Stall: 1.99A
 
 \subsection {Firmware}
 
@@ -576,6 +539,17 @@ The bug-like walker and the Ackerman-drive car both have different turning kinem
 It would have been preferable to have the test include turning, but control of the yaw rotation of a robot via feedback from the AprilTag system was found to be problematic. 
 As the number of pixels that an AprilTag takes up on a camera image decreases, the accuracy of the subpixel estimation used to localize the corners of the tag decreases. 
 Each estimation of the tag location from the ROS AprilTag detection node can then differ from previous estimations, and so even when the robot remains still, there is some noise in its detected position. 
+Because it was assumed early on that the AprilTag fiducial tracking would be sufficiently accurate, the tradeoffs between camera resolution, tag size, and tracking speed have not been fully explored. 
+In some configurations, AprilTags can have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
+More tags also leads to longer computation time, increasing the latency of the robot control loop. 
+Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
+The latency and accuracy problems with AprilTags could be mitigated in a number of ways. 
+First, the resolution of the camera can be increased while keeping the tags the same size and the camera the same distance away. Increasing the image size requires more computational power to process the larger image, in order to keep the tag detection framerate high enough to be useful for realtime control. 
+Decreasing the size of the image being checked for tags increases the speed of tag detection, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
+The update rate places an upper bound on the ability of the system to respond to the motion of the robots.
+The tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
+Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
+%As was observed in the robot drive tests, the bug and big wheel bases were already prone to tipping over. 
 
 The effect of the noise in subpixel position on the perceived rotation of the tags is larger than its effect on the perceived rotation of the tags, since rotation around the center of the tag does not change the position of its center at all. 
 As a consequence, the tags could be detected to be in lateral motion by comparing the displacement of the center of the tag and checking that it was greater than the expected noise, but detection of rotational motion and velocity calculation was sometimes swamped by noise. 
@@ -583,6 +557,14 @@ As a consequence, the tags could be detected to be in lateral motion by comparin
 The noise was also determined to be unevenly distributed over the robot arena. Because the arena is wide, a 140$^{\circ}$ wide-angle lens is used to ensure that the entire arena is visible. 
 ROS provides tools for removing the distortion inherent in the use of a wide-angle lens, but at the cost of decreased effective resolution at the edges of the image. 
 This decrease in resolution results in reduction of subpixel location accuracy, and so increased noise in localization of the tag at the edges of the arena closest to the edges of the camera image. 
+%
+%One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz \citep{PickemGrits2014}. 
+%This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
+%To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz, and for a web-based robot deployment environment, settled on ArUco tags\citep{pickem2017robotarium}. 
+%ArUco tags were tested briefly during this project, and rejected as being insufficiently accurate, but they are in use on the GRITSBots, so clearly there is some configuration that allows them to be used to track small robots. 
+%MROBerTO used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
+%Kilobot robots also include an RGB LED, which may be set to any color by the software of the Kilobot. 
+%These LEDs can also provide swarm feedback in a manner similar to the LEDs in McLurkin's Swarmish interface \citep{mclurkin2006speaking}.
 
 Because the desired figure-8 motion could not be performed with the rotational localization noise present in the system, the robots were instead commanded to move forward 0.25m, stop, and repeat that sequence of actions until the program was stopped. 
 The program was stopped if the robot was about to run into the wall of the arena, or had entered a state in which it could not move forward anymore. 
@@ -678,7 +660,8 @@ However, these mechanical problems could be more easily avoided by simply not us
 
 Because the toys were demonstrated to be unreliable as motion platforms, a new design for the motion platform was developed using a 3D printer. 
 For this version of the TinyRobos, the motor selected was a commercially available miniature gearmotor. 
-The gearmotor was selected because it was cheap, easily available from Amazon.com \footnote{https://www.amazon.com/Planetary-Reducer-Torque-Gearbox-55RPM-100RPM/dp/B01N4G8DSO/ or https://www.amazon.com/NW-Planetary-Reducer-Torque-Gearbox/dp/B07DCLL82G/}, and used the same voltage that the TinyRobo drive boards used. 
+The gearmotor was selected because it was cheap, easily available from Amazon.com, and used the same voltage that the TinyRobo drive boards used. 
+%\footnote{https://www.amazon.com/Planetary-Reducer-Torque-Gearbox-55RPM-100RPM/dp/B01N4G8DSO/ or https://www.amazon.com/NW-Planetary-Reducer-Torque-Gearbox/dp/B07DCLL82G/}
 The motors used were listed on Amazon as ``NW 3pcs 3V Micro Planetary Reducer Motor High Torque DC Motor DIY Robot Gearbox Motor". 
 Unfortunately, these particular motors are from an unknown supplier, and as such, may become unavailable. 
 However, a number of sellers are offering the same motors, or motors of similar size that could be used as replacements if the 3D print design were altered. 
@@ -702,6 +685,10 @@ The resulting prints are approximately 25g of material, and so contain \$0.50 wo
 	\label{fig:3dp_robos}
 \end{figure}
 
+On top of the 3D printed TinyRobo, posts can hold up an LED ring for color blob tracking, or any kind of trackable code. 
+The LED rings have 12 RGB LEDs, which can be lit to indicate the robot's heading to the camera, but can also convey information to the user. 
+For example, robots could illuminate LEDs based on the value of a sensor, resulting in a visible map over the swarm of the sensed quantity at the location of each robot. 
+They could also illuminate a single LED pointing to the next robot in a chain, and so indicate a path that the user could follow.
 
 Because the 3D printed robots all used the same motors, there was no need to have them use an adaptive velocity control for drive testing as in the drive test for the toys. 
 Instead, they could be commanded to move at a fixed velocity, and observed from the camera. 
@@ -732,95 +719,71 @@ However, a direct comparison cannot be easily made due to the changes that had t
 The use of a fixed velocity command for the forward motion is particularly problematic, as the gear ratio on the 3D printed robot motors is much higher than the gear ratio on most of the toys. 
 As a result, a command that moves the 3D printed robots at 3-4cm/sec will set the toy tank bases moving too quickly for the camera to track them. 
 The detection of robot motion also had problems due to the noise in the April tag detection and the low speed of the robots. 
-The missed stop commands in the runs of the 3D printed robots were caused by the movement of the robot between successive updates of the tag tracking being sufficiently small that it was less than the expected noise of the AprilTag tracking, and so was considered not movement. 
+The missed stop commands in the runs of the 3D printed robots were caused by the movement of the robot between successive updates of the tag tracking being sufficiently small that it was less than the expected noise of the AprilTag tracking, and so was considered noise and ignored. 
 As a result, the robot was never detected to be moving, and so was never commanded to stop. 
-Similarly, when the robot was moving, if its detected motion was sufficiently slow that it would fall be low the noise floor, the robot was detected as having stopped, and so would not be sent a command to stop, as the system regarded it as having already stopped. 
+Similarly, when the robot was moving, if its detected motion was sufficiently slow that it would fall below the noise floor, the robot was detected as having stopped, and so would not be sent a command to stop, as the system regarded it as having already stopped. 
 Given more accurate tracking, the 3D printed robots could be expected to have fewer false starts and erroneously-detected stops.  
 
-\subsection{Guidelines For Future Swarm Developers}
-The origin of the TinyRobo hardware platform was a hobbyist project, intended to combine the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
-While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
-
-The drivetrain of the system is of paramount importance. 
-Sensors and networking can be virtualized, as in TinyRobo and GRITSBots, but no amount of clever programming will compensate for balky motion. 
-The use of direct drive, as in GRITSBots or mROBerTO, is encouraged because the resulting drive train will be sealed against foreign matter. 
-Further, the use of stepper motors in GRITSBots provides some degree of precision in motion control by directing the motor in steps of known resolution, rather than commanding a particular speed. 
-If the system requires additional torque, sealed micro gearmotors can provide increased torque (although with reduction in speed), and will be more reliable than adapting a drivetrain from a toy. 
-
-The chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
-Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
-The use of custom mechanical assemblies (e.g. in Jasmine micro robots) adds complexity to the build process. 
-Where possible, small robots should be designed to use the PCB instead. 
-Using children's toys in TinyRobo was intended to avoid the use of custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain. 
-The use of hobby-level or toy-like platforms for swarms is not certain to be a dead-end, as the UB Swarm and the Spider-bots demonstrate, but the resulting robots will only be one of either inexpensive or reliable \citep{patil2016ub, price2014spider}. 
-
-Parts count for small robots should be minimized.
-TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
-Multi-use devices like the ESP-8266 are becoming cheaper and more competent quickly.
-The processor in mROBerTO is both a 32-bit ARM processor, a low-power Bluetooth transceiver, and an ANT Wireless tranceiver. 
-The VL6180X IC combines an ambient light sensor and a laser-based time-of-flight range sensor in a package measuring approximately 5x8x1mm. 
-Reducing parts count reduces cost and speeds assembly. 
-
-Swarm robots should have autonomous charging, and have each robot be able to monitor its own battery level. 
-Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
-In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
-For the GRITSBbots, an early version used  pins on the front of each robot to connect to a charging station, rather than requiring a human to connect it. 
-Later versions used Qi wireless charging \citep{pickem2017robotarium}.
-The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
-The alternative to this, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
-At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
-
-AprilTags have very solid position and orientation tracking, but are computationally intensive to detect and localize in typical webcam images. 
-More tags also leads to longer computation time, increasing the latency of the robot control loop. 
-Parallelizing the implementation of the AprilTag library could improve it significantly, but is out of scope for this work. 
-The latency and accuracy problems with AprilTags could be mitigated in a number of ways. 
-First, the resolution of the camera can be increased while keeping the tags the same size and the camera the same distance away. Increasing the image size requires more computational power to process the larger image, in order to keep the tag detection framerate high enough to be useful for realtime control. 
-Decreasing the size of the image being checked for tags increases the speed of tag detection, at the cost of requiring larger tags in order to have them legible in the lower-resolution image. 
-The update rate places an upper bound on the ability of the system to respond to the motion of the robots.
-The tag size could be increased, either by moving the tags closer to the camera and increasing their visual size, or by actually making the tags larger. 
-Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
-As was observed in the robot drive tests, the bug and big wheel bases were already prone to tipping over. 
-
-One version of the GRITSBots used AprilTags and a standard web cam, resulting in position updates at approximately 10Hz \citep{PickemGrits2014}. 
-This update rate is consistent with that observed by the author using the ROS implementation of AprilTags. 
-To decrease the latency of this sensing, the GRITSBots team considered moving to color blob tags, which can be detected by the onboard vision processor of a Pixy CMUCam5 at up to 50Hz, and for a web-based robot deployment environment, settled on ArUco tags\citep{pickem2017robotarium}. 
-MROBerTO used color tracking, with a single RGB LED on top of each robot to identify it, and a green LED on the front of each robot to indicate its orientation. 
-Kilobot robots also include an RGB LED, which may be set to any color by the software of the Kilobot. 
-These LEDs can also provide swarm feedback in a manner similar to the LEDs in McLurkin's Swarmish interface \citep{mclurkin2006speaking}.
-
-The final version of the TinyRobos incorporates many of these design improvements. 
-The robot chassis is a 3D printed assembly, moved by a sealed drivetrain that directly drives the wheels. 
-Changing the drivetrain eliminated many of the problems with unreliable motion. 
-This is not a perfect solution, as the TinyRobos now have a problem that the E-Pucks also have: they can become stuck on small obstacles. 
-E-Pucks and TinyRobos use the front edge of the robot as a skid, so if there is a small obstacle, the front edge of the robot can push against it rather than riding over it. 
-This problem arose during early testing of the swarm robots, when a piece of sawdust that had been adhered to the swarm arena surface by paint was able to stop E-Pucks or deflect their motion. 
-
-On top of the TinyRobo, posts can hold up an LED ring for color blob tracking, or any kind of trackable code. 
-The LED rings on the new swarm robots have 12 RGB LEDs, which can be lit to indicate the robot's heading to the camera, but can also convey information to the user. 
-For example, robots could illuminate LEDs based on the value of a sensor, resulting in a visible map over the swarm of the sensed quantity at the location of each robot. 
-They could also illuminate a single LED pointing to the next robot in a chain, and so indicate a path that the user could follow.
-
-\subsection{Conclusion}
-
-One goal of the personal project that this work developed from was to provide an inexpensive swarm platform that could be used by hobbyists and other non-traditional researchers to work with swarms. 
-In academic robotics, E-Pucks seem to be the platform of choice, but for home users, they are likely too expensive. 
-ROS's free and open source development model would enable the software to be shared easily, but there was perceived to be a need for a cheap swarm platform to work on. 
-The TinyRobo platform development is not yet at a point where it could be offered as a finished product for hobbyists to purchase, but it is hoped that the lessons learned from its development will make the development of future cheap swarms easier and faster. 
-Even without solutions to some of the concerns raised in this chapter, the project to develop the TinyRobo swarm robot platform was something of a success. 
-The TinyRobo controller module can control small toys with up to two motors, and by combining it with a 3D printed base, the hardware can be made more reliable. 
-The total cost of the resulting platform is in line with that of other low-cost swarm robots, and the flexibility of the design allows it to be duplicated relatively easily.
-
-However, there are a number of questions left open.
-Because it was assumed that the AprilTag fiducial tracking would be sufficiently accurate, the tradeoffs between camera resolution, tag size, and tracking speed have not been fully explored. 
-ArUco tags were tested briefly during this project, and rejected as being insufficiently accurate, but they are in use on the GRITSBots, so clearly there is some configuration that allows them to be used to track small robots. 
-Quantifying the relationship between the parameters of fiducial systems, such as camera quality, tag size, and camera calibration, with the output quality of the fiducial systems would likely be a help to other researchers as well. 
-
-Currently, the 3D printed TinyRobo base suffers from a problem also seen in E-Pucks: the edge of the robot can catch on small obstacles. 
-There is still at least a little work that could be done to improve the shape of the 3D base. 
+Currently, the 3D printed TinyRobo base suffers from a problem also seen in E-Pucks: the edge of the robot can catch on small obstacles, and so there is still at least a little work that could be done to improve the shape of the 3D base. 
 The flexibility of the 3D printed design also opens up possible extension to hardware with e.g. whegs or other unusual forms of mobility. 
 These directions have not been explored in any depth.
 It is unlikely that any single design is best for all users, but development of various designs using the same control hardware could produce a library of designs with different features to suit different tasks. 
 
+
+\section{Conclusion and Discussion}
+
+One goal of the personal project that this work developed from was to provide an inexpensive swarm platform that could be used by hobbyists and other non-traditional researchers to work with swarms. 
+The required reduction in price was intended to be accomplished by combining the diminishing cost and increasing power of Internet of Things (IoT) networking modules with the ready availability of toys to create a system that lowers the barrier to development of multi-robot systems.
+
+The use of toys as a source of drivetrains for swarm robots proved to be unsatisfactory due to the lack of reliable motion provided by inexpensive toys.
+Sensors and networking can be virtualized, as in TinyRobo and GRITSBots, but no amount of clever programming will compensate for balky motion. 
+The use of direct drive, as in GRITSBots or mROBerTO, provides a more reliable method of locomotion, because the resulting drive train will be sealed against foreign matter. 
+Further, the use of stepper motors in GRITSBots provides some degree of precision in motion control by directing the motor in steps of known resolution, rather than commanding a particular speed. 
+If the system requires additional torque, sealed micro gearmotors can provide increased torque (although with reduction in speed), and will be more reliable than adapting a drivetrain from a toy. 
+ 
+Adapting drivetrains from toys also adds the expense of purchasing the toy to the total robot cost.  
+This cost is frequently unnecessary, as the chassis of the robot can be constructed from the same printed circuit board (PCB) that the electronics are supported on. 
+Over the scales of forces present in tabletop swarms, PCB can be considered completely rigid, and electronics solder provides sufficient mechanical strength for motor mounts. 
+The use of custom mechanical assemblies (e.g. in Jasmine micro robots) adds complexity to the build process. 
+Where possible, small robots should be designed to use the PCB instead. 
+Using children's toys in TinyRobo was intended to avoid the use of custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain. 
+The use of hobby-level or toy-like platforms for swarms is not certain to be a dead-end, as the UB Swarm and the Spider-bots demonstrate, but the cost of sufficiently high-quality toys to produce a sufficiently reliable swarm will drive the overall cost up \citep{patil2016ub, price2014spider}. 
+ 
+Ultimately, the resulting swarm hardware platform does demonstrate that Hypothesis 1, that commodity hardware can enable the construction of a cheap indoor swarm, is correct. 
+As seen in Table \ref{tab:per_robot_parts_cost}
+ 
+%Even without solutions to some of the concerns raised in this chapter, the project to develop the TinyRobo swarm robot platform was something of a success. 
+%The TinyRobo controller module can control small toys with up to two motors, and by combining it with a 3D printed base, the hardware can be made more reliable. 
+%The total cost of the resulting platform is in line with that of other low-cost swarm robots, and the flexibility of the design allows it to be duplicated relatively easily.
+%
+%While it did not fully achieve this goal, there are a number of lessons that will be relevant to future developers of multi-robot research platforms. 
+%
+
+
+%Parts count for small robots should be minimized.
+%TinyRobo was developed around the ESP-8266 WiFi module because the module includes both a powerful microprocessor and wireless communication. 
+%Multi-use devices like the ESP-8266 are becoming cheaper and more competent quickly.
+%The processor in mROBerTO is both a 32-bit ARM processor, a low-power Bluetooth transceiver, and an ANT Wireless tranceiver. 
+%The VL6180X IC combines an ambient light sensor and a laser-based time-of-flight range sensor in a package measuring approximately 5x8x1mm. 
+%Reducing parts count reduces cost and speeds assembly. 
+
+%Swarm robots should have autonomous charging, and have each robot be able to monitor its own battery level. 
+%Any operation that requires user intervention with each individual robot will not scale well as the swarm size increases. 
+%In the case of the Kilobots, the swarm as a whole can be charged in parallel, rather than requiring the individual robots to be connected with a charger. 
+%For the GRITSBbots, an early version used  pins on the front of each robot to connect to a charging station, rather than requiring a human to connect it. 
+%Later versions used Qi wireless charging \citep{pickem2017robotarium}.
+%The TinyRobo platform could be trivially altered to provide GRITSBots-style self-charging, but does not at present have a method to detect a low battery condition, aside from monitoring the motor drivers for an undervoltage signal. 
+%The alternative to this, leaving out self-charging and battery monitoring, results in increased effort by humans to keep the batteries charged and failures due to discharged batteries that are not immediately obvious to the control software. 
+%At a more general level, hardware health monitoring is required for systems that intend to detect their own failed components and work around them, which increases robustness in a swarm system. 
+
+
+
+%The final version of the TinyRobos incorporates many of these design improvements. 
+%The robot chassis is a 3D printed assembly, moved by a sealed drivetrain that directly drives the wheels. 
+%Changing the drivetrain eliminated many of the problems with unreliable motion. 
+%This is not a perfect solution, as the TinyRobos now have a problem that the E-Pucks also have: they can become stuck on small obstacles. 
+%E-Pucks and TinyRobos use the front edge of the robot as a skid, so if there is a small obstacle, the front edge of the robot can push against it rather than riding over it. 
+%This problem arose during early testing of the swarm robots, when a piece of sawdust that had been adhered to the swarm arena surface by paint was able to stop E-Pucks or deflect their motion. 
 
 %\section{Swarm Simulation} \label{section:Swarm_Simulation}
 %

@@ -623,20 +623,20 @@ As long as both people have enough overlap in their idea of what a ``Dunkin' Don
 \subsection{Path Following}
 
 While the user cannot see the exact path taken by the robots, as the map does not have a metric space for the points of the path to be defined in, the robot can still follow user-specified paths in the graph.
-The path could be represented by a sequence of desired sensor precepts and actions, similar to human directions like ``Go past Mark's office and turn right after Terry's office".
+The path could be represented by a sequence of desired sensor precepts and actions, similar to human directions like ``Go past Mark's office and turn right after Terry's office."
 As with moving to a point, motion along a path that goes outside of the map is problematic.
 Since unexplored regions do not have a known connectivity, such directions might be specified incorrectly. 
-To return to the previous example, Terry's office might not be past Mark's office, relative to the position of the robot, and so a route that passes from the robot's location, to Mark's office, and then to Terry's office may not exist.  
+To return to the previous example, Terry's office might not be past Mark's office, relative to the position of the robot, and so a route that passes from the robot's location, to Mark's office, and then to Terry's office does not exist.  
 In the case of a metric map with possible obstacles, some subgoals might be able to be dropped so that the system can move on towards a known final goal. 
 The metric quality of the map allows attempts to move from arbitrary locations to others, by including information such as direction and distance, but in a sequence of desired sensor precepts, if one precept is not detected, such as ``Terry's office", there is no clear method to recover. 
 
 \subsection{Formation and Patrol}
 
-As with path following, in a non-metric map, the idea of forming e.g. a square becomes somewhat ill-defined. 
+As with path following, in a non-metric map, the idea of forming a specific shape, such as a square, becomes somewhat ill-defined. 
 After all, angles and distances are defined in a metric space, and so while the robots might be in a square, the map might not display them that way, and they might not be aware of it themselves. 
 However, certain formations that could be defined over a non-metric map may still have some utility. 
 For example, formations topologically equivalent to circles could be formed by occupying cycles on the map, and so regions of the map could be segregated from others by an enclosing ring. 
-By looping over such a cycle, the robots could be said to be patrolling the perimeter of a region, in the sense that all nodes adjacent to the patrol area would be regularly visited by a patrolling robot. Similarly, if a ``front'' has to be guarded, the robots could be commanded to positions such that they divide the graph, and indeed, choke points could be detected for optimizing guarding of regions.
+By looping over such a cycle, the robots could be said to be patrolling the perimeter of a region, in the sense that all nodes adjacent to the patrol area would be regularly visited by a patrolling robot. Similarly, if a ``front'' has to be guarded, the robots could be commanded to positions such that they divide the graph, and indeed, choke points could be detected to optimize the guarding of regions.
 
 \subsection{Dispersion}
 

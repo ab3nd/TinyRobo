@@ -3,7 +3,7 @@
 \thispagestyle{fancy}
 
 At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
-While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using e.g. PRISM \citep{KNP11}.
+While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using a model checker such as PRISM \citep{KNP11}.
 
 However, the user gesture language as defined by this work is actually quite vague, when it comes to allowing a robot to perform the expected actions. 
 Users were told to assume that the system was capable of understanding their orders, so they merely had to indicate what they wanted the system to do, and it would then do it. 
@@ -35,7 +35,7 @@ It is also somewhat risky, as the resulting system may not have the flexibility 
 User gestures arriving at the translation layer are stored in a stack until an end-of-command gesture arrives. 
 The gesture sequence is then translated into a program that is parsed by the Lark parser library. 
 Lark is an Earley parser, and so can parse all context-free grammars, although the current gesture language is not sufficiently complex to actually need this level of power. 
-The resulting parse tree is then walked to generate GCPR programs that implement the algorithms described in chapter \ref{chapter:Implementation_of_Swarm_Actions}.
+The resulting parse tree is then walked to generate GCPR programs that implement the algorithms described in Chapter \ref{chapter:Implementation_of_Swarm_Actions}.
 
 Basic movement to points is implemented using the variant of TangentBug. 
 Path following and formation combines the basic movement to points with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
