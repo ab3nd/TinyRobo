@@ -28,12 +28,12 @@
 	</node>
 
 	<node name="driver" pkg="robot_drivers" type="figure8.py" required="true" output="screen">
-		<param name="/robot_id" value='5' type="int"/>
+		<param name="/robot_id" value='3' type="int"/>
 	</node>
 
 	<node pkg="motor_limit" type="motor_limit.py" name="motor_control_node" output="screen">
 		<remap from="/default_driver/drive_cmd" to="/diff_drive_node/drive_cmd"/>
-		<param name="robot_addr" value="192.168.1.130" type="str" />
+		<param name="robot_addr" value="192.168.1.185" type="str" />
 	</node>
 
 	<arg name="topics_name" default="/cmd_vel /diff_drive_node/drive_cmd /limited_cmds /tag_detections /ui_twist"/>

@@ -144,10 +144,11 @@ class GCPR_driver(object):
 						todo_list.append(rule[1])
 			
 			random.shuffle(todo_list)
-		except (IndexError, KeyError) as e:
-			print e
-			print "---caused by---"
-			print rule
+		except (TypeError, IndexError, KeyError) as e:
+			rospy.logwarn(e)
+			rospy.logwarn("---caused by---")
+			rospy.logwarn(rule)
+
 
 		#This needs some smarter method to unify the drive commands than just FIFO
 		#Or does it? FIFO fast enough, plus a short-cycle time would be a sort of
@@ -510,13 +511,16 @@ class GCPR_driver(object):
 		self.hit_point = self.lastPosition
 		rospy.logwarn("{} hit at {} {}".format(self.ns, self.hit_point.position.x, self.hit_point.position.y))
 
+	def clear_hit_point(self):
+		self.hit_point = None
+
 	def set_goal(self, g):
 		self.goal = g
 		rospy.logwarn("{} goal is {}".format(self.ns, self.goal))
 
 
 	def update_distances(self):
-		for sensor in self.proxReadings:
+		for sensor in self.proxReadings: #[12:16]:
 			#Convert the sensor reading, which is 0 for unoccupied increasing to 1 at the robot, 
 			#into an actual distance (may be inaccurate if it's not linear)
 			sensor_d = self.proxRange - (self.proxRange * sensor.value)

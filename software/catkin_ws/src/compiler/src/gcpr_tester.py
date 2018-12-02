@@ -51,20 +51,20 @@ program.append(("self.goal is None", "self.set_goal((3,0))", 1.0))
 #Unconditionally, if we hit the goal, stop at it
 program.append(("self.at(self.goal)", "self.stop()", 1.0))
 #Set initial heading towards goal
-program.append(("not(self.at(self.goal)) and self.pc_is(0)", "self.set_desired_heading(self.get_heading(self.goal))", 1.0))
+program.append(("self.pc_is(0) and not(self.at(self.goal))", "self.set_desired_heading(self.get_heading(self.goal))", 1.0))
 #If in pc=0, and facing towards goal, move forwards
-program.append(("not(self.at(self.goal)) and self.pc_is(0) and self.on_heading()", "self.move_fwd(0.5)", 1.0))
+program.append(("self.pc_is(0) and not(self.at(self.goal)) and self.on_heading()", "self.move_fwd(0.5)", 1.0))
 #If in pc=0, and not facing towards goal, turn towards goal
-program.append(("not(self.at(self.goal)) and self.pc_is(0) and not(self.on_heading())", "self.turn_heading(0.7)", 1.0))
+program.append(("self.pc_is(0) and not(self.at(self.goal)) and not(self.on_heading())", "self.turn_heading(0.7)", 1.0))
 		
 #Set PC, which ends up being more a matter of mode tracking than actual advancement in the program
 # 0 - free space moves
 # 1 - wall follow moves
 # 2 - leave condition, escape the wall
 #If there's something in the way and we haven't set the hit point yet, set it. It needs to get unset when we leave the object, though
-program.append(("self.hit_point is None and (self.get_l_front() > 0 or self.get_r_front() > 0)", "self.set_hit_point()", 1.0))
+program.append(("self.pc_is(0) and self.hit_point is None and (self.get_l_front() > 0 or self.get_r_front() > 0)", "self.set_hit_point()", 1.0))
 program.append(("self.pc_is(0) and (self.get_l_front() > 0 or self.get_r_front() > 0)", "self.set_pc(1)", 1.0))
-
+program.append(("self.pc_is(0) and (self.get_l_front() > 0 or self.get_r_front() > 0)", "rospy.logwarn(\"pc=1 {} hit.\".format(self.ns))", 1.0))
 #If there is something in the way, rotate (always the same direction, setting up for edge follow)
 program.append(("self.pc_is(1) and (self.get_l_front() > 0 or self.get_r_front() > 0)", "self.move_turn(-1.2)", 1.0))
 
@@ -86,23 +86,23 @@ program.append(("self.pc_is(1) and self.get_l_front() == self.get_r_front() == 0
 
 # Check the tangent bug leave condition: We can see a point closer to the goal than anywhere along the edge of the 
 # object that we're following, so head for that point instead
-program.append(("(self.dReach < self.dFollow) and (self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) and (0.1 < self.proxReadings[6].value < 0.2)))", "rospy.logwarn(\"{} would leave.\".format(self.ns))", 1.0))
-program.append(("(self.dReach < self.dFollow) and (self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) and (0.1 < self.proxReadings[6].value < 0.2)))", "self.set_pc(2)", 1.0))
+program.append(("self.pc_is(1) and (self.dReach < self.dFollow) and (self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) and (0.1 < self.proxReadings[6].value < 0.2)))", "rospy.logwarn(\"pc=2 {} would leave.\".format(self.ns))", 1.0))
+program.append(("self.pc_is(1) and (self.dReach < self.dFollow) and (self.get_l_front() == self.get_r_front() == 0 and ((0.1 < self.proxReadings[5].value < 0.2) and (0.1 < self.proxReadings[6].value < 0.2)))", "self.set_pc(2)", 1.0))
+
 
 #Heading away from object
-program.append(("self.pc_is(2)", "head towards closest free point", 1.0))
-
-#Clear of object, reset heading towards goal
-program.append(("self.pc_is(2) and (self.get_l_front() == self.get_r_front() == 0)", "self.set_desired_heading(self.closest_free_point(self.goal))", 1.0))
+program.append(("self.pc_is(2) and (self.get_l_front() == self.get_r_front() == 0)", "self.set_desired_heading(self.get_heading(self.closest_free_point(self.goal)))", 1.0))
 #If transitioning to closest free point, and facing towards goal, move forwards
 program.append(("self.pc_is(2) and self.on_heading()", "self.move_fwd(0.5)", 1.0))
 #If in pc=0, and not facing towards goal, turn towards goal
 program.append(("self.pc_is(2) and not(self.on_heading())", "self.turn_heading(0.7)", 1.0))
 #Swap out of transition mode and back to goal pursuit
 program.append(("self.pc_is(2) and (self.get_l_front() == self.get_r_front() == 0)", "self.set_pc(0)", 1.0))
+program.append(("self.pc_is(2) and (self.get_l_front() == self.get_r_front() == 0)", "rospy.logwarn(\"pc=0 {} done leaving.\".format(self.ns))", 1.0))
+program.append(("self.pc_is(2) and (self.get_l_front() == self.get_r_front() == 0)", "self.clear_hit_point()", 1.0))
 
 #Send to either one robot or all of them
-one_robot = False
+one_robot = True
 program_sender.updatePubs()
 robots = program_sender.getRobots()
 
