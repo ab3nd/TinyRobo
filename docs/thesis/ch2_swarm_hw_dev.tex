@@ -749,8 +749,15 @@ Where possible, small robots should be designed to use the PCB instead.
 Using children's toys in TinyRobo was intended to avoid the use of custom parts, but brought with it additional problems that were outside of the scope of the work to solve, and could have been avoided with a simpler drivetrain. 
 The use of hobby-level or toy-like platforms for swarms is not certain to be a dead-end, as the UB Swarm and the Spider-bots demonstrate, but the cost of sufficiently high-quality toys to produce a sufficiently reliable swarm will drive the overall cost up \citep{patil2016ub, price2014spider}. 
  
-Ultimately, the resulting swarm hardware platform does demonstrate that Hypothesis 1, that commodity hardware can enable the construction of a cheap indoor swarm, is correct. 
-As seen in Table \ref{tab:per_robot_parts_cost}
+Ultimately, the resulting swarm hardware platform does demonstrate that Hypothesis 1, that commodity hardware can enable the construction of an indoor swarm for under \$30 per robot, is correct, assuming parts are purchased in sufficient quantities.
+As seen in Table \ref{tab:per_robot_parts_cost}, the cost of an individual TinyRobo control board is just under \$12, if parts are purchased in quantities for 100 robots, which is on par with the cost of Kilobots, which cost \$14 for parts, if the parts are purchased in sufficient quantity to produce 1000 robots. 
+The 3D printed chassis consumes approximately \$0.50 worth of material, and the motors add just under \$4 in 100-robot quantities. 
+The total price per robot is then \$16.50, well under the \$30 target.
+Unfortunately, in single quantities, the cost of the TinyRobo controller climbs to \$23, and the cost of the motors to \$6.96, putting the total cost including 3D printer material at \$30.44.
+This is only slightly over the target cost, and could likely be reduced by changing the selection of semiconductors in the power regulation section of the TinyRobo board, or by finding slightly cheaper motors.
+ 
+%This does put the cost of parts for 100 robots at \$1650, or approximately the price of two E-pucks.  
+%It may be objected that the swarm researcher must first purchase a \$200 3D printer to achieve this low cost, but for the price of a single E-Puck, the researcher can purchase the printer, and have \$600 left over to put towards robot parts.  
  
 %Even without solutions to some of the concerns raised in this chapter, the project to develop the TinyRobo swarm robot platform was something of a success. 
 %The TinyRobo controller module can control small toys with up to two motors, and by combining it with a 3D printed base, the hardware can be made more reliable. 

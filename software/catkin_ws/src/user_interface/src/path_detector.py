@@ -155,7 +155,7 @@ class PathDetector(object):
 				evt.strokes = [msg]
 
 				if len(selected_tags) > 0 and not isDrag:
-					#This is possibly a box select, pack it up and publish it
+					#This is possibly a lasso select, pack it up and publish it
 					evt.eventName = "lasso_select"
 					evt.robots = selected_tags
 				elif isDrag:

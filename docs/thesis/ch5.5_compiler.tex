@@ -1,7 +1,72 @@
 % !TeX root = ams_thesis.tex
-\chapter{Program Translation Implementation}
+\chapter{Interface Implementation}
 \thispagestyle{fancy}
 
+\section{Gesture Recognition}
+
+The user interface for the control system uses the Kivy window management library. 
+The UI uses ROS for its infrastructure, with the various components implemented as ROS nodes and communicating using ROS messages.
+The user interface layer receives images from the robot arena overhead camera, and displays them, appropriately overlaid with buttons, to the user. 
+The topmost layer receives user interactions in the form of contacts, and converts them to ROS touch events. The multitouch device emits a contact points that contain their location on the screen in cartesian coordinates, \todo{what other metadata is present at this level}
+Kivy's multitouch device handling adds some other event information, including whether the contact is a double or triple tap, when the touch was last updated, and whether the event has ended (the finger has been lifted) \todo{Be sure about which data comes from where}
+Button presses are also converted into ROS button messages\todo{maybe have the messages documented} which contain the time of the button press and the name of the button which was pressed. 
+
+The user interface layer publishes touches, which correspond to single points of contact in both time and space as observed by Kivy. 
+In order to collect points into strokes, a degree of cleaning of the input is needed. 
+The primary source of error in strokes is stick-slip motion of the user's finger on the screen. 
+When the user's finger slips, sometimes the screen regards the finger as having left the surface and returned quickly, breaking the stroke into two separate gestures. 
+The ROS node destutter.py maintains a dictionary of lists of touches in the order that they arrived, indexed in the dictionary by the touch ID assigned by the user interface. 
+As each stroke ends, it is compared to the other ended strokes. 
+If the space in time and distance between the end of the recently completed stroke and the beginning of another stroke is small enough, the two strokes are merged into a single stroke. 
+The parameters for the space and time thresholds for merging were set empirically, by intentionally causing stuttering contact with the screen and examining the reported time and distance between the beginnings and ends of contacts. 
+At present, if the beginning and end of successive strokes overlap by less than 0.01 second, or are less than 0.15 second apart, they are considered candidates for merging. 
+To be merged, candidates must also end and begin no more than 80 pixels apart. 
+This value is approximately the width of a fingertip on the 3M screen, and is greater than the observed distance between stuttering strokes. 
+
+Because a currently-ended stroke might be merged with a stroke that hasn't begun yet (that is to say, the user's finger might be in the air during the stutter of a stick-slip movement), strokes that have ended are not published unless there is no in-progress stroke that they could possibly be merged with. 
+Every 0.2 seconds, the stroke cleaning node checks all the ended strokes against all the in-progress strokes. 
+If the ended stroke's endpoint is closer than the distance threshold from the beginning of all of the active strokes, it could be merged with the active stroke. 
+If the ended stroke is close enough to an active stroke's beginning to be considered, the time threshold is checked to determine if they could possibly be merged. 
+If there is no active stroke that the current stroke could possibly be merged with, once that active stroke ends, then the current stroke could be published.
+If the current stroke's end time is greater than the merge gap threshold in the past, then it is impossible for a new stroke to begin in time to be merged with the current stroke. 
+Since there are then no active strokes it could be merged with, and it is impossible for a stroke to begin in time to merge with it, the stroke is then published. 
+
+Strokes are recognized as gestures by a set of separate recognition modules. 
+The initial design concept had been to have successive layers of recognition modules add more and more abstract information to the gestures, and arbitrate cases of ambiguity in gestures, but as the selected gesture set was intended to minimize ambiguity, this arbitration lead to additional complexity without any real gain in functionality or ability. 
+It should also not be assumed that these gesture recognizers are the best method to perform the task, but they were sufficient during development, and investing significant time in improving them was beyond the scope of this project. 
+
+Gestures are classified into taps, ]lines, arcs, or closed shapes by the angle of the beginning and end of the gesture around the centroid. 
+If a gesture has fewer than 10 points or is fewer than 10 pixels across, it is classified as a tap. 
+This classification is used because the user's finger distorts as it presses on the screen, and so can be registered as motion over a very small distance, even though the user was not dragging their finger. 
+The thresholds for the angle around the centroid were \textless 1 radian to be classified as a circle, \textless 2.5 radians to be classified as an arc, and 2.5 radians or greater to be classified as a line. 
+This sort of recognizer has problems with, for example, a circle drawn with a very tight scribble of points at one end. Placing the centroid in the center of the bounding box of the shape would result in it being recognized, correctly, as a circle, but the actual centroid as calculated from the points would be placed close to the dense knot of points at one end of the line, thus skewing the angle around the centroid. 
+
+Gestures are then compared to information about the location of robots relative to the gesture on the screen to determine the meaning of the gestures. 
+The gesture detectors are lasso \todo{end this with a full list}
+
+The lasso gesture detector receives gestures from the gesture classifier and from the AprilTag detection node. 
+If the gesture starts on a robot, it is considered a drag, where the user puts their finger on one robot, and drags from that robot to another location. 
+If the gesture is not a drag, but is a closed shape, and there are robots located inside it, then it is a lasso selection. 
+The lasso select gesture recognizer initially attempted to fit an oval to the points of the closed shape, but this approach was rejected because it does not work well if the user attempts to draw a concave polygon, such as a banana shape, in order to select some robots and not select others from a group of robots. 
+Instead of using a fitted oval, the closed shape is treated as a polygon, and all robots inside the polygon are considered selected. 
+If there are no robots, it is treated as a path, the generic classification for gestures with no other classification. 
+If the gesture is not a drag, but is a line, it could be a box selection or a path. 
+A box selection is a line whose bounding box includes at least one corner of an AprilTag. 
+This requirement for inclusion, rather than including only AprilTags with their centers, or 3/4 of their points inside the bounding box, was chosen because the user survey on inclusion in selections that intersected the robot indicated that erring on the side of including partially-selected robots was preferable. \todo{flowchart this, it's kind of wordy.}
+
+Tap gestures are handled separately from strokes. 
+If a tap gesture is on a robot, it is treated as selection of that robot. 
+Taps that are not on a robot are treated as potential waypoints. 
+For the purposes of making this distinction, a tap located within 80px of a robot is considered on the robot. 
+The value of 80 pixels was chosen because it is the approximate width of a fingertip on the interface device, and so should be adjusted for devices of different resolutions. 
+Alternatively, the mapping of pixels to real-world dimensions provided by the AprilTags could be used to calculate a conversion factor between the size of the screen and objects displayed on it in pixels and real-world meters, and the distance specified in terms of that conversion factor. 
+Doubletap is the end-of-command gesture, and so is not treated as a waypoint or as a robot selection gesture. 
+
+The gestures are then passed to the robot program generator, which adds them to a stack as they arrive. 
+When the user terminates the gesture by either issuing an explict end-of-gesture double-tap, or by issuing a new selection gesture, which ends the previous command and begins a new one. 
+
+
+\section{Translation Into Programs}
 At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
 While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using a model checker such as PRISM \citep{KNP11}.
 
@@ -37,7 +102,7 @@ The gesture sequence is then translated into a program that is parsed by the Lar
 Lark is an Earley parser, and so can parse all context-free grammars, although the current gesture language is not sufficiently complex to actually need this level of power. 
 The resulting parse tree is then walked to generate GCPR programs that implement the algorithms described in Chapter \ref{chapter:Implementation_of_Swarm_Actions}.
 
-Basic movement to points is implemented using the variant of TangentBug. 
+Basic movement to points is implemented using the variant of TangentBug. \todo{address real-world implementation of tangent bug, also GCPR composition}
 Path following and formation combines the basic movement to points with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
 As each point is either reached or determined to be unreachable, the goal is advanced to the next point.
 For motion along paths, the goals are set to points along the path, ending at the final goal. 
@@ -66,6 +131,8 @@ The robot wall-follows around the object until a line from the robot to the goal
 While in this mode, the robot continually updates the direction of the goal, and switches between getting in position and pushing the object, as needed. 
 As with the original occlusion-based manipulation, this algorithm is ignorant of obstacles on the opposite side of the object from the robot, and so can get stuck. 
 However, as the system can accept a path for the object to be pushed on, the user can attempt to specify a clear path for the robots to move the object along. 
+
+\section{Interpretation of Programs}
 
 %\chapter{Compiler Verification}
 %
