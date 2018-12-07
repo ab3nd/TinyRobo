@@ -37,15 +37,23 @@ if condition == 'X':
 screenCounter = 0
 touchCounter = 0
 taskCounter = 0
+
+outBag = None
+
 for topic, msg, t in bag.read_messages():
 	#There are several other message types, but these are the ones we care about
 	if topic == "/ui_image":
 		#New UI screen
 		screenCounter += 1
 		if screenCounter % 2 == 0 and screenCounter >= scrOffset:
+			if taskCounter > 0:
+				#Not the first task, so close the file
+				outBag.close()
 			taskCounter += 1
+			outBag = rosbag.Bag('./user-{}_cond-{}_task-{}.bag'.format(participant, condition, taskCounter), 'w')
 			print "Task {} got {} touches".format(taskCounter, touchCounter)
 		touchCounter = 0
 	if topic == "/touches":
 		touchCounter += 1
-		# vg.addPoint(msg, t)
+		if outBag is not None:
+			outBag.write(topic, msg, t)
