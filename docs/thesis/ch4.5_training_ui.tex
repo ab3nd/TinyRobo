@@ -14,11 +14,6 @@ In such a context, adding complexity to the gesture set could allow for addition
 
 Because user experience of video games does have some effect on their use of the user interface described in this work, it is interesting to examine other aspects of video games, and how they might be applied to user interface design for swarm robotics. 
 
-The majority of the work on video games and learning is centered around the outcomes of games developed to be educational, rather than on how games that are intended to be purely entertaining still educate their users in the use of the game itself. 
-Tony Hawk pro skater and such, game UI includes training elements. User can do basics, as their proficiency increases, system builds additional skills. 
-
-If the system detects repetition of a behavior, suggest more efficient methods (single moves vs select and move)
-
 It has been argued that the use of game-like user interfaces is inappropriate for the design of applications, but better suited to training material\citep{thomas1994games}. The basis for using a game-like user interface for an application is that games are engaging, and as a result, using a similar interaction paradigm should yield an engaging application. 
 However, the dissimilarities in user motivation make this approach less useful. 
 Games are played for the sake of their own play, rather than to accomplish a task outside of the game. 
@@ -26,3 +21,54 @@ Challenge and complexity are controlled in the game to make the play more reward
 Additionally, work and play are culturally strongly divided, and making one like the other will be resisted by users. 
 Thomas instead proposes that computer-based training materials are a better target for game-like user interfaces. 
 Like games, training materials are intended for high involvement over short periods, and are interacted with for themselves, rather than as part of the completion of an external task. 
+
+The majority of the work on video games and learning is centred around the outcomes of games developed to be educational, rather than on how games that are intended to be purely entertaining still educate their users in the use of the game itself.
+Modern games frequently include a tutorial level at the beginning of the game in order to familiarize the user with the controls of the game. 
+The tutorial level provides instruction for the user in performing game actions, and assesses whether those actions have been performed, in order to control progression to the next section of the tutorial. 
+For example, a game that includes an element where the player rides a horse may provide a horse, and instruct the user in how to use the controls to mount the horse and direct its movement. 
+However, games do not always provide tutorials, and the lack of tutorial content, or the low quality of tutorials when present has been cited as a potential usability issue in games \citep{pinelle2008heuristic}.
+
+The tutorial level of video games is usually somewhat separate from the main content of the game, in that actions in the tutorial have limited or no consequences in future gameplay. 
+This raises a potential issue for implementation in a robot control system. 
+If the system allows untrained users to control real robots in a tutorial mode, the user may make an error that does have permanent consequences for the future use of the system, such as causing a collision between robots. 
+If, instead, the system allows the user to operate a simulation, the design and development overhead of implementing the tutorial is quite large, for a component of the system that the user may use very rarely or never. 
+This dilemma may restrict pre-use tutorials to training the user as to which gestures the system can recognize, and only permit a sketch of the possible robot reactions to those gestures. 
+
+Alternatively, the system could be developed with a basic level of functionality based on user elicited gestures, as in this work, and attempt to recognize certain relatively inefficient patterns of user activity. 
+When such a pattern is recognized, the system would propose alternatives that extend beyond the easily-discovered gestures to offer greater finesse or complexity. 
+For example, in the user experiment, some participants performed the Move to Area A task in the 10 robot case by selecting each robot in turn and dragging it to area A, while other participants made a selection gesture and then a single motion gesture. 
+If the system detects a repeated pattern of single robot interactions, it could display a hint to the user that selection of multiple robots can be done, and indicate how to use it. 
+In order to minimize annoyance, the user should be able to dismiss the notification, or prevent future notifications if they feel that they are sufficiently proficient in the use of the interface. 
+
+The data set collected in the user gesture experiment provides an interesting sample of possible advanced gestures. 
+Rather than being common across a large percentage of the users, these were gestures that a small number of users selected, in an attempt to provide additional expressive power. 
+The rest of this chapter discusses the ``long tail'' of user gestures, and their possible use as ``superuser'' gestures after an appropriate training period. 
+
+\section{``Other'' Gestures}
+
+The ``other'' gestures are those that did not match any of the other codes as described in Appendix \ref{chapter:coding_defs}. 
+The largest category of other gestures is gestures that were some form of ``sweeping'' the robots around, but because of the diversity of these gestures, there was little agreement from user to user. 
+Some users made gestures over the screen, as if sinking their fingers into sand or a pile of small objects and dividing the pile, or cupping their hands to bring the pile back together. 
+Others used the edge of a finger (typically the index finger) or the heel of the flat hand to push robots, as if they were sweeping them along a countertop. 
+These sorts of physical gestures are in line with the expectation of NUI that the system can leverage the user's existing intuition about physical objects to guide their interaction with the screen. 
+
+However, these gestures are prone to some degree of technical difficulty. 
+Gestures made off of the screen, in the space above it, would require additional sensing to detect, such as a depth camera pointed down at the screen or towards the user from the front (or both). 
+These gestures could be mapped back into the space of the screen by flattening them to the areas that they occur over, but the use of a sensed volume could also provide the path towards operating a UAV swarm in a direct manner. 
+The user could use free space gestures to define boundaries for the swarm, or push the swarm around directly. 
+However, such a user interface does not provide feedback in the same space as the gestures. 
+In the user interface proposed for the gesture elicitation experiment, the response to a 2D gesture occurs on a 2D surface, and is a projection of a less-than-3D area onto that 2D screen.
+The reason that the area is less than 3D is that while the terrain may have elevation variation, the robots do not leave the terrain. 
+As a result, the work the user has to do to ``reproject'' the 2D space into 3D, in order to understand it, is limited. 
+For a swarm of UAVs, the display would have to do as much of this work as possible, to limit the mental labor performed by the user. 
+For example, the UAVs could be displayed at a size related to their distance from the viewport provided by the screen, using perspective to indicate distance. 
+The viewport might also need to be movable, as the user may wish to view the shape of the swarm from multiple angles. 
+
+In addition to the possible issues with gestures in space over the screen, the technology of the multitouch interface can constrain the available gestures. 
+The Microsoft Surface tracks contacts as areas with a shape, centroid, and so forth. 
+In software operating on the Surface, finger contact points are typically approximated as ovals, and distinguished from larger contact points such as the heel of the user's hand, by their size. 
+The multitouch screen used in this work tracks up to 20 contact points, but it treats them as points, each representing a single pixel location on the screen. 
+As a result, if the user extends their fingers and places the edge of their hand on the screen, and then slides their hand along the screen, the Surface will report a single oval, much longer than it is wide, moving along the screen. 
+The 3M Multitouch screen reports a large number of individual contacts in the region under the user's hand, rather than a region.
+As a consequence, gestures that use a region of the hand other than the fingertip are difficult to recognize on the 3M screen. 
+
