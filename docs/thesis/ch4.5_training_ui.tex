@@ -22,7 +22,7 @@ Additionally, work and play are culturally strongly divided, and making one like
 Thomas instead proposes that computer-based training materials are a better target for game-like user interfaces. 
 Like games, training materials are intended for high involvement over short periods, and are interacted with for themselves, rather than as part of the completion of an external task. 
 
-The majority of the work on video games and learning is centred around the outcomes of games developed to be educational, rather than on how games that are intended to be purely entertaining still educate their users in the use of the game itself.
+The majority of the work on video games and learning is centered around the outcomes of games developed to be educational, rather than on how games that are intended to be purely entertaining still educate their users in the use of the game itself.
 Modern games frequently include a tutorial level at the beginning of the game in order to familiarize the user with the controls of the game. 
 The tutorial level provides instruction for the user in performing game actions, and assesses whether those actions have been performed, in order to control progression to the next section of the tutorial. 
 For example, a game that includes an element where the player rides a horse may provide a horse, and instruct the user in how to use the controls to mount the horse and direct its movement. 
@@ -52,7 +52,7 @@ Some users made gestures over the screen, as if sinking their fingers into sand 
 Others used the edge of a finger (typically the index finger) or the heel of the flat hand to push robots, as if they were sweeping them along a countertop. 
 These sorts of physical gestures are in line with the expectation of NUI that the system can leverage the user's existing intuition about physical objects to guide their interaction with the screen. 
 
-However, these gestures are prone to some degree of technical difficulty. 
+However, these gestures are prone to some degree of technological difficulty. 
 Gestures made off of the screen, in the space above it, would require additional sensing to detect, such as a depth camera pointed down at the screen or towards the user from the front (or both). 
 These gestures could be mapped back into the space of the screen by flattening them to the areas that they occur over, but the use of a sensed volume could also provide the path towards operating a UAV swarm in a direct manner. 
 The user could use free space gestures to define boundaries for the swarm, or push the swarm around directly. 
@@ -72,3 +72,31 @@ As a result, if the user extends their fingers and places the edge of their hand
 The 3M Multitouch screen reports a large number of individual contacts in the region under the user's hand, rather than a region.
 As a consequence, gestures that use a region of the hand other than the fingertip are difficult to recognize on the 3M screen. 
 
+The use of formation provided two interesting gesture commands that used alterations of previous commands to increase the versitility of formation commands. 
+The first was indicating that the gesture was intended as a formation command by holding one finger down on the robots while drawing the formation with the other hand. 
+This gesture arose from one user's initial use of a single-finger drag to move the robots in the initial ``Move the robots to area A" task. 
+For the line formation task, the user initially used the same gesture, placing a finger on the robots and then dragging the line on the screen. 
+The participant then \todo{normalize user vs. participant} recognized that a simple drag was ambiguious with the motion command, and so placed one finger from each hand on the robots, holding one still and dragging the other one out to indicate the line for the robots to form. 
+The gesture was initially explained as ``pinning'' one end of the robots and ``stretching'' them out along the line.
+On the next task, commanding the robots to form a square, the user again placed both fingers on the screen, but drew a square rather than a line. 
+This sequence of removing ambiguity and then extending from the disambiguated gesture resulted in a set of gestures that seems to compose a ``formation'' gesture (placing and holding a finger) with a description of what that formation should be. 
+This gesture ended up not being used in the gesture set for the robot interface due to the fact that only one user chose it, but in a context where training was available, it would be relatively simple to train users to perform. 
+
+However, this sort of composability has limits. 
+Sequences of gestures would probably be harder to remember than this sort of combined command-and-modification gesture. 
+Also, since a user has at most two hands, and may only have one hand free to operate the screen, the gesture set used should minimize the number of contact points used. 
+Additionally, the fact that the hold-and-draw formation command has one hand holding still is likely a good idea from a design perspective. 
+Having each hand performing a different gesture is cognitively demanding, compared to having one hand remain still or perform the same gesture as the other hand \todo{does anyone cover this? cite?}.
+
+\todo{Possibly deal here with composability and orthogonality}
+
+Another participant gesture that made use of formations was the use of an adverb in the gesture language as described in Section \ref{sec:user_manipulation}. 
+The participant in that section used one finger to draw paths for the robots to follow, but specified that if two fingers were used to draw the path, the robots should follow the path while remaining in their current positions relative to each other. 
+Modifying path drawing in this way allowed the participant to form the robots into a scoop-shaped formation, and then move the scoop to position the crate in the crate manipulation tasks. 
+
+As with the formation command example above, the gesture is an extension of a previous gesture, but with an addition to disambiguate it. 
+These signals to the system that the command is being modified point to a commonality in the participants' thinking about the design of the gestures. 
+Participants added additional contacts to a base gesture to indicate an extension of the base gesture to a special case. 
+Holding one finger still changed path following into formation, and dragging two fingers changed path following into path following in formation. 
+This combination of additional fingers with a base gesture suggests that other base gestures could be similarly extended with additional fingers to activate different, but related functionality. 
+For example, some of the tasks displayed a mix of orange and red robots in one area (for an example, see Figure \ref{fig:10_orange_red_mix}), to attempt to elicit user gestures for sorting robots. 
