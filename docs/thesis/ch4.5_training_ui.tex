@@ -72,23 +72,24 @@ As a result, if the user extends their fingers and places the edge of their hand
 The 3M Multitouch screen reports a large number of individual contacts in the region under the user's hand, rather than a region.
 As a consequence, gestures that use a region of the hand other than the fingertip are difficult to recognize on the 3M screen. 
 
-The use of formation provided two interesting gesture commands that used alterations of previous commands to increase the versitility of formation commands. 
+The use of formation provided two interesting gesture commands that used alterations of previous commands to increase the versatility of formation commands. 
 The first was indicating that the gesture was intended as a formation command by holding one finger down on the robots while drawing the formation with the other hand. 
-This gesture arose from one user's initial use of a single-finger drag to move the robots in the initial ``Move the robots to area A" task. 
-For the line formation task, the user initially used the same gesture, placing a finger on the robots and then dragging the line on the screen. 
-The participant then \todo{normalize user vs. participant} recognized that a simple drag was ambiguious with the motion command, and so placed one finger from each hand on the robots, holding one still and dragging the other one out to indicate the line for the robots to form. 
+This gesture arose from one participant's initial use of a single-finger drag to move the robots in the initial ``Move the robots to area A" task. 
+For the line formation task, the participant initially used the same gesture, placing a finger on the robots and then dragging the line on the screen. 
+The participant then recognized that a simple drag was ambiguous with the motion command, and so placed one finger from each hand on the robots, holding one still and dragging the other one out to indicate the line for the robots to form. 
 The gesture was initially explained as ``pinning'' one end of the robots and ``stretching'' them out along the line.
-On the next task, commanding the robots to form a square, the user again placed both fingers on the screen, but drew a square rather than a line. 
+On the next task, commanding the robots to form a square, the participant again placed both fingers on the screen, but drew a square rather than a line. 
 This sequence of removing ambiguity and then extending from the disambiguated gesture resulted in a set of gestures that seems to compose a ``formation'' gesture (placing and holding a finger) with a description of what that formation should be. 
-This gesture ended up not being used in the gesture set for the robot interface due to the fact that only one user chose it, but in a context where training was available, it would be relatively simple to train users to perform. 
+This gesture ended up not being used in the gesture set for the robot interface due to the fact that only one participant chose it, but in a context where training was available, it would be relatively simple to train users to perform. 
 
 However, this sort of composability has limits. 
-Sequences of gestures would probably be harder to remember than this sort of combined command-and-modification gesture. 
-Also, since a user has at most two hands, and may only have one hand free to operate the screen, the gesture set used should minimize the number of contact points used. 
-Additionally, the fact that the hold-and-draw formation command has one hand holding still is likely a good idea from a design perspective. 
-Having each hand performing a different gesture is cognitively demanding, compared to having one hand remain still or perform the same gesture as the other hand \todo{does anyone cover this? cite?}.
-
-\todo{Possibly deal here with composability and orthogonality}
+Sequences of gestures would probably be harder to remember than this sort of combined command-and-modification gesture, as the sequence would consist of a larger count of discrete actions, rather than being experienced by the user as a single action. 
+Additionally, the fact that the hold-and-draw formation command has one hand remaining still is likely a good idea from a design perspective. 
+In the physiological research literature, tasks where each hand performs a different action are referred to as bimanual coordination tasks.
+Bimanual tasks interfere with each other, as in the classic example of patting one's head with one hand and rubbing one's belly with the other. 
+Interference between tasks of differing difficulty in a bimanual coordination task was seen in the case of aiming, where the hand making the easier motion was shown to slow to match the hand making the more difficult motion, rather than the more easily-completed motion being finished first \citep{fitts1954information}.
+For an overview of the neurological basis of bimanual coordination and the various factors that influence interference between tasks, see \citep{swinnen2004two}. 
+Having each hand performing a different gesture is cognitively demanding, compared to having one hand remain still or perform the same gesture as the other hand, so designs that allow one hand to remain still will be easier to use than those that require e.g. drawing different symbols with each hand. 
 
 Another participant gesture that made use of formations was the use of an adverb in the gesture language as described in Section \ref{sec:user_manipulation}. 
 The participant in that section used one finger to draw paths for the robots to follow, but specified that if two fingers were used to draw the path, the robots should follow the path while remaining in their current positions relative to each other. 
@@ -100,3 +101,27 @@ Participants added additional contacts to a base gesture to indicate an extensio
 Holding one finger still changed path following into formation, and dragging two fingers changed path following into path following in formation. 
 This combination of additional fingers with a base gesture suggests that other base gestures could be similarly extended with additional fingers to activate different, but related functionality. 
 For example, some of the tasks displayed a mix of orange and red robots in one area (for an example, see Figure \ref{fig:10_orange_red_mix}), to attempt to elicit user gestures for sorting robots. 
+A single-finger selection could select all robots, and adding fingers could be used as the extension to select each different color of robots in turn, with e.g. two fingers selecting the red robots and three fingers selecting the orange robots. 
+
+Another area in which gestures may be treated with finer granularity is the direction in which the gestures are made. 
+A few participants in the gesture elicitation experiment made verbal mention of this distinction, or used it in their control schemes. 
+One participant used a clockwise lasso as a robot selection gesture, but a counterclockwise selection gesture to indicate dispersion. 
+Another participant indicated that lasso selection should be done clockwise, while patrol areas were selected with a counterclockwise closed loop, similar to a lasso. 
+The participant did not indicate how they would perform a patrol that moved in a clockwise direction around the patrol area, or if the direction that the gesture was made in was intended to constrain the patrol to move in the same direction as the gesture. 
+
+Box selection also has the potential to be performed in four different orientations, with the gesture starting from the top left, top right, bottom left, or bottom right corners of the box. 
+One participant made use of this distinction, comparing it to the box selection in the Autodesk Solidworks CAD software. 
+Solidworks has two modes for box selection. 
+If the mouse moves from left to right, the selection includes only objects that are contained entirely within the box. 
+If the mouse moves from right to left, the selection includes all objects that the box overlaps to any degree. 
+The participant used box selections starting from the top right to separate part of the robots from the others, and box selections starting from the bottom right to select only robots that had been marked as being in a particular group. 
+Most other participants only used box selections starting from the top left of the box area, so for a UI supporting the distinction between the different forms, starting from the top left should be the basic gesture, and box selections starting from the other corners of the box would be reserved for more specific forms of selection. 
+
+It is worth noting that there are inherent physical limits on the methods of distinguishing gestures explored so far. Adding more fingers to a gesture is limited by the multitouch sensing technology and the user's supply of fingers. 
+Lasso can only be performed in two different directions, and box select only has four different corners the selection gesture can start from. 
+
+Another possible distinction between gestures is the velocity with which the gesture is made. 
+One participant in the gesture experiment made a distinction between dragging a robot, which is performed slowly, and flicking a robot (to remove it), which is performed rapidly, with the intent of metaphorically tossing the robot off the edge of the screen. 
+It seems unwise to alter the meaning of a gesture based on its speed, as in the case of movement becoming deletion if performed quickly, because a user may accidentally perform a gesture too slowly or too quickly, and so obtain a different result than they expect. 
+However, the velocity with which a movement gesture is performed might reasonably be used to convey to the robots that the motion is to be performed quickly, while a slow gesture might indicate that the robots should proceed slowly.
+Research would have to be performed to ensure that the increase in velocity does not result in a loss of accuracy beyond what the user is willing to accept.  
