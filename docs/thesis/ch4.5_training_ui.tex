@@ -2,13 +2,12 @@
 \chapter{UI Design for High Training}
 \thispagestyle{fancy}
 
-The work that this study built on was motivated in part by the idea of using robots in search and rescue (SAR) operations, to explore damaged buildings, enter unsafe areas, and provide additional senses and coverage while reducing risk to first responders \citep{micire2010multi}.
+The work which this study is built on was motivated in part by the idea of using robots in search and rescue (SAR) operations, to explore damaged buildings, enter unsafe areas, and provide additional senses and coverage while reducing risk to first responders \citep{micire2010multi}.
 First responders are trained on the equipment they use, but such training may be infrequent, and so complex control systems may not be remembered when the time comes to use the equipment. 
 Because a SAR situation may develop rapidly, there is little or no time available for retraining, and so use with first responders prioritizes easy learning of the interface and use with minimal training over depth of the possible commands.  
 
 However, SAR is not the only domain in which swarm robots might be used, and so considering only the gestures which maximize the ability of untrained users ignores domains where it is possible to train the users extensively. 
 In such a context, adding complexity to the gesture set could allow for additional expressiveness in the interface.
-
 
 \section{On-line Training}
 
@@ -72,6 +71,8 @@ As a result, if the user extends their fingers and places the edge of their hand
 The 3M Multitouch screen reports a large number of individual contacts in the region under the user's hand, rather than a region.
 As a consequence, gestures that use a region of the hand other than the fingertip are difficult to recognize on the 3M screen. 
 
+\section{Gesture Modification}
+
 The use of formation provided two interesting gesture commands that used alterations of previous commands to increase the versatility of formation commands. 
 The first was indicating that the gesture was intended as a formation command by holding one finger down on the robots while drawing the formation with the other hand. 
 This gesture arose from one participant's initial use of a single-finger drag to move the robots in the initial ``Move the robots to area A" task. 
@@ -103,6 +104,8 @@ This combination of additional fingers with a base gesture suggests that other b
 For example, some of the tasks displayed a mix of orange and red robots in one area (for an example, see Figure \ref{fig:10_orange_red_mix}), to attempt to elicit user gestures for sorting robots. 
 A single-finger selection could select all robots, and adding fingers could be used as the extension to select each different color of robots in turn, with e.g. two fingers selecting the red robots and three fingers selecting the orange robots. 
 
+\section{Gesture Direction}
+
 Another area in which gestures may be treated with finer granularity is the direction in which the gestures are made. 
 A few participants in the gesture elicitation experiment made verbal mention of this distinction, or used it in their control schemes. 
 One participant used a clockwise lasso as a robot selection gesture, but a counterclockwise selection gesture to indicate dispersion. 
@@ -120,8 +123,40 @@ Most other participants only used box selections starting from the top left of t
 It is worth noting that there are inherent physical limits on the methods of distinguishing gestures explored so far. Adding more fingers to a gesture is limited by the multitouch sensing technology and the user's supply of fingers. 
 Lasso can only be performed in two different directions, and box select only has four different corners the selection gesture can start from. 
 
-Another possible distinction between gestures is the velocity with which the gesture is made. 
+\section{Gesture Velocity}
+
+Another possible distinction between gestures is the speed with which the gesture is made. 
 One participant in the gesture experiment made a distinction between dragging a robot, which is performed slowly, and flicking a robot (to remove it), which is performed rapidly, with the intent of metaphorically tossing the robot off the edge of the screen. 
 It seems unwise to alter the meaning of a gesture based on its speed, as in the case of movement becoming deletion if performed quickly, because a user may accidentally perform a gesture too slowly or too quickly, and so obtain a different result than they expect. 
 However, the velocity with which a movement gesture is performed might reasonably be used to convey to the robots that the motion is to be performed quickly, while a slow gesture might indicate that the robots should proceed slowly.
-Research would have to be performed to ensure that the increase in velocity does not result in a loss of accuracy beyond what the user is willing to accept.  
+Research would have to be performed to ensure that the increase in velocity does not result in a loss of accuracy beyond what the user is willing to accept.
+  
+Scaling of the velocity from the user commands to the robot commands also presents a possible issue, as the user interaction point may traverse the map more quickly than robots can traverse the real terrain. 
+In a relatively extreme case, if a map of the continental United States is displayed on a typical touchscreen, the user could easily swipe their finger from one coast to the other in a few seconds. 
+No practical mobility platform can be expected to match this velocity. 
+As a result, the robot speed and user gesture speed may be related in a potentially complex way by other factors, such as the scale of the map view, leading to difficulty for the user in understanding how fast the robots are being commanded to move. 
+
+\section{Assessment of a Training-Oriented Gesture Set}
+
+If the system were developed with this style of gesture set, assessment of the validity of the design choices would differ from the assessment of a system based on gestures intended to be useful to untrained users. 
+
+In the case of a system intended to be useful to untrained users, the system's primary metric of effectiveness would be the ability of untrained users to complete tasks at all. 
+In the experimental study, some users performed the formation task by repeating the single-robot motion gesture to move each individual robot into a position on the formation. 
+This control scheme would work, assuming the single robot motion gesture was supported, but it is relatively inefficient compared to using a formation command button once. 
+Many of the other tasks could be performed in this way, as sequences of single robot move actions, so as long as the user discovered that interaction method, the system could be used, albeit slowly. 
+
+For a system that permits a longer training period, factors such as efficiency and memorability of the commands would be important. 
+Efficiency could be quantified as gestures required to perform a task, with a lower gesture count indicating a higher efficiency.
+To return to the previous formation example, moving ten robots into formation with single robot motions requires ten gestures, while using a formation button requires a single selection gesture, a button click, and a single gesture to draw the formation, for a total of three user interface interactions.  
+
+Testing the memorability of the system would require testing of the same user population after training, and again after a period of time not using the interface, to determine how many of the gestures were learned during the training, and how well they were retained over the gap of non-interaction time. 
+One factor that may affect the memorability of the instructions is similarity across modifications of gestures. 
+For example, if a two-finger box select selects only robots of a specific color, a two-finger lasso selection should also only select robots of a specific color. 
+As a result, the user can learn that two fingers is the modification that makes the action color-specific, and combine that modification with basic gestures to create more precise gestures. 
+To extend that example, use of two fingers in a formation gesture might indicate that only robots of a specific color participate in the formation. 
+However, enforcing this kind of consistency may result in implementation of unneeded gestures that complicate the gesture space, such as being able to command only robots of a specific color to move a box, when the main concern is that the box be moved, not what color the robots doing the work are.  
+
+Memorability
+Reduction in total gestures made
+
+Effectiveness of noobs
