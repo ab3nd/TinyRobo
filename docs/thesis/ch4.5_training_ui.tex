@@ -154,9 +154,21 @@ One factor that may affect the memorability of the instructions is similarity ac
 For example, if a two-finger box select selects only robots of a specific color, a two-finger lasso selection should also only select robots of a specific color. 
 As a result, the user can learn that two fingers is the modification that makes the action color-specific, and combine that modification with basic gestures to create more precise gestures. 
 To extend that example, use of two fingers in a formation gesture might indicate that only robots of a specific color participate in the formation. 
-However, enforcing this kind of consistency may result in implementation of unneeded gestures that complicate the gesture space, such as being able to command only robots of a specific color to move a box, when the main concern is that the box be moved, not what color the robots doing the work are.  
+However, enforcing this kind of consistency may result in implementation of unneeded gestures that complicate the gesture space. 
+For example maintaining the consistency may result in commands such as sending only robots of a specific color to move a box, when the main concern to the user is that the box be moved, not what color the robots doing the work are.  
 
-Memorability
-Reduction in total gestures made
+\section{Missing Gestures}
 
-Effectiveness of noobs
+Neither the consideration of ``superuser'' gestures nor the interface designed from naive user gestures considered certain types of user interaction. 
+
+The tasks specified in the experiment did not include gestures intended as commands to the user interface itself, such as commands to change the view of the robots. 
+One participant did suggest the use of reverse pinch as a zoom gesture, as is frequently used on cell phones, for a task where the user had to interact with one robot in a group. 
+By zooming in, the user expected to have that robot cover more of the view, and so be easier to interact with. 
+The user interface also did not ask the user to alter the color of individual robots, despite having some situations where the robots were divided into groups by color. 
+
+The absence of commands such as viewpoint changes and alteration of robot colors was intentional, so the user could have a feeling of interacting directly with the robots, rather than interacting with the interface. 
+Adding a set of commands that are only to the interface, and not to the robots, creates a layer of intermediation. 
+Adding a second set of commands also creates additional opportunities for ambiguity, as the commands to the user interface and to the robots must be separate, so that the interface can determine which commands influence it, and which commands are intended to be converted into programs for the robots. 
+The conversion of user gestures to robot programs was of more interest for this work, but in future it would be useful to determine what commands users might want to issue to the interface, and how they can be separated from commands to the robots. 
+
+
