@@ -7,9 +7,11 @@
 The user interface for the control system uses the Kivy window management library. 
 The UI uses ROS for its infrastructure, with the various components implemented as ROS nodes and communicating using ROS messages.
 The user interface layer receives images from the robot arena overhead camera, and displays them, appropriately overlaid with buttons, to the user. 
-The topmost layer receives user interactions in the form of contacts, and converts them to ROS touch events. The multitouch device emits a contact points that contain their location on the screen in cartesian coordinates, \todo{what other metadata is present at this level}
-Kivy's multitouch device handling adds some other event information, including whether the contact is a double or triple tap, when the touch was last updated, and whether the event has ended (the finger has been lifted) \todo{Be sure about which data comes from where}
-Button presses are also converted into ROS button messages\todo{maybe have the messages documented} which contain the time of the button press and the name of the button which was pressed. 
+The topmost layer receives user interactions in the form of contacts, and converts them to ROS touch events. The multitouch device emits a contact points that contain their location on the screen in cartesian coordinates, as well as identifiers for each contact.
+Kivy's multitouch device handling adds other event information, including whether the contact is a double or triple tap, when the touch was last updated, and whether the event has ended (the finger has been lifted), how far the touch has moved since the last update, and whether the touch is associated with the activation of certain hardware, such as the mouse scrollwheel.
+The majority of this metadata is not used. 
+For process in later layers of the gesture recognizer, only the start, end, and update times, whether the event is a double or triple tap, the location of the point, and its identifier are passed as a ROS message. 
+Button presses are also converted into ROS button messages which contain the time of the button press and the name of the button which was pressed. 
 
 The user interface layer publishes touches, which correspond to single points of contact in both time and space as observed by Kivy. 
 In order to collect points into strokes, a degree of cleaning of the input is needed. 
@@ -35,14 +37,14 @@ Strokes are recognized as gestures by a set of separate recognition modules.
 The initial design concept had been to have successive layers of recognition modules add more and more abstract information to the gestures, and arbitrate cases of ambiguity in gestures, but as the selected gesture set was intended to minimize ambiguity, this arbitration lead to additional complexity without any real gain in functionality or ability. 
 It should also not be assumed that these gesture recognizers are the best method to perform the task, but they were sufficient during development, and investing significant time in improving them was beyond the scope of this project. 
 
-Gestures are classified into taps, ]lines, arcs, or closed shapes by the angle of the beginning and end of the gesture around the centroid. 
 If a gesture has fewer than 10 points or is fewer than 10 pixels across, it is classified as a tap. 
 This classification is used because the user's finger distorts as it presses on the screen, and so can be registered as motion over a very small distance, even though the user was not dragging their finger. 
+Gestures are classified into taps, lines, arcs, or closed shapes by the angle between the beginning and end of the gesture around the centroid. 
 The thresholds for the angle around the centroid were \textless 1 radian to be classified as a circle, \textless 2.5 radians to be classified as an arc, and 2.5 radians or greater to be classified as a line. 
 This sort of recognizer has problems with, for example, a circle drawn with a very tight scribble of points at one end. Placing the centroid in the center of the bounding box of the shape would result in it being recognized, correctly, as a circle, but the actual centroid as calculated from the points would be placed close to the dense knot of points at one end of the line, thus skewing the angle around the centroid. 
 
 Gestures are then compared to information about the location of robots relative to the gesture on the screen to determine the meaning of the gestures. 
-The gesture detectors are lasso \todo{end this with a full list}
+The gesture detectors are lasso and box selection, paths (lines that are not lasso or box selection), tap selection, tap as waypoint, and dragging of individual robots. 
 
 The lasso gesture detector receives gestures from the gesture classifier and from the AprilTag detection node. 
 If the gesture starts on a robot, it is considered a drag, where the user puts their finger on one robot, and drags from that robot to another location. 
@@ -52,7 +54,10 @@ Instead of using a fitted oval, the closed shape is treated as a polygon, and al
 If there are no robots, it is treated as a path, the generic classification for gestures with no other classification. 
 If the gesture is not a drag, but is a line, it could be a box selection or a path. 
 A box selection is a line whose bounding box includes at least one corner of an AprilTag. 
-This requirement for inclusion, rather than including only AprilTags with their centers, or 3/4 of their points inside the bounding box, was chosen because the user survey on inclusion in selections that intersected the robot indicated that erring on the side of including partially-selected robots was preferable. \todo{flowchart this, it's kind of wordy.}
+This requirement for inclusion, rather than including only AprilTags with their centers, or 3/4 of their points inside the bounding box, was chosen because the user survey on inclusion in selections that intersected the robot indicated that erring on the side of including partially-selected robots was preferable. 
+
+If a path begins on a robot, it is the ``drag robot'' gesture, which is typically used by experiment participants to move an individual robot. 
+The criteria for deciding that a path begins on a robot is the same as that used for deciding if a tap is intended to select a robot, as described below. 
 
 Tap gestures are handled separately from strokes. 
 If a tap gesture is on a robot, it is treated as selection of that robot. 
@@ -65,25 +70,24 @@ Doubletap is the end-of-command gesture, and so is not treated as a waypoint or 
 The gestures are then passed to the robot program generator, which adds them to a stack as they arrive. 
 When the user terminates the gesture by either issuing an explict end-of-gesture double-tap, or by issuing a new selection gesture, which ends the previous command and begins a new one. 
 
-
 \section{Translation Into Programs}
 At the outset of this work, it had been hoped that there existed some form of transformation from the language defined by creating a formal description of an unambiguous subset of the user gestures to a potential language of robot behaviors. 
 While the language of robot behaviors is itself not terribly well-defined, approaches such as the flavors of AutoMoDe and Supervisory Control Theory hint that the output language would likely be able to be represented as a DFA or PA, and so the resulting programs could then be amenable to analysis using a model checker such as PRISM \citep{KNP11}.
 
-However, the user gesture language as defined by this work is actually quite vague, when it comes to allowing a robot to perform the expected actions. 
+However, the user gesture language as defined by this work is actually quite vague, when it comes to commanding a robot to perform the expected actions. 
+Alan Perlis has been quoted as saying ``When someone says `I want a programming language in which I need only say what I wish done,' give him a lollipop.'' , but regrettably, the user gesture language is just such a language, in part due to the design of the experiment \citep{PerlisYaleLolz}.  
 Users were told to assume that the system was capable of understanding their orders, so they merely had to indicate what they wanted the system to do, and it would then do it. 
-Alan Perlis has been quoted as saying ``When someone says `I want a programming language in which I need only say what I wish done,' give him a lollipop.'' \citep{PerlisYaleLolz}.  
-Such systems are substantially more difficult than the recipients of lollipops expect, because they rely on a large amount of \emph{a priori} information shared between the person issuing the command, and the system executing it. 
+A system where the computer does what the user wishes done is more difficult to implement than the recipients of lollipops expect, because they rely on a large amount of \emph{a priori} information shared between the person issuing the command, and the system executing it. 
 
 For example, in the box-moving task, the users would frequently move the robots to surround the box, and then move the robots to the goal area. 
 However, one might expect that robot control programs would attempt to avoid obstacles, and so would just go around a box. 
 Without the knowledge that boxes are acceptable to push against, no motion would occur, and the robots would in fact actively resist being steered to push the box. 
 Even this knowledge shows the limitations of the gesture as a way of conveying a program to a robot.
 The user data set does not have clear gestures for conveying that box-pushing is desirable, how to recognize the presence of a box, how to tell one box from potential other boxes, or how to convey that any particular object can be pushed, rather than just boxes. 
-Instead, users seemed to assume that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told.
+Instead, users assumed that the robots understood, as the user did, that the box was a thing that could be moved, and so did not have to be told.
 
 Because the user gestures did not convey all of the information required to perform tasks, there is not a transformation that could operate purely on the user input to produce a program as output. 
-Instead, the output program also has to include elements of planning and other knowledge. 
+Instead, the output program combines algorithms chosen by the system developer with parameterization from the user input. 
 Because the system was intended to operate in a potentially unknown environment, the bug, dispersion, and occlusion-based transportation algorithms discussed in the previous section were used. 
 If the environment were known, or communication were assumed to be reliable, other algorithms could be used. 
 Indeed, the translation layer could be modified to switch algorithms based on the parameters of the swarm it is creating programs for and their environment. 
@@ -102,7 +106,7 @@ The gesture sequence is then translated into a program that is parsed by the Lar
 Lark is an Earley parser, and so can parse all context-free grammars, although the current gesture language is not sufficiently complex to actually need this level of power. 
 The resulting parse tree is then walked to generate GCPR programs that implement the algorithms described in Chapter \ref{chapter:Implementation_of_Swarm_Actions}.
 
-Basic movement to points is implemented using the variant of TangentBug. \todo{address real-world implementation of tangent bug, also GCPR composition}
+Basic movement to points is implemented using the variant of TangentBug.
 Path following and formation combines the basic movement to points with a sequence of GCPR instructions that implement a program counter, and set the goal based on the program counter. 
 As each point is either reached or determined to be unreachable, the goal is advanced to the next point.
 For motion along paths, the goals are set to points along the path, ending at the final goal. 
@@ -133,6 +137,37 @@ As with the original occlusion-based manipulation, this algorithm is ignorant of
 However, as the system can accept a path for the object to be pushed on, the user can attempt to specify a clear path for the robots to move the object along. 
 
 \section{Interpretation of Programs}
+
+The robot algorithms were implemented as GCPR programs, and interpreted by a separate process for each robot. 
+
+The GCPR interpreter starts with a single-line GCPR program that halts the robot, so all robots are stationary until they receive a new program. 
+Programs are sent to each robot as ROS messages. 
+When a robot receives a program, it begins executing it immediately. 
+The GCPR interpreter runs at 100Hz, so 100 times per second, it evaluates the guards of each GCPR tuple, makes a list of all the commands whose guards evaluate to be true, and executes each command. 
+The GCPR interpreter also implements a number of convenience methods such as is\_near\_front(), which returns true if any of the sensors on the front of the robot detect an object near them. 
+The convenience methods are boolean, and intended to be used to create guards by boolean combinations of convenience methods with each other and with direct assertions about the sensors or other states of the robot. 
+These methods are regarded as conveniences because they could be implemented as direct boolean statements about the sensor information of the robot, but the resulting GCPR statements would be extremely verbose. 
+
+The interpreter also contains the implementations of the commands for the GCPR statements. 
+The complexity of a command in GCPR is not limited. 
+Because the system operates in the real world, at some point commands must result in changes to the state of physical actuators, and so the most atomic interactions might be simply the setting or clearing of given digital outputs. 
+However, there is a trade-off between the complexity of the resulting commands and their utility to human users for writing programs. 
+Carrying the complexity of the GCPR commands to the other extreme, the entire program could be implemented as the GCPR tuple (true, move\_to\_goal(), 1.0), which, under any condition, with probability 1.0, calls a command that moves the robot to the goal location. 
+The resulting GCPR is quite compact, but the complexity is moved to the command implementation, where it becomes difficult to evaluate with formal methods. 
+
+In seeking a balance between excessive conciseness in the expression of commands and excessive complexity in their implementation, the current implementation provides basic motion in lines, arcs, and rotation in place, and turning to face a given direction. 
+There are also a number of methods to set and clear variables such as hit points, used in bug algorithms, and program counters, used in a number of GCPR implementations. 
+All other complexity of the commands is contained in the GCPR statements which combine and control the motions, rather than in the motions themselves. 
+For a future system, it may be more interesting to implement the swarm primitives suggested by McLurikin or Nagpal as commands themselves, and then allow more complex GCPR programs to use those commands \citep{mclurkin2004stupi, nagpal2004catalog}.
+However, it then becomes incumbent on the implementer to ensure that the command implementations are correct. 
+Having simple motions as commands eases correctness checking, as the motion will be performed, under the assumption that the motors are functional and the robot's path is unobstructed. 
+
+If the commands are only outputs, the flow of information within the GCPR interpreter also becomes somewhat clearer. 
+The sensor data is updated via callbacks triggered by ROS sensor information messages arriving, and is then used to evaluate the guards, and depending on which guards are true, commands are called to produce output. 
+If the commands themselves are required to operate on sensor precepts, then the result of calling a command can change depending on the sensor information available when the precept is called.
+Increasing the complexity of the commands also increases the time they take to execute, and so may present issues for operating the GCPR interpretation loop at 100Hz. 
+The current implementation can very quickly set the desired motor speeds for a given motion and then return execution to the next command.
+All of these factors argue in favor of keeping the GCPR commands close to motor primitives for the robot system, and keeping complexity in the control program in the GCPR code, rather than the commands. 
 
 %\chapter{Compiler Verification}
 %

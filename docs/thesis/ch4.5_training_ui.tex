@@ -171,4 +171,18 @@ Adding a set of commands that are only to the interface, and not to the robots, 
 Adding a second set of commands also creates additional opportunities for ambiguity, as the commands to the user interface and to the robots must be separate, so that the interface can determine which commands influence it, and which commands are intended to be converted into programs for the robots. 
 The conversion of user gestures to robot programs was of more interest for this work, but in future it would be useful to determine what commands users might want to issue to the interface, and how they can be separated from commands to the robots. 
 
+The tasks presented in the experiment were intended to have an overlap with the tasks from \citep{micire2010multi} for purposes of comparison, but also to have a reasonable degree of coverage of actions the user might want to have robots perform. 
+However, there is no task for sensor overwatch, or any other task that requires that the robots be pointed in a certain direction. 
+As a consequence, the gesture set is somewhat agnostic to gestures that would allow the user to specify a heading for the robots to face. 
+It could be argued that in this particular experiment, as the user was told to assume that the robots could execute the task they were given, that the robots will end up pointing whatever direction they need to point to complete the task. 
+As a result, if the task was sensor overwatch, the robots would be positioned such that their sensor fields overlapped the desired area.
+
+This lacuna in the range of gestures elicited by the experiment points to a more interesting element of the experiment design for future research. 
+Heading is a quality of an individual robot (although, clearly, a swarm can point to a common heading), and so heading gestures could be elicited in a single robot case. 
+It may be useful to consider what actions can be reasonably regarded as single robot actions, such as facing a direction, turning in place, controlled movements, and so on, and compare the gestures selected to perform those actions on a single robot with the same actions, applied to a swarm. 
+In addition to providing a very fine-grained treatment of control gestures, the extension of the gestures to swarms may reveal interesting qualities of the participants' thinking about the swarm. 
+For example, if a swarm is commanded to rotate in place, do users expect each robot to move on an arc around the centroid of the swarm, or each robot to rotate in place to a new heading?
+In either case, how is the expectation reflected in the gesture used?
+Based on the results of this work, particularly in the unknown number of robots or ``cloud'' case, the participants' understanding of the swarm as a single entity would likely override their thinking of it as a large number of individuals, and so they would likely expect the swarm to reorient with some robots moving on arcs around the centroid of the swarm, rather than each robot rotating in place. 
+
 
