@@ -6,6 +6,7 @@
 
 #Load the all_participant data and get the times of the examples out of it
 import json
+import rosbag
 
 infile = "/home/ams/TinyRoboData/all_participants.json"
 
@@ -77,6 +78,7 @@ for prt in examples.keys():
 
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
+				import pdb; pdb.set_trace()
 				#TODO need to do a time check in here
 				#Actually, first pass through, get all the strokes that are occuring in the time range, and get their IDs
 				#next pass, remove anything with the ID of a c u r s e d   s t r o k e
