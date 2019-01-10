@@ -7,8 +7,22 @@
 #Load the all_participant data and get the times of the examples out of it
 import json
 import rosbag
+import rospy
+import os
+import fnmatch
+import yaml
 
-infile = "/home/ams/TinyRoboData/all_participants.json"
+#From https://stackoverflow.com/questions/1724693/find-a-file-in-python
+def find(pattern, path):
+    result = []
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if fnmatch.fnmatch(name, pattern):
+                result.append(os.path.join(root, name))
+    return result
+
+
+infile = "/home/ams/uml/TinyRoboData/all_participants.json"
 
 with open(infile, 'r') as all_data:
 	data = json.loads(all_data.read())
@@ -65,23 +79,51 @@ for prt in data.keys():
 #For mapping participant numbers to conditions
 cmap = {0:'X',1:'1',2:'10',3:'100',4:'1000'}
 
-for prt in examples.keys():
-	for task in examples[prt].keys():
-		cond = cmap[((int(prt)-1) % 5)]
 
-		#Load up the target bag and the bag to clean up
+for prt in examples.keys():
+
+	cond = cmap[((int(prt)-1) % 5)]
+
+	#Get the start time of the bag from the original bagfile
+	originalPath = "./Experiment_Run_Bags/p{0}/".format(prt)
+	fnamePattern = "id_{0}_cond_{1}_*.bag".format(prt, cond)
+
+	originalFile = find(fnamePattern, originalPath)
+
+	assert len(originalFile) > 0
+
+	#Load the info from it so we can get the real start time
+	info = yaml.load(rosbag.Bag(originalFile[0], 'r')._get_yaml_info())
+	
+	#get the real start time 
+	originalStart = rospy.Time.from_sec(info['start'])
+
+	for task in examples[prt].keys():
+		
+		#Load up the bag to clean up and a new bag to put the results in 
 		name = "user-{}_cond-{}_task-{}.bag".format(prt, cond, task)
 		outBagName = "user-{}_cond-{}_task-{}_no_example.bag".format(prt, cond, task)
 		bag = rosbag.Bag(name)
 		outBag = rosbag.Bag(outBagName, 'w')
 
+		#Get the time ranges that are blocked
+		blockedTimes = examples[prt][task]
+
+		purgeStrokes = []
+		for topic, msg, t in bag.read_messages():
+			if topic == "/touches":
+
+				import pdb; pdb.set_trace()
+				#Convert the time of this message to a coding time by subtracting
+				#the bag start time from it
+				deltaT = t - originalStart
+
+				#TODO if the message overlaps a blocked time, add its frame id to the 
+				#list of strokes to purge
 
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
-				import pdb; pdb.set_trace()
-				#TODO need to do a time check in here
-				#Actually, first pass through, get all the strokes that are occuring in the time range, and get their IDs
-				#next pass, remove anything with the ID of a c u r s e d   s t r o k e
-				if outBag is not None:
-					outBag.write(topic, msg, t)
+				if msg.frame not in purgeStrokes:
+					if outBag is not None:
+						outBag.write(topic, msg, t)
 
