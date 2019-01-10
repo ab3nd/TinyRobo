@@ -96,7 +96,8 @@ for prt in examples.keys():
 	info = yaml.load(rosbag.Bag(originalFile[0], 'r')._get_yaml_info())
 	
 	#get the real start time 
-	originalStart = rospy.Time.from_sec(info['start'])
+	#originalStart = rospy.Time.from_sec(info['start'])
+	originalStart = info['start']
 
 	for task in examples[prt].keys():
 		
@@ -113,13 +114,22 @@ for prt in examples.keys():
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
 
-				import pdb; pdb.set_trace()
 				#Convert the time of this message to a coding time by subtracting
 				#the bag start time from it
-				deltaT = t - originalStart
+				asCodeTime = t.to_sec() - originalStart
 
-				#TODO if the message overlaps a blocked time, add its frame id to the 
+				#if the message overlaps a blocked time, add its frame id to the 
 				#list of strokes to purge
+				for blt in blockedTimes:
+					start = blt[0]
+					end = blt[1]
+					if abs(asCodeTime - start) < 0.2 or abs(asCodeTime-end) < 0.2:
+						#It's near the start or end time
+						purgeStrokes.append(msg.header.frame_id)
+					elif start <= asCodeTime <= end:
+						#It's between the start and end times
+						purgeStrokes.append(msg.header.frame_id)
+					
 
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
