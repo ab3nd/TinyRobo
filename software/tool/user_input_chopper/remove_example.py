@@ -129,11 +129,11 @@ for prt in examples.keys():
 					elif start <= asCodeTime <= end:
 						#It's between the start and end times
 						purgeStrokes.append(msg.header.frame_id)
-					
+
 
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
-				if msg.frame not in purgeStrokes:
+				if msg.header.frame_id not in purgeStrokes:
 					if outBag is not None:
 						outBag.write(topic, msg, t)
 
