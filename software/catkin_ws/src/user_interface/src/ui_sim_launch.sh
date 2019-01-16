@@ -4,7 +4,7 @@
 # system by replicating a "group" tag "n" times, then executing the resulting
 # launch file. This script also launches Argos. 
 
-ARGOS_CFG=/home/ams/TinyRobo/software/catkin_ws/src/argos_ros_bridge/argos_worlds/live_ui_arena.argos
+ARGOS_CFG=/home/ams/uml/TinyRobo/software/catkin_ws/src/argos_ros_bridge/argos_worlds/live_ui_arena.argos
 argos3 -c $ARGOS_CFG &
 
 # The number of robots.  This should match the 'quantity' value in the argos world file (e.g. argos_worlds/demo.argos).

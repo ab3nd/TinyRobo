@@ -73,5 +73,3 @@ void DifferentialTranslator::cmdCallback(const geometry_msgs::Twist::ConstPtr& m
 
 	motorPub.publish(mvc);
 }
-
-
