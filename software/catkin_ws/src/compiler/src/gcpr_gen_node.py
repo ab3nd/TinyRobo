@@ -15,7 +15,6 @@ import math
 import re
 from lark import Lark, UnexpectedInput
 
-
 class ProgSender(object):
 	def __init__(self):
 		self.robotPubs = {}
@@ -381,8 +380,9 @@ class ProgGen(object):
 
 	def parseGestures(self, gesture_list):
 		#Get a list of the gestures
-		#prog_str = " ".join([g.eventName for g in gesture_list])
-
+		prog_str = " ".join([g.eventName for g in gesture_list])
+		#Log it for debugging/testing
+		rospy.logwarn("Program: {}".format(prog_str))
 		#Generate a code string from the gestures in the buffer
 		prog = []
 		for g in gesture_list:
