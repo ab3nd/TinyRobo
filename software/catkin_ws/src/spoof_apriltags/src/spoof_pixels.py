@@ -10,7 +10,7 @@ import numpy as np
 
 parser = argparse.ArgumentParser(description='Publish AprilTag messages based on the command line rather than actual tags.')
 parser.add_argument('img_path', action='store', help='path to image file to use')
-parser.add_argument('--rate', dest='pub_rate', action='store', default=10,
+parser.add_argument('--rate', dest='pub_rate', action='store',type=int, default=10,
                     help='rate setting, default is 10Hz')
 
 args = parser.parse_args()
@@ -47,15 +47,16 @@ for c in contours:
 # cv2.imshow("mask", img)
 # cv2.waitKey(0)
 
-
+rospy.init_node('faketags', anonymous=True)
 #TODO set up apriltag publisher
 
+
 #set up my rate based on the command line arg
-r = rospy.Rate(args.rate)
+r = rospy.Rate(args.pub_rate)
 while not rospy.is_shutdown():
 	
 	for robot in robot_centers:
-		pass
+		print robot
 		#TODO publish the tag
 
 	r.sleep()
