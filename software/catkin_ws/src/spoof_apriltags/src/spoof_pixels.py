@@ -4,7 +4,7 @@
 
 import argparse
 import rospy
-from apriltags_ros.msg import *
+#from apriltags_ros.msg import *
 import cv2
 import numpy as np
 
@@ -15,12 +15,6 @@ parser.add_argument('--rate', dest='pub_rate', action='store', default=10,
 
 args = parser.parse_args()
 
-def hsv_color_getter(event,x,y,flags,param):
-	if event == cv2.EVENT_MOUSEMOVE:
-		print hsv[y,x]
-	#Get the color of the pixel under the mouse
-	#Convert to HSV
-	#Draw it on the image?
 
 #Load image
 img = cv2.imread(args.img_path)
@@ -42,33 +36,26 @@ contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX
 #cv2.drawContours(img, contours, -1, (0,255,0), 3)
 
 #Get their centers in pixels 
+robot_centers = []
 for c in contours:
 	M = cv2.moments(c)
 	cX = int(M["m10"] / M["m00"])
 	cY = int(M["m01"] / M["m00"])
-	cv2.circle(img, (cX, cY), 7, (0, 255, 0), -1)
+	#cv2.circle(img, (cX, cY), 7, (0, 255, 0), -1)
+	robot_centers.append((cX, cY))
 
-cv2.imshow("mask", img)
-cv2.waitKey(0)
-# # Bitwise-AND mask and original image
-# res = cv2.bitwise_and(img,img, mask= mask)
-
-# # # Setup SimpleBlobDetector parameters.
-# params = cv2.SimpleBlobDetector_Params()
- 
-# # # Change thresholds
-# params.minThreshold = 10;
-# params.maxThreshold = 200;
-
-# detector = cv2.SimpleBlobDetector(params)
-# points = detector.detect(res)
-
-# #Draw the keypoints with circles around them
-# im_with_keypoints = cv2.drawKeypoints(res, points, np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
- 
-# # Show keypoints
-# cv2.imshow("Keypoints", im_with_keypoints)
-# cv2.setMouseCallback('Keypoints', hsv_color_getter)
+# cv2.imshow("mask", img)
 # cv2.waitKey(0)
 
-# print args.pub_rate
+
+#TODO set up apriltag publisher
+
+#set up my rate based on the command line arg
+r = rospy.Rate(args.rate)
+while not rospy.is_shutdown():
+	
+	for robot in robot_centers:
+		pass
+		#TODO publish the tag
+
+	r.sleep()
