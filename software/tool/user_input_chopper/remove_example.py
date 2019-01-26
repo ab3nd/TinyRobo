@@ -22,7 +22,7 @@ def find(pattern, path):
     return result
 
 
-infile = "/home/ams/uml/TinyRoboData/all_participants.json"
+infile = "/home/ams/TinyRoboData/all_participants.json"
 
 with open(infile, 'r') as all_data:
 	data = json.loads(all_data.read())
@@ -85,11 +85,12 @@ for prt in examples.keys():
 	cond = cmap[((int(prt)-1) % 5)]
 
 	#Get the start time of the bag from the original bagfile
-	originalPath = "./Experiment_Run_Bags/p{0}/".format(prt)
+	originalPath = "/home/ams/TinyRoboData/Experiment_Run_Bags/p{0}/".format(prt)
 	fnamePattern = "id_{0}_cond_{1}_*.bag".format(prt, cond)
 
 	originalFile = find(fnamePattern, originalPath)
-
+	print originalFile
+	
 	assert len(originalFile) > 0
 
 	#Load the info from it so we can get the real start time

@@ -62,4 +62,7 @@ for topic, msg, t in bag.read_messages():
 		print ".",
 		touchCounter += 1
 		if outBag is not None:
-			outBag.write(topic, msg, t)
+			try:
+				outBag.write(topic, msg, t)
+			except ValueError as e:
+				print "Caught touch on unopened bag"
