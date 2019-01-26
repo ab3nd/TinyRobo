@@ -90,8 +90,9 @@ for prt in examples.keys():
 
 	originalFile = find(fnamePattern, originalPath)
 	print originalFile
-	
-	assert len(originalFile) > 0
+
+	if not len(originalFile) > 0:
+		continue
 
 	#Load the info from it so we can get the real start time
 	info = yaml.load(rosbag.Bag(originalFile[0], 'r')._get_yaml_info())
