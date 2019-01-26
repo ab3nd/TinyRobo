@@ -227,11 +227,18 @@ As discussed above, the other functions had limited agreement between users, and
 Because user UI interactions were in various locations around the screen, they are not able to be directly converted to UI interactions with the interface as implemented. 
 However, as UI interactions only constitute 3.4\% of the recorded interactions, this is not a large loss. 
 
-Tasks where the user interactions fell outside of what the UI could be expected to recognize serve as negative examples.
+Tasks where the user interactions fell outside of what the UI would be expected to recognize serve as negative examples.
 They are unlikely to be correctly recognized, and so should not form acceptable sequences of commands. 
 Despite the fact that this constitutes a failure, it is a desirable result, because if they are recognized and converted to robot programs, they are unlikely to accurately capture the user's intent. 
 
 \todo{put values here when scripts/tests complete}
 
 
+\begin{table}
+\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l}
+task & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18\\
+user & & & & & & & & & & & & & & & & & & &\\
 
+\end{tabular}
+\caption{Participant gesture sets by participant and task. Those marked with a -1 do not apply to that participant, such as the dispersion task in the single robot case. Those marked with a 0 contain gestures the gesture recognizer is not expected to recognize, while those marked with a 1 contain only recognizable gestures. }\label{tab:recognizable gestures}
+\end{table}
