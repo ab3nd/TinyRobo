@@ -132,10 +132,21 @@ for prt in examples.keys():
 						#It's between the start and end times
 						purgeStrokes.append(msg.header.frame_id)
 
+		#import pdb; pdb.set_trace()
+		purgeStrokes = list(set(purgeStrokes))
+		print purgeStrokes
 
+		purged = set()
+		kept = set()
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
 				if msg.header.frame_id not in purgeStrokes:
 					if outBag is not None:
 						outBag.write(topic, msg, t)
+						kept.add(msg.header.frame_id)
+				else:
+					purged.add(msg.header.frame_id)
+		outBag.close()
 
+		print "Kept {}".format(kept)
+		print "Purged {}".format(purged)
