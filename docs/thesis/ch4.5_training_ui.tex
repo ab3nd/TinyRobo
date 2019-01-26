@@ -1,9 +1,9 @@
 % !TeX root = ams_thesis.tex
-\chapter{UI Design for High Training}
+\chapter{UI Design for Trained Users}
 \thispagestyle{fancy}
 
 The work which this study is built on was motivated in part by the idea of using robots in search and rescue (SAR) operations, to explore damaged buildings, enter unsafe areas, and provide additional senses and coverage while reducing risk to first responders \citep{micire2010multi}.
-First responders are trained on the equipment they use, but such training may be infrequent, and so complex control systems may not be remembered when the time comes to use the equipment. 
+First responders are trained on the equipment they use, but such training may be infrequent, and as a result, complex control systems may not be remembered when the time comes to use the equipment. 
 Because a SAR situation may develop rapidly, there is little or no time available for retraining, and so use with first responders prioritizes easy learning of the interface and use with minimal training over depth of the possible commands.  
 
 However, SAR is not the only domain in which swarm robots might be used, and so considering only the gestures which maximize the ability of untrained users ignores domains where it is possible to train the users extensively. 
@@ -13,7 +13,7 @@ In such a context, adding complexity to the gesture set could allow for addition
 
 Because user experience of video games does have some effect on their use of the user interface described in this work, it is interesting to examine other aspects of video games, and how they might be applied to user interface design for swarm robotics. 
 
-It has been argued that the use of game-like user interfaces is inappropriate for the design of applications, but better suited to training material\citep{thomas1994games}. The basis for using a game-like user interface for an application is that games are engaging, and as a result, using a similar interaction paradigm should yield an engaging application. 
+It has been argued that the use of game-like user interfaces is inappropriate for the design of applications, but better suited to training material \citep{thomas1994games}. The basis for using a game-like user interface for an application is that games are engaging, and as a result, using a similar interaction paradigm should yield an engaging application. 
 However, the dissimilarities in user motivation make this approach less useful. 
 Games are played for the sake of their own play, rather than to accomplish a task outside of the game. 
 Challenge and complexity are controlled in the game to make the play more rewarding, but extending this to applications for external tasks means making the tasks more difficult than they have to be, which will be a difficult proposition for end users to accept. 
@@ -28,7 +28,7 @@ For example, a game that includes an element where the player rides a horse may 
 However, games do not always provide tutorials, and the lack of tutorial content, or the low quality of tutorials when present has been cited as a potential usability issue in games \citep{pinelle2008heuristic}.
 
 The tutorial level of video games is usually somewhat separate from the main content of the game, in that actions in the tutorial have limited or no consequences in future gameplay. 
-This raises a potential issue for implementation in a robot control system. 
+This raises a potential issue for implementation of game-style tutorials in a robot control system. 
 If the system allows untrained users to control real robots in a tutorial mode, the user may make an error that does have permanent consequences for the future use of the system, such as causing a collision between robots. 
 If, instead, the system allows the user to operate a simulation, the design and development overhead of implementing the tutorial is quite large, for a component of the system that the user may use very rarely or never. 
 This dilemma may restrict pre-use tutorials to training the user as to which gestures the system can recognize, and only permit a sketch of the possible robot reactions to those gestures. 
@@ -51,7 +51,7 @@ Some users made gestures over the screen, as if sinking their fingers into sand 
 Others used the edge of a finger (typically the index finger) or the heel of the flat hand to push robots, as if they were sweeping them along a countertop. 
 These sorts of physical gestures are in line with the expectation of NUI that the system can leverage the user's existing intuition about physical objects to guide their interaction with the screen. 
 
-However, these gestures are prone to some degree of technological difficulty. 
+However, detecting and using these gestures is prone to some degree of technological difficulty. 
 Gestures made off of the screen, in the space above it, would require additional sensing to detect, such as a depth camera pointed down at the screen or towards the user from the front (or both). 
 These gestures could be mapped back into the space of the screen by flattening them to the areas that they occur over, but the use of a sensed volume could also provide the path towards operating a UAV swarm in a direct manner. 
 The user could use free space gestures to define boundaries for the swarm, or push the swarm around directly. 
@@ -66,9 +66,9 @@ The viewport might also need to be movable, as the user may wish to view the sha
 In addition to the possible issues with gestures in space over the screen, the technology of the multitouch interface can constrain the available gestures. 
 The Microsoft Surface tracks contacts as areas with a shape, centroid, and so forth. 
 In software operating on the Surface, finger contact points are typically approximated as ovals, and distinguished from larger contact points such as the heel of the user's hand, by their size. 
-The multitouch screen used in this work tracks up to 20 contact points, but it treats them as points, each representing a single pixel location on the screen. 
 As a result, if the user extends their fingers and places the edge of their hand on the screen, and then slides their hand along the screen, the Surface will report a single oval, much longer than it is wide, moving along the screen. 
-The 3M Multitouch screen reports a large number of individual contacts in the region under the user's hand, rather than a region.
+The multitouch screen used in this work tracks up to 20 contact points, but it treats them as points, each representing a single pixel location on the screen. 
+If the user preforms a sweep with the edge of their hand, the screen will a large number of individual contacts in the region under the user's hand, rather than a region.
 As a consequence, gestures that use a region of the hand other than the fingertip are difficult to recognize on the 3M screen. 
 
 \section{Gesture Modification}
@@ -93,7 +93,7 @@ For an overview of the neurological basis of bimanual coordination and the vario
 Having each hand performing a different gesture is cognitively demanding, compared to having one hand remain still or perform the same gesture as the other hand, so designs that allow one hand to remain still will be easier to use than those that require e.g. drawing different symbols with each hand. 
 
 Another participant gesture that made use of formations was the use of an adverb in the gesture language as described in Section \ref{sec:user_manipulation}. 
-The participant in that section used one finger to draw paths for the robots to follow, but specified that if two fingers were used to draw the path, the robots should follow the path while remaining in their current positions relative to each other. 
+The participant used one finger to draw paths for the robots to follow, but specified that if two fingers were used to draw the path, the robots should follow the path while remaining in their current positions relative to each other. 
 Modifying path drawing in this way allowed the participant to form the robots into a scoop-shaped formation, and then move the scoop to position the crate in the crate manipulation tasks. 
 
 As with the formation command example above, the gesture is an extension of a previous gesture, but with an addition to disambiguate it. 
@@ -159,9 +159,7 @@ For example maintaining the consistency may result in commands such as sending o
 
 \section{Missing Gestures}
 
-Neither the consideration of ``superuser'' gestures nor the interface designed from naive user gestures considered certain types of user interaction. 
-
-The tasks specified in the experiment did not include gestures intended as commands to the user interface itself, such as commands to change the view of the robots. 
+Neither the consideration of ``superuser'' gestures nor the interface designed from naive user gestures considered certain types of user interaction. For example, the tasks specified in the experiment did not include gestures intended as commands to the user interface itself, such as commands to change the viewpoint from which the user was observing the robots. 
 One participant did suggest the use of reverse pinch as a zoom gesture, as is frequently used on cell phones, for a task where the user had to interact with one robot in a group. 
 By zooming in, the user expected to have that robot cover more of the view, and so be easier to interact with. 
 The user interface also did not ask the user to alter the color of individual robots, despite having some situations where the robots were divided into groups by color. 
@@ -185,4 +183,22 @@ For example, if a swarm is commanded to rotate in place, do users expect each ro
 In either case, how is the expectation reflected in the gesture used?
 Based on the results of this work, particularly in the unknown number of robots or ``cloud'' case, the participants' understanding of the swarm as a single entity would likely override their thinking of it as a large number of individuals, and so they would likely expect the swarm to reorient with some robots moving on arcs around the centroid of the swarm, rather than each robot rotating in place. 
 
+\section{Gesture Coverage}
 
+Related to missing gestures, that is to say, gestures that were not elicited by the design of the experiment, is the question of gesture coverage. 
+Because  there was no constraint on the gestures the users could choose, all of the users performed (or described) some form of interaction for each task they were presented with. 
+There was no case where a user was presented with a task, but could not complete it because they did not have a gesture available, because any gesture they could imagine and physically perform was available. 
+
+However, once the user gestures were codified into an interface, there is a limitation on which gestures are acceptable and which are not. 
+As a consequence, a situation may arise where the available gestures in the interface do not provide the user with a way to complete the task. 
+In this case, the coverage would be incomplete: the set of gestures does not cover all the possible tasks. 
+
+Determining that all possible tasks are covered by a fixed set of gestures may not be a useful problem to attempt to solve. 
+Without a method of determining the likelyhood of each situation, and the cost of failing to respond effectively to it with the given interface, significant effort would be expended on situations that my simply never arise. 
+For a real-world SAR application, a preferable approach may be to provide a set of gestures covering a range of abstractnesses, with simple motion to a point at one end, and more complex behaviors such as formations, specialized forms of dispersion, and area searches at the other end. 
+By providing different granularities of control in this manner, the user can use the more complex behaviors when they recognize a situation in which such behavior is useful, and attempt to cross gaps in the gesture coverage by combining the simple behaviors. 
+Some hope for the validity of this approach is to be found in the use of single robot movement gestures, repeated for each robot, to send the robots to formation by some participants in the 10 robot case. 
+Rather than suggest a ``formation'' gesture, these participants combined gestures they had already created for motion to a point, and used them to perform the formation task. 
+In the case of a gap in the gesture coverage, similar ingenuity and the availability of relatively fine-grained basic actions may allow users to complete the task despite the lack of coverage. 
+However, some care must be taken to ensure that the basic actions scale well with the swarm size. 
+The use of single robot moves to enter formation is possible with more than ten robots, but becomes prohibitively tedious. 
