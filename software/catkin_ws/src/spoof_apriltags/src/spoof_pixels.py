@@ -20,6 +20,7 @@ args = parser.parse_args()
 #Load image
 img = cv2.imread(args.img_path)
 
+rospy.loginfo("Spoofing with {}".format(args.img_path))
 #Convert image to B&W by getting rid of all non-red pixels
 # Convert BGR to HSV
 hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -34,7 +35,7 @@ mask = mask1 | mask2 | mask3
 mod_img, contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 #Draw the contours
-# cv2.drawContours(img, contours, -1, (0,255,0), 3)
+#cv2.drawContours(img, contours, -1, (0,255,0), 3)
 
 #Get their centers in pixels 
 robot_centers = []
@@ -53,8 +54,8 @@ for c in contours:
     box = np.int0(box)
     robot_centers.append((cX, cY, box))
 
-# cv2.imshow("mask", img)
-# cv2.waitKey(0)
+#cv2.imshow("mask", img)
+#cv2.waitKey(0)
 
 rospy.init_node('faketags', anonymous=True)
 # set up apriltag publisher
@@ -62,6 +63,14 @@ tagPub = rospy.Publisher('tag_detections', AprilTagDetectionArray, queue_size=10
 
 #set up my rate based on the command line arg
 r = rospy.Rate(args.pub_rate)
+
+#Correction because the images were smaller than the screen, and 
+#were displayed centered in the screen, so the logged location of the user
+#touches are in screen coordinates, and the detected robot location is in 
+#image coordinates. 
+fudge_x = 150 # (height of screen (1050) - height of image (750))/2
+fudge_y = 340 # (width of screen (1680) - width of image (1000))/2
+
 while not rospy.is_shutdown():
     
     
@@ -76,15 +85,15 @@ while not rospy.is_shutdown():
 
         #Size is fixed, location based on image
         t.size = 0.051
-        t.tagCenterPx.x = robot[0]
-        t.tagCenterPx.y = robot[1]
+        t.tagCenterPx.x = robot[0] + fudge_x
+        t.tagCenterPx.y = robot[1] + fudge_y
         t.tagCenterPx.z = 0.0
         
         #Corners from rotated bounding box in image
         for corner in robot[2]:
             c = Point()
-            c.x = corner[0]
-            c.y = corner[1]
+            c.x = corner[0] + fudge_x
+            c.y = corner[1] + fudge_y
             c.z = 0 #Tags are flat in the image
             t.tagCornersPx.append(c)
         

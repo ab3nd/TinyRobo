@@ -32,16 +32,12 @@ for topic, msg, t in bag.read_messages():
 		newMsg = Kivy_Event()
 		newMsg.uid = int(msg.header.frame_id)
 		newMsg.point.x = msg.point.x
-		newMsg.point.y = 1050 - msg.point.y #Flip to pixel coords
+		newMsg.point.y = 1050 - msg.point.y #Flip to pixel coords, Kivy is upside down
 		newMsg.point.z = 0.0 #Should this be different? It's on a screen.
 
 		#Start time is based on whether this touch has started already
 		if msg.header.frame_id not in started_touches.keys():
 			#This message is the first of its kind, update its start and update values
-			# sec_f = rospy.Time.to_sec(t)
-			# sec = int(math.floor(sec_f))
-			# nsec = rospy.Time.to_nsec(t) - 1000000000 * sec_f
-
 			newMsg.start.secs = t.secs
 			newMsg.start.nsecs = t.nsecs
 
@@ -54,16 +50,12 @@ for topic, msg, t in bag.read_messages():
 		else:
 			#This message is part of a sequence that already started
 			#Use the stored start time
-			# sec_f = rospy.Time.to_sec(started_touches[msg.header.frame_id])
-			# sec = int(math.floor(sec_f))
-			# nsec = rospy.Time.to_nsec(started_touches[msg.header.frame_id]) - 1000000000 * (sec_f
 			newMsg.start.secs = started_touches[msg.header.frame_id].secs
 			newMsg.start.nsecs = started_touches[msg.header.frame_id].nsecs
 
 			#Use the new time as update time
-			#sec_f = rospy.Time.to_sec(t)
-			newMsg.update.secs = t.secs #int(math.floor(sec_f))
-			newMsg.update.nsecs = t.nsecs #rospy.Time.to_nsec(t) - 1000000000 * sec_f
+			newMsg.update.secs = t.secs
+			newMsg.update.nsecs = t.nsecs
 		
 		#The end time and ended state of this message will be set in the reverse pass
 		newMsg.ended = False

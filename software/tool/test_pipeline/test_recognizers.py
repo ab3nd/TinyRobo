@@ -6,6 +6,8 @@ import roslaunch
 import rospy
 import argparse
 import subprocess
+import os
+import fnmatch
 
 #Map of tasks to task numbers
 # task 								1	10	100	1000	Unknown    task ID number
@@ -28,8 +30,6 @@ import subprocess
 # Patrol screen						10	16	16	16		14			16
 # Patrol A							11	17	17	17		15			17
 # Disperse								18	18	18		16			18
-
-
 
 p_to_cond = {0:0, 1:1, 2:10, 3:100, 4:1000}
 
@@ -61,7 +61,7 @@ def getSlideFile(taskID, condition):
 		fname = "/home/ams/TinyRobo/software/catkin_ws/src/user_interface/src/unknown/Swarm_Robot_Control_-_Unknown_Number_of_Robots_{0:04d}.png".format(slide)	
 	elif condition == '1':
 		slide = (task_and_cond_to_slide[0][int(taskID)] * 2) + 1
-		fname = "/home/ams/TinyRobo/software/catkin_ws/src/user_interface/src/{0}/Swarm_Robot_Control_-_{0}_Robot_{1:04d}.png".format(condition, slide)
+		fname = "/home/ams/TinyRobo/software/catkin_ws/src/user_interface/src/{0}/Swarm_Robot_Control_-_Single_Robot_{1:04d}.png".format(condition, slide)
 	else:
 		#Compute slide number 
 		slide = (int(taskID) * 2) + 1
@@ -71,6 +71,25 @@ def getSlideFile(taskID, condition):
 	else:
 		raise ValueError("Couldn't get a slide file name for condition {0}, task {1}".format(condition, task))
 	
+
+#From https://stackoverflow.com/questions/1724693/find-a-file-in-python
+def find(pattern, path):
+    result = []
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if fnmatch.fnmatch(name, pattern):
+                result.append(os.path.join(root, name))
+    return result
+
+def get_bagfile_path():
+	path = "/home/ams/.ros"
+	pattern = "recognizer_test*"
+
+	#Get the files
+	files = find(pattern, path)
+
+	#Because the file names contains dates, this should more or less get the oldest one
+	return sorted(files)[0]
 
 
 # Start up all the nodes
@@ -92,6 +111,7 @@ args = parser.parse_args()
 #Build the path to the image to use from the command line argument bag file
 inputFile = args.bagfileName[0]
 chunks = inputFile.split("-")
+user = chunks[1].split("_")[0]
 condition = chunks[2].split("_")[0]
 task = chunks[3].split("_")[0]
 
@@ -100,8 +120,9 @@ task = chunks[3].split("_")[0]
 spoofFile = getSlideFile(task, condition)
 
 #invoke the spoof april tag recognizer 
+rospy.loginfo("Spoofing AprilTag pixel locations with {}".format(spoofFile))
 spooftagsP = subprocess.Popen(["python", "/home/ams/TinyRobo/software/catkin_ws/src/spoof_apriltags/src/spoof_pixels.py", spoofFile])
-rospy.loginfo("Spoofing AprilTag pixel locations")
+
 
 # wait briefly while they come on line
 rospy.sleep(3)
@@ -121,3 +142,8 @@ rospy.sleep(2)
 spooftagsP.terminate()
 launch.shutdown()
 
+#Get the resulting bagfile
+bag = get_bagfile_path()
+
+#Move it to an appropriately named directory
+os.renames(bag, "u{0}_c{1}_t{2}/u{0}_c{1}_t{2}_gestures.bag".format(user,condition,task))
