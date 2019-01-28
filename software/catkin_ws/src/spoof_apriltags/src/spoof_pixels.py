@@ -68,8 +68,8 @@ r = rospy.Rate(args.pub_rate)
 #were displayed centered in the screen, so the logged location of the user
 #touches are in screen coordinates, and the detected robot location is in 
 #image coordinates. 
-fudge_x = 150 # (height of screen (1050) - height of image (750))/2
-fudge_y = 340 # (width of screen (1680) - width of image (1000))/2
+fudge_x = 340 #150 # (height of screen (1050) - height of image (750))/2
+fudge_y = 150 #340 # (width of screen (1680) - width of image (1000))/2
 
 while not rospy.is_shutdown():
     
