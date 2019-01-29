@@ -124,6 +124,15 @@ rospy.loginfo("Spoofing AprilTag pixel locations with {}".format(spoofFile))
 spooftagsP = subprocess.Popen(["python", "/home/ams/TinyRobo/software/catkin_ws/src/spoof_apriltags/src/spoof_pixels.py", spoofFile])
 
 
+#Launch a bagfile recording process 
+ouputbagfile = "/home/ams/.ros/u{0}_c{1}_t{2}.bag"
+rosbagNode = roslaunch.core.Node('rosbag', 'record', name=None, namespace='/', 
+                 machine_name=None, args='-O {}'.format(ouputbagfile), 
+                 respawn=False, respawn_delay=0.0, 
+                 remap_args=None, env_args=None, output=None, cwd=None, 
+                 launch_prefix=None, required=False, filename='<unknown>')
+launch.launch(rosbagNode)
+
 # wait briefly while they come on line
 rospy.sleep(3)
 
@@ -142,8 +151,15 @@ rospy.sleep(2)
 spooftagsP.terminate()
 launch.shutdown()
 
+#Wait a few seconds for the bagfiles to stop being active
+rospy.sleep(3)
+
 #Get the resulting bagfile
-bag = get_bagfile_path()
+#bag = get_bagfile_path()
 
 #Move it to an appropriately named directory
-os.renames(bag, "u{0}_c{1}_t{2}/u{0}_c{1}_t{2}_gestures.bag".format(user,condition,task))
+os.renames(outputbagfile, "u{0}_c{1}_t{2}/u{0}_c{1}_t{2}_gestures.bag".format(user,condition,task))
+
+#Bring the debug image in there too, so I can see what happened
+image = find("test.png", "/home/ams/.ros")[0]
+os.renames(image, "u{0}_c{1}_t{2}/u{0}_c{1}_t{2}_gestures.png".format(user,condition,task))

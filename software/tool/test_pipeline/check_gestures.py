@@ -32,7 +32,7 @@ fname = "/home/ams/TinyRoboData/all_participants.json"
 data_file = open(fname, 'r')
 data = json.loads(data_file.read())
 
-for directory in get_dir_list("./", "^u[0-9]+_c*"):
+for directory in sorted(get_dir_list("./", "^u[0-9]+_c*")):
 
     #get the user, condition, and task from the directory name
     user, cond, task = directory.split('_')
@@ -47,8 +47,8 @@ for directory in get_dir_list("./", "^u[0-9]+_c*"):
         startTime = bagInfo['start']
     else:
         #This means the bag has no recognized gestures
-        print bagname
-        print "-- No recognized gestures --"
+        print bagname, ",,,"
+        print "-- No recognized gestures --,,,"
         print ''
         continue
 
@@ -81,8 +81,14 @@ for directory in get_dir_list("./", "^u[0-9]+_c*"):
     elif len(coded_gestures) > len(detected_gestures):
         detected_gestures = detected_gestures + pad
 
-    print bagname
-    print "{0:<23}{1}".format("detected", "coded")
+    # print bagname
+    # print "{0:<23}{1}".format("detected", "coded")
+    # for g1, g2 in zip(detected_gestures, coded_gestures):
+    #     print "{0: <14}{1: <9}{2: <14}{3}".format(g1[0], g1[1], g2[0], g2[1])
+    # print ""
+
+    print bagname,",,,"
+    print "{0},,{1},".format("detected", "coded")
     for g1, g2 in zip(detected_gestures, coded_gestures):
-        print "{0: <14}{1: <9}{2: <14}{3}".format(g1[0], g1[1], g2[0], g2[1])
+        print "{0},{1},{2},{3}".format(g1[0], g1[1], g2[0], g2[1])
     print ""
