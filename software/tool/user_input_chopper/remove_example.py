@@ -22,7 +22,7 @@ def find(pattern, path):
     return result
 
 
-infile = "/home/ams/uml/TinyRoboData/all_participants.json"
+infile = "/home/ams/TinyRoboData/all_participants.json"
 
 with open(infile, 'r') as all_data:
 	data = json.loads(all_data.read())
@@ -85,12 +85,14 @@ for prt in examples.keys():
 	cond = cmap[((int(prt)-1) % 5)]
 
 	#Get the start time of the bag from the original bagfile
-	originalPath = "./Experiment_Run_Bags/p{0}/".format(prt)
+	originalPath = "/home/ams/TinyRoboData/Experiment_Run_Bags/p{0}/".format(prt)
 	fnamePattern = "id_{0}_cond_{1}_*.bag".format(prt, cond)
 
 	originalFile = find(fnamePattern, originalPath)
+	print originalFile
 
-	assert len(originalFile) > 0
+	if not len(originalFile) > 0:
+		continue
 
 	#Load the info from it so we can get the real start time
 	info = yaml.load(rosbag.Bag(originalFile[0], 'r')._get_yaml_info())
@@ -130,10 +132,21 @@ for prt in examples.keys():
 						#It's between the start and end times
 						purgeStrokes.append(msg.header.frame_id)
 
+		#import pdb; pdb.set_trace()
+		purgeStrokes = list(set(purgeStrokes))
+		print purgeStrokes
 
+		purged = set()
+		kept = set()
 		for topic, msg, t in bag.read_messages():
 			if topic == "/touches":
 				if msg.header.frame_id not in purgeStrokes:
 					if outBag is not None:
 						outBag.write(topic, msg, t)
+						kept.add(msg.header.frame_id)
+				else:
+					purged.add(msg.header.frame_id)
+		outBag.close()
 
+		print "Kept {}".format(kept)
+		print "Purged {}".format(purged)
