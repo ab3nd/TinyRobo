@@ -23,7 +23,13 @@ def find(pattern, path):
     return result
 
 #Given a directory, get the image path and the gesture bag path
-imagefile = find("*.png", sys.argv[1])[0]
+imagefile = find("*.png", sys.argv[1])
+if len(imagefile) == 0:
+	print "Could not find image in {}".format(sys.argv[1])
+	sys.exit(-1)
+else:
+	imagefile = imagefile[0]
+
 bagfile = find("*.bag", sys.argv[1])[0]
 
 
