@@ -32,7 +32,7 @@ fname = "/home/ams/TinyRoboData/all_participants.json"
 data_file = open(fname, 'r')
 data = json.loads(data_file.read())
 
-for directory in sorted(get_dir_list("./", "^u[0-9]+_c*")):
+for directory in sorted(get_dir_list("./good_run/", "^u[0-9]+_c*")):
 
     #get the user, condition, and task from the directory name
     user, cond, task = directory.split('_')
@@ -40,7 +40,7 @@ for directory in sorted(get_dir_list("./", "^u[0-9]+_c*")):
     cond = cond.strip("c")
     task = task.strip("t")
     #get the bagfile
-    bagname = find("{}_gestures.bag".format(directory), "./{}".format(directory))[0]
+    bagname = find("{}_gestures.bag".format(directory), "./good_run/{}".format(directory))[0]
     bag = rosbag.Bag(bagname)
     bagInfo = yaml.load(bag._get_yaml_info())
     if 'start' in bagInfo.keys():
