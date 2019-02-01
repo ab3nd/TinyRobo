@@ -28,7 +28,7 @@ def find(pattern, path):
     return result
 
 #Load the coding data
-fname = "/home/ams/TinyRoboData/all_participants.json"
+fname = "/home/ams/uml/TinyRoboData/all_participants.json"
 data_file = open(fname, 'r')
 data = json.loads(data_file.read())
 
