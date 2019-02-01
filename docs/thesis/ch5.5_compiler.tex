@@ -231,14 +231,107 @@ Tasks where the user interactions fell outside of what the UI would be expected 
 They are unlikely to be correctly recognized, and so should not form acceptable sequences of commands. 
 Despite the fact that this constitutes a failure, it is a desirable result, because if they are recognized and converted to robot programs, they are unlikely to accurately capture the user's intent. 
 
-\todo{put values here when scripts/tests complete}
+\subsection{Causes of Failed Recognition}
+
+The gesture recognition elements of the user interface were not the primary thrust of this research, and so were primarily implemented in order to be able to provide gestures to the gesture compiler to attempt to generate programs. 
+The effort to implement gesture recognition from scratch was undertaken because at the time, it was felt that collecting, assessing, and potentially training available gesture recognition systems was likely to take more time than implementing a simple recognition pipeline. 
+It is difficult to assess the percentages of correct gesture recognitions as opposed to incorrect ones, as the ground truth data, the coding of the gesture experiment data by human coders, uses different categories for describing some of the gestures than the recognition system was developed to target. 
+For example, a pinch gesture is frequently recognized as two drag gestures. 
+In the single robot case, for the task of bringing the robots together in a group two robot drag gestures would bring the robots together, and so have the desired result. 
+However, the recognition is still incorrect, as the gesture was a pinch, which the recognizers do not recognize because it is not a part of the gesture language. 
+Similarly, the coding does not distinguish between drags starting on a single specific robot and drags starting within the robot swarm, although their context of other actions frequently makes the user intent clear. 
+The recognition pipeline does distinguish drags starting on a robot from drags starting anywhere else, but because of a threshold in how close the start point has to be to the robots being on it, a drag that visibly does not start on a robot (and so may be coded as a non-robot drag) could still be recognized as a robot drag because it was close enough. 
+However, despite these difficulties, some causes of failed gesture recognitions were sufficiently common to merit description below. 
+%May they serve as a warning to others.  
+
+There are a number of causes of failed recognition of gestures when the recognizers are provided with recorded participant inputs from the experiment. 
+One cause is that the gesture made by the user is simply not one that the gesture recognizers can correctly recognize, and so any recognition they generate is incorrect. 
+Because the pinch gestures and the 5-fingered scattering motion used to disperse the swarm by some participants are not implemented in the gesture recognizers, the pinch gesture is usually recognized as either two separate paths, or as two attempts to drag robots, or one of each. 
+The 5-finger scatter is similarly recognized as 5 separate gestures, which may be paths if they are not over robots, or gestures to drag individual robots if they are. 
+
+When participants made gestures that had broad contact areas, the multitouch screen rendered them as ladder-like lines of nearby points. 
+In figure \ref{recogniser_fail_1}, the parallel lines of green points, especially visible on the left side, are points reported by the multitouch screen. 
+They do not, however, represent the location of the user's fingers.
+The user was using two fingers, located close to each other, to make the two arcing gestures visible in the data. 
+Because the two points were located too close to each other to be reliably detected as separate points, the screen reported a single, interpolated location instead of the location of each fingertip. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{../../software/tool/test_pipeline/good_run/u10_c1000_t6/u10_c1000_t6_gestures.png}
+	\caption{Result of a failed recognition, showing laddering between strokes and the system's guesses at the classes of each gesture.}
+	\label{recognizer_fail_1}
+\end{figure}
+
+Also apparent in the output in figure \ref{recognizer_fail_1} are substantial gaps in the lines of points constituting the participant's gestures. 
+These are locations where no points were recorded, likely due to stick-slip motion of the participant's finger, or a very light touch resulting in only intermittent detection of contact. 
+The destuttering functionality in the earlier stages of the gesture pipeline was intended to eliminate these gaps, but it has fixed thresholds for how large the gap can be before the strokes are considered separate. 
+Raising the thresholds so the gaps can be larger, in space or time, increases the risk that un-related gestures will be erroneously combined.
+
+The stutter and interpolation-induced separation of the  participant's gestures into multiple strokes results in the detection of multiple gestures for a sequence that the participant intended as one gesture. 
+On the right-hand gesture of figure \ref{recognizer_fail_1}, the tap selection gesture is followed by a tap-waypoint gesture, even though they should have been regarded as parts of a common gesture. 
+Tap selection followed by tapping a waypoint, and then the end-of-command gesture would constitute a valid program, and so there is a possibility that stutter and laddering could result in valid, but undesired input. 
+
+In addition to spuriously-detected gestures, stutter can cause gestures to not be detected. 
+Lasso detection requires that the angle between the two ends of the gesture around its centroid be relatively small. 
+If a section of the points at the beginning or end of the gesture is missing, the angle may be too open to detect correctly as a lasso. 
+Obviously, a missing range of points anywhere else on the on the lasso could also break it into two separate arcs, neither of which would be sufficient to be considered a lasso on its own. 
+
+In addition to light touches being regarded as intermittent contacts, another source of noise in the participant inputs was participants resting their fingers on the edges of the screen. 
+This behavior was not common, and was generally coded by human coders as an action that was not intended to be an interaction with the screen, as if the user had accidentally bumped it. 
+However, multitouch screens are prone to the Midas Touch problem, first seen in gaze-based UIs, where any contact on the screen (or any gaze direction) is considered an input for the computer \cite{jacob1990you}. 
+
+A more subtle Midas Touch problem afflicted participant attempts to use group selection. 
+There is a possible ambiguity between group selection gestures and single-robot drag gestures. 
+If a user places their finger on a single robot, and drags a circle starting at that robot, the gesture is interpreted as a command to have the robot drive around in a circle, starting and returning to its current location. 
+However, if the user draws a circle around a group of robots, the gesture is interpreted as a lasso selection of that group of robots. 
+Because the robots might be depicted as small on the screen, and so the user might not hit them precisely with a fingertip, it is possible to begin a robot drag gesture approximately a fingertip-width off the robot as well. 
+However, this threshold lead to a great many of the participants attempts at box selection being interpreted as commands to drag a single robot through the group, and attempts at lasso selection to be interpreted as commands to have a single robot move around the outside of the group. 
+This error also went the other way, where attempting to draw a figure, such as a box, in an area where there were already robots, would be recognized as a lasso selection, rather than a box.
+Combined with stutter, the problem becomes even worse, as a single box selection could be broken up into multiple drag commands issued in rapid sequence. 
+As selection finishes one command and begins another, each of these would be treated by the gesture compiler as a complete and valid program, leaving a trail of chaos through the middle of the swarm. 
+
+Similarly, multiple robots could have overlapping areas that would cause a tap between them to be regarded as a tap \emph{on} one of them, and so a selection of that robot.
+As a result, it may become impossible to command an individual robot to move to a new position within the swarm, as tapping the target location would simply select a nearby robot. 
+
+Lest it appear that all the gesture recognitions were fraught with error, in some cases the gesture detection worked perfectly and resulted in reasonable outputs, despite the fact that the input was collected well before the recognizers were written, and much of it was never selected for inclusion in the eventual gesture pipeline. 
+For example, see \ref{recognizer_win}, where eight robot drag gestures were correctly detected.
+ 
+ \begin{figure}
+ 	\centering
+ 	\includegraphics[width=\textwidth]{../../software/tool/test_pipeline/good_run/u8_c10_t10/u8_c10_t10_gestures.png}
+ 	\caption{Successful recognition of all gestures, moving eight of the robots to form a line with the other two. }
+ 	\label{recognizer_win}
+ \end{figure}
+ 
+In light of the gesture recognition's sensitivity to context, as well as the problems with stutter and light touches, this component of the system could be improved in a number of ways. 
+The problem of combining intermittent contacts might be approached by searching across a gap in the direction of motion implied by the last few contacts, and allowing an approximate match for points on the opposite side of the gap, assuming the implied direction of motion was similar, and the gap crossing time was in approximate agreement with the calculated velocities between the last few points leading to the gap. 
+Approaches such as this would require significant tuning of the parameters for the approximate matching, and so might work better for some users than others, as each user may have a different style of movement. 
+Also, such approaches require a buffering of user input to allow the matching, and if the buffering becomes too long, will feel unresponsive or ``laggy'' to the user. 
+
+Such a buffer might also be useful for deciding between two gestures that are ambiguous. 
+For example, if a gesture might be a box select or might be a command to move a single robot from the edge of the swarm across it to the other edge, and the next command is a gesture from the swarm center to a location away from the swarm, then it is more likely that the intended command was box selection of the entire swarm and movment to the selected point, than movement of a single robot and then movement of another single robot to another point. 
+However, even this is not certain, and so validation testing with users would be required to determine if making such a decision is always correct. 
+
+Incorporating visual feedback to the user, particularly of selection, but also of what portion of a path was detected and would be used in the resulting command, may also mitigate these problems. 
+If the user made a gesture intended as selection, but saw that no robots were selected, they could make an additional gesture to select before issuing their next command. 
+Indeed, the entire list of detected gestures could be made visible to the user, perhaps as a stack along one edge of the screen, and edited by rearranging or deleting gestures before sending to the swarm. 
+The current system dispatches gestures as they are recognized, and counts on the interpreter to convert them appropriately, which has some advantages in terms of responsiveness and simplicity, but disadvantages in terms of flexibility to the user and ability to undo gestures. 
+
+\section{Translation Testing}
+
+Translation testing is relatively straightforward. 
+Either a sequence of gestures is in the order and of the types needed to be a valid ``sentence'' in the gesture language, or it is not. 
+The recorded gesture sequences detected by the gesture detectors in the interface testing component, while they were being given the recorded participant input, were sent to a testing version of the gesture interpreter to see if they were detected as a valid sentence, or rejected. 
+
+\todo{Do this and report back, but it's like 1AM now, so do it tomorrow}
 
 
-\begin{table}
-\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l}
-task & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18\\
-user & & & & & & & & & & & & & & & & & & &\\
 
-\end{tabular}
-\caption{Participant gesture sets by participant and task. Those marked with a -1 do not apply to that participant, such as the dispersion task in the single robot case. Those marked with a 0 contain gestures the gesture recognizer is not expected to recognize, while those marked with a 1 contain only recognizable gestures. }\label{tab:recognizable gestures}
-\end{table}
+%\begin{table}
+%\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l}
+%task & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18\\
+%user & & & & & & & & & & & & & & & & & & &\\
+%
+%\end{tabular}
+%\caption{Participant gesture sets by participant and task. Those marked with a -1 do not apply to that participant, such as the dispersion task in the single robot case. Those marked with a 0 contain gestures the gesture recognizer is not expected to recognize, while those marked with a 1 contain only recognizable gestures. }\label{tab:recognizable gestures}
+%\end{table}
