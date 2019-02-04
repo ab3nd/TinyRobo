@@ -21,13 +21,21 @@ def dist(a, b):
 class PointConverter():
 	def __init__(self):
 		#Get the sizes of all the tags
-		all_tags = rospy.get_param('/apriltag_detector/tag_descriptions')
 		self.tagsizes = {0:0.051} #default, but we try to update it
-		for tag in all_tags:
-			self.tagsizes[tag['id']] = tag['size']
-
-		#For converting pixels to meters, and camera geometry math
-		self.conversion = 0.0
+		try:
+			all_tags = rospy.get_param('/apriltag_detector/tag_descriptions')
+			for tag in all_tags:
+				self.tagsizes[tag['id']] = tag['size']
+			#For converting pixels to meters, and camera geometry math
+			self.conversion = 0.0
+		except KeyError as e:
+			#We're running without april tag detection, so make up a bunch
+			#of fake tags. This is for testing the gesture compiler, not live runs			
+			for tag in range(1000):
+				#The default tag size I was using
+				self.tagsizes[tag] = 0.051
+			#Again, a fake value, gets reset in the real case
+			self.conversion = 20/0.051
 
 	def update_tags(self, tags_msg):
 		#We can use pretty much any tag, we just need to get the tag size
