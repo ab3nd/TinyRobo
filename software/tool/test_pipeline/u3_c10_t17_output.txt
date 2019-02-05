@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u3_c10_t17/u3_c10_t17_gestures.bag
+--> gesture ended
+
+Program: drag_robot tap_waypoint tap_waypoint path end
+
+No terminal defined for 't' at line 1 col 1564
+
+333) (0.108449903867,-0.980925240333) ] tap_waypoint [ (1326.38325144,898.229865
+                                        ^
+
+Expecting: set([Terminal(u'END')])
+
+
+done.

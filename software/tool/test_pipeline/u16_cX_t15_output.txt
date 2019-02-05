@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u16_cX_t15/u16_cX_t15_gestures.bag
+--> gesture ended
+
+Program: tap_waypoint path end
+
+No terminal defined for 't' at line 1 col 1
+
+tap_waypoint [ (1252.49562059,613.519150
+^
+
+Expecting: set([Terminal('__ANON_3'), Terminal('__ANON_2'), Terminal('__ANON_4'), Terminal('__ANON_7'), Terminal('__ANON_6'), Terminal('__ANON_8')])
+
+
+done.

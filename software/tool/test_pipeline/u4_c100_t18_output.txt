@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u4_c100_t18/u4_c100_t18_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_select drag_robot tap_select drag_robot tap_select tap_select end
+
+No terminal defined for 't' at line 1 col 624
+
+004) (-0.0437497726371,-0.3519007004) ] tap_select [ 67 ] drag_robot [ 30 ] [ (-
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4')])
+
+
+done.

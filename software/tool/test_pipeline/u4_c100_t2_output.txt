@@ -1,0 +1,91 @@
+
+========================================
+./good_run/u4_c100_t2/u4_c100_t2_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_select tap_select tap_select tap_select tap_select tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint end
+
+tap_select [ 61 ] tap_select [ 24 ] tap_select [ 32 ] tap_select [ 97 ] tap_select [ 94 ] tap_select [ 50 ] tap_waypoint [ (1217.36552019,680.823450423) ] tap_waypoint [ (1253.9807123,626.668416395) ] tap_waypoint [ (1259.66502884,605.106112857) ] tap_waypoint [ (1262.22553179,561.482955412) ] tap_waypoint [ (1258.02630696,526.958342235) ] tap_waypoint [ (1253.31498154,518.233710746) ] tap_waypoint [ (1229.86077456,490.564165166) ] tap_waypoint [ (1262.63521226,546.869197668) ] tap_waypoint [ (1112.18005921,376.146855068) ] tap_waypoint [ (880.403332621,344.925138096) ] end
+
+
+start
+  gohere
+    selection
+      gestureselect
+        tap_robot
+          robot_list
+            robot_id	61
+        tap_robot
+          robot_list
+            robot_id	24
+        tap_robot
+          robot_list
+            robot_id	32
+        tap_robot
+          robot_list
+            robot_id	97
+        tap_robot
+          robot_list
+            robot_id	94
+        tap_robot
+          robot_list
+            robot_id	50
+    path
+      waypoint
+        point_list
+          point
+            x	1217.36552019
+            y	680.823450423
+      waypoint
+        point_list
+          point
+            x	1253.9807123
+            y	626.668416395
+      waypoint
+        point_list
+          point
+            x	1259.66502884
+            y	605.106112857
+      waypoint
+        point_list
+          point
+            x	1262.22553179
+            y	561.482955412
+      waypoint
+        point_list
+          point
+            x	1258.02630696
+            y	526.958342235
+      waypoint
+        point_list
+          point
+            x	1253.31498154
+            y	518.233710746
+      waypoint
+        point_list
+          point
+            x	1229.86077456
+            y	490.564165166
+      waypoint
+        point_list
+          point
+            x	1262.63521226
+            y	546.869197668
+      waypoint
+        point_list
+          point
+            x	1112.18005921
+            y	376.146855068
+      waypoint
+        point_list
+          point
+            x	880.403332621
+            y	344.925138096
+
+
+
+---
+
+
+
+done.

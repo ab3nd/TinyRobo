@@ -1,0 +1,49 @@
+
+========================================
+./good_run/u26_cX_t10/u26_cX_t10_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_select tap_waypoint tap_waypoint tap_waypoint tap_waypoint end
+
+tap_select [ 0 ] tap_select [ 0 ] tap_waypoint [ (659.687978759,394.281624805) ] tap_waypoint [ (1117.50590533,981.760917997) ] tap_waypoint [ (1117.60832545,981.760917997) ] tap_waypoint [ (26.7316507462,961.320352794) ] end
+
+
+start
+  gohere
+    selection
+      gestureselect
+        tap_robot
+          robot_list
+            robot_id	0
+        tap_robot
+          robot_list
+            robot_id	0
+    path
+      waypoint
+        point_list
+          point
+            x	659.687978759
+            y	394.281624805
+      waypoint
+        point_list
+          point
+            x	1117.50590533
+            y	981.760917997
+      waypoint
+        point_list
+          point
+            x	1117.60832545
+            y	981.760917997
+      waypoint
+        point_list
+          point
+            x	26.7316507462
+            y	961.320352794
+
+
+
+---
+
+
+
+done.

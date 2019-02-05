@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u27_c1_t10/u27_c1_t10_gestures.bag
+--> gesture ended
+
+Program: drag_robot lasso_select end
+
+No terminal defined for 'l' at line 1 col 5707
+
+3172) (-1.27190781274,-1.01838153172) ] lasso_select [ 0 ] end
+                                        ^
+
+Expecting: set([Terminal(u'END')])
+
+
+done.

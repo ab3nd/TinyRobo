@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u6_cX_t16/u6_cX_t16_gestures.bag
+--> gesture ended
+
+Program: path drag_robot path drag_robot drag_robot tap_waypoint tap_waypoint tap_select path tap_waypoint tap_waypoint path tap_select end
+
+No terminal defined for 'p' at line 1 col 1
+
+path [ (-0.321374864956,-0.0064239890743
+^
+
+Expecting: set([Terminal('__ANON_3'), Terminal('__ANON_2'), Terminal('__ANON_4'), Terminal('__ANON_7'), Terminal('__ANON_6'), Terminal('__ANON_8')])
+
+
+done.

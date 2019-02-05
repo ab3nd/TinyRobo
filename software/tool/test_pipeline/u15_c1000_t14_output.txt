@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u15_c1000_t14/u15_c1000_t14_gestures.bag
+--> gesture ended
+
+Program: tap_select drag_robot end
+
+No terminal defined for 'e' at line 1 col 1745
+
+57) (-0.10538619953,-0.0801595889157) ] end
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4')])
+
+
+done.

@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u24_c100_t4/u24_c100_t4_gestures.bag
+--> gesture ended
+
+Program: drag_robot path tap_select drag_robot path end
+
+No terminal defined for 'p' at line 1 col 813
+
+86) (0.0155361125523,-0.252421205786) ] path [ (-0.881064961699,0.351765756706) 
+                                        ^
+
+Expecting: set([Terminal(u'END')])
+
+
+done.

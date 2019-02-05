@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u2_c1_t8/u2_c1_t8_gestures.bag
+--> gesture ended
+
+Program: path tap_waypoint tap_select end
+
+No terminal defined for 'p' at line 1 col 1
+
+path [ (1.11611197241,-1.08274126865) (1
+^
+
+Expecting: set([Terminal('__ANON_3'), Terminal('__ANON_2'), Terminal('__ANON_4'), Terminal('__ANON_7'), Terminal('__ANON_6'), Terminal('__ANON_8')])
+
+
+done.

@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u30_c1000_t4/u30_c1000_t4_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_select tap_select tap_select tap_waypoint tap_waypoint drag_robot drag_robot drag_robot tap_waypoint path path tap_waypoint tap_waypoint tap_waypoint path path tap_waypoint path tap_waypoint tap_waypoint tap_waypoint tap_waypoint path path tap_waypoint path path path path path path path box_select end
+
+No terminal defined for 'p' at line 1 col 5729
+
+point [ (437.743583483,681.415478988) ] path [ (-0.861215942869,-0.478395393231)
+                                        ^
+
+Expecting: set([Terminal('__ANON_5'), Terminal(u'END')])
+
+
+done.

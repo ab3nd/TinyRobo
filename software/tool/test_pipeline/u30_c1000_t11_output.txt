@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u30_c1000_t11/u30_c1000_t11_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_select tap_select box_select tap_select box_select end
+
+No terminal defined for 'b' at line 1 col 58
+
+] tap_select [ 340 ] tap_select [ 338 ] box_select [ 86 97 102 113 128 129 131 1
+                                        ^
+
+Expecting: set([Terminal(u'PATROL'), Terminal('__ANON_1'), Terminal('__ANON_0'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'PATH'), Terminal('__ANON_8')])
+
+
+done.

@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u30_c1000_t16/u30_c1000_t16_gestures.bag
+--> gesture ended
+
+Program: box_select end
+
+No terminal defined for 'e' at line 1 col 58
+
+8 39 40 41 42 43 44 45 46 47 48 49 50 ] end
+                                        ^
+
+Expecting: set([Terminal(u'PATROL'), Terminal('__ANON_1'), Terminal('__ANON_0'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'PATH')])
+
+
+done.

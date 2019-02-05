@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u29_c100_t6/u29_c100_t6_gestures.bag
+--> gesture ended
+
+Program: box_select box_select end
+
+No terminal defined for 'b' at line 1 col 394
+
+1 193 195 197 199 201 203 205 207 209 ] box_select [ 0 2 4 6 9 12 13 15 16 17 18
+                                        ^
+
+Expecting: set([Terminal(u'PATROL'), Terminal('__ANON_1'), Terminal('__ANON_0'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'PATH')])
+
+
+done.

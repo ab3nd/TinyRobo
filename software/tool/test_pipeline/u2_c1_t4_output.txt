@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u2_c1_t4/u2_c1_t4_gestures.bag
+--> gesture ended
+
+Program: path path path path end
+
+No terminal defined for 'p' at line 1 col 1
+
+path [ (-0.257126725059,-0.694993717765)
+^
+
+Expecting: set([Terminal('__ANON_3'), Terminal('__ANON_2'), Terminal('__ANON_4'), Terminal('__ANON_7'), Terminal('__ANON_6'), Terminal('__ANON_8')])
+
+
+done.

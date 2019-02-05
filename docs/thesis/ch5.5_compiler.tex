@@ -218,7 +218,7 @@ For those thirty tests, any example gestures that the participant made were remo
 As discussed above, a gesture to end the command was required in cases where a new command did not end the previous one, and so each sequence of user gestures had a end-of-command gesture added to its end. 
 Any end-of-command gestures that already existed in the gesture set were removed. 
 The double-tap gesture performed on empty areas of the screen was chosen as the end-of-command gesture. 
-\todo{how many?} users had used double-tap for other purposes, but its relative scarcity made it a good candidate for reservation for this purpose. 
+Double-tap as selection was 7.3\% of the selection gestures, but its relative scarcity as a proportion of all gestures made it a good candidate for reservation for this purpose. 
 Triple-tap is even more rarely used, and for that reason might have been a better option, but it is also more difficult to perform, which is a poor quality to have in a gesture that will be used at the end of almost every gesture sequence. 
 
 Not all of the participants made gestures that would be expected to be recognized by the gesture recognizers. 
@@ -278,22 +278,22 @@ Obviously, a missing range of points anywhere else on the on the lasso could als
 
 In addition to light touches being regarded as intermittent contacts, another source of noise in the participant inputs was participants resting their fingers on the edges of the screen. 
 This behavior was not common, and was generally coded by human coders as an action that was not intended to be an interaction with the screen, as if the user had accidentally bumped it. 
-However, multitouch screens are prone to the Midas Touch problem, first seen in gaze-based UIs, where any contact on the screen (or any gaze direction) is considered an input for the computer \cite{jacob1990you}. 
+However, multitouch screens are prone to the Midas Touch problem, first seen in gaze-based UIs, where any contact on the screen (or any gaze direction) is considered an input for the computer \citep{jacob1990you}. 
 
 A more subtle Midas Touch problem afflicted participant attempts to use group selection. 
 There is a possible ambiguity between group selection gestures and single-robot drag gestures. 
-If a user places their finger on a single robot, and drags a circle starting at that robot, the gesture is interpreted as a command to have the robot drive around in a circle, starting and returning to its current location. 
+If a user places their finger on a single robot, and drags a circle starting at that robot, the gesture is interpreted as a command to have the robot drive around in a circle.
 However, if the user draws a circle around a group of robots, the gesture is interpreted as a lasso selection of that group of robots. 
 Because the robots might be depicted as small on the screen, and so the user might not hit them precisely with a fingertip, it is possible to begin a robot drag gesture approximately a fingertip-width off the robot as well. 
 However, this threshold lead to a great many of the participants attempts at box selection being interpreted as commands to drag a single robot through the group, and attempts at lasso selection to be interpreted as commands to have a single robot move around the outside of the group. 
 This error also went the other way, where attempting to draw a figure, such as a box, in an area where there were already robots, would be recognized as a lasso selection, rather than a box.
 Combined with stutter, the problem becomes even worse, as a single box selection could be broken up into multiple drag commands issued in rapid sequence. 
-As selection finishes one command and begins another, each of these would be treated by the gesture compiler as a complete and valid program, leaving a trail of chaos through the middle of the swarm. 
+As selection finishes one command and begins another, each of these should be treated by the gesture translator as a complete and valid program, leaving a trail of chaos through the middle of the swarm. 
 
 Similarly, multiple robots could have overlapping areas that would cause a tap between them to be regarded as a tap \emph{on} one of them, and so a selection of that robot.
 As a result, it may become impossible to command an individual robot to move to a new position within the swarm, as tapping the target location would simply select a nearby robot. 
 
-Lest it appear that all the gesture recognitions were fraught with error, in some cases the gesture detection worked perfectly and resulted in reasonable outputs, despite the fact that the input was collected well before the recognizers were written, and much of it was never selected for inclusion in the eventual gesture pipeline. 
+Lest it appear that all the gesture recognitions were fraught with error, in some cases the gesture detection worked perfectly and resulted in reasonable outputs, despite the fact that the participant input was collected well before the recognizers were written, and much of it was never selected for inclusion in the eventual gesture pipeline. 
 For example, see \ref{recognizer_win}, where eight robot drag gestures were correctly detected.
  
  \begin{figure}
@@ -309,7 +309,7 @@ Approaches such as this would require significant tuning of the parameters for t
 Also, such approaches require a buffering of user input to allow the matching, and if the buffering becomes too long, will feel unresponsive or ``laggy'' to the user. 
 
 Such a buffer might also be useful for deciding between two gestures that are ambiguous. 
-For example, if a gesture might be a box select or might be a command to move a single robot from the edge of the swarm across it to the other edge, and the next command is a gesture from the swarm center to a location away from the swarm, then it is more likely that the intended command was box selection of the entire swarm and movment to the selected point, than movement of a single robot and then movement of another single robot to another point. 
+For example, if a gesture might be a box select or might be a command to move a single robot from the edge of the swarm across it to the other edge, and the next command is a gesture from the swarm center to a location away from the swarm, then it is more likely that the intended command was box selection of the entire swarm and movement to the selected point, than movement of a single robot and then movement of another single robot to another point. 
 However, even this is not certain, and so validation testing with users would be required to determine if making such a decision is always correct. 
 
 Incorporating visual feedback to the user, particularly of selection, but also of what portion of a path was detected and would be used in the resulting command, may also mitigate these problems. 
@@ -321,17 +321,57 @@ The current system dispatches gestures as they are recognized, and counts on the
 
 Translation testing is relatively straightforward. 
 Either a sequence of gestures is in the order and of the types needed to be a valid ``sentence'' in the gesture language, or it is not. 
-The recorded gesture sequences detected by the gesture detectors in the interface testing component, while they were being given the recorded participant input, were sent to a testing version of the gesture interpreter to see if they were detected as a valid sentence, or rejected. 
+The recorded gesture sequences detected by the gesture detectors in the interface testing component, while they were being given the recorded participant input, were sent to a testing version of the gesture interpreter to see if they were detected as a valid program, or rejected. 
 
-\todo{Do this and report back, but it's like 1AM now, so do it tomorrow}
+Four hundred forty-nine of the gestures resulting from the participant input were not accepted by the gesture translator. 
+The primary causes of failure of a gesture set to be regarded as a valid input program for the gesture translator are the gesture set starting with a path (115 instances) or starting with a waypoint (81 instances). 
+These problems arise any time that either the user did not begin a command with a selection, or the selection was mis-detected as a path. 
+As discussed in the previous section, selections could be mis-detected as paths for a number of reasons, including stutter. 
+Waypoints with no prior selection caused 15 failed translations, while paths with no prior selection caused 21 failures. 
+In these cases, rather than the the gesture set starting with the waypoint or path, the waypoint or path occurs at some point within the gesture set, but has no preceding selection. 
+The ultimate cause is similar to the cases where the gesture set starts with a waypoint or path, in that there is a waypoint or path that does not have a ``subject'' in the sentence for which the waypoint or path is the ``verb''.
+In total, this class of errors accounts for 232 of the rejected gesture sets, or approximately 52\% of the rejections. 
+This is not entirely unexpected, as the participants in the study were not required to perform selection gestures before waypoint or path gestures, and so many did not. 
 
+Tap selection was designed to not start new gestures so that tap selections could be chained to select multiple robots, as discussed in section \ref{acceptable_cmd_seqs}.
+However, as a result, alternating tap selections and commands would result in an error, as the tap selections that did not start the command would result in a translation error.
+One approach to deal with this issue would be to allow a tap selection that occurs after an action other than a tap selection to cause the previous gestures to be passed off to the parser as a command, while leaving the existing tap selection in the queue. 
+This behavior would be effective, but would require correction of the mis-recognition of waypoints as tap selects noted in the analysis of the gesture recognizers.
+Taps near robots are classified as tap selections, so that users would not have to precisely hit the robots in order to select them. 
+As previously noted, this can result in erroneous detections of taps intended as waypoints, but located near a robot, as tap selections. 
+Additionally, stutter could cause a path dragged over robots to break up into what would be recognized as tap selections. 
+If these tap selections resulted in the beginning of a new command and the execution of the previous gestures as a command, it could result in undesired movement of the robots. 
 
+Drag robot operations do not chain, which is to say that while issuing a single drag robot gesture is accepted, multiple drag robot gestures in a row are not. 
+It is likely a design oversight that drag robot commands are not treated as complete commands. 
+After all, in the design language, they constitute both a selection and a motion command in a single gesture, with an implied subject, as in the English sentence "Go!". 
+Were this oversight corrected, it might result in more of the participant gestures being accepted by the gesture translator. 
+However, this problem interacts with the mis-recognition of lasso and box selection gestures as drag robot operations. 
+Due to the common mis-recognition of box and lasso selections as drag robot gestures, many of these accepted gestures would be incorrect, and would result in undesired robot motion. 
+Finally, drag robot gestures were frequently used with the intent that the entire swarm would be commanded to move, but the gesture recognizers treated them as intended to send a single robot along the dragged path. 
+This caused some rejections of gesture sets because what the user intended as a selection and path was interpreted as a selection and a drag robot gesture, which is not regarded as a valid program because the selection has no meaning for the subsequent drag gesture. 
 
-%\begin{table}
-%\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l}
-%task & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18\\
-%user & & & & & & & & & & & & & & & & & & &\\
+Thirty-five of the gesture sets had no gestures in them. The lack of gestures is not an error, and was caused by the participants not touching the screen during their interaction with the system. 
+
+Thirty-seven of the gesture sets produced by running the participant gestures through the gesture detectors were acceptable to the gesture parser. 
+Seventeen of them consisted of a single robot drag. 
+Eleven of the accepted gesture sets were a set of tap selections followed by a sequence of waypoints, one more had a path instead of waypoints. 
+Finally, six gesture sets were treated as disperse gestures, of which only one was actually intended by the user as a disperse and occurred in the disperse task. 
+This is a design flaw that would probably best be solved by not treating the gestures as a strictly linear sequence, but only detecting a dispersal if all of the four or five strokes required to cause the detection overlap significantly. 
+However, this would require implementation of a parser capable of dealing with simultaneity. 
+The current parser is the Lark library, which, while a powerful parser, is intended for dealing with typical programming languages, which can be represented as a linear sequence of symbols \citep{LarkParser}. 
+An alternate approach would be to include as part of gesture recognition a layer which detects sets of 4-5 overlapping strokes diverging from a central point, and replaces all of the strokes with a single gesture element, which takes the place of the simultaneous gestures in a linear representation of the gesture sequence. 
+
+Ultimately, dealing with the issues in the gesture recognizers and gesture translation is an exercise in satisficing. 
+The causes of many of the errors were primarily effects of design decisions made earlier in the development process in order to support participant behaviors from the user study. 
+For example, the confusion between box selection and drag robot gestures was caused  by the ability to select a robot by touching near it rather than on it, which was intended to make user interactions easier. 
+Making the threshold for selection of a robot smaller would reduce these errors, but at the cost of making robot selection more difficult. 
+
 %
-%\end{tabular}
-%\caption{Participant gesture sets by participant and task. Those marked with a -1 do not apply to that participant, such as the dispersion task in the single robot case. Those marked with a 0 contain gestures the gesture recognizer is not expected to recognize, while those marked with a 1 contain only recognizable gestures. }\label{tab:recognizable gestures}
-%\end{table}
+%but treated as disperse u13 task 10, not disperse
+%but treated as disperse u14 task 10, not disperse
+%but treated as disperse u16 task 6, not disperse
+%but treated as disperse u18 task 18, disperse
+%but treated as disperse u19 task 4, not disperse
+%but treated as disperse u4 task 12, not disperse
+

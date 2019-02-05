@@ -1,0 +1,36 @@
+
+========================================
+./good_run/u2_c1_t9/u2_c1_t9_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_waypoint tap_waypoint end
+
+tap_select [ 0 ] tap_waypoint [ (907.95434431,709.490096744) ] tap_waypoint [ (749.510422071,631.280007324) ] end
+
+
+start
+  gohere
+    selection
+      gestureselect
+        tap_robot
+          robot_list
+            robot_id	0
+    path
+      waypoint
+        point_list
+          point
+            x	907.95434431
+            y	709.490096744
+      waypoint
+        point_list
+          point
+            x	749.510422071
+            y	631.280007324
+
+
+
+---
+
+
+
+done.

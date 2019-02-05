@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u24_c100_t12/u24_c100_t12_gestures.bag
+--> gesture ended
+
+Program: tap_select path tap_select path path end
+
+No terminal defined for 't' at line 1 col 770
+
+04) (-0.642354393139,-0.137050418104) ] tap_select [ 86 ] path [ (-1.03985711234
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'END')])
+
+
+done.

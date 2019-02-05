@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u6_cX_t15/u6_cX_t15_gestures.bag
+--> gesture ended
+
+Program: box_select tap_waypoint box_select end
+
+No terminal defined for 'b' at line 1 col 64
+
+ypoint [ (1047.1432844,381.132358776) ] box_select [ 0 ] end
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'END')])
+
+
+done.

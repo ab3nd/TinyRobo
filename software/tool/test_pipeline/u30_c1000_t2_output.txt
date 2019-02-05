@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u30_c1000_t2/u30_c1000_t2_gestures.bag
+--> gesture ended
+
+Program: tap_select drag_robot tap_select tap_select drag_robot path tap_select tap_select box_select path tap_waypoint path tap_waypoint tap_waypoint path tap_waypoint tap_waypoint tap_waypoint path tap_waypoint tap_waypoint path tap_waypoint path tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint path tap_waypoint tap_waypoint box_select end
+
+No terminal defined for 't' at line 1 col 931
+
+994) (0.342000238044,-0.332195496994) ] tap_select [ 86 ] tap_select [ 272 ] dra
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4')])
+
+
+done.

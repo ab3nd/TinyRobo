@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u3_c10_t9/u3_c10_t9_gestures.bag
+--> gesture ended
+
+Program: box_select tap_select tap_select tap_waypoint tap_waypoint end
+
+No terminal defined for 't' at line 1 col 34
+
+box_select [ 0 1 2 3 4 5 7 8 9 ] tap_select [ 0 ] tap_select [ 1 ] tap_wa
+                                 ^
+
+Expecting: set([Terminal(u'PATROL'), Terminal('__ANON_1'), Terminal('__ANON_0'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'PATH')])
+
+
+done.

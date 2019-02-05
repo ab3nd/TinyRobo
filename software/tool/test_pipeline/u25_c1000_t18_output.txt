@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u25_c1000_t18/u25_c1000_t18_gestures.bag
+--> gesture ended
+
+Program: path tap_waypoint box_select end
+
+No terminal defined for 'p' at line 1 col 1
+
+path [ (0.0957157017731,0.681827913755) 
+^
+
+Expecting: set([Terminal('__ANON_3'), Terminal('__ANON_2'), Terminal('__ANON_4'), Terminal('__ANON_7'), Terminal('__ANON_6'), Terminal('__ANON_8')])
+
+
+done.

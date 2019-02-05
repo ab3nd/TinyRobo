@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u10_c1000_t6/u10_c1000_t6_gestures.bag
+--> gesture ended
+
+Program: tap_select path tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_select tap_waypoint tap_waypoint tap_waypoint path end
+
+No terminal defined for 't' at line 1 col 1290
+
+ypoint [ (716.01904355,328.659932249) ] tap_select [ 135 ] tap_waypoint [ (1253.
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'END')])
+
+
+done.

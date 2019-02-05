@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u8_c10_t14/u8_c10_t14_gestures.bag
+--> gesture ended
+
+Program: drag_robot drag_robot end
+
+No terminal defined for 'e' at line 1 col 1035
+
+3632313,0.0999682180242) (-3.57982116168e-06,0.0995709356975) (0.00221637623218,
+                                        ^
+
+Expecting: set([Terminal('COMMA')])
+
+
+done.

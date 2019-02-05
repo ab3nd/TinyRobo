@@ -1,0 +1,34 @@
+
+========================================
+./good_run/u24_c100_t15/u24_c100_t15_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_select tap_waypoint end
+
+tap_select [ 41 ] tap_select [ 41 ] tap_waypoint [ (414.391796625,636.14087344) ] end
+
+
+start
+  gohere
+    selection
+      gestureselect
+        tap_robot
+          robot_list
+            robot_id	41
+        tap_robot
+          robot_list
+            robot_id	41
+    path
+      waypoint
+        point_list
+          point
+            x	414.391796625
+            y	636.14087344
+
+
+
+---
+
+
+
+done.

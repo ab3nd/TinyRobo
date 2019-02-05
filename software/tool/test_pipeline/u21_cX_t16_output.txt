@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u21_cX_t16/u21_cX_t16_gestures.bag
+--> gesture ended
+
+Program: box_select end
+
+No terminal defined for 'e' at line 1 col 18
+
+box_select [ 0 ] end
+                 ^
+
+Expecting: set([Terminal(u'PATROL'), Terminal('__ANON_1'), Terminal('__ANON_0'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'PATH')])
+
+
+done.

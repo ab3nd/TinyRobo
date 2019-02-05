@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u19_c100_t15/u19_c100_t15_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_waypoint tap_waypoint tap_waypoint tap_select tap_select tap_waypoint tap_waypoint tap_waypoint tap_select tap_waypoint tap_waypoint path tap_waypoint path tap_waypoint end
+
+No terminal defined for 't' at line 1 col 160
+
+point [ (451.058198798,212.123783074) ] tap_select [ 28 ] tap_select [ 28 ] tap_
+                                        ^
+
+Expecting: set([Terminal(u'PATH'), Terminal('__ANON_5'), Terminal('__ANON_4'), Terminal(u'END')])
+
+
+done.

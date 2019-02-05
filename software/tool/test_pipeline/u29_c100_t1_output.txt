@@ -1,0 +1,16 @@
+
+========================================
+./good_run/u29_c100_t1/u29_c100_t1_gestures.bag
+--> gesture ended
+
+Program: drag_robot drag_robot drag_robot end
+
+No terminal defined for 'd' at line 1 col 4046
+
+011) (0.502098245186,-0.948936581011) ] drag_robot [ 6 ] [ (0.134369054231,-0.81
+                                        ^
+
+Expecting: set([Terminal(u'END')])
+
+
+done.

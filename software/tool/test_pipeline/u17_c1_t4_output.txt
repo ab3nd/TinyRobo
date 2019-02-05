@@ -1,0 +1,66 @@
+
+========================================
+./good_run/u17_c1_t4/u17_c1_t4_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint tap_waypoint end
+
+tap_select [ 0 ] tap_waypoint [ (558.906582842,585.413373211) ] tap_waypoint [ (529.20474868,566.967009491) ] tap_waypoint [ (488.236701559,469.687368389) ] tap_waypoint [ (679.352641377,367.671498764) ] tap_waypoint [ (984.35975219,678.14374218) ] tap_waypoint [ (1048.37232582,627.353923154) ] tap_waypoint [ (1118.01800592,539.546739097) ] tap_waypoint [ (996.547746208,366.674398022) ] end
+
+
+start
+  gohere
+    selection
+      gestureselect
+        tap_robot
+          robot_list
+            robot_id	0
+    path
+      waypoint
+        point_list
+          point
+            x	558.906582842
+            y	585.413373211
+      waypoint
+        point_list
+          point
+            x	529.20474868
+            y	566.967009491
+      waypoint
+        point_list
+          point
+            x	488.236701559
+            y	469.687368389
+      waypoint
+        point_list
+          point
+            x	679.352641377
+            y	367.671498764
+      waypoint
+        point_list
+          point
+            x	984.35975219
+            y	678.14374218
+      waypoint
+        point_list
+          point
+            x	1048.37232582
+            y	627.353923154
+      waypoint
+        point_list
+          point
+            x	1118.01800592
+            y	539.546739097
+      waypoint
+        point_list
+          point
+            x	996.547746208
+            y	366.674398022
+
+
+
+---
+
+
+
+done.

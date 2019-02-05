@@ -1,0 +1,46 @@
+
+========================================
+./good_run/u20_c1000_t2/u20_c1000_t2_gestures.bag
+--> gesture ended
+
+Program: tap_select tap_waypoint tap_waypoint tap_waypoint tap_waypoint end
+
+tap_select [ 147 ] tap_waypoint [ (1106.75179296,716.438642537) ] tap_waypoint [ (1187.76610614,605.853938414) ] tap_waypoint [ (917.581835383,381.506271554) ] tap_waypoint [ (892.488906522,364.804834132) ] end
+
+
+start
+  gohere
+    selection
+      gestureselect
+        tap_robot
+          robot_list
+            robot_id	147
+    path
+      waypoint
+        point_list
+          point
+            x	1106.75179296
+            y	716.438642537
+      waypoint
+        point_list
+          point
+            x	1187.76610614
+            y	605.853938414
+      waypoint
+        point_list
+          point
+            x	917.581835383
+            y	381.506271554
+      waypoint
+        point_list
+          point
+            x	892.488906522
+            y	364.804834132
+
+
+
+---
+
+
+
+done.
