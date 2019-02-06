@@ -1,0 +1,64 @@
+% !TeX root = ams_thesis.tex
+\chapter{Potential Directions for Future Work} \label{chapter:Future_work}
+\thispagestyle{fancy}
+
+The style of experiment described by Wobbrock \emph{et al.} was not used in this work because of the possibility that showing how the behavior is performed by the robots would influence the user's choice of gesture. 
+For example, if each robot moves in turn, it would suggest single-robot interactions, rather than group-oriented gestures. 
+However, participants did seem to expect some level of response or interactivity from the user interface. 
+Without a reaction from the interface, the participants appeared uncertain about their first actions, and so made incomplete sequences of actions. 
+However, since these were actions the user made, they did contribute, though possibly not significantly, to the total set of user actions.
+Showing the behavior of the system might allow the participants to be confident of making a gesture without the system reacting, since they had, essentially, already seen the reaction. 
+
+Another possible way to prevent these hesitant initial interactions would be to simply run the experiment with actual paper prototypes, rather than the prototype interface that participants saw in this experiment. 
+Since the participants would be able to see that the interface was paper, they would not expect it to react in the way that a computer-based system would. 
+Using paper prototypes would lose the ability to record participant input in the way that the screen did. 
+However, as discussed earlier, a technical flaw prevented recording of 20 participant inputs, and it was not a serious problem for the experiment, as the video recordings were sufficient to recover the participant interactions. 
+If the precise user contact points on the interface were required, a top-projected multitouch interface, such as the Mitsubishi Diamondtouch could be used without projection to record contact points on the paper. 
+	
+Another possible confounding element of this study was the size the robots were depicted on the screen.
+As can be seen in \ref{appendix_slides}, the size of the robots was diminished to keep the area of the swarm the same size and fit them all on the screen. 
+This may have made it easier for users to perform single-robot interactions with the sizes of robots used in the 1 and 10 robot conditions. 
+If the robots were all depicted in the same size as the 1000 robot case. 
+This small size, however, caused some users to question their ability to move the crate in the tasks requiring it, as the crate remained the same size.
+However, the crate could also be depicted at a size that seemed more manageable for the robots.  
+
+Rather than being concerned with the size of the depicted robots, it might be interesting to perform an experiment with a UI that does not depict the swarm location at all. 
+The utility of such a UI is debatable.
+While it would be impossible to have user feedback in such a UI, or to easily select some subset of the swarm, but it might be useful for commanding operation in an area where the robots are denied localization, or cannot communicate their location to the command computer due to the presence of hostile actors in the area. 
+It may be that the user gestures would cease to have subjects, and would consist only of the actions they wanted performed, or changes they wanted to see in the displayed environment. 
+	
+In the proposed UI, the communication channel back to the user from the swarm is implicit. 
+The swarm's behavior, as displayed to the user, allows the user to determine whether the team appears to be doing what the user commanded. 
+The use of path following to have the swarm follow the user's input was chosen because it was expected that it would provide clearer feedback than e.g. biased random walks or other strategies that may converge to the desired result, but would not be obvious that they were doing so. 
+However, this decision was not tested. 
+It may be that users would find other robot behaviors just as satisfactory, as long as the desired goal state was reached. 
+Such a test would likely be better done in simulation, as simulation would allow finer control over the robots' behavior and reliability than a hardware swarm. 
+
+Some of the design decisions made in the process of this work were reasonable choices when the work began, but more recent work shows alternative approaches that are also promising for the development of software architectures for development of swarm robots and programs to control them.
+One possible approach is the use of Supervisory Control Theory (SCT), rather than GCPR for the generation of robot control program. 
+SCT allows the generation of supervisors, which map uncontrollable events, such as sensor precepts, to controllable events, such as motor actions of the robot. 
+The ``uncontrollable events'' are only uncontrollable in the sense that they are outside of the realm of events that the robot can directly cause, not necessarily stochastic or otherwise not amenable to any form of control. 
+SCT has been applied to robotic systems, but without connection to user interfaces that would permit its use by non-programmers \citep{lopes2014application, lopes2016supervisory}.
+
+Another possible approach is the use of modular swarm robot behaviors, possibly combined with SCT by using the modular behaviors as the controllable events of the supervisor. 
+Using modular behaviors would allow easier debugging than GCPR, as conventional software development techniques could be used to produce the modules, which could then be reused. 
+This is in line with the design philosophy of ROS. 
+Recently, CMUSWARM and ROSBuzz were released, which provide swarm-oriented programming frameworks underpinned by ROS \citep{arpino2018using, DBLP:journals/corr/abs-1710-08843}.
+These tools were not available at the inception of this work, and would likely have greatly accelerated the development of the translation layer. 
+
+The development of standard, or at least commonly usable, tools for swarm robots would neatly dovetail with the possible development of a reference implementation for the hardware of swarm robots, as described by Francesca \emph{et al.} \cite{francesca2014experiment}.
+The robots developed as part of this work converged towards the design common to mROBerTO, Colias, Alice, GRITSBots, Jasmine, Amir, and the E-puck robots. 
+This common design is a platform with differential drive steering using a sealed drivetrain or direct-drive. 
+Even the Kilobots can be regarded as differential drive, although using vibration motors rather than wheels.
+The platforms are all capable of rotating in their own footprint, and equipped with omnidirectional sensing and communication, typically provided by IR sensors.
+They also all use the PCBs of the robot as the chassis, or a custom chassis which could be produced by 3D printing.  
+These reference implementations in both hardware and software would allow researchers to focus on the development of controllers and algorithms for swarms, rather than developing new swarm robots.
+It is hoped that this work will also allow future researchers to focus their efforts on fruitful avenues for the development of useful robot swarms.   
+
+%
+%Deal with the hardware first, rather than switching back and forth and only finding tag tracking problems late in the game. 
+%Ideal organization would have been to get the swarm working, then do the user experiment (or the other way around), and then focus on the translation layer
+%	Would have caught the convergence to gritsbots/colias/mroberto a lot earlier
+%	
+%Robots capable of monitoring their own battery charge and recharging themselves. 
+
