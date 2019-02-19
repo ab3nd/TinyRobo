@@ -16,11 +16,11 @@ However, as discussed earlier, a technical flaw prevented recording of 20 partic
 If the precise user contact points on the interface were required, a top-projected multitouch interface, such as the Mitsubishi Diamondtouch could be used without projection to record contact points on the paper. 
 	
 Another possible confounding element of this study was the size the robots were depicted on the screen.
-As can be seen in \ref{appendix_slides}, the size of the robots was diminished to keep the area of the swarm the same size and fit them all on the screen. 
+As can be seen in Appendix \ref{appendix_slides}, the size of the robots was diminished to keep the area of the swarm the same size and fit them all on the screen. 
 This may have made it easier for users to perform single-robot interactions with the sizes of robots used in the 1 and 10 robot conditions. 
-If the robots were all depicted in the same size as the 1000 robot case. 
-This small size, however, caused some users to question their ability to move the crate in the tasks requiring it, as the crate remained the same size.
-However, the crate could also be depicted at a size that seemed more manageable for the robots.  
+If the robots were all depicted in the same size as the 1000 robot case, this confound would be removed. 
+The small size of the robots in the 1000 robot case, however, caused some users to question their ability to move the crate in the tasks requiring it, as the crate remained the same size.
+The crate could also be depicted at a size that seemed more manageable for the robots.  
 
 Rather than being concerned with the size of the depicted robots, it might be interesting to perform an experiment with a UI that does not depict the swarm location at all. 
 The utility of such a UI is debatable.
@@ -29,7 +29,7 @@ It may be that the user gestures would cease to have subjects, and would consist
 	
 In the proposed UI, the communication channel back to the user from the swarm is implicit. 
 The swarm's behavior, as displayed to the user, allows the user to determine whether the team appears to be doing what the user commanded. 
-The use of path following to have the swarm follow the user's input was chosen because it was expected that it would provide clearer feedback than e.g. biased random walks or other strategies that may converge to the desired result, but would not be obvious that they were doing so. 
+The use of path following to have the swarm follow the user's input was chosen because it was expected that it would provide clearer feedback than biased random walks or other strategies which may converge to the desired result, but would not be obvious that they were doing so. 
 However, this decision was not tested. 
 It may be that users would find other robot behaviors just as satisfactory, as long as the desired goal state was reached. 
 Such a test would likely be better done in simulation, as simulation would allow finer control over the robots' behavior and reliability than a hardware swarm. 
@@ -46,7 +46,7 @@ This is in line with the design philosophy of ROS.
 Recently, CMUSWARM and ROSBuzz were released, which provide swarm-oriented programming frameworks underpinned by ROS \citep{arpino2018using, DBLP:journals/corr/abs-1710-08843}.
 These tools were not available at the inception of this work, and would likely have greatly accelerated the development of the translation layer. 
 
-The development of standard, or at least commonly usable, tools for swarm robots would neatly dovetail with the possible development of a reference implementation for the hardware of swarm robots, as described by Francesca \emph{et al.} \cite{francesca2014experiment}.
+The development of standard, or at least commonly usable, tools for swarm robots would neatly dovetail with the possible development of a reference implementation for the hardware of swarm robots, as described in \citep{francesca2014experiment}.
 The robots developed as part of this work converged towards the design common to mROBerTO, Colias, Alice, GRITSBots, Jasmine, Amir, and the E-puck robots. 
 This common design is a platform with differential drive steering using a sealed drivetrain or direct-drive. 
 Even the Kilobots can be regarded as differential drive, although using vibration motors rather than wheels.

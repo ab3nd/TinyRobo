@@ -278,7 +278,7 @@ The structure of the software framework is such that as available processing pow
 	\centering
 	\includegraphics[width=0.45\textwidth]{../swarm_table_no_bg_small}
 	\includegraphics[width=0.45\textwidth]{../overhead_view}
-	\caption{Swarm arena, showing top-down camera and robot area. The image to the left shows the camera view before ROS image rectification removes barrel distortion.} 
+	\caption{The image on the left shows the swarm arena. The top-down camera is mounted on the crossbar at the top. The image on the right shows the camera view before ROS image rectification removes barrel distortion.} 
 	\label{fig:robot_arena}
 \end{figure}
 
@@ -576,11 +576,11 @@ In the following descriptions of the motions of the robots, the directions left 
 	\centering
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_17.png}
-		\caption{Motion of toy car based robot\label{fig:car_motion}}
+		\caption{Motion of toy car based robot, showing long tracks across arena\label{fig:car_motion}}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_1.png}
-		\caption{Motion of big wheel robot\label{fig:big_wheel_motion}}
+		\caption{Motion of big wheel robot, showing no track due to the loss of tracking as the robot either did not move, or flipped over\label{fig:big_wheel_motion}}
 	\end{subfigure}
 	\caption{} %Triggers rendering of Figure label
 \end{figure}
@@ -599,11 +599,11 @@ In the remaining two runs, it did not move at all, possibly due to gears jamming
 \begin{figure}[h]
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_6.png}
-		\caption{Motion of 6-wheel bug\label{fig:bug_motion}}
+		\caption{Motion of 6-wheel bug, showing tight arcs and spirals caused by different motor speeds\label{fig:bug_motion}}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_0.png}
-		\caption{Motion of green tank\label{fig:green_tank_motion}}
+		\caption{Motion of green tank, showing one successful run and four tight spirals due to a stopped track on one side\label{fig:green_tank_motion}}
 	\end{subfigure}
 	\caption{} %Triggers rendering of Figure label
 \end{figure}
@@ -621,11 +621,11 @@ One tread drive did not move, while the other did, resulting in tight turns to t
 \begin{figure}[h]
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_8.png}
-		\caption{Motion of blue tank \#8\label{fig:tank_motion_8}}
+		\caption{Motion of blue tank \#8, showing lack of motion\label{fig:tank_motion_8}}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.47\textwidth}
 		\includegraphics[width=\textwidth]{../hardwareX_paper/robot_18.png}
-		\caption{Motion of blue tank \#18\label{fig:tank_motion_18}}
+		\caption{Motion of blue tank \#18, showing arc to the right on most runs, and overflow leading to sudden reverse (light yellow track)\label{fig:tank_motion_18}}
 	\end{subfigure}
 	\caption{} %Triggers rendering of Figure label
 \end{figure}
@@ -640,7 +640,7 @@ As with the 6-wheeled bug, this was likely the failure of the robot to move lead
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.47\textwidth]{../hardwareX_paper/robot_5.png}
-	\caption{Motion of bug robot}
+	\caption{Motion of bug robot, showing tendency towards the left and more erratic path than tracked or wheeled robots}
 	\label{fig:bug_robot}
 \end{figure}
 
