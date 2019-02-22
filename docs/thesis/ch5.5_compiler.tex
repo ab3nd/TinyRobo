@@ -7,7 +7,7 @@
 The user interface for the control system uses the Kivy window management library. 
 The UI uses ROS for its infrastructure, with the various components implemented as ROS nodes and communicating using ROS messages.
 The user interface layer receives images from the robot arena overhead camera, and displays them, appropriately overlaid with buttons, to the user. 
-The topmost layer receives user interactions in the form of contacts, and converts them to ROS touch events. The multitouch device emits a contact points that contain their location on the screen in cartesian coordinates, as well as identifiers for each contact.
+The topmost layer receives user interactions in the form of contacts, and converts them to ROS touch events. The multitouch device emits contact points that contain their location on the screen in cartesian coordinates, as well as identifiers for each contact.
 Kivy's multitouch device handling adds other event information, including whether the contact is a double or triple tap, when the touch was last updated, and whether the event has ended (the finger has been lifted), how far the touch has moved since the last update, and whether the touch is associated with the activation of certain hardware, such as the mouse scrollwheel.
 The majority of this metadata is not used. 
 For process in later layers of the gesture recognizer, only the start, end, and update times, whether the event is a double or triple tap, the location of the point, and its identifier are passed as a ROS message. 
@@ -219,8 +219,9 @@ In cases where a gesture sequence resulted in multiple parse attempts, each pars
 Due to a hardware misconfiguration during the user test, multitouch contact points were only recorded during the first thirty of the human subject tests. 
 For those thirty tests, any example gestures that the participant made were removed to prevent failures caused by the participant proposing alternative methods during a sequence of gestures, and so creating redundant gestures within the sequence. 
 As discussed above, a gesture to end the command was required in cases where a new command did not end the previous one, and so each sequence of user gestures had a end-of-command gesture added to its end. 
+As discussed previously, the double-tap gesture performed on empty areas of the screen was chosen as the end-of-command gesture. 
 Any end-of-command gestures that already existed in the gesture set were removed. 
-The double-tap gesture performed on empty areas of the screen was chosen as the end-of-command gesture. 
+Removing these gestures allowed the sequences of recognized gestures to also be passed into the translation layer without incorrectly terminating the gesture sequence.
 Double-tap as selection was 7.3\% of the selection gestures, but its relative scarcity as a proportion of all gestures made it a good candidate for reservation for this purpose. 
 Triple-tap is even more rarely used, and for that reason might have been a better option, but it is also more difficult to perform, which is a poor quality to have in a gesture that will be used at the end of almost every gesture sequence. 
 
@@ -296,6 +297,54 @@ As selection finishes one command and begins another, each of these should be tr
 Similarly, multiple robots could have overlapping areas that would cause a tap between them to be regarded as a tap \emph{on} one of them, and so a selection of that robot.
 As a result, it may become impossible to command an individual robot to move to a new position within the swarm, as tapping the target location would simply select a nearby robot. 
 
+To compare the recognized gestures to the data from the user experiment, the gestures from the user experiment were cleaned of example actions, leaving only the gestures that the users intended as their primary means of controlling the robots. 
+A comparison of the counts of the detected gestures and their corresponding gestures from the coded data can be found in Table \ref{tab:recognized_vs_coded}.
+
+UI gestures, ``Other'' gestures, voice commands, and pinch gestures were not captured by gesture recognizers, and so are not directly comparable to anything produced by the gesture recognizers. 
+The gesture recognizers detected 2786 total gestures, while the non-example user gestures only accounted for 1541 gestures. 
+Stuttering is likely the cause of this drastic increase, as it frequently broke single gestures into multiple gestures. 
+As an extreme example, the rightmost gesture in Figure \ref{recognizer_fail_1} shows a single two-finger drag being recognized as a path, three waypoint taps, and a select tap, for a total of five detected gestures from one real gesture. 
+
+\begin{table}
+	\centering
+	\begin{tabular}{l l r | l r}
+		&Detected Gesture & Count & Coded Gesture & Count\\
+		&Drag Robot & 635 & Drag & 877 \\
+		&Path & 685 & & \\ 
+		&Tap Waypoint & 799 & Tap & 304 \\
+		&Tap Select & 594 & & \\
+		&Lasso Select & 9 & Lasso Select & 115\\
+		&Box Select & 67 & Box Select & 55 \\
+		& & & UI & 83\\
+		& & & Other & 55\\
+		& & & Voice command & 16\\
+		& & & Pinch & 36\\
+		Total & & 2786 & & 1541\\				
+	\end{tabular}
+	\caption{Overall comparison of detected gestures versus those from the coding of the participant data.}\label{tab:recognized_vs_coded}
+\end{table}
+
+The recognizers make a distinction between drags starting on (or near) a robot, and drags starting in other areas of the screen, which are referred to as ``paths''. 
+The roughly equal proportion of paths and drag robot gestures are likely caused by stuttering breaking a drag robot gesture into a drag robot gesture at its beginning, and a path near its end, with a gap in the middle caused by stuttering. 
+
+As with drags, the recognizers distinguish between taps on or near robots, and taps elsewhere, while the coded data does not. 
+Because of the stuttering, many of the detected taps are fragments of paths, which became tap selects if they were on or near a robot, or waypoints if they were away from a robot. 
+
+Of the detected lassos, three were correct. 
+The usual cause of an incorrectly detected lasso was a path around the screen for a patrol, or a path for a box formation, being detected as a lasso because it contained robots. 
+The cause of missed lasso detections is a result of three problems.
+The first is the previously mentioned tendency of the lasso selection recognizer to regard a lasso which began too close to a robot to be drag robot gesture, thus reducing the count of lassos while increasing the count of drag robot gestures. 
+The second problem is, again, stutter, breaking up lasso selections into drag robots, paths, waypoints, and tap selections.
+The final problem is that the lasso gesture was detected based on the angle between the beginning and end of the gesture, with the centroid of the gesture as the vertex. 
+If a user gesture ended too far from the start, or overlapped the start by too much, then the angle fell outside of the threshold used for lasso detection, and so was treated as some other gesture. 
+
+Interestingly, box selection showed an increase over the coded data, rather than a decrease. 
+Of those detected, 17 were detected correctly, and the remaining 50 were spurious, and were not present in the coding.
+These were usually caused by stutter creating an incorrect path that included robots in its bounding box, and so was recognized as a box selection of those robots. 
+Of the box selections in the coding, 38 were not detected. 
+The main causes of box selections failing to be detected were stutter causing the gesture to be recognized as other gestures, or the gesture beginning too close to a robot, and so being recognized as a drag-robot gesture. 
+In cases where users drew a cut line to separate the robots for the divide group task, the line was frequently regarded as a box selection, because the users were careful to begin the cut line well outside the robot group.  
+
 Lest it appear that all of the gesture recognitions were fraught with error, in some cases the gesture detection worked perfectly and resulted in reasonable outputs, despite the fact that the participant input was collected well before the recognizers were written, and much of it was never selected for inclusion in the eventual gesture pipeline. 
 For example, see Figure \ref{recognizer_win}, where eight robot drag gestures were correctly detected.
  
@@ -305,7 +354,7 @@ For example, see Figure \ref{recognizer_win}, where eight robot drag gestures we
  	\caption{Successful recognition of all gestures, moving eight of the robots to form a line with the other two. }
  	\label{recognizer_win}
  \end{figure}
- 
+
 In light of the gesture recognition's sensitivity to context, as well as the problems with stutter and light touches, this component of the system could be improved in a number of ways. 
 The problem of combining intermittent contacts might be approached by searching across a gap in the direction of motion implied by the last few contacts, and allowing an approximate match for points on the opposite side of the gap, assuming the implied direction of motion was similar, and the gap crossing time was in approximate agreement with the calculated velocities between the last few points leading to the gap. 
 Approaches such as this would require significant tuning of the parameters for the approximate matching, and so might work better for some users than others, as each user may have a different style of movement. 
@@ -319,6 +368,7 @@ Incorporating visual feedback to the user, particularly of selection, but also o
 If the user made a gesture intended as selection, but saw that no robots were selected, they could make an additional gesture to select before issuing their next command. 
 Indeed, the entire list of detected gestures could be made visible to the user, perhaps as a stack along one edge of the screen, and edited by rearranging or deleting gestures before sending to the swarm. 
 The current system dispatches gestures as they are recognized, and counts on the interpreter to convert them appropriately, which has some advantages in terms of responsiveness and simplicity, but disadvantages in terms of flexibility to the user and ability to undo gestures. 
+
 
 \section{Translation Testing}
 
