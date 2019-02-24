@@ -9,6 +9,15 @@ Because a SAR situation may develop rapidly, there is little or no time availabl
 However, SAR is not the only domain in which swarm robots might be used, and so considering only the gestures which maximize the ability of untrained users ignores domains where it is possible to train the users extensively. 
 In such a context, adding complexity to the gesture set could allow for additional expressiveness in the interface.
 
+One such high-training environment is the space program. 
+Many SAR responders are not primarily SAR professionals, but volunteers or work as first responders primarily in other capacities. 
+NASA astronauts' primary job is service as an astronaut, and they spend a significant amount of time in training for missions, including using mock-ups of the interfaces of systems that they will use during their missions. 
+For example, operation of the remote manipulator on the International Space Station (ISS) begins with 30 hours of ``Generic Robotics Training" in a virtual environment, which is used to qualify them for future, more specialized, training on the specific arm used on the ISS \citep{liu2013predicting}. 
+Some astronauts do not pass this test, and as a result, are not qualified to use the manipulator. 
+NASA has developed the TLX (Task Load indeX), which is a widely accepted subjective metric for the physical and cognitive workload imposed on the human operator during a task \citep{hart2006nasa}.
+As a consequence, NASA is a good example of an environment where highly-trained users could be expected to interact with a more complex interface, and where interfaces could be evaluated to determine if they reduce or increase the workload on the user, as in \citep{fong2006human}.
+
+
 \section{On-line Training}
 
 Because user experience of video games does have some effect on their use of the user interface described in this work, it is interesting to examine other aspects of video games, and how they might be applied to user interface design for swarm robotics. 
@@ -26,6 +35,14 @@ Modern games frequently include a tutorial level at the beginning of the game in
 The tutorial level provides instruction for the user in performing game actions, and assesses whether those actions have been performed, in order to control progression to the next section of the tutorial. 
 For example, a game that includes horseback riding as part of gameplay may provide the horse to the player during the tutorial level, and instruct the user in how to use the controls to mount the horse and direct its movement. 
 However, games do not always provide tutorials, and the lack of tutorial content, or the low quality of tutorials when present has been cited as a potential usability issue in games \citep{pinelle2008heuristic}.
+
+These forms of training center on the gameplay of a specific video game. 
+However, as discussed in the section ``Video Game UI Design'', there are commonalities in user interface designs across games, particularly within a given genre of game, and similarities exist between the top-down views used in Real Time Strategy (RTS) games, and the top-down swarm view used in this work. 
+Indeed, some users remarked that the interface was ``like Starcraft", which is an RTS game, and used Starcraft-like box selection gestures. 
+This sort of similarity has been leveraged to control the IRobot Packbot using a controller from a Sony Playstation or Microsoft XBox, rather than the Packbot OCU. 
+The Packbot OCU is large and has a large set of individual controls for each function of the robot. 
+After significant use, Packbot operators learn complex tricks to maximize their ability to control the robot \citep{micire2011design}.
+IRobot developed a method to control the packbot using a game controller instead, because soldiers already had practice using it from playing video games \citep{glaser2010impact}. 
 
 The tutorial level of video games is usually somewhat separate from the main content of the game, in that actions in the tutorial have limited or no consequences in future gameplay. 
 This raises a potential issue for implementation of game-style tutorials in a robot control system. 
