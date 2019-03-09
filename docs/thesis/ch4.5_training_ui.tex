@@ -2,15 +2,15 @@
 \chapter{UI Design for Trained Users}
 \thispagestyle{fancy}
 
-The work on which this study is built was motivated in part by the idea of using robots in search and rescue (SAR) operations, to explore damaged buildings, enter unsafe areas, and provide additional sensor data and coverage while reducing risk to first responders \citep{micire2010multi}.
-First responders are trained on the equipment they use, but such training may be infrequent, and as a result, complex control systems may not be remembered when the time comes to use the equipment. 
-Because a SAR situation may develop rapidly, there is little or no time available for retraining, and so use with first responders prioritizes easy learning of the interface and use with minimal training over depth of the possible commands.  
+The work on which this study is built was motivated in part by the idea of using robots in search and rescue (SAR) operations, to explore damaged buildings, enter unsafe areas, and provide additional sensor data and coverage while reducing risk to first responders.
+First responders are trained on the equipment they use, but such training may be infrequent, and as a result, complex control systems may not be remembered when the time comes to use the equipment \citep{micire2010multi}. 
+Because a SAR situation may develop rapidly, there is little or no time available for retraining, and so an interface for use by first responders would prioritize easy learning of the interface and use with minimal training over richness of the possible commands.  
 
 However, SAR is not the only domain in which swarm robots might be used, and so considering only the gestures which maximize the ability of untrained users ignores domains where it is possible to train the users extensively. 
 In such a context, adding complexity to the gesture set could allow for additional expressiveness in the interface.
 
 One such high-training environment is the space program. 
-Many SAR responders are not primarily SAR professionals, but volunteers or work as first responders primarily in other capacities. 
+Many SAR responders are not primarily SAR professionals, but work primarily in other capacities. 
 NASA astronauts' primary job is service as an astronaut, and they spend a significant amount of time in training for missions, including using mock-ups of the interfaces of systems that they will use during their missions. 
 For example, operation of the remote manipulator on the International Space Station (ISS) begins with 30 hours of ``Generic Robotics Training" in a virtual environment, which is used to qualify them for future, more specialized, training on the specific arm used on the ISS \citep{liu2013predicting}. 
 Some astronauts do not pass this test, and as a result, are not qualified to use the manipulator. 
@@ -36,6 +36,12 @@ The tutorial level provides instruction for the user in performing game actions,
 For example, a game that includes horseback riding as part of gameplay may provide the horse to the player during the tutorial level, and instruct the user in how to use the controls to mount the horse and direct its movement. 
 However, games do not always provide tutorials, and the lack of tutorial content, or the low quality of tutorials when present has been cited as a potential usability issue in games \citep{pinelle2008heuristic}.
 
+The tutorial level of video games is usually somewhat separate from the main content of the game, in that actions in the tutorial have limited or no consequences in future gameplay. 
+This raises a potential issue for implementation of game-style tutorials in a robot control system. 
+If the system allows untrained users to control real robots in a tutorial mode, the user may make an error that does have permanent consequences for the future use of the system, such as causing a collision between robots. 
+If, instead, the system allows the user to operate a simulation, the design and development overhead of implementing the tutorial is quite large, for a component of the system that the user may use very rarely or never. 
+This dilemma may restrict pre-use tutorials to training the user as to which gestures the system can recognize, and only permit a sketch of the possible robot reactions to those gestures. 
+
 These forms of training center on the gameplay of a specific video game. 
 However, as discussed in the section ``Video Game UI Design'', there are commonalities in user interface designs across games, particularly within a given genre of game, and similarities exist between the top-down views used in Real Time Strategy (RTS) games, and the top-down swarm view used in this work. 
 Indeed, some users remarked that the interface was ``like Starcraft", which is an RTS game, and used Starcraft-like box selection gestures. 
@@ -44,13 +50,7 @@ The Packbot OCU is large and has a large set of individual controls for each fun
 After significant use, Packbot operators learn complex tricks to maximize their ability to control the robot \citep{micire2011design}.
 IRobot developed a method to control the packbot using a game controller instead, because soldiers already had practice using it from playing video games \citep{glaser2010impact}. 
 
-The tutorial level of video games is usually somewhat separate from the main content of the game, in that actions in the tutorial have limited or no consequences in future gameplay. 
-This raises a potential issue for implementation of game-style tutorials in a robot control system. 
-If the system allows untrained users to control real robots in a tutorial mode, the user may make an error that does have permanent consequences for the future use of the system, such as causing a collision between robots. 
-If, instead, the system allows the user to operate a simulation, the design and development overhead of implementing the tutorial is quite large, for a component of the system that the user may use very rarely or never. 
-This dilemma may restrict pre-use tutorials to training the user as to which gestures the system can recognize, and only permit a sketch of the possible robot reactions to those gestures. 
-
-Alternatively, the system could be developed with a basic level of functionality based on user elicited gestures, as in this work, and attempt to recognize certain relatively inefficient patterns of user activity. 
+Rather than including tutorials, the system could be developed with a basic level of functionality based on user elicited gestures, as in this work, and attempt to recognize certain relatively inefficient patterns of user activity. 
 When such a pattern is recognized, the system would propose alternatives that extend beyond the easily-discovered gestures to offer greater finesse or complexity. 
 For example, in the user experiment, some participants performed the Move to Area A task in the 10 robot case by selecting each robot in turn and dragging it to area A, while other participants made a selection gesture and then a single motion gesture. 
 If the system detects a repeated pattern of single robot interactions, it could display a hint to the user that selection of multiple robots can be done, and indicate how to use it. 
@@ -86,7 +86,7 @@ In software operating on the Surface, finger contact points are typically approx
 As a result, if the user extends their fingers and places the edge of their hand on the screen, and then slides their hand along the screen, the Surface will report a single oval, much longer than it is wide, moving along the screen. 
 
 The multitouch screen used in this work tracks up to 20 contact points, but it treats them as points, each representing a single pixel location on the screen. 
-If the user preforms a sweep with the edge of their hand, the screen will a large number of individual contacts in the region under the user's hand, rather than a region.
+If the user preforms a sweep with the edge of their hand, the screen will report a large number of individual contacts in the region under the user's hand, rather than a single region of contact.
 As a consequence, gestures that use a region of the hand other than the fingertip are difficult to recognize on the 3M screen. 
 
 \section{Gesture Modification}
@@ -101,8 +101,7 @@ On the next task, commanding the robots to form a square, the participant again 
 This sequence of removing ambiguity and then extending from the disambiguated gesture resulted in a set of gestures that seems to compose a ``formation'' gesture (placing and holding a finger) with a description of what that formation should be. 
 This gesture ended up not being used in the gesture set for the robot interface due to the fact that only one participant chose it, but in a context where training was available, it would be relatively simple to train users to perform this gesture. 
 
-However, this sort of composability has limits. 
-Sequences of gestures would probably be harder to remember than this sort of combined command-and-modification gesture, as the sequence would consist of a larger count of discrete actions, rather than being experienced by the user as a single action. 
+This sort of combined command-and-modification gesture would probably be easier to remember than sequences of gestures, as the sequence would consist of a larger count of discrete actions, rather than being experienced by the user as a single action. 
 Additionally, the fact that the hold-and-draw formation command has one hand remaining still is likely a good idea from a design perspective. 
 In the physiological research literature, tasks where each hand performs a different action are referred to as bimanual coordination tasks.
 Bimanual tasks interfere with each other, as in the classic example of patting one's head with one hand and rubbing one's belly with the other. 
@@ -154,13 +153,13 @@ In a relatively extreme case, if a map of the continental United States is displ
 No practical mobility platform can be expected to match this velocity. 
 As a result, the robot speed and user gesture speed may be related in a potentially complex way by other factors, such as the scale of the map view, leading to difficulty for the user in understanding how fast the robots are being commanded to move. 
 
-\section{Assessment of a Training-Oriented Gesture Set}
+\section{Assessment of Training-Oriented Gestures}
 
 If the system were developed with this style of gesture set, assessment of the validity of the design choices would differ from the assessment of a system based on gestures intended to be useful to untrained users. 
 
 In the case of a system intended to be useful to untrained users, the system's primary metric of effectiveness would be the ability of untrained users to complete tasks at all. 
 In the experimental study, some users performed the formation task by repeating the single-robot motion gesture to move each individual robot into a position on the formation. 
-This control scheme would work, assuming the single robot motion gesture was supported, but it is relatively inefficient compared to using a formation command button once. 
+This control scheme would allow the user to complete the task, assuming the single robot motion gesture was supported, but it is relatively inefficient compared to using a formation command button once. 
 Many of the other tasks could be performed in this way, as sequences of single robot move actions, so as long as the user discovered that interaction method, the system could be used, albeit slowly. 
 
 For a system that permits a longer training period, factors such as efficiency and memorability of the commands would be important, as well as the length of time to become proficient. 
