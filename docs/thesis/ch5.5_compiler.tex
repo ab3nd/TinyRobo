@@ -334,7 +334,7 @@ Because of the stuttering, many of the detected taps are fragments of paths, whi
 
 Of the nine detected lassos, three were correct. 
 The usual cause of an incorrectly detected lasso was a path around the screen for a patrol, or a path for a box formation, being detected as a lasso because it contained robots. 
-The cause of missed lasso detections is a result of three problems.
+Missed lasso detections were the result of three problems.
 The first is the previously mentioned tendency of the lasso selection recognizer to regard a lasso which began too close to a robot to be drag robot gesture, thus reducing the count of lassos while increasing the count of drag robot gestures. 
 The second problem is, again, stutter, breaking up lasso selections into drag robots, paths, waypoints, and tap selections.
 The final problem is that the lasso gesture was detected based on the angle between the beginning and end of the gesture, with the centroid of the gesture as the vertex. 

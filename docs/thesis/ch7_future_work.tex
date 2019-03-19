@@ -46,12 +46,13 @@ This is in line with the design philosophy of ROS.
 Recently, CMUSWARM and ROSBuzz were released, which provide swarm-oriented programming frameworks underpinned by ROS \citep{arpino2018using, DBLP:journals/corr/abs-1710-08843}.
 These tools were not available at the inception of this work, and would likely have greatly accelerated the development of the translation layer. 
 
-The development of standard, or at least commonly usable, tools for swarm robots would neatly dovetail with the possible development of a reference implementation for the hardware of swarm robots, as described in \citep{francesca2014experiment}.
+The development of standard software tools for swarm robots would neatly dovetail with the possible development of a reference implementation for the hardware of swarm robots, as described in \citep{francesca2014experiment}.
 The robots developed as part of this work converged towards the design common to mROBerTO, Colias, Alice, GRITSBots, Jasmine, Amir, and the E-puck robots. 
 This common design is a platform with differential drive steering using a sealed drivetrain or direct-drive. 
 Even the Kilobots can be regarded as differential drive, although using vibration motors rather than wheels.
 The platforms are all capable of rotating in their own footprint, and equipped with omnidirectional sensing and communication, typically provided by IR sensors.
 They also all use the PCBs of the robot as the chassis, or a custom chassis which could be produced by 3D printing.  
+From this convergent evolution, it could be argued that a reference swarm robot hardware implementation would have differential drive steering, a sealed drivetrain, and omnidirectional sensing and communication.
 These reference implementations in both hardware and software would allow researchers to focus on the development of controllers and algorithms for swarms, rather than developing new swarm robots.
 It is hoped that this work will also allow future researchers to focus their efforts on fruitful avenues for the development of useful robot swarms.   
 
