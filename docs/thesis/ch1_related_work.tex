@@ -457,13 +457,13 @@ Otherwise, human control may present a bottleneck, rather than an advantage.
 
 Some swarm robots are designed to be used with no control interface at all.
 By altering the shape of simple stick-slip locomotion toys with laser-cut foam ``hats'' that change their outer perimeter, and changing the outline of the laser-cut foam forms they interact with, the random motion of the toys can create stable structures \citep{andreen2016emergent}).
-The development of the shapes relies on human interaction, but specifying the shapes of the hats and interactive components seems amenable to be solved with genetic algorithms. 
+The development of the shapes relies on human interaction, but specifying the shapes of the hats and interactive components seems amenable to solution with genetic algorithms. 
 Because the toys used in this work were about \$4-8, and everything else was composed of laser-cut foam, the platform is extremely inexpensive, but the tasks it can solve are seemingly limited to self-assembly. 
 
 The Guardians project studied the deployment of sensor-equipped robots to support firefighters by providing mapping and sensor information that would not normally be available to the firefighter \citep{gancet2010user}.
 Rather than having the firefighter control the robots, the robots would deploy with the firefighters and swarm with them, attempting to maintain network connectivity and proximity to the firefighter. 
 The robots provide a stream of information via a heads-up display (HUD) constructed of LEDs on the firefighter's visor, to which the firefighter may or may not choose to react. 
-Instead of having to control the swarm, the user acts as they feel is best, using both their own information and that from the swarm of robots that surrounds them and extends the firefighter's senses \citep{penders2011robot}. 
+Instead of having to control the swarm, the firefighter acts as they feel is best, using both their own information and that from the swarm of robots that surrounds them and extends the firefighter's senses \citep{penders2011robot}. 
 
 
 \subsection{Video Game UI Design} \label{section:Video_Game_UI_Design}
@@ -988,7 +988,7 @@ While valuable for the strength of the assertions they can make about the genera
 %\unsure{So since we can't tell if a program will succeed, and determining if it is impossible might not be tractable, how do we know if we've written a compiler that does this?}
 
 Another potential approach to the generation of robot programs for swarms is the use of Supervisory Control Theory (SCT) \citep{lopes2016supervisory}.
-SCT provides a method to formally synthesize controllers called ``supervisors.''
+SCT provides a method to formally synthesize controllers called ``supervisors''.
 Both the possible state transitions of the robot and the control specification are represented as state transition diagrams, and realized as generators. 
 The generators are then composed into a synchronous automaton, which is the supervisor. 
 Changes in state are caused by events.
@@ -1000,7 +1000,7 @@ The expression of the abilities of the robot and the desired behavior, as state 
 SCT supplies a way of ensuring that the resulting program does what the specification requires. 
 As noted in \citep{lopes2017probabilistic}, a specification that is logically incorrect, such as including a possiblity to livelock, will generate a program that can be formally demonstrated to match that specification, and so includes the specification's errors. 
 
-EvoStick and AutoMoDe-Vanilla both provide automatic design of swarm robot software using a test-and refine method \citep{francesca2014experiment}. 
+EvoStick and AutoMoDe-Vanilla both provide automatic design of swarm robot software using a test-and-refine method \citep{francesca2014experiment}. 
 AutoMoDe creates controllers by combining parameterized modules in a PFSM. 
 AutoMoDe-Vanilla outperformed EvoStick, which is a typical neural network control evolution algorithm.
 It was also able to outperform unconstrained human programmers, but not humans using the same set of modules available to AutoMoDe. 
