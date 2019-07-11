@@ -552,7 +552,7 @@ The tag size could be increased, either by moving the tags closer to the camera 
 Moving the camera closer reduces the useful area of the robot arena, and making the tags larger increases the size and weight of the robots, potentially overbalancing some of the less nimble robots. 
 %As was observed in the robot drive tests, the bug and big wheel bases were already prone to tipping over. 
 
-The effect of the noise in subpixel position on the perceived rotation of the tags is larger than its effect on the perceived rotation of the tags, since rotation around the center of the tag does not change the position of its center at all. 
+The effect of the noise in subpixel position on the detected rotation of the tags is larger than its effect on the detected position of the tags, since rotation around the center of the tag does not change the position of its center at all. 
 As a consequence, the tags could be detected to be in lateral motion by comparing the displacement of the center of the tag and checking that it was greater than the expected noise, but detection of rotational motion and velocity calculation was sometimes swamped by noise. 
 
 The noise was also determined to be unevenly distributed over the robot arena. Because the arena is wide, a 140$^{\circ}$ wide-angle lens is used to ensure that the entire arena is visible. 
